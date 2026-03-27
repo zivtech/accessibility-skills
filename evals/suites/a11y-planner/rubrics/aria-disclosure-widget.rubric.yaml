@@ -1,0 +1,190 @@
+fixture_id: aria-disclosure-widget
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG Disclosure pattern with explicit URL?"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_disclosure: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      - maps_keyboard_interactions_to_pattern: true
+      - maps_aria_to_pattern: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every design decision cite a WCAG 2.2 criterion or APG pattern?"
+    weight: 3
+    rule_based_checks:
+      - aria_expanded_cites_wcag: true
+      - aria_controls_cites_wcag: true
+      - keyboard_cites_wcag_2_1_1: true
+      - focus_management_cites_wcag: true
+      - state_communication_cites_wcag: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard (keyboard interaction)"
+      - "WCAG 4.1.2 Name, Role, Value (aria-expanded, aria-controls)"
+      - "WCAG 4.1.3 Status Messages (state change announced)"
+      - "WCAG 2.4.7 Focus Visible (focus indicator)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a developer implement from this plan without guessing? Are ARIA attributes precise?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_expanded_values: "true/false"
+      - specifies_aria_controls_linking: "button id to panel id"
+      - documents_keyboard_events: "Tab, Space, Enter"
+      - includes_html_structure_stub: true
+      - specifies_focus_indicator_contrast: "3:1"
+      - specifies_touch_target_size: "44x44"
+    llm_judge_criteria:
+      - "Would a developer understand exactly what to implement?"
+      - "Are edge cases addressed (e.g., multiple open/closed states)?"
+      - "Is the implementation guidance specific or vague?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are automated, keyboard, screen reader, and visual testing approaches planned?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan length appropriate for TRIVIAL difficulty? (1-2 pages expected)"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 1-2
+      - no_scope_creep: true
+      - no_over_planning: true
+    llm_judge_criteria:
+      - "Does the plan feel proportional to the complexity?"
+      - "Is detail appropriate for difficulty level?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 90-100
+    reasoning: "Should identify all 9 phases, map to APG Disclosure, cite WCAG, be proportionally brief"
+
+  - condition: baseline-zero-shot
+    expected_score: 70-80
+    reasoning: "Should cover basics but may lack APG pattern mapping and specific WCAG citations"
+
+  - condition: baseline-few-shot
+    expected_score: 75-85
+    reasoning: "Structured approach helps, example may guide pattern thinking"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
+
+notes: |
+  This TRIVIAL fixture is straightforward — the APG Disclosure pattern is well-documented.
+
+  Key evaluation focus:
+  - Is APG pattern explicitly referenced with URL?
+  - Are aria-expanded and aria-controls documented?
+  - Are WCAG criteria cited for each major decision?
+  - Is the plan appropriately brief (1-2 pages)?
+  - Are all 9 phases at least touched (even if briefly)?
+
+  Expected findings baseline:
+  - APG Disclosure pattern: 100% of evaluators should cite it
+  - aria-expanded/aria-controls: 100% should include
+  - WCAG citations: 80%+ of evaluators (some may be generic)
+  - Keyboard interactions (Tab, Space, Enter): 95%+
+  - Testing strategy: 85%+ (some baselines may be weak here)
+  - Proportional length: 90%+ of evaluators (a11y-planner strong)
+
+  Outlier indicators:
+  - Plan >5 pages (scope creep for TRIVIAL)
+  - No WCAG citations at all
+  - No mention of APG pattern
+  - No keyboard interaction documentation
+  - Focus trap or complex focus management (not needed here)
+
+rule_based_scoring_details: |
+  Rule-based component (70% of score):
+  - Each check is binary (present/absent) or scalar
+  - Count of checks passed: N_passed / N_total
+  - Each dimension has different # of checks
+  - For ARIA specificity: must include exact attribute values
+
+  LLM judge component (30% of score):
+  - Judge evaluates subjective criteria
+  - "Would a developer understand this?"
+  - "Is detail proportional to complexity?"
+  - "Are edge cases addressed?"
+  - Judge score fed into composite with 30% weight
+
+example_excellent_response: |
+  A score of 95+ would:
+  - ✓ Reference APG Disclosure with URL
+  - ✓ Document aria-expanded="true"|"false"
+  - ✓ Document aria-controls with id linking
+  - ✓ Cite WCAG 2.1.1, 4.1.2, 4.1.3, 2.4.7
+  - ✓ Include HTML stub: <h2><button aria-expanded="false" aria-controls="panel-1">Trigger</button></h2><div id="panel-1" hidden>Content</div>
+  - ✓ Document keyboard: Tab focuses button, Space/Enter toggles aria-expanded
+  - ✓ Plan focus indicator contrast (3:1)
+  - ✓ Plan touch target (44×44)
+  - ✓ Test cases for screen reader announcement, keyboard toggle, visual toggle
+  - ✓ Be 1-2 pages (no scope creep)
+
+example_weak_response: |
+  A score of 45 would:
+  - ✗ No APG pattern reference
+  - ✗ Mentions aria-expanded but no WCAG citation
+  - ✗ Vague keyboard description ("support keyboard navigation")
+  - ✗ No HTML structure provided
+  - ✗ Missing testing strategy entirely
+  - ✗ Over-planned (5-10 pages for TRIVIAL)
+  - ✗ Suggests custom keyboard behavior not in APG

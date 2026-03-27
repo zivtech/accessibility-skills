@@ -1,0 +1,58 @@
+fixture_id: screenreader-liveregion
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    weight: 3
+    rule_based_checks:
+      - has_all_9_phases: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    weight: 3
+    rule_based_checks:
+      - includes_wcag_citations: true
+
+  - id: pattern_mapping
+    name: "Pattern Mapping"
+    weight: 2
+    rule_based_checks:
+      - maps_to_apg_pattern: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    weight: 2
+    rule_based_checks:
+      - includes_testing_strategy: true
+
+  - id: calibration
+    name: "Proportionality"
+    weight: 1
+    rule_based_checks:
+      - appropriate_length: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 82-92
+    reasoning: "Should handle MODERATE difficulty with WCAG citations and complete coverage"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+
+notes: |
+  MODERATE fixture for evaluating Live Region Content Updates implementation.

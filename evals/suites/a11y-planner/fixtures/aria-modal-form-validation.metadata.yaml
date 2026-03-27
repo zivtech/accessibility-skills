@@ -1,0 +1,114 @@
+fixture_id: aria-modal-form-validation
+name: Modal Dialog with Form Validation
+description: Modal dialog containing a form with real-time validation. Plan accessibility for APG Dialog pattern, focus trap and restoration, form structure, error message association (aria-invalid, aria-describedby), validation announcements, and error recovery flow.
+language: jsx
+framework: Next.js
+difficulty: AMBIGUOUS
+domain: ARIA Pattern Implementation
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: Reusable modal dialog component with embedded form and real-time validation
+  user_need: Secured form submission with clear error feedback and keyboard accessibility
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - JAWS
+    - NVDA
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Modal dialog with flexible form content, supports nested modals (ambiguous)
+  constraints:
+    - Async validation possible
+    - Nested modals (ambiguous requirement)
+    - Form size variable (2-10 fields)
+    - Error recovery flow unclear
+
+expected_plan_sections:
+  - Scope & Context
+  - Modal Pattern Implementation (APG Dialog)
+  - Focus Management (focus trap, restoration, nested scenarios)
+  - Form Structure (fieldset, legend, labels)
+  - Validation & Error Handling (real-time or submit?)
+  - Error Message Communication (aria-invalid, aria-describedby, live region)
+  - Keyboard Interaction (Tab trap, Escape, Shift+Tab)
+  - Screen Reader Experience (modal announcement, error navigation)
+  - Testing Strategy
+
+key_evaluation_criteria:
+  - APG pattern mapping: Must cite https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
+  - WCAG grounding: WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value), 4.1.3 (Status Messages)
+  - Focus trap: Clear Tab/Shift+Tab implementation plan
+  - Focus restoration: Mechanism to return focus to trigger button
+  - Form structure: Proper fieldset/legend, labels for inputs
+  - Error communication: aria-invalid, aria-describedby, live region usage
+  - Ambiguity handling: Makes reasonable decisions about validation approach, nested modals
+  - Completeness: All 9 phases addressed
+
+expected_findings:
+  must_have:
+    - APG Dialog pattern reference with URL
+    - Focus trap plan (Tab, Shift+Tab behavior)
+    - Focus restoration plan
+    - aria-modal="true" and aria-labelledby
+    - Form structure with fieldset/legend
+    - aria-invalid for error states
+    - aria-describedby linking input to error message
+    - Keyboard interaction (Tab, Escape, Shift+Tab)
+    - HTML structure stub
+    - Validation approach decision (real-time vs submit)
+    - WCAG citations
+
+  should_have:
+    - Live region (aria-live="polite") for validation messages
+    - Error recovery guidance
+    - Success message handling
+    - Nested modal handling plan (if applicable)
+    - Visual focus indicator contrast
+    - Close button accessibility
+    - Escape key handling
+    - Test cases for keyboard, validation, focus
+
+  nice_to_have:
+    - Async validation error handling
+    - Progress indication in multi-step forms
+    - Custom validation message formatting
+    - Keyboard shortcut to submit
+
+false_positive_traps:
+  - Not planning focus trap
+  - Missing focus restoration
+  - No APG Dialog reference
+  - Form labels missing or unclear
+  - Ambiguity not addressed (makes unsupported assumptions)
+  - Error message not associated with inputs
+  - No validation announcement strategy
+
+multi_perspective_coverage:
+  keyboard: "Tab trap implementation, Escape closes, clear focus indicator"
+  screen_reader: "Modal role, form labels, error messages, validation announcements"
+  low_vision: "Focus contrast, error indicator color + text, form layout clear"
+  cognitive: "Consistent form behavior, clear error messaging"
+  mobile_touch: "Touch activation, focus management, error feedback"
+
+notes: |
+  This AMBIGUOUS fixture tests:
+  1. Handling ambiguous requirements (decides on validation approach, nested modal handling)
+  2. Complex modal pattern (APG Dialog) with focus trap
+  3. Form pattern integration with modal
+  4. Real-time validation communication
+  5. Focus restoration mechanism
+  6. Error message association and announcements
+  7. Keyboard interaction complexity
+
+  Expected verdict: ACCEPT (even with ambiguity if handled well)
+
+  A strong plan shows:
+  - APG Dialog pattern (W3C reference)
+  - Focus trap and restoration mechanism
+  - Form structure with proper labeling
+  - Error message strategy with aria-invalid/aria-describedby
+  - Validation approach decision (documented choice)
+  - Nested modal handling (if applicable)
+  - 4-5 pages of detailed planning
+  - Addresses ambiguity explicitly

@@ -1,0 +1,190 @@
+fixture_id: aria-combobox-autocomplete
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG Combobox pattern with explicit URL?"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_combobox: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/"
+      - maps_keyboard_interactions_to_pattern: true
+      - maps_aria_to_pattern: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every design decision cite a WCAG 2.2 criterion or APG pattern?"
+    weight: 3
+    rule_based_checks:
+      - aria_expanded_cites_wcag: true
+      - aria_activedescendant_cites_wcag: true
+      - keyboard_cites_wcag_2_1_1: true
+      - focus_management_cites_wcag: true
+      - state_communication_cites_wcag: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard (keyboard interaction model)"
+      - "WCAG 4.1.2 Name, Role, Value (ARIA attributes)"
+      - "WCAG 4.1.3 Status Messages (loading, result count announcements)"
+      - "WCAG 2.4.7 Focus Visible (focus indicator in input)"
+
+  - id: aria_completeness
+    name: "ARIA Completeness"
+    description: "Does the plan specify all required ARIA attributes for the Combobox pattern?"
+    weight: 3
+    rule_based_checks:
+      - specifies_aria_expanded: "true/false"
+      - specifies_aria_owns_or_controls: true
+      - specifies_aria_activedescendant: true
+      - specifies_aria_autocomplete: "list"
+      - specifies_aria_busy_for_loading: true
+      - specifies_aria_live_for_announcements: true
+    llm_judge_criteria:
+      - "Is ARIA attribute usage complete and correct for Combobox?"
+      - "Are state transitions (expanded, loading, selected) all planned?"
+
+  - id: focus_management
+    name: "Focus Management"
+    description: "Does the plan clarify that focus remains in input during keyboard navigation (not moving to results)?"
+    weight: 2
+    rule_based_checks:
+      - clarifies_focus_stays_in_input: true
+      - documents_focus_on_open: true
+      - documents_focus_on_select: true
+      - documents_focus_on_escape: true
+      - documents_tab_behavior: "Tab exits combobox"
+
+  - id: keyboard_model
+    name: "Keyboard Interaction Model"
+    description: "Is the complete keyboard interaction model documented (typing, Arrow Up/Down, Enter, Escape, Tab)?"
+    weight: 2
+    rule_based_checks:
+      - documents_typing: true
+      - documents_arrow_up_down: true
+      - documents_enter_to_select: true
+      - documents_escape_to_close: true
+      - documents_tab_to_exit: true
+      - documents_activedescendant_updates: true
+
+  - id: dynamic_updates
+    name: "Dynamic Content & Loading"
+    description: "Does the plan address async loading, result list updates, and loading state communication?"
+    weight: 2
+    rule_based_checks:
+      - plans_aria_busy_for_loading: true
+      - plans_result_count_announcement: true
+      - plans_empty_results_handling: true
+      - plans_error_state: true
+      - plans_debouncing_strategy: true
+    llm_judge_criteria:
+      - "Would a developer know how to handle async loading scenarios?"
+      - "Are result updates and announcements clearly planned?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are keyboard, screen reader, visual, and async testing approaches planned?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - documents_async_testing: true
+      - specifies_acceptance_criteria: true
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan length appropriate for MODERATE difficulty? (3-4 pages expected)"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 3-4
+      - no_excessive_planning: true
+    llm_judge_criteria:
+      - "Is detail proportional to MODERATE complexity?"
+      - "Is the plan focused on APG pattern without reinventing?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 88-100
+    reasoning: "Should identify all phases, map to APG Combobox, cite WCAG, clarify focus model, handle async"
+
+  - condition: baseline-zero-shot
+    expected_score: 65-75
+    reasoning: "May cover basics but likely miss aria-activedescendant, focus model, or async handling"
+
+  - condition: baseline-few-shot
+    expected_score: 70-80
+    reasoning: "Structured approach helps but complex ARIA attributes may be incomplete"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  This MODERATE fixture evaluates handling of a complex APG pattern.
+
+  Key evaluation focus:
+  - Is APG Combobox explicitly referenced with URL?
+  - Are all ARIA attributes specified (aria-expanded, aria-owns, aria-activedescendant, aria-autocomplete, aria-busy)?
+  - Does the plan clarify focus stays in input (common misconception)?
+  - Is async loading and result announcements planned?
+  - Is keyboard model complete (typing, arrows, Enter, Escape, Tab)?
+  - Are all 9 phases addressed at appropriate depth for MODERATE?
+
+  Expected findings baseline:
+  - APG Combobox pattern: 95%+ of evaluators should cite it
+  - aria-expanded/aria-owns: 90%+ should include
+  - aria-activedescendant: 70%+ (some may miss this complexity)
+  - Focus stays in input: 60%+ (this is often misunderstood)
+  - WCAG citations: 85%+ of evaluators
+  - Keyboard interactions: 95%+
+  - Async/loading handling: 70%+ (some baselines may miss this)
+
+  Outlier indicators:
+  - Plan <3 pages or >6 pages (calibration issue)
+  - No WCAG citations
+  - Missing aria-activedescendant
+  - Suggests focus should move to results (incorrect)
+  - No plan for loading state
+  - Missing async scenario testing

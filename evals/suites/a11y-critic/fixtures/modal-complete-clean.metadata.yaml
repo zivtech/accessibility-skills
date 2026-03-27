@@ -1,0 +1,96 @@
+fixture_id: modal-complete-clean
+name: Modal Dialog Component (CLEAN, Complete Implementation)
+description: Properly implemented WAI-ARIA Modal Dialog pattern with focus trap, focus restoration, Escape key handling, and correct semantics.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical a11y issues. Implementation is complete and correct per WAI-ARIA Modal Dialog pattern."
+
+  - category: should_find
+    count: 0
+    notes: "No major issues."
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional enhancement: aria-label on the overlay could describe purpose (e.g., 'Dialog overlay, click outside to dismiss' or similar). Current has role='presentation' which is correct but overlay is not labeled."
+    severity: ENHANCEMENT
+
+  - category: false_positive_trap
+    count: 0
+
+components_analyzed:
+  - name: Modal overlay
+    aria_role: presentation
+    status: "Correct: marked as non-semantic presentation element"
+
+  - name: Modal dialog
+    aria_role: dialog
+    aria_attributes:
+      - aria-modal: "true"
+      - aria-labelledby: "modal-title"
+    status: "Correct and complete"
+
+  - name: Modal title
+    element: h2
+    aria_attributes:
+      - id: "modal-title"
+    status: "Correct: proper heading, associated via aria-labelledby"
+
+  - name: Close button
+    semantic_element: button
+    aria_attributes:
+      - aria-label: "Close dialog"
+    status: "Correct: native button, clear label"
+
+wcag_criteria:
+  - "2.1.1 Keyboard (all functionality available via keyboard)"
+  - "2.1.2 No Keyboard Trap (Tab cycles within modal, Escape exits)"
+  - "2.4.3 Focus Order (focus trap ensures logical order)"
+  - "4.1.2 Name, Role, Value (role='dialog', aria-modal='true', aria-labelledby present)"
+
+apa_patterns:
+  - name: "WAI-ARIA Modal Dialog Pattern"
+    link: "https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
+    compliance: "COMPLETE"
+    required_features:
+      - "role='dialog' ✓"
+      - "aria-modal='true' ✓"
+      - "aria-labelledby or aria-label ✓"
+      - "Focus trap (Tab cycles) ✓"
+      - "Escape key closes dialog ✓"
+      - "Focus restoration on close ✓"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader announces 'dialog' role. Title announced via aria-labelledby. Close button clearly labeled. Focus trap prevents accidental navigation to background. Escape to close announced if documented."
+  - keyboard: "Tab navigates between focusable elements within modal, wrapping at edges (focus trap). Escape closes modal and restores focus to trigger. Full keyboard control."
+  - low_vision: "Focus indicator visible (3px outline). Modal is centered on screen, clearly visible. Backdrop darkening provides context. Readable font size and color contrast."
+  - cognitive: "Clear purpose (title). One way to close (button or Escape). Consistent interaction model. No surprises or complex navigation."
+
+notes: |
+  This is a **CLEAN baseline** fixture.
+
+  Expected verdict: ACCEPT
+
+  This implementation demonstrates a complete, correct WAI-ARIA Modal Dialog pattern. All required features present:
+  1. Proper role="dialog" + aria-modal="true"
+  2. aria-labelledby linking to title
+  3. Focus trap (Tab/Shift+Tab cycle within modal)
+  4. Focus restoration on close
+  5. Escape key handling
+  6. Clear semantic structure
+  7. Accessible close button
+
+  A11y-critic should verify these are all present and correctly implemented. Should note there are no blocking issues.
+
+  This fixture tests whether the skill can recognize genuinely good a11y work and avoid false positives. A clean verdict here demonstrates credibility.
+
+  Optional notes:
+  - Could mention aria-label on overlay as enhancement
+  - Could note animation timing (if present) could include prefers-reduced-motion support
+  - But these are enhancements, not findings

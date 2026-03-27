@@ -1,0 +1,53 @@
+fixture_id: visual-responsive-design
+name: Accessible Responsive Layout
+description: Multi-breakpoint responsive design. Plan touch targets (44x44), viewport, scaling.
+language: jsx
+framework: React
+difficulty: COMPLEX
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: Component or feature
+  user_need: Accessibility and usability
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA
+    - JAWS
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Reusable component
+  constraints: Multiple constraints possible
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - APG pattern mapping when applicable
+  - WCAG 2.2 grounding
+  - Complete accessibility coverage
+  - Testing strategy
+  - Implementation clarity
+
+expected_findings:
+  must_have:
+    - WCAG citations
+    - Accessibility requirements documented
+    - Testing strategy
+
+  should_have:
+    - APG pattern reference
+    - Implementation guidance
+    - Multi-perspective coverage
+
+notes: |
+  COMPLEX difficulty fixture for Visual & Cognitive Accessibility domain.

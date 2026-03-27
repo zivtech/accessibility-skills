@@ -1,0 +1,80 @@
+fixture_id: image-carousel-no-region
+name: Image Carousel Without Region and Live Region
+description: Carousel with navigation buttons and indicators but missing role="region", aria-label, and aria-live announcements for state changes.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Media & Content
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing role='region' on carousel container"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Line 16-17: div has no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-label on carousel region"
+        severity: MAJOR
+        wcag: "2.4.6 Headings and Labels"
+        evidence: "Line 16-17: region has no aria-label"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-live region for state announcements"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence: "Line 35-45: no aria-live element to announce changes"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-current on active indicator"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Line 40-46: no aria-current attribute"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Consider whether alt text adequately describes images"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Carousel container
+    aria_attributes: []
+    issues: "Missing role='region', missing aria-label"
+
+  - name: Image element
+    aria_attributes: [alt text]
+    issues: "Alt text present but may lack descriptive content"
+
+  - name: Indicator buttons
+    aria_attributes: [aria-label]
+    issues: "Labels present but missing aria-current on active indicator"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "2.4.6 Headings and Labels"
+  - "4.1.3 Status Messages"
+
+patterns_used:
+  - ARIA Carousel Pattern (incomplete)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Missing region role and live region. Screen reader user cannot identify carousel or be notified of image changes."
+  - keyboard: "Works correctly — buttons are focusable and operable."
+  - low_vision: "Visual presentation is clear."
+  - cognitive: "Layout is intuitive."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests understanding of complex interactive patterns and live region announcements.
+
+  Expected verdict: REVISE
+
+  Key gap: Carousels require multiple accessibility features: region role, live region for announcements, and proper state communication. Many developers miss aria-live requirement for announcing image changes.

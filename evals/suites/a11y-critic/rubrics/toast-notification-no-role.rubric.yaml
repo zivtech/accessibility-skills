@@ -1,0 +1,118 @@
+fixture_id: toast-notification-no-role
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing role='alert'"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to div"
+        expected_to_find: "95%"
+
+      - description: "Missing aria-live='assertive'"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "file:line reference to div"
+        expected_to_find: "95%"
+
+      - description: "No dismiss mechanism for keyboard user"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard"
+        evidence_requirement: "explanation of auto-dismiss without user control"
+        expected_to_find: "85%"
+
+      - description: "Message not labeled or described"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to message"
+        expected_to_find: "80%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Consider aria-label with type prefix"
+        severity: ENHANCEMENT
+        expected_to_find: "35%"
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 94-100
+    reasoning: "Should identify all 4 issues and cite alert pattern and timed content requirements"
+
+  - condition: baseline-zero-shot
+    expected_score: 55-75
+    reasoning: "May focus on JavaScript mechanism, miss role and aria-live"
+
+  - condition: baseline-few-shot
+    expected_score: 70-85
+    reasoning: "Few-shot help with alert pattern awareness"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests transient message and alert pattern understanding.
+
+  Key test: Does reviewer understand toast notifications need role="alert" and aria-live to be announced?
+
+  Expected findings:
+  - Missing role="alert" identified as CRITICAL
+  - Missing aria-live identified as CRITICAL
+  - No dismiss mechanism identified as MAJOR
+  - Message not labeled identified as MAJOR
+  - All findings cite specific lines and patterns

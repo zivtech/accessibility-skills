@@ -1,0 +1,129 @@
+fixture_id: keyboard-breadcrumb
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    weight: 3
+    rule_based_checks:
+      - has_semantic_structure: true
+      - has_aria_implementation: true
+      - has_keyboard_interaction: true
+      - has_focus_management: true
+      - has_testing_strategy: true
+
+  - id: semantic_structure
+    name: "Semantic HTML Structure"
+    description: "Is semantic nav, ol, li structure documented?"
+    weight: 3
+    rule_based_checks:
+      - uses_nav_element: true
+      - uses_ordered_list: true
+      - uses_list_items: true
+      - documents_structure: true
+    llm_judge_criteria:
+      - "Is the semantic structure clear and well-explained?"
+
+  - id: aria_implementation
+    name: "ARIA Implementation"
+    description: "Is aria-current='page' documented?"
+    weight: 2
+    rule_based_checks:
+      - documents_aria_current: true
+      - specifies_aria_current_value: "page"
+      - cites_wcag_for_aria: true
+
+  - id: link_text
+    name: "Link Text Clarity"
+    description: "Is link text strategy documented?"
+    weight: 2
+    rule_based_checks:
+      - documents_link_text_strategy: true
+      - avoids_generic_labels: true
+
+  - id: keyboard_navigation
+    name: "Keyboard Navigation"
+    weight: 2
+    rule_based_checks:
+      - documents_tab_order: true
+      - explains_focus_path: true
+
+  - id: visual_accessibility
+    name: "Visual Accessibility"
+    description: "How are separators handled for screen readers?"
+    weight: 2
+    rule_based_checks:
+      - plans_separator_handling: true
+      - hides_decorative_content: true
+      - documents_focus_indicator: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    weight: 2
+    rule_based_checks:
+      - cites_wcag_1_3_1: true
+      - cites_wcag_2_1_1: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    weight: 1
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 86-96
+    reasoning: "Should handle semantic breadcrumb structure and aria-current implementation"
+
+  - condition: baseline-zero-shot
+    expected_score: 70-80
+    reasoning: "Semantic structure usually clear but aria-current may be missed"
+
+  - condition: baseline-few-shot
+    expected_score: 75-85
+    reasoning: "Structured approach helps with semantic elements"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  MODERATE difficulty fixture testing semantic breadcrumb navigation structure.
+
+  Key evaluation focus:
+  - Semantic nav, ol, li structure
+  - aria-current="page" for current item
+  - Link text clarity (avoid generic text)
+  - Visual separators hidden from screen readers
+  - WCAG 1.3.1 citation for structure
+  - All phases addressed at appropriate depth
+
+  Expected baseline:
+  - Semantic structure: 90%+
+  - aria-current: 75%+ (some may miss it)
+  - Link text strategy: 80%+
+  - WCAG citations: 70%+
+  - Separator handling: 65%+ (often overlooked)
+
+  Outlier indicators:
+  - No semantic nav element
+  - Missing aria-current
+  - Generic link text without strategy
+  - No mention of visual separators
+  - Plan <2 pages or >4 pages

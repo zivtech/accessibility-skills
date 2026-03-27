@@ -1,0 +1,113 @@
+fixture_id: interactive-dropdown-focus-bug
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Focus not restored to trigger button after selection"
+        severity: MAJOR
+        wcag: "2.1.2 No Keyboard Trap + WAI-ARIA Listbox Pattern"
+        evidence_requirement: "file:line reference to handleSelect function"
+        expected_to_find: "95%"
+
+      - description: "Focus not restored to trigger button after Escape key"
+        severity: MAJOR
+        wcag: "2.1.2 No Keyboard Trap + WAI-ARIA Listbox Pattern"
+        evidence_requirement: "file:line reference to Escape handler"
+        expected_to_find: "90%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "No buttonRef maintained for focus restoration"
+        severity: ENHANCEMENT
+        note: "Code structure issue; makes focus restoration impossible"
+        expected_to_find: "50%"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 90-100
+    reasoning: "Should identify both focus restoration issues as MAJOR and cite evidence correctly"
+
+  - condition: baseline-zero-shot
+    expected_score: 70-85
+    reasoning: "Should identify focus issues but may miss one or provide weaker evidence"
+
+  - condition: baseline-few-shot
+    expected_score: 75-88
+    reasoning: "Few-shot example may help with focus management issues"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests whether reviewers can identify focus management gaps while recognizing that ARIA structure is correct.
+
+  Key test: Can the reviewer distinguish between:
+  1. ARIA attributes present and correct (aria-expanded, aria-selected: YES)
+  2. Keyboard interaction pattern complete (focus restoration: NO)
+
+  Expected findings:
+  - Both focus restoration issues should be identified as MAJOR
+  - Evidence should cite specific lines in handleSelect and Escape handler
+  - Should distinguish MAJOR (pattern incomplete) from CRITICAL (missing ARIA)
+
+  Baseline performance:
+  - Generic reviewers often miss this because they check "is aria-expanded present? yes" and miss focus management
+  - Few-shot baseline should perform better because example includes focus discussion
+
+  A11y-critic should excel at identifying incomplete patterns (what's MISSING).

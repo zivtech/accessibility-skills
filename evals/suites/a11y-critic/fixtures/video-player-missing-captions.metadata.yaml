@@ -1,0 +1,68 @@
+fixture_id: video-player-missing-captions
+name: Video Player Without Caption Control
+description: Video player with play/pause controls but missing <track> element and caption toggle button. Captions unavailable to deaf/hard of hearing users.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Media & Content
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - description: "Missing <track> element for captions"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence: "Line 26-28: video element missing track child"
+        user_group: "Deaf and hard of hearing users"
+
+      - description: "Missing caption toggle button"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence: "Line 33-36: no caption control provided"
+        user_group: "Deaf and hard of hearing users"
+
+      - description: "Captions not controllable by user"
+        severity: MAJOR
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence: "Line 24-28: captions prop exists but unused"
+        user_group: "Deaf and hard of hearing users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Consider transcript availability for additional accessibility"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Video element
+    aria_attributes: [aria-label]
+    issues: "Missing <track> element for captions"
+
+  - name: Controls
+    aria_attributes: [aria-label on buttons]
+    issues: "Missing caption toggle button"
+
+wcag_criteria:
+  - "1.2.2 Captions (Prerecorded)"
+
+patterns_used:
+  - HTML Video with Captions Pattern
+
+multi_perspective_coverage:
+  - screen_reader: "Slightly affected — button label helpful but cannot enable captions"
+  - keyboard: "Works correctly — buttons are focusable, but caption control missing"
+  - low_vision: "Not directly affected by missing captions"
+  - deaf_hard_of_hearing: "CRITICAL: Cannot access captions. Violates WCAG 1.2.2"
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests media accessibility understanding.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers focus on play/pause controls without considering caption requirements. WCAG 1.2.2 mandates captions for prerecorded video with audio.

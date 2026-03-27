@@ -1,0 +1,73 @@
+fixture_id: keyboard-button-bar
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: semantics
+    name: "HTML Semantics"
+    weight: 3
+    rule_based_checks:
+      - uses_native_button: true
+      - documents_button_elements: true
+
+  - id: icon_labels
+    name: "Icon Label Accessibility"
+    weight: 3
+    rule_based_checks:
+      - plans_icon_labels: true
+      - specifies_aria_label_or_text: true
+
+  - id: focus_indicator
+    name: "Focus Indicator"
+    weight: 2
+    rule_based_checks:
+      - specifies_focus_visibility: true
+      - specifies_contrast_ratio: "3:1"
+
+  - id: keyboard_activation
+    name: "Keyboard Activation"
+    weight: 2
+    rule_based_checks:
+      - documents_enter_key: true
+      - documents_space_key: true
+
+  - id: wcag_grounding
+    name: "WCAG Citations"
+    weight: 2
+    rule_based_checks:
+      - cites_wcag_2_1_1: true
+
+  - id: calibration
+    name: "Proportionality"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 1-2
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 92-100
+    reasoning: "Should handle trivial button bar easily"
+
+  - condition: baseline-zero-shot
+    expected_score: 75-85
+    reasoning: "Basic keyboard should be clear"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT
+
+notes: |
+  TRIVIAL fixture for simple button navigation.

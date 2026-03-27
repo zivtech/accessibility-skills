@@ -1,0 +1,146 @@
+fixture_id: aria-data-table-sorting
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_keyboard_navigation: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: semantic_structure
+    name: "Semantic Table Structure"
+    description: "Is complete HTML table markup specified (thead, tbody, scope)?"
+    weight: 3
+    rule_based_checks:
+      - uses_semantic_table_elements: true
+      - includes_scope_attributes: true
+      - specifies_thead_tbody: true
+      - documents_th_vs_td: true
+      - provides_structure_stub: true
+    llm_judge_criteria:
+      - "Would a developer understand the complete table structure?"
+
+  - id: aria_sort
+    name: "aria-sort Implementation"
+    description: "Are aria-sort states and values documented?"
+    weight: 3
+    rule_based_checks:
+      - documents_aria_sort_none: true
+      - documents_aria_sort_ascending: true
+      - documents_aria_sort_descending: true
+      - cites_wcag_for_sort: true
+    llm_judge_criteria:
+      - "Is the sort state communication clear?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    weight: 2
+    rule_based_checks:
+      - table_structure_cites_wcag: true
+      - sort_state_cites_wcag: true
+      - keyboard_cites_wcag_2_1_1: true
+    expected_citations:
+      - "WCAG 1.3.1 Info and Relationships"
+      - "WCAG 4.1.2 Name, Role, Value"
+
+  - id: keyboard_navigation
+    name: "Keyboard Navigation"
+    weight: 2
+    rule_based_checks:
+      - clarifies_tab_order: true
+      - documents_header_focus: true
+      - clarifies_arrow_key_behavior: true
+      - documents_focus_indicator: true
+
+  - id: visual_sort_indicator
+    name: "Visual Sort Indicator"
+    description: "Is sort indicator planned with non-color alternative?"
+    weight: 2
+    rule_based_checks:
+      - plans_visual_sort_indicator: true
+      - includes_non_color_alternative: true
+      - plans_icon_or_text: true
+
+  - id: large_data_handling
+    name: "Large Data Set Handling"
+    description: "Are pagination and row count announcements addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_pagination: true
+      - plans_row_count_announcement: true
+      - considers_performance: true
+
+  - id: screen_reader_experience
+    name: "Screen Reader Experience"
+    weight: 2
+    rule_based_checks:
+      - plans_header_announcements: true
+      - plans_sort_feedback: true
+      - documents_position_in_table: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    weight: 1
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_sort_verification: true
+      - documents_screen_reader_testing: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 87-99
+    reasoning: "Should demonstrate deep semantic HTML and aria-sort knowledge"
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Semantic tables are often underestimated; large data complexity often missed"
+
+  - condition: baseline-few-shot
+    expected_score: 65-78
+    reasoning: "Structured approach helps but table complexity remains challenging"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  COMPLEX fixture testing deep semantic HTML knowledge and table-specific ARIA.
+
+  Key focus:
+  - Semantic table structure (thead, tbody, scope)
+  - aria-sort implementation and states
+  - Keyboard navigation strategy
+  - Large data handling
+  - Visual sort indicator with non-color alternative
+  - Screen reader experience
+
+  Expected baseline:
+  - Semantic structure: 70%+ (often underestimated)
+  - aria-sort: 60%+ (often missing or incomplete)
+  - Keyboard: 85%+
+  - Large data: 50%+ (complexity increases errors)
+  - Visual indicator: 75%+

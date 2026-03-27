@@ -1,0 +1,106 @@
+fixture_id: aria-data-table-sorting
+name: Custom Data Table with Sorting
+description: Data table with sortable column headers. Plan accessibility for semantic table structure (thead, tbody, scope), aria-sort states, keyboard navigation (Tab order within table), visual sort indicator with non-color alternative, and screen reader experience.
+language: jsx
+framework: React
+difficulty: COMPLEX
+domain: ARIA Pattern Implementation
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: Reusable data table component with sortable column headers
+  user_need: Efficient data browsing with keyboard and screen reader support
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - JAWS
+    - NVDA
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single table component, flexible column configuration
+  constraints:
+    - Can be very large (100+ rows)
+    - Multiple tables on same page
+    - Pagination may be needed
+    - Visual sort indicator (arrow icon)
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure (HTML table, thead, tbody, scope)
+  - Keyboard Navigation (Tab order, focus management)
+  - Sorting Mechanism (aria-sort states and announcements)
+  - Visual Accessibility (sort indicator, focus contrast)
+  - Large Data Handling (pagination, announcements)
+  - Screen Reader Experience (header navigation, sort feedback)
+  - Testing Strategy (keyboard, screen reader, visual)
+
+key_evaluation_criteria:
+  - Semantic structure: Complete table markup with scope attributes
+  - aria-sort implementation: Explain all states (none/ascending/descending)
+  - Keyboard model: Clarify Tab order and optional arrow navigation
+  - Visual sort indicator: Plan non-color alternative (icon, text)
+  - Screen reader: Plan announcements for headers, sort, position
+  - Large data: Address pagination and row count announcements
+  - Completeness: All 9 phases addressed at COMPLEX depth
+
+expected_findings:
+  must_have:
+    - Semantic table structure (thead, tbody, th, td)
+    - scope="col" attributes on headers
+    - aria-sort documentation (none, ascending, descending)
+    - WCAG citations for table structure and aria-sort
+    - Keyboard navigation plan
+    - Focus indicator visibility requirements
+    - HTML structure stub with proper table markup
+    - Sort state announcement strategy
+    - Visual sort indicator planning
+    - Test cases for keyboard, sort, screen reader
+
+  should_have:
+    - Pagination strategy if large data
+    - Row number announcements
+    - Skip to content link if long table
+    - Summary attribute or caption
+    - Column width considerations
+    - Multi-column sort considerations
+    - Header grouping (colgroup concept)
+
+  nice_to_have:
+    - Freeze pane strategy for scrollable tables
+    - Responsive table considerations
+    - Lazy loading for massive data sets
+    - Cell selection/highlighting strategy
+
+false_positive_traps:
+  - Using ARIA table role instead of semantic HTML
+  - Missing scope attributes
+  - No aria-sort documentation
+  - Unclear focus management
+  - No consideration of large data sets
+  - Missing visual indicator planning
+
+multi_perspective_coverage:
+  keyboard: "Tab navigates headers and cells, focus indicator visible"
+  screen_reader: "Header announcements, aria-sort states, position in table"
+  low_vision: "Sort indicator with non-color alternative, focus contrast"
+  cognitive: "Consistent navigation, clear sort state indication"
+  mobile_touch: "Touch activates sort, visual feedback, table scrolling"
+
+notes: |
+  This COMPLEX fixture tests:
+  1. Deep semantic HTML knowledge (table elements)
+  2. aria-sort implementation and states
+  3. Keyboard navigation complexity (Tab order, focus management)
+  4. Large data set handling strategy
+  5. Screen reader experience planning
+  6. Visual accessibility with non-color alternatives
+
+  Expected verdict: ACCEPT
+
+  A strong plan shows:
+  - Complete semantic table markup
+  - aria-sort with all states documented
+  - Keyboard navigation clarity
+  - Large data/pagination strategy
+  - Visual sort indicator planning
+  - 4-5 pages of detailed planning

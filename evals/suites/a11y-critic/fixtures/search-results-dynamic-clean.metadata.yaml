@@ -1,0 +1,62 @@
+fixture_id: search-results-dynamic-clean
+name: Search Results with Live Regions (CLEAN)
+description: Dynamically updating search results with proper aria-live regions, role="status", and announcements for loading and result states.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Dynamic Content & Live Regions
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Live region implementation is correct."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Could enhance screen reader experience by describing how many results were found more explicitly in results heading (e.g., 'Search Results: 3 items found' vs just 'Search Results')"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Live region (status)
+    aria_role: status
+    aria_attributes:
+      - aria-live: "polite"
+      - aria-atomic: "true"
+    status: "Correct"
+
+  - name: Search form
+    semantic_element: form
+    aria_attributes:
+      - aria-label: "Search query"
+    status: "Correct"
+
+  - name: Results list
+    semantic_element: ul
+    status: "Correct"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (dynamic updates announced)"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader announces 'Searching...' when search starts (via live region), then 'Found 3 results' when complete. Loading and result states fully announced."
+  - keyboard: "Fully navigable with Tab. Form submission works with Enter. Results can be tabbed through."
+  - low_vision: "Loading indicator visible. Results clearly displayed."
+  - cognitive: "Clear status messages. User understands when search is in progress and when results are available."
+
+notes: |
+  This is a **CLEAN baseline** fixture for dynamic content and live regions.
+
+  Expected verdict: ACCEPT
+
+  The implementation correctly demonstrates:
+  1. role="status" for live announcements
+  2. aria-live="polite" for non-intrusive announcements
+  3. aria-atomic="true" for complete message announcement
+  4. Conditional rendering of announcements based on state
+  5. Both visual and programmatic status communication
+
+  A11y-critic should verify all live region attributes and acknowledge the correct implementation. May note enhancement about result count in heading, but no blocking issues.

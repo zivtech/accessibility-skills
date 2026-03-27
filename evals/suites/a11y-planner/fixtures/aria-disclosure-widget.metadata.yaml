@@ -1,0 +1,98 @@
+fixture_id: aria-disclosure-widget
+name: Custom Disclosure Widget
+description: Disclosure/accordion widget with single or multiple expandable sections. Plan accessibility for button triggers with aria-expanded and aria-controls, content panels, keyboard interactions, and state communication.
+language: jsx
+framework: React
+difficulty: TRIVIAL
+domain: ARIA Pattern Implementation
+work_type: component_plan
+risk_level: Low
+
+scenario:
+  feature: A reusable disclosure component (accordion) where clicking a button toggles content visibility
+  user_need: Reduced cognitive load from hidden content, keyboard accessibility for all users
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single component, multiple disclosure items allowed
+  constraints:
+    - Must be reusable in design system
+    - Must support mobile touch
+    - Multiple sections can be open simultaneously (not exclusive)
+
+expected_plan_sections:
+  - Scope & Context (why, who, compliance target, risk)
+  - Semantic Structure (HTML structure stub with button, panel)
+  - Interaction Pattern Design (APG Disclosure pattern with URL, aria-expanded, aria-controls)
+  - Focus Management (Tab order, focus indicators)
+  - State Communication (aria-expanded states and announcements)
+  - Visual Accessibility (focus indicator contrast, touch target sizing)
+  - Content Accessibility (button text clarity)
+  - Testing Strategy (keyboard, screen reader, acceptance criteria)
+  - Implementation Tasks (with WCAG citations and a11y-critic checkpoints)
+
+key_evaluation_criteria:
+  - APG pattern mapping: Must cite https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
+  - WCAG grounding: Must cite WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value), 4.1.3 (Status Messages)
+  - Specificity: ARIA attributes (aria-expanded, aria-controls) with exact usage documented
+  - Completeness: All 9 phases addressed
+  - Brevity: Should be 1-2 pages (TRIVIAL difficulty)
+  - Multi-perspective: Must address keyboard, screen reader, low vision, mobile touch
+
+expected_findings:
+  must_have:
+    - APG Disclosure pattern reference with URL citation
+    - aria-expanded attribute (true/false) documented
+    - aria-controls attribute documented (linking button to panel)
+    - Keyboard interaction model: Tab focuses button, Space/Enter toggles
+    - HTML structure stub showing button and panel
+    - Focus indicator visibility requirement
+    - Screen reader announcement on state change
+    - Test case: aria-expanded toggles on Space/Enter
+    - WCAG citations for each design decision
+
+  should_have:
+    - Touch target sizing (44×44 minimum)
+    - Heading level (h2 vs h3) for disclosure section
+    - Indentation/nesting in DOM order matches visual order
+    - Focus restoration (not needed here, but worth noting it's not needed)
+    - Contrast requirements for focus indicator
+    - Performance consideration (many disclosures on one page?)
+
+  nice_to_have:
+    - Animation planning (collapse/expand animation)
+    - Initial state planning (open or closed by default?)
+    - Keyboard behavior edge cases (does Tab exit disclosure and go to next element?)
+    - Multiple-open vs exclusive-open consideration
+
+false_positive_traps:
+  - Marking aria-expanded as "optional" (it's required for the pattern)
+  - Suggesting custom keyboard behavior beyond Space/Enter
+  - Over-planning (5+ pages for a TRIVIAL component)
+  - Missing APG pattern reference entirely
+
+multi_perspective_coverage:
+  keyboard: "Tab focuses button, Space/Enter toggles, focus indicator visible"
+  screen_reader: "Button role, aria-expanded state, button text announces content"
+  low_vision: "Focus indicator 3:1 contrast, sufficient color contrast"
+  cognitive: "Consistent interaction pattern, button text clearly describes action"
+  mobile_touch: "44×44 touch target, no hover-only interactions"
+
+notes: |
+  This TRIVIAL fixture tests whether a11y-planner can:
+  1. Map to an established APG pattern (not reinvent)
+  2. Document ARIA attributes with WCAG citations
+  3. Keep plan concise for simple components (no scope creep)
+  4. Address all user perspectives even in simple cases
+  5. Provide actionable implementation guidance
+
+  Expected verdict: ACCEPT (all core elements present with WCAG grounding)
+
+  A strong plan will show mastery of:
+  - APG pattern library (knows where to find patterns)
+  - WCAG mapping (specific criterion numbers, not generic "accessibility")
+  - Keyboard interaction design (Tab, Space, Enter, not custom keys)
+  - Screen reader testing (what gets announced)
+  - Proportional effort (1-2 pages is right for TRIVIAL, not 5-10)

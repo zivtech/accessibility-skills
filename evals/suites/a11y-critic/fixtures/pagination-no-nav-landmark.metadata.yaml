@@ -1,0 +1,68 @@
+fixture_id: pagination-no-nav-landmark
+name: Pagination Controls Without nav Landmark
+description: Pagination with buttons and aria-labels but missing <nav> landmark, aria-label, and aria-current on current page.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Navigation & Wayfinding
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - description: "Missing <nav> landmark to identify pagination"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Line 5-6: div instead of nav"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-label on pagination landmark"
+        severity: MAJOR
+        wcag: "2.4.6 Headings and Labels"
+        evidence: "Line 5-6: nav has no aria-label"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-current='page' on current page"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (state communication)"
+        evidence: "Line 20-26: no aria-current attribute"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Pagination container
+    aria_attributes: []
+    issues: "Should be <nav> with aria-label"
+
+  - name: Page buttons
+    aria_attributes: [aria-label]
+    issues: "Labels present but missing aria-current on active page"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "2.4.6 Headings and Labels"
+  - "4.1.2 Name, Role, Value"
+
+patterns_used:
+  - HTML Pagination Pattern
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Missing nav landmark. Current page not announced as current. User cannot quickly navigate pagination or determine active page."
+  - keyboard: "Works correctly — buttons are focusable and operable."
+  - low_vision: "Visual highlighting shows current page but context could be clearer."
+  - cognitive: "Visual layout is clear."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests navigation landmark and state communication understanding.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers focus on individual button labels without considering that pagination is a navigation landmark and that current page state should be announced.

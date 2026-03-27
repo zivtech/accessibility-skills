@@ -1,0 +1,75 @@
+fixture_id: file-input-no-labels
+name: File Input Without Proper Label and Error Messages
+description: File input missing <label>, aria-describedby for errors, and aria-invalid state announcement.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Forms & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing <label> element"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships + 3.3.2 Labels or Instructions"
+        evidence: "Line 25-27: div instead of label"
+        user_group: "Screen reader users"
+
+      - description: "No aria-describedby linking to error message"
+        severity: CRITICAL
+        wcag: "3.3.1 Error Identification + 4.1.2 Name, Role, Value"
+        evidence: "Line 28-35: error div not associated with input"
+        user_group: "Screen reader users"
+
+      - description: "No aria-invalid when error present"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (state communication)"
+        evidence: "Line 28-35: no aria-invalid attribute"
+        user_group: "Screen reader users"
+
+      - description: "File type restrictions not announced"
+        severity: MAJOR
+        wcag: "3.3.2 Labels or Instructions"
+        evidence: "Line 31: accept attribute not announced"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: File input
+    aria_attributes: [accept attribute]
+    issues: "Missing label, missing aria-describedby, missing aria-invalid"
+
+  - name: Error message
+    aria_attributes: []
+    issues: "Not associated with input"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "3.3.1 Error Identification"
+  - "3.3.2 Labels or Instructions"
+  - "4.1.2 Name, Role, Value"
+
+patterns_used:
+  - HTML Form Field Pattern (incomplete)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No label, no error association, no invalid state announcement. User cannot identify input purpose or error."
+  - keyboard: "Works correctly — input is focusable and operable."
+  - low_vision: "Visual label and error display help, but semantic associations missing."
+  - cognitive: "Visual layout is clear but semantic relationships missing."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests form accessibility comprehensiveness.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers focus on accepting the right file types without considering the accessibility of the input itself. File inputs need the same semantic rigor as text inputs.

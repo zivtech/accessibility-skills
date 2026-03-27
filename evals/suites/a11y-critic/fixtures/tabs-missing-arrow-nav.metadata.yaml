@@ -1,0 +1,90 @@
+fixture_id: tabs-missing-arrow-nav
+name: Tabs Component Missing Arrow Key Navigation
+description: Tabs widget with correct ARIA attributes but missing arrow key navigation per WAI-ARIA pattern.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Arrow key navigation not implemented for tab cycling"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard (all functionality must be keyboard accessible)"
+        apa_pattern: "WAI-ARIA Tabs Pattern (requires arrow keys for navigation)"
+        evidence: "Line 10-16: handleTabKeyDown only handles Enter/Space; no Left/Right arrow handling"
+        user_group: "Keyboard-only users"
+        expected_behavior: "Left arrow cycles to previous tab (wrapping at start), Right arrow cycles to next tab (wrapping at end). Per WAI-ARIA APG Tabs example."
+        fix: "Add arrow key handler in handleTabKeyDown. Left arrow: setActiveTab(prev => prev > 0 ? prev - 1 : tabs.length - 1). Right arrow: setActiveTab(next => next < tabs.length - 1 ? next + 1 : 0). After state update, focus the newly active tab button."
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Active tab not focused after keyboard selection"
+        severity: MINOR
+        wcag: "2.1.1 Keyboard + 4.1.2 Name, Role, Value (focus management)"
+        evidence: "Line 34: setActiveTab changes state but doesn't move focus to newly active tab"
+        user_group: "Keyboard-only users (reduces discoverability)"
+        expected_behavior: "After arrow key selects a new tab, focus should move to that tab button"
+        fix: "Store tab button refs and after handleTabClick, focus the newly active tab button"
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Tablist container
+    aria_role: tablist
+    aria_attributes: ["aria-label='Content tabs'"]
+    status: correct
+
+  - name: Tab buttons
+    aria_role: tab
+    aria_attributes: [aria-selected, aria-controls, tabindex (roving)]
+    status: "Correct ARIA, but keyboard interaction incomplete"
+
+  - name: Tab panels
+    aria_role: tabpanel
+    aria_attributes: [aria-labelledby]
+    status: correct
+
+wcag_criteria:
+  - "2.1.1 Keyboard (all functionality must be keyboard accessible, no exceptions)"
+  - "4.1.2 Name, Role, Value (interactive components must follow expected patterns)"
+
+apa_patterns:
+  - name: "WAI-ARIA Tabs Pattern"
+    link: "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+    required_features:
+      - "Tabs are contained in a tablist with role='tablist'"
+      - "Each tab has role='tab' and aria-selected"
+      - "Arrow Left/Right cycles through tabs"
+      - "Enter/Space selects tab (if not selected on focus)"
+      - "Tab key moves focus out of tablist, not between tabs"
+      - "Optional: Home/End keys go to first/last tab"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader user can navigate tabs via Tab key to enter tablist, then must use Tab again to cycle through tabs (not ideal, but functional). ARIA structure announces role and selection correctly."
+  - keyboard: "INCOMPLETE: Keyboard user can click tabs with Tab/Enter, but efficient navigation with arrow keys not available. For a tablist with 8 tabs, this becomes tedious."
+  - low_vision: "Not directly affected, but focus indicator works."
+  - cognitive: "Inconsistent with web conventions. Arrow keys expected in tabs. May confuse users familiar with standard tab patterns."
+
+false_positive_traps: 0
+
+notes: |
+  This is a **HAS-BUGS** fixture that tests pattern completeness, not just ARIA attribute presence.
+
+  Expected verdict: REVISE
+
+  **Key distinction**: The ARIA is correct. But the keyboard pattern is incomplete per the published WAI-ARIA Tabs pattern. This is a common issue in custom tab implementations: developers add ARIA correctly but forget the keyboard interaction.
+
+  A11y-critic should:
+  1. Verify ARIA structure is correct (it is) — no false positives
+  2. Cross-reference against WAI-ARIA Tabs pattern
+  3. Identify missing arrow key navigation as MAJOR
+  4. Note in "What's Missing": "Arrow key navigation for tab cycling not implemented"
+  5. Distinguish MAJOR (pattern incompleteness) from CRITICAL (missing ARIA attributes)
+
+  This tests whether the skill goes beyond "is ARIA present?" to "is the full pattern implemented?"

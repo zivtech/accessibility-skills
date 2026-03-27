@@ -1,0 +1,111 @@
+fixture_id: video-player-missing-captions
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - description: "Missing <track> element for captions"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence_requirement: "file:line reference to video element"
+        expected_to_find: "90%"
+
+      - description: "Missing caption toggle button"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence_requirement: "file:line reference to controls"
+        expected_to_find: "90%"
+
+      - description: "Captions not controllable by user"
+        severity: MAJOR
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence_requirement: "explanation of missing user control"
+        expected_to_find: "85%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Consider transcript availability"
+        severity: ENHANCEMENT
+        expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 92-100
+    reasoning: "Should identify missing captions as CRITICAL per WCAG 1.2.2"
+
+  - condition: baseline-zero-shot
+    expected_score: 50-70
+    reasoning: "May miss caption requirement or not cite WCAG 1.2.2"
+
+  - condition: baseline-few-shot
+    expected_score: 65-80
+    reasoning: "Few-shot help with media accessibility awareness"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests media accessibility and WCAG 1.2.2 knowledge.
+
+  Key test: Does reviewer understand that captions are not optional for video content?
+
+  Expected findings:
+  - Missing <track> identified as CRITICAL
+  - Missing caption button identified as CRITICAL
+  - WCAG 1.2.2 cited
+  - Impact on deaf/hard of hearing users noted

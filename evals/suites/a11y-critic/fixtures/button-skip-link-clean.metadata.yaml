@@ -1,0 +1,46 @@
+fixture_id: button-skip-link-clean
+name: Navigation with Skip Link (CLEAN)
+description: Main layout with skip link, semantic navigation landmarks, and proper landmark regions (nav, main, footer).
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Focus Management & Keyboard
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Skip link implementation is correct and functional."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-current='page' could be added to current page link in navigation for better indication"
+    severity: ENHANCEMENT
+
+wcag_criteria:
+  - "2.4.1 Bypass Blocks (skip link allows keyboard users to bypass navigation)"
+  - "1.3.1 Info and Relationships (landmark regions)"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader announces skip link, can activate it to jump to main content. Landmark regions (nav, main, footer) are announced."
+  - keyboard: "Tab navigates to skip link first; can activate with Enter to skip navigation. All links reachable with Tab."
+  - low_vision: "Skip link visible on focus. Navigation clearly marked. Landmarks help with navigation."
+  - cognitive: "Clear structure. One way to skip repetitive navigation."
+
+notes: |
+  This is a **CLEAN baseline** fixture for focus management and keyboard navigation.
+
+  Expected verdict: ACCEPT
+
+  Implementation demonstrates:
+  1. Skip link present and functional (href="#main-content" jumps to main element with matching id)
+  2. Skip link hidden off-screen, revealed on focus
+  3. Semantic landmarks: nav, main, footer
+  4. Navigation marked with aria-label
+  5. List semantics for navigation
+  6. Focus indicators visible on navigation links
+
+  A11y-critic should verify all elements and acknowledge proper implementation. May note aria-current enhancement but no blocking issues.

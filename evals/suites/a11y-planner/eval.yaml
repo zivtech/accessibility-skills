@@ -1,0 +1,520 @@
+# Evaluation Suite Configuration for A11y-Planner Skill
+
+skill:
+  name: a11y-planner
+  type: PLANNER
+  model: claude-opus-4-6
+  agent_path: /a11y-planner/.claude/agents/a11y-planner.md
+  description: "Accessibility Design Planner — 9-phase protocol for designing accessible implementations before coding. Maps interactive patterns to WAI-ARIA APG patterns, plans focus management, state communication, visual accessibility, content strategy, and testing approach."
+
+evaluation:
+  name: a11y-planner-benchmark
+  description: Comprehensive evaluation of a11y-planner skill vs generic planning baselines
+  version: "1.0"
+  created_at: "2026-03-09"
+  estimated_total_evaluations: 225
+
+fixtures:
+  directory: ./fixtures
+  count: 25
+  pattern: "*.md"
+  metadata_suffix: ".metadata.yaml"
+
+  domains:
+    - ARIA Pattern Implementation (5 fixtures)
+    - Keyboard Navigation Design (5 fixtures)
+    - Screen Reader Experience (5 fixtures)
+    - Visual & Cognitive Accessibility (5 fixtures)
+    - Testing & Audit Planning (5 fixtures)
+
+  difficulty_distribution:
+    - TRIVIAL (6 fixtures)
+    - MODERATE (11 fixtures)
+    - COMPLEX (5 fixtures)
+    - AMBIGUOUS (3 fixtures)
+
+  fixture_list:
+    # Domain 1: ARIA Pattern Implementation
+    - id: aria-disclosure-widget
+      domain: ARIA Pattern Implementation
+      difficulty: TRIVIAL
+      name: "Custom Disclosure Widget"
+
+    - id: aria-combobox-autocomplete
+      domain: ARIA Pattern Implementation
+      difficulty: MODERATE
+      name: "Combobox with Autocomplete"
+
+    - id: aria-tab-dynamic-content
+      domain: ARIA Pattern Implementation
+      difficulty: MODERATE
+      name: "Tab Panel with Dynamic Content"
+
+    - id: aria-data-table-sorting
+      domain: ARIA Pattern Implementation
+      difficulty: COMPLEX
+      name: "Custom Data Table with Sorting"
+
+    - id: aria-modal-form-validation
+      domain: ARIA Pattern Implementation
+      difficulty: AMBIGUOUS
+      name: "Modal Dialog with Form"
+
+    # Domain 2: Keyboard Navigation Design
+    - id: keyboard-button-bar
+      domain: Keyboard Navigation Design
+      difficulty: TRIVIAL
+      name: "Simple Button Navigation"
+
+    - id: keyboard-menu-dropdown
+      domain: Keyboard Navigation Design
+      difficulty: MODERATE
+      name: "Menu Button with Dropdown"
+
+    - id: keyboard-breadcrumb
+      domain: Keyboard Navigation Design
+      difficulty: MODERATE
+      name: "Breadcrumb Navigation"
+
+    - id: keyboard-modal-focus-trap
+      domain: Keyboard Navigation Design
+      difficulty: COMPLEX
+      name: "Complex Modal with Focus Trap"
+
+    - id: keyboard-roving-tabindex
+      domain: Keyboard Navigation Design
+      difficulty: AMBIGUOUS
+      name: "Roving Tabindex in Composite"
+
+    # Domain 3: Screen Reader Experience
+    - id: sr-article-page
+      domain: Screen Reader Experience
+      difficulty: TRIVIAL
+      name: "Simple Article Page"
+
+    - id: sr-search-results-live
+      domain: Screen Reader Experience
+      difficulty: MODERATE
+      name: "Search Results with Live Updates"
+
+    - id: sr-product-listing
+      domain: Screen Reader Experience
+      difficulty: MODERATE
+      name: "Product Listing with Sorting"
+
+    - id: sr-notification-system
+      domain: Screen Reader Experience
+      difficulty: COMPLEX
+      name: "Real-Time Notification System"
+
+    - id: sr-form-field-help
+      domain: Screen Reader Experience
+      difficulty: AMBIGUOUS
+      name: "Complex Form with Field-Level Help"
+
+    # Domain 4: Visual & Cognitive Accessibility
+    - id: visual-status-colors
+      domain: Visual & Cognitive Accessibility
+      difficulty: TRIVIAL
+      name: "Status Indicator Colors"
+
+    - id: visual-animated-transition
+      domain: Visual & Cognitive Accessibility
+      difficulty: MODERATE
+      name: "Animated Transition"
+
+    - id: visual-dark-mode
+      domain: Visual & Cognitive Accessibility
+      difficulty: MODERATE
+      name: "Dark Mode Support"
+
+    - id: visual-form-validation
+      domain: Visual & Cognitive Accessibility
+      difficulty: COMPLEX
+      name: "Complex Form with Validation UI"
+
+    - id: visual-data-viz
+      domain: Visual & Cognitive Accessibility
+      difficulty: AMBIGUOUS
+      name: "Accessible Data Visualization"
+
+    # Domain 5: Testing & Audit Planning
+    - id: test-simple-button
+      domain: Testing & Audit Planning
+      difficulty: TRIVIAL
+      name: "Simple Component Testing"
+
+    - id: test-form
+      domain: Testing & Audit Planning
+      difficulty: MODERATE
+      name: "Form Testing Strategy"
+
+    - id: test-modal
+      domain: Testing & Audit Planning
+      difficulty: MODERATE
+      name: "Modal Dialog Testing"
+
+    - id: test-data-table
+      domain: Testing & Audit Planning
+      difficulty: COMPLEX
+      name: "Data Table Testing"
+
+    - id: test-multi-page-audit
+      domain: Testing & Audit Planning
+      difficulty: COMPLEX
+      name: "Multi-Page Audit Plan"
+
+rubrics:
+  directory: ./rubrics
+  scoring_method: hybrid
+  hybrid_config:
+    rule_based_weight: 0.7
+    llm_judge_weight: 0.3
+    llm_judge_model: claude-opus-4-6
+
+  dimensions:
+    - id: completeness
+      name: "Completeness"
+      description: "All 9 phases present and addressed, no missing critical sections"
+      weight: 3
+
+    - id: apg_pattern_mapping
+      name: "APG Pattern Mapping"
+      description: "Every interactive widget maps to specific APG pattern with URL citation"
+      weight: 3
+
+    - id: wcag_grounding
+      name: "WCAG Grounding"
+      description: "Every design decision cites WCAG 2.2 criterion or APG pattern"
+      weight: 3
+
+    - id: specificity
+      name: "Specificity & Actionability"
+      description: "Developers can implement from plan without guessing; ARIA lists precise; interactions explicit; focus management clear; tests measurable"
+      weight: 2
+
+    - id: multi_perspective
+      name: "Multi-Perspective Coverage"
+      description: "Keyboard, screen reader, low vision, cognitive, mobile accessibility all addressed"
+      weight: 2
+
+    - id: testing_coverage
+      name: "Testing Coverage"
+      description: "Automated, keyboard, screen reader, visual testing approaches; acceptance criteria measurable; a11y-critic checkpoints defined"
+      weight: 2
+
+    - id: calibration
+      name: "Calibration & Proportionality"
+      description: "Simple components brief (1-2 pages), medium detailed (3-5 pages), complex comprehensive (6-10 pages); no scope creep"
+      weight: 1
+
+  composite_formula: "sum(found_items * weight) / sum(positive_weights) * 100"
+
+baselines:
+  directory: ./baselines
+  conditions:
+    - name: a11y-planner
+      type: skill
+      description: "Target skill with 9-phase accessibility design protocol"
+      model: claude-opus-4-6
+      agent_path: /a11y-planner/.claude/agents/a11y-planner.md
+
+    - name: baseline-zero-shot
+      type: prompt
+      description: "Generic accessibility planning prompt, no structure or examples"
+      path: "./baselines/baseline-zero-shot.md"
+      model: claude-opus-4-6
+
+    - name: baseline-few-shot
+      type: prompt
+      description: "Generic accessibility planning prompt with structured approach and example"
+      path: "./baselines/baseline-few-shot.md"
+      model: claude-opus-4-6
+
+repetitions:
+  n_fixtures: 25
+  n_repeats_per_fixture: 3
+  total_evaluations: 225
+  randomization: true
+
+statistical_design:
+  test_type: paired_comparison
+  significance_level: 0.05
+  bonferroni_correction: true
+  correction_factor: 2
+
+  primary_test:
+    name: wilcoxon_signed_rank
+    test_type: one_tailed
+    hypothesis: "a11y-planner composite score > baseline-zero-shot composite score"
+    alternative: greater
+    success_threshold: "p < 0.05 AND delta >= 15 points"
+
+  secondary_tests:
+    - id: gap_coverage
+      metric: "Gap Coverage"
+      description: "Number of design gaps and missing elements identified"
+      test: wilcoxon_signed_rank
+      success_criteria: "a11y-planner 25%+ more gap items (p < 0.05)"
+
+    - id: specificity_rate
+      metric: "Specificity Rate"
+      description: "Percentage of design decisions with explicit WCAG/APG citations"
+      test: wilcoxon_signed_rank
+      success_criteria: "a11y-planner 20%+ higher citation rate (p < 0.05)"
+
+    - id: pattern_completeness
+      metric: "Pattern Completeness Detection"
+      description: "Percentage of interactive widgets with complete APG pattern mapping"
+      test: wilcoxon_signed_rank
+      success_criteria: "a11y-planner 90%+ pattern mapping with citations (p < 0.05)"
+
+    - id: multi_perspective_coverage_rate
+      metric: "Multi-Perspective Coverage Rate"
+      description: "Number of user perspectives explicitly addressed per fixture"
+      test: wilcoxon_signed_rank
+      success_criteria: "a11y-planner 4+ perspectives per fixture on average (p < 0.05)"
+
+    - id: false_positive_rate
+      metric: "False Positive Rate"
+      description: "Percentage of non-issues incorrectly identified as design problems"
+      test: wilcoxon_signed_rank
+      direction: lower_is_better
+      success_criteria: "a11y-planner <5% false positive rate (p < 0.05)"
+
+  effect_size:
+    metric: cohens_d
+    small: 0.2
+    medium: 0.5
+    large: 0.8
+
+  confidence_intervals:
+    method: bootstrap
+    resamples: 1000
+    ci: 0.95
+
+  power_analysis:
+    alpha: 0.05
+    beta: 0.20
+    effect_size_delta: 0.5
+    n_required: 28
+    n_actual: 25
+    power_actual: "~78%"
+
+subgroup_analysis:
+  enabled: true
+  dimensions:
+    - id: domain
+      values:
+        - "ARIA Pattern Implementation"
+        - "Keyboard Navigation Design"
+        - "Screen Reader Experience"
+        - "Visual & Cognitive Accessibility"
+        - "Testing & Audit Planning"
+
+    - id: difficulty
+      values:
+        - "TRIVIAL"
+        - "MODERATE"
+        - "COMPLEX"
+        - "AMBIGUOUS"
+
+    - id: pattern_type
+      values:
+        - "Semantic Structure"
+        - "Interactive Patterns"
+        - "Focus Management"
+        - "State Communication"
+        - "Testing & Validation"
+
+success_criteria:
+  primary:
+    composite_score_delta: 15
+    composite_score_pvalue: 0.05
+    notes: "a11y-planner must exceed baseline-zero-shot by 15+ points with p < 0.05"
+
+  secondary:
+    gap_coverage_delta: 25
+    gap_coverage_pvalue: 0.05
+    notes: "a11y-planner should identify 25%+ more design gaps than baseline"
+
+    specificity_delta: 20
+    specificity_pvalue: 0.05
+    notes: "a11y-planner should cite WCAG/APG 20%+ more often than baseline"
+
+    pattern_completeness_threshold: 0.90
+    notes: "a11y-planner should map 90%+ of interactive patterns with citations"
+
+    multi_perspective_threshold: 4
+    notes: "a11y-planner should address 4+ user perspectives per fixture on average"
+
+    false_positive_rate_threshold: 0.05
+    notes: "a11y-planner should have <5% false positive rate"
+
+  subgroup:
+    domain_advantage:
+      expected_domains:
+        - "ARIA Pattern Implementation"
+        - "Keyboard Navigation Design"
+      notes: "a11y-planner should show significant advantage in these domains"
+
+    difficulty_progression:
+      trivial_delta: 5-10
+      moderate_delta: 15-20
+      complex_delta: 25-35
+      notes: "Advantage should increase with difficulty (protocol scalability)"
+
+    ambiguous_handling:
+      delta: 20-30
+      notes: "a11y-planner should excel at recognizing and documenting trade-offs"
+
+output:
+  format: json
+  schema: grading.json
+  include_metadata:
+    - fixture_id
+    - condition
+    - composite_score
+    - completeness_score
+    - apg_pattern_score
+    - wcag_grounding_score
+    - specificity_score
+    - multi_perspective_score
+    - testing_coverage_score
+    - calibration_score
+    - gap_coverage_count
+    - specificity_rate
+    - pattern_completeness_rate
+    - multi_perspective_count
+    - false_positive_count
+    - false_positive_rate
+    - verdict
+    - reasoning_summary
+    - timestamp
+
+  summary_statistics:
+    - mean
+    - std_dev
+    - min
+    - max
+    - median
+    - q1
+    - q3
+    - iqr
+    - confidence_intervals_95
+    - effect_sizes
+    - p_values
+    - win_loss_ties
+
+  subgroup_breakdowns: true
+
+  plots:
+    - id: box_plot_by_condition
+      type: box_plot
+      x: condition
+      y: composite_score
+      facet: none
+      title: "Composite Score Distribution by Condition"
+
+    - id: box_plot_by_difficulty
+      type: box_plot
+      x: difficulty
+      y: composite_score
+      facet: condition
+      title: "Composite Score by Difficulty and Condition"
+
+    - id: bar_chart_domain_performance
+      type: bar
+      x: domain
+      y: composite_score
+      facet: condition
+      title: "Mean Composite Score by Domain and Condition"
+
+    - id: line_plot_difficulty_progression
+      type: line
+      x: difficulty_numeric
+      y: composite_score
+      color: condition
+      title: "Performance Progression: TRIVIAL → COMPLEX"
+
+    - id: scatter_dimension_breakdown
+      type: scatter
+      x: apg_pattern_score
+      y: specificity_score
+      color: condition
+      size: complexity
+      title: "APG Pattern Mapping vs Specificity"
+
+    - id: win_rate_by_domain
+      type: bar
+      x: domain
+      y: win_rate_pct
+      title: "A11y-Planner Win Rate (%) by Domain vs Baseline"
+
+pilot:
+  enabled: true
+  fixtures:
+    - aria-disclosure-widget
+    - aria-combobox-autocomplete
+    - keyboard-modal-focus-trap
+    - sr-form-field-help
+    - test-data-table
+
+  validation_checks:
+    - rubric_unambiguity
+    - baseline_fairness
+    - fixture_discrimination
+    - variance_reasonableness
+    - scoring_reproducibility
+    - dimension_coverage
+
+  output: pilot-results.md
+
+reporting:
+  format: markdown
+  include_sections:
+    - Executive Summary
+    - Methodology (Design, Fixtures, Baselines, Statistical Approach)
+    - Primary Findings (Wilcoxon test results, effect sizes)
+    - Statistical Details (p-values, confidence intervals)
+    - Effect Sizes (Cohen's d, interpretation)
+    - Subgroup Analysis (by domain, difficulty, pattern type)
+    - Baseline Comparison (strengths/weaknesses of each)
+    - Failure Mode Analysis (what causes lower scores)
+    - Key Differentiators (why a11y-planner is stronger)
+    - Recommendations (when to use each approach)
+    - Limitations (sample size, model variation, etc.)
+    - Appendix (Detailed Scores, Outlier Analysis, Sensitivity Analysis)
+
+notes: |
+  | This evaluation suite measures a11y-planner's effectiveness using:
+  | - 25 realistic planning scenarios across 5 accessibility domains and 4 difficulty levels
+  | - Hybrid scoring with rule-based (70%) and LLM judge (30%) components
+  | - Paired comparison against 2 generic planning baselines
+  | - Wilcoxon signed-rank tests for non-parametric comparison
+  | - Bootstrap confidence intervals and effect size estimates
+  | - Subgroup analysis by domain, difficulty, and pattern type
+  | - 3 repetitions per fixture (total 225 evaluations) for stability
+  |
+  | The skill is expected to excel at:
+  | 1. WCAG Grounding — Every design decision cites WCAG 2.2 or APG (URL)
+  | 2. APG Pattern Mapping — Every interactive widget maps to established patterns
+  | 3. Specificity — Developers can implement from plan without guessing
+  | 4. Coverage Breadth — All 9 phases addressed, all user groups considered
+  | 5. Focus Management — Focus traps, restoration, indicators all designed before code
+  | 6. Testing Strategy — Acceptance criteria defined upfront, a11y-critic checkpoints clear
+  |
+  | Key differentiators from baselines:
+  | - Structured 9-phase protocol vs ad-hoc planning
+  | - Mandatory WCAG/APG citations vs generic statements
+  | - Mandatory APG pattern mapping vs custom designs
+  | - Explicit ARIA attribute lists vs implied
+  | - Focus management by design vs "figure it out in code"
+  | - Testing strategy embedded vs deferred
+  |
+  | Baselines provide fair comparison points (not strawmen):
+  | - Zero-shot: Simple planning prompt, no structure
+  | - Few-shot: Same prompt + structured approach + example
+  |
+  | Pilot run (5 fixtures) validates rubrics and baselines before full eval.
+  | Expected timeline: 2-3 weeks for full evaluation suite

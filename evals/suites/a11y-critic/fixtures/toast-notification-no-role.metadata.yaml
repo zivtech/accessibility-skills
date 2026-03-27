@@ -1,0 +1,72 @@
+fixture_id: toast-notification-no-role
+name: Toast Notification Without Alert Role
+description: Toast notification with auto-dismiss but missing role="alert", aria-live, and manual dismiss option.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing role='alert'"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value (alert role for status messages)"
+        evidence: "Line 19-25: div has no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-live='assertive'"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages (live regions announce changes)"
+        evidence: "Line 19-25: no aria-live attribute"
+        user_group: "Screen reader users"
+
+      - description: "No way for keyboard user to dismiss toast"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard (user control over timed interactions)"
+        evidence: "Line 10-17: no dismiss mechanism"
+        user_group: "Keyboard users"
+
+      - description: "Message not labeled or described"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Line 24-25: no aria-label or context"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Consider aria-label with message type prefix (e.g., 'Success: Item saved')"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Toast container
+    aria_attributes: []
+    issues: "Missing role='alert', missing aria-live"
+
+wcag_criteria:
+  - "2.1.1 Keyboard (control over timed content)"
+  - "4.1.2 Name, Role, Value"
+  - "4.1.3 Status Messages"
+
+patterns_used:
+  - ARIA Alert Pattern (missing)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No alert role or live region means user may not be notified of toast message at all."
+  - keyboard: "MAJOR: Cannot manually dismiss toast if needed. Auto-dismiss may interrupt user workflow."
+  - low_vision: "Visual toast may be missed if user is focused elsewhere."
+  - cognitive: "Automatic dismissal without user control may be confusing."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests transient message and alert pattern understanding.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers implement toast notifications focusing on visual presentation and JavaScript mechanics, without considering that screen reader users need role="alert" and aria-live to be notified of transient messages. This is a common pattern that developers get wrong.

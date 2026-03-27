@@ -1,0 +1,79 @@
+fixture_id: interactive-dropdown-clean
+name: Custom Dropdown Component (CLEAN Implementation)
+description: A properly implemented custom dropdown component with complete ARIA pattern, focus management, and keyboard navigation.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical a11y issues present. Skill should verify and confirm clean bill of health."
+
+  - category: should_find
+    count: 0
+    notes: "No major issues."
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-label on list could be more descriptive for screen reader users if multiple dropdowns exist on page (e.g., aria-label='Select category'). Current uses only role=listbox without descriptive label."
+    severity: ENHANCEMENT
+    evidence: "fixture:0-40 (no aria-label on ul#dropdown-listbox)"
+
+  - category: false_positive_trap
+    count: 1
+    description: "Listbox gets tabindex='0' for keyboard focus (intentional). Not a keyboard trap or improper tab order. Ensures arrow key navigation works."
+    severity: NONE
+    notes: "A11y-critic should verify this is a roving tabindex pattern and not flag as improper."
+
+components:
+  - name: Button (trigger)
+    ARIA_attributes:
+      - aria-haspopup: listbox
+      - aria-expanded: boolean (dynamic)
+      - aria-controls: dropdown-listbox
+    semantic_element: button
+
+  - name: Label
+    semantic_element: label
+    associated_via: htmlFor
+
+  - name: List Container
+    ARIA_role: listbox
+    ARIA_attributes:
+      - id: dropdown-listbox
+      - tabindex: 0 (roving)
+    semantic_element: ul
+
+  - name: List Items
+    ARIA_role: option
+    ARIA_attributes:
+      - aria-selected: boolean (dynamic)
+
+patterns_used:
+  - WAI-ARIA: Listbox Pattern
+  - Focus Management: Roving tabindex
+  - Keyboard: Arrow Down/Up for navigation, Enter/Space for select, Escape to close
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (label association, role relationships)"
+  - "2.1.1 Keyboard (arrow keys, Enter, Escape fully functional)"
+  - "2.4.3 Focus Order (logical, restorable)"
+  - "4.1.2 Name, Role, Value (aria-expanded, aria-selected, aria-controls present)"
+
+multi_perspective_coverage:
+  - screen_reader: "Button announces role=listbox via aria-haspopup. aria-expanded announces open/closed state. Arrow keys and selections announced. Listbox not named, but context clear from button text."
+  - keyboard: "All functionality available via keyboard. Escape key properly supported. Focus visually indicated."
+  - low_vision: "Focus indicators visible (3px outline). Button and list large enough (12px padding = ~36-44px). Colors have sufficient contrast (dark text on light background)."
+  - cognitive: "Clear, consistent behavior. One interaction pattern (arrow keys + enter). Label describes purpose."
+
+notes: |
+  This fixture is a **CLEAN baseline** to test skill accuracy and false-positive rate.
+
+  Expected verdict: ACCEPT or ACCEPT-WITH-RESERVATIONS (for enhancement about aria-label).
+
+  The implementation fully complies with WAI-ARIA Listbox pattern. All required attributes present and correct. Focus management is sound. Keyboard navigation is complete. No blocking issues.
+
+  False positive trap: The listbox has tabindex="0" (roving tabindex pattern). This is correct, not improper tab order.

@@ -1,0 +1,102 @@
+fixture_id: interactive-dropdown-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes false positives; rewards specificity"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present in clean implementation"
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-label on listbox for clarity"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "50%"
+
+  - category: false_positive_trap
+    count: 1
+    description: "Correctly identifying roving tabindex pattern as intentional"
+    impact: "Listbox has tabindex='0' (correct for roving tabindex, not a keyboard trap)"
+    expected_to_find: "80%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  where positive_weights = [must_find, should_find, nice_to_find, evidence_quality, format_compliance]
+  false_positive_trap is subtracted from score if incorrectly flagged
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 95-100
+    reasoning: "Should recognize clean implementation and verify no false positives"
+
+  - condition: baseline-zero-shot
+    expected_score: 85-95
+    reasoning: "May identify enhancement but should recognize no critical issues"
+
+  - condition: baseline-few-shot
+    expected_score: 85-95
+    reasoning: "Same as zero-shot; few-shot doesn't add much for clean fixtures"
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  This CLEAN fixture tests baseline truthfulness and false-positive rate.
+
+  A11y-critic should:
+  1. Verify no false positives (roving tabindex is correct)
+  2. Acknowledge clean implementation
+  3. Possibly note enhancement (aria-label on listbox)
+  4. Give clean verdict (ACCEPT)
+
+  False positive trap: The listbox has tabindex="0" which is correct for roving tabindex pattern. Many reviewers incorrectly flag this as improper tab order. A11y-critic should recognize this pattern and not flag it.
+
+  Scoring: Both skill and baselines should score similarly high (90%+) on this fixture. Divergence would indicate one is being too harsh or too lenient.

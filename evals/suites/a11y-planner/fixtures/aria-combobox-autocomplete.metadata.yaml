@@ -1,0 +1,115 @@
+fixture_id: aria-combobox-autocomplete
+name: Combobox with Autocomplete
+description: Search input with autocomplete results dropdown. Plan accessibility for APG Combobox pattern including aria-owns/aria-activedescendant, keyboard navigation (typing, Arrow Up/Down, Enter, Escape), focus management, dynamic result updates, loading state communication.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: ARIA Pattern Implementation
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: A reusable combobox component with autocomplete filtering and dropdown results
+  user_need: Efficient search and selection with keyboard and screen reader support
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single combobox component, supports async result loading
+  constraints:
+    - Must support API-based result fetching (async)
+    - Results can be grouped (e.g., People, Organizations)
+    - Must work on desktop and mobile
+    - Multiple comboboxes can appear on one page
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure (input, listbox, options)
+  - Interaction Pattern Design (APG Combobox with complete ARIA)
+  - Focus Management (input focus, no focus movement to list)
+  - State Communication (aria-expanded, aria-activedescendant, aria-busy)
+  - Keyboard Interaction Model (typing, Arrow Up/Down, Enter, Escape, Tab)
+  - Loading State Communication (aria-busy, live region for count)
+  - Visual Accessibility (focus indicator, listbox visibility)
+  - Testing Strategy (keyboard, screen reader, async scenarios)
+
+key_evaluation_criteria:
+  - APG pattern mapping: Must cite https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
+  - WCAG grounding: Must cite WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value), 4.1.3 (Status Messages)
+  - ARIA completeness: aria-expanded, aria-owns/aria-controls, aria-activedescendant, aria-autocomplete="list"
+  - Keyboard model: Typing narrows list, Arrow Up/Down navigate, Enter selects, Escape closes, Tab exits
+  - Focus management: Clarify focus stays in input while typing (not moving to results)
+  - Dynamic updates: Plan how result count and loading state are announced
+  - Async handling: Plan for loading delay, error states, empty results
+  - Completeness: All 9 phases addressed
+
+expected_findings:
+  must_have:
+    - APG Combobox pattern reference with URL
+    - aria-expanded attribute (true/false) for dropdown visibility
+    - aria-owns or aria-controls linking input to listbox
+    - aria-activedescendant for keyboard navigation within results
+    - aria-autocomplete="list" on input
+    - Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab
+    - HTML structure stub: input, listbox, option elements
+    - Focus management plan: focus remains in input during navigation
+    - aria-busy during async loading
+    - WCAG citations for each design decision
+    - Test cases for keyboard, screen reader, async scenarios
+
+  should_have:
+    - aria-label or aria-labelledby for listbox
+    - aria-live="polite" for result count announcements
+    - Option grouping strategy (optgroup-like structure)
+    - Clear result count announcement (e.g., "5 results found")
+    - Loading message announcement
+    - Empty results handling
+    - Error state communication
+    - Debouncing strategy for typing
+    - Touch/mobile interaction considerations
+
+  nice_to_have:
+    - Highlighted first result by default
+    - Keyboard shortcut for clearing input
+    - Custom keyboard shortcuts (e.g., Ctrl+K to focus input)
+    - Recent searches or suggested results
+    - Result preview on arrow navigation
+    - Animation planning for dropdown open/close
+
+false_positive_traps:
+  - Suggesting focus should move to results list (focus should stay in input)
+  - Underestimating ARIA complexity (many attributes needed)
+  - Missing aria-activedescendant for keyboard navigation
+  - No plan for aria-busy during loading
+  - Vague about how many results are announced
+  - Missing Tab key behavior (Tab should exit combobox)
+  - Not addressing grouped results
+
+multi_perspective_coverage:
+  keyboard: "Typing, Arrow Up/Down, Enter, Escape, Tab; focus stays in input"
+  screen_reader: "Input role, listbox announced, option count, selection confirmation, loading state"
+  low_vision: "Focus indicator visible, listbox visually clear, sufficient color contrast"
+  cognitive: "Consistent keyboard behavior, clear result presentation"
+  mobile_touch: "Touch activates dropdown, swipe/arrow keys optional, selection feedback"
+
+notes: |
+  This MODERATE fixture tests whether a11y-planner can:
+  1. Map to a complex APG pattern (Combobox is among the hardest)
+  2. Manage complete ARIA attribute list (aria-expanded, aria-owns, aria-activedescendant, aria-autocomplete)
+  3. Design focus management that differs from simpler patterns (focus stays in input, not moving to results)
+  4. Plan for async state communication (aria-busy, live region)
+  5. Document comprehensive keyboard interaction model
+  6. Address dynamic content updates (result list changing as user types)
+
+  Expected verdict: ACCEPT (all core elements present with WCAG grounding and complete ARIA)
+
+  A strong plan will show mastery of:
+  - Complex APG pattern (Combobox pattern from W3C)
+  - Complete ARIA attribute set
+  - Focus management strategy (focus stays in input)
+  - Keyboard interaction complexity (Arrow Up/Down with aria-activedescendant)
+  - Dynamic updates and announcements
+  - Async state handling (loading, delays, errors)
+  - 3-4 pages of detailed planning

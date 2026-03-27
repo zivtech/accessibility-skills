@@ -1,0 +1,54 @@
+fixture_id: keyboard-button-bar
+name: Simple Button Navigation
+description: Button bar with 3 action buttons. Plan accessibility for native HTML buttons, icon labels, Tab order, focus indicator contrast (3:1), keyboard activation (Enter/Space), and visual styling.
+language: html
+framework: None
+difficulty: TRIVIAL
+domain: Keyboard Navigation Design
+work_type: component_plan
+risk_level: Low
+
+scenario:
+  feature: Simple 3-button navigation bar
+  user_need: Clear keyboard navigation and visual feedback
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA
+    - Keyboard-only users
+  scope: Simple static button bar
+  constraints:
+    - Icon-only buttons need labels
+
+expected_plan_sections:
+  - Scope & Context
+  - Button Semantics (native HTML button)
+  - Icon Labels (aria-label or text)
+  - Tab Order (left-to-right)
+  - Focus Indicator (contrast and visibility)
+  - Keyboard Activation (Enter/Space)
+  - Visual Styling
+  - Testing Strategy
+
+key_evaluation_criteria:
+  - Native HTML buttons used
+  - Icon labels specified
+  - Tab order documented
+  - Focus indicator contrast (3:1) specified
+  - WCAG 2.1.1 citation
+  - Simple, proportional plan (1-2 pages)
+
+expected_findings:
+  must_have:
+    - Native HTML button elements
+    - Icon labels (aria-label or text)
+    - Focus indicator contrast (3:1)
+    - Keyboard activation documentation
+    - WCAG 2.1.1 citation
+
+  should_have:
+    - Tab order documentation
+    - Visual styling plan
+    - Simple test cases
+
+notes: |
+  TRIVIAL fixture for keyboard button navigation.

@@ -1,0 +1,53 @@
+fixture_id: keyboard-breadcrumb
+name: Breadcrumb Navigation
+description: Breadcrumb showing page hierarchy. Plan semantic nav, ol/li structure, aria-current='page', link text clarity, Tab order, visual separators hidden from screen readers.
+language: html
+framework: None
+difficulty: TRIVIAL
+domain: Keyboard Navigation Design
+work_type: component_plan
+risk_level: Low
+
+scenario:
+  feature: Breadcrumb navigation component showing page hierarchy
+  user_need: Clear page location and backward navigation
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA
+    - VoiceOver
+    - Keyboard-only users
+  scope: Single breadcrumb component
+  constraints:
+    - Variable depth (2-5 levels)
+    - Visual separators (arrows, slashes)
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure (nav, ol, li)
+  - aria-current="page" Implementation
+  - Link Text Strategy
+  - Tab Order
+  - Visual Accessibility (separators, focus)
+  - Testing Strategy
+
+key_evaluation_criteria:
+  - Semantic nav element used
+  - Ordered list (ol) structure
+  - aria-current="page" documented
+  - Link text clarity (avoid "Click here")
+  - WCAG citations
+
+expected_findings:
+  must_have:
+    - nav element
+    - ol/li structure
+    - aria-current="page" for current item
+    - WCAG 1.3.1 citation (Info and Relationships)
+
+  should_have:
+    - Link text strategy documented
+    - Visual separator handling (css-only)
+    - Tab order documentation
+
+notes: |
+  MODERATE difficulty testing semantic breadcrumb structure.

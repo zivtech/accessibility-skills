@@ -1,0 +1,66 @@
+fixture_id: checkbox-group-no-fieldset
+name: Checkbox Group Without Fieldset and Legend
+description: Multiple checkboxes with individual labels but missing <fieldset> and <legend> to semantically group them. Screen reader cannot determine group membership.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Forms & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Missing <fieldset> to group related checkboxes"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Line 18-22: div wrapper instead of fieldset"
+        user_group: "Screen reader users"
+
+      - description: "Missing <legend> to label the group"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships + 3.3.2 Labels or Instructions"
+        evidence: "Line 18-22: group-label is div, should be legend"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Group context lost to screen reader"
+        severity: MAJOR
+        evidence: "Line 27-36: individual labels only, no group relationship"
+        user_group: "Screen reader users"
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Checkbox group wrapper
+    aria_attributes: []
+    issues: "Should be <fieldset> with <legend> child"
+
+  - name: Individual checkboxes
+    aria_attributes: [label via htmlFor]
+    issues: "Labels present but group context missing"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (fieldset groups related inputs)"
+  - "3.3.2 Labels or Instructions (legend labels fieldset)"
+
+patterns_used:
+  - HTML Checkbox Group Pattern
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Each checkbox announced as isolated element. Group membership not communicated. Screen reader user cannot understand relationship between checkboxes."
+  - keyboard: "Works correctly — checkboxes are focusable and operable."
+  - low_vision: "Visual label is clear."
+  - cognitive: "Visual layout suggests grouping, but semantic structure lacks it."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests understanding of HTML form semantics.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers use label elements for individual checkboxes without understanding that related checkboxes need <fieldset> and <legend> for semantic grouping. This is a fundamental HTML pattern, not optional ARIA enhancement.

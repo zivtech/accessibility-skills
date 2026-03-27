@@ -1,0 +1,63 @@
+fixture_id: breadcrumb-navigation-no-nav-landmark
+name: Breadcrumb Navigation Without nav Landmark
+description: Breadcrumb with aria-current and semantic list but missing <nav> landmark and aria-label. Screen reader does not identify as navigation.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Navigation & Wayfinding
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Missing <nav> landmark to identify breadcrumb navigation"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships (landmarks communicate structure)"
+        evidence: "Line 5-6: div instead of nav element"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-label on navigation landmark"
+        severity: MAJOR
+        wcag: "2.4.6 Headings and Labels (navigation labeled)"
+        evidence: "Line 5-6: nav has no aria-label or title"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Consider whether breadcrumb list structure is clear enough to screen reader users"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Breadcrumb container
+    aria_attributes: [aria-current on items]
+    issues: "Should be <nav> with aria-label"
+
+  - name: List structure
+    aria_attributes: [aria-hidden on separators]
+    issues: "Correct use of aria-hidden but container landmark missing"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (landmarks)"
+  - "2.4.6 Headings and Labels"
+
+patterns_used:
+  - HTML Breadcrumb Navigation Pattern
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Missing nav landmark. User does not identify as breadcrumb navigation. Cannot quickly navigate to breadcrumb region."
+  - keyboard: "Works correctly — links are focusable and navigable."
+  - low_vision: "Visual layout is clear."
+  - cognitive: "Visual structure is intuitive."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests understanding of HTML landmarks and their role in site navigation.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers focus on aria-current and list semantics without considering that breadcrumbs are a navigation landmark. The <nav> element is essential for screen reader users to understand site structure.

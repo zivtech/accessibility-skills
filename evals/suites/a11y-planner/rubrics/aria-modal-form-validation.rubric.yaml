@@ -1,0 +1,165 @@
+fixture_id: aria-modal-form-validation
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_modal_pattern: true
+      - has_focus_management: true
+      - has_form_structure: true
+      - has_validation_strategy: true
+      - has_error_handling: true
+      - has_testing_strategy: true
+
+  - id: apg_dialog_pattern
+    name: "APG Dialog Pattern"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_dialog: true
+      - includes_url: "https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
+      - documents_focus_trap: true
+      - documents_focus_restoration: true
+
+  - id: focus_trap_restoration
+    name: "Focus Management (Trap & Restoration)"
+    description: "Is focus trap clearly implemented? Is restoration mechanism specified?"
+    weight: 3
+    rule_based_checks:
+      - clarifies_tab_cycling: true
+      - clarifies_shift_tab_cycling: true
+      - documents_focus_restoration_mechanism: true
+      - clarifies_initial_focus_on_open: true
+    llm_judge_criteria:
+      - "Would a developer understand how to implement focus trap?"
+      - "Is focus restoration mechanism clear and implementable?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    weight: 2
+    rule_based_checks:
+      - keyboard_cites_wcag_2_1_1: true
+      - form_cites_wcag: true
+      - error_cites_wcag_4_1_3: true
+
+  - id: form_structure
+    name: "Form Structure & Labeling"
+    description: "Are fieldset/legend and input labels properly specified?"
+    weight: 2
+    rule_based_checks:
+      - documents_fieldset_legend: true
+      - documents_label_association: true
+      - provides_form_structure_stub: true
+
+  - id: error_communication
+    name: "Error Message Communication"
+    description: "Are aria-invalid and aria-describedby specified for errors?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_invalid: true
+      - specifies_aria_describedby: true
+      - plans_error_message_placement: true
+      - plans_error_announcements: true
+
+  - id: validation_approach
+    name: "Validation Strategy"
+    description: "Is validation approach (real-time vs submit) decided and documented?"
+    weight: 2
+    rule_based_checks:
+      - makes_validation_decision: true
+      - justifies_validation_approach: true
+      - plans_async_handling: true
+      - addresses_error_recovery: true
+    llm_judge_criteria:
+      - "Is validation approach clear and well-justified?"
+
+  - id: ambiguity_handling
+    name: "Ambiguity Resolution"
+    description: "Does the plan address ambiguous requirements explicitly?"
+    weight: 2
+    rule_based_checks:
+      - identifies_ambiguity: true
+      - makes_documented_decisions: true
+      - justifies_assumptions: true
+    llm_judge_criteria:
+      - "Does the plan clarify ambiguous points?"
+      - "Are decisions reasonable and documented?"
+
+  - id: keyboard_interaction
+    name: "Keyboard Interaction"
+    weight: 2
+    rule_based_checks:
+      - documents_tab_behavior: true
+      - documents_escape_behavior: true
+      - documents_submit_key: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    weight: 1
+    rule_based_checks:
+      - documents_focus_trap_testing: true
+      - documents_form_validation_testing: true
+      - documents_keyboard_testing: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 88-100
+  good: 75-87
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-98
+    reasoning: "Should handle focus trap/restoration, form structure, error communication, ambiguity resolution"
+
+  - condition: baseline-zero-shot
+    expected_score: 50-65
+    reasoning: "Focus trap complexity and ambiguity handling often missed"
+
+  - condition: baseline-few-shot
+    expected_score: 60-75
+    reasoning: "Structured examples help but focus restoration still challenging"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  AMBIGUOUS fixture testing focus trap implementation, form integration, and ambiguity handling.
+
+  Key focus:
+  - APG Dialog pattern reference
+  - Focus trap and restoration clarity
+  - Form structure (fieldset/legend)
+  - Error message communication (aria-invalid, aria-describedby)
+  - Validation approach decision (with justification)
+  - Ambiguity handling (explicit decisions on unclear requirements)
+  - All 9 phases addressed
+
+  Expected baseline:
+  - APG Dialog: 90%+ cite it
+  - Focus trap: 70%+ document it
+  - Focus restoration: 50%+ (often missing)
+  - Form structure: 80%+
+  - Error communication: 75%+
+  - Validation approach: 60%+ (ambiguity often not addressed)
+  - Ambiguity handling: 40%+ (most don't explicitly address it)
+
+  Outlier indicators:
+  - Focus trap not documented
+  - Focus restoration missing
+  - No form structure specified
+  - Error messages not associated with inputs
+  - Ambiguity not addressed or assumptions not documented
+  - Plan >6 pages (over-planning for AMBIGUOUS)

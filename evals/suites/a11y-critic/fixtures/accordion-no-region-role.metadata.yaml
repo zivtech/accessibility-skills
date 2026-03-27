@@ -1,0 +1,66 @@
+fixture_id: accordion-no-region-role
+name: Accordion Without Region Role on Expanded Content
+description: Accordion with correct button behavior but missing role="region" and aria-labelledby on expanded panels. Screen reader user cannot identify expanded section as a logical region.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Missing role='region' on accordion panel"
+        severity: MAJOR
+        wcag: "WAI-ARIA Accordion Pattern"
+        evidence: "Line 29-35: accordion-panel div has no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-labelledby on accordion panel"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (region label)"
+        evidence: "Line 29-35: accordion-panel has no aria-labelledby attribute"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Consider keeping all panels in DOM with visibility control"
+        severity: ENHANCEMENT
+        evidence: "Line 27: panels conditionally rendered, button always present"
+        user_group: "Keyboard users"
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Accordion trigger button
+    aria_attributes: [aria-expanded, aria-controls]
+    issues: "Missing id and aria-labelledby reference to label the panel"
+
+  - name: Accordion panel
+    aria_attributes: []
+    issues: "Missing role='region', missing aria-labelledby"
+
+wcag_criteria:
+  - "4.1.2 Name, Role, Value (regions must be identified)"
+  - "WAI-ARIA Accordion Pattern"
+
+patterns_used:
+  - WAI-ARIA Accordion Pattern (partially implemented)
+
+multi_perspective_coverage:
+  - screen_reader: "Missing region role and label. Screen reader user navigates content but cannot identify it as a logical expandable section."
+  - keyboard: "Works correctly — buttons are in tab order, can be focused and activated."
+  - low_vision: "Visual presentation is clear. Expansion state is visually obvious."
+  - cognitive: "Layout is straightforward."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests whether reviewers understand region semantics and their purpose in accordion patterns.
+
+  Expected verdict: REVISE
+
+  Key gap: Many reviewers check "is aria-expanded present and toggling correctly? yes" without considering that the expanded content needs its own semantic identity (role="region"). This is a common incompleteness in accordion implementations.

@@ -1,0 +1,81 @@
+fixture_id: combobox-autocomplete-no-listbox-role
+name: Combobox with Missing Listbox Role
+description: Combobox with working keyboard interaction but missing role="listbox" and role="option" on suggestion items. Screen reader user cannot identify popup as selectable list.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing role='listbox' on suggestions container"
+        severity: CRITICAL
+        wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
+        evidence: "Line 64-72: suggestions-list div has no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing role='option' on suggestion items"
+        severity: CRITICAL
+        wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
+        evidence: "Line 73-82: item divs have no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-controls linking input to suggestions"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (relationship establishment)"
+        evidence: "Line 60-61: input missing aria-controls attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-selected on suggestion items"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (state communication)"
+        evidence: "Line 73-82: items missing aria-selected attribute"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-owns could alternatively establish container relationship if aria-controls not used"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Input element
+    aria_attributes: [role=combobox, aria-autocomplete, aria-expanded]
+    issues: "Missing aria-controls to declare relationship to suggestions container"
+
+  - name: Suggestions container
+    aria_attributes: []
+    issues: "Missing role='listbox', no semantic meaning"
+
+  - name: Suggestion items
+    aria_attributes: []
+    issues: "Missing role='option', missing aria-selected"
+
+wcag_criteria:
+  - "4.1.2 Name, Role, Value (roles and state must be available to AT)"
+  - "WAI-ARIA Combobox (with Listbox Popup) Pattern"
+
+patterns_used:
+  - WAI-ARIA Combobox (with Listbox Popup) Pattern (incomplete)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Suggestions popup is announced as generic container, not listbox. Items are plain divs, not options. User cannot identify this as a selectable list."
+  - keyboard: "Works correctly — arrow keys, Enter, Escape all function as expected. Keyboard user not affected."
+  - low_vision: "Not directly affected by role/state issues. Visual presentation is clear."
+  - cognitive: "Visual layout is straightforward."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests whether reviewers understand that ARIA roles are not decorative — they establish semantic meaning for assistive technology.
+
+  Expected verdict: REVISE
+
+  Key gap: The skill should identify missing roles as CRITICAL, not just "nice to have" ARIA. Many reviewers check "is keyboard navigation working? yes" and miss the fact that screen reader experience is completely broken.
+
+  The "What's Missing" section should surface: role="listbox" on container, role="option" on items, aria-selected on items, aria-controls on input.

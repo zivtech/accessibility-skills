@@ -1,0 +1,57 @@
+fixture_id: keyboard-menu-dropdown
+name: Menu Button with Dropdown
+description: Menu button that opens dropdown list. Plan APG Menu Button pattern, aria-expanded, keyboard navigation (Arrow Up/Down), focus management, Escape handling, disabled items.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: Keyboard Navigation Design
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: Menu button component with 5-8 selectable items
+  user_need: Efficient menu navigation with keyboard support
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - JAWS
+    - NVDA
+    - Keyboard-only users
+  scope: Single menu button component
+  constraints:
+    - Some items may be disabled
+    - Submenus optional
+
+expected_plan_sections:
+  - Scope & Context
+  - APG Menu Button Pattern
+  - ARIA Attributes (aria-expanded, menu roles, aria-disabled)
+  - Keyboard Interaction (Arrow Up/Down, Enter, Escape, Tab)
+  - Focus Management
+  - Visual Accessibility
+  - Testing Strategy
+
+key_evaluation_criteria:
+  - APG pattern mapping: https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/
+  - WCAG grounding: WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value)
+  - ARIA completeness: aria-expanded, menu, menuitem, aria-disabled
+  - Keyboard model: Arrow Up/Down, Enter, Escape, Tab
+  - Focus management: Clarify focus on menu open
+  - Completeness: All phases addressed
+
+expected_findings:
+  must_have:
+    - APG Menu Button pattern reference
+    - aria-expanded attribute
+    - menu/menuitem roles
+    - Keyboard interaction documented
+    - Focus management plan
+    - WCAG citations
+
+  should_have:
+    - aria-disabled for unavailable items
+    - Escape key handling
+    - Focus restoration
+    - Test cases
+
+notes: |
+  MODERATE difficulty testing APG Menu Button pattern with focus management complexity.

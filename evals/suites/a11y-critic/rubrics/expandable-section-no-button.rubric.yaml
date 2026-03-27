@@ -1,0 +1,114 @@
+fixture_id: expandable-section-no-button
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Using <div> instead of <button>"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "file:line reference to div trigger"
+        expected_to_find: "95%"
+
+      - description: "Missing aria-expanded"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to trigger"
+        expected_to_find: "95%"
+
+      - description: "No keyboard support"
+        severity: CRITICAL
+        wcag: "2.1.1 Keyboard"
+        evidence_requirement: "file:line reference to onClick-only handler"
+        expected_to_find: "95%"
+
+      - description: "Missing role='button'"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to trigger"
+        expected_to_find: "90%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 97-100
+    reasoning: "Should identify all 4 critical issues immediately"
+
+  - condition: baseline-zero-shot
+    expected_score: 70-85
+    reasoning: "Should identify div vs button issue, may miss some aspects"
+
+  - condition: baseline-few-shot
+    expected_score: 80-95
+    reasoning: "Few-shot example should help identify pattern violations"
+
+verdict_expectations:
+  harsh-critic: REJECT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests fundamental semantic HTML understanding.
+
+  Key test: Does reviewer immediately identify div vs button as a critical violation?
+
+  Expected findings:
+  - All 4 issues identified as CRITICAL or MAJOR
+  - Clear explanation of why div is wrong and button is correct
+  - Keyboard accessibility impact explained
+  - WCAG citations provided
+  - Expected verdict: REJECT (critical keyboard and semantic issues)

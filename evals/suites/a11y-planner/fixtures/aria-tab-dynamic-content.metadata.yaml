@@ -1,0 +1,105 @@
+fixture_id: aria-tab-dynamic-content
+name: Tab Panel with Dynamic Content
+description: Tab interface with async content loading. Plan accessibility for APG Tab pattern including aria-selected, aria-controls, async loading state (aria-busy), keyboard navigation (Left/Right arrows), focus management, and error handling.
+language: vue
+framework: Vue.js
+difficulty: MODERATE
+domain: ARIA Pattern Implementation
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: Reusable tab component where tab panels load content asynchronously
+  user_need: Organized content access with clear indication of loading progress
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - JAWS
+    - NVDA
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single tab component, content loaded from API
+  constraints:
+    - Content load time 1-3 seconds
+    - Load failures possible
+    - Must support mobile
+    - Some tabs may be disabled
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure (tablist, tab, tabpanel)
+  - Interaction Pattern Design (APG Tab with async)
+  - Focus Management (tab vs panel focus)
+  - State Communication (aria-selected, aria-busy, error states)
+  - Keyboard Interaction (Left/Right, Home/End, Tab)
+  - Loading & Error Communication (live regions, aria-busy)
+  - Visual Accessibility (focus indicator, loading indicator)
+  - Testing Strategy (keyboard, async, errors, screen reader)
+
+key_evaluation_criteria:
+  - APG pattern mapping: Must cite https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
+  - WCAG grounding: WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value), 4.1.3 (Status Messages)
+  - ARIA completeness: aria-selected, aria-controls, aria-labelledby, aria-busy, aria-describedby for errors
+  - Async handling: Clear plan for loading state, result announcement, error handling
+  - Keyboard model: Left/Right arrows, Home/End, Tab to exit
+  - Focus management: Clarify focus behavior on tab switch
+  - Completeness: All 9 phases addressed
+
+expected_findings:
+  must_have:
+    - APG Tab pattern reference with URL
+    - aria-selected attribute (true/false)
+    - aria-controls linking tab to panel
+    - aria-labelledby for panel labeling
+    - Keyboard model: Left/Right arrows, Home/End, Tab
+    - HTML structure stub: tablist, tab, tabpanel
+    - aria-busy during loading
+    - Live region for load completion announcements
+    - Error state handling with aria-describedby
+    - WCAG citations
+
+  should_have:
+    - Disabled tab handling (aria-disabled)
+    - Focus management clarification
+    - Retry button for failed loads
+    - Loading indicator announcement
+    - Test cases for keyboard, async, errors
+    - Animation timing considerations
+    - Touch/swipe support (optional for mobile)
+
+  nice_to_have:
+    - Lazy loading optimization discussion
+    - Persistence of tab state (bookmarkable tabs)
+    - Preload strategy for likely-selected tabs
+    - Keyboard shortcut to refresh content
+
+false_positive_traps:
+  - Not planning async loading communication
+  - Missing aria-controls
+  - No error handling strategy
+  - Unclear focus movement on tab select
+  - Over-planning (>5 pages for MODERATE)
+
+multi_perspective_coverage:
+  keyboard: "Left/Right arrows, Home/End, Tab to exit; clear focus movement"
+  screen_reader: "Tab role, aria-selected state, loading announcements, completion, error messages"
+  low_vision: "Loading indicator, focus indicator contrast, error messages"
+  cognitive: "Consistent keyboard behavior, clear state feedback"
+  mobile_touch: "Touch activation, swipe support (optional), loading feedback"
+
+notes: |
+  This MODERATE fixture tests:
+  1. APG Tab pattern mapping with complexity (async adds requirements)
+  2. State management (aria-selected, aria-busy) with timing
+  3. Keyboard interaction with arrow key navigation
+  4. Async communication (loading, completion, errors)
+  5. Focus management strategy clarification
+
+  Expected verdict: ACCEPT
+
+  A strong plan shows:
+  - APG Tab pattern (W3C reference)
+  - Complete ARIA attribute set for tabs and panels
+  - Clear async/loading state strategy
+  - Keyboard interaction with arrow keys
+  - Error handling and recovery
+  - 3-4 pages of detailed planning

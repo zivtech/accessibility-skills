@@ -1,0 +1,149 @@
+fixture_id: aria-tab-dynamic-content
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference APG Tab pattern?"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_tab: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      - maps_keyboard_to_pattern: true
+      - maps_aria_to_pattern: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "WCAG citations for all design decisions"
+    weight: 3
+    rule_based_checks:
+      - aria_selected_cites_wcag: true
+      - keyboard_cites_wcag_2_1_1: true
+      - state_communication_cites_wcag: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard"
+      - "WCAG 4.1.2 Name, Role, Value"
+      - "WCAG 4.1.3 Status Messages"
+
+  - id: async_handling
+    name: "Async Content & Loading"
+    description: "Is loading state, error handling, and announcements planned?"
+    weight: 3
+    rule_based_checks:
+      - plans_aria_busy_for_loading: true
+      - plans_live_region_announcements: true
+      - plans_error_state_handling: true
+      - plans_retry_strategy: true
+    llm_judge_criteria:
+      - "Would a developer understand async state management?"
+      - "Are error scenarios clearly addressed?"
+
+  - id: keyboard_model
+    name: "Keyboard Interaction"
+    description: "Complete keyboard model documented?"
+    weight: 2
+    rule_based_checks:
+      - documents_left_right_arrows: true
+      - documents_home_end_keys: true
+      - documents_tab_behavior: true
+      - documents_focus_movement: true
+
+  - id: focus_management
+    name: "Focus Management"
+    description: "Is focus behavior clarified on tab selection?"
+    weight: 2
+    rule_based_checks:
+      - clarifies_focus_on_tab_select: true
+      - documents_focus_restoration: true
+
+  - id: aria_completeness
+    name: "ARIA Completeness"
+    description: "All required ARIA attributes specified?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_selected: true
+      - specifies_aria_controls: true
+      - specifies_aria_labelledby: true
+      - specifies_aria_busy: true
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    weight: 1
+    rule_based_checks:
+      - documents_async_testing: true
+      - documents_keyboard_testing: true
+      - documents_error_testing: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 88-100
+    reasoning: "Should handle async complexity, APG Tab pattern, WCAG citations"
+
+  - condition: baseline-zero-shot
+    expected_score: 65-75
+    reasoning: "May miss async loading complexity or error handling"
+
+  - condition: baseline-few-shot
+    expected_score: 72-82
+    reasoning: "Structured approach helps but async scenarios often missed"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  MODERATE fixture evaluating APG Tab pattern with async complexity.
+
+  Key focus:
+  - APG Tab pattern reference
+  - Complete ARIA attributes
+  - Async/loading state strategy
+  - Keyboard arrows and focus management
+  - Error handling and retry
+  - All 9 phases at appropriate depth
+
+  Expected baseline:
+  - APG Tab: 95%+ cite it
+  - aria-selected/aria-controls: 90%+
+  - Async handling: 65%+ (complexity increases errors here)
+  - Error states: 60%+ (often overlooked)
+  - Keyboard: 90%+

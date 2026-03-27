@@ -1,0 +1,69 @@
+fixture_id: interactive-dropdown-focus-bug
+name: Custom Dropdown with Focus Restoration Bug
+description: Dropdown with correct ARIA attributes but incomplete focus management. Focus not restored after selection or Escape key.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Focus not restored to trigger button after selection"
+        severity: MAJOR
+        wcag: "2.1.2 No Keyboard Trap + WAI-ARIA Listbox Pattern"
+        evidence: "Line 41-45: handleSelect function closes dropdown but doesn't restore focus"
+        user_group: "Keyboard-only users"
+
+      - description: "Focus not restored to trigger button after Escape key"
+        severity: MAJOR
+        wcag: "2.1.2 No Keyboard Trap + WAI-ARIA Listbox Pattern"
+        evidence: "Line 17-20: Escape handler closes dropdown but doesn't restore focus"
+        user_group: "Keyboard-only users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: No buttonRef maintained, so focus restoration is impossible. Suggest storing ref to trigger button for focus management."
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Button trigger
+    aria_attributes: [aria-haspopup, aria-expanded, aria-controls]
+    issues: "Missing ref for focus restoration"
+
+  - name: Listbox container
+    aria_attributes: [role=listbox, tabindex=0]
+    issues: "None specific to this element"
+
+  - name: Option items
+    aria_attributes: [role=option, aria-selected]
+    issues: "None specific to this elements"
+
+wcag_criteria:
+  - "2.1.2 No Keyboard Trap (focus management when closing)"
+  - "4.1.2 Name, Role, Value (focus must be managed)"
+
+patterns_used:
+  - WAI-ARIA Listbox Pattern (partially implemented)
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader user won't notice this issue; ARIA structure announced correctly. However, focus loss is disorienting."
+  - keyboard: "CRITICAL: Keyboard user cannot determine where focus is after selecting or pressing Escape. Must use Tab to regain position. Breaks natural interaction flow."
+  - low_vision: "Not directly affected, but focus indicator loss is disorienting."
+  - cognitive: "Unpredictable focus behavior violates consistency principle (WCAG 3.2.1)."
+
+false_positive_traps: 0
+
+notes: |
+  This is a realistic HAS-BUGS fixture. ARIA structure is mostly correct, but focus management is incomplete.
+
+  Expected verdict: REVISE
+
+  Key gap: The skill should identify this as a pattern incompleteness issue, not just a missing attribute. Many baseline reviewers might miss this if they only check for aria-expanded and aria-selected presence.
+
+  The "What's Missing" section should surface: missing focus restoration on selection, missing focus restoration on Escape.

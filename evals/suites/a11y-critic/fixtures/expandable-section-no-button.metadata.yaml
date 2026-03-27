@@ -1,0 +1,70 @@
+fixture_id: expandable-section-no-button
+name: Expandable Section Using Div Instead of Button
+description: Expandable content with click handler on div instead of button. Missing aria-expanded, keyboard support, and role="button".
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Using <div> instead of <button> for interactive trigger"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships (semantic meaning)"
+        evidence: "Line 14-23: div with onClick handler"
+        user_group: "All users (keyboard, AT)"
+
+      - description: "Missing aria-expanded state announcement"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value (state communication)"
+        evidence: "Line 14-23: no aria-expanded attribute"
+        user_group: "Screen reader users"
+
+      - description: "No keyboard support for activation"
+        severity: CRITICAL
+        wcag: "2.1.1 Keyboard (all interactive elements must be keyboard accessible)"
+        evidence: "Line 14-23: div only responds to onClick, not keyboard"
+        user_group: "Keyboard-only users"
+
+      - description: "Missing role='button'"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Line 14-23: no role attribute"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Expandable trigger
+    aria_attributes: []
+    issues: "Should be <button> or have role='button' with aria-expanded"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "2.1.1 Keyboard"
+  - "4.1.2 Name, Role, Value"
+
+patterns_used:
+  - Expandable Disclosure Pattern (not implemented)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No role and no aria-expanded means user cannot identify as button or know expanded state."
+  - keyboard: "CRITICAL: Cannot focus with Tab (not a button), cannot activate with Space/Enter."
+  - low_vision: "Indicator visible but semantic meaning missing for all AT users."
+  - cognitive: "Visual layout suggests clickability but no semantic confirmation."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests fundamental semantic HTML understanding.
+
+  Expected verdict: REJECT
+
+  Key gap: This is a critical pattern violation — using div for interactive elements breaks keyboard and screen reader accessibility. This is one of the most common accessibility mistakes in web development.

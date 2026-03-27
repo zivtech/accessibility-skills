@@ -1,0 +1,72 @@
+fixture_id: tooltip-no-role-no-association
+name: Tooltip Missing Focus Behavior and aria-describedby
+description: Tooltip with role="tooltip" but only appears on hover (not focus) and missing aria-describedby association. Keyboard and screen reader users cannot access tooltip.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - description: "Tooltip only appears on hover, not on focus"
+        severity: CRITICAL
+        wcag: "1.4.13 Content on Hover or Focus"
+        evidence: "Line 11-13: onMouseEnter handler only, no onFocus"
+        user_group: "Keyboard-only users"
+
+      - description: "Missing aria-describedby on trigger button"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value (association)"
+        evidence: "Line 8-13: button has no aria-describedby attribute"
+        user_group: "Screen reader users"
+
+      - description: "Tooltip not announced when button is focused"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Line 15-22: tooltip only renders on hover, unavailable to AT"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: Consider using aria-label on button if text is unclear"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Trigger button
+    aria_attributes: [role=button (implicit)]
+    issues: "Missing aria-describedby, missing focus handler"
+
+  - name: Tooltip container
+    aria_attributes: [role=tooltip]
+    issues: "Only shown on hover, not available to keyboard or AT"
+
+wcag_criteria:
+  - "1.4.13 Content on Hover or Focus"
+  - "4.1.2 Name, Role, Value"
+
+patterns_used:
+  - ARIA Tooltip Pattern (incomplete)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No aria-describedby association means tooltip content is not announced. Keyboard user focusing button gets no tooltip information."
+  - keyboard: "CRITICAL: Tooltip only appears on hover. Tab navigation skips tooltip entirely. Keyboard user cannot access tooltip."
+  - low_vision: "Hover-only tooltip is problematic for low vision users who may not have precise mouse control."
+  - cognitive: "Inconsistent behavior (hover vs focus) is confusing."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests understanding of multi-perspective accessibility.
+
+  Expected verdict: REVISE
+
+  Key gap: role="tooltip" alone is insufficient. The pattern requires:
+  1. Tooltip appears on BOTH hover AND focus
+  2. aria-describedby association
+  3. Content must be announced to screen reader

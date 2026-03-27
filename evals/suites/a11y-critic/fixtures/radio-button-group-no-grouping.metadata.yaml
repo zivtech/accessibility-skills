@@ -1,0 +1,66 @@
+fixture_id: radio-button-group-no-grouping
+name: Radio Button Group Without Semantic Grouping
+description: Radio buttons with name attribute and individual labels but missing <fieldset> and <legend> for semantic grouping.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Forms & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Missing <fieldset> to group related radio buttons"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Line 9-13: div wrapper instead of fieldset"
+        user_group: "Screen reader users"
+
+      - description: "Missing <legend> to label the radio group"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships + 3.3.2 Labels or Instructions"
+        evidence: "Line 11: group-label is div, should be legend"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "name attribute alone is insufficient for AT"
+        severity: MAJOR
+        evidence: "Line 14-24: name present but no fieldset/legend"
+        user_group: "Screen reader users"
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Radio group wrapper
+    aria_attributes: []
+    issues: "Should be <fieldset> with <legend>"
+
+  - name: Individual radio buttons
+    aria_attributes: [name attribute, label via htmlFor]
+    issues: "Labels and name present but group context missing"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "3.3.2 Labels or Instructions"
+
+patterns_used:
+  - HTML Radio Button Group Pattern
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: Each radio announced as isolated element. Group membership not communicated."
+  - keyboard: "Works correctly — radios are focusable and operable."
+  - low_vision: "Visual label is clear."
+  - cognitive: "Layout suggests grouping but semantics lack it."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests fundamental HTML form semantics.
+
+  Expected verdict: REVISE
+
+  Key gap: Similar to checkbox groups, radio button groups require <fieldset> and <legend> for semantic grouping. The name attribute groups them for form submission but not for assistive technology.

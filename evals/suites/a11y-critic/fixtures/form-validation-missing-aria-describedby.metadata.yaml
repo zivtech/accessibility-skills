@@ -1,0 +1,100 @@
+fixture_id: form-validation-missing-aria-describedby
+name: Form Validation Without aria-describedby Associations
+description: Login form with error messages displayed and aria-invalid set, but errors not associated to fields via aria-describedby. Error summary not announced as live region.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Form & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Error messages not associated with form inputs via aria-describedby"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships (form fields must be associated with their labels and error descriptions)"
+        wcag_secondary: "4.1.2 Name, Role, Value (error must be programmatically related to field)"
+        evidence: "Lines 72-82: aria-invalid set but aria-describedby missing. Error message rendered but not associated. Screen reader announces 'Email Address, invalid' but doesn't link to error message."
+        user_group: "Screen reader users"
+        expected_behavior: "Input should have aria-describedby='error-email' pointing to an element with id='error-email' containing the error message. Screen reader announces both label and error description."
+        fix: "Add id to error span (e.g., id='error-email'). Add aria-describedby='error-email' to input element."
+
+      - description: "Error summary not announced as dynamic content update"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages (dynamic status messages must be announced to AT)"
+        evidence: "Lines 19-26: Error summary div has no aria-live, role='alert', or role='status'. When validation fails and error message appears, screen reader doesn't announce it."
+        user_group: "Screen reader users"
+        expected_behavior: "Error summary should have role='alert' (or aria-live='assertive' for urgent errors) to announce validation failures."
+        fix: "Add to error summary div: role='alert' and aria-atomic='true'. This ensures new errors are announced when they appear."
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Error summary doesn't provide links to associated fields"
+        severity: MINOR
+        wcag: "3.3.4 Error Prevention (error prevention and error suggestion)"
+        evidence: "Lines 19-26: Error list items are plain text; not linked to fields"
+        user_group: "Cognitive users, users who prefer explicit navigation"
+        expected_behavior: "Error summary list items could be links (anchor elements) that jump focus to associated form field"
+        fix: "Optional: Convert error summary items to links that focus the associated field when clicked"
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Error summary div
+    aria_attributes: []
+    issues:
+      - missing: "role='alert' or aria-live='polite'"
+      - missing: "aria-atomic='true'"
+      - impact: "Validation failures not announced to screen reader"
+
+  - name: Email input
+    aria_attributes: [aria-invalid]
+    issues:
+      - missing: "aria-describedby='error-email'"
+      - impact: "Error message not programmatically related to field"
+
+  - name: Password input
+    aria_attributes: [aria-invalid]
+    issues:
+      - missing: "aria-describedby='error-password'"
+      - impact: "Error message not programmatically related to field"
+
+  - name: Error messages
+    current_state: "Visually rendered but not associated"
+    missing: "id attributes to enable aria-describedby references"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (error must be associated with its field)"
+  - "4.1.2 Name, Role, Value (form fields must communicate their state)"
+  - "4.1.3 Status Messages (error announcements must be communicated)"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader announces 'Email Address' and 'invalid' but doesn't link to the error message. User hears errors in summary but doesn't know which field they apply to without manual navigation."
+  - keyboard: "Fully functional. Can navigate between fields with Tab and read error messages. But no programmatic relationship."
+  - low_vision: "Not affected; error messages visible and form is magnifiable."
+  - cognitive: "Error messages are clear, but no links from summary to fields makes recovery harder. User must remember which field failed."
+
+false_positive_traps: 0
+
+notes: |
+  This is a **HAS-BUGS** fixture testing semantic relationships, not just visual presentation.
+
+  Expected verdict: REVISE
+
+  **Key distinction**: The visual design is correct. Errors display prominently. But the programmatic relationships are missing:
+  1. Error message not linked to field (aria-describedby)
+  2. Error summary not announced as dynamic content (aria-live/role='alert')
+
+  This is realistic and common. Many developers focus on visual accessibility but miss the semantic layer.
+
+  A11y-critic should:
+  1. Note the error summary should have aria-live="polite" or role="alert"
+  2. Verify aria-describedby is missing from all inputs with errors
+  3. Suggest adding id to error message elements
+  4. Rate as CRITICAL + MAJOR (two separate issues)
+  5. Note in "What's Missing": "Field-level error associations via aria-describedby", "Live region announcement for error summary"
+
+  Expected baseline performance: Baseline might notice aria-invalid + aria-live gap but miss aria-describedby. A11y-critic should catch all three.

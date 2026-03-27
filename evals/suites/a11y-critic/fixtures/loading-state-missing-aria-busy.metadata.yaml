@@ -1,0 +1,46 @@
+fixture_id: loading-state-missing-aria-busy
+name: Loading State Without aria-busy Announcement
+description: Data loading component showing visual spinner but not communicating loading state to screen readers via aria-busy or aria-live.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content & Live Regions
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Loading state not communicated via aria-busy"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages (state changes must be announced)"
+        evidence: "Lines 6-18: div.data-container shows loading spinner but has no aria-busy attribute"
+        user_group: "Screen reader users"
+        expected_behavior: "Container should have aria-busy='true' while loading, aria-busy='false' when complete"
+        fix: "Add aria-busy={isLoading} to data-container div"
+
+      - description: "Loading message not announced as live region"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Lines 14-18: Loading message renders but no aria-live region to announce it"
+        user_group: "Screen reader users"
+        expected_behavior: "Loading status should be announced via aria-live='polite' or role='status'"
+        fix: "Add role='status' aria-live='polite' aria-atomic='true' to loading-spinner div"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (asynchronous state changes must be announced)"
+
+multi_perspective_coverage:
+  - screen_reader: "Screen reader announces nothing when loading starts. Spinner is animation (not readable). Content appears to load immediately from SR perspective, even though user sees 2-second delay."
+  - keyboard: "Not affected; no keyboard interaction in this component"
+  - low_vision: "Spinner animation may be hard to see or cause dizziness"
+  - cognitive: "Unclear if content is loading or already loaded"
+
+notes: |
+  This is a **HAS-BUGS** fixture testing state communication for dynamic content.
+
+  Expected verdict: REVISE
+
+  Screen reader users don't know content is loading. They hear the "Results" heading immediately (before data loads), then content magically appears after 2 seconds with no announcement.
+
+  A11y-critic should identify both aria-busy and live region gaps as blocking issues.

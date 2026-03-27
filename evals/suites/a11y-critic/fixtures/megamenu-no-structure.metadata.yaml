@@ -1,0 +1,95 @@
+fixture_id: megamenu-no-structure
+name: Mega Menu Without Proper Structure and Navigation
+description: Mega menu with divs instead of semantic buttons and links, missing nav landmark, aria-expanded, and arrow key navigation.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Navigation & Wayfinding
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 6
+    items:
+      - description: "Missing <nav> landmark"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships (landmarks)"
+        evidence: "Line 8-9: div instead of nav"
+        user_group: "Screen reader users"
+
+      - description: "Menu items are divs instead of buttons"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships + 2.1.1 Keyboard"
+        evidence: "Line 13-19: div with onClick, no role or keyboard support"
+        user_group: "Keyboard users"
+
+      - description: "Submenu items are divs instead of links/buttons"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships + 2.1.1 Keyboard"
+        evidence: "Line 27-33: div submenu items"
+        user_group: "Keyboard users"
+
+      - description: "No role='menu' on submenu"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Line 23-33: submenu div has no role"
+        user_group: "Screen reader users"
+
+      - description: "No arrow key navigation support"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard (keyboard patterns)"
+        evidence: "Line 13-19: only onClick handler"
+        user_group: "Keyboard users"
+
+      - description: "Missing aria-expanded on menu items"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (state)"
+        evidence: "Line 13-19: no aria-expanded"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Menu container
+    aria_attributes: []
+    issues: "Should be <nav> landmark"
+
+  - name: Menu items
+    aria_attributes: []
+    issues: "Should be <button> with aria-expanded and keyboard handlers"
+
+  - name: Submenu
+    aria_attributes: []
+    issues: "Should have role='menu'"
+
+  - name: Submenu items
+    aria_attributes: []
+    issues: "Should be <a> or <button> with role='menuitem'"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "2.1.1 Keyboard"
+  - "4.1.2 Name, Role, Value"
+
+patterns_used:
+  - ARIA Menu Pattern (missing)
+  - HTML Navigation Landmark Pattern (missing)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No nav, no role='menu', no aria-expanded. User cannot identify or navigate menu."
+  - keyboard: "CRITICAL: Divs not keyboard accessible. Arrow key navigation missing. User cannot open or navigate submenus."
+  - low_vision: "Visual layout clear but semantic structure missing for all AT."
+  - cognitive: "Interaction unpredictable without clear menu semantics."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests complex menu pattern understanding.
+
+  Expected verdict: REJECT
+
+  Key gap: Mega menus are complex patterns requiring nav landmark, semantic buttons, menu roles, aria-expanded, and arrow key navigation. This is one of the most commonly broken patterns in web development.

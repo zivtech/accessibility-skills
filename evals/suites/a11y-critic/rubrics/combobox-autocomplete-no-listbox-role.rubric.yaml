@@ -1,0 +1,123 @@
+fixture_id: combobox-autocomplete-no-listbox-role
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 4
+    items:
+      - description: "Missing role='listbox' on suggestions container"
+        severity: CRITICAL
+        wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
+        evidence_requirement: "file:line reference to suggestions-list div"
+        expected_to_find: "95%"
+
+      - description: "Missing role='option' on suggestion items"
+        severity: CRITICAL
+        wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
+        evidence_requirement: "file:line reference to item divs"
+        expected_to_find: "95%"
+
+      - description: "Missing aria-controls linking input to suggestions"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to input element"
+        expected_to_find: "85%"
+
+      - description: "Missing aria-selected on suggestion items"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to item divs"
+        expected_to_find: "85%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "aria-owns could alternatively establish relationship"
+        severity: ENHANCEMENT
+        expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 95-100
+    reasoning: "Should identify all 4 missing ARIA semantics and cite combobox pattern specifically"
+
+  - condition: baseline-zero-shot
+    expected_score: 60-75
+    reasoning: "May identify role gaps but might not cite pattern correctly or understand criticality"
+
+  - condition: baseline-few-shot
+    expected_score: 70-85
+    reasoning: "Few-shot example of combobox pattern may help with role identification"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests whether reviewers understand ARIA role semantics vs just checking for presence.
+
+  Key test: Can the reviewer identify that keyboard interaction works but screen reader experience is broken?
+
+  Expected findings:
+  - role="listbox" identified as CRITICAL (not optional)
+  - role="option" identified as CRITICAL
+  - aria-controls identified as MAJOR
+  - aria-selected identified as MAJOR
+  - All findings cite specific lines and WAI-ARIA pattern
+
+  Baseline performance:
+  - Generic reviewers often miss this if they focus on keyboard navigation
+  - Pattern-aware reviewers should catch all four issues
+  - A11y-critic should excel at identifying missing semantic roles

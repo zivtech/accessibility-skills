@@ -1,0 +1,65 @@
+fixture_id: data-table-missing-scope
+name: Data Table Missing Scope Attributes
+description: Semantic table with proper structure but missing scope="col" and scope="row" attributes on headers.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Content & Semantic Structure
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Column headers missing scope='col' attribute"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships (table header scope must be identified)"
+        evidence: "Lines 12-17: Column headers (Product, Q1, Q2, Q3, Q4) are <th> but lack scope='col'"
+        user_group: "Screen reader users"
+        expected_behavior: "All column headers in <thead> should have scope='col' to indicate they apply to columns below"
+        fix: "Add scope='col' to each <th> in <thead> row"
+
+      - description: "Row headers missing scope='row' attribute"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Line 24: Product names are <th> but lack scope='row'. Screen reader can't determine which column is the row header."
+        user_group: "Screen reader users"
+        expected_behavior: "The first <th> in each data row (product names) should have scope='row' to indicate it's the row header"
+        fix: "Add scope='row' to product name <th> elements in table body"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Table lacks caption or aria-label"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships (descriptive titles for data tables)"
+        evidence: "Line 10: Table element has no <caption> or aria-label"
+        user_group: "Screen reader users"
+        expected_behavior: "Table should have <caption> describing purpose or aria-label"
+        fix: "Add <caption> after <table> opening tag, or add aria-label to <table> element"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (table structure, row/column relationships)"
+
+multi_perspective_coverage:
+  - screen_reader: "Critical issue. Screen reader user navigating with arrow keys cannot determine which column is which without scope attributes. Pressing 'right arrow' to move to next column doesn't announce column header."
+  - keyboard: "Not affected; table is not interactive"
+  - low_vision: "Not affected; table is visible and readable"
+  - cognitive: "Not directly affected, but clear table structure (via scope) helps all users understand relationships"
+
+false_positive_traps: 0
+
+notes: |
+  This is a **HAS-BUGS** fixture testing semantic completeness.
+
+  Expected verdict: REVISE
+
+  The table uses proper semantic elements (<table>, <thead>, <th>, <td>) which is good. But scope attributes are missing, making the table inaccessible to screen reader users navigating with table commands.
+
+  Baseline might miss this because the table "looks structured". A11y-critic should:
+  1. Verify table structure (semantic elements) — it's correct
+  2. Audit scope attributes — they're missing
+  3. Identify as MAJOR (not CRITICAL, since basic structure is present)
+  4. Note in "What's Missing": "scope attributes on column and row headers"
+
+  This tests pattern completeness beyond just element usage.

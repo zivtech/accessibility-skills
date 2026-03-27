@@ -1,0 +1,80 @@
+fixture_id: popover-no-focus-management
+name: Popover Without Focus Management
+description: Popover dialog rendered but missing focus management, role="dialog", aria-modal, and aria-labelledby.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 5
+    items:
+      - description: "Focus not moved to popover after opening"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order + WAI-ARIA Modal Dialog Pattern"
+        evidence: "Line 8-10: openPopover has no focus movement"
+        user_group: "Keyboard users"
+
+      - description: "Focus not restored to trigger after close"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order + WAI-ARIA Modal Dialog Pattern"
+        evidence: "Line 12-15: closePopover has no focus restoration"
+        user_group: "Keyboard users"
+
+      - description: "Missing role='dialog'"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Line 25-31: no role attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-modal"
+        severity: MAJOR
+        wcag: "WAI-ARIA Modal Dialog Pattern"
+        evidence: "Line 25-31: no aria-modal attribute"
+        user_group: "Screen reader users"
+
+      - description: "Missing aria-labelledby"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (dialog label)"
+        evidence: "Line 25-31: no aria-labelledby"
+        user_group: "Screen reader users"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+components_analyzed:
+  - name: Trigger button
+    aria_attributes: []
+    issues: "Missing ref to restore focus when popover closes"
+
+  - name: Popover container
+    aria_attributes: []
+    issues: "Missing role='dialog', aria-modal, aria-labelledby"
+
+wcag_criteria:
+  - "2.4.3 Focus Order"
+  - "4.1.2 Name, Role, Value"
+  - "WAI-ARIA Modal Dialog Pattern"
+
+patterns_used:
+  - WAI-ARIA Modal Dialog Pattern (missing)
+
+multi_perspective_coverage:
+  - screen_reader: "CRITICAL: No role='dialog' means user doesn't identify as dialog. No aria-modal means AT doesn't know focus is modal-scoped."
+  - keyboard: "CRITICAL: Focus not managed. User doesn't know where focus is or where to navigate."
+  - low_vision: "Popover visually distinct but semantic meaning missing."
+  - cognitive: "Interaction unpredictable without clear focus management."
+
+false_positive_traps: 0
+
+notes: |
+  This HAS-BUGS fixture tests modal dialog pattern understanding.
+
+  Expected verdict: REVISE
+
+  Key gap: Many developers render popovers without understanding that they're modal dialogs requiring focus management, role="dialog", and proper labeling. This is a complex pattern often implemented incorrectly.

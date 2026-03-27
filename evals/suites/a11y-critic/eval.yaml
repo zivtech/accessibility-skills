@@ -1,0 +1,290 @@
+# Evaluation Suite Configuration for A11y-Critic Skill
+
+skill:
+  name: a11y-critic
+  type: CRITIC
+  model: claude-opus-4-6
+  agent_path: /.claude/agents/a11y-critic.md
+  description: "Accessibility design reviewer evaluating ARIA patterns, focus management, state communication, and multi-perspective access"
+
+evaluation:
+  name: a11y-critic-benchmark
+  description: Comprehensive evaluation of a11y-critic skill vs generic accessibility review baselines
+  version: "1.0"
+  created_at: "2026-03-09"
+  estimated_total_evaluations: 75
+
+fixtures:
+  directory: ./fixtures
+  count: 25
+  pattern: "*.md"
+  metadata_suffix: ".metadata.yaml"
+
+  domains:
+    - Interactive Widgets (5 fixtures)
+    - Form & Validation (5 fixtures)
+    - Content & Semantic Structure (5 fixtures)
+    - Focus Management & Keyboard (5 fixtures)
+    - Dynamic Content & Live Regions (3 fixtures)
+    - Color, Motion, & Sensory (2 fixtures)
+
+  difficulty_distribution:
+    - CLEAN (6 fixtures)
+    - HAS-BUGS (11 fixtures)
+    - FLAWED (5 fixtures)
+    - ADVERSARIAL (3 fixtures)
+
+rubrics:
+  directory: ./rubrics
+  scoring_method: hybrid
+  hybrid_config:
+    rule_based_weight: 0.7
+    llm_judge_weight: 0.3
+    llm_judge_model: claude-opus-4-6
+
+  dimensions:
+    - name: must_find
+      weight: 3
+      description: "Competent reviewer must find these issues"
+
+    - name: should_find
+      weight: 2
+      description: "Skilled reviewer would find these issues"
+
+    - name: nice_to_find
+      weight: 1
+      description: "Sophisticated findings"
+
+    - name: false_positive_trap
+      weight: -2
+      description: "Correctly avoiding non-issues; tests specificity"
+
+    - name: evidence_quality
+      weight: 1
+      description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+
+    - name: format_compliance
+      weight: 1
+      description: "Output matches a11y-critic format contract"
+
+  composite_formula: "sum(found_items * weight) / sum(positive_weights) * 100"
+
+baselines:
+  directory: ./baselines
+  conditions:
+    - name: a11y-critic
+      type: skill
+      description: "Target skill with 10-phase accessibility investigation protocol"
+      model: claude-opus-4-6
+      agent_path: /.claude/agents/a11y-critic.md
+
+    - name: baseline-zero-shot
+      type: prompt
+      description: "Generic accessibility review prompt, no examples"
+      path: "./baselines/baseline-zero-shot.md"
+      model: claude-opus-4-6
+
+    - name: baseline-few-shot
+      type: prompt
+      description: "Generic accessibility review prompt with structured approach"
+      path: "./baselines/baseline-few-shot.md"
+      model: claude-opus-4-6
+
+repetitions:
+  n_fixtures: 25
+  n_repeats_per_fixture: 3
+  total_evaluations: 75
+  randomization: true
+
+statistical_design:
+  test_type: paired_comparison
+  significance_level: 0.05
+  bonferroni_correction: true
+  correction_factor: 2
+
+  primary_test:
+    name: wilcoxon_signed_rank
+    test_type: one_tailed
+    hypothesis: "a11y-critic composite score > baseline A composite score"
+    alternative: greater
+
+  secondary_tests:
+    - metric: gap_coverage
+      description: "Findings in 'What's Missing' section"
+      test: wilcoxon_signed_rank
+
+    - metric: evidence_rate
+      description: "Percentage of CRITICAL/MAJOR findings with file:line evidence"
+      test: wilcoxon_signed_rank
+
+    - metric: pattern_completeness_detection
+      description: "Detection of incomplete ARIA patterns (must-find gaps)"
+      test: wilcoxon_signed_rank
+
+    - metric: false_positive_rate
+      description: "Percentage of non-issues incorrectly flagged"
+      test: wilcoxon_signed_rank
+      direction: lower_is_better
+
+    - metric: multi_perspective_coverage
+      description: "Number of perspectives addressed (screen reader, keyboard, low vision, cognitive)"
+      test: wilcoxon_signed_rank
+
+  effect_size:
+    metric: cohens_d
+    small: 0.2
+    medium: 0.5
+    large: 0.8
+
+  confidence_intervals:
+    method: bootstrap
+    resamples: 1000
+    ci: 0.95
+
+  power_analysis:
+    alpha: 0.05
+    beta: 0.20
+    effect_size_delta: 0.5
+    n_required: 28
+    n_actual: 25
+
+subgroup_analysis:
+  enabled: true
+  dimensions:
+    - domain:
+        - Interactive Widgets
+        - Form & Validation
+        - Content & Semantic Structure
+        - Focus Management & Keyboard
+        - Dynamic Content & Live Regions
+        - Color Motion & Sensory
+
+    - difficulty:
+        - CLEAN
+        - HAS-BUGS
+        - FLAWED
+        - ADVERSARIAL
+
+    - pattern_type:
+        - ARIA Pattern Completeness
+        - Semantic HTML
+        - Focus Management
+        - State Communication
+        - Multi-perspective Accessibility
+
+success_criteria:
+  composite_score_delta: 15
+  composite_score_pvalue: 0.05
+  notes: "a11y-critic must exceed baseline A by 15+ points with p < 0.05"
+
+  gap_coverage_delta: 25
+  gap_coverage_pvalue: 0.05
+  notes: "a11y-critic 'What's Missing' section should have 25%+ more gap items than baseline"
+
+  evidence_rate_delta: 20
+  evidence_rate_pvalue: 0.05
+  notes: "a11y-critic should have 20%+ higher evidence rate on CRITICAL/MAJOR findings"
+
+  win_rate_threshold: 0.60
+  notes: "a11y-critic should beat baseline on 60%+ of fixtures"
+
+  pattern_completeness_detection_threshold: 0.80
+  notes: "a11y-critic should detect 80%+ of incomplete ARIA patterns (must-find issues)"
+
+output:
+  format: json
+  schema: grading.json
+  include_metadata:
+    - fixture_id
+    - condition
+    - composite_score
+    - must_find_count
+    - should_find_count
+    - nice_to_find_count
+    - false_positive_count
+    - gap_coverage_count
+    - evidence_rate
+    - pattern_completeness_detection_rate
+    - false_positive_rate
+    - multi_perspective_coverage
+    - verdict
+    - timestamp
+
+  summary_statistics:
+    - mean
+    - std_dev
+    - min
+    - max
+    - median
+    - confidence_intervals
+    - effect_sizes
+    - p_values
+    - win_loss_ties
+
+  subgroup_breakdowns: true
+  plots:
+    - scatter_plot_scores_by_difficulty
+    - box_plot_by_domain
+    - bar_plot_win_rate_by_domain
+    - line_plot_scores_by_pattern_type
+
+pilot:
+  enabled: true
+  fixtures:
+    - interactive-dropdown-clean
+    - interactive-dropdown-focus-bug
+    - form-validation-missing-aria-describedby
+    - modal-complete-clean
+    - tabs-missing-arrow-nav
+
+  validation_checks:
+    - rubric_unambiguity
+    - baseline_fairness
+    - fixture_discrimination
+    - variance_reasonableness
+    - scoring_reproducibility
+
+  output: pilot-results.md
+
+reporting:
+  format: markdown
+  include_sections:
+    - Executive Summary
+    - Methodology
+    - Primary Findings
+    - Statistical Tests
+    - Effect Sizes
+    - Subgroup Analysis
+    - Baseline Comparison
+    - False Positive Analysis
+    - Key Differentiators
+    - Recommendations
+    - Appendix: Detailed Scores
+
+notes:
+  | This evaluation suite measures a11y-critic's effectiveness using:
+  | - 25 realistic fixtures across 6 accessibility domains and 4 difficulty levels
+  | - Objective rubrics with weighted finding categories
+  | - Paired comparison against 2 generic accessibility review baselines
+  | - Wilcoxon signed-rank tests for non-parametric comparison
+  | - Bootstrap confidence intervals and effect size estimates
+  | - Subgroup analysis by domain, difficulty, and pattern type
+  |
+  | The skill is expected to excel at:
+  | 1. Gap Analysis ("What's Missing" section) — finding absent elements, missing associations, missing announcements
+  | 2. Pattern Completeness Detection — identifying incomplete ARIA patterns (e.g., aria-selected but no arrow keys)
+  | 3. Multi-Perspective Investigation — reviewing from screen reader, keyboard, low vision, and cognitive angles
+  | 4. Evidence-Backed Findings — providing file:line references for every CRITICAL/MAJOR finding
+  |
+  | Key differentiators from baselines:
+  | - Structured 10-phase investigation protocol vs ad-hoc review
+  | - Explicit gap analysis phase vs implicit coverage
+  | - Multi-perspective mandatory vs optional
+  | - Severity calibration via Realist Check vs unfiltered flagging
+  | - False positive avoidance via self-audit vs potential over-flagging
+  |
+  | Baselines provide fair comparison points (not strawmen):
+  | - Zero-shot: Simple, direct accessibility review prompt
+  | - Few-shot: Same prompt + structured approach + example
+  |
+  | Pilot run (5 fixtures) validates rubrics and baselines before full eval.
