@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>a11y-meta-skills — Visual Explainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6efe6;
+      --panel: rgba(255, 252, 247, 0.86);
+      --panel-strong: #fffaf4;
+      --text: #1e2d2f;
+      --muted: #5d6d6d;
+      --border: rgba(30, 45, 47, 0.12);
+      --accent: #0f766e;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --warn: #9a3412;
+      --warn-soft: rgba(154, 52, 18, 0.12);
+      --ink: #15323c;
+      --shadow: 0 20px 60px rgba(26, 36, 39, 0.10);
+      --font-display: "Fraunces", serif;
+      --font-body: "IBM Plex Sans", sans-serif;
+      --font-mono: "IBM Plex Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 36%),
+        radial-gradient(circle at bottom right, rgba(154, 52, 18, 0.14), transparent 28%),
+        linear-gradient(180deg, #fbf6ef, #f3eadf 55%, #efe5d8);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .topbar a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .panel {
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 34px 34px 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin: 0 0 16px;
+      max-width: 10ch;
+      color: var(--ink);
+    }
+
+    .lede {
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 0 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-card {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(30, 45, 47, 0.08);
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .mini-card span {
+      display: block;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .hero-side {
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .metric {
+      padding: 18px 18px 16px;
+      border-radius: 22px;
+      background: var(--panel-strong);
+      border: 1px solid rgba(30, 45, 47, 0.08);
+    }
+
+    .metric .label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .metric .value {
+      font-family: var(--font-display);
+      font-size: 42px;
+      line-height: 1;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+
+    .metric p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: 30px;
+    }
+
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 42px);
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    .section > p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 72ch;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .skill-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.52));
+      border: 1px solid rgba(30,45,47,0.08);
+    }
+
+    .skill-card .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+
+    .skill-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: var(--ink);
+    }
+
+    .skill-card ul,
+    .flow ol,
+    .checks ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 0.95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .flow-card {
+      padding: 22px;
+      border-radius: 24px;
+      background: var(--panel-strong);
+      border: 1px solid rgba(30,45,47,0.08);
+    }
+
+    .code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #183138;
+      color: #e7f8f1;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .check-card {
+      padding: 22px;
+      border-radius: 24px;
+      background: var(--panel-strong);
+      border: 1px solid rgba(30,45,47,0.08);
+    }
+
+    .check-card.warn {
+      background: linear-gradient(180deg, rgba(154,52,18,0.08), rgba(255,250,244,0.92));
+      border-color: rgba(154,52,18,0.16);
+    }
+
+    .check-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 22px 26px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .split,
+      .flow,
+      .checks,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shell {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .hero-main,
+      .hero-side,
+      .section {
+        padding: 24px;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <span>Accessibility planner + critic bundle for Claude Code</span>
+      <a href="https://github.com/zivtech/a11y-meta-skills">github.com/zivtech/a11y-meta-skills</a>
+    </div>
+
+    <section class="hero">
+      <div class="panel hero-main">
+        <div class="eyebrow">Build access in first</div>
+        <h1>a11y-meta-skills</h1>
+        <p class="lede">A paired workflow for teams that want accessibility designed before implementation and reviewed after implementation. The planner prevents avoidable mistakes. The critic catches the ones automated tooling misses.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/zivtech/a11y-meta-skills">Open Repository</a>
+          <a class="button secondary" href="#workflow">See Workflow</a>
+        </div>
+        <div class="mini-grid">
+          <div class="mini-card">
+            <strong>Plan first</strong>
+            <span>Semantic structure, APG pattern choice, focus logic, and state announcements are explicit before coding.</span>
+          </div>
+          <div class="mini-card">
+            <strong>Review after</strong>
+            <span>Passing axe-core is not the finish line. The critic checks whether the design really works for people.</span>
+          </div>
+          <div class="mini-card">
+            <strong>Shared language</strong>
+            <span>Both surfaces talk in WCAG criteria, APG patterns, and concrete keyboard or screen reader outcomes.</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel hero-side">
+        <div class="metric">
+          <div class="label">Planner</div>
+          <div class="value">9</div>
+          <p>phases covering scope, semantics, interaction patterns, focus, state communication, visual accessibility, content accessibility, testing, and task sequencing.</p>
+        </div>
+        <div class="metric">
+          <div class="label">Critic</div>
+          <div class="value">8</div>
+          <p>review phases with evidence-backed severity, realist calibration, and mandatory multi-perspective analysis.</p>
+        </div>
+        <div class="metric">
+          <div class="label">Outcome</div>
+          <div class="value">1</div>
+          <p>coherent planner-to-critic loop instead of disconnected prompts, test results, and after-the-fact accessibility patching.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel section">
+      <h2>Two surfaces, one workflow</h2>
+      <p>This bundle exists because accessibility problems happen at two different points. Some are created when the interaction is designed. Others are revealed only after implementation. The planner and critic divide that work cleanly.</p>
+      <div class="split">
+        <article class="skill-card">
+          <div class="tag">Planner</div>
+          <h3>/a11y-planner</h3>
+          <ul>
+            <li>Plans semantic HTML and landmark structure before implementation starts.</li>
+            <li>Maps each interactive pattern to an established APG pattern instead of inventing new behavior ad hoc.</li>
+            <li>Designs keyboard interactions, focus traps, restoration, and tab order explicitly.</li>
+            <li>Specifies how loading, error, invalid, selected, disabled, and success states are announced.</li>
+            <li>Builds the testing strategy so automation and manual checks match the design intent.</li>
+          </ul>
+        </article>
+        <article class="skill-card">
+          <div class="tag">Critic</div>
+          <h3>/a11y-critic</h3>
+          <ul>
+            <li>Reviews the actual implementation for design gaps that automated tooling may not flag.</li>
+            <li>Checks whether semantics match intent, not just whether attributes exist.</li>
+            <li>Looks for incomplete focus management and broken state communication.</li>
+            <li>Requires evidence for major findings instead of speculative lint-style commentary.</li>
+            <li>Applies screen reader, keyboard-only, low-vision, and cognitive lenses before verdict.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section" id="workflow">
+      <h2>Workflow</h2>
+      <div class="flow">
+        <div class="flow-card">
+          <ol>
+            <li>Run <strong>/a11y-planner</strong> before implementation when semantics, keyboard behavior, focus logic, and state announcements still need to be decided.</li>
+            <li>Implement the feature against the plan.</li>
+            <li>Run <strong>/a11y-critic</strong> on the resulting code or component.</li>
+            <li>Run automated and manual accessibility testing.</li>
+            <li>Refine based on critic evidence and real interaction results.</li>
+          </ol>
+        </div>
+        <div class="code">/a11y-planner
+  ↓
+implementation
+  ↓
+/a11y-critic
+  ↓
+automated + manual testing
+  ↓
+refinement</div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>Install</h2>
+      <div class="flow">
+        <div class="flow-card">
+          <ol>
+            <li>Fast path: install the repo with <strong>npx claude-skills</strong>.</li>
+            <li>Manual path: clone the repository and copy root `.claude/skills` and `.claude/agents` into your Claude directories.</li>
+            <li>Use <strong>/a11y-planner</strong> before implementation and <strong>/a11y-critic</strong> after implementation.</li>
+          </ol>
+        </div>
+        <div class="code">npx claude-skills add https://github.com/zivtech/a11y-meta-skills
+
+# manual install
+git clone https://github.com/zivtech/a11y-meta-skills.git
+cp -r a11y-meta-skills/.claude/skills/* ~/.claude/skills/
+cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/</div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>What this bundle is trying to prevent</h2>
+      <div class="checks">
+        <article class="check-card">
+          <h3>False confidence</h3>
+          <ul>
+            <li>Attributes exist, but the component still uses the wrong interaction model.</li>
+            <li>Focus technically moves, but does not return where users expect.</li>
+            <li>Error states are visible but not associated with the affected fields.</li>
+            <li>Dynamic content updates without any useful live announcement.</li>
+          </ul>
+        </article>
+        <article class="check-card warn">
+          <h3>Late discovery</h3>
+          <ul>
+            <li>Accessibility concerns are postponed until after implementation, when the fix requires a structural rewrite.</li>
+            <li>Testing is treated as a cleanup step instead of part of the design.</li>
+            <li>Teams confuse “keyboard reachable” with “keyboard accessible.”</li>
+            <li>Real users hit friction even though the automation report looks clean.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel footer">
+      <span>Repo includes installable root `.claude/` assets, copied templates, and bundled eval suites.</span>
+      <a href="https://github.com/zivtech/a11y-meta-skills">View source</a>
+    </section>
+  </main>
+</body>
+</html>

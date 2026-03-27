@@ -1,11 +1,84 @@
 # a11y-meta-skills
 
-Accessibility planner-critic skill pair for Claude Code.
+Accessibility planner-critic skill bundle for Claude Code.
 
-This repository packages two companion skills:
+**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**  
+Use this repo when you want accessibility designed before implementation and reviewed after implementation.
 
-- `a11y-planner`: plan accessible implementations before coding
-- `a11y-critic`: review ARIA, focus, semantics, and state communication after implementation
+This bundle packages two companion skills:
+
+- `a11y-planner`: plans accessible implementations before coding
+- `a11y-critic`: reviews ARIA, focus, semantics, and state communication after implementation
+
+## Why this bundle exists
+
+Most accessibility failures are not just missing attributes. They come from design decisions:
+
+- the wrong interaction pattern chosen for the job
+- focus that technically moves but makes no sense to keyboard users
+- loading, error, and success states that are visible but not announced
+- semantics that pass automated checks while still confusing screen readers
+
+This repo combines the two surfaces needed to catch that work at the right times:
+
+1. **Plan first** so semantic structure, keyboard behavior, APG pattern mapping, and testing strategy are explicit before coding.
+2. **Review after implementation** so passing automated checks do not hide broken accessibility design.
+
+## What’s in the bundle
+
+### `a11y-planner`
+
+`a11y-planner` is the pre-implementation design surface. It produces plans for:
+
+- semantic HTML structure and landmark strategy
+- APG pattern choice for interactive components
+- keyboard behavior and focus management
+- state communication for assistive technology
+- visual accessibility concerns like contrast, motion, and resize behavior
+- testing strategy for automated and manual checks
+
+The planner uses a 9-phase protocol:
+
+1. Scope and context
+2. Semantic structure plan
+3. Interaction pattern plan
+4. Focus management
+5. State communication
+6. Visual accessibility
+7. Content accessibility
+8. Testing strategy
+9. Implementation tasks
+
+### `a11y-critic`
+
+`a11y-critic` is the post-implementation review surface. It is for accessibility design critique, not just rule checking. It looks for:
+
+- semantic mismatches between UI intent and HTML structure
+- incomplete or incorrect ARIA pattern implementations
+- broken focus traps, restoration, or tab order
+- missing live regions or state announcements
+- low-vision and cognitive accessibility friction
+- gaps that pass axe-core but still fail real users
+
+The critic uses an 8-phase review protocol with evidence-backed severity and a mandatory multi-perspective pass:
+
+- screen reader user
+- keyboard-only user
+- low-vision user
+- cognitive accessibility lens
+
+## Workflow
+
+1. Run `/a11y-planner` to design the feature before implementation.
+2. Build the feature.
+3. Run `/a11y-critic` on the implementation.
+4. Run automated and manual accessibility testing.
+5. Refine based on critic findings and test evidence.
+
+## Commands
+
+- `/a11y-planner`
+- `/a11y-critic`
 
 ## Install
 
@@ -13,10 +86,13 @@ This repository packages two companion skills:
 npx claude-skills add https://github.com/zivtech/a11y-meta-skills
 ```
 
-Both slash commands are provided by the same repo:
+Manual install:
 
-- `/a11y-planner`
-- `/a11y-critic`
+```bash
+git clone https://github.com/zivtech/a11y-meta-skills.git
+cp -r a11y-meta-skills/.claude/skills/* ~/.claude/skills/
+cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
+```
 
 ## Repository Layout
 
@@ -34,13 +110,6 @@ evals/
 ```
 
 Skills and agents live at root `.claude/` for Claude Code discovery. Per-skill documentation lives under `docs/`.
-
-## Companion Workflow
-
-1. Use `a11y-planner` to design semantic structure, ARIA pattern choice, focus management, and testing strategy.
-2. Implement the feature.
-3. Use `a11y-critic` to review the result for accessibility design gaps that automated tooling can miss.
-4. Run automated and manual accessibility testing.
 
 ## Evaluation Assets
 
