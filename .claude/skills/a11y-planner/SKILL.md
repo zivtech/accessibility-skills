@@ -301,6 +301,12 @@ Copy this protocol into the subagent prompt:
        - Roving tabindex means: one item in the group has tabindex="0" (tabbable), others have tabindex="-1" (programmatically focusable but not tabbable)
        - User Tabs to the group once, then uses arrow keys to navigate within the group
        - Per APG Tabs pattern: https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
+    9. For "reveal on hover/focus" patterns (action buttons like Edit/Delete that appear on card hover): use `opacity:0` to hide, NOT `visibility:hidden`. `visibility:hidden` removes elements from the tab order — keyboard users can never focus them, making `:focus-within` on the parent impossible to trigger (catch-22). `opacity:0` keeps elements focusable. WCAG 2.1.1 Keyboard.
+    Similarly, `aria-hidden="true"` alone does NOT prevent focus — hidden sidebars, collapsed panels, and off-screen content still receive keyboard focus unless also using `inert`, `display: none`, or `visibility: hidden`. Plan hidden-content strategy explicitly: conditional rendering (preferred in React/SPA), or `inert` + `aria-hidden` (preferred for progressive enhancement).
+    10. For panel/sidebar close: decide whether focus returns to the TRIGGER BUTTON (standard pattern for modals and sidebars per WAI-ARIA APG Modal Dialog pattern) or to a CONTENT HEADING (appropriate when the user was reading content and the panel was a temporary interruption — e.g., annotation sidebar returns focus to the chapter heading, not the sidebar button, because the user's reading context matters more). Document the rationale — the choice affects screen reader user flow per WCAG 2.4.3 Focus Order.
+    11. **Focus after list CRUD operations**: When planning lists, collections, or item management UIs, explicitly design focus behavior for: (a) delete item at index N → focus item now at index N, or last item if N exceeds new length; (b) delete last/all items → focus dismiss/close button or empty-state message; (c) create/save new item → focus the new item after re-render. Use a ref-based intent pattern: store the intended focus target before the operation, apply focus in the data-fetch callback with `setTimeout` to survive framework re-render. WCAG 2.4.3 Focus Order.
+    12. **SPA in-page anchor navigation**: When planning SPAs with in-page links (footnotes, cross-references, section jumps), design focus to follow scroll. Browser default hash-link behavior doesn't work in SPAs — `history.push()` scrolls but doesn't move focus. Plan: add `tabindex="-1"` to scroll targets, call `focus({ preventScroll: true })` after programmatic scroll, defer with `setTimeout` for framework timing. WCAG 2.4.3 Focus Order.
+    13. **Reverse skip-links for deep content**: For long-form reading UIs, document viewers, or multi-section pages, plan "Back to navigation" or "Back to table of contents" links using the visually-hidden-until-focused pattern. Place after section headings so keyboard users can navigate back without reverse-tabbing through all content. Per WCAG 2.4.1 Bypass Blocks — skip links work in both directions.
 
     Example focus plan for a modal dialog:
     ```
@@ -345,6 +351,7 @@ Copy this protocol into the subagent prompt:
     6. Are error messages associated with fields?
        - Use aria-describedby to link error message to input (WCAG 1.3.1 Info and Relationships)
        - Use aria-invalid="true" on the input (WCAG 1.3.1, 4.1.2)
+    7. **Visual text symbols as state indicators**: If the design uses characters like `+`/`−`, `>`/`<`, `×`, or `▼`/`▲` to indicate state, plan to wrap them in `<span aria-hidden="true">` when the state is already communicated programmatically (e.g., via `aria-expanded`). Screen readers announce these as "plus", "minus", "greater than", "times", "down-pointing triangle" — creating redundant or confusing announcements. WCAG 4.1.2 Name, Role, Value.
 
     Example state communication for a form input:
     ```
@@ -372,11 +379,13 @@ Copy this protocol into the subagent prompt:
        - Non-text UI components (buttons, form inputs, focus indicators): 3:1 contrast ratio
        - Document which text is "large" in your design
        - WCAG citation: 1.4.3 Contrast (Minimum)
+       - **Focus indicator technique**: Plan a two-color (double-ring) focus indicator — dark outline + light box-shadow (or vice versa). Single-color outlines become invisible when the outline color matches the element or page background. Use `outline` + `box-shadow` together for universal visibility. Note: framework/library CSS (Bootstrap, MUI) and browser defaults may override author focus styles at lower specificity — plan for `!important` or high-specificity selectors. Use `:focus-visible` (not `:focus`) to avoid showing rings on mouse click. Inline elements (`display: inline`) have fragmented outlines — use `display: inline-block` for proper rectangular focus rings.
     2. Color as sole indicator (WCAG 1.4.1 Use of Color):
        - Never use color alone to convey information (e.g., "This field is required" shown only in red)
        - Always use color + shape + text + position (e.g., red border + asterisk + "required" text)
        - Example: error indication = red border + error icon + error text message
        - WCAG citation: 1.4.1 Use of Color
+       - **Link distinction in content**: Links in body text must be distinguishable from surrounding text by more than color. Plan underlines for links in content areas (paragraphs, prose). Navigation, menus, tabs, and obviously-interactive UI elements are exempt. Additionally, link text color must have 3:1 contrast against surrounding non-link text color (separate from the 4.5:1 text-on-background requirement). WCAG 1.4.1 Use of Color.
     3. Non-color alternatives for all color-coded information:
        - List every instance of color used to convey meaning (required field, error, success, warning, disabled, etc.)
        - For each, document the non-color indicator: text, icon, shape, position, pattern, etc.
@@ -403,6 +412,7 @@ Copy this protocol into the subagent prompt:
        - Interactive elements must be at least 44x44 CSS pixels
        - Smaller targets allowed if there's an alternative target for the same function
        - WCAG citation: 2.5.8 Target Size (Minimum)
+    9. **Content reflow at 400% zoom** (WCAG 1.4.10 Reflow): Requires no horizontal scroll at 320px equivalent (1280px viewport at 400% zoom). Plan for: features available on desktop MUST also be available at narrow viewports — do not hide functionality behind desktop-only breakpoints. Fixed-width containers must use `max-width: 100%` and relative units. Sticky headers consume proportionally more viewport at high zoom — plan to collapse or reduce header size at narrow viewports.
 
     Phase 7 — Content Accessibility Plan:
     Design how content is structured for screen reader users:
@@ -411,6 +421,7 @@ Copy this protocol into the subagent prompt:
        - Informative images: concise alt text (e.g., "Product photo: blue wireless headphones" not "image of product" or filename)
        - Complex images (charts, diagrams): short alt text + long description via aria-describedby or <figure>/<figcaption>
        - Images in links: alt text must describe the link destination (e.g., "LinkedIn profile" not "LinkedIn icon")
+       - **CSS pseudo-element decorative content**: If the design uses `::before`/`::after` for icons, triangles, separators, or visual indicators, plan to replace with `<span aria-hidden="true">` in markup. Pseudo-element `content` (even empty `content: ''` used for border-trick shapes) can appear in the a11y tree. Move visual styles to the span's class. Update any state-dependent pseudo-element selectors (e.g., `.open .label::after` becomes `.open .label .toggle-icon`). WCAG 1.1.1 Non-text Content.
        - WCAG citation: 1.1.1 Non-text Content
     2. Link text quality (WCAG 2.4.4 Link Purpose):
        - Links must have descriptive text (not "click here", "read more", "learn more")
@@ -440,6 +451,7 @@ Copy this protocol into the subagent prompt:
        - DOM order must match visual reading order
        - Do not use CSS to reorder content visually if DOM order is different (screen readers follow DOM order)
        - WCAG citation: 1.3.2 Meaningful Sequence
+    8. **Font icon strategy** (WCAG 1.1.1 Non-text Content): If using icon fonts (Font Awesome, Material Icons, Glyphicons), plan `aria-hidden="true"` on all decorative icon elements. Icons that are the sole content of a button or link are NOT decorative — add `aria-label` to the parent element instead. For large existing sites, consider a runtime JS behavior that scans for common icon selectors (`.fa`, `.fas`, `.far`, `.icon`, `.glyphicon`) and applies `aria-hidden` automatically, with detection for icons that are sole-content of interactive elements (which need `aria-label` on the parent, not `aria-hidden` on the icon).
 
     Phase 8 — Testing Strategy:
     Plan how the design will be tested for accessibility:

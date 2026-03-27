@@ -197,6 +197,7 @@ Copy this protocol into the subagent prompt:
     - Are landmark regions present and correctly nested (`<main>`, `<nav>`, `<aside>`, `<footer>`)?
     - Are lists used for list content (`<ul>`, `<ol>`, not divs styled as lists)?
     - Are tables used for tabular data, not layout?
+    - Are layout tables (tables used for visual arrangement, not data relationships) marked with `role="presentation"`? Layout tables without this role are announced as data tables by screen readers, confusing users. Check for `<table>` elements without `<th>` that contain layout content. Conversely, do NOT add `role="presentation"` to actual data tables.
     - Is `<label>` associated with every form input via `for` attribute, nesting, or aria-labelledby?
     - For read-only content: is it truly semantic or is there hidden ARIA trying to fix broken HTML?
 
@@ -233,6 +234,8 @@ Copy this protocol into the subagent prompt:
     - SPA route changes: when client-side navigation changes the page content, does focus move to the new content heading or main area? (SPAs don't trigger browser focus reset — focus stays on the clicked link unless explicitly managed)
     - Duplicate DOM rendering (mobile + desktop): if the same component renders twice, is focus management scoped to the visible instance? Are ARIA IDs unique across duplicates, or do they collide?
     - React/framework unmount timing: are focus-return calls wrapped in setTimeout(0) or equivalent to survive component unmount? (React 16 in particular drops focus assignments in synchronous unmount callbacks)
+    - Deferred focus after async CRUD operations: After delete, does focus move to the item now at the deleted index (or last item if index exceeds length)? After delete-all, does focus move to a dismiss/close button or empty-state element? After create/save, does focus move to the new item? Focus set synchronously before an async re-render will be lost — look for ref-based intent patterns where focus target is stored before the operation and applied in the data-fetch callback with `setTimeout` to survive framework re-render.
+    - SPA in-page anchor navigation: When in-page links (footnotes, cross-references, section jumps) scroll to anchors within SPA content, does focus also move to the target? Scrolling without focus movement leaves keyboard users stranded at the link they clicked. Fix: target element needs `tabindex="-1"` and `focus({ preventScroll: true })` called after programmatic scroll, deferred with `setTimeout` for framework re-render timing.
 
     WCAG citations: 2.1.1 Keyboard (Tab must navigate), 2.1.2 No Keyboard Trap, 2.4.3 Focus Order (logical), 2.4.7 Focus Visible, 3.2.1 On Focus (focus doesn't cause unexpected context change).
 
@@ -250,6 +253,7 @@ Copy this protocol into the subagent prompt:
     - Visual-only indicators: is there an icon, color change, or position change that indicates state but not a programmatic property? (Red flag: use color + shape + text, not color alone; add aria-label or aria-describedby for non-visual indicators)
     - Status messages: are they announced with aria-live="polite" (non-urgent) or aria-live="assertive" (urgent error)?
     - Readonly fields: do they use aria-readonly="true"? Or are they just CSS-disabled looking?
+    - Visual text symbols as state indicators: Characters used to indicate state (`+`/`−` for expand/collapse, `>`/`<` for navigation, `×` for close) are announced by screen readers as "plus", "minus", "greater than", "times". These must be wrapped in `aria-hidden="true"` spans when the state is already communicated programmatically via `aria-expanded` or `aria-label`. Without this, screen reader users hear redundant or confusing announcements (e.g., "Expand section, button, collapsed, plus"). WCAG 4.1.2.
 
     WCAG citations: 4.1.2 Name, Role, Value (state must be programmable); 4.1.3 Status Messages (announcements).
 
@@ -285,6 +289,7 @@ Copy this protocol into the subagent prompt:
     - Are colors distinguishable (not red/green only)?
     - Is text resizable? Does it stay readable?
     - Are interactive elements large enough to hit (44x44 CSS pixels minimum)?
+    - Are links in body text distinguishable from surrounding text by more than color alone? Per WCAG 1.4.1, links in content areas must have a non-color indicator (typically underline). Link text color must also have 3:1 contrast against surrounding non-link text color. Navigation, menus, tabs, and obviously-interactive UI elements are exempt.
 
     **Cognitive accessibility user:**
     - Are error messages clear and specific? Do they describe the error AND suggest a fix?
@@ -319,6 +324,10 @@ Copy this protocol into the subagent prompt:
     - Missing heading structure: no clear information architecture via headings
     - Missing list semantics: navigation items in divs instead of `<ul>/<li>`
     - CSS `visibility:hidden` on focus-reveal elements: elements revealed by `:hover` or `:focus-within` that use `visibility:hidden` are removed from the tab order — keyboard users can never focus them, so `:focus-within` on the parent never fires (catch-22). Common pattern: Edit/Delete/action buttons on cards or list items that hide with `opacity:0; visibility:hidden` and reveal on hover. Fix: use `opacity:0` alone. WCAG 2.1.1 Keyboard.
+    - Missing `inert` on hidden content: `aria-hidden="true"` alone does not prevent keyboard focus — collapsed sidebars, hidden panels, and off-screen content still receive Tab focus unless also using `inert` attribute, `display: none`, or `visibility: hidden`. WCAG 2.4.3 Focus Order.
+    - CSS pseudo-element content exposed to AT: `::before`/`::after` with text `content` (including symbols like `+`, `>`, border triangles with empty `content: ''`) can appear in the accessibility tree. Even `content: ''` creates a pseudo-element some AT detects. Replace with `<span aria-hidden="true">` in markup, or ensure the pseudo-element is inside an `aria-hidden` ancestor. WCAG 1.1.1.
+    - Font icon elements exposed to AT: Icon font elements (`.fa`, `.fas`, `.far`, `.icon`, `.glyphicon`) are announced by screen readers as Unicode characters. Decorative icons need `aria-hidden="true"`. Icons that are the sole content of a link or button are NOT decorative — the parent needs `aria-label` instead. WCAG 1.1.1.
+    - Missing reverse skip-links: Deep content pages (long-form reading, multi-section documents) with no way to navigate back to the table of contents or primary navigation force keyboard users to reverse-tab through all content. Add visually-hidden-until-focused "Back to navigation" links at content boundaries. WCAG 2.4.1 Bypass Blocks.
 
     Self-audit: rate confidence in each gap. Move LOW confidence to Open Questions.
 
