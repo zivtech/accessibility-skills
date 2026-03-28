@@ -1,0 +1,99 @@
+version: 1
+generated_at: '2026-03-28T00:00:00Z'
+skills:
+- id: snapsynapse/skill-a11y-audit
+  repo_url: https://github.com/snapsynapse/skill-a11y-audit
+  categories:
+  - audit-pipeline
+  - automated-scanning
+  - compliance-mapping
+  audiences_supported:
+  - accessibility
+  - qa-testing
+  priority: 100
+  status: active
+  stealable_techniques:
+  - dynamic-test-prioritization-by-risk
+  - template-aware-sampling-for-scale
+  - ci-integration-pattern
+- id: addyosmani/web-quality-skills/accessibility
+  repo_url: https://github.com/addyosmani/web-quality-skills
+  categories:
+  - wcag-2.2-reference
+  - guidelines
+  audiences_supported:
+  - accessibility
+  - end-user
+  priority: 95
+  status: active
+  stealable_techniques:
+  - wcag-2.2-specific-planning-criteria
+  - visually-hidden-canonical-pattern
+  - lighthouse-score-as-benchmark
+- id: accesslint/claude-marketplace
+  repo_url: https://github.com/accesslint/claude-marketplace
+  categories:
+  - contrast-analysis
+  - link-purpose
+  - use-of-color
+  audiences_supported:
+  - accessibility
+  - design-system
+  priority: 90
+  status: active
+  stealable_techniques:
+  - text-in-ui-component-contrast-distinction
+  - contrast-first-design-approach
+- id: meodai/skill.color-expert
+  repo_url: https://github.com/meodai/skill.color-expert
+  categories:
+  - color-science
+  - contrast-analysis
+  - apca
+  audiences_supported:
+  - accessibility
+  - design-system
+  priority: 85
+  status: active
+  stealable_techniques:
+  - contrast-first-color-composition
+  - oklch-oklab-for-accessible-palettes
+  - apca-forward-looking-awareness
+- id: airowe/claude-a11y-skill
+  repo_url: https://github.com/airowe/claude-a11y-skill
+  categories:
+  - runtime-scanning
+  - static-analysis
+  audiences_supported:
+  - accessibility
+  - frontend-development
+  priority: 80
+  status: active
+  stealable_techniques:
+  - static-analysis-as-distinct-testing-layer
+  - false-positive-awareness-in-testing
+- id: ehmo/platform-design-skills/web
+  repo_url: https://github.com/ehmo/platform-design-skills
+  categories:
+  - cross-platform-design
+  - wcag-2.2-reference
+  audiences_supported:
+  - accessibility
+  - cross-platform
+  priority: 75
+  status: active
+  stealable_techniques:
+  - focus-indicator-area-formula
+  - wcag-2.2-focus-appearance-criteria
+- id: Hack23/homepage/accessibility-wcag
+  repo_url: https://github.com/Hack23/homepage
+  categories:
+  - time-based-media
+  - content-accessibility
+  audiences_supported:
+  - accessibility
+  priority: 60
+  status: active
+  stealable_techniques:
+  - time-based-media-planning
+  - captions-audio-descriptions-transcripts

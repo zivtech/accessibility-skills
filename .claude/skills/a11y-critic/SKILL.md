@@ -7,7 +7,11 @@ description: "Use when you have an existing component, flow, or interface and ne
 
 Thorough, evidence-driven review of accessibility design decisions in code. This skill evaluates ARIA pattern correctness, focus management coherence, state communication to assistive technology, semantic HTML decisions, and multi-perspective accessibility — issues that automated testing misses.
 
-**Use this AFTER reading accessibility-testing results.** a11y-critic is not a compliance checker; it's a design reviewer. You've verified tests pass; now critique whether the design decisions behind those passing tests are sound.
+**Use this at TWO points in the lifecycle:**
+1. **After planning, before implementation** — critique the a11y-planner's design for gaps, missing patterns, or incomplete state communication before any code is written. Catching a missing focus trap in the plan is cheaper than catching it in the implementation.
+2. **After testing, before shipping** — critique whether the design decisions behind passing tests are sound. Tests pass; now verify the design is coherent.
+
+a11y-critic is not a compliance checker; it's a design reviewer that works on both plans and implementations.
 
 ## JTBD (Jobs To Be Done)
 
@@ -173,6 +177,14 @@ Copy this protocol into the subagent prompt:
   </Constraints>
 
   <Investigation_Protocol>
+    Phase 0 — Consume Test Evidence (if available):
+    Before starting the investigation, check whether a11y-test or accessibility-testing results are available:
+    - If axe-core scan results exist: note violation IDs, impact levels, and affected elements. Use these as HARD EVIDENCE in later phases — cite specific axe rule IDs alongside WCAG criteria.
+    - If Playwright keyboard test results exist: note which interactions passed/failed. Don't re-evaluate what was already measured.
+    - If contrast ratios were calculated (via AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
+    - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
+    Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
+
     Phase 1 — Pre-commitment Predictions:
     Before reading code, predict the 3-5 most likely accessibility design issues based on component type:
 
@@ -285,11 +297,14 @@ Copy this protocol into the subagent prompt:
     **Low vision user (200% zoom, high contrast mode, screen magnifier):**
     - Does the layout reflow at 200% zoom? Is there horizontal scroll?
     - Are focus indicators visible at 200% zoom?
+    - Does the focused element remain visible, or do sticky headers/footers/banners obscure it? (WCAG 2.4.11 Focus Not Obscured)
     - Does the page work in high contrast mode (Windows High Contrast)?
     - Are colors distinguishable (not red/green only)?
     - Is text resizable? Does it stay readable?
-    - Are interactive elements large enough to hit (44x44 CSS pixels minimum)?
+    - Are interactive elements large enough to hit (24x24 CSS pixels minimum per WCAG 2.5.8, 44x44 recommended)?
+    - **Text-in-UI-component contrast**: Text inside buttons, inputs, and other UI components must meet TEXT contrast requirements (4.5:1 normal, 3:1 large) — not the 3:1 UI component boundary threshold. A button border at 3.5:1 passes as a UI boundary but text at 3.5:1 FAILS for normal text. Always apply the stricter text requirement to text content regardless of container.
     - Are links in body text distinguishable from surrounding text by more than color alone? Per WCAG 1.4.1, links in content areas must have a non-color indicator (typically underline). Link text color must also have 3:1 contrast against surrounding non-link text color. Navigation, menus, tabs, and obviously-interactive UI elements are exempt.
+    - **Forward-looking note**: APCA (Advanced Perceptual Contrast Algorithm) is the emerging WCAG 3.0 contrast method. Current compliance is WCAG 2.2, but note when APCA would give a different result — useful context for design system teams planning ahead.
 
     **Cognitive accessibility user:**
     - Are error messages clear and specific? Do they describe the error AND suggest a fix?
@@ -329,7 +344,21 @@ Copy this protocol into the subagent prompt:
     - Font icon elements exposed to AT: Icon font elements (`.fa`, `.fas`, `.far`, `.icon`, `.glyphicon`) are announced by screen readers as Unicode characters. Decorative icons need `aria-hidden="true"`. Icons that are the sole content of a link or button are NOT decorative — the parent needs `aria-label` instead. WCAG 1.1.1.
     - Missing reverse skip-links: Deep content pages (long-form reading, multi-section documents) with no way to navigate back to the table of contents or primary navigation force keyboard users to reverse-tab through all content. Add visually-hidden-until-focused "Back to navigation" links at content boundaries. WCAG 2.4.1 Bypass Blocks.
 
+    - Missing aria-current on active navigation item: current page, step, or location not marked in nav (aria-current="page", "step", "location", "date", "time" — not "true"). WCAG 4.1.2.
+    - Missing accessible authentication alternative: login requires cognitive function test (CAPTCHA, password recall) without paste/autofill support or alternative method. WCAG 3.3.8.
+    - Missing dragging alternative: drag-and-drop operation has no single-pointer alternative (click-to-move, input field, buttons). WCAG 2.5.7.
+    - Missing consistent help: help mechanism (chat, FAQ link, contact) appears in different relative locations on different pages. WCAG 3.2.6.
+
     Self-audit: rate confidence in each gap. Move LOW confidence to Open Questions.
+
+    **Known False Positives to Watch For:**
+    Common axe/jsx-a11y findings that may not be real issues in context:
+    - `jsx-a11y/no-noninteractive-element-interactions`: custom `role` props on components that pass through to child elements
+    - `jsx-a11y/anchor-is-valid`: Next.js `<Link>` components that render valid anchors at runtime
+    - `color-contrast` on transparent/gradient backgrounds: axe can't resolve computed background through layers
+    - `region` (content not in landmarks) on React portal content that renders into a `role="dialog"` at runtime
+    - `aria-allowed-attr` when ARIA attributes are passed through to a different element via spread props
+    If you suspect a false positive: mark the finding as **Needs user verification** with a concrete check the developer can perform (e.g., "Inspect this element in DevTools accessibility tree to verify the computed role"). Do not suppress the finding silently.
 
     Phase 8 — Realist Check (Severity Calibration):
 
@@ -390,8 +419,15 @@ Copy this protocol into the subagent prompt:
     - 2.1.2 No Keyboard Trap (Tab can always move forward/backward)
     - 2.4.3 Focus Order (Tab order is logical)
     - 2.4.7 Focus Visible (focus indicator is visible)
+    - 2.4.11 Focus Not Obscured (Minimum) (focused element not entirely hidden by author-created content — sticky headers, footers, cookie banners)
+    - 2.4.13 Focus Appearance (focus indicator has minimum area of 2px perimeter and 3:1 contrast change)
+    - 2.5.7 Dragging Movements (any drag operation must have a single-pointer alternative — click-to-move, input field, etc.)
+    - 2.5.8 Target Size (Minimum) (interactive targets at least 24x24 CSS pixels, with spacing exceptions)
     - 3.2.1 On Focus (focus doesn't cause unexpected context change)
+    - 3.2.6 Consistent Help (help mechanisms appear in same relative location across pages)
     - 3.3.4 Error Prevention (confirmation before destructive actions)
+    - 3.3.7 Redundant Entry (don't re-ask for information already provided in same session)
+    - 3.3.8 Accessible Authentication (Minimum) (no cognitive function test for login — allow paste, autofill, or alternative)
     - 4.1.2 Name, Role, Value (buttons/inputs must be accessible to assistive tech)
     - 4.1.3 Status Messages (dynamic updates announced to assistive tech)
 
@@ -544,13 +580,19 @@ This skill is part of the Zivtech a11y tooling ecosystem:
 
 | Skill | When | What |
 |-------|------|------|
-| accessibility-testing | First | Run automated checks (axe-core, Pa11y) for WCAG violations |
-| a11y-test | Second | Test keyboard navigation with real key presses (Playwright) |
-| a11y-critic | Third | Review design decisions (ARIA patterns, focus management, state communication) |
+| a11y-planner | 1. Before coding | Design accessibility upfront (APG patterns, focus, state, testing) |
+| **a11y-critic** | **2. After planning** | **Critique the plan for gaps before implementation begins** |
+| Implementation | 3. During coding | Build according to the reviewed plan |
+| accessibility-testing | 4. After coding | Run automated checks (axe-core, Pa11y) for WCAG violations |
+| a11y-test | 5. After coding | Test keyboard navigation with real key presses (Playwright) |
+| **a11y-critic** | **6. After testing** | **Critique the implementation — design decisions behind passing tests** |
+| Fix & re-test | 7. If needed | Address findings, re-run tests |
 | accessibility-standards | Reference | WCAG 2.2 AA coding patterns and standards |
 | ui-design-critic | Holistic | Comprehensive design review where a11y is one of several perspectives |
 
-Run accessibility-testing first to verify automated checks pass. Then use a11y-critic to evaluate whether the design decisions behind those passing tests are sound.
+**Full lifecycle:** plan → critique plan → revise → implement → test → critique implementation → fix → re-test
+
+The critic serves at two checkpoints: once to validate the plan before code is written, and again to validate the implementation after tests pass.
 
 ## Examples
 

@@ -1,0 +1,118 @@
+version: 1
+generated_at: '2026-03-28T00:00:00Z'
+skills:
+- id: snapsynapse/skill-a11y-audit
+  repo_url: https://github.com/snapsynapse/skill-a11y-audit
+  categories:
+  - audit-pipeline
+  - automated-scanning
+  - compliance-mapping
+  audiences_supported:
+  - accessibility
+  - qa-testing
+  priority: 100
+  status: active
+  stealable_techniques:
+  - dynamic-manual-check-prioritization
+  - delta-comparison-between-runs
+  - compliance-matrix-completeness
+  - template-aware-sampling
+- id: accesslint/claude-marketplace
+  repo_url: https://github.com/accesslint/claude-marketplace
+  categories:
+  - contrast-analysis
+  - link-purpose
+  - use-of-color
+  - refactoring
+  audiences_supported:
+  - accessibility
+  - design-system
+  priority: 95
+  status: active
+  stealable_techniques:
+  - mcp-contrast-tooling
+  - single-criterion-decomposition
+  - text-in-ui-component-contrast-distinction
+- id: addyosmani/web-quality-skills/accessibility
+  repo_url: https://github.com/addyosmani/web-quality-skills
+  categories:
+  - wcag-2.2-reference
+  - guidelines
+  audiences_supported:
+  - accessibility
+  - end-user
+  priority: 90
+  status: active
+  stealable_techniques:
+  - wcag-2.2-specific-criteria
+  - visually-hidden-canonical-pattern
+- id: meodai/skill.color-expert
+  repo_url: https://github.com/meodai/skill.color-expert
+  categories:
+  - color-science
+  - contrast-analysis
+  - apca
+  audiences_supported:
+  - accessibility
+  - design-system
+  priority: 85
+  status: active
+  stealable_techniques:
+  - apca-wcag3-contrast
+  - oklch-oklab-palette-generation
+  - contrast-first-color-composition
+- id: ramzesenok/iOS-Accessibility-Audit-Skill
+  repo_url: https://github.com/ramzesenok/iOS-Accessibility-Audit-Skill
+  categories:
+  - mobile-audit
+  - swiftui
+  - patch-ready-fixes
+  audiences_supported:
+  - accessibility
+  - ios-development
+  priority: 80
+  status: active
+  stealable_techniques:
+  - needs-user-verification-flag
+  - patch-ready-snippets-per-finding
+  - reference-library-decomposition
+- id: airowe/claude-a11y-skill
+  repo_url: https://github.com/airowe/claude-a11y-skill
+  categories:
+  - runtime-scanning
+  - static-analysis
+  - react-focus
+  audiences_supported:
+  - accessibility
+  - frontend-development
+  priority: 75
+  status: active
+  stealable_techniques:
+  - static-plus-runtime-dual-mode
+  - false-positive-catalog
+  - temporary-eslint-config-pattern
+- id: ehmo/platform-design-skills/web
+  repo_url: https://github.com/ehmo/platform-design-skills
+  categories:
+  - cross-platform-design
+  - wcag-2.2-reference
+  audiences_supported:
+  - accessibility
+  - cross-platform
+  priority: 70
+  status: active
+  stealable_techniques:
+  - focus-indicator-area-formula
+  - cross-platform-awareness
+- id: mindrally/skills/accessibility-a11y
+  skills_url: https://skills.sh/mindrally/skills/accessibility-a11y
+  repo_url: https://github.com/mindrally/skills
+  categories:
+  - coding-guidelines
+  - aria-patterns
+  audiences_supported:
+  - accessibility
+  priority: 50
+  status: active
+  stealable_techniques:
+  - aria-current-navigation-state

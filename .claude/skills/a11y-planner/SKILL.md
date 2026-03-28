@@ -242,6 +242,16 @@ Copy this protocol into the subagent prompt:
 
     Phase 3 — Interaction Pattern Design:
     For every interactive widget, document the ARIA pattern:
+
+    **WCAG 2.2-specific criteria to plan for:**
+    - 2.4.11 Focus Not Obscured (Minimum): Plan for sticky headers/footers/banners that may cover the focused element. Ensure focused elements remain at least partially visible.
+    - 2.4.13 Focus Appearance: Plan focus indicators with minimum 2px perimeter area and 3:1 contrast change between focused/unfocused states.
+    - 2.5.7 Dragging Movements: Every drag operation MUST have a single-pointer alternative (click-to-place, input field, up/down buttons). Plan both interaction paths.
+    - 2.5.8 Target Size (Minimum): Interactive targets minimum 24x24 CSS pixels (44x44 recommended). Plan spacing to avoid overlap.
+    - 3.2.6 Consistent Help: If the feature includes help (chat, FAQ, contact), plan for consistent placement across all pages.
+    - 3.3.7 Redundant Entry: Do not re-ask for information the user already provided in the same session. Plan data persistence across form steps.
+    - 3.3.8 Accessible Authentication (Minimum): Login/auth flows must not require cognitive function tests. Plan for paste support in password fields, autofill compatibility, and alternative auth methods (passkey, magic link).
+
     1. Identify every interactive element: buttons, links, toggles, tabs, menus, dialogs, carousels, comboboxes, listboxes, sliders, etc.
     2. For each interactive element:
        - Name it (e.g., "Search submit button", "Filter toggle", "Sort ascending button")
@@ -455,10 +465,33 @@ Copy this protocol into the subagent prompt:
 
     Phase 8 — Testing Strategy:
     Plan how the design will be tested for accessibility:
+
+    **Testing Layer Architecture** (different tools catch different issue classes):
+    - **Static analysis** (eslint-plugin-jsx-a11y for React/Vue/JSX projects): catches issues at build time without a running server — missing alt text, invalid ARIA attributes, inaccessible form patterns. Plan as a CI gate.
+    - **Runtime scanning** (axe-core via Playwright injection): catches issues on live rendered pages — computed contrast, missing landmarks, ARIA state correctness at runtime.
+    - **Keyboard interaction testing** (Playwright real key presses via a11y-test): catches focus management, keyboard traps, interaction model gaps.
+    - **Manual screen reader testing**: catches announcements, reading order, live region behavior that no tool can automate.
+    Static and runtime analysis are complementary — jsx-a11y catches JSX-level patterns axe-core misses (e.g., no `role` prop on custom component), while axe-core catches runtime-only issues (e.g., computed contrast through CSS layers).
+
+    **Dynamic test prioritization** — order manual testing effort based on the component's risk profile:
+    - If the component has ARIA patterns (tabs, menus, disclosure): prioritize screen reader testing and keyboard interaction testing
+    - If the component has color-dependent state (error, success, warnings): prioritize visual contrast testing and non-color alternative verification
+    - If the component has forms: prioritize error association testing (aria-describedby) and validation flow testing
+    - If the component has no interactive elements: deprioritize keyboard testing, prioritize semantic structure and heading hierarchy
+    - Always test: focus indicators at zoom levels, reduced-motion behavior, and skip link functionality
+
+    **Scale and sampling** (for large sites/multi-page features):
+    - If >15 pages/routes: classify pages into template groups (e.g., "list page", "detail page", "form page") and test one representative per group rather than every page
+    - Document which pages were sampled and which templates they represent
+
     1. Automated testing (axe-core via accessibility-testing skill):
        - What WCAG rules will axe-core check? (Color contrast, alt text, ARIA usage, heading hierarchy, form labels, etc.)
        - What issues does axe-core NOT catch? (Focus management, aria-live announcements, keyboard navigation, screen reader compatibility)
        - Plan: Run axe-core on every page variant (default state, loading state, error state, expanded state, etc.)
+    1b. Static analysis (eslint-plugin-jsx-a11y, for React/Vue/JSX projects):
+       - Plan as a separate CI step from axe-core runtime scanning
+       - Catches JSX-level patterns: missing alt, invalid ARIA in markup, inaccessible element nesting
+       - Note known false positives: custom `role` props, passthrough ARIA attributes, Next.js `<Link>` components
     2. Manual keyboard testing (a11y-test skill):
        - Can the page be navigated with Tab key only? Is the tab order logical?
        - Do buttons/links respond to Enter/Space?
@@ -793,15 +826,20 @@ This skill is part of the Zivtech a11y tooling ecosystem:
 
 | Skill | When | What |
 |-------|------|------|
-| a11y-planner | First | Design accessibility BEFORE implementation (this skill) |
+| a11y-planner | 1. Before coding | Design accessibility BEFORE implementation (this skill) |
+| **a11y-critic** | **2. After planning** | **Critique the plan for gaps before implementation begins** |
+| Revise plan | 3. If needed | Address critic findings in the plan |
+| Implementation | 4. During coding | Build according to the reviewed plan |
+| accessibility-testing | 5. After coding | Run automated checks (axe-core, Pa11y-CI) for WCAG violations |
+| a11y-test | 6. After coding | Test keyboard navigation with real Playwright key presses |
+| **a11y-critic** | **7. After testing** | **Critique implementation — design decisions behind passing tests** |
+| Fix & re-test | 8. If needed | Address findings, re-run tests |
 | accessibility-standards | Reference | WCAG 2.2 AA coding patterns and standards |
 | brainstorming | Optional | Explore multiple accessibility design approaches before committing |
-| Implementation | During | Build according to the a11y-planner design |
-| a11y-critic | After | Review the implementation for design soundness, pattern completeness, gap analysis |
-| accessibility-testing | After | Run automated tests (axe-core, Pa11y-CI), keyboard navigation tests |
-| a11y-test | After | Manual keyboard testing with real Playwright key presses |
 
-Use a11y-planner upfront to design accessibility. Build according to the plan. Then use a11y-critic to verify the design was followed.
+**Full lifecycle:** plan → critique plan → revise → implement → test → critique implementation → fix → re-test
+
+Use a11y-planner to design accessibility. Run a11y-critic on the plan to catch gaps before coding. Build according to the reviewed plan. Then run tests and a11y-critic again to verify the implementation.
 
 ## Examples
 
