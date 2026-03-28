@@ -303,6 +303,8 @@ Copy this protocol into the subagent prompt:
     - WCAG 4.1.3 Status Messages: state changes must be announced
     ```
 
+    **Perspective check:** Does this component have custom widgets or drag interactions (→ Keyboard & Motor)? Does it use ARIA roles or dynamic content (→ Screen Reader)?
+
     Phase 4 — Focus Management Plan:
     Design how focus moves through the interface:
     1. What is the logical tab order? (Document it: "Tab 1: Search input, Tab 2: Search button, Tab 3: First result, Tab 4: Next filter, ...")
@@ -340,6 +342,8 @@ Copy this protocol into the subagent prompt:
        - Default browser outline is sufficient (3:1 contrast)
        - Custom focus indicator must meet 3:1 contrast per WCAG 2.4.7
     ```
+
+    **Perspective check:** Are there sticky headers/footers that could obscure focus (→ Magnification, WCAG 2.4.11)? Do focus changes involve animation or transitions (→ Vestibular)?
 
     Phase 5 — State Communication Design:
     Design how every state is communicated to assistive technology:
@@ -386,6 +390,8 @@ Copy this protocol into the subagent prompt:
        - WCAG: 4.1.2 Name, Role, Value (state must be programmatic)
     ```
 
+    **Perspective check:** Do multi-step flows re-ask information already provided (→ Cognitive, WCAG 3.3.7)? Does authentication require cognitive function tests or block paste (→ Cognitive, WCAG 3.3.8)?
+
     Phase 6 — Visual Accessibility Plan:
     Design visual accessibility across color, contrast, text, and responsive design:
     1. Color contrast (WCAG 1.4.3 Contrast Minimum):
@@ -429,6 +435,8 @@ Copy this protocol into the subagent prompt:
        - WCAG citation: 2.5.8 Target Size (Minimum)
     9. **Content reflow at 400% zoom** (WCAG 1.4.10 Reflow): Requires no horizontal scroll at 320px equivalent (1280px viewport at 400% zoom). Plan for: features available on desktop MUST also be available at narrow viewports — do not hide functionality behind desktop-only breakpoints. Fixed-width containers must use `max-width: 100%` and relative units. Sticky headers consume proportionally more viewport at high zoom — plan to collapse or reduce header size at narrow viewports.
 
+    **Perspective check:** Does the component have animations, parallax, or auto-playing content (→ Vestibular)? Does it use custom colors that need contrast verification (→ Environmental Contrast)? Does content on hover/focus need to be dismissible and persistent (→ Magnification, WCAG 1.4.13)?
+
     Phase 7 — Content Accessibility Plan:
     Design how content is structured for screen reader users:
     1. Alt text strategy (WCAG 1.1.1 Non-text Content):
@@ -467,6 +475,17 @@ Copy this protocol into the subagent prompt:
        - Do not use CSS to reorder content visually if DOM order is different (screen readers follow DOM order)
        - WCAG citation: 1.3.2 Meaningful Sequence
     8. **Font icon strategy** (WCAG 1.1.1 Non-text Content): If using icon fonts (Font Awesome, Material Icons, Glyphicons), plan `aria-hidden="true"` on all decorative icon elements. Icons that are the sole content of a button or link are NOT decorative — add `aria-label` to the parent element instead. For large existing sites, consider a runtime JS behavior that scans for common icon selectors (`.fa`, `.fas`, `.far`, `.icon`, `.glyphicon`) and applies `aria-hidden` automatically, with detection for icons that are sole-content of interactive elements (which need `aria-label` on the parent, not `aria-hidden` on the icon).
+
+    **Perspective check:** Is content language complex or jargon-heavy (→ Cognitive)? Are there `<video>` or `<audio>` elements needing captions/transcripts (→ Auditory)?
+
+    Phase 7b — Time-Based Media Accessibility (if media elements present):
+    If `<video>`, `<audio>`, or media player components exist:
+    - Plan caption strategy: `<track kind="captions">` for all video with speech
+    - Plan transcript placement: adjacent to media element or linked
+    - Plan audio description strategy for visual-only information
+    - Plan media player keyboard controls: play/pause (Space), caption toggle, volume
+    - Plan no-autoplay policy or immediate pause control in first focus order position
+    - Reference: WCAG 1.2.1, 1.2.2, 1.2.3, 1.2.5, 1.4.2
 
     Phase 8 — Testing Strategy:
     Plan how the design will be tested for accessibility:
@@ -521,6 +540,8 @@ Copy this protocol into the subagent prompt:
        - Document what passes as "accessible":
          - Example: "Disclosure widget is accessible if: Tab focuses button, Space toggles aria-expanded, panel content is shown/hidden, focus restoration works"
        - Reference WCAG citations for each requirement
+
+    **Perspective escalation:** Based on the component's content, assign alarm levels (LOW/MEDIUM/HIGH) for each perspective. Perspectives at MEDIUM or HIGH should be flagged for deep review via `/perspective-audit`.
 
     Phase 9 — Implementation Tasks & Review Checkpoints:
     Break down the plan into implementation tasks:

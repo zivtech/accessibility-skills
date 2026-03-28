@@ -55,7 +55,7 @@ expect(initialExpanded).not.toBe(afterExpanded); // State MUST change
 
 ### WAI-ARIA APG Keyboard Test Templates
 
-Reusable Playwright templates for the five most common widget patterns. Each uses real `page.keyboard.press()` calls — never synthetic events.
+Reusable Playwright templates for common widget patterns. Each uses real `page.keyboard.press()` calls — never synthetic events.
 
 **1. Tree View**
 Interactions: ArrowDown/Up move `aria-activedescendant`; ArrowRight expands closed node or moves to first child; ArrowLeft collapses open node or moves to parent; Home/End jump to first/last visible treeitem; Enter activates.
@@ -120,6 +120,108 @@ expect(toggled).not.toBe(initial);
 const panelId = await btn.getAttribute('aria-controls');
 const panel = page.locator(`#${panelId}`);
 await expect(panel).toBeVisible(); // when expanded=true
+```
+
+**6. Menu Button / Dropdown**
+Interactions: Enter/Space opens menu, focus moves to first item; Arrow keys navigate with wrapping; Escape closes and returns focus to trigger; Home/End jump to first/last; type-ahead jumps to matching item.
+```js
+const trigger = page.locator('button[aria-haspopup="menu"]');
+await trigger.focus();
+await page.keyboard.press('Enter');
+await page.waitForTimeout(200);
+const menu = page.locator('[role="menu"]');
+await expect(menu).toBeVisible();
+await expect(menu.locator('[role="menuitem"]').first()).toBeFocused();
+await page.keyboard.press('End');
+await expect(menu.locator('[role="menuitem"]').last()).toBeFocused();
+await page.keyboard.press('Escape');
+await expect(trigger).toBeFocused();
+```
+
+**7. Combobox / Autocomplete**
+Interactions: typing shows listbox with filtered options; ArrowDown focuses first option; Enter selects and closes; Escape closes without selection; `aria-expanded` and `aria-activedescendant` update.
+```js
+const input = page.locator('[role="combobox"]');
+await input.focus();
+await input.type('ap');
+await page.waitForTimeout(300);
+await expect(input).toHaveAttribute('aria-expanded', 'true');
+const listbox = page.locator('[role="listbox"]');
+await page.keyboard.press('ArrowDown');
+expect(await input.getAttribute('aria-activedescendant')).toBeTruthy();
+await page.keyboard.press('Enter');
+await expect(listbox).toBeHidden();
+```
+
+**8. Listbox (single and multi-select)**
+Interactions: Arrow keys move selection in single-select; Space toggles in multi-select; Shift+Arrow extends range; Home/End jump to first/last; type-ahead navigation.
+```js
+const listbox = page.locator('[role="listbox"]');
+await listbox.focus();
+await expect(listbox.locator('[role="option"]').first()).toHaveAttribute('aria-selected', 'true');
+await page.keyboard.press('ArrowDown');
+await page.waitForTimeout(150);
+await expect(listbox.locator('[role="option"]').nth(1)).toHaveAttribute('aria-selected', 'true');
+await page.keyboard.press('End');
+await expect(listbox.locator('[role="option"]').last()).toBeFocused();
+```
+
+**9. Slider**
+Interactions: ArrowLeft/Right adjust by step; PageUp/Down by larger increment; Home/End set to min/max; `aria-valuenow`, `aria-valuemin`, `aria-valuemax` update.
+```js
+const slider = page.locator('[role="slider"]');
+await slider.focus();
+const before = Number(await slider.getAttribute('aria-valuenow'));
+await page.keyboard.press('ArrowRight');
+await page.waitForTimeout(150);
+expect(Number(await slider.getAttribute('aria-valuenow'))).toBeGreaterThan(before);
+await page.keyboard.press('Home');
+expect(await slider.getAttribute('aria-valuenow')).toBe(await slider.getAttribute('aria-valuemin'));
+await page.keyboard.press('End');
+expect(await slider.getAttribute('aria-valuenow')).toBe(await slider.getAttribute('aria-valuemax'));
+```
+
+**10. Date Picker**
+Interactions: Arrow keys navigate days; PageUp/Down navigate months; Shift+PageUp/Down navigate years; Enter selects and closes; Escape closes without selection and returns focus to input.
+```js
+const input = page.locator('[aria-label*="date" i]');
+await input.focus();
+await page.keyboard.press('Enter');
+const grid = page.locator('[role="grid"]');
+await expect(grid).toBeVisible();
+await page.keyboard.press('ArrowRight');
+await page.keyboard.press('PageDown');
+await page.keyboard.press('Enter');
+await expect(grid).toBeHidden();
+expect(await input.inputValue()).not.toBe('');
+```
+
+**11. Accordion**
+Interactions: Enter/Space on header toggles panel; `aria-expanded` reflects state; Arrow keys move between headers; Home/End jump to first/last header.
+```js
+const headers = page.locator('[role="button"][aria-expanded]');
+await headers.first().focus();
+const initial = await headers.first().getAttribute('aria-expanded');
+await page.keyboard.press('Enter');
+await page.waitForTimeout(200);
+expect(await headers.first().getAttribute('aria-expanded')).not.toBe(initial);
+await page.keyboard.press('ArrowDown');
+await expect(headers.nth(1)).toBeFocused();
+await page.keyboard.press('End');
+await expect(headers.last()).toBeFocused();
+```
+
+**12. Radio Group**
+Interactions: Arrow keys move selection within group (roving tabindex); Tab moves to/from group as a whole; first or checked radio receives initial focus; `aria-checked` updates with selection.
+```js
+const radios = page.locator('[role="radiogroup"] [role="radio"]');
+await radios.first().focus();
+await page.keyboard.press('ArrowDown');
+await page.waitForTimeout(150);
+await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
+await expect(radios.first()).toHaveAttribute('aria-checked', 'false');
+await page.keyboard.press('Tab');
+await expect(radios.nth(1)).not.toBeFocused();
 ```
 
 ### Live Site Requirement
@@ -187,6 +289,60 @@ After verifying keyboard operability, also check:
 - SVGs inside buttons have `aria-hidden="true"`
 - Close buttons have descriptive `aria-label`
 - Only one tab has `aria-selected="true"` per tablist
+
+## Section 5: Time-Based Media Tests
+
+Run these tests when `<video>`, `<audio>`, or media player components are present.
+
+### Caption Infrastructure
+- Verify `<track kind="captions">` exists on every `<video>` with speech
+- Verify `<track>` has valid `src` pointing to caption file
+- Verify caption toggle control exists and is keyboard-accessible
+
+### Transcript Availability
+- Verify transcript exists adjacent to media OR a visible link to it
+- For audio-only content: verify full text transcript is available
+
+### Media Player Keyboard Access
+- Tab: focus enters player controls; all controls have visible focus indicators
+- Space: play/pause toggle
+- Arrow keys: seek forward/backward; Up/Down: volume control
+- C or CC button: caption toggle; Escape: exit fullscreen
+
+### Audio Auto-play
+- Verify no audio auto-plays on page load
+- If auto-play exists: verify pause/stop control is the first focusable element
+
+## Section 6: Screen Reader Test Protocol
+
+### Test Matrix
+| Screen Reader | Browser | Mode |
+|---|---|---|
+| NVDA | Chrome | Browse mode + Focus mode |
+| VoiceOver | Safari (macOS) | Web rotor + standard navigation |
+| (Optional) JAWS | Chrome/Edge | Virtual cursor + Forms mode |
+
+### Landmark Navigation Test
+- Use landmark navigation (NVDA: D key, VoiceOver: Web rotor)
+- Verify: `<main>`, `<nav>`, `<header>`, `<footer>` announced correctly
+- Verify: multiple `<nav>` elements have distinguishing `aria-label`
+
+### Heading Navigation Test
+- Navigate by headings (NVDA: H key, VoiceOver: Web rotor); verify hierarchy is logical, no skipped levels; `<h1>` present
+
+### Form Mode Test
+- Tab into form (NVDA enters focus mode automatically)
+- Verify: each input announces its label and "required" if applicable
+- Verify: error messages announce when field is focused; `aria-describedby` reads after label
+
+### Live Region Test
+- Trigger dynamic content changes (form submission, async updates, notifications)
+- Verify: `aria-live="polite"` announces after current speech
+- Verify: `aria-live="assertive"` interrupts; toast content announced without focus moving
+
+### SPA Route Change Test
+- Navigate between routes; verify page title updates and is announced
+- Verify: focus moves to main content or heading; back button restores expected focus
 
 ## 2. Visual Regression Tests (REQUIRED)
 Visual regression tests ensure accessibility fixes don't introduce unintended visual changes. Supports **Playwright** and optionally **BackstopJS** for side-by-side HTML reports.
@@ -263,6 +419,21 @@ CMS pages often contain dynamic elements (timestamps, session blocks, popups). T
 - **Common elements to mask/remove**: `.contextual`, `.toolbar-tray`, `.messages`, `[data-drupal-messages]`, `dialog`, `[role="dialog"]`, time/date elements.
 - **Dismiss popups before capture**: Use Playwright's `dismissPopups()` helper or BackstopJS `onReadyScript`.
 - **Use `waitForLoadState('networkidle')`** and a short wait to let JS behaviors settle before capture.
+
+### Contrast Verification
+- Use browser DevTools (Chrome: CSS Overview, Firefox: Accessibility Inspector) to audit all text contrast
+- Run axe-core with `color-contrast` rule enabled (catches most but not all cases)
+- Manually check: text over images/gradients (axe-core misses these)
+- Manually check: focus indicator contrast against both focused and unfocused backgrounds
+- Check non-text contrast: UI component borders, icons, form control outlines (WCAG 1.4.11)
+- Test with forced-colors mode: verify all interactive elements remain distinguishable
+
+### Zoom and Reflow Verification
+- Set viewport to 1280px, zoom to 400% (equivalent to 320px)
+- Verify: no horizontal scrollbar, content reflows to single column
+- Verify: no text truncation, overlap, or content hidden behind other elements
+- Test text spacing override: 1.5x line height, 2x paragraph spacing, 0.12em letter spacing
+- Verify: all interactive elements remain visible and operable at 200% zoom
 
 ### Elements to Test
 - Focus indicators (links, buttons, inputs in :focus state)
@@ -381,14 +552,9 @@ Critical: [n] | Serious: [n] | Moderate: [n] | Minor: [n]
 
 This output feeds directly into the a11y-critic's Phase 0 (Consume Test Evidence) — measured violations become hard evidence in the design review.
 
-## 5. Static Analysis (eslint-plugin-jsx-a11y) — React/Vue/JSX projects only
+## 5. Static Analysis (eslint-plugin-jsx-a11y) — React/Vue/JSX only
 
-Static analysis catches accessibility issues at build time, complementing axe-core's runtime scanning. Different tools catch different issue classes.
-
-### When to Use
-- Project uses React, Next.js, Vue, or other JSX/TSX framework
-- Want CI-gate a11y checks that don't require a running server
-- Catches: missing alt text in JSX, invalid ARIA attributes in markup, inaccessible element nesting
+Use when the project uses React, Next.js, Vue, or other JSX/TSX framework. Catches missing alt text, invalid ARIA, and inaccessible element nesting at build time — no running server needed.
 
 ### Setup
 ```bash
@@ -418,18 +584,17 @@ rm eslint.a11y.mjs
 ```
 
 ### Known False Positives
-- Custom component `role` props (not HTML role attributes)
-- Components that pass ARIA attributes through to child elements via spread
-- Dynamic content loaded after initial render
-- Next.js `<Link>` components that render valid anchors at runtime
+Custom component `role` props, ARIA passed via spread, dynamic content loaded post-render, Next.js `<Link>` components (render valid anchors at runtime).
 
 ## Test Execution Order
-1. Run static analysis first (fast, no server needed) — Section 5
-2. Run keyboard accessibility tests — Section 1
-3. Run visual regression tests — Section 2
-4. Run axe-core automated scans — Section 4
-5. Run WCAG compliance checks — Section 3
-6. Report consolidated results with pass/fail counts per section
+1. Static analysis (§5) — fast, no server needed
+2. Keyboard accessibility tests (§1)
+3. Visual regression tests (§2)
+4. axe-core automated scans (§4)
+5. WCAG compliance checks (§3)
+6. Time-based media tests (§5-media) — if applicable
+7. Screen reader tests (§6) — if applicable
+8. Report consolidated results with pass/fail counts per section
 
 **Lifecycle integration:** These test results feed into a11y-critic reviews. The full a11y lifecycle is:
 plan → critique plan → revise → implement → **test (this skill)** → critique implementation → fix → re-test

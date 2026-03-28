@@ -318,6 +318,54 @@ Copy this protocol into the subagent prompt:
     - Is there confirmation before destructive actions?
     - Is the page cluttered or calm? Can I focus on what matters?
     - Are instructions clear and concise?
+    - Do error messages suggest specific corrections, not just describe what went wrong? (WCAG 3.3.3)
+    - Do multi-step forms avoid re-asking previously provided information? (WCAG 3.3.7)
+    - Does authentication avoid cognitive function tests? Does paste work in password fields? (WCAG 3.3.8)
+    - Is navigation consistent across pages? Do repeated components appear in the same order? (WCAG 3.2.3, 3.2.4)
+    - Do destructive actions have confirmation or undo? (WCAG 3.3.4)
+    - Are `autocomplete` attributes present on personal data fields (name, email, address)? (WCAG 1.3.5)
+
+    **Vestibular & motion sensitivity perspective:**
+    - Does the component have animations, transitions, parallax, or auto-playing content?
+    - Is `prefers-reduced-motion` respected? Are non-essential animations suppressed when the media query is set?
+    - Can all auto-playing content be paused, stopped, or hidden? (WCAG 2.2.2)
+    - Is there flashing content above 3 flashes per second? (WCAG 2.3.1)
+    - Do motion-triggered features (shake, tilt, device orientation) have UI alternatives? (WCAG 2.5.4)
+
+    **Auditory access perspective:**
+    - Do `<video>` elements have `<track kind="captions">` for synchronized captions? (WCAG 1.2.2)
+    - Do audio-only elements (podcasts, recordings) have text transcripts? (WCAG 1.2.1)
+    - Is the media player keyboard-accessible (play, pause, volume, seek reachable via Tab)?
+    - Do auditory alerts (notifications, errors announced by sound) have visual equivalents?
+    - Does any audio auto-play for more than 3 seconds without user control to pause or stop it? (WCAG 1.4.2)
+    - Caption accuracy and transcript completeness are content-level concerns — flag these as "Needs content author verification" rather than code findings.
+
+    **Environmental contrast perspective:**
+    - Are all contrast ratios verified? Normal text ≥ 4.5:1, large text ≥ 3:1, UI component boundaries and icons ≥ 3:1. (WCAG 1.4.3, 1.4.11)
+    - Is color ever the sole indicator of meaning (status, error, required field)? (WCAG 1.4.1)
+    - Does the interface function in forced-colors / Windows High Contrast mode without losing information?
+    - Do instructions reference shape, size, location, or orientation as the sole way to identify elements? (WCAG 1.3.3)
+
+    ### Perspective Alarm Levels
+
+    After reviewing all perspectives, assign an alarm level for each:
+    - **HIGH**: Component has patterns requiring deep review (custom widgets, media elements, complex flows, motion-heavy UI)
+    - **MEDIUM**: Component has standard patterns worth checking (forms, navigation, standard UI elements)
+    - **LOW**: Perspective is not relevant to this component (e.g., no media → Auditory is LOW; no animation → Vestibular is LOW)
+
+    Output a table:
+
+    | Perspective | Alarm Level | Trigger Signal |
+    |-------------|-------------|----------------|
+    | Screen reader | | |
+    | Keyboard-only | | |
+    | Low vision | | |
+    | Cognitive | | |
+    | Vestibular & motion | | |
+    | Auditory access | | |
+    | Environmental contrast | | |
+
+    Perspectives at MEDIUM or HIGH should be flagged for deep review via `/perspective-audit`.
 
     Note gaps for each perspective. One component might work perfectly for keyboard but confuse screen reader users.
 
@@ -353,6 +401,13 @@ Copy this protocol into the subagent prompt:
     - Missing accessible authentication alternative: login requires cognitive function test (CAPTCHA, password recall) without paste/autofill support or alternative method. WCAG 3.3.8.
     - Missing dragging alternative: drag-and-drop operation has no single-pointer alternative (click-to-move, input field, buttons). WCAG 2.5.7.
     - Missing consistent help: help mechanism (chat, FAQ link, contact) appears in different relative locations on different pages. WCAG 3.2.6.
+    - Missing caption infrastructure on video elements: `<video>` present without `<track kind="captions">`. WCAG 1.2.2.
+    - Missing transcripts for audio content: audio-only elements with no linked text transcript. WCAG 1.2.1.
+    - Missing keyboard controls on media player: play, pause, volume, or seek not reachable via Tab/Enter. WCAG 2.1.1.
+    - Audio auto-play without pause control: audio starts on load with no mechanism to pause or stop within 3 seconds. WCAG 1.4.2.
+    - Focus obscured by sticky elements: focused element partially or fully hidden behind a sticky header, footer, or cookie banner. WCAG 2.4.11.
+    - Focus appearance below minimum threshold: focus indicator does not meet 2px perimeter outline with 3:1 contrast change against adjacent colors. WCAG 2.4.13.
+    - Redundant entry in multi-step forms: user asked to re-enter information already provided earlier in the same session. WCAG 3.3.7.
 
     Self-audit: rate confidence in each gap. Move LOW confidence to Open Questions.
 
