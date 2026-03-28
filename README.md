@@ -55,7 +55,7 @@ The planner uses a 9-phase protocol:
 
 ### `a11y-critic`
 
-`a11y-critic` is the post-implementation review surface. It is for accessibility design critique, not just rule checking. It looks for:
+`a11y-critic` reviews accessibility design decisions at two points: **after planning** (to catch gaps before code is written) and **after testing** (to verify the implementation). It looks for:
 
 - semantic mismatches between UI intent and HTML structure
 - incomplete or incorrect ARIA pattern implementations
@@ -71,13 +71,23 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 - low-vision user
 - cognitive accessibility lens
 
-## Workflow
+### Companion: `a11y-test`
+
+This bundle pairs with the `a11y-test` companion skill for real Playwright keyboard testing, axe-core scanning, and visual regression. The test skill provides the measured evidence that feeds into the critic's review.
+
+## Lifecycle
+
+```
+plan → critique plan → revise → implement → test → critique implementation → fix → re-test
+```
 
 1. Run `/a11y-planner` to design the feature before implementation.
-2. Build the feature.
-3. Run `/a11y-critic` on the implementation.
-4. Run automated and manual accessibility testing.
-5. Refine based on critic findings and test evidence.
+2. Run `/a11y-critic` on the plan to catch gaps before coding.
+3. Revise the plan based on critic findings.
+4. Build the feature.
+5. Run `a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
+6. Run `/a11y-critic` on the implementation after tests pass.
+7. Fix findings, re-test.
 
 ## Commands
 
@@ -87,7 +97,7 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 ## Install
 
 ```bash
-npx claude-skills add https://github.com/zivtech/a11y-meta-skills
+npx skills add zivtech/a11y-meta-skills
 ```
 
 Manual install:
@@ -102,9 +112,18 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
 
 ```text
 .claude/
-  agents/
+  agents/                              # Standalone agent prompts
   skills/
+    a11y-critic/
+      SKILL.md                         # Skill definition
+      references/
+        external-skills-manifest.yaml  # External skill references
+    a11y-planner/
+      SKILL.md
+      references/
+        external-skills-manifest.yaml
 docs/
+  EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
   a11y-planner/
   a11y-critic/
 templates/
