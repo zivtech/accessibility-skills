@@ -1,6 +1,11 @@
 ---
 name: a11y-planner
-description: "Use when you know what component, flow, or interface you need but not yet the right accessibility approach. Best for turning requirements into an accessible implementation plan before code hardens bad interaction and state patterns."
+description: "Use when you know what component, flow, or interface you need but not yet the right accessibility approach. Best for turning WCAG 2.2 requirements into an accessible implementation plan with WAI-ARIA APG patterns before code hardens bad interaction and state patterns."
+license: Apache-2.0
+compatibility: Designed for Claude Code
+metadata:
+  author: zivtech
+  version: "1.1.0"
 ---
 
 # Accessibility Design Planner

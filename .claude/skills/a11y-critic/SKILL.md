@@ -1,6 +1,11 @@
 ---
 name: a11y-critic
-description: "Use when you have an existing component, flow, or interface and need an evidence-backed accessibility design review after basic checks pass. Best for focus management, ARIA pattern quality, semantics, and state communication gaps automated tools miss."
+description: "Use when you have an existing component, flow, or interface and need an evidence-backed accessibility design review after basic checks pass. Best for WCAG 2.2 compliance, focus management, ARIA pattern quality, semantics, and state communication gaps automated tools miss."
+license: Apache-2.0
+compatibility: Designed for Claude Code
+metadata:
+  author: zivtech
+  version: "1.1.0"
 ---
 
 # Accessibility Design Critic

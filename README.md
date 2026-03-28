@@ -1,14 +1,17 @@
 # a11y-meta-skills
 
-Accessibility planner-critic skill bundle for Claude Code.
+Accessibility planner-critic skill bundle for [Claude Code](https://claude.ai/code).
 
-**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**  
-Use this repo when you want accessibility designed before implementation and reviewed after implementation.
+```bash
+npx skills add zivtech/a11y-meta-skills
+```
 
-This bundle packages two companion skills:
+**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**
 
-- `a11y-planner`: plans accessible implementations before coding
-- `a11y-critic`: reviews ARIA, focus, semantics, and state communication after implementation
+This bundle packages two companion skills that work at different points in the development lifecycle:
+
+- `a11y-planner`: designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
+- `a11y-critic`: reviews plans before implementation AND implementations after testing
 
 ## Why this bundle exists
 
@@ -22,7 +25,8 @@ Most accessibility failures are not just missing attributes. They come from desi
 This repo combines the two surfaces needed to catch that work at the right times:
 
 1. **Plan first** so semantic structure, keyboard behavior, APG pattern mapping, and testing strategy are explicit before coding.
-2. **Review after implementation** so passing automated checks do not hide broken accessibility design.
+2. **Critique the plan** so gaps (missing focus traps, incomplete state communication) are caught before any code is written.
+3. **Review after testing** so passing automated checks do not hide broken accessibility design.
 
 ## What’s in the bundle
 
