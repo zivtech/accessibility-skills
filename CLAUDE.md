@@ -27,6 +27,7 @@ plan → critique plan → revise → implement → test → critique implementa
 |-------|------|---------|
 | a11y-planner | planner | `/a11y-planner` |
 | a11y-critic | critic | `/a11y-critic` |
+| a11y-test | tester | `/a11y-test` |
 
 ## Structure
 

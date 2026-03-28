@@ -3,7 +3,8 @@
 | Agent | Type | Command | Companion |
 |-------|------|---------|-----------|
 | a11y-planner | planner | `/a11y-planner` | a11y-critic |
-| a11y-critic | critic | `/a11y-critic` | a11y-planner |
+| a11y-critic | critic | `/a11y-critic` | a11y-planner, a11y-test |
+| a11y-test | tester | `/a11y-test` | a11y-critic |
 
 ## Lifecycle
 

@@ -8,10 +8,11 @@ npx skills add zivtech/a11y-meta-skills
 
 **[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**
 
-This bundle packages two companion skills that work at different points in the development lifecycle:
+This bundle packages three companion skills that cover the full accessibility development lifecycle:
 
 - `a11y-planner`: designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
 - `a11y-critic`: reviews plans before implementation AND implementations after testing
+- `a11y-test`: runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
 
 ## Why this bundle exists
 
@@ -71,9 +72,16 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 - low-vision user
 - cognitive accessibility lens
 
-### Companion: `a11y-test`
+### `a11y-test`
 
-This bundle pairs with the `a11y-test` companion skill for real Playwright keyboard testing, axe-core scanning, and visual regression. The test skill provides the measured evidence that feeds into the critic's review.
+`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review:
+
+- Playwright keyboard interaction tests (Tab, Enter, Escape, arrow keys — real key presses, not attribute checks)
+- axe-core scanning via Playwright injection for automated WCAG violation detection
+- eslint-plugin-jsx-a11y static analysis for React/Vue/JSX projects
+- Visual regression testing with Playwright screenshots and optional BackstopJS
+- WCAG 2.2 compliance checks including new criteria (2.4.11, 2.4.13, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
+- Dynamic test prioritization based on automated scan findings
 
 ## Lifecycle
 
@@ -91,8 +99,9 @@ plan → critique plan → revise → implement → test → critique implementa
 
 ## Commands
 
-- `/a11y-planner`
-- `/a11y-critic`
+- `/a11y-planner` — design accessibility before coding
+- `/a11y-critic` — review plans or implementations
+- `/a11y-test` — run keyboard, axe-core, and visual regression tests
 
 ## Install
 
