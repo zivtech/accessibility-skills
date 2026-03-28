@@ -1,6 +1,6 @@
 # a11y-meta-skills
 
-Accessibility planner-critic skill bundle for [Claude Code](https://claude.ai/code).
+Accessibility skill bundle for [Claude Code](https://claude.ai/code) — plan, test, and review.
 
 ```bash
 npx skills add zivtech/a11y-meta-skills
@@ -23,7 +23,7 @@ Most accessibility failures are not just missing attributes. They come from desi
 - loading, error, and success states that are visible but not announced
 - semantics that pass automated checks while still confusing screen readers
 
-This repo combines the two surfaces needed to catch that work at the right times:
+This repo combines three skills that cover the full lifecycle:
 
 1. **Plan first** so semantic structure, keyboard behavior, APG pattern mapping, and testing strategy are explicit before coding.
 2. **Critique the plan** so gaps (missing focus traps, incomplete state communication) are caught before any code is written.

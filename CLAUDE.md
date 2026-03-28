@@ -1,6 +1,6 @@
 # a11y-meta-skills
 
-This repository contains the standalone Claude Code package for the accessibility planner-critic pair.
+This repository contains the standalone Claude Code accessibility skill bundle — planner, critic, and tester.
 
 ## Lifecycle
 
