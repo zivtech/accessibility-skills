@@ -93,7 +93,7 @@ plan → critique plan → revise → implement → test → critique implementa
 2. Run `/a11y-critic` on the plan to catch gaps before coding.
 3. Revise the plan based on critic findings.
 4. Build the feature.
-5. Run `a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
+5. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
 6. Run `/a11y-critic` on the implementation after tests pass.
 7. Fix findings, re-test.
 
