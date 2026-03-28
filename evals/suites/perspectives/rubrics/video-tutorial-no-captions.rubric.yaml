@@ -1,0 +1,217 @@
+fixture_id: video-tutorial-no-captions
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical auditory-dimension issues a perspective-aware reviewer must identify"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find with auditory and secondary perspective attention"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Minor issues requiring screen reader perspective depth"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correct keyboard/focus implementations must NOT be flagged as bugs"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL and MAJOR findings backed by file:line reference or element quote"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract (severity, wcag, user_group, fix)"
+    weight: 1
+
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    description: "Findings attributed to the correct access perspective (auditory primary, screen reader secondary)"
+    weight: 2
+
+expected_findings:
+  must_find:
+    count: 2
+    items:
+      - id: mf-1
+        description: "Missing <track kind=\"captions\"> element on the <video>"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        perspective: auditory
+        evidence_requirement: "Reference to <video> element lacking <track> child (lines 89-96)"
+        expected_to_find: "95%"
+        scoring_notes: >
+          Full credit if reviewer cites 1.2.2 and identifies the absent <track> element.
+          Partial credit (0.5) if reviewer identifies missing captions without citing WCAG.
+          No credit if reviewer only mentions captions in passing without identifying the element.
+
+      - id: mf-2
+        description: "No transcript available on the page or linked from it"
+        severity: CRITICAL
+        wcag: "1.2.3 Audio Description or Media Alternative (Prerecorded)"
+        perspective: auditory
+        evidence_requirement: "Reference to tutorial-meta section or absence of transcript (lines 141-145)"
+        expected_to_find: "80%"
+        scoring_notes: >
+          Full credit if reviewer cites 1.2.1 or 1.2.3 and notes absent transcript.
+          Partial credit (0.5) if reviewer mentions missing transcript without WCAG reference.
+          Condition A baseline expected to miss this entirely; condition C should find it.
+
+  should_find:
+    count: 2
+    items:
+      - id: sf-1
+        description: "No caption toggle button in player controls"
+        severity: MAJOR
+        wcag: "1.2.2 Captions (Prerecorded)"
+        perspective: auditory
+        evidence_requirement: "Reference to controls group missing caption button (lines 135-137)"
+        expected_to_find: "75%"
+        scoring_notes: >
+          Full credit if reviewer distinguishes between the missing <track> (mf-1) and the
+          missing UI control as two separate issues — both are required for 1.2.2 compliance.
+          Partial credit (0.5) if reviewer mentions missing toggle without separating it from mf-1.
+
+      - id: sf-2
+        description: "Audio-only error/completion signals with no visual DOM equivalent"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color; non-text equivalent principle"
+        perspective: auditory
+        evidence_requirement: "Reference to handleError or handleEnded Web Audio beep with no rendered state (lines 31-43)"
+        expected_to_find: "60%"
+        scoring_notes: >
+          Full credit requires identifying the Web Audio API beep pattern AND the absence of
+          visual state rendering (hasError/hasCompleted never rendered).
+          This is the highest-signal differentiator between conditions A and C.
+          Condition A baseline expected to miss this; condition B may partially find it;
+          condition C with auditory perspective lens should find it reliably.
+
+  nice_to_find:
+    count: 1
+    items:
+      - id: ntf-1
+        description: "Generic aria-label 'video player' does not describe content"
+        severity: MINOR
+        wcag: "1.1.1 Non-text Content"
+        perspective: screen_reader
+        evidence_requirement: "Reference to aria-label=\"video player\" on line 91"
+        expected_to_find: "50%"
+        scoring_notes: >
+          Credit if reviewer cites line 91 and identifies that title prop is unused in aria-label.
+          This tests screen reader perspective depth beyond the primary auditory findings.
+
+  false_positive_traps:
+    count: 2
+    items:
+      - id: fpt-1
+        description: "Keyboard controls (play, pause, seek, volume, mute) are correct and must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags any keyboard-operable control as a bug"
+        relevant_lines: "101-134"
+        scoring_notes: >
+          Apply -2 weight if reviewer flags the play/pause button, seek bar, volume slider,
+          or mute button as keyboard accessibility issues.
+          These are intentionally correct to test whether the reviewer distinguishes
+          keyboard from auditory dimensions.
+
+      - id: fpt-2
+        description: "Focus management on player controls is correct and must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags focus behavior on the custom player as broken"
+        relevant_lines: "99-138"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites focus management on any player control as an issue.
+          The player uses native <button> and <input type=range> elements throughout;
+          focus behavior is browser-native and correct.
+
+composite_score_formula: |
+  positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
+  max_positive = (2 * 3) + (2 * 2) + (1 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 16
+  false_positive_penalty = count_triggered * 2
+  raw_score = sum(found * weight) - false_positive_penalty
+  normalized_score = raw_score / max_positive * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: 30-50
+    reasoning: >
+      Without auditory perspective prompting, condition A is expected to find missing
+      captions (mf-1) but likely miss the transcript requirement (mf-2) and the audio-only
+      beep pattern (sf-2). May conflate caption UI and track element as one finding.
+      No false positives expected on keyboard controls (those are visibly correct).
+
+  - condition: B
+    label: "Strong generic baseline (dimension names appended)"
+    expected_score: 55-75
+    reasoning: >
+      Naming "auditory" in the prompt modifier will likely surface mf-1 and mf-2.
+      sf-2 (audio beep pattern) requires structured auditory lens reasoning; condition B
+      may partially find it. The key test for B vs C is whether named dimensions alone
+      produce the same depth as the structured perspective protocol.
+
+  - condition: C
+    label: "Enhanced skills with perspective-audit"
+    expected_score: 80-95
+    reasoning: >
+      With auditory perspective protocol, condition C should find all must-find and
+      should-find items. The JTBD framing ("deaf user trying to follow instructor speech")
+      directly surfaces sf-2 (audio-only feedback). Perspective coverage dimension
+      should score high if findings are correctly attributed to auditory vs screen reader.
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+differentiator_findings:
+  - finding_id: sf-2
+    name: "Audio-only beep with no visual equivalent"
+    rationale: >
+      This finding is the primary differentiator between conditions. It requires reasoning
+      from the auditory user's perspective (deaf user receives no feedback on error or
+      completion) rather than pattern-matching to a known WCAG checklist item.
+      Condition A is expected to miss it in >80% of runs.
+      Condition C is expected to find it in >60% of runs.
+    metric_target: "new_dimension_recall"
+
+  - finding_id: mf-2
+    name: "Missing transcript"
+    rationale: >
+      Transcript requirement (1.2.3) is less commonly checked than 1.2.2 captions.
+      Tests depth of auditory perspective coverage beyond the most obvious finding.
+    metric_target: "new_dimension_recall"
+
+notes: |
+  Pilot fixture 1 of 5. Rubric version 1.0.
+
+  Key measurement goals for this fixture:
+  1. Does condition C find sf-2 (audio-only beep) more reliably than A or B?
+  2. Does condition C correctly attribute findings to the auditory perspective?
+  3. Do any conditions produce false positives on the intentionally-correct keyboard controls?
+
+  The false positive traps on keyboard controls are the primary test of whether
+  perspective-enhanced skills can hold the keyboard dimension stable while adding
+  new auditory findings. Regression on false_positive_rate for keyboard would indicate
+  the perspective hints are over-generalizing.
+
+  Line references are to video-tutorial-no-captions.md in the same fixtures/ directory.

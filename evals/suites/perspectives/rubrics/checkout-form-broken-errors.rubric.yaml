@@ -1,0 +1,220 @@
+fixture_id: checkout-form-broken-errors
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# Critical metric for this fixture. Because it tests existing dimensions only,
+# existing_dimension_tpr is the primary pass/fail signal. The non-inferiority
+# test requires C >= A on this metric.
+primary_metric: existing_dimension_tpr
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical/major issues a competent reviewer must identify"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would identify"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Minor gaps worth noting"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging working keyboard nav, correct aria-invalid, correct fieldset/legend"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line reference or specific element/attribute citation"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches skill format contract (severity labels, WCAG citations, user group, fix)"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - id: htmlfor-mismatch-firstname
+        description: "htmlFor='first-name' does not match id='firstName' — label not programmatically associated"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        wcag_secondary: "4.1.2 Name, Role, Value"
+        evidence_requirement: "Reference to htmlFor/id mismatch on First Name field"
+        expected_to_find:
+          A: "75%"
+          B: "75%"
+          C: "80%"
+        scoring_note: "Full credit if both mismatches found together; half credit if only one of the two is identified"
+
+      - id: htmlfor-mismatch-address
+        description: "htmlFor='street-address' does not match id='address' — label not programmatically associated"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        wcag_secondary: "4.1.2 Name, Role, Value"
+        evidence_requirement: "Reference to htmlFor/id mismatch on Street Address field"
+        expected_to_find:
+          A: "70%"
+          B: "70%"
+          C: "75%"
+        scoring_note: "May be reported with htmlfor-mismatch-firstname as a single combined finding — acceptable"
+
+      - id: missing-aria-describedby
+        description: "Error messages rendered without aria-describedby; error spans have no id"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification"
+        wcag_secondary: "3.3.2 Labels or Instructions"
+        evidence_requirement: "Reference to absence of aria-describedby on inputs with aria-invalid, or absence of id on error spans"
+        expected_to_find:
+          A: "80%"
+          B: "80%"
+          C: "85%"
+
+  - category: should_find
+    count: 1
+    items:
+      - id: color-only-step-indicator
+        description: "Step indicator uses color alone to communicate completion state"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        evidence_requirement: "Reference to CSS color-only distinction or absence of text/icon/aria supplement"
+        expected_to_find:
+          A: "50%"
+          B: "60%"
+          C: "70%"
+        scoring_note: "B gets a bump here because the prompt modifier names 'contrast accessibility'; C should do at least as well"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - id: no-aria-live-error-summary
+        description: "Error summary div has no aria-live, role='alert', or role='status'"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        expected_to_find:
+          A: "60%"
+          B: "65%"
+          C: "70%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - id: keyboard-nav-works
+        description: "Keyboard navigation between fields is functional — should NOT be flagged as broken"
+        penalty_if_flagged: true
+
+      - id: aria-invalid-correct
+        description: "aria-invalid is correctly toggled — should NOT be flagged as incorrect usage"
+        penalty_if_flagged: true
+
+      - id: fieldset-legend-correct
+        description: "fieldset + legend grouping within each step is correct — should NOT be flagged"
+        penalty_if_flagged: true
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  Penalty applied for each false_positive_trap triggered: -2 points each
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+# Regression detection: all three conditions should perform similarly.
+# C must not be worse than A. This is a non-inferiority test, not a
+# superiority test — the fixture is outside the new-dimension improvement zone.
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: "70-85"
+    expected_existing_dimension_tpr: "75%"
+    reasoning: |
+      Current skills are strong on screen reader and ARIA dimensions. Should catch
+      both htmlFor mismatches and missing aria-describedby. May miss the color-only
+      step indicator (1.4.1 is not a core focus of current skills). Should catch
+      the aria-live gap.
+
+  - condition: B
+    label: "Strong generic baseline"
+    expected_score: "70-85"
+    expected_existing_dimension_tpr: "75%"
+    reasoning: |
+      The generic prompt modifier ("also review for auditory, vestibular, cognitive,
+      and contrast accessibility") may improve detection of the color-only step indicator
+      (contrast dimension) but should not meaningfully affect screen reader findings.
+      Overall score should be similar to A.
+
+  - condition: C
+    label: "Enhanced skills with perspective audit"
+    expected_score: "75-90"
+    expected_existing_dimension_tpr: "80%"
+    reasoning: |
+      Perspective-aware review should maintain parity with A on screen reader findings
+      (must-find issues) and may improve on the color-only step indicator via the
+      Contrast perspective. Must not score lower than A on existing_dimension_tpr.
+
+# Non-inferiority test definition for this fixture
+non_inferiority_test:
+  metric: existing_dimension_tpr
+  comparison: "C >= A"
+  tolerance: "-5%"
+  description: |
+    Condition C is permitted to score up to 5 percentage points below A on
+    existing_dimension_tpr before triggering a regression flag. If C scores
+    more than 5pp below A on this fixture, it is a regression signal.
+  pass_condition: "C_tpr >= A_tpr - 0.05"
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+llm_judge_prompts:
+  finding_quality: |
+    For each CRITICAL or MAJOR finding in the reviewer output, assess:
+    1. Is the finding accurate? (Does it describe a real issue in the component?)
+    2. Is the element or attribute cited specifically? (e.g., "htmlFor='first-name'" not just "label issue")
+    3. Is the user impact described? (Which users are affected and how?)
+    4. Is the fix actionable? (A developer could implement it without further clarification?)
+    Score each finding 0-3 and average across all CRITICAL/MAJOR findings.
+
+  false_positive_check: |
+    Check whether the reviewer incorrectly flagged any of the following as issues:
+    - Keyboard navigation between fields (Tab/Shift+Tab)
+    - Tab order
+    - aria-invalid usage
+    - fieldset + legend grouping
+    - button element usage for Next and Submit
+    If any are flagged as problems, note them. Each incorrect flag reduces score by 2 points.
+
+notes: |
+  This is a regression detection fixture (existing dimensions: screen reader, keyboard/ARIA).
+
+  The critical test: does adding perspective enhancements (condition C) cause the skill to
+  miss issues that condition A would catch? If C scores below A on existing_dimension_tpr,
+  the perspective design has a regression problem.
+
+  The two htmlFor mismatches are the highest-signal findings — both CRITICAL, both in the
+  screen reader dimension. A reviewer that misses these is demonstrating a gap in label
+  association checking, which is a core skill competency.
+
+  The color-only step indicator (should_find) is a mild cross-dimension signal — it sits at
+  the intersection of Screen Reader (no aria-current), Contrast (color-only), and Cognitive
+  (completion status unclear). Condition C may score slightly better here due to explicit
+  Contrast and Cognitive perspective checks, but this is a bonus, not the primary signal.
+
+  False positive traps are important here because the form does many things right. A
+  reviewer that flags working keyboard nav or correct fieldset/legend is over-flagging,
+  which would signal that perspectives are adding noise rather than signal.

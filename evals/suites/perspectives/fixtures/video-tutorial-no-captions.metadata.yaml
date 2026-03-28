@@ -1,0 +1,156 @@
+fixture_id: video-tutorial-no-captions
+name: Video Tutorial Page Without Captions
+description: >
+  React video tutorial page with a fully keyboard-accessible custom player. The video
+  contains instructor speech but has no <track> element, no caption toggle, no transcript,
+  and uses audio-only beeps for error and completion signals with no visual DOM equivalent.
+  All keyboard controls (play, pause, seek, volume) are intentionally correct to isolate
+  the auditory dimension.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Media & Content
+work_type: component_review
+
+expected_findings:
+  must_find:
+    count: 2
+    items:
+      - description: "Missing <track kind=\"captions\"> element on <video>"
+        severity: CRITICAL
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence: "Lines 89-96: <video> element has no <track> children"
+        user_group: "Deaf and hard of hearing users"
+
+      - description: "No transcript available on the page or linked from it"
+        severity: CRITICAL
+        wcag: "1.2.3 Audio Description or Media Alternative (Prerecorded)"
+        evidence: "Lines 141-145: tutorial-meta section contains only duration, no transcript"
+        user_group: "Deaf and hard of hearing users; cognitive/attention users"
+
+  should_find:
+    count: 2
+    items:
+      - description: "No caption toggle button in player controls"
+        severity: MAJOR
+        wcag: "1.2.2 Captions (Prerecorded)"
+        evidence: "Lines 135-137: comment marks where toggle belongs; no button rendered"
+        user_group: "Deaf and hard of hearing users"
+
+      - description: "Audio-only error and completion signals with no visual DOM equivalent"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color; general non-text equivalent principle"
+        evidence: "Lines 31-43: handleError and handleEnded fire AudioContext beeps; hasError and hasCompleted state is never rendered"
+        user_group: "Deaf and hard of hearing users; users with audio disabled"
+
+  nice_to_find:
+    count: 1
+    items:
+      - description: "aria-label on <video> is generic 'video player' rather than describing content"
+        severity: MINOR
+        wcag: "1.1.1 Non-text Content"
+        evidence: "Line 91: aria-label=\"video player\" does not reference title prop"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "Auditory Access"
+  secondary: "Screen Reader"
+
+expected_alarm_levels:
+  auditory: HIGH
+  screen_reader: MEDIUM
+  keyboard: LOW
+  magnification: LOW
+  vestibular: LOW
+  contrast: LOW
+  cognitive: LOW
+
+components_analyzed:
+  - name: "video element"
+    aria_attributes: ["aria-label"]
+    issues: "Missing <track kind='captions'>; generic aria-label"
+
+  - name: "Player controls group"
+    aria_attributes: ["role=group", "aria-label"]
+    issues: "No caption toggle button"
+
+  - name: "handleError callback"
+    aria_attributes: []
+    issues: "Fires audio beep; sets hasError state that is never rendered"
+
+  - name: "handleEnded callback"
+    aria_attributes: []
+    issues: "Fires audio beep; sets hasCompleted state that is never rendered"
+
+  - name: "Play/pause button"
+    aria_attributes: ["aria-label"]
+    issues: "None — keyboard-accessible (intentional true negative)"
+
+  - name: "Seek bar"
+    aria_attributes: ["aria-label", "aria-valuetext"]
+    issues: "None — keyboard-accessible (intentional true negative)"
+
+  - name: "Volume slider"
+    aria_attributes: ["aria-label"]
+    issues: "None — keyboard-accessible (intentional true negative)"
+
+  - name: "Mute toggle"
+    aria_attributes: ["aria-label"]
+    issues: "None — keyboard-accessible (intentional true negative)"
+
+wcag_criteria:
+  - "1.2.1 Audio-only and Video-only (Prerecorded)"
+  - "1.2.2 Captions (Prerecorded)"
+  - "1.2.3 Audio Description or Media Alternative (Prerecorded)"
+  - "1.4.1 Use of Color"
+
+patterns_used:
+  - "HTML5 video with WebVTT captions (absent)"
+  - "Custom player controls (keyboard-correct)"
+  - "Web Audio API for feedback signals (audio-only, no visual equivalent)"
+
+multi_perspective_coverage:
+  auditory:
+    alarm_level: HIGH
+    notes: "Missing captions (1.2.2), missing transcript (1.2.3), audio-only beeps — all directly impact deaf and hard of hearing users"
+  screen_reader:
+    alarm_level: MEDIUM
+    notes: "Generic aria-label on video element; otherwise controls are correctly labeled"
+  keyboard:
+    alarm_level: LOW
+    notes: "Play, pause, seek, volume, and mute are all keyboard-operable with correct ARIA — no issues"
+  magnification:
+    alarm_level: LOW
+    notes: "No evidence of magnification-specific issues in the component"
+  vestibular:
+    alarm_level: LOW
+    notes: "No motion, animation, or autoplay — no vestibular impact"
+  contrast:
+    alarm_level: LOW
+    notes: "No contrast-specific evidence available in JSX source"
+  cognitive:
+    alarm_level: LOW
+    notes: "Straightforward player layout; missing transcript has minor cognitive impact but primary impact is auditory"
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Keyboard controls (play, pause, seek, volume, mute) are all correctly implemented and should NOT be flagged"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "Lines 101-134"
+
+    - description: "Focus management on player controls is correct and should NOT be flagged"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "Lines 99-138"
+
+notes: |
+  Pilot fixture 1 of 5. Category: HAS-BUGS (new dimension — auditory).
+
+  Design intent: isolate auditory dimension by making keyboard accessibility intentionally
+  correct. A reviewer who conflates keyboard and auditory accessibility will over-report
+  keyboard issues (false positives) and may under-report auditory issues (false negatives).
+
+  The audio beep pattern (Web Audio API with no visual equivalent) is drawn from real
+  production code patterns found in accessible-player audit failures.
+
+  Expected verdict: REVISE

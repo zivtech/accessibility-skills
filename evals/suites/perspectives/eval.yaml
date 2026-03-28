@@ -1,0 +1,130 @@
+suite_id: perspectives
+name: "Perspective Agents Evaluation Suite"
+version: "1.0.0"
+skill: perspective-audit
+companion_skills:
+  - a11y-planner
+  - a11y-critic
+  - a11y-test
+model: claude-opus-4-6
+temperature: 0
+
+conditions:
+  A:
+    name: "Current skills (no perspectives)"
+    description: "a11y-planner + a11y-critic + a11y-test as of commit before perspective enhancements"
+    prompt_modifier: null
+  B:
+    name: "Strong generic baseline"
+    description: "Current skills + 'also review for auditory, vestibular, cognitive, and contrast accessibility' appended"
+    prompt_modifier: "Also review for auditory, vestibular, cognitive, and contrast accessibility."
+  C:
+    name: "Enhanced skills with perspective audit"
+    description: "Enhanced a11y-planner/critic/test + perspective-audit companion skill"
+    prompt_modifier: null
+    skills:
+      - perspective-audit
+
+fixture_sets:
+  main:
+    path: fixtures/
+    count: 25
+    composition:
+      has_bugs_new_dimension: 10
+      has_bugs_existing_dimension: 6
+      clean: 5
+      adversarial: 4
+    repeats: 3
+  calibration:
+    path: calibration/
+    count: 5
+    scoring: alarm_level_accuracy
+    repeats: 3
+
+pilot:
+  fixtures:
+    - video-tutorial-no-captions
+    - product-carousel-autoplay
+    - article-page-clean
+    - checkout-form-broken-errors
+    - color-only-status-indicators
+  calibration:
+    - calibration-static-blog
+    - calibration-login-captcha
+    - calibration-video-tutorial
+
+scoring:
+  method: hybrid
+  weights:
+    rule_based: 0.7
+    llm_judge: 0.3
+  llm_judge_model: claude-sonnet-4-6
+  llm_judge_temperature: 0
+
+metrics:
+  - id: precision_weighted_coverage
+    name: "Precision-weighted coverage"
+    definition: "Distinct WCAG criteria cited that correspond to real issues"
+    method: rule_based
+    target: "C >= 1.3x A"
+
+  - id: new_dimension_precision
+    name: "New-dimension precision"
+    definition: "% of findings in auditory/vestibular/cognitive/contrast that are correct"
+    method: llm_judge
+    target: "C >= 80%"
+
+  - id: new_dimension_recall
+    name: "New-dimension recall"
+    definition: "% of planted new-dimension issues found"
+    method: rule_based
+    target: "C >= 70%"
+
+  - id: existing_dimension_tpr
+    name: "Existing-dimension TPR"
+    definition: "True positive rate in keyboard/screen reader/ARIA dimensions"
+    method: rule_based
+    target: "C >= A (no regression)"
+
+  - id: false_positive_rate
+    name: "False positive rate"
+    definition: "Findings that don't match any real issue (especially on CLEAN)"
+    method: llm_judge
+    target: "C <= A + 10%"
+
+  - id: actionability
+    name: "Actionability"
+    definition: "% of findings with element ref + problem + user group + fix"
+    method: rule_based
+    target: "C >= 85%"
+
+  - id: escalation_accuracy
+    name: "Escalation accuracy"
+    definition: "% of alarm levels matching expected on calibration fixtures"
+    method: rule_based
+    target: ">= 80% exact, >= 95% within +/-1"
+
+statistical_design:
+  sample_size: 25
+  repeats_per_condition: 3
+  total_evaluations: 225
+  test: wilcoxon_signed_rank
+  alpha: 0.05
+  bonferroni_adjusted_alpha: 0.007
+  effect_size: cohens_d
+  power_target: 0.80
+  confidence_intervals:
+    method: bootstrap
+    B: 1000
+
+success_criteria:
+  precision_weighted_coverage: "C >= 1.3x A (significant)"
+  new_dimension_precision: ">= 80%"
+  new_dimension_recall: ">= 70%"
+  existing_dimension_tpr: "C >= A at -5% non-inferiority"
+  false_positive_rate: "C <= A + 10%"
+  actionability: ">= 85%"
+  escalation_accuracy: ">= 80% exact match"
+
+rubric_path: rubrics/
+baseline_path: baselines/

@@ -1,0 +1,151 @@
+fixture_id: color-only-status-indicators
+version: "1.0.0"
+category: ADVERSARIAL
+domain: "Color, Motion, & Sensory"
+component_type: data-table
+framework: React 18+
+
+difficulty: ADVERSARIAL
+difficulty_rationale: >
+  Automated tools (axe-core, Lighthouse) report zero errors on this component.
+  All status dot colors pass WCAG contrast ratio checks (4.5:1+) against white.
+  Table semantics are correct. Keyboard navigation works. Focus indicators are present.
+  The primary violation — color as the sole differentiator between four distinct states —
+  requires understanding that passing contrast ratio does NOT satisfy WCAG 1.4.1.
+  These are independent requirements. Condition A is expected to miss this entirely.
+  Condition B may surface "contrast" concerns but is likely to conflate color-only
+  with contrast ratio and reach the wrong conclusion. Only Condition C, guided by the
+  Environmental Contrast JTBD checklist ("When color carries meaning, I need a
+  non-color indicator"), should reliably distinguish the two requirements.
+
+perspectives_tested:
+  primary: Environmental Contrast
+  secondary: Cognitive & Neurodivergent
+  also_relevant:
+    - Keyboard & Motor (sort button target size)
+    - Screen Reader & AT (status dot has no accessible name)
+
+false_positive_traps:
+  - id: fp_contrast_ratios
+    description: >
+      Each status dot color passes WCAG AA contrast against white (all >= 4.5:1).
+      A reviewer who checks contrast and finds it passing should NOT conclude that
+      WCAG 1.4.1 is satisfied — color-only and contrast ratio are distinct criteria.
+      Flagging contrast ratio as a problem on this component is a false positive.
+    affected_criteria: WCAG 1.4.3
+    expected_false_positive_rate_A: 0%
+    expected_false_positive_rate_B: 20%
+    expected_false_positive_rate_C: 5%
+
+  - id: fp_keyboard_navigation
+    description: >
+      Table rows have tabIndex, onKeyDown handlers, and focus-visible styles.
+      Sort buttons have focus-visible outlines. The keyboard interaction pattern
+      is intentionally correct. A reviewer should NOT flag keyboard navigation
+      as broken — the target size issue is the only keyboard/motor finding.
+      Broadly flagging "keyboard accessibility" as a problem is a false positive.
+    affected_criteria: WCAG 2.1.1
+    expected_false_positive_rate_A: 10%
+    expected_false_positive_rate_B: 10%
+    expected_false_positive_rate_C: 5%
+
+expected_findings:
+  must_find:
+    - id: color_only_status
+      criterion: WCAG 1.4.1
+      severity: CRITICAL
+      perspective: Environmental Contrast
+      description: >
+        Status indicators (blocked/at-risk/on-track/not-started) rely on color alone.
+        The span has no aria-label, no text, no shape/pattern supplement.
+        Passes contrast check — the violation is color-as-sole-differentiator.
+
+    - id: hover_only_tooltips
+      criterion: "WCAG 1.4.13, 2.1.1"
+      severity: MAJOR
+      perspective: Keyboard & Motor
+      description: >
+        Full task descriptions are only accessible via CSS :hover.
+        No :focus equivalent exists. Keyboard-only users cannot access the content.
+
+  should_find:
+    - id: sort_target_size
+      criterion: WCAG 2.5.8
+      severity: MAJOR
+      perspective: Keyboard & Motor
+      description: >
+        Sort icon is 10x10px with no padding. Minimum target size is 24x24px.
+
+    - id: abbreviations_unexpanded
+      criterion: "WCAG 3.1.4 (AAA), Cognitive"
+      severity: MAJOR
+      perspective: Cognitive & Neurodivergent
+      description: >
+        Effort (L/M/S) and priority (P1/P2/P3) abbreviations are never defined or expanded.
+        Dense 8-column layout at 11px font size with no density control.
+
+  nice_to_find:
+    - id: row_selection_color_only
+      criterion: WCAG 1.4.1
+      severity: MINOR
+      perspective: Environmental Contrast
+      description: >
+        Row selection indicated only by background-color shift (light blue tint).
+        No aria-selected, border, or other non-color indicator.
+
+    - id: no_density_control
+      criterion: Cognitive accessibility best practice
+      severity: MINOR
+      perspective: Cognitive & Neurodivergent
+      description: >
+        No option to reduce information density, hide columns, or access a simplified view.
+
+expected_alarm_levels:
+  Environmental Contrast: HIGH
+  Cognitive: HIGH
+  Keyboard: MEDIUM
+  Screen Reader: MEDIUM
+  Magnification: MEDIUM
+  Auditory: LOW
+  Vestibular: LOW
+
+expected_verdict: REVISE
+
+expected_reviewer_performance:
+  condition_A:
+    likely_score: "~35%"
+    expected_behavior: >
+      Finds keyboard and ARIA correctness (marks as good), likely misses color-only status
+      entirely because contrast ratios pass. May note hover tooltip as a keyboard issue.
+      Will not surface cognitive density concerns. Primary miss: WCAG 1.4.1 color-only.
+    expected_critical_miss: color_only_status
+
+  condition_B:
+    likely_score: "~50%"
+    expected_behavior: >
+      May mention "color" and "contrast" together but likely conflates them, concluding
+      contrast passes so no issue exists. Might surface hover tooltip issue. Less likely
+      to surface cognitive density. The key failure mode is conflating contrast ratio
+      (1.4.3) with color-as-sole-differentiator (1.4.1) — these require distinct checks.
+    expected_critical_miss: color_only_status (conflated with contrast ratio)
+
+  condition_C:
+    likely_score: "~80%"
+    expected_behavior: >
+      Environmental Contrast JTBD checklist drives correct distinction: "When color carries
+      meaning, I need a non-color indicator" is a separate check from contrast ratio.
+      Should find color-only status (CRITICAL), hover tooltip (MAJOR), sort target size (MAJOR),
+      and abbreviations (MAJOR). Row selection and density control are nice-to-find.
+    expected_primary_differentiator: >
+      Correctly identifies that contrast passing does not satisfy WCAG 1.4.1 color-only requirement.
+
+key_differentiator: >
+  The defining test for this fixture is whether the reviewer understands that
+  WCAG 1.4.3 (contrast ratio) and WCAG 1.4.1 (use of color) are independent criteria.
+  A component can pass all contrast checks and still fail 1.4.1 if color is the only
+  mechanism conveying information. Condition C should show the largest delta over A and B
+  on this fixture because the perspective-driven JTBD checklist explicitly separates
+  "does color meet contrast ratio" from "does color carry meaning without a supplement."
+
+pilot_fixture_index: 5
+total_pilot_fixtures: 5

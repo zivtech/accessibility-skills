@@ -1,0 +1,158 @@
+fixture_id: article-page-clean
+name: Article Page With Proper Accessibility (CLEAN)
+description: >
+  A React article page that correctly implements all common accessibility
+  features across all seven access perspectives. Used to measure false-positive
+  rate: a well-calibrated reviewer should not trigger findings against this page.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Content Pages
+work_type: component_review
+pilot_fixture: true
+pilot_index: 3
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: >
+      No critical accessibility issues. All landmark regions, heading hierarchy,
+      alt text, contrast ratios, keyboard access, skip link, and motion handling
+      are correctly implemented.
+
+  - category: should_find
+    count: 0
+    notes: >
+      No major issues. WCAG 1.4.1 (link underlines), 1.4.3 (contrast),
+      2.4.1 (skip link), 2.4.6 (headings), and 1.3.1 (info and relationships)
+      are all satisfied.
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - id: aria-current-nav
+        description: >
+          Could add aria-current="page" to the active navigation item.
+          Not present because active state is not defined in this static
+          component fixture. A reviewer who notes this as a pattern-level
+          recommendation is correct.
+        severity: ENHANCEMENT
+        wcag: "2.4.8 Location (AAA)"
+        expected_find_rate: "40%"
+
+      - id: lang-foreign-quotes
+        description: >
+          Could add lang attribute to any foreign-language quotations
+          embedded in the article. There are none in this fixture, so
+          a reviewer noting this as a general best practice is acceptable
+          but not required.
+        severity: ENHANCEMENT
+        wcag: "3.1.2 Language of Parts (AA)"
+        expected_find_rate: "25%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - id: main-tabindex-minus-one
+        description: >
+          main has tabIndex={-1}. This is CORRECT — it is needed to allow
+          the skip link to move focus to main content. tabIndex=-1 makes
+          an element programmatically focusable without adding it to the
+          tab order. A reviewer who flags this as "incorrect tabindex usage"
+          is producing a false positive.
+        correct_pattern: "Skip link target must be programmatically focusable"
+
+      - id: fade-in-animation
+        description: >
+          The page has a CSS animation (fade-in) on the article element.
+          This is CORRECT — the animation only runs when
+          prefers-reduced-motion: no-preference is active; it is suppressed
+          for reduced-motion users. A reviewer who flags the animation
+          without reading the media query is producing a false positive.
+        correct_pattern: >
+          Animation gated on prefers-reduced-motion: no-preference
+          (default-off for reduced-motion users)
+
+      - id: main-focus-outline-none
+        description: >
+          main:focus has outline: none. This is CORRECT — the main element
+          has tabIndex=-1 so it is only focusable programmatically (via skip
+          link), not via keyboard tab navigation. Removing the visible ring on
+          a programmatic-only focus target is a deliberate, accepted pattern.
+          A reviewer who flags outline:none here without this context is
+          producing a false positive.
+        correct_pattern: >
+          outline:none is acceptable on tabIndex=-1 elements that are not
+          in the sequential tab order
+
+perspectives_tested:
+  keyboard:
+    alarm_level: LOW
+    rationale: >
+      Skip link functions correctly. All interactive elements (nav links,
+      footer links, logo) are natively focusable. No custom widgets. Focus
+      indicators are visible on all interactive elements.
+
+  screen_reader:
+    alarm_level: LOW
+    rationale: >
+      All landmark regions are present and labeled. Heading hierarchy is
+      correct. Images have descriptive alt text. article has aria-labelledby.
+      time has datetime attribute. No role misuse.
+
+  auditory:
+    alarm_level: LOW
+    rationale: >
+      No audio or video content. No auto-playing media. No sound-only
+      information. Auditory perspective has nothing to flag.
+
+  vestibular:
+    alarm_level: LOW
+    rationale: >
+      The only animation (article fade-in) is gated on
+      prefers-reduced-motion: no-preference and is a subtle opacity +
+      6px translate over 0.35s. No parallax, no looping motion, no
+      large-area movement. Vestibular perspective should produce no findings.
+
+  cognitive:
+    alarm_level: MEDIUM
+    rationale: >
+      Article content always warrants a basic cognitive check. A reviewer
+      may note that the article is well-structured with clear headings,
+      short paragraphs, and plain language. MEDIUM alarm indicates a
+      thorough cognitive review is warranted even though no issues are
+      expected to be found. A reviewer noting the reading level is
+      accessible is a correct positive observation, not a finding.
+
+  low_vision:
+    alarm_level: LOW
+    rationale: >
+      All color contrast ratios meet or exceed WCAG AA. Body text is
+      14.7:1, links are 7.1:1, footer links are 7.5:1. Text resizes to
+      200% without overflow. Layout reflows at 320px. Font sizes use
+      clamp() for fluid scaling. No information conveyed by color alone.
+
+  magnification:
+    alarm_level: LOW
+    rationale: >
+      Responsive layout with max-width 740px container. Mobile breakpoint
+      at 400px handles small viewports. clamp() font sizing avoids fixed
+      pixel values that break at zoom. No horizontal scrollbar at 320px.
+
+expected_verdict:
+  primary: ACCEPT
+  acceptable: ACCEPT-WITH-RESERVATIONS
+  notes: >
+    ACCEPT-WITH-RESERVATIONS is acceptable only if the reviewer notes
+    enhancement-level suggestions (aria-current on nav, lang on foreign
+    quotes). Any MAJOR or CRITICAL finding against this fixture is a
+    false positive. Any REJECT verdict is a scoring failure.
+
+scoring_notes:
+  false_positive_weight: -2
+  critical_false_positive_penalty: -3
+  clean_fixture_purpose: >
+    This fixture measures the false-positive rate of each condition.
+    The key question is: does condition C (perspective-audit enhanced)
+    over-flag compared to condition A? If C generates more false positives
+    on this fixture than A + 10%, it fails the false_positive_rate metric.

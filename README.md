@@ -1,6 +1,6 @@
 # a11y-meta-skills
 
-Accessibility skill bundle for [Claude Code](https://claude.ai/code) — plan, test, and review.
+Accessibility skill bundle for [Claude Code](https://claude.ai/code) — plan, test, review, and audit from real perspectives.
 
 ```bash
 npx skills add zivtech/a11y-meta-skills
@@ -8,11 +8,12 @@ npx skills add zivtech/a11y-meta-skills
 
 **[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**
 
-This bundle packages three companion skills that cover the full accessibility development lifecycle:
+This bundle packages four companion skills that cover the full accessibility development lifecycle:
 
 - `a11y-planner`: designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
 - `a11y-critic`: reviews plans before implementation AND implementations after testing
 - `a11y-test`: runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
+- `perspective-audit`: deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
 
 ## Why this bundle exists
 
@@ -23,11 +24,12 @@ Most accessibility failures are not just missing attributes. They come from desi
 - loading, error, and success states that are visible but not announced
 - semantics that pass automated checks while still confusing screen readers
 
-This repo combines three skills that cover the full lifecycle:
+This repo combines four skills that cover the full lifecycle:
 
 1. **Plan first** so semantic structure, keyboard behavior, APG pattern mapping, and testing strategy are explicit before coding.
 2. **Critique the plan** so gaps (missing focus traps, incomplete state communication) are caught before any code is written.
 3. **Review after testing** so passing automated checks do not hide broken accessibility design.
+4. **Audit from real perspectives** so the planner and critic can escalate specific disability or situational access concerns for deep review by perspective agents grounded in CivicActions personas and the W3C WAI ARRM framework.
 
 ## What’s in the bundle
 
@@ -83,25 +85,44 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 - WCAG 2.2 compliance checks including new criteria (2.4.11, 2.4.13, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
 - Dynamic test prioritization based on automated scan findings
 
+### `perspective-audit`
+
+`perspective-audit` provides deep accessibility review from 7 disability and situational access perspectives. It is activated by escalation — when the planner or critic flags one or more perspectives at MEDIUM or HIGH alarm level, those perspectives get a focused deep review.
+
+The 7 perspectives:
+
+- **Magnification & Reflow** — zoom users, reflow at 320px, touch target sizing
+- **Environmental Contrast** — outdoor use, low-light, color vision deficiency
+- **Vestibular & Motion** — motion sensitivity, parallax, auto-playing animation
+- **Auditory Access** — deaf/hard-of-hearing, captions, visual alternatives to audio
+- **Keyboard & Motor** — switch users, voice control, limited dexterity, one-handed use
+- **Screen Reader & Semantic** — NVDA/JAWS/VoiceOver users, semantic structure, live regions
+- **Cognitive & Neurodivergent** — reading level, information density, consistent navigation
+
+Each perspective uses a Jobs-to-be-Done checklist derived from CivicActions accessibility personas with ARRM role-responsibility mapping for team assignment.
+
 ## Lifecycle
 
 ```
-plan → critique plan → revise → implement → test → critique implementation → fix → re-test
+plan → critique plan → [perspective audit] → revise → implement → test → critique implementation → [perspective audit] → fix → re-test
 ```
 
 1. Run `/a11y-planner` to design the feature before implementation.
 2. Run `/a11y-critic` on the plan to catch gaps before coding.
-3. Revise the plan based on critic findings.
-4. Build the feature.
-5. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
-6. Run `/a11y-critic` on the implementation after tests pass.
-7. Fix findings, re-test.
+3. If the critic escalates perspectives at MEDIUM/HIGH, run `/perspective-audit` for deep review.
+4. Revise the plan based on critic and audit findings.
+5. Build the feature.
+6. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
+7. Run `/a11y-critic` on the implementation after tests pass.
+8. If the critic escalates perspectives, run `/perspective-audit` again.
+9. Fix findings, re-test.
 
 ## Commands
 
 - `/a11y-planner` — design accessibility before coding
 - `/a11y-critic` — review plans or implementations
 - `/a11y-test` — run keyboard, axe-core, and visual regression tests
+- `/perspective-audit` — deep review from escalated disability/situational access perspectives
 
 ## Install
 
@@ -131,8 +152,16 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
       SKILL.md
       references/
         external-skills-manifest.yaml
+    a11y-test/
+      SKILL.md
+    perspective-audit/
+      SKILL.md                         # Escalation-based perspective auditor
+      references/
+        perspectives.md                # 7 JTBD checklists (CivicActions personas)
+        arrm-perspective-mapping.md    # W3C WAI ARRM role routing
 docs/
   EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
+  PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
   a11y-planner/
   a11y-critic/
 templates/

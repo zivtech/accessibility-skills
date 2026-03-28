@@ -1,0 +1,323 @@
+fixture_id: article-page-clean
+rubric_version: "1.0"
+fixture_category: CLEAN
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# -----------------------------------------------------------------------
+# SCORING DIMENSIONS
+# -----------------------------------------------------------------------
+# CLEAN fixtures invert the normal sensitivity rubric.
+# The primary measure is false-positive avoidance, not issue detection.
+# Positive weights reflect correct recognition of good implementation.
+# Negative weights penalize incorrect findings.
+# -----------------------------------------------------------------------
+
+dimensions:
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: >
+      Correctly NOT flagging well-implemented patterns as issues.
+      Penalizes any finding that targets a correctly implemented feature.
+    weight: -2
+    note: >
+      Each incorrectly flagged item from false_positive_traps subtracts 2
+      from the raw score. Applied per false positive raised.
+
+  - id: critical_false_positive
+    name: "Critical False Positive Penalty"
+    description: >
+      Any finding at CRITICAL or MAJOR severity against this clean fixture
+      is a scoring failure. Penalizes each such finding heavily.
+    weight: -3
+    note: >
+      A CRITICAL false positive indicates severe miscalibration.
+      A MAJOR false positive indicates significant miscalibration.
+      Each occurrence subtracts 3 from the raw score.
+
+  - id: clean_recognition
+    name: "Clean Implementation Recognition"
+    description: >
+      Reviewer correctly identifies the implementation as well-structured
+      and produces ACCEPT or ACCEPT-WITH-RESERVATIONS verdict.
+    weight: 3
+    note: >
+      This is the primary positive signal for a CLEAN fixture.
+      ACCEPT = full credit. ACCEPT-WITH-RESERVATIONS = full credit
+      if only ENHANCEMENT findings are present.
+
+  - id: false_positive_trap_recognition
+    name: "Known False Positive Trap Recognition"
+    description: >
+      Reviewer correctly identifies one or more of the three known
+      false positive traps (tabIndex=-1, animation with reduced-motion
+      guard, outline:none on skip-link target) as correct patterns
+      rather than issues.
+    weight: 2
+    note: >
+      Partial credit: 1 point per correctly identified trap (max 3 traps).
+      Combined with weight 2 this rewards genuine pattern literacy.
+
+  - id: nice_to_find
+    name: "Legitimate Enhancement Suggestions"
+    description: >
+      Reviewer notes one or both optional enhancements (aria-current on
+      nav item, lang on foreign quotes) correctly framed as ENHANCEMENT
+      severity — not as MAJOR or CRITICAL.
+    weight: 1
+    note: >
+      Finding enhancements is acceptable and shows thoroughness.
+      Only counts positively if framed at ENHANCEMENT severity.
+      If framed at higher severity, counts as false_positive_trap instead.
+
+  - id: perspective_alarm_accuracy
+    name: "Perspective Alarm Level Accuracy"
+    description: >
+      Each perspective alarm level matches the expected level from metadata
+      (all LOW except Cognitive = MEDIUM).
+    weight: 2
+    note: >
+      Scored per-perspective. 7 perspectives total.
+      Exact match = full credit. Within +/-1 level = half credit.
+      Off by 2 levels = no credit.
+      Raising any perspective to HIGH against this clean fixture is
+      a false positive and triggers critical_false_positive penalty.
+
+  - id: actionability
+    name: "Actionability of Any Findings"
+    description: >
+      Any finding raised (including valid enhancements) includes element
+      reference, problem description, affected user group, and fix suggestion.
+    weight: 1
+    note: >
+      Only scored if the reviewer raises findings. Rewards high-quality
+      enhancement suggestions. Not penalized if reviewer raises no findings.
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: >
+      Output matches the perspective-audit format contract (verdict block,
+      per-perspective alarm levels, findings list or explicit clean statement).
+    weight: 1
+
+# -----------------------------------------------------------------------
+# EXPECTED FINDINGS SUMMARY
+# -----------------------------------------------------------------------
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical issues present. Reviewer should not raise any."
+
+  - category: should_find
+    count: 0
+    impact: "No major issues present. Reviewer should not raise any."
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - id: aria-current-nav
+        description: "aria-current='page' on active nav item (ENHANCEMENT)"
+        expected_find_rate: "40%"
+        severity_required: ENHANCEMENT
+
+      - id: lang-foreign-quotes
+        description: "lang attribute on foreign-language quotations (ENHANCEMENT)"
+        expected_find_rate: "25%"
+        severity_required: ENHANCEMENT
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - id: main-tabindex-minus-one
+        description: "main tabIndex={-1} is correct for skip link target"
+        penalty_if_flagged: -2
+
+      - id: fade-in-animation
+        description: "Fade-in animation correctly gated on prefers-reduced-motion"
+        penalty_if_flagged: -2
+
+      - id: main-focus-outline-none
+        description: "outline:none on main:focus is correct for tabIndex=-1 element"
+        penalty_if_flagged: -2
+
+# -----------------------------------------------------------------------
+# SCORING FORMULA
+# -----------------------------------------------------------------------
+
+composite_score_formula: |
+  raw_score = 0
+
+  # Positive contributions
+  if verdict in [ACCEPT, ACCEPT-WITH-RESERVATIONS]:
+    raw_score += clean_recognition.weight  # +3
+
+  for each correctly_identified_trap in false_positive_trap_recognition:
+    raw_score += 1  # up to +2 total (weight 2, max 3 traps × partial)
+
+  for each valid_enhancement_at_ENHANCEMENT_severity:
+    raw_score += nice_to_find.weight  # +1 each, max +2
+
+  perspective_alarm_score = sum(per_perspective_credit) / 7
+  raw_score += perspective_alarm_score * perspective_alarm_accuracy.weight
+
+  if any_findings_raised:
+    raw_score += actionability_score * actionability.weight  # +1
+
+  raw_score += format_compliance_score * format_compliance.weight  # +1
+
+  # Negative contributions
+  for each false_positive_raised:
+    raw_score += false_positive_trap.weight  # -2 each
+
+  for each CRITICAL_or_MAJOR_finding:
+    raw_score += critical_false_positive.weight  # -3 each
+
+  # Normalize
+  max_positive = clean_recognition.weight + (3 * 1) +
+                 (2 * nice_to_find.weight) +
+                 (perspective_alarm_accuracy.weight) +
+                 actionability.weight + format_compliance.weight
+  # max_positive = 3 + 3 + 2 + 2 + 1 + 1 = 12
+
+  final_score = max(0, raw_score) / max_positive * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+# -----------------------------------------------------------------------
+# EXPECTED REVIEWER PERFORMANCE
+# -----------------------------------------------------------------------
+# Key differentiator: condition C (perspective-audit enhanced) should NOT
+# produce more false positives than condition A (no perspectives).
+# The eval passes if C's false positive rate <= A + 10%.
+# -----------------------------------------------------------------------
+
+expected_reviewer_performance:
+  - condition: A
+    name: "Current skills (no perspectives)"
+    expected_score: 75-88
+    expected_false_positives: 0-1
+    reasoning: >
+      Current skills are well-calibrated on keyboard/screen reader dimensions.
+      May correctly identify clean implementation but lacks structured alarm
+      levels for all 7 perspectives. Low false positive risk because it does
+      not have a structured new-dimension checklist to over-apply.
+
+  - condition: B
+    name: "Strong generic baseline"
+    expected_score: 70-85
+    expected_false_positives: 1-2
+    reasoning: >
+      Appending "also review for auditory, vestibular, cognitive, and contrast"
+      may cause B to over-flag in new dimensions without calibration context.
+      B is most likely to raise a false MEDIUM or HIGH alarm on vestibular
+      (because of the animation) despite the prefers-reduced-motion guard.
+      Slightly higher false positive risk than A.
+
+  - condition: C
+    name: "Enhanced skills with perspective audit"
+    expected_score: 80-95
+    expected_false_positives: 0-1
+    reasoning: >
+      Structured JTBD checklists include correct-pattern awareness for common
+      false positive traps. Perspective-audit companion should recognize the
+      reduced-motion guard, the skip-link tabIndex pattern, and the
+      outline:none pattern as correct. C should match or beat A on false
+      positive rate. If C produces more false positives than B, the
+      structured approach has backfired.
+
+  # Key differentiator check:
+  # C should NOT over-flag compared to A.
+  # Acceptable: C_false_positives <= A_false_positives + 1
+  # Failure: C_false_positives > A_false_positives + 1
+  key_differentiator: >
+    The critical measurement is false_positive_rate(C) <= false_positive_rate(A) + 10%.
+    If condition C raises more false positives on this CLEAN fixture than
+    condition A, the perspective enhancement is miscalibrated and introduces
+    noise without quality gain. This fixture is the primary guard against
+    that failure mode.
+
+verdict_expectations:
+  condition_A: ACCEPT
+  condition_B: ACCEPT  # may include 1 minor FP but overall verdict should hold
+  condition_C: ACCEPT
+
+# -----------------------------------------------------------------------
+# LLM JUDGE PROMPTS
+# -----------------------------------------------------------------------
+
+llm_judge:
+  model: claude-sonnet-4-6
+  temperature: 0
+
+  false_positive_adjudication_prompt: |
+    You are evaluating an accessibility reviewer's output against a CLEAN fixture.
+    The fixture is a React article page with NO real accessibility issues.
+    All landmark regions, heading hierarchy, alt text, contrast ratios, skip link,
+    prefers-reduced-motion handling, and keyboard access are correctly implemented.
+
+    For each finding in the reviewer output, determine:
+    1. Is this finding targeting a real accessibility issue, or a correctly
+       implemented pattern?
+    2. If the reviewer flags tabIndex={-1} on main, outline:none on main:focus,
+       or the CSS animation — are they correctly identifying a known false positive
+       trap, or incorrectly flagging a correct implementation?
+    3. Is the verdict (ACCEPT / ACCEPT-WITH-RESERVATIONS / REJECT) appropriate
+       for a clean page?
+
+    Known correct patterns that should NOT be flagged:
+    - main element has tabIndex={-1}: correct, required for skip link target
+    - article fade-in animation: guarded by prefers-reduced-motion, correct
+    - main:focus has outline:none: correct for tabIndex=-1 programmatic-only target
+
+    Acceptable enhancements (ENHANCEMENT severity only):
+    - aria-current="page" on active nav item
+    - lang attribute on foreign-language quotations
+
+    Return JSON:
+    {
+      "false_positives": [{ "finding": "...", "reason": "..." }],
+      "false_positive_count": N,
+      "verdict_appropriate": true|false,
+      "verdict_given": "...",
+      "overall_assessment": "..."
+    }
+
+  clean_recognition_prompt: |
+    The reviewer examined a well-implemented React article page. Assess whether
+    the reviewer correctly recognized the implementation as clean and accessible,
+    or whether they failed to acknowledge the quality of the implementation.
+
+    Return JSON:
+    {
+      "recognized_as_clean": true|false,
+      "verdict": "...",
+      "enhancement_only": true|false,
+      "notes": "..."
+    }
+
+notes: |
+  CLEAN fixture purpose: measure false-positive rate, not detection sensitivity.
+
+  The three false positive traps are:
+  1. tabIndex={-1} on main — needed for skip link, commonly misread as incorrect
+  2. animation with prefers-reduced-motion guard — animation IS present but
+     correctly disabled for reduced-motion users; reviewers who flag "animation
+     present" without reading the media query fail this trap
+  3. outline:none on main:focus — correct for programmatic-only focus targets;
+     reviewers who apply "no outline:none ever" as a rule without context fail
+
+  Condition C (perspective-enhanced) is most at risk of failing trap #2 because
+  the vestibular perspective specifically focuses on motion. The rubric weights
+  this heavily: a vestibular HIGH alarm on this page is a -3 critical false positive.
+
+  All three conditions should score 75%+ on this fixture. Divergence from that
+  floor indicates miscalibration. Condition C scoring LOWER than A indicates the
+  perspective enhancement is introducing noise.

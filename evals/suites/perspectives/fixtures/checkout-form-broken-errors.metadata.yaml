@@ -1,0 +1,147 @@
+fixture_id: checkout-form-broken-errors
+name: Multi-Step Checkout Form With Broken Error Association
+description: |
+  A React 3-step checkout form (Shipping, Payment, Review) with visible labels on all fields
+  but two htmlFor/id mismatches that break label association for screen readers, error messages
+  rendered without aria-describedby, an error summary with no aria-live, error summary list
+  items that are plain text rather than anchor links, and a step indicator that uses color alone
+  to communicate completion state. Keyboard navigation is fully functional.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Form & Validation
+work_type: component_review
+
+regression_fixture: true
+regression_note: |
+  This fixture tests EXISTING dimensions (screen reader, keyboard/ARIA). All three conditions
+  (A, B, C) should find these issues. The primary question is whether adding perspective
+  enhancements causes regression — condition C must not score lower than condition A on
+  existing_dimension_tpr for this fixture.
+
+perspectives_tested:
+  primary: Screen Reader & Semantic
+  secondary: Keyboard & Motor
+  rationale: |
+    Two label/id mismatches and absent aria-describedby are classic screen reader failures.
+    Error summary links that don't navigate to fields affect keyboard users. Color-only step
+    indicator affects color-blind users (covered under Contrast perspective). These are
+    well-established WCAG 1.3.1, 3.3.1, and 4.1.x failures within the skills' existing
+    strong dimensions.
+
+expected_findings:
+  - category: must_find
+    count: 3
+    items:
+      - description: "htmlFor mismatch on First Name field — label not associated with input"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        wcag_secondary: "4.1.2 Name, Role, Value"
+        evidence: "htmlFor='first-name' vs id='firstName' — browser cannot resolve association"
+        user_group: "Screen reader users"
+        expected_behavior: "Screen reader announces the visible label text when input receives focus"
+        fix: "Align htmlFor and id — use htmlFor='firstName' or id='first-name' consistently"
+
+      - description: "htmlFor mismatch on Street Address field — label not associated with input"
+        severity: CRITICAL
+        wcag: "1.3.1 Info and Relationships"
+        wcag_secondary: "4.1.2 Name, Role, Value"
+        evidence: "htmlFor='street-address' vs id='address' — browser cannot resolve association"
+        user_group: "Screen reader users"
+        expected_behavior: "Screen reader announces 'Street Address' when address input receives focus"
+        fix: "Align htmlFor and id — use htmlFor='address' or id='street-address' consistently"
+
+      - description: "Error messages not associated with fields via aria-describedby"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification"
+        wcag_secondary: "3.3.2 Labels or Instructions"
+        evidence: "aria-invalid set on inputs but no aria-describedby; error spans have no id"
+        user_group: "Screen reader users"
+        expected_behavior: "Screen reader reads both the field label and the error message when input has aria-invalid"
+        fix: "Add id to each error span; add aria-describedby to corresponding input pointing to that id"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Step indicator communicates state via color alone"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        evidence: "CSS uses green/gray backgrounds only; no text supplement, no icon, no aria-current"
+        user_group: "Color-blind users, low-vision users"
+        expected_behavior: "Completed and upcoming steps are distinguishable without relying on color"
+        fix: "Add visually-hidden text suffix per step ('Shipping — complete') or checkmark icon; add aria-current='step' to active step"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Error summary region has no aria-live — validation failures not announced"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Error summary div has no role='alert', aria-live, or aria-atomic"
+        user_group: "Screen reader users"
+        expected_behavior: "When error summary mounts after failed validation, screen reader announces it"
+        fix: "Add role='alert' (or aria-live='polite' + aria-atomic='true') to the error summary div"
+
+  - category: should_not_flag
+    items:
+      - description: "Keyboard navigation between fields"
+        reason: "Tab/Shift+Tab traverse all inputs in DOM order — fully functional"
+      - description: "Tab order"
+        reason: "Logical, matches visual flow"
+      - description: "Submit and Next buttons"
+        reason: "Real <button> elements, keyboard-activatable with Enter and Space"
+
+expected_alarm_levels:
+  Screen Reader: HIGH
+  Keyboard: MEDIUM
+  Cognitive: MEDIUM
+  Contrast: MEDIUM
+  Auditory: LOW
+  Vestibular: LOW
+  Magnification: LOW
+
+alarm_level_rationale:
+  Screen Reader: "Two broken label associations (CRITICAL x2) plus missing aria-describedby (MAJOR) — clear HIGH"
+  Keyboard: "Error summary links don't navigate to fields — affects keyboard users; otherwise keyboard nav is intact — MEDIUM"
+  Cognitive: "Error recovery is harder without navigable error links; step progress unclear without color — MEDIUM"
+  Contrast: "Step indicator color-only — affects color perception — MEDIUM"
+  Auditory: "No audio/video content — LOW"
+  Vestibular: "No animation or motion — LOW"
+  Magnification: "Standard form layout, no fixed-size text — LOW"
+
+false_positive_traps:
+  - description: "Keyboard navigation between fields"
+    note: "Tab order and field navigation work correctly — do not flag"
+  - description: "aria-invalid usage"
+    note: "aria-invalid is correctly set; the gap is aria-describedby, not aria-invalid"
+  - description: "fieldset + legend grouping"
+    note: "Step-level fieldset/legend is correct — do not flag"
+  - description: "Error summary heading"
+    note: "Error summary has an h2 with id and matching aria-labelledby on the list — structurally correct"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (label/input association)"
+  - "1.4.1 Use of Color (step indicator)"
+  - "3.3.1 Error Identification (error messages associated with fields)"
+  - "3.3.2 Labels or Instructions (error description programmatically associated)"
+  - "4.1.2 Name, Role, Value (form control names)"
+  - "4.1.3 Status Messages (error summary live announcement)"
+
+expected_verdict: REVISE
+
+notes: |
+  Regression detection fixture. The bugs planted here are in the existing-dimension
+  skill strengths (screen reader, ARIA, keyboard). All three conditions should find them.
+
+  The two htmlFor mismatches are the highest-signal issues — they represent a subtle
+  but common real-world pattern where visual design is correct (labels are visible and
+  adjacent) but programmatic association is broken (IDs don't match). A competent
+  a11y reviewer catches this by checking htmlFor against id, not just visual proximity.
+
+  The missing aria-describedby on error messages is a companion to the
+  form-validation-missing-aria-describedby fixture from the a11y-critic suite,
+  but in a more complex multi-step context and paired with the htmlFor bugs.
+
+  Error summary links issue (should_find) adds navigability concern on top of the
+  aria-live gap (nice_to_find). A strong reviewer finds both; a passing reviewer
+  catches at least the aria-live gap.

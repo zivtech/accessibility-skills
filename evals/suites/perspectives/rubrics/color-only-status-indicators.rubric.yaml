@@ -1,0 +1,238 @@
+rubric_id: color-only-status-indicators
+fixture_id: color-only-status-indicators
+version: "1.0.0"
+scoring_method: hybrid
+weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# ─────────────────────────────────────────────
+# SCORING DIMENSIONS
+# ─────────────────────────────────────────────
+dimensions:
+
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    description: >
+      Does the review identify issues from the Environmental Contrast and
+      Cognitive & Neurodivergent perspectives, not just keyboard/ARIA patterns?
+    weight: 2
+    critical: true
+    method: llm_judge
+    scoring:
+      0:
+        label: No coverage
+        criteria: >
+          Review addresses only keyboard navigation and ARIA semantics.
+          No mention of color-only indicators or cognitive density.
+      1:
+        label: Partial coverage
+        criteria: >
+          Review mentions color or contrast but does not correctly identify
+          the color-only violation (e.g., concludes contrast passes therefore no issue).
+          OR identifies cognitive issues but misses color-only entirely.
+      2:
+        label: Adequate coverage
+        criteria: >
+          Review correctly identifies color-only status as a WCAG 1.4.1 violation
+          AND notes at least one cognitive accessibility concern (abbreviations or density).
+      3:
+        label: Full coverage
+        criteria: >
+          Review correctly identifies color-only status as CRITICAL (WCAG 1.4.1),
+          explicitly distinguishes it from contrast ratio (1.4.3), identifies
+          cognitive concerns (abbreviations, density), and notes row-selection
+          color-only as an additional 1.4.1 instance.
+
+  - id: color_only_diagnosis
+    name: "Color-Only Diagnosis Accuracy"
+    description: >
+      Does the review correctly diagnose the color-only violation — specifically
+      distinguishing between passing contrast ratio and failing color-as-sole-differentiator?
+      This is the primary differentiator between conditions A/B and condition C.
+    weight: 2
+    critical: true
+    method: llm_judge
+    scoring:
+      0:
+        label: Incorrect or absent
+        criteria: >
+          Review does not mention color-only status, or incorrectly concludes
+          that passing contrast ratios means WCAG 1.4.1 is satisfied.
+      1:
+        label: Mentioned but conflated
+        criteria: >
+          Review flags color or contrast as a concern but conflates 1.4.1 and 1.4.3,
+          suggesting the fix is to improve contrast ratios rather than add non-color indicators.
+      2:
+        label: Correctly identified
+        criteria: >
+          Review correctly identifies that status uses color alone (WCAG 1.4.1),
+          and that this is independent of the contrast ratio result.
+          May or may not explicitly name both criteria.
+      3:
+        label: Precisely distinguished
+        criteria: >
+          Review explicitly distinguishes WCAG 1.4.1 (color-only) from 1.4.3 (contrast ratio),
+          names both, explains why passing contrast does not satisfy color-only,
+          and proposes a non-color supplement (text label, icon shape, pattern, or aria-label).
+
+  - id: finding_completeness
+    name: "Finding Completeness"
+    description: >
+      Does the review identify the full set of must_find and should_find issues?
+    weight: 1
+    method: rule_based
+    scoring:
+      rule: >
+        Score = (must_find_found * 2 + should_find_found * 1) /
+                (must_find_total * 2 + should_find_total * 1)
+      must_find_total: 2
+      should_find_total: 2
+      nice_to_find_bonus: 0.1 per item (max 0.2 total)
+      max_score: 1.0 (+ up to 0.2 bonus)
+
+  - id: false_positive_avoidance
+    name: "False Positive Avoidance"
+    description: >
+      Does the review avoid flagging things that are intentionally correct?
+      Key traps: (1) flagging dot colors as failing contrast, (2) flagging
+      keyboard navigation as broken.
+    weight: 1
+    method: llm_judge
+    scoring:
+      0:
+        label: Multiple false positives
+        criteria: >
+          Review flags dot color contrast ratios as failing WCAG AA, OR
+          flags keyboard navigation as non-functional, OR flags both.
+      1:
+        label: One false positive
+        criteria: >
+          Review makes one of the above errors but not both.
+      2:
+        label: Clean
+        criteria: >
+          Review does not flag contrast ratios or keyboard navigation as problems.
+          May note them as passing in context of the 1.4.1 discussion.
+
+  - id: actionability
+    name: "Actionability"
+    description: >
+      For each finding, does the review include: element reference, problem statement,
+      affected user group, and proposed fix?
+    weight: 1
+    method: rule_based
+    scoring:
+      rule: >
+        For each finding, award 1 point if it includes all four components:
+        element reference, problem, user group, fix.
+        Score = (complete_findings / total_findings).
+      target: >= 0.85
+
+  - id: severity_calibration
+    name: "Severity Calibration"
+    description: >
+      Are severity levels assigned accurately? Color-only status should be CRITICAL.
+      Hover-only tooltips and sort target size should be MAJOR. Row selection color-only
+      and density should be MINOR.
+    weight: 1
+    method: rule_based
+    scoring:
+      rule: >
+        Exact match = 1.0 per finding; one level off = 0.5; two or more levels off = 0.
+        Score = mean across all found findings.
+      critical_findings:
+        - color_only_status: CRITICAL
+      major_findings:
+        - hover_only_tooltips: MAJOR
+        - sort_target_size: MAJOR
+        - abbreviations_unexpanded: MAJOR
+      minor_findings:
+        - row_selection_color_only: MINOR
+        - no_density_control: MINOR
+
+# ─────────────────────────────────────────────
+# COMPOSITE SCORE
+# ─────────────────────────────────────────────
+composite_score:
+  formula: >
+    (perspective_coverage * 2 + color_only_diagnosis * 2 +
+     finding_completeness * 1 + false_positive_avoidance * 1 +
+     actionability * 1 + severity_calibration * 1) / 8
+  max_raw: 8
+  normalized: true  # expressed as 0.0 – 1.0
+
+# ─────────────────────────────────────────────
+# EXPECTED PERFORMANCE BY CONDITION
+# ─────────────────────────────────────────────
+expected_performance:
+  condition_A:
+    composite_score: "~0.35"
+    perspective_coverage: 0   # keyboard/ARIA only
+    color_only_diagnosis: 0   # either absent or conflated with contrast
+    finding_completeness: "~0.25"  # may find hover tooltip, misses color-only
+    false_positive_avoidance: 1    # probably won't make explicit false claims
+    actionability: "~0.70"
+    severity_calibration: "~0.40"
+
+  condition_B:
+    composite_score: "~0.50"
+    perspective_coverage: 1   # mentions color, likely conflates
+    color_only_diagnosis: 1   # conflated with contrast ratio
+    finding_completeness: "~0.40"
+    false_positive_avoidance: 1
+    actionability: "~0.75"
+    severity_calibration: "~0.50"
+
+  condition_C:
+    composite_score: "~0.80"
+    perspective_coverage: 2   # Environmental Contrast + Cognitive both addressed
+    color_only_diagnosis: 3   # correctly distinguishes 1.4.1 from 1.4.3
+    finding_completeness: "~0.90"
+    false_positive_avoidance: 2   # explicitly notes contrast passes, then pivots to 1.4.1
+    actionability: "~0.90"
+    severity_calibration: "~0.85"
+
+# C vs A delta on this fixture is the largest of the 5 pilot fixtures.
+# The color_only_diagnosis dimension (weight 2, critical) is where the gap is widest.
+largest_delta_fixture: true
+delta_driver: color_only_diagnosis
+
+# ─────────────────────────────────────────────
+# LLM JUDGE INSTRUCTIONS
+# ─────────────────────────────────────────────
+llm_judge_instructions: |
+  You are scoring an accessibility review of a React project dashboard component.
+
+  The component has these key characteristics:
+  - Status indicators (blocked/at-risk/on-track/not-started) are colored dots only.
+    Each dot color PASSES WCAG AA contrast ratio checks (4.5:1+) against white.
+    But color is the ONLY differentiator — no text, no aria-label, no shape/pattern.
+    This is a WCAG 1.4.1 (Use of Color) violation, NOT a WCAG 1.4.3 (Contrast) violation.
+  - Keyboard navigation works correctly. Do not penalize reviews that confirm this.
+  - Hover-only tooltips violate WCAG 1.4.13 and 2.1.1. This is a real finding.
+  - Sort icons are 10x10px. This violates WCAG 2.5.8. This is a real finding.
+  - Abbreviations (L/M/S, P1/P2/P3) are unexpanded. Cognitive concern. Real finding.
+
+  FALSE POSITIVES to watch for:
+  - Flagging dot contrast ratios as failing (they pass — false positive)
+  - Flagging keyboard navigation as broken (it works — false positive)
+  - Conflating 1.4.1 and 1.4.3 and recommending higher contrast as the fix
+
+  KEY EVALUATION QUESTION for perspective_coverage and color_only_diagnosis:
+  Does the review demonstrate that it understands WCAG 1.4.1 and 1.4.3 are
+  independent requirements, and that a component can pass contrast checks
+  while still failing the color-only requirement?
+
+  Score each dimension using the rubric criteria above. Return a JSON object
+  with dimension IDs as keys and integer scores as values, plus a brief rationale
+  string for each score (1-2 sentences). Example:
+  {
+    "perspective_coverage": 2,
+    "perspective_coverage_rationale": "...",
+    "color_only_diagnosis": 3,
+    "color_only_diagnosis_rationale": "...",
+    "false_positive_avoidance": 2,
+    "false_positive_avoidance_rationale": "..."
+  }

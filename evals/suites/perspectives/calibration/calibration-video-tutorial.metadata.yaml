@@ -1,0 +1,46 @@
+fixture_id: calibration-video-tutorial
+name: "Video Tutorial Page"
+description: "Video tutorial with captions, audio descriptions, chapter navigation, and transcript. Tests that escalation correctly identifies Auditory and Screen Reader as HIGH for media content."
+type: calibration
+archetype: media_page
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: HIGH
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+
+scoring:
+  method: alarm_level_accuracy
+  exact_match_score: 1.0
+  within_one_score: 0.5
+  off_by_two_score: 0.0
+  total_assessments: 7
+  passing_threshold_exact: 5
+  target_threshold_exact: 6
+
+rationale: |
+  Video content is the canonical trigger for Auditory perspective escalation.
+  Even when captions and transcripts are present, the escalation mechanism
+  should flag Auditory as HIGH because the component TYPE warrants deep review
+  (are captions accurate? is the transcript complete? are audio descriptions
+  sufficient?). These are content-level questions that need human verification.
+
+  Key signals:
+  - <video> element with speech → Auditory HIGH
+  - Custom player with toolbar role → Screen Reader HIGH
+  - Chapter navigation with aria-current → Keyboard MEDIUM
+  - Transcript section with heading hierarchy → Cognitive MEDIUM
+  - No animation → Vestibular LOW
+  - No color-coded info → Contrast LOW
+  - Standard responsive layout → Magnification LOW
+
+  Under-escalation failure mode: rating Auditory as MEDIUM or LOW when
+  a <video> element with speech content is present.
+
+  Nuance test: the component is well-implemented, but escalation should
+  fire based on component type risk, not current implementation quality.
+  A video page always needs auditory review, even if it looks good.

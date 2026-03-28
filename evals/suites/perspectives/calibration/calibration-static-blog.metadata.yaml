@@ -1,0 +1,42 @@
+fixture_id: calibration-static-blog
+name: "Static Blog Post (text + 1 image)"
+description: "Standard blog post with title, hero image, body text, author bio. Minimal interactivity. Tests that escalation mechanism correctly rates most perspectives as LOW."
+type: calibration
+archetype: static_content
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: MEDIUM
+
+scoring:
+  method: alarm_level_accuracy
+  exact_match_score: 1.0
+  within_one_score: 0.5
+  off_by_two_score: 0.0
+  total_assessments: 7
+  passing_threshold_exact: 5  # 5/7 = 71% (minimum)
+  target_threshold_exact: 6   # 6/7 = 86% (target)
+
+rationale: |
+  This calibration fixture represents the "quiet" end of the spectrum.
+  A well-calibrated escalation mechanism should NOT trigger deep review
+  for perspectives that have no relevance to static text content.
+
+  Key signals that should drive LOW ratings:
+  - No <video> or <audio> elements → Auditory LOW
+  - No CSS animation or transition → Vestibular LOW
+  - No custom interactive widgets → Keyboard LOW
+  - No color-coded information → Contrast LOW
+  - Single-column responsive layout → Magnification LOW
+
+  Key signals that should drive MEDIUM ratings:
+  - <article> with heading hierarchy → Screen Reader MEDIUM
+  - Body text content requiring reading → Cognitive MEDIUM
+
+  Over-escalation failure mode: rating Keyboard or Auditory as MEDIUM/HIGH
+  when there are no interactive widgets or media elements present.

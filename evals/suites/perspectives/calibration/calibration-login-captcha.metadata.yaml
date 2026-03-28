@@ -1,0 +1,42 @@
+fixture_id: calibration-login-captcha
+name: "Login Form with CAPTCHA"
+description: "Login form with email, password, and third-party visual CAPTCHA. Tests that escalation correctly identifies CAPTCHA as a HIGH barrier for Cognitive and Keyboard perspectives."
+type: calibration
+archetype: form_with_captcha
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: HIGH
+
+scoring:
+  method: alarm_level_accuracy
+  exact_match_score: 1.0
+  within_one_score: 0.5
+  off_by_two_score: 0.0
+  total_assessments: 7
+  passing_threshold_exact: 5
+  target_threshold_exact: 6
+
+rationale: |
+  CAPTCHA is one of the best-documented accessibility barriers. A well-calibrated
+  escalation mechanism should recognize it immediately.
+
+  Key signals:
+  - Third-party CAPTCHA widget → Keyboard HIGH (unknown keyboard support, potential trap)
+  - Visual puzzle challenge → Cognitive HIGH (time pressure, puzzle-solving, frustration)
+  - Form labels and aria-describedby present → Screen Reader MEDIUM (good form, uncertain widget)
+  - No media → Auditory LOW
+  - No animation → Vestibular LOW
+  - No color-coded info → Contrast LOW
+  - Simple layout → Magnification LOW
+
+  Under-escalation failure mode: rating Cognitive or Keyboard as LOW/MEDIUM
+  when a CAPTCHA widget is present.
+
+  Over-escalation failure mode: rating Auditory or Vestibular as MEDIUM/HIGH
+  when there is no media or animation.

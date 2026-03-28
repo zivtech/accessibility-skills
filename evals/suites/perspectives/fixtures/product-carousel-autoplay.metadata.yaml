@@ -1,0 +1,100 @@
+fixture_id: product-carousel-autoplay
+name: Product Carousel With Autoplay Animation
+description: >
+  React product carousel that auto-advances every 3 seconds with sliding CSS transitions,
+  a parallax background, and a pulsing badge animation — none guarded by prefers-reduced-motion.
+  No pause/stop control exists. Keyboard navigation (prev/next buttons) works correctly.
+  Tests whether reviewers surface vestibular and cognitive concerns, not just ARIA/keyboard gaps.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+perspectives_tested:
+  primary: vestibular
+  secondary: cognitive
+  notes: >
+    Four of five planted bugs are in the vestibular/motion dimension. The fifth (no aria-live)
+    is in the screen reader dimension. Keyboard navigation is intentionally correct to isolate
+    whether reviewers shift focus to motion/vestibular concerns.
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "No pause/stop control for auto-advancing content"
+        severity: CRITICAL
+        wcag: "2.2.2 Pause, Stop, Hide"
+        evidence: "setInterval with no pause mechanism, no pause button in JSX"
+        user_group: "Vestibular disorder users, cognitive/attention users"
+
+      - description: "CSS slide transition ignores prefers-reduced-motion"
+        severity: MAJOR
+        wcag: "2.3.1 / WCAG 2.3.3 Animation from Interactions"
+        evidence: "Inline transform transition 0.6s ease; no @media (prefers-reduced-motion) anywhere"
+        user_group: "Vestibular disorder users"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Parallax background-attachment: fixed with no reduced-motion alternative"
+        severity: MAJOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: "background-attachment: fixed on .carousel-wrapper; no reduced-motion override"
+        user_group: "Vestibular disorder users"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Rapid badge pulse animation is distracting for cognitive/attention users"
+        severity: MINOR
+        wcag: "2.3.3 Animation from Interactions (WCAG 2.1 AAA) / cognitive load"
+        evidence: "@keyframes badgePulse 0.8s infinite alternate; no reduced-motion guard"
+        user_group: "Cognitive/attention users (ADHD, ASD)"
+
+      - description: "No aria-live region announcing slide changes"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Dot indicators aria-hidden; no live region present"
+        user_group: "Screen reader users"
+
+expected_alarm_levels:
+  Vestibular: HIGH
+  Cognitive: MEDIUM
+  Screen_Reader: LOW
+  Keyboard: LOW
+  Low_Vision: LOW
+  Auditory: LOW
+  Motor: LOW
+
+multi_perspective_coverage:
+  vestibular: >
+    Primary failure dimension. Auto-advance (WCAG 2.2.2), slide transition without reduced-motion
+    (WCAG 2.3.1/2.3.3), and parallax background (WCAG 2.3.3) all present. Combined effect is
+    significant risk for users with BPPV, migraine, or motion sickness. Alarm level: HIGH.
+  cognitive: >
+    Rapid badge pulse creates persistent peripheral distraction. Auto-advance also contributes to
+    cognitive load by constantly shifting content without user control. Alarm level: MEDIUM.
+  screen_reader: >
+    Slide changes produce no announcement. Keyboard navigation buttons are correctly labeled.
+    Structural semantics (heading, alt text) are present. Minor gap only. Alarm level: LOW.
+  keyboard: >
+    Prev/next buttons are focusable, labeled, and functional. No keyboard bugs. Alarm level: LOW.
+  low_vision: >
+    Contrast on text and buttons is adequate. No issues. Alarm level: LOW.
+  auditory: >
+    No audio content in this component. Not applicable. Alarm level: LOW.
+  motor: >
+    Buttons are adequately sized and spaced. No motor-specific issues. Alarm level: LOW.
+
+false_positive_traps: 0
+notes: |
+  This is a vestibular/motion fixture. The deliberate design choice is that keyboard navigation
+  WORKS — buttons are labeled, focusable, and functional. A reviewer who only checks ARIA and
+  keyboard patterns will walk away satisfied having missed four significant issues.
+
+  The key diagnostic question for this fixture: does the reviewer pivot from "keyboard works" to
+  "what does this component do to users with motion sensitivity?"
+
+  Expected verdict: REVISE
