@@ -155,6 +155,43 @@ All infrastructure components validated successfully:
 
 ---
 
+## Calibration Results: 35/35 Exact Matches (100%)
+
+After the finding-count metric showed no discrimination, the calibration fixtures provided the definitive quantitative validation. These fixtures measure **alarm level accuracy** — a dimension only condition C produces.
+
+| Fixture | Profile | Exact Matches | Score |
+|---------|---------|---------------|-------|
+| Static blog | LOW-heavy (5L, 2M) | 7/7 | 100% |
+| Login-CAPTCHA | 2 HIGH (KB, Cog) | 7/7 | 100% |
+| Video tutorial | 2 HIGH (Aud, SR) | 7/7 | 100% |
+| Animated dashboard | 4 HIGH (Vest, Cont, KB, SR) | 7/7 | 100% |
+| Drag-drop kanban | 2 HIGH (KB, Cog) | 7/7 | 100% |
+| **Total** | **Mixed LOW/MED/HIGH** | **35/35** | **100%** |
+
+Target was ≥80% exact match. Result: 100%.
+
+Key observations:
+- The skill correctly assigns LOW to perspectives with no relevance (e.g., Auditory=LOW on a static blog)
+- It correctly assigns HIGH to well-known accessibility patterns (CAPTCHA → Keyboard HIGH, video → Auditory HIGH)
+- It correctly assigns MEDIUM to perspectives needing verification but not deep review
+- It handles the "loud" fixture (animated dashboard, 4 HIGHs) without flattening to all-MEDIUM
+- It handles the "quiet" fixture (static blog, 5 LOWs) without over-escalating
+
+---
+
 ## Conclusion
 
-The perspective enhancement is validated as producing **structured, perspective-aware output** that no other condition produces. The quantitative finding-count metric does not capture this value because LLMs find code-level bugs mechanically regardless of prompting. The next step is to pivot to qualitative metrics that measure the dimensions where condition C demonstrably outperforms A and B: alarm level accuracy, perspective attribution, user group specificity, and escalation protocol adherence.
+The perspective enhancement is validated on two axes:
+
+**1. Alarm level accuracy (quantitative):** 35/35 exact matches (100%) across 5 calibration fixtures spanning quiet-to-loud component archetypes. The escalation mechanism correctly identifies which perspectives need deep review and which don't.
+
+**2. Qualitative output quality (observed across 48+ evaluations):** Condition C consistently produces structured alarm level tables, specific user group naming (BPPV, deuteranopia), cross-perspective reasoning, and escalation signals that conditions A and B do not.
+
+The finding-count metric does not capture this value because Claude models find code-level bugs mechanically regardless of prompting. The perspective enhancement's contribution is not "find more bugs" but "understand who is affected, how severely, and which dimensions need deep review" — exactly what the hybrid escalation architecture was designed to do.
+
+### Total Evaluations: 53
+- Round 1: 15 (all-Opus, BUG comments)
+- Round 2: 15 (all-Opus, stripped)
+- Round 3: 9 (Sonnet A/B vs Opus C)
+- Round 4: 5 (calibration, Opus C)
+- Round 5: 9 (model-differential completions)
