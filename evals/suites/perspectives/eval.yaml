@@ -6,21 +6,29 @@ companion_skills:
   - a11y-planner
   - a11y-critic
   - a11y-test
-model: claude-opus-4-6
 temperature: 0
+
+# Model differential: A/B use Sonnet (realistic baseline — the skill prompt is the
+# enhancement, not the model). C uses Opus (matching actual perspective-audit usage).
+# Pilot with all-Opus showed no discrimination — Opus finds all bugs from code
+# structure alone regardless of prompting. Sonnet is the realistic baseline for
+# how a11y-critic would be used without perspective enhancements.
 
 conditions:
   A:
     name: "Current skills (no perspectives)"
     description: "a11y-planner + a11y-critic + a11y-test as of commit before perspective enhancements"
+    model: claude-sonnet-4-6
     prompt_modifier: null
   B:
     name: "Strong generic baseline"
     description: "Current skills + 'also review for auditory, vestibular, cognitive, and contrast accessibility' appended"
+    model: claude-sonnet-4-6
     prompt_modifier: "Also review for auditory, vestibular, cognitive, and contrast accessibility."
   C:
     name: "Enhanced skills with perspective audit"
     description: "Enhanced a11y-planner/critic/test + perspective-audit companion skill"
+    model: claude-opus-4-6
     prompt_modifier: null
     skills:
       - perspective-audit
