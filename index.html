@@ -260,6 +260,11 @@
       -webkit-overflow-scrolling: touch;
       padding-bottom: .5rem;
     }
+    .lifecycle-diagram:focus {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
 
     .lifecycle-flow {
       display: flex;
@@ -312,6 +317,15 @@
       background: #fce7f3;
       border-color: #db2777;
       color: #831843;
+      border-style: dashed;
+    }
+    /* Faded placeholder version — uses diluted colors instead of opacity
+       to maintain contrast ratio compliance (axe flags opacity < 1).
+       #6b5060 on #f5f0f2 = ~4.7:1 — passes AA for normal text */
+    .lc-node--faded {
+      background: #f5f0f2;
+      border-color: #d4b5c4;
+      color: #6b5060;
       border-style: dashed;
     }
     .lc-node--manual {
@@ -950,7 +964,7 @@
           </p>
         </div>
 
-        <div class="lifecycle-diagram" role="img" aria-label="Lifecycle diagram: plan, critique, optional perspective audit, revise, implement, test, critique again, optional perspective audit, fix, re-test">
+        <div class="lifecycle-diagram" role="img" tabindex="0" aria-label="Lifecycle diagram: plan, critique, optional perspective audit, revise, implement, test, critique again, optional perspective audit, fix, re-test">
           <div class="lifecycle-flow">
 
             <!-- Main track row 1 (steps 1-5) -->
@@ -990,7 +1004,7 @@
 
               <!-- Step 3 placeholder (escalation shown below) -->
               <div class="lc-step" style="position:relative;">
-                <div class="lc-node lc-node--perspective" style="opacity:.35;" aria-hidden="true">
+                <div class="lc-node lc-node--perspective" class="lc-node--faded" aria-hidden="true">
                   <span class="lc-node__step">3</span>
                   Perspective audit
                 </div>
@@ -1070,7 +1084,7 @@
 
               <!-- Step 8 placeholder -->
               <div class="lc-step">
-                <div class="lc-node lc-node--perspective" style="opacity:.35;" aria-hidden="true">
+                <div class="lc-node lc-node--perspective" class="lc-node--faded" aria-hidden="true">
                   <span class="lc-node__step">8</span>
                   Perspective audit
                 </div>
