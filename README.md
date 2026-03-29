@@ -172,9 +172,64 @@ evals/
 
 Skills and agents live at root `.claude/` for Claude Code discovery. Per-skill documentation lives under `docs/`.
 
+## Testing & Contributing
+
+### Evaluation suite
+
+The `evals/suites/perspectives/` directory contains a 30-fixture evaluation suite (25 main + 5 calibration) that validates the perspective-audit skill and the perspective enhancements to the planner, critic, and tester.
+
+Fixture categories:
+- **HAS-BUGS (new dimension)** — 10 fixtures with planted bugs in auditory, vestibular, cognitive, contrast, and magnification dimensions
+- **HAS-BUGS (existing dimension)** — 6 regression fixtures with keyboard/screen reader bugs all conditions should catch
+- **CLEAN** — 5 fixtures with zero real bugs, measuring false positive rate
+- **ADVERSARIAL** — 4 fixtures that pass automated tools but have subtle perspective-specific issues
+
+Each fixture has 3 files:
+- `fixtures/{id}.md` — Component code, expected behavior, planted bugs
+- `fixtures/{id}.metadata.yaml` — Ground truth: expected findings, alarm levels, false positive traps
+- `rubrics/{id}.rubric.yaml` — Scoring dimensions, expected performance per condition, thresholds
+
+### Running evaluations
+
+Generate stripped fixtures (removes `// BUG:` hint comments for blind review):
+
+```bash
+cd evals/suites/perspectives
+python3 strip_bug_comments.py
+# Creates fixtures-eval/ with clean versions
+```
+
+The eval harness runs fixtures under 3 conditions:
+- **A** — Standard a11y-critic (Sonnet, no perspectives)
+- **B** — Standard a11y-critic + "also review for auditory, vestibular, cognitive, and contrast" (Sonnet)
+- **C** — Enhanced a11y-critic + perspective-audit (Opus, with alarm levels)
+
+### Baselines to maintain
+
+Any change to the skills must preserve these baselines:
+
+| Baseline | Current | Minimum | How to test |
+|----------|---------|---------|-------------|
+| **Calibration alarm accuracy** | 35/35 (100%) | 28/35 (80%) | Run 5 calibration fixtures under condition C, score alarm levels against `calibration/*.metadata.yaml` expected levels |
+| **CLEAN false positive rate** | 0% | 0% | Run 5 CLEAN fixtures under condition C, count MAJOR/CRITICAL findings (must be 0) |
+| **Regression non-inferiority** | C = A (6/6) | C ≥ A - 5% | Run 6 regression fixtures under A and C, compare existing-dimension true positive rate |
+
+Scoring for alarm levels: exact match = 1.0, within +/-1 level = 0.5, off by 2 levels = 0.0.
+
+### Adding new fixtures
+
+1. Create 3 files using the naming convention `{kebab-case-id}.md`, `.metadata.yaml`, `.rubric.yaml`
+2. Or add the spec to `generate_fixtures.py` and run it to generate metadata + rubric
+3. Use snake_case for perspective keys in metadata: `magnification_reflow`, `environmental_contrast`, `vestibular_motion`, `auditory_access`, `keyboard_motor`, `screen_reader_semantic`, `cognitive_neurodivergent`
+4. Include `// BUG:` comments in the fixture `.md` code for documentation, but always test with stripped versions (`strip_bug_comments.py`)
+5. CLEAN fixtures must have zero real bugs and 3+ false positive traps
+6. Regression fixtures must include `regression_fixture: true` and `non_inferiority_test` in metadata/rubric
+
+See `evals/suites/perspectives/PILOT-REPORT.md` for full evaluation methodology and results.
+
 ## Evaluation Assets
 
-This repo includes the `a11y-planner` and `a11y-critic` eval suites. The fixture and rubric assets are included here; the broader harness originated in the source monorepo.
+This repo includes eval suites for `a11y-critic` and `perspectives`. The fixture and rubric assets are included here; the broader harness originated in the source monorepo.
 
 ## License
 
