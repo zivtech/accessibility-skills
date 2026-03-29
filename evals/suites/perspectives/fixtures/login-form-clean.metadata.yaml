@@ -1,0 +1,58 @@
+fixture_id: login-form-clean
+name: "Login Form With Complete Accessibility (CLEAN)"
+description: >
+  React login form with email, password, remember-me, and forgot-password link. All labels matched, aria-describedby on errors, role='alert', aria-invalid, aria-required, autocomplete, visible focus styles.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Form & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+  - category: should_find
+    count: 0
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Could add aria-live='polite' to error summary region"
+        severity: ENHANCEMENT
+        wcag: "4.1.3 Status Messages"
+        evidence: "Error summary updates on submit but has no live region"
+        user_group: "Screen reader users"
+      - description: "Could add show/hide password toggle for usability"
+        severity: ENHANCEMENT
+        wcag: "Cognitive best practice"
+        evidence: "No password visibility toggle"
+        user_group: "Cognitive users"
+
+perspectives_tested:
+  primary: "all"
+  secondary: "all"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "type='password' on password field — correct, not a bug"
+      note: "Standard password field"
+    - description: "autocomplete='current-password' — correct usage"
+      note: "Proper autocomplete attribute"
+    - description: "'Remember me' checkbox without fieldset — acceptable as single checkbox"
+      note: "Fieldset not required for single checkbox"
+
+expected_verdict: ACCEPT
+scoring_notes:
+  false_positive_weight: -2
+  critical_false_positive_penalty: -3
+
+notes: "Generated fixture for CLEAN category, primary perspective all."

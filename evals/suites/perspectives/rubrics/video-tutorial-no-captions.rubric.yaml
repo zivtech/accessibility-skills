@@ -138,7 +138,7 @@ expected_findings:
 
 composite_score_formula: |
   positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
-  max_positive = (2 * 3) + (2 * 2) + (1 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 16
+  max_positive = (2 * 3) + (2 * 2) + (1 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 15
   false_positive_penalty = count_triggered * 2
   raw_score = sum(found * weight) - false_positive_penalty
   normalized_score = raw_score / max_positive * 100

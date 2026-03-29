@@ -1,0 +1,26 @@
+fixture_id: calibration-drag-drop-kanban
+name: "Drag-and-Drop Kanban Board (Calibration C5)"
+description: "React kanban board with drag-and-drop columns (To Do, In Progress, Done) and card reordering. No keyboard alternative for drag. Tests keyboard + cognitive HIGH detection."
+type: calibration
+archetype: drag_drop_interactive
+
+expected_alarm_levels:
+  magnification_reflow: MEDIUM
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: HIGH
+
+scoring:
+  method: alarm_level_accuracy
+  exact_match_score: 1.0
+  within_one_score: 0.5
+  off_by_two_score: 0.0
+  total_assessments: 7
+  passing_threshold_exact: 5
+  target_threshold_exact: 6
+
+rationale: |
+  Drag-and-drop without keyboard alternative is the canonical keyboard accessibility failure. Cognitive is HIGH due to spatial organization and multi-column state tracking. Tests specific pattern recognition.

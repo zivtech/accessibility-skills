@@ -1,0 +1,127 @@
+fixture_id: multi-column-pricing
+name: Multi-Column Pricing Comparison Table
+description: >
+  React pricing comparison table with 4 tiers and 7 feature rows. Table structure
+  (thead, tbody, th scope), CTA button labels, and horizontal scroll wrapper are all
+  correct. Issues are concentrated in contrast (color-only feature indicators, borderline
+  pricing sub-text) and cognitive/magnification (recommended-tier color-only highlight).
+  Feature tooltips are hover-only. Badge animation has no reduced-motion override.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Content & Layout
+work_type: component_review
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - description: "Feature availability indicated by color only — check vs X has no non-color distinction"
+        severity: CRITICAL
+        wcag: "1.4.1 Use of Color"
+        evidence: "FeatureCell renders aria-hidden span with check/X glyph and color class only; no visually-hidden text; no aria-label on td"
+        user_group: "Users with color vision deficiencies; screen reader users; high-contrast users"
+
+  should_find:
+    count: 2
+    items:
+      - description: "Recommended tier highlighted with background color and border only — no text label"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        evidence: "recommended-header CSS applies background and border only; no text Recommended in th; BUG comment confirms"
+        user_group: "Users with color vision deficiencies; screen reader users; high-contrast users"
+
+      - description: "Pricing sub-text is 12px #767676 on white — 4.54:1 contrast, borderline AA"
+        severity: MAJOR
+        wcag: "1.4.3 Contrast (Minimum)"
+        evidence: ".tier-price { font-size: 12px; color: #767676 } — ~4.54:1 ratio at 12px regular weight"
+        user_group: "Users with low vision; users in high-glare environments"
+
+  nice_to_find:
+    count: 2
+    items:
+      - description: "Feature comparison tooltips are hover-only — no focus trigger, :focus-within absent"
+        severity: MINOR
+        wcag: "1.4.13 Content on Hover or Focus; 2.1.1 Keyboard"
+        evidence: ".feature-tooltip-trigger:hover shows tooltip; no :focus-within rule; BUG comment confirms"
+        user_group: "Keyboard-only users; motor-impaired users"
+
+      - description: "Most popular badge has shimmer animation with no prefers-reduced-motion override"
+        severity: MINOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: ".most-popular-badge { animation: shimmer 2s linear infinite } with no reduced-motion media query"
+        user_group: "Users with vestibular disorders; users who have enabled reduced-motion"
+
+perspectives_tested:
+  primary: "Environmental Contrast"
+  secondary: "Cognitive Neurodivergent"
+
+expected_alarm_levels:
+  environmental_contrast: HIGH
+  cognitive_neurodivergent: MEDIUM
+  magnification_reflow: MEDIUM
+  vestibular_motion: LOW
+  screen_reader_semantic: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+
+multi_perspective_coverage:
+  environmental_contrast:
+    alarm_level: HIGH
+    notes: "Color-only feature availability (1.4.1), recommended-tier color-only highlight (1.4.1), borderline pricing text contrast (1.4.3) — all concentrate in the contrast dimension"
+  cognitive_neurodivergent:
+    alarm_level: MEDIUM
+    notes: "Recommended tier has no text label; hover-only tooltips require discovery; feature comparison requires color discrimination"
+  magnification_reflow:
+    alarm_level: MEDIUM
+    notes: "12px pricing sub-text at low contrast is worse at high magnification; horizontal scroll wrapper handles reflow correctly"
+  vestibular_motion:
+    alarm_level: LOW
+    notes: "Shimmer animation on Most popular badge has no reduced-motion override — minor vestibular impact"
+  screen_reader_semantic:
+    alarm_level: LOW
+    notes: "aria-hidden on check/X icons with no visually-hidden text is a screen reader issue, but primary dimension is contrast/color"
+  auditory_access:
+    alarm_level: LOW
+    notes: "No audio content"
+  keyboard_motor:
+    alarm_level: LOW
+    notes: "All CTA buttons keyboard-accessible; tooltip :focus-within gap is minor; table nav is native"
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Table structure (thead, tbody, th scope=col) is semantically correct — must NOT be flagged"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "pricing-table thead and tbody structure"
+
+    - description: "CTA buttons have descriptive aria-label values identifying both action and plan name — must NOT be flagged as unlabeled"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "cta-button elements with aria-label"
+
+    - description: "Check and X icons individually pass color contrast — the bug is 1.4.1 (color as sole differentiator), NOT 1.4.3 (contrast); reviewers must cite the correct criterion"
+      trap_type: "wrong_criterion_applied"
+      relevant_lines: "FeatureCell check/X spans with available/unavailable color classes"
+
+wcag_criteria:
+  - "1.4.1 Use of Color"
+  - "1.4.3 Contrast (Minimum)"
+  - "1.4.13 Content on Hover or Focus"
+  - "2.3.3 Animation from Interactions"
+
+expected_verdict: REVISE
+
+notes: |
+  Fixture 4 of 4 in the expanded perspectives eval suite. Category: HAS-BUGS (contrast primary).
+
+  Design intent: test whether reviewers can distinguish between 1.4.1 (color as sole
+  differentiator) and 1.4.3 (contrast ratio) failures — two related but distinct WCAG
+  criteria. The check/X color-only issue is 1.4.1; the pricing text is 1.4.3.
+  A reviewer who conflates them or cites the wrong criterion for each earns partial
+  credit only.
+
+  The "both check and X individually pass contrast" note is a deliberate trap for
+  reviewers who think the issue is contrast ratio. The real issue is that color is the
+  only differentiator between the two states — a separate and more subtle violation.
+
+  Expected scores: A ~30-40%, B ~55-65%, C ~80-90%

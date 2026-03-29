@@ -85,6 +85,15 @@ expected_findings:
           outline:none is acceptable on tabIndex=-1 elements that are not
           in the sequential tab order
 
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+
 perspectives_tested:
   keyboard:
     alarm_level: LOW

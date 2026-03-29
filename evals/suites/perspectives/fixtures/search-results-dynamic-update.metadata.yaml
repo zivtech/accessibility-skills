@@ -1,0 +1,74 @@
+fixture_id: search-results-dynamic-update
+name: "Search Results With No Live Region Announcements"
+description: >
+  React search interface with real-time results updating as user types. No aria-live on results, no 'N results found' announcement, loading spinner is CSS-only with no accessible text.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content
+work_type: component_review
+regression_fixture: true
+regression_note: "Tests existing-dimension strength. All conditions should score 70%+. C must not regress below A."
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "No aria-live on results container — SR users unaware results changed"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence: "Results container div has no aria-live attribute"
+        user_group: "Screen reader users"
+      - description: "'N results found' count updates visually but no live announcement"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Count text updates on render; no aria-live wrapping it"
+        user_group: "Screen reader users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "Loading spinner CSS-only — no aria-busy, no accessible text"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Spinner is CSS animation; no aria-busy on container, no sr-only text"
+        user_group: "Screen reader users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Search input type='text' not type='search'"
+        severity: MINOR
+        wcag: "Semantic HTML best practice"
+        evidence: "<input type='text'> instead of type='search'"
+        user_group: "Screen reader users"
+      - description: "Clear search button '×' has no aria-label"
+        severity: MINOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Button contains only '×' text, no aria-label"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "screen_reader_semantic"
+  secondary: "cognitive_neurodivergent"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Results are in a landmark region with aria-label"
+      note: "Correct — do not flag"
+    - description: "Each result card has heading"
+      note: "Correct — do not flag"
+    - description: "Keyboard navigation between results works"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective screen_reader_semantic."

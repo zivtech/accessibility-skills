@@ -58,6 +58,11 @@ expected_findings:
           condition_A: "55%"
           condition_B: "70%"
           condition_C: "90%"
+        scoring_notes: >
+          Full credit if reviewer cites WCAG 2.2.2 and frames the harm as vestibular/motion
+          or cognitive/attention impact. Partial credit (0.5) if reviewer flags the auto-advance
+          as a general UX concern without WCAG citation or user group framing. No credit if
+          auto-advance is not mentioned.
         notes: >
           Condition A may flag this as a general UX issue but is unlikely to frame it through
           vestibular/motion harm. Condition B names the dimension but may under-weight severity.
@@ -71,6 +76,11 @@ expected_findings:
           condition_A: "25%"
           condition_B: "55%"
           condition_C: "85%"
+        scoring_notes: >
+          Full credit if reviewer cites prefers-reduced-motion absence on the slide transition
+          AND references WCAG 2.3.1 or 2.3.3. Partial credit (0.5) if reviewer mentions
+          animation concern without identifying the specific CSS property or media query.
+          No credit if not mentioned.
         notes: >
           This is the key differentiator. Condition A has no structured prefers-reduced-motion
           checklist and is unlikely to raise this independently. Condition B may mention it if
@@ -115,6 +125,7 @@ expected_findings:
 
   - category: false_positive_trap
     count: 0
+    penalty_weight: 0
     known_safe_features:
       - "Prev/next button aria-label attributes"
       - "Button keyboard focusability and :focus-visible styles"

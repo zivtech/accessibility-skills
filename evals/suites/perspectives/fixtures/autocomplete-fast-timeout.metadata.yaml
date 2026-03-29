@@ -1,0 +1,70 @@
+fixture_id: autocomplete-fast-timeout
+name: "Address Autocomplete With Fast Timeout and Double-Action Enter"
+description: >
+  React address autocomplete where suggestions disappear after 800ms inactivity, Enter both selects suggestion AND submits form, suggestions list has no ARIA roles, and loading/empty states lack accessible announcements.
+language: jsx
+framework: React
+difficulty: ADVERSARIAL
+domain: Form & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Suggestions disappear after 800ms inactivity — too fast for slow navigators"
+        severity: CRITICAL
+        wcag: "2.2.1 Timing Adjustable"
+        evidence: "setTimeout(closeSuggestions, 800) on blur; no option to extend"
+        user_group: "Motor impairment users, switch users, cognitive users"
+      - description: "Enter both selects suggestion AND submits form — double-action"
+        severity: MAJOR
+        wcag: "3.2.2 On Input"
+        evidence: "Enter key handler selects option then calls form.submit()"
+        user_group: "Keyboard users, cognitive users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "Suggestions list has no role='listbox' — SR can't announce as options"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Suggestions in plain div with no ARIA role"
+        user_group: "Screen reader users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "'No results' state shows italic gray text with no aria-live"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Empty state text rendered with no live announcement"
+        user_group: "Screen reader users"
+      - description: "Loading spinner during fetch has no aria-busy or text"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "CSS-only spinner; no aria-busy on container"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "keyboard_motor"
+  secondary: "cognitive_neurodivergent"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: HIGH
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Input has proper label and aria-describedby instructions"
+      note: "Correct — do not flag"
+    - description: "Visible focus styles on input and suggestions"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for ADVERSARIAL category, primary perspective keyboard_motor."

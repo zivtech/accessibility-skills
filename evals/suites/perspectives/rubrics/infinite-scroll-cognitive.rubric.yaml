@@ -1,0 +1,54 @@
+fixture_id: infinite-scroll-cognitive
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    weight: 3
+  - id: should_find
+    name: "Should-Find Issues"
+    weight: 2
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    weight: 1
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    weight: -2
+  - id: evidence_quality
+    name: "Evidence Quality"
+    weight: 1
+  - id: format_compliance
+    name: "Format Compliance"
+    weight: 1
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    weight: 2
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: "30-40"
+  - condition: B
+    label: "Strong generic baseline"
+    expected_score: "45-55"
+  - condition: C
+    label: "Enhanced skills with perspective audit"
+    expected_score: "75-85"
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+notes: "Generated rubric for infinite-scroll-cognitive. Category: ADVERSARIAL."

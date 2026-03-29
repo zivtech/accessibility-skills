@@ -1,0 +1,134 @@
+fixture_id: dense-admin-jargon
+name: Dense Admin Settings Panel With Jargon
+description: >
+  React admin settings panel with three columns of toggles, technical jargon labels,
+  and a 9px column header font. All 12 checkboxes use native input elements correctly
+  associated with labels and are keyboard-operable. Issues are concentrated in cognitive
+  legibility (jargon, overload, unsaved state) and magnification/reflow (9px text,
+  fixed 3-column grid). Error messages use opaque codes. Required fields are asterisk-only.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Data Display
+work_type: component_review
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - description: "Dense 3-column layout with 9px column header font — fails magnification/reflow and cognitive legibility"
+        severity: CRITICAL
+        wcag: "1.4.4 Resize Text; 1.4.10 Reflow"
+        evidence: "settings-grid uses fixed grid-template-columns with no media query; h2 font-size is 9px"
+        user_group: "Users with low vision using screen magnification; users with cognitive disabilities"
+
+  should_find:
+    count: 3
+    items:
+      - description: "Technical jargon labels (HSTS, SRI, Brotli, WAL) with no tooltips or plain-English descriptions"
+        severity: MAJOR
+        wcag: "3.1.5 Reading Level; 3.1.3 Unusual Words"
+        evidence: "All 12 toggle labels use technical acronyms; BUG comment in renderToggleGroup confirms no tooltip"
+        user_group: "Users with cognitive disabilities; non-specialist administrators"
+
+      - description: "12 ungrouped toggles across three flat lists — cognitive overload, no sub-grouping"
+        severity: MAJOR
+        wcag: "3.2.4 Consistent Identification (general cognitive best practice)"
+        evidence: "renderToggleGroup renders flat div with no fieldset/legend or internal headings; BUG comment confirms"
+        user_group: "Users with cognitive and attention disabilities"
+
+      - description: "No unsaved-changes indicator — saved state set false but never rendered"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification; general cognitive best practice"
+        evidence: "setSaved(false) called in handleToggle but saved state unused in JSX; BUG comment confirms"
+        user_group: "Users with cognitive and memory disabilities; all users"
+
+  nice_to_find:
+    count: 2
+    items:
+      - description: "Error messages use opaque codes (ERR_CSP_001) not human-readable descriptions"
+        severity: MINOR
+        wcag: "3.3.1 Error Identification"
+        evidence: "SECURITY_TOGGLES contains error: 'ERR_CSP_001'; rendered as-is in alert span"
+        user_group: "All users, especially users with cognitive disabilities"
+
+      - description: "Required fields marked with asterisk only — no aria-required, asterisk is aria-hidden"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships; 3.3.2 Labels or Instructions"
+        evidence: "required-asterisk span has aria-hidden=true; no aria-required on input elements"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "Cognitive Neurodivergent"
+  secondary: "Magnification Reflow"
+
+expected_alarm_levels:
+  cognitive_neurodivergent: HIGH
+  magnification_reflow: HIGH
+  screen_reader_semantic: MEDIUM
+  environmental_contrast: MEDIUM
+  auditory_access: LOW
+  vestibular_motion: LOW
+  keyboard_motor: LOW
+
+multi_perspective_coverage:
+  cognitive_neurodivergent:
+    alarm_level: HIGH
+    notes: "Technical jargon, 12 ungrouped toggles, missing unsaved-changes indicator, opaque error codes — all directly impair cognitive access"
+  magnification_reflow:
+    alarm_level: HIGH
+    notes: "9px section header font and fixed 3-column grid with no breakpoints fail at 200% magnification"
+  screen_reader_semantic:
+    alarm_level: MEDIUM
+    notes: "aria-required missing on required checkboxes; required asterisk is aria-hidden; error codes lack human-readable text"
+  environmental_contrast:
+    alarm_level: MEDIUM
+    notes: "9px gray section headers (#666 on white) may fail contrast at very small sizes; red asterisks at 9px have functional contrast issues"
+  auditory_access:
+    alarm_level: LOW
+    notes: "No audio content; no audio-only notifications"
+  vestibular_motion:
+    alarm_level: LOW
+    notes: "No animation or motion patterns"
+  keyboard_motor:
+    alarm_level: LOW
+    notes: "All 12 checkboxes are native input elements with correct label associations — fully keyboard-operable, no issues"
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "All 12 checkboxes are native <input type='checkbox'> with correct <label> associations — must NOT be flagged as keyboard or labeling failures"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "renderToggleGroup function and all toggle-row elements"
+
+    - description: "Save button is a native <button> with focus-visible outline — must NOT be flagged as keyboard inaccessible"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "btn-save button element"
+
+    - description: "Error span uses role=alert which is correct — the bug is the opaque error code content, NOT the ARIA pattern; reviewers must not penalize the role=alert usage"
+      trap_type: "partial_implementation_over-penalized"
+      relevant_lines: "error-inline span with role=alert"
+
+wcag_criteria:
+  - "1.4.4 Resize Text"
+  - "1.4.10 Reflow"
+  - "3.1.3 Unusual Words"
+  - "3.1.5 Reading Level"
+  - "3.3.1 Error Identification"
+  - "3.3.2 Labels or Instructions"
+  - "1.3.1 Info and Relationships"
+
+expected_verdict: REVISE
+
+notes: |
+  Fixture 2 of 4 in the expanded perspectives eval suite. Category: HAS-BUGS (cognitive + magnification primary).
+
+  Design intent: test whether reviewers can identify cognitive and magnification failures
+  independently of the correctly implemented keyboard layer. The error span trap (correct
+  role=alert, wrong content) is designed to catch reviewers who penalize correct ARIA usage
+  rather than the content quality.
+
+  The 9px font and fixed grid are the highest-signal CRITICAL finding — a reviewer who
+  misses the font size measurement is likely not applying the magnification perspective lens.
+
+  Expected scores: A ~25-35%, B ~45-55%, C ~75-85%

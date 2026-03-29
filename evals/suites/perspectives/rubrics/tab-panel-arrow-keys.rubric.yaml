@@ -1,0 +1,61 @@
+fixture_id: tab-panel-arrow-keys
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+primary_metric: existing_dimension_tpr
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    weight: 3
+  - id: should_find
+    name: "Should-Find Issues"
+    weight: 2
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    weight: 1
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    weight: -2
+  - id: evidence_quality
+    name: "Evidence Quality"
+    weight: 1
+  - id: format_compliance
+    name: "Format Compliance"
+    weight: 1
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    weight: 2
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: "75-85"
+  - condition: B
+    label: "Strong generic baseline"
+    expected_score: "75-85"
+  - condition: C
+    label: "Enhanced skills with perspective audit"
+    expected_score: "80-90"
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+non_inferiority_test:
+  metric: existing_dimension_tpr
+  comparison: "C >= A"
+  tolerance: "-5%"
+  pass_condition: "C_tpr >= A_tpr - 0.05"
+
+notes: "Generated rubric for tab-panel-arrow-keys. Category: HAS-BUGS."

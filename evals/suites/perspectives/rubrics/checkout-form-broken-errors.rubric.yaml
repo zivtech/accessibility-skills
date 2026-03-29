@@ -81,8 +81,19 @@ expected_findings:
           C: "85%"
 
   - category: should_find
-    count: 1
+    count: 2
     items:
+      - id: error-summary-links-not-navigable
+        description: "Error summary list items are plain text, not anchor links to fields"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification"
+        evidence_requirement: "Reference to error summary <li> elements lacking <a href> to field IDs"
+        expected_to_find:
+          A: "55%"
+          B: "55%"
+          C: "65%"
+        scoring_note: "Full credit if reviewer identifies non-navigable error links as distinct from missing aria-describedby. Partial (0.5) if mentioned but conflated with aria-describedby finding."
+
       - id: color-only-step-indicator
         description: "Step indicator uses color alone to communicate completion state"
         severity: MAJOR

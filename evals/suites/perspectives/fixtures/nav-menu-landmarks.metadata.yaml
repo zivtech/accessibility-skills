@@ -1,0 +1,53 @@
+fixture_id: nav-menu-landmarks
+name: "Navigation Menu With Complete Landmarks (CLEAN)"
+description: >
+  React site navigation with primary nav, breadcrumb with aria-current, sidebar, skip links, and all landmarks correctly labeled.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Navigation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+  - category: should_find
+    count: 0
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Could add aria-expanded on mobile menu toggle (desktop has no toggle)"
+        severity: ENHANCEMENT
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "No mobile menu toggle visible in desktop view"
+        user_group: "Screen reader users on mobile"
+
+perspectives_tested:
+  primary: "all"
+  secondary: "all"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Multiple nav elements on page — correct with distinct aria-labels"
+      note: "Correct — each nav has unique label"
+    - description: "aria-current='page' on breadcrumb — correct"
+      note: "Standard breadcrumb pattern"
+    - description: "aside element for sidebar — correct landmark"
+      note: "Proper use of aside"
+
+expected_verdict: ACCEPT
+scoring_notes:
+  false_positive_weight: -2
+  critical_false_positive_penalty: -3
+
+notes: "Generated fixture for CLEAN category, primary perspective all."

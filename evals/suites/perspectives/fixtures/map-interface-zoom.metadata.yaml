@@ -1,0 +1,72 @@
+fixture_id: map-interface-zoom
+name: "Interactive Map With Mouse-Only Navigation"
+description: >
+  React interactive map with mouse-drag-only panning, undersized zoom controls, controls overlapping at 200% zoom, and hover-only info popups on markers.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Map panning relies on mouse drag only — no keyboard alternative"
+        severity: CRITICAL
+        wcag: "2.1.1 Keyboard"
+        evidence: "onMouseDown/Move/Up handlers; no arrow key handlers for panning"
+        user_group: "Keyboard users, switch users"
+      - description: "Zoom +/- buttons 18x18px — below minimum target size"
+        severity: MAJOR
+        wcag: "2.5.8 Target Size (Minimum)"
+        evidence: ".zoom-control { width: 18px; height: 18px }"
+        user_group: "Motor impairment users"
+  - category: should_find
+    count: 2
+    items:
+      - description: "At 200% zoom, map controls overlap and become unusable"
+        severity: MAJOR
+        wcag: "1.4.10 Reflow"
+        evidence: "Controls use position: absolute with fixed px; overlap at zoom"
+        user_group: "Magnification users"
+      - description: "Info popup on marker hover only — no focus/click alternative"
+        severity: MAJOR
+        wcag: "1.4.13 Content on Hover or Focus / 2.1.1 Keyboard"
+        evidence: "onMouseEnter shows popup; no focus/click handler"
+        user_group: "Keyboard users, touch users"
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Scroll wheel zoom hijacks page scroll without escape"
+        severity: MINOR
+        wcag: "2.5.3 Label in Name"
+        evidence: "onWheel prevents default; no way to pass through to page"
+        user_group: "All users scrolling past the map"
+
+perspectives_tested:
+  primary: "magnification_reflow"
+  secondary: "keyboard_motor"
+
+expected_alarm_levels:
+  magnification_reflow: HIGH
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Map container has role='application'"
+      note: "Correct for complex widget — do not flag"
+    - description: "Zoom buttons are real button elements"
+      note: "Correct — do not flag"
+    - description: "Location search input has proper label"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective magnification_reflow."

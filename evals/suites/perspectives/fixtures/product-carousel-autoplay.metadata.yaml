@@ -60,13 +60,13 @@ expected_findings:
         user_group: "Screen reader users"
 
 expected_alarm_levels:
-  Vestibular: HIGH
-  Cognitive: MEDIUM
-  Screen_Reader: LOW
-  Keyboard: LOW
-  Low_Vision: LOW
-  Auditory: LOW
-  Motor: LOW
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: HIGH
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
 
 multi_perspective_coverage:
   vestibular: >

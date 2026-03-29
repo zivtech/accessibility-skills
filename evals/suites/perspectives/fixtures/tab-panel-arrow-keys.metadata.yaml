@@ -1,0 +1,72 @@
+fixture_id: tab-panel-arrow-keys
+name: "Tab Panel Without Arrow Key Navigation"
+description: >
+  React tabs component where Arrow Left/Right don't switch tabs (only Tab key works), no ARIA roles, no aria-selected, no aria-controls.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+regression_fixture: true
+regression_note: "Tests existing-dimension strength. All conditions should score 70%+. C must not regress below A."
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "No Arrow Left/Right — only Tab key switches panels"
+        severity: CRITICAL
+        wcag: "2.1.1 Keyboard"
+        evidence: "No ArrowLeft/ArrowRight in onKeyDown handler"
+        user_group: "Keyboard users"
+      - description: "No role='tablist'/role='tab'/role='tabpanel'"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Container is div, tabs are buttons with no role"
+        user_group: "Screen reader users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "No aria-selected on active tab, no aria-controls linking tab to panel"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Active tab has CSS class only, no aria-selected; no aria-controls"
+        user_group: "Screen reader users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Home/End keys don't jump to first/last tab"
+        severity: MINOR
+        wcag: "APG Tabs pattern"
+        evidence: "No Home/End key handlers"
+        user_group: "Keyboard users"
+      - description: "Tab panel has no aria-labelledby pointing to its tab"
+        severity: MINOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Panel div has no aria-labelledby"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "keyboard_motor"
+  secondary: "screen_reader_semantic"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Visual active tab indicator is present"
+      note: "Correct — do not flag"
+    - description: "Content shows/hides correctly on tab change"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective keyboard_motor."

@@ -1,0 +1,58 @@
+fixture_id: dashboard-text-labels
+name: "Analytics Dashboard With Text Status Labels (CLEAN)"
+description: >
+  React analytics dashboard with stat cards, bar chart with text labels on each bar, and data table. Status uses text+icons (not color-only), contrast meets AA, layout reflows, reduced-motion respected.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Data Display
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+  - category: should_find
+    count: 0
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Could add data table alternative view for the chart"
+        severity: ENHANCEMENT
+        wcag: "1.1.1 Non-text Content"
+        evidence: "Chart data not available as accessible table"
+        user_group: "Screen reader users"
+      - description: "Could add high-contrast mode toggle"
+        severity: ENHANCEMENT
+        wcag: "1.4.11 Non-text Contrast"
+        evidence: "No contrast mode toggle"
+        user_group: "Low-vision users"
+
+perspectives_tested:
+  primary: "all"
+  secondary: "all"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: MEDIUM
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Status uses both text AND color — not color-only"
+      note: "Correct — text labels present alongside color"
+    - description: "Chart animation respects prefers-reduced-motion"
+      note: "Correct — media query present"
+    - description: "Table has role='table' (redundant but harmless)"
+      note: "Do not flag — redundant but not incorrect"
+
+expected_verdict: ACCEPT
+scoring_notes:
+  false_positive_weight: -2
+  critical_false_positive_penalty: -3
+
+notes: "Generated fixture for CLEAN category, primary perspective all."

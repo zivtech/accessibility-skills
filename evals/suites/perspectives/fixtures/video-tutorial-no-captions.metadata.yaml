@@ -57,13 +57,13 @@ perspectives_tested:
   secondary: "Screen Reader"
 
 expected_alarm_levels:
-  auditory: HIGH
-  screen_reader: MEDIUM
-  keyboard: LOW
-  magnification: LOW
-  vestibular: LOW
-  contrast: LOW
-  cognitive: LOW
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: HIGH
+  keyboard_motor: LOW
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
 
 components_analyzed:
   - name: "video element"
@@ -99,6 +99,7 @@ components_analyzed:
     issues: "None — keyboard-accessible (intentional true negative)"
 
 wcag_criteria:
+  - "1.1.1 Non-text Content"
   - "1.2.1 Audio-only and Video-only (Prerecorded)"
   - "1.2.2 Captions (Prerecorded)"
   - "1.2.3 Audio Description or Media Alternative (Prerecorded)"

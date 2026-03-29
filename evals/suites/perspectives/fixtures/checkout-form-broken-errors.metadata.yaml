@@ -61,8 +61,16 @@ expected_findings:
         fix: "Add id to each error span; add aria-describedby to corresponding input pointing to that id"
 
   - category: should_find
-    count: 1
+    count: 2
     items:
+      - description: "Error summary links do not navigate to fields"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification"
+        evidence: "Error summary <li> elements are plain text, not anchor links — cannot jump to offending field"
+        user_group: "Keyboard users, screen reader users, cognitive users"
+        expected_behavior: "Error summary items are anchor links that move focus to the offending field on activation"
+        fix: "Replace <li>{message}</li> with <li><a href=\"#fieldId\">{message}</a></li>"
+
       - description: "Step indicator communicates state via color alone"
         severity: MAJOR
         wcag: "1.4.1 Use of Color"
@@ -92,13 +100,13 @@ expected_findings:
         reason: "Real <button> elements, keyboard-activatable with Enter and Space"
 
 expected_alarm_levels:
-  Screen Reader: HIGH
-  Keyboard: MEDIUM
-  Cognitive: MEDIUM
-  Contrast: MEDIUM
-  Auditory: LOW
-  Vestibular: LOW
-  Magnification: LOW
+  magnification_reflow: LOW
+  environmental_contrast: MEDIUM
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
 
 alarm_level_rationale:
   Screen Reader: "Two broken label associations (CRITICAL x2) plus missing aria-describedby (MAJOR) — clear HIGH"

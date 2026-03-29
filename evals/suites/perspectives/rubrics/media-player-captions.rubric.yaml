@@ -1,0 +1,54 @@
+fixture_id: media-player-captions
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    weight: -2
+  - id: critical_false_positive
+    name: "Critical False Positive Penalty"
+    weight: -3
+  - id: clean_recognition
+    name: "Clean Implementation Recognition"
+    weight: 3
+  - id: false_positive_trap_recognition
+    name: "Known False Positive Trap Recognition"
+    weight: 2
+  - id: nice_to_find
+    name: "Legitimate Enhancement Suggestions"
+    weight: 1
+  - id: perspective_alarm_accuracy
+    name: "Perspective Alarm Level Accuracy"
+    weight: 2
+  - id: format_compliance
+    name: "Format Compliance"
+    weight: 1
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: "75-88"
+  - condition: B
+    label: "Strong generic baseline"
+    expected_score: "72-85"
+  - condition: C
+    label: "Enhanced skills with perspective audit"
+    expected_score: "80-95"
+
+verdict_expectations:
+  A: ACCEPT
+  B: ACCEPT
+  C: ACCEPT
+
+notes: "Generated rubric for media-player-captions. Category: CLEAN."

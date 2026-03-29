@@ -1,0 +1,239 @@
+fixture_id: chat-cognitive-load
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical cognitive/motion issues a perspective-aware reviewer must identify"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major vestibular and cognitive issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Minor issues requiring cognitive or keyboard perspective depth"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly implemented aria-live log, labeled controls, and Enter-to-send must NOT be flagged"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL and MAJOR findings backed by code reference (useEffect, CSS property)"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract (severity, wcag, user_group, fix)"
+    weight: 1
+
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    description: "Findings attributed to correct perspective (cognitive primary, vestibular secondary)"
+    weight: 2
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - id: mf-1
+        description: "Auto-scroll fires on every message update with no pause mechanism"
+        severity: CRITICAL
+        wcag: "2.2.2 Pause, Stop, Hide"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to useEffect calling scrollIntoView unconditionally on messages state change"
+        expected_to_find: "70%"
+        scoring_notes: >
+          Full credit if reviewer cites 2.2.2 and identifies the unconditional scrollIntoView
+          in the useEffect. Partial credit (0.5) if reviewer identifies auto-scroll as a
+          problem without citing WCAG or without referencing the useEffect specifically.
+          No credit for a generic mention of "auto-scroll" without identifying the mechanism.
+
+  should_find:
+    count: 2
+    items:
+      - id: sf-1
+        description: "Typing indicator infinite bounce animation with no prefers-reduced-motion override"
+        severity: MAJOR
+        wcag: "2.3.3 Animation from Interactions"
+        perspective: vestibular_motion
+        evidence_requirement: "Reference to .typing-dot animation CSS and absence of @media prefers-reduced-motion rule"
+        expected_to_find: "65%"
+        scoring_notes: >
+          Full credit if reviewer cites both the animation definition AND the missing
+          prefers-reduced-motion media query. Partial credit (0.5) if reviewer identifies
+          the animation as a problem without citing the missing media query specifically.
+          The fixture is designed to test vestibular perspective depth — a reviewer applying
+          only a general "motion" check may identify the animation but miss the media query fix.
+
+      - id: sf-2
+        description: "New message notification is color-flash only — no persistent non-animated indicator"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        perspective: vestibular_motion
+        evidence_requirement: "Reference to .new-message-flash flashBg animation and absence of persistent text 'New' label"
+        expected_to_find: "50%"
+        scoring_notes: >
+          This is the primary differentiator between conditions. Full credit requires the
+          reviewer to distinguish between: (a) the correct aria-live content announcement
+          via role=log, and (b) the color-flash-only visual "new" signal that is a separate,
+          inadequate indicator. Reviewers who flag the aria-live as broken are penalized
+          via fpt-1. Reviewers who conflate the content announcement with the visual signal
+          earn no credit for sf-2. Condition C with vestibular + cognitive lens should
+          identify this by asking "how does a color-blind or reduced-motion user know a
+          message is new beyond the content appearing?"
+
+  nice_to_find:
+    count: 2
+    items:
+      - id: ntf-1
+        description: "Relative timestamps update every 60 seconds without user action"
+        severity: MINOR
+        wcag: "2.2.2 Pause, Stop, Hide (cognitive best practice)"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to setInterval with 60000ms interval causing timestamp re-renders"
+        expected_to_find: "45%"
+        scoring_notes: >
+          Credit if reviewer identifies the setInterval and its effect on timestamp content.
+          Bonus signal if reviewer connects this to cognitive disruption (content changing
+          while reading) rather than just WCAG 2.2.2 motion.
+
+      - id: ntf-2
+        description: "Emoji picker has no arrow-key grid navigation, no Escape handler, no focus-visible styles"
+        severity: MINOR
+        wcag: "2.1.1 Keyboard"
+        perspective: keyboard_motor
+        evidence_requirement: "Reference to 64 emoji buttons with no onKeyDown handler and no focus-visible CSS"
+        expected_to_find: "55%"
+        scoring_notes: >
+          Full credit for identifying all three issues (arrow nav, Escape, focus styles).
+          Partial credit (0.5) for identifying any two. The role=grid annotation on the
+          emoji container is present but unimplemented — reviewers who note this gap earn
+          full credit.
+
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "aria-live=polite on role=log is correct — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags the aria-live or role=log on the chat messages container as incorrect"
+        relevant_elements: "chat-messages div with aria-live=polite and role=log"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the aria-live=polite or role=log as a bug.
+          This is the intentional correct implementation for a chat log. The only
+          related bug (sf-2) is the color-flash visual "new" signal, not the live region.
+          This trap specifically tests whether reviewers understand that aria-live correctly
+          handles content announcements while the visual novelty signal is a separate concern.
+
+      - id: fpt-2
+        description: "Send button, textarea, and emoji picker toggle are correctly implemented"
+        penalty: -2
+        trigger: "Reviewer flags send button, textarea, or emoji picker toggle as keyboard-inaccessible or unlabeled"
+        relevant_elements: "btn-send, chat-input, emoji-picker-btn"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels or keyboard inaccessibility on
+          the send button, textarea, or emoji picker toggle. All three carry correct
+          aria-label or associated label and are native interactive elements.
+
+      - id: fpt-3
+        description: "Enter-to-send is a standard chat convention — not a keyboard trap"
+        penalty: -2
+        trigger: "Reviewer flags Enter-to-send (without Shift) as a keyboard trap or accessibility violation"
+        relevant_elements: "handleKeyDown in textarea"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites Enter-to-send as a keyboard trap. The pattern
+          includes Shift+Enter for newlines, which is the standard chat convention.
+          Flagging this indicates the reviewer is applying form keyboard semantics to a
+          chat interface without accounting for the different interaction model.
+
+composite_score_formula: |
+  positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
+  max_positive = (1 * 3) + (2 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 14
+  false_positive_penalty = count_triggered * 2
+  raw_score = sum(found * weight) - false_positive_penalty
+  normalized_score = raw_score / max_positive * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: 30-40
+    reasoning: >
+      Without cognitive/vestibular perspective prompting, condition A is likely to find
+      the emoji picker keyboard gap (ntf-2) as an obvious keyboard issue, but may miss
+      the auto-scroll WCAG 2.2.2 framing (mf-1) and is unlikely to find the typing
+      animation reduced-motion gap (sf-1). High risk of flagging aria-live as a bug (fpt-1)
+      due to unfamiliarity with role=log pattern.
+
+  - condition: B
+    label: "Strong generic baseline (dimension names appended)"
+    expected_score: 50-60
+    reasoning: >
+      Naming "vestibular" will likely surface sf-1 (animation). Naming "cognitive" may
+      surface mf-1. sf-2 (color-flash vs aria-live distinction) requires the nuanced
+      understanding that condition B typically lacks. fpt-1 risk is reduced for B.
+
+  - condition: C
+    label: "Enhanced skills with perspective-audit"
+    expected_score: 75-85
+    reasoning: >
+      With vestibular and cognitive perspective protocols, condition C should find mf-1,
+      sf-1, and sf-2. The JTBD framing ("user with vestibular disorder reading a chat
+      while a response streams in") directly surfaces both the animation and the
+      color-flash signal. sf-2 nuance (aria-live correct, visual signal wrong) is the
+      key test of perspective depth. fpt-1 should not trigger for condition C.
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+differentiator_findings:
+  - finding_id: sf-2
+    name: "Color-flash-only new message notification"
+    rationale: >
+      The highest-signal differentiator. Requires understanding that role=log/aria-live
+      correctly announces content but that the visual "new" novelty signal (color flash)
+      is a separate and inadequate indicator. Condition A is expected to either miss it
+      or incorrectly flag the aria-live as the problem. Condition C should correctly
+      identify the color-flash as the issue while preserving the aria-live as correct.
+    metric_target: "new_dimension_recall"
+
+  - finding_id: fpt-1
+    name: "aria-live=polite false positive trap"
+    rationale: >
+      The fpt-1 false positive trap is the primary regression test for this fixture.
+      If condition C (perspective-enhanced) triggers this trap at higher rates than
+      condition A, it indicates the perspective hints are causing reviewers to
+      over-apply the "notification" pattern to the correct aria-live implementation.
+    metric_target: "false_positive_rate"
+
+notes: |
+  Fixture 3 of 4 in the expanded suite. Rubric version 1.0.
+
+  Key measurement goals:
+  1. Does condition C correctly distinguish the color-flash visual signal (bad) from
+     the aria-live content announcement (correct) for sf-2?
+  2. Does the fpt-1 trap show different false-positive rates across A/B/C conditions?
+  3. Does condition C find the prefers-reduced-motion gap (sf-1) vs condition A?
+
+  The aria-live false-positive trap (fpt-1) is unique to this fixture. If condition C
+  triggers it more than condition A, that is a regression signal worth investigating —
+  it may indicate the perspective prompts are causing over-generalization of the
+  "non-text notification" pattern to correct implementations.

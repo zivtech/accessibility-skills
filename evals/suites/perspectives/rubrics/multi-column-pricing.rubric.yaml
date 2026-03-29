@@ -1,0 +1,250 @@
+fixture_id: multi-column-pricing
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical contrast/color issues a perspective-aware reviewer must identify"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major color and contrast issues a skilled reviewer would find with contrast lens"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Minor motion and keyboard issues requiring secondary perspective depth"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correct table structure, CTA labels, and correct WCAG criterion citation required"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL and MAJOR findings backed by CSS value, element reference, or computed ratio"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract (severity, wcag, user_group, fix)"
+    weight: 1
+
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    description: "Findings attributed to correct perspective (contrast primary, cognitive secondary)"
+    weight: 2
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - id: mf-1
+        description: "Feature availability indicated by color only — check vs X has no non-color distinction"
+        severity: CRITICAL
+        wcag: "1.4.1 Use of Color"
+        perspective: environmental_contrast
+        evidence_requirement: "Reference to FeatureCell aria-hidden span with color class only and absence of visually-hidden text or aria-label on td"
+        expected_to_find: "80%"
+        scoring_notes: >
+          Full credit requires citing 1.4.1 (not 1.4.3) and identifying that both check
+          and X individually pass contrast, making the issue the color-as-sole-differentiator
+          pattern. Partial credit (0.5) if reviewer identifies color-only distinction
+          without citing the correct criterion. No credit if reviewer cites 1.4.3 (contrast
+          ratio) as the primary violation — that is the wrong criterion for this finding.
+          The criterion distinction is the primary test for this fixture.
+
+  should_find:
+    count: 2
+    items:
+      - id: sf-1
+        description: "Recommended tier highlighted with background color and border only"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        perspective: environmental_contrast
+        evidence_requirement: "Reference to recommended-header CSS class and absence of text label Recommended in th element"
+        expected_to_find: "70%"
+        scoring_notes: >
+          Full credit if reviewer cites 1.4.1 and identifies that the visual highlight
+          (background color + border) is the only differentiator for the recommended status.
+          Partial credit (0.5) if reviewer notes the issue without distinguishing it from
+          mf-1 as a separate finding. The Most popular badge has aria-label and is not
+          the issue here — the issue is the column-level recommendation signal.
+
+      - id: sf-2
+        description: "Pricing sub-text is 12px #767676 on white — 4.54:1, borderline AA"
+        severity: MAJOR
+        wcag: "1.4.3 Contrast (Minimum)"
+        perspective: environmental_contrast
+        evidence_requirement: "Reference to .tier-price font-size: 12px; color: #767676 and computed ratio ~4.54:1"
+        expected_to_find: "60%"
+        scoring_notes: >
+          Full credit if reviewer cites 1.4.3, identifies the 12px regular weight text,
+          and notes the #767676 color. Computing the ratio (~4.54:1) is not required for
+          full credit, but citing the color value and font-size is. Partial credit (0.5)
+          if reviewer notes "low contrast on price text" without citing the CSS values.
+          Note: this is 1.4.3 (contrast ratio), distinguishing it from mf-1 (1.4.1 color
+          as differentiator). The LLM judge dimension should penalize reviewers who
+          conflate these two distinct criteria.
+
+  nice_to_find:
+    count: 2
+    items:
+      - id: ntf-1
+        description: "Feature comparison tooltips are hover-only — no :focus-within trigger"
+        severity: MINOR
+        wcag: "1.4.13 Content on Hover or Focus; 2.1.1 Keyboard"
+        perspective: keyboard_motor
+        evidence_requirement: "Reference to :hover-only CSS rule and absent :focus-within on .feature-tooltip-trigger"
+        expected_to_find: "55%"
+        scoring_notes: >
+          Credit if reviewer cites 1.4.13 or 2.1.1 and identifies the missing :focus-within.
+          Bonus if reviewer notes that role=tooltip is present but never shown on focus,
+          making the ARIA annotation misleading.
+
+      - id: ntf-2
+        description: "Most popular badge shimmer animation with no prefers-reduced-motion override"
+        severity: MINOR
+        wcag: "2.3.3 Animation from Interactions"
+        perspective: vestibular_motion
+        evidence_requirement: "Reference to .most-popular-badge animation and absent @media prefers-reduced-motion rule"
+        expected_to_find: "50%"
+        scoring_notes: >
+          Credit if reviewer cites the missing reduced-motion media query. Note: the badge
+          has aria-label='Most popular' — reviewers must NOT flag the aria-label as missing
+          (see fpt-2). The only issue is the animation.
+
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "Table structure with thead/tbody/th scope=col is semantically correct"
+        penalty: -2
+        trigger: "Reviewer flags the table structure as missing headers, incorrect scope, or inaccessible to screen readers"
+        relevant_elements: "pricing-table thead, tbody, th scope=col elements"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the table structure as a semantic failure.
+          All headers use scope='col' correctly. This trap tests whether reviewers
+          default to flagging data tables as accessibility problems without inspecting
+          the actual markup.
+
+      - id: fpt-2
+        description: "CTA buttons have descriptive aria-label values — must NOT be flagged as unlabeled"
+        penalty: -2
+        trigger: "Reviewer flags CTA buttons as missing or insufficient labels"
+        relevant_elements: "cta-button elements with aria-label='action — plan name'"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels on CTA buttons.
+          All buttons carry aria-label values identifying both the action and the plan
+          name (e.g., 'Start free trial — Pro plan'). This is more descriptive than
+          the button text alone and is intentionally correct.
+
+      - id: fpt-3
+        description: "Check and X icons individually pass contrast — the issue is 1.4.1 not 1.4.3"
+        penalty: -2
+        trigger: "Reviewer cites 1.4.3 (contrast ratio failure) as the primary violation for the check/X feature cells"
+        relevant_elements: "feature-check spans with available/unavailable CSS classes"
+        scoring_notes: >
+          Apply -2 weight if reviewer's primary citation for the check/X cells is 1.4.3
+          (contrast ratio). The green #38a169 on white and red #e53e3e on white both
+          individually pass contrast. The violation is 1.4.1 (color as sole differentiator
+          between two states). Applying the wrong criterion indicates the reviewer is
+          pattern-matching to "colors = contrast issue" rather than reasoning from the
+          1.4.1 definition.
+
+composite_score_formula: |
+  positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
+  max_positive = (1 * 3) + (2 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 14
+  false_positive_penalty = count_triggered * 2
+  raw_score = sum(found * weight) - false_positive_penalty
+  normalized_score = raw_score / max_positive * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: 30-40
+    reasoning: >
+      Without contrast perspective prompting, condition A is expected to find the color-only
+      check/X (mf-1) as a known pattern, but may cite the wrong WCAG criterion (1.4.3
+      instead of 1.4.1), triggering fpt-3. The borderline pricing text (sf-2) requires
+      specific CSS measurement that condition A typically skips. High risk of flagging
+      table structure as a problem (fpt-1).
+
+  - condition: B
+    label: "Strong generic baseline (dimension names appended)"
+    expected_score: 55-65
+    reasoning: >
+      Naming "contrast" will likely surface mf-1 and sf-2. The recommended-tier
+      color-only highlight (sf-1) requires distinguishing 1.4.1 from 1.4.3, which
+      condition B may handle partially. fpt-3 risk is lower for B than A.
+
+  - condition: C
+    label: "Enhanced skills with perspective-audit"
+    expected_score: 80-90
+    reasoning: >
+      With contrast perspective protocol, condition C should find mf-1 (with correct
+      1.4.1 citation), sf-1, and sf-2 (with CSS value reference). The JTBD framing
+      ("color-blind user comparing feature availability across plans") directly surfaces
+      mf-1 as the primary barrier. The 1.4.1 vs 1.4.3 distinction is the key test
+      of criterion precision for condition C.
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+differentiator_findings:
+  - finding_id: mf-1
+    name: "Color-only feature availability with correct 1.4.1 citation"
+    rationale: >
+      The primary differentiator is not finding the color-only issue (all conditions
+      are likely to identify it) but citing the correct WCAG criterion. Condition A
+      is expected to cite 1.4.3 in >50% of runs, triggering fpt-3. Condition C
+      with contrast perspective JTBD framing should cite 1.4.1 in >80% of runs.
+    metric_target: "criterion_precision"
+
+  - finding_id: sf-2
+    name: "Borderline 12px #767676 contrast measurement"
+    rationale: >
+      The pricing sub-text passes 1.4.3 AA by 0.04 ratio units at 12px regular weight.
+      Condition A is unlikely to identify this as a MAJOR issue (it technically passes).
+      Condition C with contrast perspective should identify the practical risk: at 12px
+      regular weight in non-ideal viewing conditions, 4.54:1 is functionally insufficient.
+    metric_target: "borderline_case_identification"
+
+  - finding_id: fpt-3
+    name: "1.4.1 vs 1.4.3 criterion confusion false positive"
+    rationale: >
+      The false positive trap (wrong criterion for check/X cells) is the primary
+      regression test. If condition C has a higher fpt-3 rate than condition A, it
+      suggests the contrast perspective hints are reinforcing the incorrect
+      "colors = contrast ratio" pattern rather than the correct 1.4.1 analysis.
+    metric_target: "false_positive_rate"
+
+notes: |
+  Fixture 4 of 4 in the expanded suite. Rubric version 1.0.
+
+  Key measurement goals:
+  1. Does condition C cite 1.4.1 (not 1.4.3) for the check/X finding more reliably than A?
+  2. Does condition C identify the borderline 12px pricing text (sf-2) with CSS evidence?
+  3. Does fpt-3 (wrong criterion) show lower trigger rates for C than for A?
+
+  The criterion precision test (1.4.1 vs 1.4.3) makes this fixture unique among the four.
+  The other three fixtures test recall of findings; this one additionally tests whether
+  the perspective lens improves the accuracy of WCAG criterion attribution.
+
+  The horizontal scroll wrapper (overflow-x: auto) is correct and should be noted as
+  a good practice if cited — it must not be flagged as an accessibility problem.

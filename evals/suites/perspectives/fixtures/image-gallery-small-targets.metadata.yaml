@@ -1,0 +1,72 @@
+fixture_id: image-gallery-small-targets
+name: "Image Gallery With Undersized Touch Targets"
+description: >
+  React image gallery with 32x32px thumbnail grid, 16x16px lightbox close button, 20x20px zoom controls, and horizontal overflow at 200% zoom.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Thumbnails 32x32px with 2px gap — below WCAG 2.5.8 minimum"
+        severity: CRITICAL
+        wcag: "2.5.8 Target Size (Minimum)"
+        evidence: ".thumbnail { width: 32px; height: 32px; margin: 2px }"
+        user_group: "Motor impairment users, touch users"
+      - description: "Lightbox close button 16x16px — tiny target"
+        severity: MAJOR
+        wcag: "2.5.8 Target Size (Minimum)"
+        evidence: ".close-btn { width: 16px; height: 16px; padding: 0 }"
+        user_group: "Motor impairment users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "Zoom in/out buttons 20x20px with no padding"
+        severity: MAJOR
+        wcag: "2.5.8 Target Size (Minimum)"
+        evidence: ".zoom-btn { width: 20px; height: 20px }"
+        user_group: "Motor users, touch users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "At 200% zoom, thumbnail grid overflows horizontally"
+        severity: MINOR
+        wcag: "1.4.10 Reflow"
+        evidence: "Grid uses fixed widths; no flex-wrap at zoom"
+        user_group: "Magnification users"
+      - description: "Lightbox nav arrows clipped at zoom levels"
+        severity: MINOR
+        wcag: "1.4.10 Reflow"
+        evidence: "Arrows positioned at viewport edge; overflow: hidden"
+        user_group: "Magnification users"
+
+perspectives_tested:
+  primary: "magnification_reflow"
+  secondary: "keyboard_motor"
+
+expected_alarm_levels:
+  magnification_reflow: HIGH
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "All buttons are real button elements"
+      note: "Correct — do not flag"
+    - description: "Images have alt text"
+      note: "Correct — do not flag"
+    - description: "Lightbox traps focus correctly, Escape closes"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective magnification_reflow."

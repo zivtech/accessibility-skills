@@ -1,0 +1,58 @@
+fixture_id: media-player-captions
+name: "Media Player With Full Caption Support (CLEAN)"
+description: >
+  React video player with captions track (default), audio descriptions track, transcript section, all keyboard-accessible controls, role='toolbar', poster with alt, and reduced-motion handling.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Media & Content
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+  - category: should_find
+    count: 0
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Could add chapter markers for long video navigation"
+        severity: ENHANCEMENT
+        wcag: "2.4.5 Multiple Ways"
+        evidence: "No chapter navigation for video"
+        user_group: "Cognitive users, all users"
+      - description: "Could add playback speed control"
+        severity: ENHANCEMENT
+        wcag: "Cognitive best practice"
+        evidence: "No speed adjustment"
+        user_group: "Cognitive users, second-language users"
+
+perspectives_tested:
+  primary: "all"
+  secondary: "all"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: MEDIUM
+  keyboard_motor: LOW
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "autoplay={false} — correct, no autoplay"
+      note: "Not autoplay — do not flag"
+    - description: "Caption track has default attribute — correct"
+      note: "Captions show by default — correct"
+    - description: "Video element has tabIndex={-1}"
+      note: "Correct — controls receive focus, not video element"
+
+expected_verdict: ACCEPT
+scoring_notes:
+  false_positive_weight: -2
+  critical_false_positive_penalty: -3
+
+notes: "Generated fixture for CLEAN category, primary perspective all."

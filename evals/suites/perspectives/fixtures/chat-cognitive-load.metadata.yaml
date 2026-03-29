@@ -1,0 +1,126 @@
+fixture_id: chat-cognitive-load
+name: Chat Interface With Cognitive Load Issues
+description: >
+  React chat interface with real-time message streaming, typing indicators, and an
+  emoji picker. The send button, textarea, aria-live log, and emoji picker toggle
+  are all correctly implemented. Issues are concentrated in cognitive load (auto-scroll
+  without pause, timestamp churn) and vestibular/motion (infinite typing animation
+  with no reduced-motion override, color-flash-only new-message notification).
+  The emoji picker has no keyboard grid navigation and no visible focus styles.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - description: "Auto-scroll fires on every message update with no pause mechanism"
+        severity: CRITICAL
+        wcag: "2.2.2 Pause, Stop, Hide"
+        evidence: "useEffect calling scrollIntoView on every messages state change; no scroll-lock logic"
+        user_group: "Users with cognitive disabilities; users reading earlier messages"
+
+  should_find:
+    count: 2
+    items:
+      - description: "Typing indicator uses infinite bounce animation with no prefers-reduced-motion override"
+        severity: MAJOR
+        wcag: "2.3.3 Animation from Interactions (AAA); 2.3.1 Three Flashes (reference)"
+        evidence: ".typing-dot animation: bounce 0.6s infinite alternate; no @media prefers-reduced-motion rule"
+        user_group: "Users with vestibular disorders; users who have enabled reduced-motion"
+
+      - description: "New message notification is color-flash only — no persistent text badge or non-animated indicator"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        evidence: ".new-message-flash uses flashBg animation transitioning background color only; no text 'New' label"
+        user_group: "Users with vestibular disorders; users with color vision deficiencies; high-contrast users"
+
+  nice_to_find:
+    count: 2
+    items:
+      - description: "Relative timestamps update every 60 seconds without user action"
+        severity: MINOR
+        wcag: "2.2.2 Pause, Stop, Hide (general cognitive best practice)"
+        evidence: "setInterval calling setTick every 60000ms triggers timestamp re-render"
+        user_group: "Users with cognitive disabilities; users with attention difficulties"
+
+      - description: "Emoji picker has no arrow-key grid navigation, no Escape handler, no focus-visible styles"
+        severity: MINOR
+        wcag: "2.1.1 Keyboard"
+        evidence: "64 emoji buttons with no onKeyDown grid navigation; no focus-visible CSS; no Escape handler"
+        user_group: "Keyboard-only users; motor-impaired users using switch access"
+
+perspectives_tested:
+  primary: "Cognitive Neurodivergent"
+  secondary: "Vestibular Motion"
+
+expected_alarm_levels:
+  cognitive_neurodivergent: HIGH
+  vestibular_motion: MEDIUM
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: LOW
+  auditory_access: LOW
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+
+multi_perspective_coverage:
+  cognitive_neurodivergent:
+    alarm_level: HIGH
+    notes: "Auto-scroll without pause (2.2.2), timestamp churn, color-flash-only new-message signal — all impair cognitive access and attention"
+  vestibular_motion:
+    alarm_level: MEDIUM
+    notes: "Infinite bounce animation on typing dots with no prefers-reduced-motion override; new-message flash animation"
+  keyboard_motor:
+    alarm_level: MEDIUM
+    notes: "Emoji picker requires tabbing through 64 buttons linearly; no arrow-key grid nav; no visible focus styles on emoji buttons"
+  screen_reader_semantic:
+    alarm_level: LOW
+    notes: "aria-live=polite on role=log is correct; send, textarea, and picker toggle are all labeled; no screen-reader-specific issues"
+  auditory_access:
+    alarm_level: LOW
+    notes: "No audio content; no audio-only notifications"
+  magnification_reflow:
+    alarm_level: LOW
+    notes: "No magnification-specific layout issues in the component"
+  environmental_contrast:
+    alarm_level: LOW
+    notes: "No contrast failures identified in JSX/CSS source"
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "aria-live=polite on role=log is the correct pattern for chat — must NOT be flagged as incorrect"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "chat-messages div with aria-live=polite and role=log"
+
+    - description: "Send button, textarea, and emoji picker toggle are all correctly labeled and keyboard-accessible — must NOT be flagged"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "btn-send, chat-input textarea, emoji-picker-btn"
+
+    - description: "Enter-to-send without Shift is a standard chat convention — must NOT be flagged as a keyboard trap"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "handleKeyDown in textarea"
+
+wcag_criteria:
+  - "2.2.2 Pause, Stop, Hide"
+  - "1.4.1 Use of Color"
+  - "2.1.1 Keyboard"
+  - "2.3.3 Animation from Interactions"
+
+expected_verdict: REVISE
+
+notes: |
+  Fixture 3 of 4 in the expanded perspectives eval suite. Category: HAS-BUGS (cognitive + vestibular primary).
+
+  Design intent: test whether reviewers can separate the correctly implemented real-time
+  patterns (aria-live log, labeled controls) from the cognitive/motion failures layered on top.
+
+  The new-message-flash finding is intentionally nuanced: role=log correctly announces new
+  message content via aria-live, but the visual "new" signal (color flash) is separate and
+  color-only. Reviewers must understand the difference between the content announcement
+  (correct) and the visual novelty signal (color-only, no reduced-motion, no persistence).
+
+  Expected scores: A ~30-40%, B ~50-60%, C ~75-85%

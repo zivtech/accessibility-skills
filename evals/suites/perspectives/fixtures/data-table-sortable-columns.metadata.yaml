@@ -1,0 +1,74 @@
+fixture_id: data-table-sortable-columns
+name: "Data Table With Sortable Columns Missing ARIA Sort State"
+description: >
+  React data table with sortable column headers and pagination. Uses div+CSS grid
+  instead of semantic table elements, sort buttons lack aria-sort, and pagination
+  uses anchor links with no page context.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Data Display
+work_type: component_review
+regression_fixture: true
+regression_note: "Tests existing-dimension strength. All conditions should score 70%+. C must not regress below A."
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Sort buttons have no aria-sort attribute — screen reader cannot determine sort state"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Sort buttons toggle visual indicator but no aria-sort on column headers"
+        user_group: "Screen reader users"
+      - description: "Table uses div+CSS grid instead of semantic table elements"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "No thead/tbody/th/td elements — all div with CSS grid layout"
+        user_group: "Screen reader users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "Pagination uses anchor links with href='#' — no page context announced"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Pagination links announce as 'link' not 'page 2 of 5'"
+        user_group: "Screen reader users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Column headers not associated with cells (no scope)"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "No real th elements means no scope attribute"
+        user_group: "Screen reader users"
+      - description: "'Showing 1-10 of 47' text updates on sort but no live region"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Count text updates visually with no aria-live"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "screen_reader_semantic"
+  secondary: "cognitive_neurodivergent"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Sort buttons are keyboard activatable"
+      note: "Correct — do not flag"
+    - description: "Visual sort indicators (arrows) are present"
+      note: "Correct visual — the issue is missing ARIA, not missing visual"
+
+expected_verdict: REVISE
+
+notes: "Regression fixture for screen reader dimension. Classic semantic table failures."

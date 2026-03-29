@@ -1,0 +1,239 @@
+fixture_id: dense-admin-jargon
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical cognitive and magnification issues a perspective-aware reviewer must identify"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major cognitive and UX issues a skilled reviewer would find with cognitive and magnification lens"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Minor issues requiring screen reader or cognitive depth"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly implemented checkboxes, save button, and role=alert must NOT be flagged as bugs"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL and MAJOR findings backed by CSS property value or element reference"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract (severity, wcag, user_group, fix)"
+    weight: 1
+
+  - id: perspective_coverage
+    name: "Perspective Coverage"
+    description: "Findings attributed to correct perspective (cognitive primary, magnification secondary)"
+    weight: 2
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - id: mf-1
+        description: "Dense 3-column layout with 9px column header font"
+        severity: CRITICAL
+        wcag: "1.4.4 Resize Text; 1.4.10 Reflow"
+        perspective: magnification_reflow
+        evidence_requirement: "Reference to font-size: 9px on h2 elements and/or fixed grid-template-columns with no media query"
+        expected_to_find: "75%"
+        scoring_notes: >
+          Full credit if reviewer cites both the 9px font size AND the fixed grid layout
+          as a combined magnification/reflow failure. Partial credit (0.5) if reviewer
+          identifies only one of the two (font or grid) without linking them.
+          Reviewers who cite only "small text" without the specific 9px measurement earn
+          partial credit only — the measurement matters for rubric calibration.
+
+  should_find:
+    count: 3
+    items:
+      - id: sf-1
+        description: "Technical jargon labels with no tooltips or plain-English descriptions"
+        severity: MAJOR
+        wcag: "3.1.3 Unusual Words; 3.1.5 Reading Level"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to specific jargon terms (HSTS, SRI, WAL, Brotli) and absence of tooltip or description"
+        expected_to_find: "70%"
+        scoring_notes: >
+          Full credit if reviewer cites specific jargon terms and notes the absence of
+          any plain-English equivalent. A generic statement ("labels are technical")
+          earns partial credit (0.5). Evidence must reference at least one specific term.
+
+      - id: sf-2
+        description: "12 ungrouped toggles — cognitive overload, no sub-grouping or visual hierarchy"
+        severity: MAJOR
+        wcag: "3.2.4 Consistent Identification; cognitive best practice"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to flat toggle-group div with no fieldset/legend or sub-headings"
+        expected_to_find: "65%"
+        scoring_notes: >
+          Full credit if reviewer identifies both the flat structure AND recommends a
+          structural fix (fieldset/legend or accordion). Partial credit (0.5) if reviewer
+          only cites "too many toggles" without noting the missing structure.
+
+      - id: sf-3
+        description: "No unsaved-changes indicator — saved state set but never rendered"
+        severity: MAJOR
+        wcag: "3.3.1 Error Identification; cognitive best practice"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to saved state set to false in handleToggle but unused in JSX render"
+        expected_to_find: "55%"
+        scoring_notes: >
+          Full credit requires identifying the state variable and noting it is never rendered.
+          This is the highest-signal differentiator: requires reading the handleToggle
+          callback and tracing the saved state through the component, not just inspecting
+          the visible UI structure. Condition A is expected to miss this >70% of the time.
+
+  nice_to_find:
+    count: 2
+    items:
+      - id: ntf-1
+        description: "Error messages use opaque codes (ERR_CSP_001) not descriptions"
+        severity: MINOR
+        wcag: "3.3.1 Error Identification"
+        perspective: cognitive_neurodivergent
+        evidence_requirement: "Reference to ERR_CSP_001 string in SECURITY_TOGGLES or error-inline span"
+        expected_to_find: "60%"
+        scoring_notes: >
+          Credit if reviewer notes the error code is opaque and suggests a human-readable
+          description. Must not penalize the role=alert pattern itself (see fpt-1).
+
+      - id: ntf-2
+        description: "Required fields use aria-hidden asterisk with no aria-required on input"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships; 3.3.2 Labels or Instructions"
+        perspective: screen_reader_semantic
+        evidence_requirement: "Reference to aria-hidden=true on asterisk span and/or absence of aria-required on input"
+        expected_to_find: "50%"
+        scoring_notes: >
+          Full credit if reviewer cites both the aria-hidden on the asterisk AND the
+          missing aria-required on the input — these are complementary failures.
+          Partial credit (0.5) for citing only one.
+
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "Error span uses role=alert correctly — the bug is the opaque content, not the ARIA pattern"
+        penalty: -2
+        trigger: "Reviewer penalizes role=alert usage on the error span"
+        relevant_elements: "error-inline span with role=alert"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the role=alert pattern itself as incorrect.
+          role=alert is appropriate for an inline validation error. The only issue is
+          the content (opaque code vs. description). This trap tests whether reviewers
+          can separate ARIA pattern correctness from content quality.
+
+      - id: fpt-2
+        description: "All 12 checkboxes are native inputs with correct label associations — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags any checkbox as missing a label or as keyboard-inaccessible"
+        relevant_elements: "All toggle-row input elements and their label elements"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels on checkboxes or keyboard
+          inaccessibility of any toggle. All inputs use native <input type='checkbox'>
+          with htmlFor/id label association. This trap tests whether the reviewer
+          conflates keyboard/labeling with cognitive/magnification dimensions.
+
+      - id: fpt-3
+        description: "Save button is keyboard-accessible with focus-visible outline — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags save button as lacking keyboard support or focus indication"
+        relevant_elements: "btn-save button with focus-visible CSS"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the save button as a keyboard accessibility
+          failure. The button is native <button> with explicit focus-visible outline styles.
+
+composite_score_formula: |
+  positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
+  max_positive = (1 * 3) + (3 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 16
+  false_positive_penalty = count_triggered * 2
+  raw_score = sum(found * weight) - false_positive_penalty
+  normalized_score = raw_score / max_positive * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: A
+    label: "Current skills (no perspectives)"
+    expected_score: 25-35
+    reasoning: >
+      Without cognitive/magnification perspective prompting, condition A may identify the
+      jargon (sf-1) as a general usability concern but is unlikely to find the 9px font
+      measurement (mf-1), the unsaved-state trace (sf-3), or the toggle overload structure
+      (sf-2). Risk of penalizing role=alert (fpt-1) is moderate for condition A.
+
+  - condition: B
+    label: "Strong generic baseline (dimension names appended)"
+    expected_score: 45-55
+    reasoning: >
+      Naming "cognitive" will likely surface sf-1 and sf-2. The 9px font measurement
+      requires the magnification lens specifically; condition B may cite "small text"
+      without the measurement. sf-3 (unsaved state trace) remains a key B-vs-C differentiator.
+
+  - condition: C
+    label: "Enhanced skills with perspective-audit"
+    expected_score: 75-85
+    reasoning: >
+      With cognitive and magnification perspective protocols, condition C should find
+      mf-1 (9px + grid), sf-1 (jargon), sf-2 (overload), and sf-3 (unsaved state trace).
+      The JTBD framing ("non-expert admin trying to configure HSTS without background
+      knowledge") directly surfaces sf-1 and sf-3. Perspective coverage attribution
+      should correctly separate cognitive from magnification findings.
+
+verdict_expectations:
+  A: REVISE
+  B: REVISE
+  C: REVISE
+
+differentiator_findings:
+  - finding_id: sf-3
+    name: "Unsaved-changes indicator — state set but never rendered"
+    rationale: >
+      Requires reading handleToggle to trace the saved state variable through the component
+      and notice it never appears in JSX. This is the primary condition-A-vs-C differentiator:
+      condition A will see a form with a save button and assume it is standard behavior;
+      condition C with cognitive JTBD framing will ask "how does the user know their
+      changes are pending?"
+    metric_target: "new_dimension_recall"
+
+  - finding_id: mf-1
+    name: "9px font size measurement"
+    rationale: >
+      Citing "small text" earns only partial credit; the 9px measurement is required for
+      full credit. This tests whether the magnification perspective protocol prompts
+      quantitative CSS inspection rather than qualitative description.
+    metric_target: "evidence_precision"
+
+notes: |
+  Fixture 2 of 4 in the expanded suite. Rubric version 1.0.
+
+  Key measurement goals:
+  1. Does condition C find sf-3 (unsaved state trace) more reliably than A or B?
+  2. Does condition C cite the 9px font measurement specifically, or only "small text"?
+  3. Does the role=alert false positive trap (fpt-1) catch reviewers who conflate
+     content quality with ARIA pattern correctness?
+
+  This fixture has the lowest expected A-condition score of the four (25-35%) because
+  it requires two independent perspective lenses (cognitive AND magnification) and the
+  highest-value finding (sf-3) requires code tracing rather than UI inspection.

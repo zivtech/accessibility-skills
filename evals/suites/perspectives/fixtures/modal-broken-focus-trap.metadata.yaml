@@ -1,0 +1,73 @@
+fixture_id: modal-broken-focus-trap
+name: "Modal Dialog With Broken Focus Trap"
+description: >
+  React modal dialog with form content. Focus not moved on open, no focus trap,
+  no role="dialog" or aria-modal, close button has no accessible label, Escape doesn't close.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+regression_fixture: true
+regression_note: "Tests existing-dimension strength. All conditions should score 70%+. C must not regress below A."
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Focus not moved to modal on open — stays on trigger button"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order"
+        evidence: "Modal opens but focus remains on trigger button behind overlay"
+        user_group: "Keyboard users, screen reader users"
+      - description: "No focus trap — Tab escapes modal into background page"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order"
+        evidence: "Tab key moves focus to elements behind the modal overlay"
+        user_group: "Keyboard users, screen reader users"
+  - category: should_find
+    count: 2
+    items:
+      - description: "No role='dialog' or aria-modal='true'"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Modal container is plain div with no ARIA role"
+        user_group: "Screen reader users"
+      - description: "Close button has no accessible label — just × character"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Button contains only × text, no aria-label"
+        user_group: "Screen reader users"
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Escape key doesn't close modal"
+        severity: MINOR
+        wcag: "APG Dialog pattern"
+        evidence: "No onKeyDown handler for Escape"
+        user_group: "Keyboard users"
+
+perspectives_tested:
+  primary: "keyboard_motor"
+  secondary: "screen_reader_semantic"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Overlay dims background correctly"
+      note: "Visual design is correct — do not flag"
+    - description: "Form fields inside modal have proper labels"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Regression fixture for keyboard/screen reader dimension. Classic modal pattern failures."

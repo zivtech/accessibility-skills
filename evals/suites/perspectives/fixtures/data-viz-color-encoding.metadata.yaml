@@ -1,0 +1,70 @@
+fixture_id: data-viz-color-encoding
+name: "Data Visualization With Color-Only Series Encoding"
+description: >
+  React SVG bar/pie chart with 5 color-coded data series distinguished only by fill color — no pattern fills, no direct labels. Legend uses small colored squares only. Hover tooltips have no keyboard equivalent.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Data Display
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "5 data series distinguished only by fill color — no patterns or labels"
+        severity: CRITICAL
+        wcag: "1.4.1 Use of Color"
+        evidence: "SVG rect elements use fill color as sole differentiator"
+        user_group: "Color-blind users, monochrome display users"
+      - description: "Hover tooltips on SVG bars with no keyboard/focus equivalent"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard / 1.4.13 Content on Hover"
+        evidence: "onMouseEnter shows tooltip; no focus handler on SVG elements"
+        user_group: "Keyboard users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "Legend uses small colored squares only, no text-shape mapping"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color"
+        evidence: "Legend items: colored div + text label, but color is sole series identifier"
+        user_group: "Color-blind users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Chart title in SVG with no accessible name on svg element"
+        severity: MINOR
+        wcag: "1.1.1 Non-text Content"
+        evidence: "svg element has no role='img' or aria-label"
+        user_group: "Screen reader users"
+      - description: "Y-axis labels at 10px font size"
+        severity: MINOR
+        wcag: "1.4.4 Resize Text"
+        evidence: "SVG text elements at font-size 10px"
+        user_group: "Low-vision users"
+
+perspectives_tested:
+  primary: "environmental_contrast"
+  secondary: "screen_reader_semantic"
+
+expected_alarm_levels:
+  magnification_reflow: MEDIUM
+  environmental_contrast: HIGH
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "SVG colors all pass contrast against white background"
+      note: "Contrast ratio is fine — the issue is color-ONLY encoding, not contrast"
+    - description: "Page heading structure and landmarks are correct"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective environmental_contrast."

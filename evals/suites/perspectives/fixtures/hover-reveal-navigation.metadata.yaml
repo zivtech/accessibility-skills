@@ -1,0 +1,72 @@
+fixture_id: hover-reveal-navigation
+name: "Mega-Menu Navigation With Hover-Only Submenus"
+description: >
+  React mega-menu where submenus appear on mouseenter only — no keyboard trigger despite focusable parent links. No hover grace period, no Escape handler, and submenu animation without reduced-motion check.
+language: jsx
+framework: React
+difficulty: ADVERSARIAL
+domain: Navigation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Submenus appear on mouseenter only — no keyboard trigger"
+        severity: CRITICAL
+        wcag: "2.1.1 Keyboard"
+        evidence: "onMouseEnter shows submenu; no onFocus or onKeyDown handler"
+        user_group: "Keyboard users, switch users"
+      - description: "Submenu disappears with no hover grace period"
+        severity: MAJOR
+        wcag: "1.4.13 Content on Hover or Focus"
+        evidence: "onMouseLeave immediately hides; no delay or grace zone"
+        user_group: "Motor impairment users, magnification users"
+  - category: should_find
+    count: 1
+    items:
+      - description: "No Escape key handler to close open submenu"
+        severity: MAJOR
+        wcag: "1.4.13 Content on Hover or Focus"
+        evidence: "No onKeyDown handler for Escape on submenu"
+        user_group: "Keyboard users"
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Submenu slide-down animation without reduced-motion check"
+        severity: MINOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: "200ms slide-down transition; no prefers-reduced-motion"
+        user_group: "Vestibular users"
+      - description: "Submenu items not wrapped in role='menu'"
+        severity: MINOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "Nested links in div, no menu role"
+        user_group: "Screen reader users"
+
+perspectives_tested:
+  primary: "keyboard_motor"
+  secondary: "cognitive_neurodivergent"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Top-level nav items are proper links with descriptive text"
+      note: "Correct — do not flag"
+    - description: "aria-label on nav element"
+      note: "Correct — do not flag"
+    - description: "Skip link present and working"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for ADVERSARIAL category, primary perspective keyboard_motor."

@@ -1,0 +1,117 @@
+fixture_id: podcast-audio-only
+name: Podcast Player Without Transcripts
+description: >
+  React podcast player with episode list, play/pause, skip, and speed controls.
+  All keyboard controls are intentionally correct. The audio-only content has no
+  transcript anywhere in the component, episode descriptions are spoken in the
+  audio intro but never rendered as text, the "new episode" notification is an
+  audio chime with no visual DOM equivalent, and the speed control does not
+  announce the active speed to screen readers on change.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Media & Content
+work_type: component_review
+
+expected_findings:
+  must_find:
+    count: 1
+    items:
+      - description: "No transcript for audio-only content anywhere in the component"
+        severity: CRITICAL
+        wcag: "1.2.1 Audio-only and Video-only (Prerecorded)"
+        evidence: "No transcript section or link exists; no-transcript-notice CSS class comment confirms absence"
+        user_group: "Deaf and hard of hearing users; users in noise-sensitive environments"
+
+  should_find:
+    count: 2
+    items:
+      - description: "Episode descriptions spoken in audio intro but never rendered as text"
+        severity: MAJOR
+        wcag: "1.2.1 Audio-only and Video-only (Prerecorded)"
+        evidence: "BUG comment above episode list; no description field rendered per episode item"
+        user_group: "Deaf and hard of hearing users"
+
+      - description: "New episode notification is audio chime only — no visual DOM change or aria-live"
+        severity: MAJOR
+        wcag: "1.4.1 Use of Color; non-text equivalent principle"
+        evidence: "handleNewEpisode fires AudioContext chime with no DOM update; .new-badge has role=img but no aria-label"
+        user_group: "Deaf and hard of hearing users; screen reader users"
+
+  nice_to_find:
+    count: 1
+    items:
+      - description: "Speed control does not announce active speed to screen readers on change"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "handleSpeedChange updates state with no aria-live region; select aria-label is static"
+        user_group: "Screen reader users; motor-impaired keyboard users"
+
+perspectives_tested:
+  primary: "Auditory Access"
+  secondary: "Screen Reader Semantic"
+
+expected_alarm_levels:
+  auditory_access: HIGH
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+  magnification_reflow: LOW
+  vestibular_motion: LOW
+  environmental_contrast: LOW
+  keyboard_motor: LOW
+
+multi_perspective_coverage:
+  auditory_access:
+    alarm_level: HIGH
+    notes: "Missing transcript (1.2.1), audio-only episode descriptions, audio-chime-only new-episode notification — all directly impact deaf and hard of hearing users"
+  screen_reader_semantic:
+    alarm_level: MEDIUM
+    notes: "new-badge span has role=img with no aria-label; speed control missing live announcement on change"
+  cognitive_neurodivergent:
+    alarm_level: LOW
+    notes: "Player layout is straightforward; no cognitive overload patterns present"
+  magnification_reflow:
+    alarm_level: LOW
+    notes: "No magnification-specific layout issues in the component"
+  vestibular_motion:
+    alarm_level: LOW
+    notes: "No animation, autoplay, or motion patterns present"
+  environmental_contrast:
+    alarm_level: LOW
+    notes: "No contrast-specific evidence available in JSX source"
+  keyboard_motor:
+    alarm_level: LOW
+    notes: "Play, pause, skip, seek, and speed controls are all keyboard-operable with correct ARIA — no issues"
+
+false_positive_traps:
+  count: 3
+  items:
+    - description: "Play/pause, skip back, skip forward, and seek controls are correctly implemented and must NOT be flagged"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "Episode player controls group"
+
+    - description: "Speed control <label htmlFor> association is correct — the bug is only the missing change announcement, not a missing label"
+      trap_type: "partial_implementation_over-penalized"
+      relevant_lines: "speed-control div and speed-select element"
+
+    - description: "Episode buttons use aria-pressed correctly and must NOT be flagged as missing selection state"
+      trap_type: "correct_implementation_flagged_as_broken"
+      relevant_lines: "Episode list button elements"
+
+wcag_criteria:
+  - "1.2.1 Audio-only and Video-only (Prerecorded)"
+  - "1.4.1 Use of Color"
+  - "4.1.3 Status Messages"
+
+expected_verdict: REVISE
+
+notes: |
+  Fixture 1 of 4 in the expanded perspectives eval suite. Category: HAS-BUGS (auditory primary).
+
+  Design intent: isolate auditory dimension by making keyboard accessibility intentionally correct.
+  The speed control is a nuanced case — the label association IS correct, making this a partial-
+  implementation trap. A reviewer who flags the label as missing will be penalized; a reviewer
+  who identifies the narrower issue (missing live announcement on change) earns full credit.
+
+  The new-episode chime pattern mirrors the video-tutorial-no-captions audio beep pattern
+  to test whether the auditory perspective lens transfers across media types.

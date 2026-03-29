@@ -101,13 +101,13 @@ expected_findings:
         No option to reduce information density, hide columns, or access a simplified view.
 
 expected_alarm_levels:
-  Environmental Contrast: HIGH
-  Cognitive: HIGH
-  Keyboard: MEDIUM
-  Screen Reader: MEDIUM
-  Magnification: MEDIUM
-  Auditory: LOW
-  Vestibular: LOW
+  magnification_reflow: MEDIUM
+  environmental_contrast: HIGH
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: MEDIUM
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: HIGH
 
 expected_verdict: REVISE
 

@@ -1,0 +1,70 @@
+fixture_id: animated-onboarding-flow
+name: "Animated Onboarding Wizard With Unguarded Transitions"
+description: >
+  React multi-step onboarding wizard with full-viewport slide transitions, confetti celebration, progress bar animation, and bouncing step icons — all without prefers-reduced-motion guards.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Full-viewport slide transitions with no prefers-reduced-motion"
+        severity: CRITICAL
+        wcag: "2.3.1 Three Flashes or Below Threshold"
+        evidence: "translateX(100%) transition with no @media (prefers-reduced-motion)"
+        user_group: "Vestibular disorder users"
+      - description: "Confetti particle animation — 200+ moving elements for 3 seconds"
+        severity: CRITICAL
+        wcag: "2.3.1 Three Flashes"
+        evidence: "Canvas confetti with no reduced-motion check"
+        user_group: "Vestibular users, photosensitive users"
+  - category: should_find
+    count: 2
+    items:
+      - description: "Progress bar smooth-scrolling fill animation, no reduced-motion"
+        severity: MAJOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: "CSS transition on .progress-fill width; no media query guard"
+        user_group: "Vestibular users"
+      - description: "Step icons bounce/scale on activation, no reduced-motion guard"
+        severity: MAJOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: "@keyframes bounce on .step-icon.active; no media query"
+        user_group: "Vestibular users, cognitive/attention users"
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Background gradient shift animation on each step"
+        severity: MINOR
+        wcag: "2.3.3 Animation from Interactions"
+        evidence: "CSS transition on background gradient; subtle but continuous"
+        user_group: "Vestibular users"
+
+perspectives_tested:
+  primary: "vestibular_motion"
+  secondary: "cognitive_neurodivergent"
+
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: HIGH
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+
+false_positive_traps:
+  count: 2
+  items:
+    - description: "Next/Back buttons properly labeled with aria-label"
+      note: "Correct — do not flag"
+    - description: "Step content uses headings, form fields have labels"
+      note: "Correct — do not flag"
+
+expected_verdict: REVISE
+
+notes: "Generated fixture for HAS-BUGS category, primary perspective vestibular_motion."

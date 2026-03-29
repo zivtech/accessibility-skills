@@ -159,16 +159,24 @@ composite_score:
   formula: >
     (perspective_coverage * 2 + color_only_diagnosis * 2 +
      finding_completeness * 1 + false_positive_avoidance * 1 +
-     actionability * 1 + severity_calibration * 1) / 8
+     actionability * 1 + severity_calibration * 1) / 8 * 100
   max_raw: 8
-  normalized: true  # expressed as 0.0 – 1.0
+  normalized: true  # expressed as 0-100 percentage
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
 
 # ─────────────────────────────────────────────
 # EXPECTED PERFORMANCE BY CONDITION
 # ─────────────────────────────────────────────
 expected_performance:
   condition_A:
-    composite_score: "~0.35"
+    composite_score: "~35"
+    expected_score: "30-40"
     perspective_coverage: 0   # keyboard/ARIA only
     color_only_diagnosis: 0   # either absent or conflated with contrast
     finding_completeness: "~0.25"  # may find hover tooltip, misses color-only
@@ -177,7 +185,8 @@ expected_performance:
     severity_calibration: "~0.40"
 
   condition_B:
-    composite_score: "~0.50"
+    composite_score: "~50"
+    expected_score: "45-55"
     perspective_coverage: 1   # mentions color, likely conflates
     color_only_diagnosis: 1   # conflated with contrast ratio
     finding_completeness: "~0.40"
@@ -186,7 +195,8 @@ expected_performance:
     severity_calibration: "~0.50"
 
   condition_C:
-    composite_score: "~0.80"
+    composite_score: "~80"
+    expected_score: "75-85"
     perspective_coverage: 2   # Environmental Contrast + Cognitive both addressed
     color_only_diagnosis: 3   # correctly distinguishes 1.4.1 from 1.4.3
     finding_completeness: "~0.90"

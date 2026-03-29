@@ -1,0 +1,26 @@
+fixture_id: calibration-animated-dashboard
+name: "Animated Dashboard (Calibration C4)"
+description: "React analytics dashboard with live-updating charts, animated counters, scrolling ticker, and color-coded alerts. Tests whether escalation correctly identifies many simultaneous HIGH perspectives."
+type: calibration
+archetype: animated_data_display
+
+expected_alarm_levels:
+  magnification_reflow: MEDIUM
+  environmental_contrast: HIGH
+  vestibular_motion: HIGH
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+
+scoring:
+  method: alarm_level_accuracy
+  exact_match_score: 1.0
+  within_one_score: 0.5
+  off_by_two_score: 0.0
+  total_assessments: 7
+  passing_threshold_exact: 5
+  target_threshold_exact: 6
+
+rationale: |
+  This is the 'loud' fixture — almost everything is HIGH. Scrolling ticker + chart animations (Vestibular), color-coded alerts (Contrast), interactive charts (Keyboard), live data (Screen Reader). Tests whether escalation avoids flattening all perspectives to MEDIUM.
