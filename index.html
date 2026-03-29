@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>a11y-meta-skills — Accessibility skill bundle for Claude Code</title>
+  <meta name="description" content="Accessibility skill bundle for Claude Code — plan, test, review, and audit from real perspectives.">
+  <style>
+    /* ===========================
+       Design tokens
+    =========================== */
+    :root {
+      --navy:       #0f172a;
+      --navy-mid:   #1e293b;
+      --navy-light: #334155;
+      --teal:       #0d9488;
+      --teal-dark:  #0f766e;
+      --teal-light: #ccfbf1;
+      --amber:      #b45309;
+      --amber-light:#fef3c7;
+      --red:        #b91c1c;
+      --red-light:  #fee2e2;
+      --slate-100:  #f1f5f9;
+      --slate-200:  #e2e8f0;
+      --slate-300:  #cbd5e1;
+      --slate-500:  #64748b;
+      --slate-700:  #334155;
+      --white:      #ffffff;
+      --text:       #1e293b;
+      --text-muted: #475569;
+
+      --radius-sm:  4px;
+      --radius:     8px;
+      --radius-lg:  12px;
+
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow:     0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.06);
+      --shadow-lg:  0 10px 24px rgba(0,0,0,.1), 0 4px 8px rgba(0,0,0,.06);
+
+      --font-sans:  Georgia, 'Times New Roman', serif; /* headings: editorial feel */
+      --font-body:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --font-mono:  'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Consolas, monospace;
+    }
+
+    /* ===========================
+       Reset & base
+    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    /* ===========================
+       Typography
+    =========================== */
+    h1, h2, h3, h4 {
+      font-family: var(--font-sans);
+      line-height: 1.2;
+      color: var(--navy);
+    }
+
+    h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.02em; }
+    h2 { font-size: clamp(1.4rem, 3vw, 1.875rem); margin-bottom: .5rem; }
+    h3 { font-size: 1.125rem; margin-bottom: .375rem; }
+    h4 { font-size: 1rem; font-family: var(--font-body); font-weight: 600; }
+
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    code, kbd {
+      font-family: var(--font-mono);
+      font-size: .875em;
+      background: var(--slate-100);
+      padding: .1em .35em;
+      border-radius: var(--radius-sm);
+      color: var(--navy-mid);
+    }
+
+    pre {
+      font-family: var(--font-mono);
+      font-size: .875rem;
+      background: var(--navy);
+      color: #e2e8f0;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+    pre code { background: none; padding: 0; color: inherit; font-size: 1em; }
+
+    a {
+      color: var(--teal-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    a:hover, a:focus {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+    a:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ===========================
+       Layout
+    =========================== */
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    section { padding: 4rem 0; }
+    section + section { border-top: 1px solid var(--slate-200); }
+
+    /* ===========================
+       Hero
+    =========================== */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 4rem 0 3.5rem;
+    }
+
+    .hero__eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin-bottom: 1rem;
+      background: rgba(13,148,136,.15);
+      padding: .25rem .6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(13,148,136,.3);
+    }
+
+    .hero h1 {
+      color: var(--white);
+      margin-bottom: .75rem;
+      font-family: var(--font-mono);
+      letter-spacing: -.02em;
+    }
+
+    .hero__subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #94a3b8;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .hero__install {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+
+    .install-block {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: .625rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .install-block code {
+      font-family: var(--font-mono);
+      font-size: .875rem;
+      color: var(--teal-light);
+      background: none;
+      padding: 0;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--radius-sm);
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: .75rem;
+      font-family: var(--font-body);
+      padding: .25rem .5rem;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover, .copy-btn:focus-visible {
+      background: rgba(255,255,255,.1);
+      color: var(--white);
+      outline: 2px solid var(--teal);
+      outline-offset: 1px;
+    }
+
+    .hero__badges {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      padding: .2rem .55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.15);
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    /* ===========================
+       Section headers
+    =========================== */
+    .section-header {
+      margin-bottom: 2.5rem;
+    }
+    .section-header__label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+      margin-bottom: .5rem;
+    }
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 640px;
+      font-size: 1.05rem;
+    }
+
+    /* ===========================
+       Lifecycle diagram
+    =========================== */
+    .lifecycle-diagram {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: .5rem;
+    }
+
+    .lifecycle-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 640px;
+    }
+
+    /* Main track */
+    .lifecycle-track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .lc-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .lc-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: .6rem .9rem;
+      border-radius: var(--radius);
+      border: 2px solid transparent;
+      font-size: .78rem;
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: center;
+      min-width: 82px;
+      max-width: 100px;
+      cursor: default;
+    }
+
+    .lc-node--planner {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0c4a6e;
+    }
+    .lc-node--critic {
+      background: #fef9c3;
+      border-color: #ca8a04;
+      color: #713f12;
+    }
+    .lc-node--perspective {
+      background: #fce7f3;
+      border-color: #db2777;
+      color: #831843;
+      border-style: dashed;
+    }
+    .lc-node--manual {
+      background: var(--slate-100);
+      border-color: var(--slate-300);
+      color: var(--slate-700);
+    }
+    .lc-node--test {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+
+    .lc-node__step {
+      font-size: .6rem;
+      font-weight: 400;
+      opacity: .7;
+      font-family: var(--font-mono);
+      margin-bottom: .15rem;
+    }
+
+    .lc-arrow {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 .15rem;
+      margin-top: -20px; /* align to node center */
+    }
+
+    .lc-arrow svg { display: block; }
+
+    /* Escalation branch row */
+    .lifecycle-escalation {
+      display: flex;
+      gap: 0;
+      align-items: flex-start;
+      margin-top: .25rem;
+      padding-left: 0;
+    }
+
+    .lc-spacer { flex-shrink: 0; }
+
+    .escalation-branch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .escalation-down-arrow {
+      display: flex;
+      justify-content: center;
+      height: 20px;
+    }
+
+    .escalation-node {
+      background: #fce7f3;
+      border: 2px dashed #db2777;
+      border-radius: var(--radius);
+      padding: .45rem .7rem;
+      font-size: .73rem;
+      font-weight: 600;
+      color: #831843;
+      text-align: center;
+      min-width: 82px;
+      max-width: 100px;
+      line-height: 1.3;
+    }
+
+    .escalation-node__step {
+      font-size: .6rem;
+      font-weight: 400;
+      opacity: .7;
+      font-family: var(--font-mono);
+      display: block;
+      margin-bottom: .1rem;
+    }
+
+    .escalation-label {
+      font-size: .62rem;
+      color: #db2777;
+      font-style: italic;
+      margin-top: .2rem;
+      text-align: center;
+    }
+
+    /* Legend */
+    .lifecycle-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem 1.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--slate-200);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .8rem;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: var(--radius-sm);
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+    .legend-dot--planner { background: #e0f2fe; border-color: #0284c7; }
+    .legend-dot--critic  { background: #fef9c3; border-color: #ca8a04; }
+    .legend-dot--perspective { background: #fce7f3; border-color: #db2777; }
+    .legend-dot--test    { background: #dcfce7; border-color: #16a34a; }
+    .legend-dot--manual  { background: var(--slate-100); border-color: var(--slate-300); }
+
+    /* Skill tags on legend */
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      padding: .2rem .5rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .skill-tag--planner { background: #e0f2fe; color: #0c4a6e; border: 1px solid #7dd3fc; }
+    .skill-tag--critic  { background: #fef9c3; color: #713f12; border: 1px solid #fcd34d; }
+    .skill-tag--perspective { background: #fce7f3; color: #831843; border: 1px solid #f9a8d4; }
+    .skill-tag--test    { background: #dcfce7; color: #14532d; border: 1px solid #86efac; }
+
+    /* ===========================
+       Perspectives grid
+    =========================== */
+    .perspectives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .perspective-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.25rem 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, transform .2s;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .perspective-card:hover {
+        box-shadow: var(--shadow);
+        transform: translateY(-2px);
+      }
+    }
+
+    .perspective-card__header {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      margin-bottom: .75rem;
+    }
+
+    .perspective-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 2.25rem;
+      height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--slate-100);
+      border-radius: var(--radius);
+      aria-hidden: true;
+    }
+
+    .perspective-card h3 {
+      font-size: .95rem;
+      margin-bottom: .1rem;
+      color: var(--navy);
+    }
+
+    .perspective-card__at {
+      font-size: .78rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .perspective-card__criteria {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem;
+      margin-top: .75rem;
+    }
+
+    .criteria-pill {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      border: 1px solid var(--slate-200);
+      border-radius: 999px;
+      padding: .15rem .45rem;
+    }
+
+    /* ===========================
+       Escalation comparison
+    =========================== */
+    .escalation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .escalation-grid { grid-template-columns: 1fr; }
+    }
+
+    .escalation-panel {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .escalation-panel__header {
+      padding: .75rem 1.25rem;
+      font-weight: 600;
+      font-size: .9rem;
+    }
+
+    .escalation-panel--standard .escalation-panel__header {
+      background: var(--slate-100);
+      color: var(--slate-700);
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .escalation-panel--enhanced .escalation-panel__header {
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 1px solid var(--navy-light);
+    }
+
+    .escalation-panel__body {
+      padding: 1rem 1.25rem;
+      background: var(--white);
+    }
+
+    .finding-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .finding-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+      font-size: .82rem;
+      color: var(--text);
+      padding: .5rem .6rem;
+      background: var(--slate-100);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--slate-300);
+    }
+
+    .finding-item--critical { border-left-color: var(--red); background: #fff5f5; }
+    .finding-item--warning  { border-left-color: var(--amber); background: #fffbeb; }
+
+    .finding-badge {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: .1rem .35rem;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+    .finding-badge--critical { background: var(--red-light); color: var(--red); }
+    .finding-badge--warning  { background: var(--amber-light); color: var(--amber); }
+
+    .alarm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .8rem;
+      margin-top: .5rem;
+    }
+    .alarm-table th {
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-weight: 600;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: .45rem .6rem;
+      text-align: left;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .alarm-table td {
+      padding: .4rem .6rem;
+      border-bottom: 1px solid var(--slate-100);
+      vertical-align: top;
+    }
+    .alarm-table tr:last-child td { border-bottom: none; }
+
+    .alarm-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: .15rem .45rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+    .alarm-pill--high   { background: var(--red-light);   color: var(--red); }
+    .alarm-pill--medium { background: var(--amber-light); color: var(--amber); }
+    .alarm-pill--low    {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .alarm-rationale {
+      font-size: .75rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ===========================
+       Eval results
+    =========================== */
+    .eval-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.25rem 1rem;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-card__value {
+      font-family: var(--font-mono);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: .35rem;
+      letter-spacing: -.03em;
+    }
+
+    .stat-card__value--accent { color: var(--teal-dark); }
+    .stat-card__value--zero   { color: var(--teal-dark); }
+
+    .stat-card__label {
+      font-size: .78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .calibration-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+    }
+    .calibration-table th {
+      background: var(--navy);
+      color: var(--white);
+      font-weight: 600;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: .6rem .75rem;
+      text-align: left;
+    }
+    .calibration-table td {
+      padding: .55rem .75rem;
+      border-bottom: 1px solid var(--slate-100);
+      color: var(--text);
+    }
+    .calibration-table tr:last-child td { border-bottom: none; }
+    .calibration-table tr:nth-child(even) td { background: var(--slate-100); }
+
+    .match-pill {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 700;
+      background: #dcfce7;
+      color: #15803d;
+      border-radius: 999px;
+      padding: .15rem .5rem;
+    }
+
+    .qualitative-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .qual-card {
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 1rem;
+      background: var(--white);
+    }
+
+    .qual-card__label {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      margin-bottom: .3rem;
+    }
+
+    .qual-card__value {
+      font-size: .875rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* ===========================
+       Install section
+    =========================== */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: .75rem;
+      margin-top: 1.5rem;
+    }
+
+    .command-card {
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+      padding: .875rem 1rem;
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .command-card code {
+      font-size: .85rem;
+      font-family: var(--font-mono);
+      color: var(--teal-dark);
+      background: none;
+      padding: 0;
+    }
+
+    .command-card__desc {
+      font-size: .78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .install-manual {
+      margin-top: 2rem;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .install-manual__toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: var(--slate-100);
+      border: none;
+      padding: .75rem 1rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+    }
+    .install-manual__toggle:hover { background: var(--slate-200); }
+    .install-manual__toggle:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: -2px;
+    }
+
+    .install-manual__content {
+      padding: 1rem;
+      background: var(--white);
+    }
+
+    .install-manual__content[hidden] { display: none; }
+
+    /* ===========================
+       Footer
+    =========================== */
+    footer {
+      background: var(--navy);
+      color: #94a3b8;
+      padding: 2.5rem 0;
+      font-size: .875rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      color: var(--white);
+      font-size: .9rem;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .footer-brand:hover { color: var(--teal-light); }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    footer a:hover { color: var(--white); }
+    footer a:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .footer-meta {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* ===========================
+       Utilities
+    =========================== */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    .overflow-table {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===========================
+       Responsive
+    =========================== */
+    @media (max-width: 480px) {
+      section { padding: 2.5rem 0; }
+      .hero { padding: 2.5rem 0 2rem; }
+      .lifecycle-legend { gap: .5rem 1rem; }
+    }
+
+    @media (max-width: 320px) {
+      :root { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===========================
+       Hero
+  =========================== -->
+  <header class="hero" role="banner">
+    <div class="container">
+      <div class="hero__eyebrow">Claude Code skill bundle</div>
+      <h1>a11y-meta-skills</h1>
+      <p class="hero__subtitle">
+        Accessibility skill bundle for Claude Code — plan, test, review, and audit from real perspectives.
+      </p>
+
+      <div class="hero__install">
+        <div class="install-block" role="region" aria-label="Install command">
+          <code id="install-cmd">npx skills add zivtech/a11y-meta-skills</code>
+          <button
+            class="copy-btn"
+            onclick="copyInstall(this)"
+            aria-label="Copy install command to clipboard"
+          >Copy</button>
+        </div>
+      </div>
+
+      <div class="hero__badges" aria-label="Skill commands">
+        <span class="badge">/a11y-planner</span>
+        <span class="badge">/a11y-critic</span>
+        <span class="badge">/a11y-test</span>
+        <span class="badge">/perspective-audit</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ===========================
+         Section 2: Lifecycle
+    =========================== -->
+    <section aria-labelledby="lifecycle-heading">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__label">Workflow</div>
+          <h2 id="lifecycle-heading">The 4-Skill Lifecycle</h2>
+          <p>
+            The bundle covers the full accessibility development cycle across 8 steps. The critic runs at
+            two checkpoints. The perspective audit is triggered by escalation — not always-on.
+          </p>
+        </div>
+
+        <div class="lifecycle-diagram" role="img" aria-label="Lifecycle diagram: plan, critique, optional perspective audit, revise, implement, test, critique again, optional perspective audit, fix, re-test">
+          <div class="lifecycle-flow">
+
+            <!-- Main track row 1 (steps 1-5) -->
+            <div class="lifecycle-track">
+
+              <!-- Step 1: plan -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--planner">
+                  <span class="lc-node__step">1</span>
+                  Plan
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 2: critique plan -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--critic">
+                  <span class="lc-node__step">2</span>
+                  Critique plan
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 3 placeholder (escalation shown below) -->
+              <div class="lc-step" style="position:relative;">
+                <div class="lc-node lc-node--perspective" style="opacity:.35;" aria-hidden="true">
+                  <span class="lc-node__step">3</span>
+                  Perspective audit
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 4: revise -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--manual">
+                  <span class="lc-node__step">4</span>
+                  Revise
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 5: implement -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--manual">
+                  <span class="lc-node__step">5</span>
+                  Implement
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 6: test -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--test">
+                  <span class="lc-node__step">6</span>
+                  Test
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 7: critique impl -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--critic">
+                  <span class="lc-node__step">7</span>
+                  Critique impl.
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 8 placeholder -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--perspective" style="opacity:.35;" aria-hidden="true">
+                  <span class="lc-node__step">8</span>
+                  Perspective audit
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div class="lc-arrow">
+                <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true">
+                  <line x1="2" y1="9" x2="22" y2="9" stroke="#94a3b8" stroke-width="1.5"/>
+                  <polyline points="18,5 22,9 18,13" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                </svg>
+              </div>
+
+              <!-- Step 9: fix -->
+              <div class="lc-step">
+                <div class="lc-node lc-node--manual">
+                  <span class="lc-node__step">9</span>
+                  Fix &amp; re-test
+                </div>
+              </div>
+            </div><!-- /.lifecycle-track -->
+
+          </div><!-- /.lifecycle-flow -->
+        </div><!-- /.lifecycle-diagram -->
+
+        <!-- Escalation callout (readable fallback) -->
+        <div style="margin-top:1.5rem; background:var(--slate-100); border-radius:var(--radius); padding:1rem 1.25rem; border-left:3px solid #db2777;">
+          <p style="font-size:.875rem; color:var(--text-muted); margin:0;">
+            <strong style="color:#831843;">Escalation branches</strong> — steps 3 and 8 are conditional.
+            When the planner or critic assigns <strong>MEDIUM</strong> or <strong>HIGH</strong> alarm to one or more
+            perspectives, run <code>/perspective-audit</code> for a focused deep review of those perspectives only.
+          </p>
+        </div>
+
+        <!-- Legend -->
+        <div class="lifecycle-legend" aria-label="Skill color legend">
+          <div class="legend-item">
+            <span class="legend-dot legend-dot--planner" aria-hidden="true"></span>
+            <span class="skill-tag skill-tag--planner">/a11y-planner</span>
+            <span>step 1</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot legend-dot--critic" aria-hidden="true"></span>
+            <span class="skill-tag skill-tag--critic">/a11y-critic</span>
+            <span>steps 2 &amp; 7 (dual checkpoint)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot legend-dot--perspective" aria-hidden="true"></span>
+            <span class="skill-tag skill-tag--perspective">/perspective-audit</span>
+            <span>steps 3 &amp; 8 (escalation only)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot legend-dot--test" aria-hidden="true"></span>
+            <span class="skill-tag skill-tag--test">/a11y-test</span>
+            <span>step 6</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===========================
+         Section 3: 7 Perspectives
+    =========================== -->
+    <section aria-labelledby="perspectives-heading" style="background:var(--slate-100);">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__label">perspective-audit</div>
+          <h2 id="perspectives-heading">The 7 Perspectives</h2>
+          <p>
+            Each perspective covers a distinct disability or situational access scenario.
+            Together they map 52 WCAG 2.2 AA criteria with one primary owner per criterion.
+          </p>
+        </div>
+
+        <div class="perspectives-grid">
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">🔍</div>
+              <div>
+                <h3>Magnification &amp; Reflow</h3>
+                <p class="perspective-card__at">Browser zoom, screen magnifier, 320px reflow</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">1.4.4</span>
+              <span class="criteria-pill">1.4.10</span>
+              <span class="criteria-pill">1.4.12</span>
+              <span class="criteria-pill">1.4.13</span>
+              <span class="criteria-pill">2.4.11</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">☀️</div>
+              <div>
+                <h3>Environmental Contrast</h3>
+                <p class="perspective-card__at">High-contrast mode, outdoor brightness, color vision deficiency</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">1.3.3</span>
+              <span class="criteria-pill">1.4.1</span>
+              <span class="criteria-pill">1.4.3</span>
+              <span class="criteria-pill">1.4.11</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">🌀</div>
+              <div>
+                <h3>Vestibular &amp; Motion</h3>
+                <p class="perspective-card__at">Motion sensitivity, prefers-reduced-motion, parallax</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">2.2.2</span>
+              <span class="criteria-pill">2.3.1</span>
+              <span class="criteria-pill">2.5.4</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">👂</div>
+              <div>
+                <h3>Auditory Access</h3>
+                <p class="perspective-card__at">Captions, transcripts, visual alternatives to audio</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">1.2.1</span>
+              <span class="criteria-pill">1.2.2</span>
+              <span class="criteria-pill">1.2.3</span>
+              <span class="criteria-pill">1.2.5</span>
+              <span class="criteria-pill">1.4.2</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">⌨️</div>
+              <div>
+                <h3>Keyboard &amp; Motor</h3>
+                <p class="perspective-card__at">Keyboard-only, switch access, voice control, limited dexterity</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">2.1.1</span>
+              <span class="criteria-pill">2.1.2</span>
+              <span class="criteria-pill">2.4.1</span>
+              <span class="criteria-pill">2.4.3</span>
+              <span class="criteria-pill">2.4.7</span>
+              <span class="criteria-pill">2.5.7</span>
+              <span class="criteria-pill">2.5.8</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">🗣️</div>
+              <div>
+                <h3>Screen Reader &amp; Semantic</h3>
+                <p class="perspective-card__at">NVDA, JAWS, VoiceOver — semantic structure, live regions</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">1.1.1</span>
+              <span class="criteria-pill">1.3.1</span>
+              <span class="criteria-pill">1.3.2</span>
+              <span class="criteria-pill">4.1.2</span>
+              <span class="criteria-pill">4.1.3</span>
+            </div>
+          </article>
+
+          <article class="perspective-card">
+            <div class="perspective-card__header">
+              <div class="perspective-icon" aria-hidden="true">🧠</div>
+              <div>
+                <h3>Cognitive &amp; Neurodivergent</h3>
+                <p class="perspective-card__at">Plain language, information density, consistent navigation</p>
+              </div>
+            </div>
+            <div class="perspective-card__criteria" aria-label="WCAG criteria">
+              <span class="criteria-pill">1.3.5</span>
+              <span class="criteria-pill">2.2.1</span>
+              <span class="criteria-pill">3.2.1</span>
+              <span class="criteria-pill">3.2.4</span>
+              <span class="criteria-pill">3.3.3</span>
+              <span class="criteria-pill">3.3.4</span>
+              <span class="criteria-pill">3.3.7</span>
+              <span class="criteria-pill">3.3.8</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===========================
+         Section 4: Escalation
+    =========================== -->
+    <section aria-labelledby="escalation-heading">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__label">How escalation works</div>
+          <h2 id="escalation-heading">Standard vs. Perspective-Enhanced Review</h2>
+          <p>
+            The perspective enhancement changes the output structure, not the number of findings.
+            The alarm level table is produced only in condition C (perspective-aware).
+          </p>
+        </div>
+
+        <div class="escalation-grid">
+
+          <!-- Standard -->
+          <div class="escalation-panel escalation-panel--standard">
+            <div class="escalation-panel__header">Standard review</div>
+            <div class="escalation-panel__body">
+              <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.875rem;">
+                Flat findings list — no perspective framing, no escalation signal.
+              </p>
+              <ul class="finding-list" aria-label="Standard review findings">
+                <li class="finding-item finding-item--critical">
+                  <span class="finding-badge finding-badge--critical">Critical</span>
+                  <span>Carousel auto-advances without pause control. Fails WCAG 2.2.2.</span>
+                </li>
+                <li class="finding-item finding-item--critical">
+                  <span class="finding-badge finding-badge--critical">Critical</span>
+                  <span>No <code>prefers-reduced-motion</code> media query on slide transitions.</span>
+                </li>
+                <li class="finding-item finding-item--warning">
+                  <span class="finding-badge finding-badge--warning">Warning</span>
+                  <span>Slide counter text not announced to screen readers on change.</span>
+                </li>
+                <li class="finding-item finding-item--warning">
+                  <span class="finding-badge finding-badge--warning">Warning</span>
+                  <span>Navigation dots lack descriptive accessible labels.</span>
+                </li>
+              </ul>
+              <p style="font-size:.75rem;color:var(--text-muted);margin-top:.875rem;font-style:italic;">
+                No perspective attribution. No escalation signal. User groups generic.
+              </p>
+            </div>
+          </div>
+
+          <!-- Enhanced -->
+          <div class="escalation-panel escalation-panel--enhanced">
+            <div class="escalation-panel__header">Perspective-enhanced review</div>
+            <div class="escalation-panel__body">
+              <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.875rem;">
+                Alarm level table — 7 perspectives, each with a level and rationale.
+              </p>
+              <div class="overflow-table">
+                <table class="alarm-table" aria-label="Alarm levels for product carousel fixture">
+                  <thead>
+                    <tr>
+                      <th scope="col">Perspective</th>
+                      <th scope="col">Alarm</th>
+                      <th scope="col">Rationale</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Vestibular &amp; Motion</td>
+                      <td><span class="alarm-pill alarm-pill--high">HIGH</span></td>
+                      <td class="alarm-rationale">Continuous auto-advance, no motion opt-out. BPPV users affected.</td>
+                    </tr>
+                    <tr>
+                      <td>Cognitive</td>
+                      <td><span class="alarm-pill alarm-pill--high">HIGH</span></td>
+                      <td class="alarm-rationale">3 s auto-advance too fast; reading speed varies widely.</td>
+                    </tr>
+                    <tr>
+                      <td>Screen Reader</td>
+                      <td><span class="alarm-pill alarm-pill--medium">MEDIUM</span></td>
+                      <td class="alarm-rationale">Live region missing; slide count not announced on change.</td>
+                    </tr>
+                    <tr>
+                      <td>Keyboard &amp; Motor</td>
+                      <td><span class="alarm-pill alarm-pill--low">LOW</span></td>
+                      <td class="alarm-rationale">Arrow key navigation present; focus visible.</td>
+                    </tr>
+                    <tr>
+                      <td>Magnification</td>
+                      <td><span class="alarm-pill alarm-pill--low">LOW</span></td>
+                      <td class="alarm-rationale">Reflows cleanly at 320px; no horizontal scroll.</td>
+                    </tr>
+                    <tr>
+                      <td>Contrast</td>
+                      <td><span class="alarm-pill alarm-pill--low">LOW</span></td>
+                      <td class="alarm-rationale">Text on slide overlay passes AA.</td>
+                    </tr>
+                    <tr>
+                      <td>Auditory</td>
+                      <td><span class="alarm-pill alarm-pill--low">LOW</span></td>
+                      <td class="alarm-rationale">No audio content in carousel.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="font-size:.75rem;color:var(--text-muted);margin-top:.875rem;font-style:italic;">
+                Vestibular=HIGH and Cognitive=HIGH trigger <code>/perspective-audit</code> for those two perspectives.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===========================
+         Section 5: Evaluation
+    =========================== -->
+    <section aria-labelledby="eval-heading" style="background:var(--slate-100);">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__label">Evaluation results</div>
+          <h2 id="eval-heading">What the Pilot Measured</h2>
+          <p>
+            53 blind evaluations across 3 experimental rounds plus calibration fixtures.
+            The primary quantitative metric is alarm level accuracy, not finding count.
+          </p>
+        </div>
+
+        <div class="eval-stats" role="list" aria-label="Key evaluation metrics">
+          <div class="stat-card" role="listitem">
+            <div class="stat-card__value stat-card__value--accent">35/35</div>
+            <div class="stat-card__label">Alarm level exact matches across 5 calibration archetypes (100%)</div>
+          </div>
+          <div class="stat-card" role="listitem">
+            <div class="stat-card__value stat-card__value--zero">0%</div>
+            <div class="stat-card__label">False positive rate on clean fixtures, all rounds</div>
+          </div>
+          <div class="stat-card" role="listitem">
+            <div class="stat-card__value">53</div>
+            <div class="stat-card__label">Total blind evaluations run across 5 rounds</div>
+          </div>
+          <div class="stat-card" role="listitem">
+            <div class="stat-card__value">25+5</div>
+            <div class="stat-card__label">Fixtures — 25 main + 5 calibration, 4 categories</div>
+          </div>
+        </div>
+
+        <!-- Calibration table -->
+        <h3 style="margin-bottom:.875rem;">Calibration Results</h3>
+        <p style="font-size:.875rem; color:var(--text-muted); margin-bottom:1rem;">
+          Target was &ge;80% exact match on alarm levels. Each calibration fixture spans a different
+          component archetype from quiet (static blog, mostly LOW) to loud (animated dashboard, 4 HIGHs).
+        </p>
+        <div class="overflow-table">
+          <table class="calibration-table" aria-label="Calibration fixture results">
+            <thead>
+              <tr>
+                <th scope="col">Fixture</th>
+                <th scope="col">Alarm profile</th>
+                <th scope="col">Exact matches</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Static blog</td>
+                <td>LOW-heavy (5L, 2M)</td>
+                <td><span class="match-pill">7/7</span></td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td>Login / CAPTCHA</td>
+                <td>2 HIGH (Keyboard, Cognitive)</td>
+                <td><span class="match-pill">7/7</span></td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td>Video tutorial</td>
+                <td>2 HIGH (Auditory, Screen Reader)</td>
+                <td><span class="match-pill">7/7</span></td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td>Animated dashboard</td>
+                <td>4 HIGH (Vestibular, Contrast, Keyboard, SR)</td>
+                <td><span class="match-pill">7/7</span></td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td>Drag-drop kanban</td>
+                <td>2 HIGH (Keyboard, Cognitive)</td>
+                <td><span class="match-pill">7/7</span></td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>Mixed LOW / MEDIUM / HIGH</strong></td>
+                <td><strong><span class="match-pill">35/35</span></strong></td>
+                <td><strong>100%</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- What pilot learned -->
+        <h3 style="margin-top:2rem; margin-bottom:.875rem;">What the Pilot Found</h3>
+        <p style="font-size:.875rem; color:var(--text-muted); margin-bottom:1rem;">
+          Finding count did not discriminate between conditions because Claude models find
+          code-level bugs mechanically regardless of prompting. The perspective enhancement's
+          contribution is in output structure and escalation accuracy.
+        </p>
+        <div class="qualitative-grid">
+          <div class="qual-card">
+            <div class="qual-card__label">Output structure</div>
+            <div class="qual-card__value">Alarm level table + findings grouped by perspective. Standard review produces a flat list.</div>
+          </div>
+          <div class="qual-card">
+            <div class="qual-card__label">User group specificity</div>
+            <div class="qual-card__value">Names specific conditions (BPPV, deuteranopia) rather than generic "users with disabilities."</div>
+          </div>
+          <div class="qual-card">
+            <div class="qual-card__label">Escalation signal</div>
+            <div class="qual-card__value">HIGH / MEDIUM / LOW per perspective tells you which dimensions need deep review and which don't.</div>
+          </div>
+          <div class="qual-card">
+            <div class="qual-card__label">Fixture categories</div>
+            <div class="qual-card__value">HAS-BUGS (new dimension), HAS-BUGS (existing dimension), CLEAN, ADVERSARIAL.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===========================
+         Section 6: Install
+    =========================== -->
+    <section aria-labelledby="install-heading">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-header__label">Get started</div>
+          <h2 id="install-heading">Install &amp; Commands</h2>
+          <p>Install the bundle, then invoke the skills directly in Claude Code.</p>
+        </div>
+
+        <pre><code>npx skills add zivtech/a11y-meta-skills</code></pre>
+
+        <div class="commands-grid" aria-label="Available commands">
+          <div class="command-card">
+            <code>/a11y-planner</code>
+            <p class="command-card__desc">Design accessibility before coding. Produces a 9-phase accessibility plan including semantic structure, APG pattern choice, keyboard behavior, and testing strategy.</p>
+          </div>
+          <div class="command-card">
+            <code>/a11y-critic</code>
+            <p class="command-card__desc">Review plans or implementations. Runs at two lifecycle checkpoints — after planning and after testing. Produces severity-weighted findings with a mandatory multi-perspective pass.</p>
+          </div>
+          <div class="command-card">
+            <code>/a11y-test</code>
+            <p class="command-card__desc">Run real accessibility tests. Playwright keyboard interaction tests, axe-core scanning, eslint-plugin-jsx-a11y static analysis, and visual regression with screenshots.</p>
+          </div>
+          <div class="command-card">
+            <code>/perspective-audit</code>
+            <p class="command-card__desc">Deep review from escalated perspectives. Triggered when the planner or critic assigns MEDIUM or HIGH alarm — runs the full JTBD checklist only for those perspectives.</p>
+          </div>
+        </div>
+
+        <div class="install-manual">
+          <button
+            class="install-manual__toggle"
+            aria-expanded="false"
+            aria-controls="manual-install-content"
+            onclick="toggleManualInstall(this)"
+          >
+            Manual install
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="flex-shrink:0;transition:transform .2s">
+              <polyline points="4,6 8,10 12,6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </button>
+          <div id="manual-install-content" class="install-manual__content" hidden>
+            <pre><code>git clone https://github.com/zivtech/a11y-meta-skills.git
+cp -r a11y-meta-skills/.claude/skills/* ~/.claude/skills/
+cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===========================
+       Footer
+  =========================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <a href="https://github.com/zivtech/a11y-meta-skills" class="footer-brand">
+            zivtech/a11y-meta-skills
+          </a>
+          <div class="footer-meta">
+            <a href="https://github.com/zivtech/a11y-meta-skills/blob/main/LICENSE">GPL-3.0-or-later</a>
+            <a href="https://github.com/zivtech/a11y-meta-skills">GitHub</a>
+          </div>
+        </div>
+        <div>
+          Built by <a href="https://zivtech.com">Zivtech</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copy install command
+    function copyInstall(btn) {
+      const cmd = document.getElementById('install-cmd').textContent;
+      navigator.clipboard.writeText(cmd).then(function() {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.setAttribute('aria-label', 'Copied to clipboard');
+        setTimeout(function() {
+          btn.textContent = orig;
+          btn.setAttribute('aria-label', 'Copy install command to clipboard');
+        }, 2000);
+      }).catch(function() {
+        // Fallback for browsers without clipboard API
+        btn.textContent = 'Copy failed';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+
+    // Toggle manual install
+    function toggleManualInstall(btn) {
+      var content = document.getElementById('manual-install-content');
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      content.hidden = expanded;
+      var svg = btn.querySelector('svg');
+      if (svg) {
+        svg.style.transform = expanded ? '' : 'rotate(180deg)';
+      }
+    }
+  </script>
+
+</body>
+</html>
