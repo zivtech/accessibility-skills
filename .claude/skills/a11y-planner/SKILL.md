@@ -524,6 +524,7 @@ Copy this protocol into the subagent prompt:
        - Does focus trap work correctly in modals?
        - Does focus restore to trigger element after closing modal?
        - Is focus indicator visible at all zoom levels?
+       - **Test routing**: codified regression tests belong in `npx playwright test` `.spec.js` files (CI-runnable, reproducible); ad-hoc interactive verification during planning or fix iteration can use `agent-browser` CLI (snapshot+ref pattern, real CDP keyboard events, no test file overhead). Do not use the Playwright MCP — `browser_press_key` is silently dropped.
     3. Screen reader testing (manual, requires real assistive tech):
        - NVDA (Windows free), JAWS (Windows paid), VoiceOver (macOS/iOS built-in)
        - Test scenarios:

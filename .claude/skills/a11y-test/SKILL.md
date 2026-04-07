@@ -10,7 +10,36 @@ metadata:
 
 # Accessibility Testing Skill
 
-Use Playwright MCP (not Bash) to test accessibility comprehensively:
+## Browser Tooling Routing (read first)
+
+This skill has two distinct execution modes. Pick the right one before running anything:
+
+| Task | Tool | Why |
+|---|---|---|
+| Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
+| Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
+| Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
+| Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
+
+**CDP keyboard event delivery for `agent-browser` has been verified end-to-end** on both a vanilla JS disclosure widget (WAI-ARIA APG disclosure-faq example: `focus → press Enter → aria-expanded: false → true`) and a React state-driven modal (react.dev DocSearch: `Meta+K` → React global keydown listener → state-mounted searchbox). The MCP keyboard delivery bug does not apply to `agent-browser` because it calls CDP `Input.dispatchKeyEvent` directly rather than through an MCP wrapper.
+
+## Interactive reconnaissance with agent-browser
+
+For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
+
+```bash
+agent-browser open https://example.com/component-under-test
+agent-browser snapshot -i                    # Returns interactive elements with refs: [ref=e1], [ref=e2]...
+agent-browser focus @e1                      # Focus by ref
+agent-browser press Enter                    # Real CDP keyboard event
+agent-browser get attr @e1 aria-expanded     # Verify state mutation
+agent-browser screenshot --annotate          # Numbered overlays mapping to refs (useful for multimodal review)
+agent-browser close
+```
+
+Key flags: `--profile Default` (reuse the user's Chrome login state for authenticated sites), `--session <name>` (isolated browser per parallel agent), `--json` (parseable output for programmatic checks), `--allowed-domains` (safety).
+
+**When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
 
 ## 1. Keyboard Accessibility Tests
 

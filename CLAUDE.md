@@ -50,6 +50,16 @@ plan → critique plan → [perspective audit] → revise → implement → test
 - Prefer targeted edits over large rewrites.
 - The critic serves at two lifecycle points — keep both documented in companion tables.
 
+## Browser Automation Tooling
+
+The a11y-test skill has two distinct execution modes; other a11y skills in this bundle route testing work to the same split:
+
+- **Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance** → `npx playwright test` with `.spec.js` files. Primary path. All mandatory "real keyboard events, no synthetic events" rules apply.
+- **Interactive agent-driven reconnaissance** (snapshot ARIA structure, navigate a SPA to reach a page under test, verify a single fix, capture annotated screenshots) → `agent-browser` CLI. Uses the snapshot+ref pattern (`@e1`, `@e2`) and calls CDP `Input.dispatchKeyEvent` directly, so real keyboard events are delivered. Verified on both vanilla JS (WAI-ARIA APG disclosure) and React state (react.dev DocSearch Meta+K).
+- **Playwright MCP for keyboard events** → do not use. `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead.
+
+See `.claude/skills/a11y-test/SKILL.md` for the full routing table and the interactive reconnaissance quickstart.
+
 ## Canonical Source
 
 This standalone repo was extracted from `zivtech-meta-skills`. If upstream source material changes, sync intentionally rather than drifting silently.

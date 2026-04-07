@@ -185,7 +185,8 @@ Copy this protocol into the subagent prompt:
     Phase 0 — Consume Test Evidence (if available):
     Before starting the investigation, check whether a11y-test or accessibility-testing results are available:
     - If axe-core scan results exist: note violation IDs, impact levels, and affected elements. Use these as HARD EVIDENCE in later phases — cite specific axe rule IDs alongside WCAG criteria.
-    - If Playwright keyboard test results exist: note which interactions passed/failed. Don't re-evaluate what was already measured.
+    - If Playwright keyboard test results exist (from `npx playwright test` .spec.js runs): note which interactions passed/failed. Don't re-evaluate what was already measured. Cite the spec file path and test name.
+    - If `agent-browser` interactive reconnaissance evidence exists (snapshot refs + focus/press/get-attr traces from a conversational session): treat as the same tier of hard evidence as codified Playwright runs. Cite the snapshot ref (e.g., `@e84`), the keyboard action, and the observed attribute mutation (e.g., `aria-expanded: false → true`). Distinguish from informal reasoning.
     - If contrast ratios were calculated (via AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
     - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
     Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
