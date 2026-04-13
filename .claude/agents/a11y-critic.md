@@ -223,6 +223,20 @@ disallowedTools: Write, Edit
     - Font icon elements exposed to AT: Icon font elements (`.fa`, `.fas`, `.far`, `.icon`, `.glyphicon`) are announced by screen readers as Unicode characters. Decorative icons need `aria-hidden="true"`. Icons that are the sole content of a link or button are NOT decorative — the parent needs `aria-label` instead. WCAG 1.1.1.
     - Missing reverse skip-links: Deep content pages (long-form reading, multi-section documents) with no way to navigate back to the table of contents or primary navigation force keyboard users to reverse-tab through all content. Add visually-hidden-until-focused "Back to navigation" links at content boundaries. WCAG 2.4.1 Bypass Blocks.
 
+    ### Known Anti-Patterns from a Prior Third-Party Audit (April 2026)
+
+    Captured from 19 defects that were marked fixed internally but rejected by the third-party auditor on re-test. Apply these as mandatory checks during code review:
+
+    1. **Broadcast vs. Association** — flag any `role="alert"` or `aria-live="assertive"` on elements inside loops or repeating templates (form-element error divs, list items, grid cells). Rule: one announcement region per event type, not per field. For per-field feedback use `aria-describedby` to associate, not `aria-live` to broadcast. (WCAG 3.3.1)
+    2. **title vs. aria-label conflation** — flag any `title` attribute on `<a>` or `<button>` being used as the sole accessible name. `title` is an advisory tooltip, not a reliable accessible name. Recommend `aria-label`. (WCAG 2.4.4, 4.1.2)
+    3. **ARIA without visible label** — flag `aria-label` on a `<form>` or container when the actual `<input>`/`<button>` inside lacks a visible `<label>` or text. The visible label MUST exist alongside programmatic association. aria-label on a wrapper is not a substitute. (WCAG 3.3.2)
+    4. **Else-branch coverage** — when reviewing JS focus/state logic with if/else branches or view-mode checks, verify the fix/behavior applies to ALL branches (hover AND click toggled, desktop AND mobile, default AND teaser view modes). Focus-out handlers, Escape key handlers, aria-expanded toggles tend to fix one branch and miss the other.
+    5. **Single-selector scope** — when reviewing JS that hides/modifies elements by selector (e.g., `.views-row .field-image a`), audit whether ALL view modes producing that element are covered (featured, teaser, default, referenced entity). A CMS often renders the same component in multiple wrappers.
+    6. **td-in-for-loop row headers** — in Twig/JSX templates with loops rendering tables, flag any `<td>` that contains row-identifying content (names, SKUs, IDs, invoice numbers) and recommend `<th scope="row">`. (WCAG 1.3.1)
+    7. **role="presentation" on data tables** — flag `role="presentation"` on any table that has semantic `<th>` cells. Only truly layout tables (no `<th>`, no tabular relationships) should use presentation.
+    8. **Empty or decorative alt on content images** — when an image link has `aria-label` or is `aria-hidden`, the image `alt` should be `""` (empty) to prevent verbose decorative description from being announced redundantly. Verbose alt like "image of the front cover of X, white background with green highlights..." should NEVER be the accessible name for a link. (WCAG 1.1.1)
+    9. **DOM-verification required** — any a11y fix that adds aria-* attributes MUST include a DOM inspection step (not just visual/unit tests). Verify the attribute lands on the correct element in the rendered output, and that the association (aria-describedby id reference, aria-controls target) actually resolves.
+
     Self-audit: rate confidence in each gap. Move LOW confidence to Open Questions.
 
     Phase 8 — Realist Check (Severity Calibration):

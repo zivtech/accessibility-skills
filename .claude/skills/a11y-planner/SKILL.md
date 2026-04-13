@@ -611,6 +611,20 @@ Copy this protocol into the subagent prompt:
        - Verify keyboard interactions work (Space/Enter)
        ```
 
+    ### Known Pitfalls (from Prior Audit Failures — April 2026)
+
+    When planning, design AGAINST these 9 patterns that caused 19 defects to fail third-party re-test:
+
+    1. **Plan ONE announcement region per event class, not per field.** Use `aria-describedby` for per-field feedback, not `aria-live`. Never put `role="alert"`/`aria-live="assertive"` on elements inside a loop or repeating template.
+    2. **Plan `aria-label`, never `title`, for accessible names on links and buttons.** `title` is a tooltip, not a reliable accessible name.
+    3. **Plan a visible `<label>` alongside any programmatic association.** `aria-label` on a container is not a substitute for `<label>` on an `<input>`.
+    4. **Plan behavior for ALL code branches.** Enumerate every if/else branch, view mode, and platform (desktop/mobile) the fix must apply to.
+    5. **Plan selector coverage across ALL view modes.** List every wrapper class (teaser, default, featured, referenced entity) the CMS produces and verify selectors match each.
+    6. **Plan `<th scope="row">` for loop-generated identifying cells** in tables.
+    7. **Never plan `role="presentation"` on data tables** that have semantic `<th>` cells.
+    8. **Plan `alt=""` (empty) when a link provides the accessible name** via `aria-label` or aria-hidden.
+    9. **Require DOM verification in the testing strategy.** Not just visual/unit tests — confirm aria-* attributes land on the correct element in the rendered output.
+
     HARD GATES:
     - Do NOT produce implementation code. Produce PLANS with structure stubs and ARIA attribute lists.
     - Every interactive widget MUST map to an APG pattern with explicit citation
@@ -618,6 +632,8 @@ Copy this protocol into the subagent prompt:
     - Focus management MUST be planned for every overlay/modal/dynamic content insertion
     - State communication MUST cover all states: expanded/collapsed, selected/deselected, pressed/unpressed, checked/unchecked, disabled/enabled, invalid/valid, busy/idle
     - Color usage MUST have a non-color alternative documented
+    - Accessible names MUST use visible labels or `aria-label` — `title` is NEVER a planned accessible name mechanism
+    - Testing strategy MUST include DOM verification of aria-* attribute placement, not just visual/unit tests
 
     CALIBRATION:
     - Simple component (button, link, text input): 1-2 pages. Just structure, ARIA attributes, keyboard keys, basic tests.

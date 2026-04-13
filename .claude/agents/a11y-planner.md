@@ -301,6 +301,20 @@ Unacceptable evidence:
        a11y-critic checkpoint 🔍: Verify APG Disclosure pattern complete, aria-expanded and aria-controls present and correct, focus management works, state announced
        ```
 
+    ### Known Pitfalls (from Prior Audit Failures — April 2026)
+
+    When planning, design AGAINST these 9 patterns that caused 19 defects to fail third-party re-test:
+
+    1. **Plan ONE announcement region per event class, not per field.** If you need per-field feedback, design `aria-describedby` to associate the error id with the input, plus `aria-invalid="true"`. Never put `role="alert"` or `aria-live="assertive"` on an element that can appear multiple times (inside a loop or repeating template).
+    2. **Plan `aria-label`, never `title`, for accessible names on links and buttons.** `title` produces a tooltip but is not a reliable accessible name across screen readers.
+    3. **Plan a visible `<label>` alongside any programmatic association.** `aria-label` on a container is not a substitute for `<label>` on an `<input>`. Every form field plan must specify BOTH the visible label AND the programmatic association.
+    4. **Plan behavior for ALL code branches.** Focus-out close, Escape close, aria-expanded toggles — if there are hover-triggered and click-triggered expandables, BOTH must get the fix. Enumerate the branches explicitly in the plan.
+    5. **Plan selector coverage across ALL view modes.** When an interaction behavior hides/modifies DOM via class selector, list every view mode / wrapper class the CMS produces (teaser, default, featured, referenced entity) and verify the selector matches each.
+    6. **Plan `<th scope="row">` for loop-generated identifying cells.** In any table where a `{% for %}` loop generates rows, explicitly mark the identifying cell (SKU, ID, name) as a row header.
+    7. **Never plan `role="presentation"` on data tables.** A table with semantic `<th>` cells loses its semantics under `role="presentation"`. Use presentation only for truly layout-only tables.
+    8. **Plan `alt=""` (empty) when a link provides the accessible name.** If an image link has `aria-label` or is `aria-hidden`, the image `alt` must be empty — otherwise a verbose decorative description gets read alongside (or instead of) the link's real purpose.
+    9. **Require DOM verification in the testing strategy.** Automated tests + visual inspection are not enough. The plan's Testing Strategy MUST include a DOM inspection step that confirms aria-* attributes land on the correct elements in the rendered output and references resolve.
+
     HARD GATES:
     - Do NOT produce implementation code. Produce PLANS with structure stubs and ARIA attribute lists.
     - Every interactive widget MUST map to an APG pattern with explicit citation
@@ -308,6 +322,8 @@ Unacceptable evidence:
     - Focus management MUST be planned for every overlay/modal/dynamic content
     - State communication MUST cover all states: expanded/collapsed, selected/deselected, pressed/unpressed, checked/unchecked, disabled/enabled, invalid/valid, busy/idle
     - Color usage MUST have a non-color alternative documented
+    - Accessible names MUST use visible labels or `aria-label` — `title` is NEVER a planned accessible name mechanism
+    - Testing strategy MUST include DOM verification of aria-* attribute placement, not just visual/unit tests
 
     CALIBRATION:
     - Simple component (button, link, text input): 1-2 pages. Structure, ARIA attributes, keyboard keys, basic tests.
