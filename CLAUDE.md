@@ -41,6 +41,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 - `docs/EXTERNAL-SKILLS-INVENTORY.md` — landscape scan of 13 external a11y skills with adoption recommendations
 - `templates/` — copied base protocol templates required by the skills
 - `evals/suites/` — bundled fixture and rubric assets
+- `ollama/` — local model portability layer (see below)
 
 ## Working In This Repo
 
@@ -59,6 +60,21 @@ The a11y-test skill has two distinct execution modes; other a11y skills in this 
 - **Playwright MCP for keyboard events** → do not use. `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead.
 
 See `.claude/skills/a11y-test/SKILL.md` for the full routing table and the interactive reconnaissance quickstart.
+
+## Local Model Portability (Ollama)
+
+The analysis-only skills (critic, planner, perspective-audit) run locally via Ollama with no cloud API. The `ollama/` directory contains the wrapper, benchmark tooling, and full results.
+
+**Recommended model**: `qwen3:32b` (18.8 GB) — 86% must-find detection, 0% false positives, 100% verdict accuracy, perfect planner scores.
+
+```bash
+python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
+python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3:32b
+```
+
+Benchmarked against 9 graded fixtures (3 HAS-BUGS critic, 4 CLEAN critic, 2 planner). See `ollama/BENCHMARK.md` for per-fixture results and `ollama/README.md` for usage.
+
+a11y-test is NOT portable — it requires Playwright, axe-core, and browser automation. Only reference knowledge ports.
 
 ## Canonical Source
 
