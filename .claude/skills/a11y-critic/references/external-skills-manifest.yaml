@@ -1,5 +1,5 @@
-version: 1
-generated_at: '2026-03-28T00:00:00Z'
+version: 2
+generated_at: '2026-05-14T00:00:00Z'
 skills:
 - id: snapsynapse/skill-a11y-audit
   repo_url: https://github.com/snapsynapse/skill-a11y-audit
@@ -7,32 +7,40 @@ skills:
   - audit-pipeline
   - automated-scanning
   - compliance-mapping
+  - template-discovery
   audiences_supported:
   - accessibility
   - qa-testing
   priority: 100
   status: active
+  notes: Ownership transferred to PAICE.work PBC (2026-04-04). Now at v15.
   stealable_techniques:
   - dynamic-manual-check-prioritization
   - delta-comparison-between-runs
   - compliance-matrix-completeness
   - template-aware-sampling
+  - discovery-based-template-group-sampling
+  - issue-planning-dry-run-validation
 - id: accesslint/claude-marketplace
   repo_url: https://github.com/accesslint/claude-marketplace
   categories:
   - contrast-analysis
   - link-purpose
   - use-of-color
-  - refactoring
+  - audit-fix-loop
   audiences_supported:
   - accessibility
   - design-system
   priority: 95
   status: active
+  notes: v0.5.0 — restructured as Claude plugin. Single audit skill with report+fix modes. Chrome auto-launches. Dropped diff_html and quick_check tools.
   stealable_techniques:
   - mcp-contrast-tooling
   - single-criterion-decomposition
   - text-in-ui-component-contrast-distinction
+  - source-fiber-line-mapping
+  - audit-diff-baseline-verification
+  - report-vs-fix-mode-split
 - id: addyosmani/web-quality-skills/accessibility
   repo_url: https://github.com/addyosmani/web-quality-skills
   categories:
@@ -43,6 +51,7 @@ skills:
   - end-user
   priority: 90
   status: active
+  notes: Now available as Claude plugin, Codex plugin, and Gemini extension (2026-05-09). Added AI search visibility/llms.txt note.
   stealable_techniques:
   - wcag-2.2-specific-criteria
   - visually-hidden-canonical-pattern
@@ -52,11 +61,13 @@ skills:
   - color-science
   - contrast-analysis
   - apca
+  - generative-art
   audiences_supported:
   - accessibility
   - design-system
   priority: 85
   status: active
+  notes: Enhanced generative art guidance (2026-05-10). New color science references.
   stealable_techniques:
   - apca-wcag3-contrast
   - oklch-oklab-palette-generation

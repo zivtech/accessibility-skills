@@ -1,5 +1,5 @@
-version: 1
-generated_at: '2026-03-28T00:00:00Z'
+version: 2
+generated_at: '2026-05-14T00:00:00Z'
 skills:
 - id: snapsynapse/skill-a11y-audit
   repo_url: https://github.com/snapsynapse/skill-a11y-audit
@@ -7,15 +7,18 @@ skills:
   - audit-pipeline
   - automated-scanning
   - compliance-mapping
+  - template-discovery
   audiences_supported:
   - accessibility
   - qa-testing
   priority: 100
   status: active
+  notes: Ownership transferred to PAICE.work PBC (2026-04-04). Now at v15. Added discover.js for template-group sampling.
   stealable_techniques:
   - dynamic-test-prioritization-by-risk
   - template-aware-sampling-for-scale
   - ci-integration-pattern
+  - discovery-based-template-group-sampling
 - id: addyosmani/web-quality-skills/accessibility
   repo_url: https://github.com/addyosmani/web-quality-skills
   categories:
@@ -26,6 +29,7 @@ skills:
   - end-user
   priority: 95
   status: active
+  notes: Now available as Claude plugin, Codex plugin, and Gemini extension (2026-05-09). Added Lighthouse v13 notes.
   stealable_techniques:
   - wcag-2.2-specific-planning-criteria
   - visually-hidden-canonical-pattern
@@ -36,25 +40,30 @@ skills:
   - contrast-analysis
   - link-purpose
   - use-of-color
+  - audit-fix-loop
   audiences_supported:
   - accessibility
   - design-system
   priority: 90
   status: active
+  notes: v0.5.0 — restructured as Claude plugin. Single audit skill with report+fix modes. Chrome auto-launches.
   stealable_techniques:
   - text-in-ui-component-contrast-distinction
   - contrast-first-design-approach
+  - report-vs-fix-mode-split
 - id: meodai/skill.color-expert
   repo_url: https://github.com/meodai/skill.color-expert
   categories:
   - color-science
   - contrast-analysis
   - apca
+  - generative-art
   audiences_supported:
   - accessibility
   - design-system
   priority: 85
   status: active
+  notes: Enhanced generative art guidance (2026-05-10). New color science references.
   stealable_techniques:
   - contrast-first-color-composition
   - oklch-oklab-for-accessible-palettes
@@ -94,6 +103,7 @@ skills:
   - accessibility
   priority: 60
   status: active
+  notes: Active (v1.0.17, 2026-05-13). Recent changes are dependency bumps only — no a11y technique changes.
   stealable_techniques:
   - time-based-media-planning
   - captions-audio-descriptions-transcripts
