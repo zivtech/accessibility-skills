@@ -449,6 +449,17 @@ Should-find items found:
 
 **Scorer note**: The search-results-dynamic-clean fixture initially scored as FAIL due to a verdict-detection bug — the scorer matched "REVISE" in a hypothetical section ("What would need to change for REVISE") rather than the declared verdict (ACCEPT-WITH-RESERVATIONS). Fixed in `score_output.py` by prioritizing explicit `# Verdict:` declarations.
 
+### qwen3.5:27b (17.4 GB) — a11y-critic (n=2)
+
+| Fixture | Difficulty | Must-find | Verdict | Time | Tokens | Phases |
+|---------|-----------|----------|---------|------|--------|--------|
+| form-validation-missing-aria-describedby | HAS-BUGS | 2/2 (100%) | REVISE ✓ | 430s | 3,397 | 0/11 |
+| tabs-missing-arrow-nav | HAS-BUGS | 1/1 (100%) | REVISE ✓ | 486s | 4,372 | 9/11 |
+
+**Finding**: qwen3.5:27b passes both fixtures with correct detection. On tabs, it followed 9/11 phases — the only sub-70B model to show phase compliance. However, it is consistently 3-4x slower than qwen3.5:latest (430-486s vs 109-130s) with 60-90% more tokens, and no accuracy advantage on these fixtures. The phase compliance on the tabs fixture may indicate the model has more capacity to follow structured protocols, which could matter for harder fixtures.
+
+**Recommendation**: For the critic skill, qwen3.5:latest (6.6 GB) is the better choice. qwen3.5:27b's extra capacity doesn't improve detection accuracy on tested fixtures and significantly slows generation. The 27b model may be more valuable for perspective-audit where the protocol is more complex.
+
 ## Next Steps
 
 - [x] ~~Build simple `ollama_a11y.py` wrapper (not orchestrator)~~
@@ -460,7 +471,7 @@ Should-find items found:
 - [x] ~~Test qwen3.5:latest on critic (n=6)~~ — **86% must-find, 0% FP, 3-6x faster**
 - [x] ~~Complete qwen3.5:latest CLEAN~~ — **4/4 PASS, 0% false positives**
 - [x] ~~Complete perspective-audit pilot~~ — **7/7 PASS, 100% must-find, 0% false positives**
-- [ ] Test qwen3.5:27b on critic + planner (generational comparison vs qwen3:32b)
+- [ ] Test qwen3.5:27b on remaining critic fixtures (2/7 done, both PASS, 3-4x slower than qwen3.5:latest)
 - [ ] Run deepseek-r1:70b on remaining critic fixtures
 - [ ] Run qwen3.5:latest on perspective-audit
 - [ ] Establish Claude baseline (optional)
