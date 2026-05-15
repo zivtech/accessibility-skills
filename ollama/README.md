@@ -35,8 +35,11 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 |-------|------|-------------|-------|
 | **qwen3:32b** | 18.8 GB | **Yes** | Best value — same detection rate, better WCAG citations, half the size |
 | llama3.3:70b | 39.6 GB | For verbose output | Follows all 11 protocol phases, larger responses |
+| qwen3.5:latest | 6.6 GB | **Lightweight** | Same accuracy as 32B, 3-6x faster (75-170s vs 300-500s) |
+| deepseek-r1:70b | 42.5 GB | Testing | Reasoning model, n=1 preliminary result |
+| qwen3.5:27b | 17.4 GB | Testing | Newer Qwen generation, not yet benchmarked |
 
-Both models were benchmarked against 9 graded fixtures across 2 skills. See [BENCHMARK.md](BENCHMARK.md) for full results.
+See [BENCHMARK.md](BENCHMARK.md) for full results.
 
 ## Benchmark Results
 
@@ -77,34 +80,56 @@ Both models missed `role="alert"` on a toast fixture while catching the overlapp
 | File | Purpose |
 |------|---------|
 | `ollama_a11y.py` | Main wrapper — sends skill protocol + input to Ollama |
-| `run_benchmark.py` | Benchmark runner — tests models against graded fixtures |
-| `score_output.py` | Scorer — checks model output against fixture rubrics |
+| `run_benchmark.py` | Benchmark runner — tests models against graded fixtures (critic, planner, perspective) |
+| `score_output.py` | Scorer — checks critic/planner output against fixture rubrics |
+| `score_perspective.py` | Scorer — checks perspective-audit output (coverage, escalation, ARRM routing) |
 | `BENCHMARK.md` | Full benchmark results with per-fixture breakdowns |
 
 ## Benchmarking
 
 ```bash
-# Run CLEAN fixtures (false positive test) on both models
+# Run CLEAN fixtures (false positive test) on all models
 python3 ollama/run_benchmark.py ollama-clean
 
-# Run HAS-BUGS fixtures on both models
+# Run HAS-BUGS fixtures on all models
 python3 ollama/run_benchmark.py ollama-bugs
 
-# Score all results
+# Score all critic results
 python3 ollama/run_benchmark.py score-all
 
 # Single fixture, single model
 python3 ollama/run_benchmark.py single qwen3:32b tabs-missing-arrow-nav
+
+# Perspective-audit: single fixture
+python3 ollama/run_benchmark.py perspective qwen3:32b animated-onboarding-flow
+
+# Perspective-audit: pilot set (7 fixtures, one model)
+python3 ollama/run_benchmark.py perspective-pilot qwen3:32b
+
+# Score perspective results
+python3 ollama/run_benchmark.py score-perspective
 ```
 
 ## Architecture
 
 The wrapper sends the full SKILL.md (minus YAML frontmatter) as the Ollama system prompt and the component/requirements file as the user prompt. No phase-by-phase orchestration — benchmarks proved single-shot works.
 
-For perspective-audit, reference files (perspectives.md, arrm-perspective-mapping.md) are appended to the system prompt automatically.
+For perspective-audit, reference files (perspectives.md, arrm-perspective-mapping.md) are appended to the system prompt automatically. The escalation list (which perspectives are MEDIUM/HIGH) is injected into the user prompt from fixture metadata.
+
+### Tiered Model Routing (Planned)
+
+Route by task difficulty — use the smallest model that produces reliable results:
+
+| Tier | Model | Size | Use For |
+|------|-------|------|---------|
+| Cloud | Claude Sonnet | API | Adversarial/complex fixtures, baseline comparisons |
+| Local L | llama3.3:70b / deepseek-r1:70b | ~42 GB | Subtle bugs, multi-perspective reviews |
+| Local M | qwen3:32b / qwen3.5:27b | 17-20 GB | Standard HAS-BUGS, planner tasks |
+| Local S | qwen3.5:latest | 6.6 GB | CLEAN false-positive checks, obvious bugs |
 
 ### Performance Notes
 
-- **Memory**: Run one model at a time. Loading both models simultaneously (74 GB) on a 128 GB system causes swap pressure and 2-3x slowdowns.
-- **Speed**: Expect 5-10 minutes per review on llama3.3:70b, 3-8 minutes on qwen3:32b. The planner skill's larger protocol (71K chars) takes longer than the critic (55K chars).
+- **Memory**: Run one model at a time when possible. Loading two large models simultaneously (e.g., 78 GB) on a 128 GB system causes 1.5-2x slowdowns.
+- **Speed**: Expect 5-10 minutes per review on 70B models, 3-8 minutes on 32B models, potentially faster on smaller models.
 - **Context**: Default 32K token context window. Increase with `--ctx 65536` for very large components.
+- **DeepSeek-R1**: Emits `<think>...</think>` reasoning blocks — automatically stripped before scoring.

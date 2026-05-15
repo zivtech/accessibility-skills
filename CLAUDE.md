@@ -2,6 +2,19 @@
 
 This repository contains the standalone Claude Code accessibility skill bundle — planner, critic, tester, and perspective auditor.
 
+## Dead Output
+
+**What dead looks like in this repo:**
+- Accessibility reviews that pattern-match ARIA attributes without testing whether the interaction actually works for the user. A finding that says "missing aria-label" without explaining what a screen reader user would experience is dead.
+- Plans that cite WCAG success criteria by number without engaging with the actual user experience they protect. "Violates 4.1.2" is a citation, not a finding.
+- Findings rated CRITICAL because the checklist says so, not because a real user would be blocked. Severity must reflect impact on people, not rule weight.
+- Eval fixtures that test whether the skill finds the planted bug without testing whether it avoids false alarms on clean code. A critic that flags everything is dead — it just looks thorough.
+
+Three rules:
+- **Name it when you see it.** If a review, plan, or finding is dead — checking boxes rather than thinking about the person who'll interact with the UI — say so.
+- **Friction is the job.** If the planner's recommendations don't fit the component's actual interaction pattern, push back. If a critique applies a pattern from the APG that doesn't match the use case, say so.
+- **Watch for rank erosion.** Accessibility guidance that gets summarized into checklists loses the "why." If the output could be produced by a linter, it's not earning its place as a skill.
+
 ## Lifecycle
 
 The critic serves at **two checkpoints** in the accessibility development lifecycle:

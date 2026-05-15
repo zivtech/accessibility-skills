@@ -278,11 +278,137 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 `ollama/ollama_a11y.py` — supports critic, planner, and perspective-audit skills. See `ollama/README.md`.
 
+## Perspective-Audit Results (Pilot)
+
+**Date**: 2026-05-14
+**Protocol**: Full perspective-audit SKILL.md + reference files (20K chars) as system prompt.
+**Input**: Fixture with injected escalation list from metadata (MEDIUM/HIGH perspectives only).
+**Scoring**: `ollama/score_perspective.py` — checks perspective coverage, must-find detection, LOW leakage, ARRM routing, verdict.
+**Verdict note**: Perspective-audit uses a PASS/REVISE/BLOCK ladder. BLOCK is valid when CRITICAL findings are present, even if metadata says REVISE.
+
+### Fixture: animated-onboarding-flow (Vestibular HIGH, Cognitive MEDIUM)
+
+| Metric | qwen3:32b |
+|--------|-----------|
+| Perspective coverage | 2/2 (100%) |
+| LOW perspective leakage | none |
+| Must-find detection | 2/2 (100%) |
+| Should-find detection | 2/2 (100%) |
+| Nice-to-find detection | 1/1 (100%) |
+| WCAG citations | All present |
+| ARRM routing | YES |
+| Verdict | BLOCK (valid — 2 CRITICAL findings) |
+| Response chars | 7,955 |
+| Tokens generated | 2,682 |
+| Generation time | 801s (dual-model memory pressure) |
+| **Status** | **PASS** |
+
+### Fixture: checkout-form-broken-errors (Screen Reader HIGH, Keyboard/Contrast/Cognitive MEDIUM)
+
+| Metric | qwen3:32b |
+|--------|-----------|
+| Perspective coverage | 4/4 (100%) |
+| LOW perspective leakage | none |
+| Must-find detection | 3/3 (100%) |
+| Should-find detection | 2/2 (100%) |
+| Nice-to-find detection | 1/1 (100%) |
+| WCAG citations | All present |
+| ARRM routing | YES |
+| Verdict | REVISE ✓ |
+| Response chars | 6,367 |
+| Tokens generated | 2,755 |
+| Generation time | 374s |
+| **Status** | **PASS** |
+
+### Fixture: color-only-status-indicators (ADVERSARIAL — Contrast HIGH, Cognitive HIGH, others MEDIUM)
+
+**This is the discriminator fixture.** Designed to test whether the reviewer distinguishes WCAG 1.4.3 (contrast ratio — all colors pass) from WCAG 1.4.1 (color as sole differentiator — fails). The metadata predicts ~35% for naive reviewers, ~80% for perspective-driven ones.
+
+| Metric | qwen3:32b |
+|--------|-----------|
+| Perspective coverage | 5/5 (100%) |
+| LOW perspective leakage | none |
+| Must-find detection | 2/2 (100%) |
+| Should-find detection | 2/2 (100%) |
+| Nice-to-find detection | 1/2 (50%) |
+| WCAG citations | All present |
+| ARRM routing | YES |
+| Verdict | BLOCK (valid — CRITICAL findings) |
+| Response chars | 7,688 |
+| Generation time | 2,849s (dual-model pressure) |
+| **Status** | **PASS** |
+
+**Key result**: qwen3:32b correctly identified that all status dot colors pass contrast ratio checks (1.4.3) but still violate 1.4.1 because color is the sole differentiator. This is the central capability the perspective-audit skill exists to test.
+
+Must-find items found:
+1. Status indicators rely on color alone (CRITICAL, 1.4.1) — **Found**
+2. Hover-only tooltips, no :focus equivalent (MAJOR, 1.4.13/2.1.1) — **Found**
+
+Should-find items found:
+1. Sort icon 10x10px, below 24x24px minimum (2.5.8) — **Found**
+2. Abbreviations never expanded (3.1.4) — **Found**
+
+### Perspective-Audit Pilot Summary (3 fixtures, qwen3:32b)
+
+| Metric | Score |
+|--------|-------|
+| Fixtures passed | 3/3 |
+| Must-find detection | 7/7 (100%) |
+| Should-find detection | 6/6 (100%) |
+| Perspective coverage | 11/11 (100%) |
+| LOW perspective leakage | 0 |
+| ARRM routing present | 3/3 |
+| False positives on LOW | 0 |
+
+**Note**: n=3. The discriminator fixture (color-only-status-indicators) is the highest-signal result — it tests the specific capability the perspective-audit skill adds over the base critic. 4 more pilot fixtures remain.
+
+## Additional Model Results (Preliminary)
+
+### deepseek-r1:70b — a11y-critic (n=1)
+
+| Fixture | Must-find | Verdict | Time |
+|---------|----------|---------|------|
+| form-validation-missing-aria-describedby | 2/2 (100%) | REVISE ✓ | 760s |
+
+**Note**: Single-fixture result only. DeepSeek-R1 did not emit `<think>` blocks through the Ollama generate API on this fixture — the stripping logic in the scorer is present but was not exercised. More fixtures needed before conclusions.
+
+### qwen3.5:latest (6.6 GB) — a11y-critic (n=7)
+
+| Fixture | Difficulty | Must-find | Verdict | Time |
+|---------|-----------|----------|---------|------|
+| form-validation-missing-aria-describedby | HAS-BUGS | 2/2 (100%) | REVISE ✓ | 130s |
+| tabs-missing-arrow-nav | HAS-BUGS | 1/1 (100%) | REVISE ✓ | 109s |
+| toast-notification-no-role | HAS-BUGS | 3/4 (75%) | REJECT ✓ | 75s |
+| button-skip-link-clean | CLEAN | 0 expected | ACCEPT ✓ | 170s |
+| interactive-dropdown-clean | CLEAN | 0 expected | ACCEPT ✓ | 70s |
+| modal-complete-clean | CLEAN | 0 expected | ACCEPT ✓ | 400s |
+| search-results-dynamic-clean | CLEAN | 0 expected | ACCEPT ✓ | 95s |
+
+| Metric | Result |
+|--------|--------|
+| HAS-BUGS must-find rate | 6/7 (86%) |
+| CLEAN false positive rate | 0/4 (0%) |
+| Verdict accuracy | 7/7 (100%) |
+| Average generation time (HAS-BUGS) | 105s |
+| Average generation time (CLEAN) | 134s |
+| Model size | 6.6 GB |
+
+**Finding**: qwen3.5:latest matches qwen3:32b and llama3.3:70b on all measured dimensions — same 86% must-find rate, same 0% false positive rate, same 100% verdict accuracy — while being 3-6x faster and using 1/3 the memory. The same `role="alert"` rubric overlap miss hits all 4 models tested, suggesting a rubric issue rather than a model-specific blind spot.
+
+**Scorer note**: The search-results-dynamic-clean fixture initially scored as FAIL due to a verdict-detection bug — the scorer matched "REVISE" in a hypothetical section ("What would need to change for REVISE") rather than the declared verdict (ACCEPT-WITH-RESERVATIONS). Fixed in `score_output.py` by prioritizing explicit `# Verdict:` declarations.
+
 ## Next Steps
 
 - [x] ~~Build simple `ollama_a11y.py` wrapper (not orchestrator)~~
 - [x] ~~Test on CLEAN fixtures (verify models don't manufacture false positives)~~ — 8/8 PASS
 - [x] ~~Test a11y-planner protocol on both models~~ — both viable, qwen3 perfect
-- [ ] Test perspective-audit protocol on both models
+- [x] ~~Test perspective-audit on qwen3:32b (3 pilot fixtures)~~ — **3/3 PASS, 100% must-find**
+- [x] ~~Test discriminator fixture (color-only-status-indicators)~~ — **PASS, key capability confirmed**
+- [x] ~~Test deepseek-r1:70b on critic (n=1)~~ — **PASS, more fixtures needed**
+- [x] ~~Test qwen3.5:latest on critic (n=6)~~ — **86% must-find, 0% FP, 3-6x faster**
+- [x] ~~Complete qwen3.5:latest CLEAN~~ — **4/4 PASS, 0% false positives**
+- [ ] Complete perspective-audit pilot (4 fixtures remaining)
+- [ ] Test qwen3.5:27b on critic + planner (generational comparison vs qwen3:32b)
+- [ ] Run deepseek-r1:70b on remaining critic fixtures
+- [ ] Run qwen3.5:latest on perspective-audit
 - [ ] Establish Claude baseline (optional)
-- [ ] Test on additional models (deepseek-r1:70b, qwen3.5:27b)

@@ -17,10 +17,18 @@ import re
 import yaml
 
 
+def strip_thinking(text: str) -> str:
+    """Strip <think>...</think> blocks emitted by reasoning models (e.g., DeepSeek-R1).
+
+    Scoring should only evaluate the final output, not internal chain-of-thought.
+    """
+    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+
+
 def load_response(path: str) -> str:
     with open(path) as f:
         data = json.load(f)
-    return data.get("response", "")
+    return strip_thinking(data.get("response", ""))
 
 
 def load_rubric(path: str) -> dict:
@@ -37,7 +45,16 @@ def check_phases(text: str) -> dict:
 
 
 def check_verdict(text: str) -> str:
-    for verdict in ["REJECT", "REVISE", "ACCEPT-WITH-RESERVATIONS", "ACCEPT"]:
+    # First check for explicit verdict declarations (most reliable)
+    verdict_pattern = re.search(
+        r"(?:#\s*)?(?:\*\*)?Verdict(?:\*\*)?[:\s]+\*?\*?(REJECT|REVISE|ACCEPT-WITH-RESERVATIONS|ACCEPT)\b",
+        text,
+        re.IGNORECASE,
+    )
+    if verdict_pattern:
+        return verdict_pattern.group(1).upper()
+    # Fallback: look for verdict keywords, checking most specific first
+    for verdict in ["ACCEPT-WITH-RESERVATIONS", "REJECT", "REVISE", "ACCEPT"]:
         if verdict in text.upper():
             return verdict
     return "NONE"
@@ -97,7 +114,9 @@ def count_false_positives(text: str) -> dict:
     for pattern in finding_patterns:
         finding_count += len(re.findall(pattern, text, re.MULTILINE | re.IGNORECASE))
 
-    reject_revise = bool(re.search(r"\b(REJECT|REVISE)\b", text))
+    # Check if the declared verdict (not mentions in hypothetical sections) is REJECT/REVISE
+    declared = check_verdict(text)
+    reject_revise = declared in ("REJECT", "REVISE")
 
     return {
         "structured_findings": finding_count,
