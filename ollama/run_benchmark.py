@@ -135,7 +135,7 @@ def run_ollama(model, fixture_id, system_prompt):
         "options": {"num_ctx": 16384, "temperature": 0.3},
     }
 
-    model_tag = model.split(":")[0].replace(".", "").replace("-", "")
+    model_tag = model.replace(":", "-").replace(".", "")
     out_path = f"/tmp/ollama-bench-{fixture_id}-{model_tag}-response.json"
 
     print(f"\n{'='*60}")
@@ -149,7 +149,7 @@ def run_ollama(model, fixture_id, system_prompt):
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=900) as resp:
+    with urllib.request.urlopen(req, timeout=1800) as resp:
         data = json.loads(resp.read())
 
     elapsed = time.time() - start
