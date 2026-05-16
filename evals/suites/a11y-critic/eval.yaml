@@ -12,25 +12,26 @@ evaluation:
   description: Comprehensive evaluation of a11y-critic skill vs generic accessibility review baselines
   version: "1.0"
   created_at: "2026-03-09"
-  estimated_total_evaluations: 75
+  estimated_total_evaluations: 99
 
 fixtures:
   directory: ./fixtures
-  count: 25
+  count: 33
   pattern: "*.md"
   metadata_suffix: ".metadata.yaml"
 
   domains:
-    - Interactive Widgets (5 fixtures)
-    - Form & Validation (5 fixtures)
-    - Content & Semantic Structure (5 fixtures)
-    - Focus Management & Keyboard (5 fixtures)
-    - Dynamic Content & Live Regions (3 fixtures)
-    - Color, Motion, & Sensory (2 fixtures)
+    - Interactive Widgets (10 fixtures)
+    - Forms & Validation (6 fixtures)
+    - Dynamic Content & Live Regions (6 fixtures)
+    - Content & Semantic Structure (3 fixtures)
+    - Focus Management & Keyboard (3 fixtures)
+    - Navigation & Wayfinding (3 fixtures)
+    - Media & Content (2 fixtures)
 
   difficulty_distribution:
-    - CLEAN (6 fixtures)
-    - HAS-BUGS (11 fixtures)
+    - CLEAN (4 fixtures)
+    - HAS-BUGS (21 fixtures)
     - FLAWED (5 fixtures)
     - ADVERSARIAL (3 fixtures)
 
@@ -69,6 +70,13 @@ rubrics:
 
   composite_formula: "sum(found_items * weight) / sum(positive_weights) * 100"
 
+  adversarial_dimensions_note: |
+    ADVERSARIAL fixtures use different rubric dimensions:
+    must_articulate (weight 4), perspective_analysis (weight 3),
+    recommendation_quality (weight 2), false_positive_avoidance (weight -3).
+    These score tradeoff analysis quality, not bug detection.
+    LLM judge weight is 0.4 (vs 0.3 standard).
+
 baselines:
   directory: ./baselines
   conditions:
@@ -91,9 +99,9 @@ baselines:
       model: claude-opus-4-6
 
 repetitions:
-  n_fixtures: 25
+  n_fixtures: 33
   n_repeats_per_fixture: 3
-  total_evaluations: 75
+  total_evaluations: 99
   randomization: true
 
 statistical_design:
@@ -146,18 +154,19 @@ statistical_design:
     beta: 0.20
     effect_size_delta: 0.5
     n_required: 28
-    n_actual: 25
+    n_actual: 33
 
 subgroup_analysis:
   enabled: true
   dimensions:
     - domain:
         - Interactive Widgets
-        - Form & Validation
+        - Forms & Validation
+        - Dynamic Content & Live Regions
         - Content & Semantic Structure
         - Focus Management & Keyboard
-        - Dynamic Content & Live Regions
-        - Color Motion & Sensory
+        - Navigation & Wayfinding
+        - Media & Content
 
     - difficulty:
         - CLEAN
@@ -263,7 +272,7 @@ reporting:
 
 notes:
   | This evaluation suite measures a11y-critic's effectiveness using:
-  | - 25 realistic fixtures across 6 accessibility domains and 4 difficulty levels
+  | - 33 realistic fixtures across 7 accessibility domains and 4 difficulty levels
   | - Objective rubrics with weighted finding categories
   | - Paired comparison against 2 generic accessibility review baselines
   | - Wilcoxon signed-rank tests for non-parametric comparison
