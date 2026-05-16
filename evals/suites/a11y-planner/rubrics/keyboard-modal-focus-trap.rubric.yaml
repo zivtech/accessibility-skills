@@ -1,5 +1,5 @@
 fixture_id: keyboard-modal-focus-trap
-rubric_version: "1.0"
+rubric_version: "1.1"
 scoring_method: hybrid
 hybrid_weights:
   rule_based: 0.7
@@ -8,36 +8,166 @@ hybrid_weights:
 dimensions:
   - id: completeness
     name: "Completeness"
+    description: "Are all 9 plan phases addressed at depth appropriate for COMPLEX difficulty?"
     weight: 3
     rule_based_checks:
-      - has_all_9_phases: true
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+    llm_judge_criteria:
+      - "Is each phase addressed at COMPLEX depth — not just listed as a heading with one sentence?"
+      - "Are the three interdependent concerns (focus trap, form structure, background inert) each addressed with sufficient depth?"
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Is the APG Dialog (Modal) pattern correctly identified and applied to this component?"
+    weight: 3
+    rule_based_checks:
+      - maps_to_apg_dialog: true
+      - includes_apg_url: true
+    expected_citations:
+      - "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+    llm_judge_criteria:
+      - "Is the APG dialog pattern applied specifically (Tab cycling, initial focus, focus restoration) — not just cited by name?"
+      - "Does the plan distinguish dialog (standard form modal) from alertdialog (urgent notification) — these are different roles?"
+
+  - id: focus_trap_mechanism
+    name: "Focus Trap Mechanism"
+    description: "Is the Tab-cycle focus trap fully specified — forward wrap, backward wrap, and implementation approach?"
+    weight: 4
+    rule_based_checks:
+      - documents_tab_forward_cycle: true
+      - documents_shift_tab_backward_cycle: true
+      - documents_wrap_at_boundary: true
+    llm_judge_criteria:
+      - "Is the wrap behavior explicit — Tab on last element goes to first, Shift+Tab on first goes to last?"
+      - "Is an implementation approach indicated — JavaScript keydown listener, focus-trap library, or React hook?"
+      - "Does the plan address dynamically focusable elements (elements that may appear/disappear during form interaction)?"
+
+  - id: initial_focus
+    name: "Initial Focus Strategy"
+    description: "Does the plan specify where focus moves when the modal opens?"
+    weight: 3
+    rule_based_checks:
+      - documents_initial_focus_on_open: true
+    llm_judge_criteria:
+      - "Is the initial focus target specified — first focusable element or dialog heading (not trigger button)?"
+      - "Is the rationale for the initial focus choice tied to screen reader context needs (hearing dialog title on entry)?"
+      - "Is moving focus to the dialog overlay/backdrop identified as incorrect?"
+
+  - id: focus_restoration
+    name: "Focus Restoration"
+    description: "Does the plan specify focus returning to the trigger element on all close paths?"
+    weight: 3
+    rule_based_checks:
+      - documents_focus_restoration_on_escape: true
+      - documents_focus_restoration_on_close_button: true
+      - documents_trigger_reference_storage: true
+    llm_judge_criteria:
+      - "Are all close paths covered — Escape key, Close button, and successful form submission?"
+      - "Is the mechanism for storing the trigger reference mentioned (useRef, stored element reference)?"
+      - "Does the plan address focus restoration for stacked modals — returning to the parent modal's correct element?"
+
+  - id: inert_background
+    name: "Background Inert Strategy"
+    description: "Does the plan specify how background content is excluded from keyboard and AT access while modal is open?"
+    weight: 3
+    rule_based_checks:
+      - documents_aria_modal: true
+      - addresses_background_inert_strategy: true
+    llm_judge_criteria:
+      - "Is the limitation of aria-modal='true' with NVDA/JAWS acknowledged — some AT still navigate background via arrow keys?"
+      - "Is the inert attribute mentioned as the more robust solution (or a focus-trap polyfill)?"
+      - "Does the plan distinguish the VoiceOver case (aria-modal sufficient) from NVDA/JAWS case (may need inert)?"
+
+  - id: modal_semantics
+    name: "Modal Semantics"
+    description: "Are role='dialog', aria-modal='true', and aria-labelledby all correctly specified?"
+    weight: 3
+    rule_based_checks:
+      - documents_role_dialog: true
+      - documents_aria_modal: true
+      - documents_aria_labelledby: true
+    llm_judge_criteria:
+      - "Is aria-labelledby pointing to the modal title element by ID — not aria-label with redundant text?"
+      - "Is role='alertdialog' avoided for this standard form modal use case?"
+      - "Is the close button's accessible name specified — 'Close dialog' or contextual label?"
 
   - id: wcag_grounding
     name: "WCAG Grounding"
+    description: "Are WCAG citations applied to specific design decisions with criterion names?"
     weight: 3
     rule_based_checks:
-      - includes_wcag_citations: true
+      - cites_wcag_2_1_1: true
+      - cites_wcag_2_4_3: true
+      - cites_wcag_4_1_2: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard — all modal functionality operable via keyboard"
+      - "WCAG 2.4.3 Focus Order — focus sequence within modal and on open/close"
+      - "WCAG 4.1.2 Name, Role, Value — role='dialog', aria-modal, aria-labelledby"
+      - "WCAG 1.3.1 Info and Relationships — fieldset/legend for form group structure"
+    llm_judge_criteria:
+      - "Are citations tied to specific decisions rather than listed at the end as a block?"
+      - "Is WCAG 2.4.3 applied specifically to focus management — not just cited generically?"
 
-  - id: pattern_mapping
-    name: "Pattern Mapping"
+  - id: form_structure
+    name: "Form Structure Within Modal"
+    description: "Does the plan specify accessible form structure for the multi-section form inside the modal?"
     weight: 2
     rule_based_checks:
-      - maps_to_apg_pattern: true
+      - documents_fieldset_legend: true
+      - documents_label_association: true
+      - documents_error_association: true
+    llm_judge_criteria:
+      - "Is fieldset/legend specified for each grouped section of the form?"
+      - "Is aria-invalid + aria-describedby specified for validation error communication?"
+      - "Does the plan address that fieldset/legend provides context for screen reader users navigating into a group mid-form?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
 
   - id: testing_coverage
     name: "Testing Coverage"
+    description: "Are test cases defined for focus trap cycling, initial focus, restoration, stacked modals, and form validation?"
     weight: 2
     rule_based_checks:
-      - includes_testing_strategy: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - specifies_acceptance_criteria: true
+    llm_judge_criteria:
+      - "Is a Tab-cycle wrap test included (Tab from last element goes to first)?"
+      - "Is a focus restoration test included (close modal, verify trigger regains focus)?"
+      - "Is a stacked modal test included (focus trapped in topmost modal, not parent)?"
+      - "Is background content inaccessibility tested (Tab from inside modal does not reach page content)?"
 
   - id: calibration
-    name: "Proportionality"
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for COMPLEX difficulty (4-5 pages)? No under-documented concerns."
     weight: 1
     rule_based_checks:
-      - appropriate_length: true
+      - estimated_length_pages: "4-6"
+      - no_scope_creep: true
+    llm_judge_criteria:
+      - "Is depth proportional to COMPLEX — each of the three core concerns (focus trap, semantics, form structure) has dedicated treatment?"
+      - "Is the plan not just a list of ARIA attributes without explanation of the interactions between them?"
 
 composite_score_formula: |
   score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
 
 scoring_thresholds:
   excellent: 90-100
@@ -48,11 +178,53 @@ scoring_thresholds:
 
 expected_reviewer_performance:
   - condition: a11y-planner
-    expected_score: 82-92
-    reasoning: "Should handle COMPLEX difficulty with WCAG citations and complete coverage"
+    expected_score: 80-95
+    reasoning: "Should cover focus trap mechanism, initial focus, focus restoration, modal semantics, and form structure. Key differentiators: inert vs aria-modal distinction, stacked modal handling, initial focus specificity, and fieldset/legend for form sections."
+
+  - condition: baseline-zero-shot
+    expected_score: 45-65
+    reasoning: "Likely covers role='dialog', aria-labelledby, Escape key, and basic focus trap concept. Common gaps: inert vs aria-modal limitation (NVDA/JAWS bypass), stacked modal handling, initial focus decision, fieldset/legend form structure, Tab wrap boundary behavior."
+
+  - condition: baseline-few-shot
+    expected_score: 55-70
+    reasoning: "Structured approach improves completeness on semantics and focus trap. Likely still gaps: inert attribute vs aria-modal trade-off, stacked modal sequencing, and form error association (aria-describedby) within modal context."
 
 verdict_expectations:
   a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
 
 notes: |
-  COMPLEX fixture for evaluating Complex Modal with Focus Trap implementation.
+  COMPLEX fixture — three interdependent concerns that must all be addressed at depth:
+  1. Focus trap mechanism — Tab/Shift+Tab cycling with wrap, implementation approach
+  2. Background inert strategy — aria-modal limitation with NVDA/JAWS, inert attribute as robust alternative
+  3. Form structure within modal — fieldset/legend, label association, validation error communication
+
+  A plan that addresses only the first concern (Tab cycling) without background inert strategy or form structure should score in the 45-60 range.
+
+  Key evaluation focus:
+  - APG Dialog pattern URL cited
+  - role="dialog", aria-modal="true", aria-labelledby all specified
+  - Tab/Shift+Tab cycle with wrap at boundaries
+  - Initial focus: first focusable element or dialog heading (not trigger)
+  - Focus restoration: trigger regains focus on all close paths
+  - Escape key closes modal
+  - Background inert: aria-modal limitation noted, inert attribute mentioned
+  - Stacked modal: only topmost trap active
+  - fieldset/legend for form sections
+  - WCAG 2.1.1, 2.4.3, 4.1.2 citations
+
+  False positive patterns (penalized in modal_semantics and calibration):
+  - role="alertdialog" for standard form modal
+  - aria-live on modal container (unnecessary, causes double-announcements)
+  - aria-hidden on background content instead of inert/aria-modal
+  - Initial focus stays on trigger button after modal opens
+
+  Outlier indicators (flag for review):
+  - No focus trap documented at all
+  - role="alertdialog" used
+  - No background inert strategy
+  - Initial focus on trigger or overlay (not inside dialog)
+  - No form structure (fieldset/legend) despite 10+ field constraint
+  - Plan <3 pages (calibration failure for COMPLEX)
+  - Tab navigation to background content while modal is open not addressed

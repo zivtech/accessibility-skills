@@ -1,6 +1,6 @@
 fixture_id: keyboard-menu-dropdown
 name: Menu Button with Dropdown
-description: Menu button that opens dropdown list. Plan APG Menu Button pattern, aria-expanded, keyboard navigation (Arrow Up/Down), focus management, Escape handling, disabled items.
+description: Menu button that opens a dropdown list with 5-8 selectable items. Plan APG Menu Button pattern, aria-expanded, keyboard navigation (Arrow Up/Down), focus management on open/close, Escape handling, disabled items, and focus restoration.
 language: jsx
 framework: React
 difficulty: MODERATE
@@ -9,49 +9,91 @@ work_type: component_plan
 risk_level: Medium
 
 scenario:
-  feature: Menu button component with 5-8 selectable items
-  user_need: Efficient menu navigation with keyboard support
+  feature: Reusable React menu button component — a trigger button labeled "Actions" or "Menu" that opens a dropdown list of 5-8 items. Items are selectable via click or keyboard. Some items may be disabled. Nested submenus are out of scope for this fixture. Component must handle Escape to close, Arrow Up/Down within the menu, and return focus to trigger on close.
+  user_need: Keyboard-only users need complete Arrow key navigation within the open menu without Tab-trapping. Screen reader users need correct role announcements (menu, menuitem) and the expanded state communicated via aria-expanded. Disabled items must be communicated without hiding them.
   compliance_target: WCAG 2.2 AA
   assistive_technologies:
-    - JAWS
-    - NVDA
+    - JAWS (Windows)
+    - NVDA (Windows)
+    - VoiceOver (macOS)
     - Keyboard-only users
-  scope: Single menu button component
+  scope: Single menu button component — button trigger, dropdown list, keyboard navigation model, focus management, aria-expanded state, disabled item handling
   constraints:
-    - Some items may be disabled
-    - Submenus optional
+    - Some items may be disabled (aria-disabled, not removed from DOM)
+    - Submenus optional/out of scope for this fixture
+    - Must decide: focus first item or keep on button when menu opens
 
 expected_plan_sections:
   - Scope & Context
   - APG Menu Button Pattern
   - ARIA Attributes (aria-expanded, menu roles, aria-disabled)
   - Keyboard Interaction (Arrow Up/Down, Enter, Escape, Tab)
-  - Focus Management
-  - Visual Accessibility
+  - Focus Management (open, close, disabled items)
+  - Visual Accessibility (focus indicator on menu items)
   - Testing Strategy
 
 key_evaluation_criteria:
   - APG pattern mapping: https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/
   - WCAG grounding: WCAG 2.1.1 (Keyboard), 4.1.2 (Name Role Value)
-  - ARIA completeness: aria-expanded, menu, menuitem, aria-disabled
-  - Keyboard model: Arrow Up/Down, Enter, Escape, Tab
-  - Focus management: Clarify focus on menu open
-  - Completeness: All phases addressed
+  - ARIA completeness: aria-expanded on trigger, role="menu" on list, role="menuitem" on items, aria-disabled on disabled items
+  - Keyboard model: Arrow Down/Up within menu, Enter/Space to select, Escape to close, Tab closes and moves to next element
+  - Focus management: explicit decision on where focus goes when menu opens (first item vs trigger)
+  - Focus restoration: focus returns to trigger button on close (Escape or item selection)
 
 expected_findings:
   must_have:
-    - APG Menu Button pattern reference
-    - aria-expanded attribute
-    - menu/menuitem roles
-    - Keyboard interaction documented
-    - Focus management plan
-    - WCAG citations
+    - "APG Menu Button pattern reference with URL: https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/"
+    - "aria-expanded='true'/'false' on trigger button, toggling on open/close"
+    - "role='menu' on dropdown list container"
+    - "role='menuitem' on each selectable item"
+    - "Arrow Down/Up navigation within open menu"
+    - "Escape key closes menu and restores focus to trigger button"
+    - "Focus management decision: where focus goes on menu open (APG recommends first menuitem)"
+    - "WCAG 2.1.1 (Keyboard) citation"
+    - "WCAG 4.1.2 (Name, Role, Value) citation for aria-expanded"
 
   should_have:
-    - aria-disabled for unavailable items
-    - Escape key handling
-    - Focus restoration
-    - Test cases
+    - "aria-disabled='true' on disabled items (items remain in DOM and focusable but non-activatable)"
+    - "Enter and Space both activate the focused menu item"
+    - "Tab key behavior: closes menu, does not trap focus in menu"
+    - "Focus restoration to trigger after item selection (not just Escape)"
+    - "aria-controls or aria-haspopup='menu' on trigger button"
+    - "Test cases: keyboard traversal, SR announcement of aria-expanded, disabled item behavior"
+
+  nice_to_have:
+    - "Home/End key navigation (jump to first/last menu item)"
+    - "Type-ahead / character navigation within menu (APG optional behavior)"
+    - "aria-haspopup='menu' explicit documentation with JAWS behavior note"
+    - "WCAG 2.4.3 (Focus Order) citation for focus management sequence"
+    - "Mobile touch considerations: menu item tap targets ≥ 44px"
+
+false_positive_traps:
+  - "Using role='listbox' instead of role='menu' — listbox is for selection UI (combobox, select), not action menus"
+  - "Using aria-selected on menuitem — aria-selected belongs to listbox/option pattern, not menu/menuitem"
+  - "Removing disabled items from the DOM — disabled items should remain focusable and announced as dimmed/unavailable"
+  - "Using Tab to navigate between menu items — APG Menu Button uses Arrow keys within menu; Tab exits the menu"
+  - "Adding aria-live to the menu container — menus don't need live regions; role='menu' triggers AT announcement on open"
+  - "Making the dropdown a `<select>` element — select does not support rich menuitem content or keyboard-navigable custom items"
+
+multi_perspective_coverage:
+  keyboard: "Arrow Down/Up navigate menu items. Enter/Space activate item. Escape closes menu and returns focus to trigger. Tab closes menu and moves to next focusable element in page. All menu items reachable without mouse."
+  screen_reader: "NVDA/JAWS announces trigger as 'Actions, collapsed, button' (aria-expanded=false). On open: 'Actions, expanded, button'. Menu items announced with their label and 'menu item' role. Disabled items announced as 'dimmed' or 'unavailable' (aria-disabled='true'). JAWS also reads aria-haspopup='menu' as 'has submenu'."
+  low_vision: "Focus indicator visible on trigger button and each menu item at 200% zoom — 3:1 minimum contrast. Dropdown placement must not clip at viewport edge at large text sizes. Menu items have sufficient height for large text."
+  cognitive: "Menu closes predictably on Escape and item selection. Disabled items visible but clearly distinct — not hidden, which would confuse users expecting a specific option. Simple linear list reduces cognitive load."
+  mobile_touch: "Menu items meet 44×44px touch target. Dropdown dismisses on outside tap. Touch scroll within long menus if item count exceeds viewport height. Focus management on close still applies for VoiceOver on iOS."
 
 notes: |
-  MODERATE difficulty testing APG Menu Button pattern with focus management complexity.
+  MODERATE fixture — the discriminating quality is whether the plan makes explicit, justified decisions about the APG menu pattern rather than listing ARIA attributes generically.
+
+  Two key decision points that separate good plans from adequate ones:
+  1. Focus on menu open: APG specifies focus moves to first menuitem (not stays on trigger). Plans that leave this ambiguous or say "focus stays on button" deviate from the pattern without justification.
+  2. Disabled item handling: aria-disabled="true" keeps items in the DOM and keyboard-reachable (announced as unavailable). Removing them from the DOM or using disabled HTML attribute on non-button elements is a common error.
+
+  Expected verdict: ACCEPT for a11y-planner and baseline-few-shot. ACCEPT-WITH-RESERVATIONS for baseline-zero-shot (likely gaps: aria-controls, Home/End keys, disabled item DOM strategy, focus-on-open specificity).
+
+  Outlier indicators (flag for review):
+  - role="listbox" used instead of role="menu"
+  - aria-selected on menuitem
+  - No APG pattern reference
+  - Focus management not addressed
+  - Plan <2 pages or >5 pages

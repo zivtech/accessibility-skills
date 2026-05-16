@@ -1,0 +1,200 @@
+fixture_id: sr-notification-system
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed at COMPLEX depth?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: priority_tiered_live_regions
+    name: "Priority-Tiered Live Region Architecture"
+    description: "Are three separate aria-live regions designed with correct politeness per tier? Is role='alert' misconception identified and corrected?"
+    weight: 3
+    rule_based_checks:
+      - designs_three_separate_live_regions: true
+      - critical_region_is_assertive: true
+      - warning_region_is_polite: true
+      - info_region_is_polite: true
+      - corrects_role_alert_equals_assertive: true
+      - explains_why_role_alert_on_all_tiers_is_wrong: true
+      - cites_wcag_4_1_3: true
+    llm_judge_criteria:
+      - "Does the plan explain why a single live region cannot serve all three tiers?"
+      - "Is the role='alert' = aria-live='assertive' equivalence explained clearly enough that a developer would understand the existing bug?"
+      - "Is the patient safety implication of missed Critical announcements acknowledged?"
+
+  - id: live_region_inject_pattern
+    name: "Live Region Inject/Clear/Inject Pattern"
+    description: "Does the plan specify text injection into the live region rather than appending DOM nodes?"
+    weight: 3
+    rule_based_checks:
+      - specifies_text_injection_not_dom_append: true
+      - explains_why_dom_append_is_unreliable: true
+      - specifies_clear_then_inject_sequence: true
+    llm_judge_criteria:
+      - "Is the inject/clear/inject pattern explained with enough detail that a developer could implement it in React (useState or direct DOM manipulation)?"
+      - "Does the plan acknowledge that DOM node appending causes duplicate announcements or silence in NVDA/JAWS?"
+
+  - id: assertive_vs_polite_decisions
+    name: "Assertive vs Polite Decision Reasoning"
+    description: "Is the choice of assertive for Critical and polite for Warning/Info explicitly justified with workflow impact reasoning?"
+    weight: 2
+    rule_based_checks:
+      - justifies_assertive_for_critical: true
+      - justifies_polite_for_warning: true
+      - justifies_polite_for_info: true
+      - addresses_ehr_safety_context: true
+    llm_judge_criteria:
+      - "Is the reasoning grounded in actual user workflow impact, not just a WCAG citation?"
+      - "Does the plan acknowledge that both Warning and Info are polite — distinguishing severity within polite tier?"
+
+  - id: badge_count_announcement
+    name: "Badge Count Announcement Strategy"
+    description: "Is the badge count communicated via aria-label update on the bell button rather than a per-increment live region?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_label_on_bell_button: true
+      - aria_label_includes_unread_count: true
+      - does_not_use_per_increment_live_region: true
+      - specifies_when_to_announce_badge_update: true
+    llm_judge_criteria:
+      - "Does the plan explain why per-increment live region announcements are chatty and should be avoided?"
+
+  - id: timing_adjustable
+    name: "Auto-Dismiss Timing (WCAG 2.2.1)"
+    description: "Is the auto-dismiss timing analyzed against WCAG 2.2.1? Is the 10s Info timeout flagged as insufficient for AT users?"
+    weight: 2
+    rule_based_checks:
+      - cites_wcag_2_2_1_timing_adjustable: true
+      - flags_10s_info_timeout_as_insufficient: true
+      - recommends_pause_stop_hide_control: true
+      - confirms_critical_no_autodismiss_is_correct: true
+    llm_judge_criteria:
+      - "Does the plan provide actionable guidance on how to implement a 'Pause auto-dismiss' control?"
+
+  - id: focus_management_dismiss
+    name: "Focus Management on Dismiss"
+    description: "Is focus behavior after dismiss specified for both last-notification and non-last-notification cases?"
+    weight: 2
+    rule_based_checks:
+      - specifies_focus_to_next_on_dismiss: true
+      - specifies_focus_to_bell_on_last_dismiss: true
+      - specifies_dismiss_button_as_button_element: true
+      - dismiss_label_includes_notification_summary: true
+    llm_judge_criteria:
+      - "Is the focus management plan concrete enough that a developer knows exactly where focus goes in both cases?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Are WCAG 4.1.3, 2.2.1, 2.1.1, and 1.4.3 cited with criterion names?"
+    weight: 2
+    rule_based_checks:
+      - cites_4_1_3_status_messages: true
+      - cites_2_2_1_timing_adjustable: true
+      - cites_2_1_1_keyboard: true
+      - cites_1_4_3_contrast: true
+    expected_citations:
+      - "WCAG 4.1.3 Status Messages"
+      - "WCAG 2.2.1 Timing Adjustable"
+      - "WCAG 2.1.1 Keyboard"
+      - "WCAG 1.4.3 Contrast (Minimum)"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does testing include AT-specific tests per priority tier?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Does the testing plan include specific tests for Critical interruption (NVDA assertive) AND Info non-interruption (NVDA polite)?"
+      - "Is the inject pattern tested — not just that announcements fire, but that they don't duplicate?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan 5-7 pages appropriate for COMPLEX difficulty?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "5-7"
+      - no_scope_creep: true
+      - no_role_alert_on_all_tiers: true
+      - no_single_live_region_for_all_tiers: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 80-95
+    reasoning: "COMPLEX fixture with safety-critical context. The 9-phase protocol plus ARIA expertise should produce tiered live regions and timing analysis. The inject/clear/inject pattern and badge count strategy are the most differentiating items."
+
+  - condition: baseline-zero-shot
+    expected_score: 45-62
+    reasoning: "Generic planning likely: uses role='alert' on all tiers (repeating the bug), proposes single live region, misses WCAG 2.2.1 timing analysis, misses inject pattern. Safety context rarely acknowledged."
+
+  - condition: baseline-few-shot
+    expected_score: 55-72
+    reasoning: "Structured examples improve tier separation (polite/assertive). Still likely to miss inject pattern, WCAG 2.2.1 timing, and per-increment badge chatty issue."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  COMPLEX fixture — the highest-stakes SR fixture in the suite due to the EHR/patient-safety context.
+
+  Five discriminating items:
+  1. Three separate aria-live regions (not one, not role="alert" on all)
+  2. role="alert" = aria-live="assertive" — this misconception correction differentiates the skill from baselines
+  3. Inject/clear/inject pattern (not DOM append) — unreliability of DOM append in NVDA/JAWS is advanced knowledge
+  4. WCAG 2.2.1 timing analysis for 10s Info auto-dismiss
+  5. Badge count via aria-label update (not per-increment live region)
+
+  The llm_judge weight is higher (0.4) because safety context and workflow reasoning require judgment that rule-based checks cannot fully capture.
+
+  Differentiated from screenreader-liveregion: that fixture covers generic live region mechanics. This fixture requires priority-tiered architecture, role="alert" misconception correction, inject pattern reliability, WCAG 2.2.1 timing analysis, and safety consequence reasoning.
+
+  Outlier indicators (flag for rubric review):
+  - Single live region for all three tiers (fundamental architecture error)
+  - role="alert" on all tiers (repeats the existing bug)
+  - DOM append to live region (inject pattern missing)
+  - No WCAG 2.2.1 analysis for auto-dismiss
+  - Per-increment live region for badge count
+  - Notification history treated as a live region

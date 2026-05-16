@@ -1,0 +1,109 @@
+fixture_id: heading-hierarchy-skipped
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Heading hierarchy skips from h1 directly to h3"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "file:line reference to h1 (lines 8) followed by h3 (line 11), skipping h2"
+        expected_to_find: "90%"
+
+      - description: "Inconsistent heading hierarchy — h3 then h2 breaks document outline"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "file:line reference to h3 (line 20) followed by h2 (line 22)"
+        expected_to_find: "75%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 0
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 85-100
+    reasoning: "Should identify both hierarchy issues and rate as MAJOR; cite specific heading elements and lines"
+
+  - condition: baseline-zero-shot
+    expected_score: 60-80
+    reasoning: "May verify headings are semantic (they are) but miss the hierarchy ordering issue"
+
+  - condition: baseline-few-shot
+    expected_score: 65-85
+    reasoning: "Few-shot example may prompt checking heading order, not just presence"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This HAS-BUGS fixture tests semantic structure validation.
+
+  The headings are all proper semantic elements (h1, h2, h3) — not divs
+  styled as headings. But the hierarchy is broken: h1 → h3 (skip) and
+  later h3 → h2 (inversion).
+
+  This is realistic: blog posts written incrementally often develop
+  inconsistent heading structures, especially when authors pick heading
+  levels for visual sizing rather than document structure.
+
+  Expected baseline gap: Many reviewers check "are headings semantic?"
+  (yes) and stop. A11y-critic should audit the hierarchy order and
+  identify both the skip and the inversion as separate MAJOR issues.
+
+  Screen reader impact: Users pressing 'h' to navigate by heading, or
+  '2' to jump to next h2, encounter broken navigation. The document
+  outline doesn't match the visual hierarchy.

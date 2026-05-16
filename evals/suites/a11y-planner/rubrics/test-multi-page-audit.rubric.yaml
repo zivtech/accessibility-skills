@@ -1,0 +1,209 @@
+fixture_id: test-multi-page-audit
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: audit_methodology
+    name: "Audit Methodology"
+    description: "Does the plan reference WCAG-EM as the evaluation framework and apply structured sampling? This replaces APG pattern mapping for audit-scope plans."
+    weight: 3
+    rule_based_checks:
+      - references_wcag_em: true
+      - includes_wcag_em_url: "https://www.w3.org/TR/WCAG-EM/"
+      - defines_structured_page_sample: true
+      - prioritizes_authenticated_flows_first: true
+      - identifies_shared_component_leverage: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does the plan identify the WCAG criteria most commonly failed on government portals and cite them to test areas?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_3_contrast: true
+      - cites_wcag_2_4_3_focus_order: true
+      - cites_wcag_3_3_1_error_identification: true
+      - cites_wcag_4_1_2_name_role_value: true
+    expected_citations:
+      - "WCAG 1.4.3 Contrast Minimum (most-failed criterion in government portals)"
+      - "WCAG 2.4.3 Focus Order (authenticated flow navigation)"
+      - "WCAG 3.3.1 Error Identification (multi-step application form)"
+      - "WCAG 4.1.2 Name, Role, Value (mega-menu, alerts, form controls, data table)"
+      - "WCAG 2.2.1 Timing Adjustable (session timeout modal)"
+      - "WCAG 1.3.5 Identify Input Purpose (application form fields)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a 2-person QA team execute this audit in 3 months? Are tool roles distinct? Is effort estimated? Are test responsibilities assigned by page type?"
+    weight: 2
+    rule_based_checks:
+      - distinguishes_axe_from_wave_roles: true
+      - assigns_sr_coverage_by_page_type: true
+      - addresses_third_party_components: true
+      - connects_findings_to_vpat_structure: true
+    llm_judge_criteria:
+      - "Is it clear which tool to use for which type of finding, and why each tool is not redundant?"
+      - "Does the plan make the 3-month timeline achievable with 2 engineers or would it require 6 months of work?"
+      - "Does the plan connect audit findings to specific VPAT 2.4 conformance claim cells?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed, including mobile SR (iOS VoiceOver, TalkBack)?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+      - includes_mobile_sr: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does the plan cover all required test types AND audit-specific coverage (tool matrix, all page types, all shared components, third-party components)?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - defines_testing_matrix: true
+      - covers_authenticated_flows: true
+      - covers_shared_components: true
+      - addresses_third_party_components: true
+
+  - id: sampling_strategy
+    name: "Sampling Strategy"
+    description: "Does the plan define a structured page sample based on risk? Does it identify which pages to test in depth vs. spot-check? Is the sample selection justified?"
+    weight: 2
+    rule_based_checks:
+      - defines_page_sample: true
+      - justifies_sample_selection: true
+      - differentiates_deep_test_vs_spot_check: true
+      - identifies_high_risk_pages: true
+    llm_judge_criteria:
+      - "Is the sampling strategy risk-based (by user journey impact) or arbitrary?"
+      - "Would a government procurement officer find this sampling justification defensible?"
+      - "Does the plan make clear which pages represent different page types (template coverage)?"
+
+  - id: prioritization_framework
+    name: "Prioritization Framework"
+    description: "Does the plan define CRITICAL/MAJOR/MINOR/ADVISORY with user-impact-based definitions? Is prioritization tied to user journey completion, not WCAG criterion number?"
+    weight: 2
+    rule_based_checks:
+      - defines_critical_as_journey_blocking: true
+      - defines_major_as_significant_friction: true
+      - defines_minor_as_inconvenience: true
+      - defines_advisory_as_best_practice: true
+      - ties_priority_to_user_journey_not_wcag_number: true
+    llm_judge_criteria:
+      - "Are the priority definitions clear enough for a QA engineer to classify findings without ambiguity?"
+      - "Would a CRITICAL finding block a citizen from completing a benefits application?"
+
+  - id: reporting_template
+    name: "Reporting Template"
+    description: "Does the plan define the VPAT output structure? Does it address VPAT 2.4 Rev 508 specifically? Does it handle third-party components with appropriate VPAT language?"
+    weight: 2
+    rule_based_checks:
+      - mentions_vpat_2_4_rev_508: true
+      - addresses_third_party_vpat_language: true
+      - defines_conformance_claim_structure: true
+    llm_judge_criteria:
+      - "Does the plan explain how audit findings map to VPAT 2.4 conformance claim cells?"
+      - "Does it correctly describe reCAPTCHA and YouTube as third-party components that are documented but not remediated?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan proportional to COMPLEX audit-scope difficulty? 5-7 pages expected. Must not treat all 20 pages as equal testing depth."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 5-7
+      - avoids_equal_depth_all_pages: true
+      - does_not_require_remediating_recaptcha: true
+    llm_judge_criteria:
+      - "Is the plan achievable by 2 engineers in 3 months, or is it an exhaustive 6-month plan?"
+      - "Does the plan avoid the equal-depth trap (all 20 pages tested identically)?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 80-95
+    reasoning: "Should reference WCAG-EM, define risk-based sampling, distinguish tool roles, address third-party VPAT language, define prioritization framework, connect findings to VPAT output. May miss Dragon NaturallySpeaking specifics or detailed VPAT cell mapping."
+
+  - condition: baseline-zero-shot
+    expected_score: 45-65
+    reasoning: "Will likely cover axe-core and screen reader testing at a generic level. Will almost certainly miss WCAG-EM, risk-based sampling rationale, third-party VPAT handling, tool complementarity explanation, and the connection between findings and VPAT output."
+
+  - condition: baseline-few-shot
+    expected_score: 50-65
+    reasoning: "Structured approach may surface testing matrix and tool selection, but WCAG-EM methodology, VPAT structure, third-party handling, and risk-based sampling are specialist knowledge that structured examples don't supply."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  This is the most complex fixture in the Testing & Audit Planning domain.
+  It tests audit methodology knowledge, not just component testing knowledge.
+
+  Critical discriminator 1: WCAG-EM reference.
+  A plan that doesn't know the W3C's own evaluation methodology cannot produce a legally
+  defensible VPAT. This is a hard gate for government compliance work.
+
+  Critical discriminator 2: Third-party handling.
+  A plan that says "fix reCAPTCHA" instead of "document reCAPTCHA in VPAT as third-party"
+  demonstrates a fundamental misunderstanding of how government accessibility compliance works.
+
+  Critical discriminator 3: Sampling strategy.
+  "Test all 20 pages equally" is not a testing strategy; it's a planning failure. A WCAG-EM
+  structured sample defines representative page types and tests each template once deeply,
+  plus critical authenticated flows. Equal-depth testing of all pages is neither achievable
+  nor methodologically sound.
+
+  Baseline scoring note:
+  Baseline plans scoring 45-55 typically:
+  - List axe-core and "manual testing" as tools (no matrix)
+  - Cover keyboard and screen reader generically
+  - Ignore WCAG-EM entirely
+  - Have no sampling rationale
+  - Mention reCAPTCHA as a remediation task
+  - Have no VPAT connection
+
+  a11y-planner scoring 80-95 additionally:
+  - References WCAG-EM with URL
+  - Defines risk-based page sample with justification
+  - Distinguishes axe vs. WAVE vs. manual roles
+  - Documents third-party handling with correct VPAT language
+  - Defines CRITICAL/MAJOR/MINOR with user journey definitions
+  - Connects findings to VPAT 2.4 conformance claim structure
+  - Identifies shared component leverage

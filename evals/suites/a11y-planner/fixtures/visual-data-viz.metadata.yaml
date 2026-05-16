@@ -1,0 +1,113 @@
+fixture_id: visual-data-viz
+name: Interactive Bar/Line Chart
+description: Custom SVG chart with colored legend, hover tooltips, and data point interaction. Ambiguous — multiple valid approaches. Plan color independence (1.4.1), tooltip keyboard access (1.4.13), data table fallback, reflow (1.4.10).
+language: jsx
+framework: React
+difficulty: AMBIGUOUS
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: A custom SVG bar/line chart with a colored legend (3-5 series), hover-only tooltips, axis labels, and interactive data points. Currently has no ARIA attributes, keyboard navigation, or screen reader alternative.
+  user_need: Screen reader users need structured access to the underlying data (not just a description of the visual). Keyboard users need to reach the tooltip content. Colorblind users need non-color series differentiation. Users at 320px viewport need the data without horizontal scrolling.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Chart component and its accessibility layer; excludes data pipeline
+  constraints:
+    - Custom SVG renderer must remain (no recharts migration)
+    - Visual chart appearance must remain unchanged
+    - Data table fallback is acceptable as an addition
+    - Chart will be embedded in containers that narrow to 320px on mobile
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Architecture choice: single committed approach with tradeoff justification (not a list of options)
+  - WCAG 1.4.1: legend color swatches — concrete non-color alternative (pattern, label)
+  - WCAG 1.4.13: tooltip must appear on keyboard focus, not only on hover
+  - WCAG 1.4.10: reflow at 320px — plan for no horizontal scrolling
+  - Screen reader data path: specific strategy (sr-only table, aria-describedby, long description)
+  - SVG root ARIA attributes: what role and aria-label the chart element carries
+  - Internal coherence: chosen approach is consistent throughout the plan
+
+expected_findings:
+  must_have:
+    - Single committed accessibility architecture with explicit justification
+    - WCAG 1.4.1 (Use of Color) citation for legend swatches with concrete non-color alternative
+    - WCAG 1.4.13 (Content on Hover or Focus) — tooltip accessible on keyboard focus
+    - WCAG 1.4.10 (Reflow) — chart behavior at 320px CSS width
+    - Screen reader data access path: specific strategy named and described
+    - SVG root ARIA attributes specified (role, aria-label, aria-labelledby, or aria-describedby)
+
+  should_have:
+    - WCAG 2.1.1 (Keyboard) — keyboard navigation to data points if interactive model chosen
+    - WCAG 1.4.3 (Contrast) — data series colors and axis labels meet 4.5:1
+    - WCAG 1.4.11 (Non-Text Contrast) — interactive data points (bars/nodes) meet 3:1
+    - Keyboard model for data point navigation if interactive approach chosen (Tab, Arrow keys, Enter, Escape)
+    - Data table sr-only styling specification (class="sr-only" not display:none)
+    - How tooltip content renders on keyboard focus (position, delay, content structure)
+
+  nice_to_have:
+    - Pattern fills or hatching as alternative to color-only series differentiation
+    - Direct data labels on bars/nodes (avoid tooltip dependency entirely)
+    - Zoom behavior at 400% browser zoom (WCAG 1.4.4 Text Resize)
+    - Chart title as an h-level heading (not just aria-label)
+    - Sonification mention (acknowledge it exists, but out of scope for AA)
+
+false_positive_traps:
+  - Listing all possible approaches without committing to one (appears thorough but is not a plan)
+  - alt text describing visual appearance ("Blue and red bars") not data ("Revenue: $1.2M in January")
+  - Missing WCAG 1.4.13 — hover-only tooltip is a common chart accessibility failure
+  - Proposing ARIA grid on SVG bar groups without checking browser/AT support
+  - data table with display:none (hidden from AT, not just visually)
+  - No plan for 320px reflow
+  - Adding role="img" to the SVG but aria-label is the visual description, not a data summary
+
+multi_perspective_coverage:
+  keyboard: "Tab reaches the chart container. If interactive model: Arrow keys navigate between data points, Enter/Space shows tooltip, Escape returns focus to chart container. If table model: Tab through data table after chart."
+  screen_reader: "Chart has a meaningful accessible name. Data is accessible as a structured table or summary. Tooltip content is announced when focus lands on a data point. Legend announces series names, not just color names."
+  low_vision: "Data series colors meet 4.5:1 against chart background. Axis labels meet contrast. Legend text meets contrast. Non-color alternatives (pattern or text) available for colorblind users. Chart reflows or shows table at 320px."
+  cognitive: "Chart has a clear title. Legend labels are short and consistent with tooltip labels. Data table matches chart data exactly. No information presented in the chart is unavailable in the fallback."
+  mobile_touch: "Touch triggers tooltip (equivalent to hover). Chart reflows to data table at 320px. Touch targets on interactive data points meet 44px. No horizontal scroll at 320px (1.4.10)."
+
+notes: |
+  AMBIGUOUS fixture. There is no single correct chart accessibility approach. Scoring rewards internal coherence of a committed approach over exhaustive option listing.
+
+  Expected verdict: ACCEPT for a11y-planner (committed, coherent approach). ACCEPT-WITH-RESERVATIONS or REJECT for baselines (often list approaches without committing, or miss 1.4.13 and 1.4.10).
+
+  Scoring expectation: a11y-planner 75-90. The ambiguity means perfect scores are unlikely — the rubric rewards choosing and justifying, not just coverage. A plan that picks "role=img + sr-only data table" and executes it well scores higher than a plan that lists "option A, option B, option C" without committing.
+
+  The most commonly missed items in ambiguous chart fixtures:
+  - WCAG 1.4.13 (tooltip on hover only is a WCAG failure) — missed by ~50% of evaluators
+  - WCAG 1.4.10 (reflow at 320px) — missed by ~45%
+  - Architecture commitment: ~40% of evaluators list options rather than choose
+  - Legend color alternative beyond "add text labels" (pattern fill etc.) — missed by ~55%
+
+  Expected findings baseline:
+  - WCAG 1.4.1 for legend: 80%+
+  - Screen reader data path: 70%+
+  - WCAG 1.4.13 for tooltip: 50%+
+  - WCAG 1.4.10 for reflow: 45%+
+  - Architecture commitment: 40%+
+  - SVG root ARIA attributes: 65%+
+
+  Outlier indicators:
+  - Lists three approaches without committing (architectural avoidance)
+  - Tooltip mention missing entirely
+  - Reflow at 320px not addressed
+  - data table with display:none
+  - aria-label describing the visual not the data

@@ -1,53 +1,130 @@
 fixture_id: keyboard-button-bar
-rubric_version: "1.0"
+rubric_version: "1.1"
 scoring_method: hybrid
 hybrid_weights:
   rule_based: 0.7
   llm_judge: 0.3
 
 dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed at depth appropriate for TRIVIAL difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+    llm_judge_criteria:
+      - "Are all phases present at TRIVIAL depth — not padded with ARIA patterns that don't belong on a simple button bar?"
+
   - id: semantics
     name: "HTML Semantics"
+    description: "Does the plan specify native HTML button elements without redundant ARIA roles?"
     weight: 3
     rule_based_checks:
       - uses_native_button: true
       - documents_button_elements: true
+      - avoids_role_button_on_native_button: true
+    llm_judge_criteria:
+      - "Does the plan correctly identify that native `<button>` carries implicit role — no ARIA needed?"
+      - "Is the type='button' safety attribute mentioned for non-submit buttons?"
 
   - id: icon_labels
     name: "Icon Label Accessibility"
+    description: "Does the plan specify a complete accessible naming strategy for icon+text buttons?"
     weight: 3
     rule_based_checks:
       - plans_icon_labels: true
       - specifies_aria_label_or_text: true
+      - addresses_aria_hidden_on_icon: true
+    llm_judge_criteria:
+      - "Is the plan specific about whether the icon is SVG, img, or CSS background — labeling strategy differs by implementation?"
+      - "Does the plan distinguish icon-only (needs aria-label) from icon+text (aria-hidden on icon, visible text sufficient)?"
 
   - id: focus_indicator
     name: "Focus Indicator"
+    description: "Does the plan specify visible focus with 3:1 contrast ratio?"
     weight: 2
     rule_based_checks:
       - specifies_focus_visibility: true
       - specifies_contrast_ratio: "3:1"
+      - cites_wcag_2_4_11: true
+    llm_judge_criteria:
+      - "Is the contrast ratio tied to the specific 3:1 WCAG 2.4.11 requirement (not just 'visible focus')?"
 
   - id: keyboard_activation
     name: "Keyboard Activation"
+    description: "Are Enter and Space key behaviors documented for native buttons?"
     weight: 2
     rule_based_checks:
       - documents_enter_key: true
       - documents_space_key: true
+    llm_judge_criteria:
+      - "Does the plan note this is native behavior of `<button>` — no additional JS listener required?"
+
+  - id: apg_pattern_mapping
+    name: "Pattern Selection"
+    description: "Does the plan correctly identify that no APG pattern applies — native `<button>` is the right choice?"
+    weight: 2
+    rule_based_checks:
+      - correctly_identifies_native_button_sufficiency: true
+      - does_not_invoke_unnecessary_aria_patterns: true
+    llm_judge_criteria:
+      - "Does the plan avoid recommending ARIA button patterns (menubutton, toolbar) when individual action buttons suffice?"
+      - "Is the decision to use native HTML over ARIA patterns explicit or implicit?"
 
   - id: wcag_grounding
     name: "WCAG Citations"
+    description: "Are WCAG citations applied to specific decisions (not listed generically)?"
     weight: 2
     rule_based_checks:
       - cites_wcag_2_1_1: true
+      - cites_wcag_2_4_7_or_2_4_11: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard — all button functionality operable via keyboard"
+      - "WCAG 2.4.7 Focus Visible or WCAG 2.4.11 Focus Appearance — focus indicator requirement"
 
-  - id: calibration
-    name: "Proportionality"
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for keyboard activation, focus traversal, and screen reader label announcement?"
     weight: 1
     rule_based_checks:
-      - estimated_length_pages: 1-2
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+    llm_judge_criteria:
+      - "Are specific test cases listed (Tab order, Enter activate, Space activate, SR label check)?"
+      - "Is automated testing (axe-core) mentioned for basic button semantics?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan 1-2 pages with no patterns that don't belong on a simple button bar?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "1-2"
+      - no_scope_creep: true
+      - no_aria_pressed_on_action_buttons: true
+      - no_unnecessary_tabindex: true
 
 composite_score_formula: |
   score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
 
 scoring_thresholds:
   excellent: 90-100
@@ -59,15 +136,54 @@ scoring_thresholds:
 expected_reviewer_performance:
   - condition: a11y-planner
     expected_score: 92-100
-    reasoning: "Should handle trivial button bar easily"
+    reasoning: "TRIVIAL fixture with well-defined requirements. The 9-phase protocol covers all required items. Discriminating items: icon labeling specificity (SVG/img/CSS distinction) and type='button' safety pattern."
 
   - condition: baseline-zero-shot
     expected_score: 75-85
-    reasoning: "Basic keyboard should be clear"
+    reasoning: "Basic button semantics are common knowledge. Likely gaps: icon labeling specificity (aria-hidden on icon vs accessible name), type='button' safety pattern, and danger distinction beyond color."
+
+  - condition: baseline-few-shot
+    expected_score: 78-88
+    reasoning: "Structured approach improves completeness on all dimensions. May still miss aria-hidden strategy for icon rendering method, or omit the non-color danger distinction."
 
 verdict_expectations:
   a11y-planner: ACCEPT
   baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
 
 notes: |
-  TRIVIAL fixture for simple button navigation.
+  TRIVIAL fixture — all conditions expected to ACCEPT. The evaluation distinguishes quality bands, not pass/fail.
+
+  Key evaluation focus:
+  - Native `<button>` elements (not div)
+  - Icon labeling strategy: aria-hidden on icon + accessible name on button (or aria-label if icon-only)
+  - Focus indicator contrast specified (3:1)
+  - No redundant role="button" on native elements
+  - Delete button danger distinction does not rely on color alone
+  - WCAG 2.1.1 citation for keyboard support
+
+  The fixture's two discriminating items:
+  1. Icon labeling specificity — "add aria-label" is not enough; the plan should address how SVG icons, img tags, and CSS background images each require different implementation strategies.
+  2. Non-color danger distinction for Delete button — plans that only specify red color for Delete without a shape/icon/text marker miss WCAG 1.4.1.
+
+  False positive traps (penalized in calibration):
+  - role="button" on native `<button>` (redundant ARIA)
+  - aria-pressed on action buttons (wrong pattern — aria-pressed is for toggles)
+  - tabindex="0" on `<button>` (buttons are natively focusable)
+  - Recommending keyboard event listeners for Enter/Space on native buttons (unnecessary with native button)
+
+  Expected findings baseline:
+  - Native button: 95%+
+  - Icon labels (basic): 85%+
+  - Icon labeling specificity: 60%+
+  - Focus indicator contrast: 80%+
+  - WCAG 2.1.1: 85%+
+  - Non-color danger distinction: 55%+
+  - type='button' safety pattern: 40%+
+
+  Outlier indicators:
+  - div or span used instead of button
+  - No icon label strategy at all
+  - role="button" on native button
+  - Plan >3 pages (scope creep for TRIVIAL)
+  - No WCAG citations

@@ -1,0 +1,118 @@
+fixture_id: modal-complete-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes false positives; rewards specificity"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present in clean implementation"
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-label on overlay or prefers-reduced-motion support for open/close animation"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "40%"
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "role='presentation' on overlay is correct — not a missing-semantics issue"
+        impact: "Overlay is intentionally non-semantic; flagging it as needing a role is a false positive"
+        expected_to_find: "85%"
+
+      - description: "setTimeout for initial focus is a valid React pattern — not unreliable focus management"
+        impact: "setTimeout(fn, 0) defers focus until after React commits the DOM; flagging it as a timing bug is a false positive"
+        expected_to_find: "70%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  where positive_weights = [must_find, should_find, nice_to_find, evidence_quality, format_compliance]
+  false_positive_trap is subtracted from score if incorrectly flagged
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 90-100
+    reasoning: "Should recognize complete WAI-ARIA Modal Dialog pattern and avoid false positives on overlay role and setTimeout focus"
+
+  - condition: baseline-zero-shot
+    expected_score: 80-95
+    reasoning: "May flag role='presentation' or setTimeout as issues; should still recognize overall clean implementation"
+
+  - condition: baseline-few-shot
+    expected_score: 80-95
+    reasoning: "Same as zero-shot; few-shot doesn't add much for clean fixtures"
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  This CLEAN fixture tests whether reviewers can recognize a complete, correct
+  WAI-ARIA Modal Dialog pattern implementation.
+
+  A11y-critic should:
+  1. Verify role="dialog" + aria-modal="true" present
+  2. Verify aria-labelledby linking to title
+  3. Verify focus trap (Tab/Shift+Tab cycle)
+  4. Verify focus restoration on close (previouslyFocusedElement ref)
+  5. Verify Escape key handling
+  6. Acknowledge clean implementation with ACCEPT verdict
+  7. NOT flag role="presentation" on overlay as a problem
+  8. NOT flag setTimeout(fn, 0) for initial focus as unreliable
+
+  False positive traps:
+  - role="presentation" on overlay: This is the correct role for a non-semantic
+    backdrop element. Flagging it as "missing semantics" or "needs role" is wrong.
+  - setTimeout(fn, 0) for focus: This is a standard React pattern to defer focus
+    until after the component renders. Flagging it as a timing issue misunderstands
+    the React rendering lifecycle.
+
+  A flag-everything reviewer that catches these traps will score significantly lower
+  than a calibrated reviewer that correctly identifies the clean implementation.

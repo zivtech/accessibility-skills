@@ -1,0 +1,208 @@
+fixture_id: sr-form-field-help
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: help_text_timing_decision
+    name: "Help Text Association Decision"
+    description: "Is the aria-describedby question explicitly resolved with justification? Is it left open (fail) or decided (pass)?"
+    weight: 3
+    rule_based_checks:
+      - makes_explicit_aria_describedby_decision: true
+      - justifies_decision_with_domain_context: true
+      - does_not_leave_decision_open: true
+    llm_judge_criteria:
+      - "Does the plan make a clear, final decision on aria-describedby vs alternative patterns — not 'it depends' or 'choose based on user preferences'?"
+      - "Is the justification grounded in the financial services context (actionable instructions, not decorative help text)?"
+      - "Would a developer reading this plan know exactly what to implement without a follow-up question?"
+
+  - id: help_vs_error_disambiguation
+    name: "Error vs Help Text Disambiguation"
+    description: "Is the multiple-ID aria-describedby order specified with error ID before help text ID? Is the AT announcement sequence described?"
+    weight: 3
+    rule_based_checks:
+      - specifies_multiple_id_aria_describedby: true
+      - specifies_error_id_before_help_id: true
+      - describes_nvda_jaws_announcement_order: true
+      - cites_wcag_3_3_1: true
+    llm_judge_criteria:
+      - "Does the plan explain WHY error ID must come before help text ID (NVDA/JAWS read IDs in DOM attribute order)?"
+      - "Is the expected announcement sequence described? ('Email address — required — [type email] — Email is required — Must be a valid email address')"
+
+  - id: conditional_field_announcements
+    name: "Conditional Field Announcement Strategy"
+    description: "Is the conditional field reveal announcement strategy documented with a single justified approach?"
+    weight: 2
+    rule_based_checks:
+      - confirms_display_none_removes_from_accessibility_tree: true
+      - documents_conditional_field_announcement_strategy: true
+      - makes_single_approach_decision: true
+      - justifies_approach_chosen: true
+    llm_judge_criteria:
+      - "Does the plan choose one approach (focus move OR live region) and justify it — not present both as equally valid?"
+      - "Is the display:none accessibility tree behavior correctly described (removes element AND descendants from AT)?"
+
+  - id: expandable_help_toggle
+    name: "Expandable Help Toggle (aria-expanded + aria-controls)"
+    description: "Is the '?' expandable help button specified with aria-expanded and aria-controls? Is focus correctly kept on the button?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_expanded_on_help_button: true
+      - specifies_aria_controls_pointing_to_help_region: true
+      - specifies_focus_stays_on_button: true
+      - does_not_apply_aria_live_to_help_region: true
+    llm_judge_criteria:
+      - "Is it clear that the help region does NOT get aria-live — the developer must understand why aria-expanded/aria-controls is the correct pattern here?"
+
+  - id: ambiguity_handling
+    name: "Ambiguity Resolution"
+    description: "Are all three ambiguous points resolved: aria-describedby decision, conditional field strategy, disabled vs aria-disabled?"
+    weight: 2
+    rule_based_checks:
+      - identifies_and_resolves_aria_describedby_ambiguity: true
+      - identifies_and_resolves_conditional_field_strategy: true
+      - identifies_and_resolves_disabled_vs_aria_disabled: true
+      - documents_assumptions_explicitly: true
+    llm_judge_criteria:
+      - "Does the plan identify all three ambiguous points rather than silently choosing one option?"
+      - "Are decisions documented as decisions ('We are choosing X because Y') not presented as the only possible approach?"
+
+  - id: disabled_vs_aria_disabled
+    name: "HTML disabled vs aria-disabled Decision"
+    description: "Does the plan recommend HTML disabled for the auto-filled Phone field and explain the tab order difference?"
+    weight: 2
+    rule_based_checks:
+      - recommends_html_disabled_for_autofill_field: true
+      - explains_disabled_removes_from_tab_order: true
+      - explains_aria_disabled_keeps_in_tab_order: true
+      - cites_wcag_4_1_2: true
+    llm_judge_criteria:
+      - "Is the disabled vs aria-disabled distinction actionable — does a developer understand which to choose and when?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Are WCAG 3.3.2, 3.3.1, 1.3.1, 4.1.2 cited with criterion names?"
+    weight: 2
+    rule_based_checks:
+      - cites_3_3_2_labels_or_instructions: true
+      - cites_3_3_1_error_identification: true
+      - cites_1_3_1_info_and_relationships: true
+      - cites_4_1_2_name_role_value: true
+    expected_citations:
+      - "WCAG 3.3.2 Labels or Instructions"
+      - "WCAG 3.3.1 Error Identification"
+      - "WCAG 1.3.1 Info and Relationships"
+      - "WCAG 4.1.2 Name, Role, Value"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Are ARIA attribute names, ID naming conventions, and expected announcement sequences concrete?"
+    weight: 2
+    rule_based_checks:
+      - provides_html_form_structure_example: true
+      - specifies_aria_describedby_id_order_example: true
+      - specifies_help_button_markup_example: true
+    llm_judge_criteria:
+      - "Would a developer know the exact aria-describedby attribute value for a field with both error and help text?"
+      - "Is the expandable help button markup specific enough to implement?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does testing include NVDA/JAWS help text announcement order verification and conditional field reveal test?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Does the testing plan include: verify NVDA announces error before help text when both exist?"
+      - "Does the testing plan include: verify conditional field reveal is announced when radio selection changes?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length 3-5 pages for AMBIGUOUS difficulty?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "3-5"
+      - no_scope_creep: true
+      - no_aria_live_on_expandable_help_region: true
+      - no_aria_hidden_on_conditional_fields: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 75-92
+    reasoning: "AMBIGUOUS fixture — the skill's structured protocol and ARIA expertise should handle the decision points. The multiple-ID aria-describedby order and disabled vs aria-disabled distinction are the hardest items. Wider score range reflects ambiguity handling variance."
+
+  - condition: baseline-zero-shot
+    expected_score: 40-58
+    reasoning: "Generic planning covers aria-describedby basics but leaves the decision open, misses the ID ordering rule, applies aria-live to the expandable help region, and confuses disabled with aria-disabled."
+
+  - condition: baseline-few-shot
+    expected_score: 52-68
+    reasoning: "Structured examples help with form structure basics. Still likely to leave aria-describedby decision unresolved, miss the error-before-help ID ordering, and miss the disabled distinction."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  AMBIGUOUS fixture — the discriminating items are explicit decision-making (not presenting both options as equivalent) and the multiple-ID aria-describedby ordering rule.
+
+  The llm_judge weight is higher (0.4) because ambiguity resolution, decision justification, and announcement sequence reasoning require judgment that rule-based checks cannot fully capture.
+
+  Three non-obvious items that separate a11y-planner from baselines:
+  1. Multiple-ID aria-describedby order: error ID before help ID — NVDA/JAWS read in attribute order
+  2. aria-live is wrong on expandable help region — aria-expanded + aria-controls is the correct pattern
+  3. HTML disabled (not aria-disabled) for auto-filled field — keeps field out of tab order
+
+  Differentiated from screenreader-form-errors: that fixture covers error message association for validation errors. This fixture covers help text association, conditional field announcements, progressive disclosure toggle state, and the coexistence of error + help text — none of which appear in the form-errors fixture.
+
+  Outlier indicators (flag for rubric review):
+  - aria-describedby decision left as "it depends" without resolution
+  - Help text ID listed before error ID in aria-describedby
+  - aria-live on expandable help region
+  - aria-disabled instead of HTML disabled for auto-filled field
+  - No conditional field announcement strategy
+  - aria-hidden on conditional fields instead of display:none

@@ -1,0 +1,103 @@
+fixture_id: test-form
+name: Form Testing Strategy
+description: Accessibility testing plan for a healthcare portal registration form — label association, error announcement via aria-describedby and role=alert, NVDA Forms Mode, keyboard order, show/hide password toggle, and visual regression for error states.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: Medium
+
+scenario:
+  feature: An 8-field user registration form with blur validation, submit-time error summary banner, required field indicators, and a show/hide password toggle
+  user_need: Ensuring keyboard-only and screen reader users can complete registration and understand all validation errors before the form ships to a healthcare portal
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single multi-section registration form (8 fields, 2 sections, show/hide password toggle, submit error summary)
+  constraints:
+    - QA team has no screen reader experience — plan must be a runbook, not exploratory guidance
+    - Playwright and axe-core already configured in CI
+    - 3-week deadline before production release
+    - Healthcare portal requires WCAG 2.2 AA compliance documentation
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Axe-core specificity: Names form-specific rule IDs (label, aria-required-attr, autocomplete-valid, color-contrast)
+  - NVDA Forms Mode: Explicitly covers entering/exiting forms mode (F key) and how errors read in context
+  - Error announcement: Distinguishes blur-time (aria-describedby) from submit-time (role=alert) error mechanisms
+  - Keyboard order test: Documents exact expected Tab order across all 8 fields
+  - Show/hide password: Tests focus management on toggle, role and state announcement
+  - Acceptance criteria: Measurable (e.g., "aria-invalid='true' present on field when error visible")
+  - Playwright assertions: Shows actual assertion syntax for aria-describedby linkage
+
+expected_findings:
+  must_have:
+    - Specific axe-core rule IDs for forms (label, label-content-name-mismatch, aria-required-attr, color-contrast)
+    - NVDA Forms Mode documentation (F to enter, field labels read, blur errors in context)
+    - Keyboard Tab order test covering all 8 fields and submit button
+    - Blur error announcement test (focus field → leave empty → Tab out → verify NVDA announces error text)
+    - Submit-time error summary banner test (role="alert", focus management to banner)
+    - Show/hide password toggle test (focus stays in password area, role="button" announced, state change announced)
+    - WCAG 3.3.1 (Error Identification) cited for error message tests
+    - WCAG 3.3.2 (Labels or Instructions) cited for label association tests
+    - WCAG 4.1.3 (Status Messages) cited for the role="alert" banner
+    - Acceptance criteria: aria-invalid="true" present when field has visible error
+    - Acceptance criteria: aria-describedby links input to visible error text
+
+  should_have:
+    - JAWS-specific form mode behavior (Forms Mode auto-activates on <form>)
+    - VoiceOver form navigation (VO+Shift+J jumps to next form control)
+    - WCAG 1.4.3 (Contrast Minimum) cited for error text color
+    - Autocomplete attribute testing (WCAG 1.3.5 Identify Input Purpose)
+    - Visual regression screenshots for: field-default, field-focused, field-error, field-valid, form-error-banner
+    - Playwright assertion: await expect(input).toHaveAttribute('aria-invalid', 'true')
+    - Playwright assertion: await expect(input).toHaveAttribute('aria-describedby', errorId)
+
+  nice_to_have:
+    - Screen reader testing matrix (NVDA + Chrome, JAWS + Chrome, VoiceOver + Safari)
+    - Mobile screen reader testing (VoiceOver iOS, TalkBack Android)
+    - Timeout testing (if session expires during form fill)
+    - Autofill behavior testing with password managers
+
+false_positive_traps:
+  - Prescribing aria-label on every field — native <label for> association is correct; aria-label is an override for fields without visible labels, not a substitute for proper label usage
+  - Requiring role="form" on the <form> element — the form element has implicit form role; role="form" is only needed for forms without submit buttons and is often misused
+  - Testing that aria-required="true" is present when HTML required attribute is already used — they're redundant and either alone is valid; prescribing both is over-specification
+  - Expecting focus to move to the first error field on blur (it should not — focus management is submit-time, not blur-time)
+
+multi_perspective_coverage:
+  keyboard: "Tab order through all 8 fields matches visual reading order; Enter submits from any field; Shift+Tab works in reverse; show/hide password activatable with Space/Enter; focus indicator visible on all interactive elements"
+  screen_reader: "Labels announced with each field in forms mode; error text announced via aria-describedby on blur; submit error banner announced via role=alert; required fields announced; show/hide toggle announces state change"
+  low_vision: "Focus indicators visible at 200% zoom; error indicators use both color and icon (not color alone); error text meets 4.5:1 contrast ratio; required asterisk has text equivalent"
+  cognitive: "Error messages are specific and actionable (not just 'Invalid'); required field indicator explained at form start; validation fires on blur not on keyup to avoid interruption"
+  mobile_touch: "Touch targets for show/hide toggle and submit button meet 44x44px minimum; form fields scrollable without horizontal scroll; on-screen keyboard does not obscure active field"
+
+notes: |
+  This MODERATE fixture tests whether a11y-planner:
+  1. Knows NVDA Forms Mode and why it matters for form testing
+  2. Distinguishes blur-time error mechanisms (aria-describedby) from submit-time (role=alert)
+  3. Can produce a runbook-level plan a non-expert QA engineer can follow
+  4. Names axe-core rules specific to forms, not generic tool references
+  5. Covers all interactive elements including the show/hide password toggle
+
+  Expected verdict: ACCEPT
+  Baseline may produce a reasonable structure but will likely treat NVDA forms mode as an afterthought,
+  conflate blur and submit error mechanisms, and stay generic on axe-core.
+
+  Key discriminator: Does the plan distinguish NVDA Browse Mode from Forms Mode?
+  A plan that describes "pressing Tab to navigate to form fields" without acknowledging
+  that NVDA's Forms Mode is active shows a surface-level understanding of screen reader testing.

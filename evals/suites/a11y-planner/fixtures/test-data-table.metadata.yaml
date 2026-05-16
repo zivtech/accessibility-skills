@@ -1,0 +1,111 @@
+fixture_id: test-data-table
+name: Data Table Testing
+description: Accessibility testing plan for a sortable, paginated data table with per-row action menus — table semantics, aria-sort transitions, NVDA table mode navigation, pagination focus management, row action menus via APG Menu Button pattern, and responsive horizontal scroll.
+language: jsx
+framework: React
+difficulty: COMPLEX
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: High
+
+scenario:
+  feature: A financial dashboard data table (50 rows, 7 columns) with sortable column headers (aria-sort), paginated results (50/page), per-row dropdown action menus, aria-live sort announcement, and horizontal scroll on narrow viewports
+  user_need: Ensuring keyboard-only and screen reader users can navigate, sort, paginate, and act on table data in a complex financial reporting context — a known accessibility risk area
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: DataTable component including sort controls, pagination, per-row action menus, and responsive behavior
+  constraints:
+    - Team has limited axe-core experience — rules must be named explicitly
+    - Tests maintained by a rotating QA team — must be reproducible runbook
+    - NVDA + Chrome is the primary SR test combination
+    - Horizontal scroll behavior is a known usability gap on smaller viewports
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Table-specific axe rules named (td-headers-attr, th-has-data-cells, scope-attr-valid)
+  - NVDA table mode documented (Ctrl+Alt+Arrow navigation, column header announced per cell)
+  - aria-sort transition test scripted (none → ascending → descending → none with per-state verification)
+  - aria-live announcement tested separately from aria-sort state
+  - Pagination focus management documented (focus stays on button or appropriate target after page change)
+  - Per-row menu APG pattern cited and tested (Arrow keys, Escape closes and restores focus)
+  - Responsive test: horizontal keyboard scroll and 200% zoom without header loss
+  - WCAG 1.4.10 (Reflow) cited for responsive behavior testing
+
+expected_findings:
+  must_have:
+    - Specific axe-core table rules (td-headers-attr, th-has-data-cells, scope-attr-valid)
+    - NVDA table mode navigation steps (Ctrl+Alt+Arrow, column header announcement per cell)
+    - aria-sort transition test (click → verify attribute → verify aria-live region content)
+    - Sort state acceptance criteria ("aria-sort cycles none→ascending→descending→none")
+    - Pagination focus management test (Previous/Next click → verify focus target)
+    - Per-row dropdown test using APG Menu Button pattern
+    - Arrow key navigation within per-row menu
+    - Escape key closes per-row menu and restores focus to trigger button
+    - WCAG 1.3.1 (Info and Relationships) cited for table semantics
+    - WCAG 4.1.2 (Name, Role, Value) cited for aria-sort and menu button states
+    - WCAG 4.1.3 (Status Messages) cited for aria-live sort announcement
+    - WCAG 1.4.10 (Reflow) cited for responsive testing
+    - Acceptance criteria per test area (measurable, not abstract)
+
+  should_have:
+    - JAWS table reading mode (Insert+F5 table list, Ctrl+Alt+Arrow navigation)
+    - VoiceOver table navigation (VO+Shift+Right/Left, column headers announced)
+    - Playwright assertions for aria-sort attribute values
+    - Playwright assertions for aria-live region content after sort
+    - Screen reader testing matrix (NVDA+Chrome, JAWS+Chrome, VO+Safari)
+    - Pagination screen reader announcement: "Page 3 of 15" announced after navigation
+    - Caption tested: "Transaction Records — 742 results" announced on table entry
+    - WCAG 2.4.1 (Bypass Blocks) noted if table navigation landmarks are missing
+
+  nice_to_have:
+    - Frozen header column test (if implemented) — header cells visible while scrolling horizontally
+    - Mobile table navigation (VoiceOver swipe, TalkBack linear navigation)
+    - High contrast mode testing for sort direction indicators
+    - Testing table with 0 results vs. full pagination
+
+false_positive_traps:
+  - Prescribing headers="..." attribute on all TD cells — scope="col" on <th> is sufficient for a flat 7-column table; prescribing headers attribute signals confusion about when complex table markup is needed
+  - Expecting role="grid" to be used — the table uses semantic <table> markup; role="grid" is for interactive spreadsheet-like widgets with cell editing, not for read-mostly tables with sort
+  - Testing that all sortable headers have tabindex="0" — if implemented as <button> elements inside <th>, no explicit tabindex is needed
+  - Recommending aria-colindex on every cell — required only for tables with hidden columns or virtualized rendering, not a 7-column flat table
+
+multi_perspective_coverage:
+  keyboard: "Tab to sortable column headers; Enter/Space to sort; Tab to pagination buttons; Tab to per-row action buttons; Arrow keys within action dropdown menus; Escape closes dropdowns; horizontal scroll via keyboard on narrow viewports"
+  screen_reader: "Table entered in NVDA Browse Mode; Ctrl+Alt+Arrow navigates cells; column header announced with each cell; aria-sort state read with sortable headers; aria-live announces sort change; caption announced on table entry; per-row menus announced as button+expanded state"
+  low_vision: "Sort direction indicators visible at 200% zoom; focus indicators visible within table; pagination context clear at 200% zoom; no horizontal page scroll at 200% zoom (WCAG 1.4.10)"
+  cognitive: "Caption describes table purpose and result count; sort state visually and programmatically clear; pagination shows current page and total; action menu items labeled descriptively (not generic 'Action')"
+  mobile_touch: "Table scrollable horizontally by touch; action buttons meet 44x44px touch target; pagination buttons meet touch target minimum; sort header buttons large enough to activate"
+
+notes: |
+  This COMPLEX fixture tests whether a11y-planner:
+  1. Knows NVDA table mode (Ctrl+Alt+Arrow) — not just generic keyboard navigation
+  2. Tests aria-sort as a state transition (3 states) with separate aria-live announcement verification
+  3. Handles the per-row dropdown as a separate pattern within the table (APG Menu Button)
+  4. Addresses pagination focus management (a common production failure)
+  5. Covers responsive behavior using WCAG 1.4.10 (Reflow)
+  6. Identifies when NOT to use complex markup (headers attribute on a flat table)
+
+  Expected verdict: ACCEPT
+  A plan missing NVDA table mode is REVISE — this is the core discriminator.
+  A plan present but with generic aria-sort test ("verify sort works") is ACCEPT-WITH-RESERVATIONS.
+
+  Key discriminator: Does the plan document Ctrl+Alt+Arrow as the table cell navigation keystroke?
+  This is a specialist testing step that baseline models frequently omit or describe incorrectly.
+
+  Scoring note: COMPLEX fixture tolerance for missing nice-to-have items is higher.
+  A plan scoring 82+ that covers all must-have items is ACCEPT even without
+  JAWS/VoiceOver-specific navigation details.

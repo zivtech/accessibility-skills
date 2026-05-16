@@ -1,0 +1,108 @@
+fixture_id: sr-form-field-help
+name: Complex Form with Field-Level Help Text and Progressive Disclosure
+description: Financial services registration form with static help text, conditional fields revealed by radio group, expandable inline help toggle, co-located errors and help text, and disabled auto-filled field. Tests aria-describedby announcement strategy decision, multiple-ID ordering, conditional field reveal announcement, aria-expanded help toggle, and disabled vs aria-disabled distinction.
+language: jsx
+framework: React
+difficulty: AMBIGUOUS
+domain: Screen Reader Experience
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: Multi-section account registration form with static help text on standard fields (aria-describedby decision needed), conditional Business Account fields revealed/hidden by radio selection (display:none toggle), an expandable "?" help button for Tax ID field (inline expansion), co-located error messages and help text on the same field, and a "Same as primary phone" checkbox that disables and auto-fills the Mobile Phone field. No existing ARIA implementation — design specs have static wireframes only.
+  user_need: Screen reader users on a financial services form need actionable guidance (password rules, Tax ID explanation) without excessive verbosity; conditional field appearance must be announced; expandable help must communicate open/closed state; when both error and help text exist, order must be unambiguous; disabled auto-filled field must communicate its state.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Help text association strategy (aria-describedby decision), conditional field announcement, expandable help toggle (aria-expanded + aria-controls), error/help co-location order, HTML disabled vs aria-disabled
+  constraints:
+    - Design spec does not specify whether help text is always-announced or on-demand — plan must resolve this
+    - Conditional fields use CSS display:none toggle — need to confirm this removes fields from accessibility tree correctly
+    - Expandable help is inline, not a modal or tooltip — focus stays on toggle button
+    - Both error message and help text can appear simultaneously on the same field
+    - Phone field disabled state: HTML disabled removes from tab order vs aria-disabled keeps it
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Ambiguity resolution: explicit, justified decision on aria-describedby for help text (not left open)
+  - Multiple-ID aria-describedby order: error ID before help text ID when both exist
+  - display:none confirmation: correctly identifies that display:none removes element from accessibility tree
+  - Conditional field announcement: documented choice between focus-move-to-first-field and aria-live surrounding section
+  - Expandable help toggle: aria-expanded + aria-controls, focus stays on button (no focus move)
+  - HTML disabled vs aria-disabled: recommend HTML disabled for auto-filled phone field, explain tab order difference
+  - fieldset/legend for conditional Business Account group
+  - WCAG 3.3.2, 3.3.1, 1.3.1, 4.1.2 citations
+
+expected_findings:
+  must_have:
+    - "Explicit decision: aria-describedby on all help-text fields — justified by financial services context where instructions are actionable"
+    - "Multiple-ID aria-describedby order: aria-describedby='email-error email-help' — error ID first, help text ID second"
+    - "display:none confirmed to remove fields from accessibility tree — no additional aria-hidden needed"
+    - "Conditional field announcement: documented choice (focus-move to first field OR aria-live on section) with justification"
+    - "Expandable help button: aria-expanded='false|true' aria-controls='tax-id-help-region'"
+    - "Expandable help: focus stays on button after toggle — help region does NOT get aria-live"
+    - "HTML disabled (not aria-disabled) for auto-filled Phone field — with explanation that disabled removes from tab order"
+    - "<fieldset>/<legend> for Business Account conditional group ('Business Details')"
+    - "Ambiguity noted explicitly and resolved with documented reasoning"
+    - "WCAG 3.3.2 (Labels or Instructions) citation for help text strategy"
+    - "WCAG 3.3.1 (Error Identification) citation for error message placement"
+    - "WCAG 1.3.1 (Info and Relationships) citation for form structure"
+    - "WCAG 4.1.2 (Name, Role, Value) citation for expandable help button state"
+
+  should_have:
+    - "JAWS/NVDA description announcement order: label → input type → value → aria-describedby (IDs in DOM order)"
+    - "Conditional field strategy: if focus-move chosen, move to first newly visible field with clear label; if live region, announce 'Additional business fields are now visible'"
+    - "Business Account radio group: <fieldset>/<legend> with options 'Personal Account' and 'Business Account'"
+    - "Help text ID prefix consistency: 'email-help', 'password-help', 'tax-id-help' — predictable naming"
+    - "WCAG 3.2.2 (On Input) citation for conditional field behavior on radio change"
+    - "Testing: NVDA verify help text announced after label; verify error announced before help; verify conditional reveal announced"
+
+  nice_to_have:
+    - "Password strength meter: role='status' aria-live='polite' for real-time strength updates"
+    - "Tax ID expandable help: aria-labelledby on help region pointing to the '?' button text"
+    - "Form section headings: <h2> elements for 'Account Type', 'Contact Information', 'Security' sections"
+
+false_positive_traps:
+  - "Leaving aria-describedby decision as 'it depends on user preference' without resolving it — fixture requires a decision"
+  - "Using aria-hidden='true' on conditional fields instead of display:none — aria-hidden does not remove fields from tab order; display:none is correct"
+  - "Applying aria-live to the expandable help region — the help content is not live data; aria-expanded + aria-controls is the correct pattern"
+  - "Using aria-disabled='true' instead of HTML disabled for the auto-filled Phone field — keeps field in tab order unnecessarily"
+  - "Putting help text ID before error ID in aria-describedby — errors must be announced first"
+
+multi_perspective_coverage:
+  keyboard: "Conditional fields reachable via Tab when visible; hidden fields (display:none) removed from tab order; expandable help toggle keyboard-activated (Enter/Space); disabled Phone field removed from tab order"
+  screen_reader: "Help text announced after label via aria-describedby; error announced before help text via ID order; conditional field reveal announced; expandable help state (expanded/collapsed) via aria-expanded; disabled state announced on Phone field"
+  low_vision: "Error indicators use text labels not color alone; help text visible at 200% zoom without horizontal scroll; expandable help visible inline without tooltip clipping"
+  cognitive: "Predictable help text position (below each field); conditional fields grouped under clear 'Business Details' heading; expandable help available but not forced — reduces cognitive load for users who don't need it"
+  mobile_touch: "Help text visible without hover; expandable help toggle 44×44px; conditional fields appear/disappear with smooth transition that does not disorient"
+
+notes: |
+  AMBIGUOUS difficulty — the discriminating item is whether the plan resolves the aria-describedby question with explicit justification, rather than presenting it as an unresolved option. Financial services context makes always-announced help the right call — instructions are actionable, not decorative.
+
+  The multiple-ID aria-describedby order (error first, help second) is frequently missed by zero-shot baselines. JAWS and NVDA read IDs in DOM attribute order, so the order of IDs in aria-describedby="error-id help-id" directly determines announcement sequence.
+
+  The HTML disabled vs aria-disabled distinction is a concrete, verifiable decision the plan must make — not leave ambiguous.
+
+  Differentiated from screenreader-form-errors: that fixture covers error message association for form validation errors. This fixture covers help text association (a pre-error state), conditional field announcements, expandable help toggles, and the coexistence of error + help on the same field — none of which appear in the errors fixture.
+
+  Expected verdict: ACCEPT for a11y-planner. REVISE for zero-shot baselines that leave the aria-describedby decision open, miss the ID ordering rule, or apply aria-live to the expandable help region. ACCEPT-WITH-RESERVATIONS for few-shot baselines.
+
+  Outlier indicators:
+  - aria-describedby decision left unresolved
+  - Error ID listed after help text ID in aria-describedby
+  - aria-live on expandable help region
+  - aria-disabled instead of HTML disabled for auto-filled field
+  - No conditional field announcement strategy

@@ -1,53 +1,110 @@
 fixture_id: keyboard-roving-tabindex
-name: Roving Tabindex in Menu Grid
-description: Menu grid with roving tabindex. Plan Tab enters grid, arrow keys navigate, single tab stop.
+name: Roving Tabindex in Composite Widget
+description: Rich text editor toolbar with 24 buttons across 4 groups requiring roving tabindex, role decision (toolbar vs menubar), toggle vs action button distinction, and group navigation strategy.
 language: jsx
 framework: React
-difficulty: MODERATE
+difficulty: AMBIGUOUS
 domain: Keyboard Navigation Design
 work_type: component_plan
 risk_level: Medium
 
 scenario:
-  feature: Component or feature
-  user_need: Accessibility and usability
+  feature: A toolbar with 24 formatting buttons (toggle and action types) organized into 4 groups, needing single-tab-stop roving tabindex navigation
+  user_need: Keyboard users must traverse the toolbar efficiently without 24 Tab presses; screen reader users need group context and button state
   compliance_target: WCAG 2.2 AA
   assistive_technologies:
-    - NVDA
-    - JAWS
+    - NVDA (Windows)
+    - JAWS (Windows)
     - VoiceOver (macOS)
     - Keyboard-only users
-  scope: Reusable component
-  constraints: Multiple constraints possible
+  scope: Toolbar component with roving tabindex, group navigation, toggle/action button distinction
+  constraints:
+    - Must support 24 buttons across 4 groups
+    - Some buttons toggle (Bold, Italic, Underline) with pressed/unpressed state
+    - Some buttons open dialogs (Insert Image, Insert Link) — focus restoration required
+    - Design mockup labels it "Format Menu" but there are no submenus
+    - Must integrate with editor focus management (editor ↔ toolbar ↔ sidebar)
 
 expected_plan_sections:
-  - Scope & Context
-  - Semantic Structure
-  - Interaction Pattern Design
-  - Focus Management
-  - State Communication
-  - Visual Accessibility
-  - Content Accessibility
-  - Testing Strategy
-  - Implementation Tasks
+  - Scope & Context (why roving tabindex, who benefits, compliance target)
+  - Semantic Structure (toolbar role, group roles, button elements)
+  - Interaction Pattern Design (APG Toolbar pattern, roving tabindex, arrow keys)
+  - Focus Management (roving tabindex mechanism, focus restoration from dialogs)
+  - State Communication (aria-pressed for toggles, dialog open state)
+  - Visual Accessibility (focus indicator across 24 buttons, group visual boundaries)
+  - Content Accessibility (button labels, group labels, toolbar label)
+  - Testing Strategy (keyboard sequence tests, SR announcement tests)
+  - Implementation Tasks (with WCAG citations and a11y-critic checkpoints)
 
 key_evaluation_criteria:
-  - APG pattern mapping when applicable
-  - WCAG 2.2 grounding
-  - Complete accessibility coverage
-  - Testing strategy
-  - Implementation clarity
+  - Role decision: Must choose role="toolbar" and explain why role="menubar" is wrong (no submenus)
+  - APG pattern mapping: Must cite https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/
+  - Roving tabindex: Must document tabindex="0" on active button, tabindex="-1" on others
+  - Toggle vs action: Must distinguish aria-pressed buttons from action buttons
+  - Group navigation: Must address the ambiguity of within-group vs across-group arrow navigation
+  - WCAG grounding: Must cite 2.1.1 (Keyboard), 4.1.2 (Name, Role, Value), 2.4.7 (Focus Visible)
+  - Focus restoration: Must plan focus return from dialogs to triggering button
 
 expected_findings:
   must_have:
-    - WCAG citations
-    - Accessibility requirements documented
-    - Testing strategy
+    - role="toolbar" chosen over role="menubar" with rationale
+    - APG Toolbar pattern reference with URL
+    - Roving tabindex documented (tabindex="0" on active, tabindex="-1" on others)
+    - Arrow key navigation (Left/Right cycle, wrapping)
+    - aria-pressed="true"/"false" for toggle buttons
+    - Action buttons distinguished from toggle buttons
+    - Toolbar aria-label (not "Format Menu")
+    - WCAG citations for each design decision
+    - Keyboard test cases (Tab enters, arrows navigate, Tab exits)
 
   should_have:
-    - APG pattern reference
-    - Implementation guidance
-    - Multi-perspective coverage
+    - Group structure (role="group" with aria-label per group)
+    - Group navigation recommendation (within-group vs across-group arrows)
+    - Home/End key support
+    - Focus restoration from dialog-opening buttons
+    - Focus indicator contrast requirement (3:1 minimum)
+    - Screen reader test cases (announcement of button label, group, pressed state)
+
+  nice_to_have:
+    - Ctrl+Home/Ctrl+End to jump to first/last button in toolbar
+    - Discussion of alternative patterns (aria-activedescendant vs roving tabindex)
+    - Performance consideration for 24 buttons (state management)
+    - Mobile touch consideration for toolbar buttons
+
+false_positive_traps:
+  - Choosing role="menubar" because the mockup says "Format Menu"
+  - Using aria-selected instead of aria-pressed for toggle buttons
+  - Suggesting tabindex="0" on all 24 buttons (the existing bug, not the fix)
+  - Recommending aria-activedescendant as the primary approach without discussing tradeoffs
+
+multi_perspective_coverage:
+  keyboard: "Tab enters toolbar at first button; Left/Right arrows navigate between buttons; Tab exits toolbar entirely; roving tabindex ensures single tab stop"
+  screen_reader: "Announces toolbar role, group labels, button labels, pressed state for toggles; NVDA browse mode vs focus mode interaction"
+  low_vision: "Focus indicator visible on all 24 buttons; group visual boundaries help orientation"
+  cognitive: "Consistent interaction model; grouped buttons reduce cognitive load vs 24 undifferentiated buttons"
+  mobile_touch: "Touch target sizing for toolbar buttons; touch scrolling if toolbar overflows"
 
 notes: |
-  COMPLEX difficulty fixture for Keyboard Navigation Design domain.
+  This AMBIGUOUS fixture tests whether a11y-planner can:
+  1. Make the correct role decision (toolbar, not menubar) and justify it
+  2. Implement roving tabindex correctly
+  3. Handle mixed button types (toggle vs action) within one container
+  4. Address the group navigation ambiguity with a reasoned recommendation
+  5. Plan focus restoration for dialog-opening buttons
+
+  Expected verdict: ACCEPT (with thorough ambiguity resolution)
+
+  The primary ambiguity is toolbar vs menubar. A strong plan will:
+  - Choose toolbar and explain why (no submenus = not menubar)
+  - Acknowledge the mockup label ("Format Menu") and explain labels ≠ roles
+  - Document the keyboard contract differences between toolbar and menubar
+
+  The secondary ambiguity is group navigation:
+  - Option A: Arrow keys step through every button (simpler, but 24 steps)
+  - Option B: Arrow keys within group, Tab between groups (faster, but more complex)
+  - A strong plan chooses one and explains the tradeoff
+
+  Expected baseline performance:
+  - a11y-planner: 75-90 (should handle role decision and roving tabindex; group navigation ambiguity is the differentiator)
+  - baseline-zero-shot: 40-60 (likely to choose menubar or miss roving tabindex entirely)
+  - baseline-few-shot: 50-65 (may get roving tabindex from example but miss the role decision)

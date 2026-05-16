@@ -1,0 +1,190 @@
+fixture_id: visual-form-validation
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed at depth appropriate for COMPLEX difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+    llm_judge_criteria:
+      - "Is each phase addressed at COMPLEX depth (not just mentioned)?"
+
+  - id: error_identification
+    name: "Error Identification"
+    description: "Does the plan specify aria-invalid and aria-describedby correctly, with a non-color error indicator?"
+    weight: 4
+    rule_based_checks:
+      - specifies_aria_invalid: "true on invalid inputs"
+      - specifies_aria_describedby: true
+      - specifies_non_color_indicator: true
+      - cites_wcag_3_3_1: true
+      - cites_wcag_1_4_1: true
+    llm_judge_criteria:
+      - "Is aria-describedby on the INPUT pointing to the error message ID (not aria-label on the error message)?"
+      - "Is the non-color indicator specific (icon type named, placement defined)?"
+      - "Does the plan address the error state recovery (clearing aria-invalid and removing error message when corrected)?"
+
+  - id: focus_management
+    name: "Focus Management on Error"
+    description: "Does the plan specify where focus goes when errors appear (blur-time and submit-time), and when the error summary appears?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_2_4_3: true
+      - documents_focus_on_error_summary_appearance: true
+      - documents_error_summary_link_behavior: true
+      - addresses_cross_step_focus: true
+    llm_judge_criteria:
+      - "Does focus move to the error summary panel when it appears on submit — not stay on the submit button?"
+      - "Do error summary links navigate to AND focus the invalid field (not just scroll to it)?"
+      - "For cross-step errors: does the link navigate back to the correct step first, then focus the field?"
+      - "Is there a plan for what happens to focus when the user navigates back to a step with existing errors?"
+
+  - id: blur_time_strategy
+    name: "Blur-Time Announcement Strategy"
+    description: "Does the plan specify a non-disruptive announcement strategy for real-time inline validation?"
+    weight: 3
+    rule_based_checks:
+      - addresses_blur_time_validation: true
+      - recommends_specific_announcement_approach: true
+    llm_judge_criteria:
+      - "Does the plan avoid recommending role='alert' for blur-time errors (too aggressive)?"
+      - "Is a specific approach recommended: aria-live='polite', delayed announcement, or errors-only-after-first-submit?"
+      - "Is the tradeoff between immediate vs. delayed announcement explained?"
+
+  - id: cognitive_load
+    name: "Cognitive Load Management"
+    description: "Does the plan make a specific recommendation on error presentation strategy and justify it?"
+    weight: 3
+    rule_based_checks:
+      - addresses_cognitive_load: true
+      - makes_specific_recommendation: true
+    llm_judge_criteria:
+      - "Does the plan document the tradeoff between all-errors-at-once vs. progressive disclosure?"
+      - "Is a specific approach recommended with justification (not 'show errors clearly')?"
+      - "Is the error count per step (4-8 fields) considered when making the recommendation?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Do design decisions cite relevant WCAG 2.2 criteria accurately?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_3_3_1: true
+      - cites_wcag_3_3_3: true
+      - cites_wcag_1_4_1: true
+      - cites_wcag_4_1_3: true
+    expected_citations:
+      - "WCAG 3.3.1 Error Identification — aria-invalid + programmatic association"
+      - "WCAG 3.3.3 Error Suggestion — actionable error message content"
+      - "WCAG 1.4.1 Use of Color — non-color error indicator (icon) required"
+      - "WCAG 4.1.3 Status Messages — error summary can be announced without focus move"
+      - "WCAG 2.4.3 Focus Order — focus management after error appearance"
+    llm_judge_criteria:
+      - "Are citations applied to specific decisions rather than listed generically?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for blur-time validation, submit-time errors, error summary, and cross-step consolidation?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Is a blur-time validation test case included (screen reader behavior on field blur)?"
+      - "Is a cross-step error consolidation test case included?"
+      - "Is a colorblind simulation test included?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for COMPLEX difficulty? (5-7 pages expected)"
+    weight: 1
+    llm_judge_criteria:
+      - "Does the plan dedicate appropriate space to each of the four core concerns (error ID, focus, blur-time, cognitive)?"
+      - "Is depth proportional to COMPLEX — not an aria-describedby snippet and nothing else?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 80-95
+    reasoning: "Should cover all four interdependent concerns — aria-invalid/describedby, focus management, blur-time strategy, cognitive load. Key differentiators: specific blur strategy and cross-step consolidation plan."
+
+  - condition: baseline-zero-shot
+    expected_score: 45-65
+    reasoning: "Likely covers aria-invalid and aria-describedby but misses blur-time announcement strategy, cognitive load specifics, and cross-step handling."
+
+  - condition: baseline-few-shot
+    expected_score: 55-70
+    reasoning: "Structured approach improves error identification coverage; blur-time strategy and cross-step plan remain likely gaps."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REJECT
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  COMPLEX fixture with four interdependent error communication concerns. A partial plan (aria-describedby only) fails on depth.
+
+  Key evaluation focus:
+  - aria-invalid and aria-describedby (correct direction: on the input, not on the message)
+  - Non-color error indicator with WCAG 1.4.1 citation
+  - Focus management: summary panel gets focus on submit-time errors
+  - Error summary links navigate to AND focus the invalid field
+  - Blur-time announcement: non-disruptive strategy specified (not role="alert")
+  - Cognitive load: specific recommendation with tradeoff documented
+  - Cross-step error consolidation: step navigation + field focus
+
+  Expected findings baseline:
+  - aria-invalid: 90%+
+  - aria-describedby on input: 80%+
+  - Non-color icon indicator: 70%+
+  - Error summary focus management: 65%+
+  - Blur strategy (specific, non-disruptive): 50%+
+  - WCAG 3.3.1: 85%+
+  - WCAG 1.4.1 for icons: 65%+
+  - Cognitive load recommendation (specific): 45%+
+  - Cross-step error consolidation: 40%+
+
+  Outlier indicators:
+  - role="alert" on every blur-time inline error
+  - aria-describedby on the error element (wrong direction)
+  - No focus management for error summary
+  - Cognitive load section is vague or missing
+  - No cross-step plan at all
+  - Plan is under 3 pages (calibration failure for COMPLEX)

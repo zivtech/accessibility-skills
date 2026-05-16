@@ -1,6 +1,6 @@
 fixture_id: keyboard-modal-focus-trap
 name: Complex Modal with Focus Trap
-description: Modal dialog with focus trap implementation. Plan Tab cycling, focus restoration, Escape closes.
+description: Multi-section form modal dialog with validation, focus trap, focus restoration, and stackable support. Plan APG Dialog pattern, Tab cycling within modal, focus restoration to trigger, Escape key, form structure (fieldset/legend), modal semantics (role="dialog", aria-modal, aria-labelledby), and WCAG citations.
 language: jsx
 framework: React
 difficulty: COMPLEX
@@ -9,45 +9,116 @@ work_type: component_plan
 risk_level: High
 
 scenario:
-  feature: Component or feature
-  user_need: Accessibility and usability
+  feature: Reusable React modal component containing a multi-section form with 10+ fields — text inputs, selects, checkboxes, and radios — with blur-time and submit-time validation. Modal appears over an e-commerce page with an overlay. Multiple modals can be stacked (e.g., a confirmation dialog opened from within the form modal). Touch support is required. Form section are grouped by topic (e.g., contact info, shipping address, payment method).
+  user_need: Keyboard-only users must navigate all form fields within the modal via Tab/Shift+Tab without escaping to background content — focus trap required. Screen reader users need the dialog role announced, the dialog title associated via aria-labelledby, background content excluded from the AT reading flow (aria-modal or inert), and form validation errors programmatically associated. All users need focus to return to the trigger button when the modal closes.
   compliance_target: WCAG 2.2 AA
   assistive_technologies:
-    - NVDA
-    - JAWS
+    - JAWS (Windows)
+    - NVDA (Windows)
     - VoiceOver (macOS)
     - Keyboard-only users
-  scope: Reusable component
-  constraints: Multiple constraints possible
+  scope: Modal component design — focus trap mechanism, initial focus strategy, focus restoration on close, dialog semantics, form structure within modal, Escape key handling, stacked modal handling; excludes server-side validation and data submission logic
+  constraints:
+    - Form has 10+ fields across multiple sections — must use fieldset/legend grouping
+    - Multiple modals can be stacked — focus trap must handle nested modal stack
+    - Touch support required (VoiceOver on iOS, TalkBack on Android)
+    - Existing page must not be operable while modal is open (background inert)
 
 expected_plan_sections:
   - Scope & Context
-  - Semantic Structure
-  - Interaction Pattern Design
-  - Focus Management
-  - State Communication
-  - Visual Accessibility
-  - Content Accessibility
+  - Semantic Structure (dialog, form, fieldset/legend)
+  - Interaction Pattern Design (APG Dialog pattern)
+  - Focus Management (initial focus, Tab cycling, focus restoration)
+  - State Communication (aria-modal, aria-labelledby, validation errors)
+  - Visual Accessibility (focus indicator, overlay contrast)
+  - Content Accessibility (form labels, error association)
   - Testing Strategy
   - Implementation Tasks
 
 key_evaluation_criteria:
-  - APG pattern mapping when applicable
-  - WCAG 2.2 grounding
-  - Complete accessibility coverage
-  - Testing strategy
-  - Implementation clarity
+  - APG Dialog (Modal) pattern: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
+  - Focus trap: Tab cycles forward through all focusable elements within modal; Shift+Tab cycles backward; wraps at boundary
+  - Initial focus: moves to first focusable element or modal heading on open (not trigger)
+  - Focus restoration: returns to trigger button on modal close (Escape or explicit close action)
+  - Modal semantics: role="dialog", aria-modal="true", aria-labelledby referencing modal title
+  - Background inert: aria-modal="true" or inert attribute on background content
+  - Form structure: fieldset/legend for grouped fields, label/input association, aria-describedby for validation errors
+  - WCAG 2.1.1 (Keyboard), 2.4.3 (Focus Order), 4.1.2 (Name Role Value), 1.3.1 (Info and Relationships)
 
 expected_findings:
   must_have:
-    - WCAG citations
-    - Accessibility requirements documented
-    - Testing strategy
+    - "APG Dialog (Modal) pattern reference with URL: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+    - "Focus trap implementation: Tab/Shift+Tab cycle within modal, wrapping at last/first focusable element"
+    - "Initial focus: moves into modal on open — to first focusable element or dialog heading (not stays on trigger)"
+    - "Focus restoration: trigger button regains focus when modal closes (Escape, Close button, or successful submit)"
+    - "role='dialog' on modal container element"
+    - "aria-modal='true' to exclude background content from AT virtual reading cursor"
+    - "aria-labelledby on dialog element pointing to modal title element"
+    - "Escape key closes modal and restores focus to trigger"
+    - "WCAG 2.1.1 (Keyboard) citation"
+    - "WCAG 4.1.2 (Name, Role, Value) citation for dialog semantics"
 
   should_have:
-    - APG pattern reference
-    - Implementation guidance
-    - Multi-perspective coverage
+    - "fieldset/legend grouping for each multi-field section within the form"
+    - "label elements associated with each form input (for/id pairing or aria-labelledby)"
+    - "Form validation error association: aria-invalid='true' + aria-describedby pointing to error message"
+    - "Background content made inert: aria-modal='true' (VoiceOver) or inert attribute on #root (NVDA/JAWS fallback)"
+    - "Stacked modal handling: only topmost modal's focus trap is active; background modal is inert"
+    - "WCAG 2.4.3 (Focus Order) citation for focus sequence within modal"
+    - "WCAG 1.3.1 (Info and Relationships) citation for fieldset/legend grouping"
+    - "Close button accessible name — 'Close dialog' or 'Close [modal title]'"
+    - "Test cases: Tab cycling, Shift+Tab cycling, focus trap boundary wrap, focus restoration, Escape behavior"
+
+  nice_to_have:
+    - "inert attribute implementation note for NVDA/JAWS (aria-modal not consistently supported by all AT)"
+    - "Scroll within modal: overflow-y on modal body with focus trap still containing scroll container"
+    - "Touch accessibility: VoiceOver swipe navigation within dialog, dismiss gesture (two-finger scrub)"
+    - "WCAG 2.4.11 (Focus Appearance) — focus indicators visible on all form elements within modal"
+    - "Confirmation before discard: if form has unsaved changes, closing modal with Escape should prompt confirmation"
+    - "Error summary focus management: on submit with errors, focus moves to error summary within modal"
+
+false_positive_traps:
+  - "Using role='alertdialog' for a standard form modal — alertdialog is for dialogs requiring immediate user response (errors, warnings); a form modal is role='dialog'"
+  - "Trapping Tab within modal by disabling Tab on the body — breaks browser focus order; use JavaScript focus trap on the modal container instead"
+  - "Setting aria-hidden='true' on background content instead of using inert or aria-modal — aria-hidden alone doesn't prevent AT from reaching background via arrow key navigation"
+  - "Sending initial focus to the modal overlay/backdrop element — backdrop is decorative; focus should go to first focusable element or modal heading inside the dialog"
+  - "Using aria-live on the modal container — dialogs are announced via role='dialog' + aria-labelledby when they receive focus; aria-live is unnecessary and can cause double-announcements"
+  - "Making the Close button type='submit' — should be type='button' to avoid triggering form submission"
+  - "Removing focus trap when Escape is the only close mechanism — close button must also exist for users who don't know Escape"
+
+multi_perspective_coverage:
+  keyboard: "Tab cycles forward through all focusable elements in modal (inputs, selects, checkboxes, radios, close button, submit). Shift+Tab cycles backward. At last focusable element, Tab wraps to first. At first, Shift+Tab wraps to last. Escape closes modal. Background content unreachable via keyboard while modal is open. Close button explicitly labeled."
+  screen_reader: "NVDA/JAWS announce 'dialog' role and aria-labelledby title on focus entry. aria-modal='true' hides background content from virtual cursor. Form inputs announced with labels and group context (fieldset/legend). Validation errors announced via aria-describedby when field is focused after error state. VoiceOver on iOS: swipe navigation within dialog respects aria-modal boundary."
+  low_vision: "Modal overlay provides sufficient contrast against background (semi-transparent overlay). Focus indicators on all form elements visible at 200% zoom — 3:1 contrast minimum. Modal does not clip at 400% zoom on 1280px viewport (WCAG 1.4.10 Reflow). Error messages and field labels readable at large text sizes."
+  cognitive: "Modal has clear visible title. Single-purpose form sections grouped with fieldset/legend labels. Close button (X) visible and labeled. Escape key works as expected. Error messages inline with fields, not only in a remote summary. Progress indicators for multi-section form reduce uncertainty."
+  mobile_touch: "All touch targets (inputs, buttons, close) meet 44×44px. Modal dismisses on close button or Escape (not on overlay tap alone, which risks accidental dismiss). VoiceOver on iOS respects aria-modal and confines swipe navigation within dialog. Form scroll accessible without triggering modal close gesture."
 
 notes: |
-  COMPLEX difficulty fixture for Keyboard Navigation Design domain.
+  COMPLEX fixture combining three interdependent concerns: focus trap mechanism, form structure within modal, and stacked modal handling. A plan that addresses only focus trap without form structure or only semantics without the trap mechanism is inadequate.
+
+  The fixture's three discriminating items:
+  1. Background inert strategy: aria-modal="true" alone is sufficient for VoiceOver but NVDA and JAWS still allow arrow key navigation to background content in some AT configurations. A complete plan notes the inert attribute as the more robust solution (or polyfill for older browsers) and explains the difference.
+  2. Stacked modal handling: when a confirmation dialog opens over the form modal, only the topmost dialog's focus trap should be active. Plans that address focus trapping without handling stacked modals are incomplete for this fixture.
+  3. Initial focus target: APG recommends moving focus to the first focusable element or the dialog heading — not leaving focus on the trigger. Plans that don't specify the initial focus target miss a real usability gap for screen reader users who need to hear the dialog context on entry.
+
+  Expected verdict: ACCEPT for a11y-planner. REVISE for baseline-zero-shot (likely to miss inert/background strategy, stacked modals, initial focus specificity). ACCEPT-WITH-RESERVATIONS for baseline-few-shot.
+
+  Expected findings baseline:
+  - role="dialog": 95%+
+  - aria-labelledby: 85%+
+  - Focus trap (Tab cycling): 85%+
+  - Focus restoration on close: 80%+
+  - Escape key: 90%+
+  - Initial focus decision (specific): 60%+
+  - aria-modal vs inert distinction: 40%+
+  - Stacked modal handling: 35%+
+  - fieldset/legend for form sections: 70%+
+  - aria-invalid + aria-describedby for errors: 65%+
+
+  Outlier indicators (flag for review):
+  - No focus trap documented
+  - role="alertdialog" used for standard form modal
+  - Focus stays on trigger button when modal opens
+  - Background content accessible via keyboard while modal is open
+  - No form structure (fieldset/legend) for grouped fields
+  - Plan <3 pages (calibration failure for COMPLEX)

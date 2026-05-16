@@ -1,0 +1,153 @@
+fixture_id: visual-status-colors
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed at a depth appropriate for TRIVIAL difficulty?"
+    weight: 2
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+    llm_judge_criteria:
+      - "Are interaction and focus sections appropriately brief (dot is non-interactive) rather than absent?"
+
+  - id: color_independence
+    name: "Color Independence"
+    description: "Does the plan identify WCAG 1.4.1 failure and specify a concrete non-color alternative?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_1_4_1: true
+      - identifies_color_only_failure: true
+      - specifies_non_color_alternative: true
+      - addresses_compact_mode: true
+    llm_judge_criteria:
+      - "Is the chosen AT pattern correct (sr-only span OR role=img+aria-label, not title attribute)?"
+      - "Does the plan specify that aria-hidden goes on the dot SVG/span when a sibling text label exists?"
+      - "Does the compact mode strategy use CSS sr-only/clip (not display:none or visibility:hidden)?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Do design decisions cite relevant WCAG 2.2 criteria?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_1: true
+      - cites_wcag_1_4_11: true
+    expected_citations:
+      - "WCAG 1.4.1 Use of Color — color alone must not convey status"
+      - "WCAG 1.4.11 Non-Text Contrast — dot must meet 3:1 ratio against adjacent background"
+      - "WCAG 1.1.1 Non-Text Content — icon-only variant needs text alternative"
+    llm_judge_criteria:
+      - "Does the plan explain why each cited criterion applies to this specific component?"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a developer implement from this plan without guessing? Are text labels defined? Is the CSS technique named?"
+    weight: 3
+    rule_based_checks:
+      - defines_text_labels_for_all_states: true
+      - names_sr_only_technique: true
+    llm_judge_criteria:
+      - "Are all three status states mapped to specific text labels (not 'add a label')?"
+      - "Is the aria-hidden pattern specified for the co-located dot+label scenario?"
+      - "Would a developer know exactly what CSS class or technique to use for compact mode?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are screen reader, low-vision (contrast), and cognitive perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+    llm_judge_criteria:
+      - "Is Windows High Contrast mode mentioned (even briefly)?"
+      - "Is label vocabulary consistency addressed?"
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are key test cases documented for color independence, contrast, and compact mode?"
+    weight: 2
+    rule_based_checks:
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Is a high-contrast mode test case included?"
+      - "Is a screen reader announcement test case included?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for TRIVIAL difficulty? (1-2 pages expected; not an over-engineered epic)"
+    weight: 2
+    rule_based_checks:
+      - no_aria_live_for_static_dot: true
+      - no_keyboard_nav_for_static_dot: true
+    llm_judge_criteria:
+      - "Is the plan focused and appropriately short for a single static indicator component?"
+      - "Does the plan avoid inventing complexity (focus traps, live regions) that don't apply?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 90-100
+    reasoning: "TRIVIAL fixture with a well-defined solution. Planner should identify 1.4.1, specify sr-only compact mode, cite 1.4.11 and 1.1.1, define text labels, and calibrate length correctly."
+
+  - condition: baseline-zero-shot
+    expected_score: 70-80
+    reasoning: "Likely identifies 1.4.1 and adds text labels, but may miss compact mode, use title attribute, or fail to specify aria-hidden on the decorative dot."
+
+  - condition: baseline-few-shot
+    expected_score: 75-85
+    reasoning: "Structure improves coverage but may still miss the double-announcement trap or compact mode sr-only specifics."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
+
+notes: |
+  TRIVIAL fixture evaluating whether the planner handles the most fundamental visual accessibility pattern:
+  color as the sole status indicator.
+
+  Key evaluation focus:
+  - Does the plan identify WCAG 1.4.1 and name the failure mode clearly?
+  - Is the chosen AT alternative pattern correct (sr-only or role=img, NOT title)?
+  - Is aria-hidden correctly placed on the dot SVG when a text sibling exists?
+  - Is compact mode addressed with a CSS sr-only (clip) technique?
+  - Does the plan cite 1.4.11 for dot contrast?
+  - Is the plan appropriately brief (1-2 pages) — not over-engineered?
+
+  Expected findings baseline:
+  - WCAG 1.4.1 identification: 95%+ of evaluators
+  - Correct AT pattern (sr-only/role=img): 80%+ (some may default to title)
+  - aria-hidden on decorative dot: 60%+ (often missed)
+  - Compact mode addressed: 70%+ (may be overlooked if not prompted)
+  - 1.4.11 contrast: 75%+ (common knowledge but sometimes omitted)
+
+  Outlier indicators:
+  - Plan recommends title attribute as primary AT mechanism (incorrect)
+  - Plan is 5+ pages with aria-live regions and focus traps (calibration failure)
+  - Status text labels not defined (leaves developer guessing)
+  - Compact mode not mentioned at all

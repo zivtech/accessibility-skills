@@ -1,0 +1,193 @@
+fixture_id: visual-data-viz
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed at appropriate depth for AMBIGUOUS difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: approach_coherence
+    name: "Approach Coherence"
+    description: "Does the plan commit to a single accessibility architecture and execute it consistently? This replaces APG pattern mapping for ambiguous fixtures where no single APG pattern applies."
+    weight: 4
+    rule_based_checks:
+      - commits_to_single_approach: true
+      - justifies_architecture_choice: true
+      - approach_consistent_throughout: true
+    llm_judge_criteria:
+      - "Does the plan choose one architecture (e.g., role=img + sr-only table, or keyboard-navigable data points) and execute it throughout — rather than listing options?"
+      - "Is the tradeoff explicitly stated — why was this approach chosen over alternatives?"
+      - "Are all sections (keyboard, screen reader, testing) consistent with the chosen approach?"
+      - "Does the plan avoid 'you could do A or B or C' without committing?"
+
+  - id: color_independence
+    name: "Color Independence in Legend and Data"
+    description: "Does the plan cite WCAG 1.4.1 and specify a concrete non-color alternative for the colored legend swatches?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_1: true
+      - specifies_non_color_legend_alternative: true
+    llm_judge_criteria:
+      - "Is the non-color alternative for the legend swatches specific (pattern fill, hatching, direct text label, or both)?"
+      - "Does the plan explain what a colorblind user would experience with the current legend?"
+
+  - id: tooltip_keyboard_access
+    name: "Tooltip / Content on Hover"
+    description: "Does the plan address WCAG 1.4.13 — hover-only tooltip is a WCAG failure, must be accessible on keyboard focus?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_1_4_13: true
+      - specifies_keyboard_triggered_tooltip: true
+    llm_judge_criteria:
+      - "Does the plan specify how the tooltip renders when a data point receives keyboard focus?"
+      - "Is WCAG 1.4.13 (Content on Hover or Focus) named explicitly?"
+      - "Does the plan address tooltip dismissal on keyboard (Escape or focus movement)?"
+
+  - id: reflow_and_zoom
+    name: "Reflow at 320px"
+    description: "Does the plan address WCAG 1.4.10 (Reflow) — chart behavior at 320px CSS width with no horizontal scrolling?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_10: true
+      - specifies_320px_behavior: true
+    llm_judge_criteria:
+      - "Is a specific behavior defined for 320px (table fallback, scrollable container, simplified chart)?"
+      - "Does the plan explain that horizontal scroll at 320px fails WCAG 1.4.10?"
+
+  - id: screen_reader_data_path
+    name: "Screen Reader Data Access"
+    description: "Does the plan specify a concrete screen reader data access path (not just 'provide an alternative')?"
+    weight: 3
+    rule_based_checks:
+      - specifies_data_access_path: true
+      - specifies_svg_root_aria_attributes: true
+    llm_judge_criteria:
+      - "Is the specific strategy named (sr-only table, aria-describedby to a summary, or long description)?"
+      - "Are SVG root ARIA attributes specified (role='img' with aria-label, or role='group' with title, etc.)?"
+      - "Is the data table hidden visually but not from AT (sr-only CSS class, not display:none)?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Do design decisions cite relevant WCAG 2.2 criteria accurately?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_1: true
+      - cites_wcag_1_4_10: true
+      - cites_wcag_1_4_13: true
+    expected_citations:
+      - "WCAG 1.4.1 Use of Color — legend swatches must have non-color alternative"
+      - "WCAG 1.4.10 Reflow — chart must not require horizontal scroll at 320px"
+      - "WCAG 1.4.13 Content on Hover or Focus — tooltip must be keyboard-accessible"
+      - "WCAG 2.1.1 Keyboard — if interactive data points are planned"
+      - "WCAG 1.4.3 Contrast — data series colors and axis labels"
+    llm_judge_criteria:
+      - "Are WCAG 1.4.13 and 1.4.10 both cited — these are the most commonly missed?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for color independence, keyboard tooltip, screen reader data access, and reflow?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Is a WCAG 1.4.13 test case included (tooltip accessible on keyboard focus)?"
+      - "Is a 320px reflow test included?"
+      - "Is a colorblind simulation test included for the legend?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length proportional to the chosen approach? AMBIGUOUS fixtures have variable length — 3-5 pages is typical."
+    weight: 1
+    llm_judge_criteria:
+      - "Does the plan commit to an approach and execute it at appropriate depth — not enumerate all options exhaustively?"
+      - "Is length appropriate to the complexity of the chosen approach?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 75-90
+    reasoning: "Should commit to an approach, cite 1.4.1/1.4.13/1.4.10, specify concrete screen reader data path. Full marks unlikely given inherent ambiguity; top score requires 1.4.13 + 1.4.10 + coherent architecture."
+
+  - condition: baseline-zero-shot
+    expected_score: 40-60
+    reasoning: "Often lists approaches without committing. Likely misses 1.4.13 (hover-only tooltip) and 1.4.10 (reflow). May cover 1.4.1 and screen reader basics."
+
+  - condition: baseline-few-shot
+    expected_score: 50-65
+    reasoning: "Structure helps with completeness but architecture avoidance (listing options) and missing 1.4.13/1.4.10 remain likely."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REJECT
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  AMBIGUOUS fixture. LLM judge weight is higher (0.4) than other fixtures because approach coherence cannot be evaluated by rule-based checks alone.
+
+  Key evaluation focus:
+  - Does the plan commit to one accessibility architecture or list options? (Coherence is the primary differentiator)
+  - Are WCAG 1.4.13 (tooltip) and 1.4.10 (reflow) both addressed? (Most commonly missed)
+  - Is the legend color alternative specific?
+  - Is the screen reader data path concrete (specific technique, not "provide alternative")?
+  - Are SVG root ARIA attributes specified?
+
+  Scoring approach for coherence dimension:
+  - Plan commits and executes one approach coherently: 90-100
+  - Plan leans toward one approach but hedges: 65-80
+  - Plan lists multiple approaches without committing: 30-50
+  - Plan has no architecture at all: 0-30
+
+  Expected findings baseline:
+  - WCAG 1.4.1 for legend: 80%+
+  - Screen reader data path: 70%+
+  - Architecture commitment: 40%+
+  - WCAG 1.4.13 for tooltip: 50%+
+  - WCAG 1.4.10 for reflow: 45%+
+  - SVG root ARIA attributes: 65%+
+
+  Outlier indicators:
+  - Lists three approaches without committing (architectural avoidance)
+  - Tooltip not mentioned at all
+  - Reflow not addressed
+  - data table with display:none (hidden from AT)
+  - aria-label describes the visual not the data

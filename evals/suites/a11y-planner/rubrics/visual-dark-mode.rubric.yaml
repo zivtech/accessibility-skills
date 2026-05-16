@@ -1,0 +1,167 @@
+fixture_id: visual-dark-mode
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed at appropriate depth for MODERATE difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: toggle_aria_pattern
+    name: "Toggle Button ARIA Pattern"
+    description: "Does the plan specify a correct ARIA pattern for the icon-only toggle button?"
+    weight: 3
+    rule_based_checks:
+      - specifies_aria_pressed_or_role_switch: true
+      - specifies_aria_label_for_icon_only: true
+      - addresses_state_announcement: true
+    llm_judge_criteria:
+      - "Is a justification provided for choosing aria-pressed vs. role='switch'?"
+      - "Does the aria-label convey the current action or component purpose ('Dark mode toggle') — not just the icon ('Moon')?"
+      - "Is the state announcement verified (NVDA/JAWS will announce 'pressed' or 'on' — are both covered)?"
+
+  - id: contrast_verification
+    name: "Contrast Verification in Both Modes"
+    description: "Does the plan call for contrast validation in both light AND dark modes with specific ratios?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_1_4_3: true
+      - cites_wcag_1_4_11: true
+      - requires_dark_mode_contrast_audit: true
+      - flags_focus_indicator_re_evaluation: true
+    llm_judge_criteria:
+      - "Are specific contrast ratios named (4.5:1 text, 3:1 non-text) — not just 'sufficient contrast'?"
+      - "Is the existing #0066CC focus indicator explicitly flagged for re-testing against dark backgrounds?"
+      - "Is there a practical test matrix or token pair list for the dark mode audit?"
+
+  - id: forced_colors_distinction
+    name: "Forced-Colors / High Contrast Distinction"
+    description: "Does the plan correctly distinguish prefers-color-scheme (dark mode) from forced-colors (Windows High Contrast)?"
+    weight: 3
+    rule_based_checks:
+      - mentions_forced_colors: true
+      - distinguishes_from_dark_mode: true
+    llm_judge_criteria:
+      - "Does the plan explain that forced-colors overrides CSS custom properties and is architecturally different from dark mode?"
+      - "Does it avoid the error of treating dark mode as a solution to forced-colors requirements?"
+      - "Is a separate forced-colors test case or note included?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Do design decisions cite relevant WCAG 2.2 criteria accurately and in context?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_1_4_3: true
+      - cites_wcag_1_4_11: true
+      - cites_wcag_2_4_7: true
+    expected_citations:
+      - "WCAG 1.4.3 Contrast (Minimum) — 4.5:1 text in both modes"
+      - "WCAG 1.4.11 Non-Text Contrast — 3:1 focus indicators and UI components in both modes"
+      - "WCAG 2.4.7 Focus Visible — focus indicator must meet contrast in both light and dark modes"
+      - "WCAG 1.4.1 Use of Color — confirm no information expressed by color alone in either mode"
+    llm_judge_criteria:
+      - "Are criteria applied to both modes, not just the light mode?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for both modes, forced-colors, and toggle state announcement?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Is a forced-colors test case included?"
+      - "Is a contrast measurement test for dark mode tokens included?"
+      - "Is a screen reader test for toggle state announcement included?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for MODERATE difficulty? (3-4 pages expected)"
+    weight: 1
+    llm_judge_criteria:
+      - "Is the plan focused on the three core concerns (toggle ARIA, dual-mode contrast, forced-colors) without padding?"
+      - "Is depth proportional to MODERATE — not a full design-system contrast audit nor a one-pager?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "Should specify correct toggle ARIA, flag focus indicator for dark mode re-testing, cite 1.4.3/1.4.11/2.4.7, and distinguish forced-colors from dark mode."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Likely covers aria-pressed and contrast basics, but often conflates dark mode with forced-colors and misses focus indicator re-evaluation in dark mode."
+
+  - condition: baseline-few-shot
+    expected_score: 65-75
+    reasoning: "Structured approach improves ARIA coverage; forced-colors distinction remains the most likely gap."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  MODERATE fixture with three bounded concerns: toggle button ARIA pattern, contrast validation in both modes, and the forced-colors/dark-mode distinction.
+
+  Key evaluation focus:
+  - Is aria-pressed or role="switch" specified with justification?
+  - Is the existing focus indicator explicitly flagged for dark-mode re-testing?
+  - Are contrast ratios specified for both light AND dark modes?
+  - Is forced-colors correctly distinguished from dark mode as a separate CSS mechanism?
+  - Are WCAG 1.4.3, 1.4.11, and 2.4.7 cited in context?
+
+  The forced-colors distinction is the highest-signal item. Plans that conflate it with dark mode have a fundamental architectural misunderstanding.
+
+  Expected findings baseline:
+  - aria-pressed or role="switch": 85%+
+  - aria-label on icon-only button: 90%+
+  - Contrast in light mode: 90%+
+  - Contrast in dark mode: 70%+
+  - Focus indicator re-evaluation in dark mode: 60%+
+  - Forced-colors distinction: 40%+
+  - localStorage/aria-pressed sync: 50%+
+
+  Outlier indicators:
+  - Contrast only checked in light mode
+  - Dark mode conflated with forced-colors throughout
+  - Focus indicator not mentioned in dark mode context
+  - No aria-label on icon-only toggle button

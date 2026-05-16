@@ -1,0 +1,163 @@
+fixture_id: visual-animated-transition
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed at appropriate depth for MODERATE difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: motion_sensitivity
+    name: "Motion Sensitivity & Reduced Motion"
+    description: "Does the plan correctly handle prefers-reduced-motion with a concrete fallback (not just disable), using framer-motion's API?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_2_3_3: true
+      - specifies_reduced_motion_fallback: true
+      - mentions_prefers_reduced_motion: true
+      - addresses_both_variants: true
+    llm_judge_criteria:
+      - "Does the plan distinguish 'replace with instant/cross-fade' from 'disable animation' — not just setting animation to none?"
+      - "Is framer-motion's useReducedMotion() hook (or equivalent mechanism) identified?"
+      - "Are both slide and fade variants addressed separately with their reduced-motion alternatives?"
+
+  - id: post_navigation_focus
+    name: "Post-Navigation Focus Management"
+    description: "Does the plan specify a concrete focus management strategy after route changes?"
+    weight: 4
+    rule_based_checks:
+      - cites_wcag_2_4_3: true
+      - documents_focus_target_after_navigation: true
+      - addresses_focus_during_animation_gap: true
+    llm_judge_criteria:
+      - "Is the focus target concrete (e.g., main heading, skip link, specific ref) rather than vague ('focus something logical')?"
+      - "Does the plan address what happens during the animation gap — is focus sent before or after the animation completes?"
+      - "Is a route announcer pattern or aria-live approach mentioned for screen reader announcement of route changes?"
+
+  - id: dom_overlap
+    name: "DOM Overlap During Exit Animation"
+    description: "Does the plan address the AnimatePresence DOM overlap problem (exiting page in DOM and readable by AT)?"
+    weight: 3
+    rule_based_checks:
+      - addresses_exiting_page_at_visibility: true
+    llm_judge_criteria:
+      - "Does the plan specify aria-hidden='true' on the exiting page element, or use the inert attribute?"
+      - "Does the plan acknowledge that framer-motion AnimatePresence keeps exiting elements in the DOM during exit animations?"
+      - "Is there a plan to prevent the outgoing page content from being accessible to screen readers during the exit phase?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Do design decisions cite relevant WCAG 2.2 criteria accurately?"
+    weight: 3
+    rule_based_checks:
+      - cites_wcag_2_3_3: true
+      - cites_wcag_2_4_3: true
+    expected_citations:
+      - "WCAG 2.3.3 Animation from Interactions — user-triggered transitions must respect prefers-reduced-motion"
+      - "WCAG 2.4.3 Focus Order — focus must not remain on elements from the exiting route"
+      - "WCAG 2.2.2 Pause Stop Hide — note difference from 2.3.3 (auto-moving content vs. user-triggered)"
+    llm_judge_criteria:
+      - "Does the plan correctly distinguish WCAG 2.3.3 from 2.2.2 rather than conflating them?"
+      - "Does it note that a 300ms user-triggered transition is not inherently non-compliant (it's about preference honoring, not duration)?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision/motion-sensitive, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for motion preference, post-navigation focus, and screen reader announcement?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Is a test case included for simulating prefers-reduced-motion in browser devtools?"
+      - "Is a screen reader test case for route change announcement included?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for MODERATE difficulty? (3-4 pages expected)"
+    weight: 1
+    llm_judge_criteria:
+      - "Is the plan 3-4 pages, not a framer-motion animation tutorial or a 10-page spec?"
+      - "Is detail proportional to the two core concerns (motion and focus) without inventing unrelated complexity?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "Should identify both concerns (motion sensitivity and post-navigation focus), cite 2.3.3 and 2.4.3, address DOM overlap, and name framer-motion useReducedMotion()."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Likely addresses prefers-reduced-motion via CSS media query but misses DOM overlap, may have vague focus management, unlikely to know useReducedMotion() API."
+
+  - condition: baseline-few-shot
+    expected_score: 65-75
+    reasoning: "Structure improves coverage of motion concern but DOM overlap and framer-motion specifics remain likely gaps."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  MODERATE fixture with two independent required concerns: motion sensitivity and post-navigation focus management.
+
+  Key evaluation focus:
+  - Is prefers-reduced-motion handled with a concrete fallback (not just disabled)?
+  - Is framer-motion's useReducedMotion() hook identified?
+  - Is there a concrete post-navigation focus target?
+  - Is the DOM overlap problem (AnimatePresence keeps exiting DOM) addressed?
+  - Are WCAG 2.3.3 and 2.4.3 both cited correctly?
+  - Are 2.3.3 and 2.2.2 correctly distinguished?
+
+  Expected findings baseline:
+  - WCAG 2.3.3: 90%+
+  - Reduced-motion via CSS: 90%+
+  - framer-motion useReducedMotion(): 50%+
+  - Concrete focus target after nav: 70%+
+  - DOM overlap mitigation: 40%+ (most commonly missed)
+  - WCAG 2.4.3: 60%+
+
+  Outlier indicators:
+  - Plan only addresses prefers-reduced-motion, nothing else
+  - Reduced-motion fallback is "disable animation" without specifying the replacement
+  - Focus management vague: "focus goes somewhere logical"
+  - No mention of framer-motion despite explicit library constraint
+  - DOM overlap problem not identified

@@ -1,0 +1,168 @@
+fixture_id: sr-search-results-live
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: live_region_strategy
+    name: "Live Region Strategy"
+    description: "Is the result count live region correctly configured with polite politeness, atomic update, and debounce alignment?"
+    weight: 3
+    rule_based_checks:
+      - specifies_aria_live_polite_for_count: true
+      - specifies_aria_atomic_true_for_count: true
+      - addresses_debounce_timing_constraint: true
+      - explains_aria_relevant_value: true
+      - cites_wcag_4_1_3: true
+    llm_judge_criteria:
+      - "Does the plan explain why assertive would be wrong for the result count (interrupts typing)?"
+      - "Is the debounce timing constraint addressed specifically — live region tied to 300ms debounce end, not every keystroke?"
+
+  - id: loading_state_announcement
+    name: "Loading State Announcement (aria-busy)"
+    description: "Is aria-busy documented for the results container during async fetches?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_busy_true_during_loading: true
+      - specifies_aria_busy_false_on_complete: true
+      - addresses_spinner_as_aria_hidden: true
+    llm_judge_criteria:
+      - "Is the connection between React Suspense loading state and aria-busy explicitly documented?"
+
+  - id: filter_chip_state
+    name: "Filter Chip State Communication"
+    description: "Do filter chip toggle buttons communicate pressed state and include the filter name in their accessible label?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_pressed_on_filter_chips: true
+      - specifies_filter_name_in_accessible_label: true
+      - addresses_chip_dismissal_label: true
+    llm_judge_criteria:
+      - "Is the filter chip label specific enough? ('Subject: Case Law — remove filter' vs generic 'Filter chip')"
+
+  - id: aria_sort_misconception
+    name: "aria-sort Misconception Correction"
+    description: "Does the plan correctly identify that aria-sort does not apply to <select> controls, only to <th> elements?"
+    weight: 3
+    rule_based_checks:
+      - corrects_aria_sort_misconception: true
+      - specifies_sort_select_uses_visible_label: true
+      - specifies_sort_state_via_selected_option: true
+    llm_judge_criteria:
+      - "Is the aria-sort correction explained with enough context that a developer would understand why?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Are WCAG 4.1.3, 1.3.1, and 2.4.3 cited with criterion names?"
+    weight: 2
+    rule_based_checks:
+      - cites_4_1_3_status_messages: true
+      - cites_1_3_1_info_and_relationships: true
+      - cites_2_4_3_focus_order: true
+    expected_citations:
+      - "WCAG 4.1.3 Status Messages"
+      - "WCAG 1.3.1 Info and Relationships"
+      - "WCAG 2.4.3 Focus Order"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a developer implement without guessing? Are ARIA attribute names and values explicit?"
+    weight: 2
+    rule_based_checks:
+      - provides_html_structure_example: true
+      - specifies_role_search_landmark: true
+      - specifies_result_list_as_ul_li: true
+      - specifies_no_focus_move_on_filter_change: true
+    llm_judge_criteria:
+      - "Would a developer know exactly which DOM elements need which ARIA attributes?"
+      - "Is the role=search landmark placement specified (wraps search input, chips, sort)?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does testing strategy include AT-specific tests for live region behavior?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Does the testing plan include a specific test: verify result count announced after filter without focus move?"
+      - "Is AT-specific testing called out (NVDA/JAWS) for live region reliability?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan 3-4 pages appropriate for MODERATE difficulty?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "3-4"
+      - no_scope_creep: true
+      - no_aria_live_assertive_on_count: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "MODERATE fixture. The 9-phase protocol covers live region configuration and filter state. Debounce timing and aria-sort correction are non-obvious but within the skill's ARIA expertise."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Generic planning covers live region basics but misses debounce timing, applies aria-sort to the select control, and omits aria-busy for loading states."
+
+  - condition: baseline-few-shot
+    expected_score: 65-78
+    reasoning: "Structured examples improve live region coverage. Still likely to miss the aria-sort misconception and the debounce timing constraint."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  MODERATE fixture — the two hard items are debounce timing (live region tied to the 300ms debounce end) and the aria-sort misconception (aria-sort belongs on <th>, not <select>).
+
+  Key differentiator from screenreader-liveregion fixture: that fixture covers generic live region mechanics; this fixture requires concrete decisions about debounce timing, filter chip toggle state, loading state via aria-busy, and the aria-sort element scope.
+
+  Outlier indicators (flag for rubric review):
+  - aria-live="assertive" on result count (wrong politeness)
+  - aria-sort applied to <select> control (common misconception — zero-shot baselines frequently do this)
+  - Focus moved to result list after filter change (2.4.3 violation)
+  - No aria-busy documentation for loading state

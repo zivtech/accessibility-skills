@@ -1,0 +1,110 @@
+fixture_id: sr-notification-system
+name: Real-Time Notification System with Priority Tiers
+description: Hospital EHR real-time notification panel with three priority tiers (Critical/Warning/Info), dismissible notifications, auto-dismiss timers, badge count, and notification history. Tests priority-tiered live regions, role="alert" misconception, assertive vs polite strategy, badge count announcement, and WCAG 2.2.1 timing requirements.
+language: jsx
+framework: React
+difficulty: COMPLEX
+domain: Screen Reader Experience
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: Real-time EHR notification panel with three priority tiers — Critical (assertive, never auto-dismiss), Warning (polite, 30s auto-dismiss), Info (polite, 10s auto-dismiss). Bell icon with unread badge count, collapsible panel of up to 50 notifications, dismissible via button, and a Notification History drawer for past notifications. WebSocket delivery; current code uses role="alert" on all three tiers.
+  user_need: Clinicians using screen readers must receive Critical notifications immediately without missing them — patient safety risk. Warning and Info notifications must not disrupt active workflows. The existing role="alert" on all tiers is a bug that causes Warning and Info to interrupt every time. Badge count should communicate unread state without chatty per-notification announcements.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Priority-tiered live regions (three separate aria-live regions), role="alert" vs aria-live distinction, badge count announcement strategy, dismiss button keyboard accessibility, focus management on dismiss, auto-dismiss timing (WCAG 2.2.1), notification history navigation
+  constraints:
+    - Critical tier must interrupt — patient safety requirement
+    - Warning and Info must NOT interrupt — disrupts clinical workflows
+    - role="alert" used on all tiers in existing code — this is the bug to fix
+    - Auto-dismiss: Critical never, Warning 30s, Info 10s — 10s may violate WCAG 2.2.1 for AT users
+    - Dismiss buttons are currently <span> elements — not keyboard accessible
+    - Badge count increments per notification — per-increment live region is too chatty
+    - Notification history is not a live region
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Three separate aria-live regions: assertive for Critical, polite for Warning, polite for Info
+  - role="alert" misconception corrected: role="alert" = aria-live="assertive" — wrong for Warning/Info
+  - Inject/clear/inject pattern for live region content (not appending DOM nodes)
+  - Badge count: aria-label update on bell button, not per-increment live region
+  - Dismiss button: <button> element with label including notification summary
+  - Focus management on dismiss: next notification's dismiss button, or bell button if last
+  - WCAG 2.2.1 analysis for auto-dismiss timing
+  - Notification history as region with aria-live="off"
+  - WCAG 4.1.3, 2.2.1, 2.1.1, 1.4.3 citations
+
+expected_findings:
+  must_have:
+    - "Three separate aria-live regions: id='critical-announcer' aria-live='assertive', id='warning-announcer' aria-live='polite', id='info-announcer' aria-live='polite'"
+    - "role='alert' on all tiers is incorrect — role='alert' maps to aria-live='assertive'; must use explicit aria-live attributes instead"
+    - "Inject/replace pattern for live region content — do not append notification elements to the region"
+    - "Badge count: aria-label='Notifications, 5 unread' on bell button — updated on badge change"
+    - "Dismiss button as <button> element with label: 'Dismiss: Critical lab result, Patient Doe John'"
+    - "Focus management on dismiss: next notification dismiss button or bell button if last"
+    - "WCAG 2.2.1 (Timing Adjustable): 10s Info auto-dismiss requires pause/stop/hide control"
+    - "Notification history: <section aria-label='Notification history'> with aria-live='off'"
+    - "WCAG 4.1.3 (Status Messages) citation for announcement strategy"
+    - "WCAG 2.2.1 (Timing Adjustable) citation for auto-dismiss"
+    - "WCAG 2.1.1 (Keyboard) citation for dismiss buttons"
+    - "Safety implication noted: missed Critical notification in EHR context is a patient safety risk"
+
+  should_have:
+    - "aria-atomic='true' on Critical announcer — full message read without interruption"
+    - "aria-relevant='additions' on Info announcer — new content only, not the full region re-read"
+    - "Panel open/close: bell button with aria-expanded='true|false' aria-controls='notification-panel'"
+    - "Auto-dismiss countdown: Warning 30s is borderline; consider extending or adding pause control"
+    - "Focus management when panel opens: focus moves to first notification or a panel heading"
+    - "Notification history keyboard navigation: focus management when history drawer opens"
+    - "High contrast requirements for Critical (red), Warning (amber) notification backgrounds"
+
+  nice_to_have:
+    - "Priority grouping within panel: ARIA structure to distinguish Critical vs Warning vs Info sections"
+    - "Notification age: relative time ('2 minutes ago') with <time datetime> for machine-readable value"
+    - "Pause button for auto-dismiss: allows AT users to pause all auto-dismissals globally"
+
+false_positive_traps:
+  - "Single aria-live region for all three priority tiers — cannot support mixed assertive/polite politeness"
+  - "Appending notification <li> elements to the live region rather than injecting text — unreliable in NVDA/JAWS, causes duplicate announcements"
+  - "Adding aria-live to the notification history section — history is a static reference section, not a live region"
+  - "Using aria-live='assertive' for all three tiers — matches the existing bug, not the fix"
+  - "Announcing every badge count increment via a live region ('3 unread', '4 unread', '5 unread') — chatty and disruptive"
+  - "role='alertdialog' on the notification panel — alertdialog implies a modal requiring immediate response; notification panel is non-modal"
+
+multi_perspective_coverage:
+  keyboard: "Bell button Tab-reachable; panel dismiss buttons Tab-reachable (currently broken — <span> must become <button>); notification history drawer keyboard navigable; Escape closes panel and returns focus to bell button"
+  screen_reader: "Critical notifications interrupt via assertive live region; Warning/Info polite and non-interrupting; badge count communicated via aria-label update; history accessible as static section; dismiss confirmation not required if next focus is clear"
+  low_vision: "Critical/Warning/Info color differentiation plus text label — not color alone; priority badges visible at 200% zoom; notification panel scrollable within viewport at high zoom"
+  cognitive: "Consistent dismiss affordance (× button) across all notification tiers; priority tier labeled in text ('Critical', 'Warning', 'Info'); notification history provides persistent record"
+  mobile_touch: "Notification panel full-width on mobile; dismiss button 44×44px minimum; swipe-to-dismiss is an enhancement — keyboard dismiss must work independently"
+
+notes: |
+  COMPLEX difficulty — the discriminating items are the priority-tiered live region architecture (most plans use a single region or role="alert" everywhere) and the WCAG 2.2.1 timing analysis (10s auto-dismiss is routinely overlooked).
+
+  The safety-critical context is intentional: a plan that ignores the consequence of a missed Critical announcement in an EHR has a real-world gap, not just a technical one. Plans that note the patient safety implication score higher on the llm_judge specificity dimension.
+
+  Differentiated from screenreader-liveregion: that fixture covers generic live region patterns in a generic scenario. This fixture requires priority-tiered live region architecture, role="alert" misconception correction, auto-dismiss timing analysis (WCAG 2.2.1), and a safety-critical framing that demands explicit consequence reasoning.
+
+  Expected verdict: ACCEPT for a11y-planner. REVISE for zero-shot baselines that either apply role="alert" to all tiers or use a single live region. ACCEPT-WITH-RESERVATIONS for few-shot baselines that separate assertive/polite but miss WCAG 2.2.1 and the inject pattern.
+
+  Outlier indicators:
+  - Single live region for all three tiers
+  - role="alert" on all tiers (repeats the existing bug)
+  - Appending DOM nodes to live region (announce reliability issue)
+  - No WCAG 2.2.1 analysis for auto-dismiss timing
+  - No focus management plan for dismiss action

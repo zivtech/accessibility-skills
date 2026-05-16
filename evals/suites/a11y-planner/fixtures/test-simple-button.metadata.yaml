@@ -1,0 +1,98 @@
+fixture_id: test-simple-button
+name: Simple Component Testing
+description: Accessibility testing plan for a custom PrimaryButton React component — axe-core rules, keyboard test script, screen reader verification for name/role/state, focus indicator, and disabled/loading state coverage.
+language: jsx
+framework: React
+difficulty: TRIVIAL
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: Low
+
+scenario:
+  feature: A reusable PrimaryButton React component with disabled and isLoading states that needs an accessibility test suite
+  user_need: Confidence that the button component works for keyboard-only and screen reader users in all states before it ships to production
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single reusable component with three states (default, disabled, loading)
+  constraints:
+    - Tests must integrate with existing Playwright CI pipeline (GitHub Actions)
+    - Team has basic WCAG knowledge but no screen reader testing experience
+    - Must produce replicable steps, not exploratory instructions
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Axe-core specificity: Names specific rule IDs (button-name, color-contrast) not just "run axe"
+  - Keyboard test script: Step-by-step (Tab → verify ring → Enter → verify activation)
+  - Screen reader steps: Which SR, which keystrokes, what to listen for per state
+  - State coverage: Tests default, disabled, and isLoading states explicitly
+  - Acceptance criteria: Measurable per state (not "the button is accessible")
+  - Playwright integration: Shows assertion syntax for ARIA attribute verification
+  - Calibration: 1-2 pages is right for TRIVIAL; over-planning is a failure mode
+
+expected_findings:
+  must_have:
+    - Specific axe-core rule IDs for buttons (button-name, color-contrast)
+    - Step-by-step keyboard test script (Tab focus, Enter activation, Space activation)
+    - Screen reader verification steps for at least one SR (NVDA or VoiceOver)
+    - Test cases for the disabled state (announced as unavailable, not activatable)
+    - Test cases for the isLoading state (aria-busy="true" announced)
+    - Measurable acceptance criteria for focus indicator (contrast ratio threshold)
+    - WCAG 2.1.1 (Keyboard) cited for keyboard interaction
+    - WCAG 4.1.2 (Name, Role, Value) cited for ARIA state testing
+    - WCAG 2.4.7 (Focus Visible) cited for focus indicator test
+
+  should_have:
+    - Playwright assertion example for aria-busy and aria-disabled attributes
+    - Visual regression screenshot plan covering each state
+    - WCAG 1.4.11 (Non-text Contrast) cited for focus ring
+    - Note that native <button> does not need tabindex="0"
+    - a11y-critic review checkpoint defined (e.g., after initial implementation, after any state change logic)
+
+  nice_to_have:
+    - JAWS-specific verification steps (Insert+F6 links list, Insert+F7 elements list)
+    - High contrast mode testing note
+    - Touch target size verification (WCAG 2.5.8 Target Size Minimum)
+    - Storybook integration for isolated component testing
+
+false_positive_traps:
+  - Prescribing tabindex="0" on the button (native <button> is focusable; explicit tabindex is a smell that signals the engineer expects a non-button element)
+  - Recommending role="button" verification — native <button> has button role implicitly
+  - Suggesting that aria-label is always required — it's only needed when there's no visible text label
+  - Treating isLoading spinner alt text as a required test when the spinner should be aria-hidden
+
+multi_perspective_coverage:
+  keyboard: "Tab focuses button in DOM order; Enter and Space both activate; disabled state prevents activation; loading state prevents activation while announcing busy"
+  screen_reader: "Announced as 'Button' with text label; disabled state announced as dimmed/unavailable; loading state announces aria-busy; spinner is not read if aria-hidden"
+  low_vision: "Focus indicator visible against all backgrounds used in context; 3:1 minimum contrast for focus ring; loading state visually distinct at 200% zoom"
+  cognitive: "Consistent behavior across all button instances; loading state provides clear feedback that action is in progress"
+  mobile_touch: "Touch target minimum 44x44px; no activation on hover-only; disabled state still meets touch target size"
+
+notes: |
+  This TRIVIAL fixture tests whether a11y-planner produces a testing plan that is:
+  1. Specific about axe-core (names rules, not just "run the scanner")
+  2. Scripted for keyboard testing (step-by-step, not high-level)
+  3. Screen-reader-ready (names which SR, names which keystrokes)
+  4. State-aware (covers default, disabled, loading — not just happy path)
+  5. Proportional (1-2 pages for a single component)
+
+  Expected verdict: ACCEPT
+  A plan that covers all must-have items with specific tooling guidance scores 90+.
+  A plan that covers the right topics but stays at "use axe-core" and "test keyboard" without specifics scores 60-75.
+
+  Key discriminator between a11y-planner and baseline: a11y-planner will name axe rule IDs,
+  provide step-by-step keyboard scripts, and cite WCAG criterion numbers. Baseline may
+  produce the right structure but stay generic on all three.

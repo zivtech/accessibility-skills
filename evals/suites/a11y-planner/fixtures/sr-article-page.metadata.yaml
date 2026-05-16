@@ -1,0 +1,92 @@
+fixture_id: sr-article-page
+name: Blog Article Page — Semantic Structure
+description: Static article page with landmark regions, heading hierarchy, image alt strategy, and time element. Tests foundational semantic HTML planning without ARIA complexity.
+language: jsx
+framework: Next.js
+difficulty: TRIVIAL
+domain: Screen Reader Experience
+work_type: component_plan
+risk_level: Low
+
+scenario:
+  feature: Long-form blog article page with header navigation, main article content (H1/H2/H3 headings, body images, blockquote), author byline with publication date, complementary sidebar of related articles, and site footer — rendered from a Drupal CMS via dangerouslySetInnerHTML
+  user_need: Screen reader users need to navigate the page by landmark regions and headings, understand image content, and identify publication date without losing context. The existing component offers no landmark regions and all images have alt="".
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single article page component — landmark regions, heading document outline, image alt text strategy, time element, skip link, blockquote semantics
+  constraints:
+    - Alt text authored by editorial staff with no accessibility training
+    - Heading levels driven by visual design tokens, not document order
+    - Same Article component used for full article and listing page teaser
+    - dangerouslySetInnerHTML bypasses React a11y linting
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Landmark region mapping: correct HTML5 elements with aria-label disambiguation for multiple nav elements
+  - Heading hierarchy: document outline principle (no level skips), CMS-driven heading repair strategy
+  - Alt text decision tree: decorative (alt=""), informative (descriptive alt), complex image (aria-describedby or long description)
+  - time element: datetime attribute with ISO 8601 format
+  - Skip link: href="#main-content" targeting <main id="main-content">
+  - WCAG citations: 1.1.1, 1.3.1, 2.4.1, 2.4.6 all cited
+  - Calibration: plan is 1-2 pages, not padded with ARIA patterns that don't belong on a reading page
+
+expected_findings:
+  must_have:
+    - "Landmark regions: <header>, <nav aria-label='Primary'>, <main id='main-content'>, <aside aria-label='Related articles'>, <footer>"
+    - "Heading hierarchy rule: H1 = article title only; H2 = major sections; H3 = subsections; no levels skipped"
+    - "Alt text decision tree covering decorative, informative, and complex image cases"
+    - "Skip link: <a href='#main-content' class='sr-only skip-link'>Skip to main content</a>"
+    - "WCAG 1.1.1 (Non-text Content) citation for images"
+    - "WCAG 1.3.1 (Info and Relationships) citation for heading hierarchy and landmarks"
+    - "WCAG 2.4.1 (Bypass Blocks) citation for skip link"
+    - "WCAG 2.4.6 (Headings and Labels) citation for heading strategy"
+
+  should_have:
+    - "<time datetime='YYYY-MM-DD'> pattern for publication date"
+    - "Blockquote semantics — <blockquote> reads as 'block quote' in NVDA/JAWS; no additional ARIA needed"
+    - "Strategy for CMS heading repair (map visual design tokens to correct HTML heading levels)"
+    - "dangerouslySetInnerHTML caveat — axe-core cannot lint sanitized HTML; manual audit required"
+    - "aria-label or aria-labelledby on secondary <nav> elements to disambiguate from primary navigation"
+    - "Keyboard-only reading: no interactive traps on a static page; Tab moves through links in DOM order"
+
+  nice_to_have:
+    - "Adjacent duplicate link detection: article card teaser + article title both linking to same URL"
+    - "Line length recommendation (45-75 characters per WCAG 1.4.8 AAA — note as enhancement, not AA requirement)"
+    - "Image aspect ratio preservation to prevent layout shifts that reorder heading DOM"
+
+false_positive_traps:
+  - "Adding role='article' to <article> element — redundant; <article> already has implicit role"
+  - "Recommending aria-live for the article content — static content needs no live region"
+  - "Suggesting tabindex='0' on heading elements — headings are not interactive; keyboard users navigate by AT virtual cursor"
+  - "Treating the blockquote as requiring aria-label — <blockquote> is a semantic HTML element with native AT support"
+  - "Applying aria-describedby to every image — only complex images where alt text is insufficient"
+
+multi_perspective_coverage:
+  keyboard: "Skip link active on first Tab press; all links and interactive elements reachable in DOM order; no keyboard traps on static content"
+  screen_reader: "Landmark navigation enables H key (headings), D key (landmarks) quick navigation; heading outline enables structural skimming; image alt text conveys editorial content; time element machine-readable"
+  low_vision: "Text resize to 200% without horizontal scrolling (WCAG 1.4.4); sidebar collapses to single column at narrow widths; focus indicator visible at all zoom levels"
+  cognitive: "Consistent heading structure reduces cognitive load for repeat visitors; clear section boundaries via H2 headings; reading progress anchored by visible headings"
+  mobile_touch: "Touch targets for navigation links ≥ 44×44px; sidebar accessible as collapsed section on mobile; no hover-only content"
+
+notes: |
+  TRIVIAL difficulty — the discriminating quality is whether the plan is precise about *which* elements go *where*, not whether it discovers ARIA complexity.
+
+  Expected verdict: ACCEPT for a11y-planner (90-100 range), ACCEPT-WITH-RESERVATIONS for baselines that list landmarks without aria-label disambiguation or miss the CMS heading constraint.
+
+  The fixture's intentional trap is the dangerouslySetInnerHTML constraint — plans that ignore it and recommend automated linting as sufficient will miss a real limitation. The CMS-driven heading order problem is the second trap — plans that say "use H1/H2/H3" without addressing how editorial staff controls heading levels (and that visual tokens can produce H3 before H2) are incomplete.
+
+  Key differentiator from existing screenreader-landmark-regions fixture: this fixture provides existing broken code context (no landmarks, alt="" everywhere), gives a specific CMS constraint (editorial heading authoring), and requires an alt text decision tree rather than just landmark mapping. It is not a generic landmark exercise.

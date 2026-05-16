@@ -1,0 +1,171 @@
+fixture_id: sr-article-page
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed at a depth appropriate for TRIVIAL difficulty?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: landmark_coverage
+    name: "Landmark Region Coverage"
+    description: "Are all 5 landmark types mapped to correct HTML5 elements with disambiguation where needed?"
+    weight: 3
+    rule_based_checks:
+      - specifies_main_with_id: true
+      - specifies_header_element: true
+      - specifies_nav_element: true
+      - specifies_aside_element: true
+      - specifies_footer_element: true
+      - disambiguates_multiple_nav_with_aria_label: true
+      - specifies_skip_link_targeting_main: true
+    llm_judge_criteria:
+      - "Would a developer know exactly which HTML element to use for each page region without guessing?"
+      - "Is the aria-label strategy for multiple nav elements concrete and implementable?"
+
+  - id: heading_hierarchy
+    name: "Heading Hierarchy & CMS Constraint"
+    description: "Is the heading outline rule documented? Does the plan address the CMS-driven heading order problem?"
+    weight: 3
+    rule_based_checks:
+      - documents_h1_as_article_title_only: true
+      - documents_no_heading_level_skips: true
+      - addresses_cms_heading_authoring_constraint: true
+      - cites_wcag_2_4_6: true
+      - cites_wcag_1_3_1: true
+    llm_judge_criteria:
+      - "Does the plan explain how to enforce heading order when editorial staff controls heading levels in CMS?"
+      - "Is the document outline rule actionable for a developer implementing the Article component?"
+
+  - id: image_alt_strategy
+    name: "Image Alt Text Decision Tree"
+    description: "Does the plan cover all three image cases: decorative, informative, complex?"
+    weight: 3
+    rule_based_checks:
+      - documents_decorative_images_with_empty_alt: true
+      - documents_informative_images_with_descriptive_alt: true
+      - documents_complex_images_with_long_description_or_aria_describedby: true
+      - cites_wcag_1_1_1: true
+      - addresses_editorial_staff_authoring_constraint: true
+    llm_judge_criteria:
+      - "Could an editorial staff member use this decision tree to write correct alt text without guessing?"
+      - "Is the complex image strategy (aria-describedby vs caption) clear and not over-applied?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Are the four key WCAG 2.2 criteria cited with criterion names, not just numbers?"
+    weight: 2
+    rule_based_checks:
+      - cites_1_1_1_non_text_content: true
+      - cites_1_3_1_info_and_relationships: true
+      - cites_2_4_1_bypass_blocks: true
+      - cites_2_4_6_headings_and_labels: true
+    expected_citations:
+      - "WCAG 1.1.1 Non-text Content"
+      - "WCAG 1.3.1 Info and Relationships"
+      - "WCAG 2.4.1 Bypass Blocks"
+      - "WCAG 2.4.6 Headings and Labels"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a developer implement from this plan without guessing?"
+    weight: 2
+    rule_based_checks:
+      - provides_html_structure_example: true
+      - specifies_time_datetime_attribute_format: true
+      - names_skip_link_css_class_pattern: true
+    llm_judge_criteria:
+      - "Would a developer know how to implement the heading repair strategy for CMS-sourced content?"
+      - "Is the alt text decision tree specific enough that two developers would make the same choices?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are testing approaches for semantic structure, images, and headings documented?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Does the testing section include a heading order check (axe) AND a manual landmark audit?"
+      - "Is the dangerouslySetInnerHTML axe-core limitation acknowledged in testing strategy?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan 1-2 pages with no ARIA patterns that don't belong on a static reading page?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "1-2"
+      - no_scope_creep: true
+      - no_inappropriate_aria_live_regions: true
+      - no_unnecessary_tabindex_on_headings: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 90-100
+    reasoning: "TRIVIAL fixture with well-defined semantic HTML requirements. The 9-phase protocol produces complete landmark/heading/image coverage. CMS constraint and dangerouslySetInnerHTML caveat are the discriminating items."
+
+  - condition: baseline-zero-shot
+    expected_score: 70-80
+    reasoning: "Generic planning produces correct landmark and heading advice. Missing: aria-label disambiguation on multiple nav elements, alt text decision tree (vs generic 'add alt text'), CMS heading authoring constraint, dangerouslySetInnerHTML axe-core limitation."
+
+  - condition: baseline-few-shot
+    expected_score: 78-88
+    reasoning: "Structured approach improves completeness. Still likely to miss the CMS constraint and editorial alt text authoring gap. May skip time element datetime pattern."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  TRIVIAL fixture — evaluation focus is on precise semantic choices and constraint handling, not ARIA complexity.
+
+  The fixture's two discriminating items:
+  1. CMS heading constraint — plans that say "use H2 for sections" without acknowledging that editorial staff controls heading levels in CMS, and that visual design tokens can produce arbitrary heading order, are incomplete.
+  2. Alt text decision tree — plans that say "add descriptive alt text" without distinguishing decorative (alt=""), informative (alt with description), and complex image cases score lower on image_alt_strategy.
+
+  False positive trap: plans that add aria-live regions to the article body, role="article" on <article>, or tabindex="0" on heading elements are penalized in the calibration dimension (scope creep / inappropriate ARIA).
+
+  Outlier indicators (plan should be flagged for review):
+  - Plan > 3 pages for a TRIVIAL fixture
+  - ARIA patterns not applicable to static content (live regions, focus traps, roving tabindex)
+  - No mention of skip link (basic 2.4.1 requirement)
+  - All three image alt cases not distinguished

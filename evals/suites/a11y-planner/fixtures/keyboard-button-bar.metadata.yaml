@@ -1,6 +1,6 @@
 fixture_id: keyboard-button-bar
 name: Simple Button Navigation
-description: Button bar with 3 action buttons. Plan accessibility for native HTML buttons, icon labels, Tab order, focus indicator contrast (3:1), keyboard activation (Enter/Space), and visual styling.
+description: Button bar with 3 action buttons (Save, Cancel, Delete). Plan accessibility for native HTML buttons, icon labels, Tab order, focus indicator contrast (3:1), keyboard activation (Enter/Space), and visual styling for danger vs normal actions.
 language: html
 framework: None
 difficulty: TRIVIAL
@@ -9,46 +9,85 @@ work_type: component_plan
 risk_level: Low
 
 scenario:
-  feature: Simple 3-button navigation bar
-  user_need: Clear keyboard navigation and visual feedback
+  feature: Simple 3-button horizontal action bar with icon + text labels. Save (primary), Cancel (secondary), Delete (danger/destructive action). Buttons are statically positioned — no dynamic addition or removal.
+  user_need: Keyboard-only users and screen reader users need clear button semantics, visible focus indicators, meaningful accessible labels for icon-text buttons, and distinct communication of the Delete button's destructive intent.
   compliance_target: WCAG 2.2 AA
   assistive_technologies:
-    - NVDA
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
     - Keyboard-only users
-  scope: Simple static button bar
+  scope: Single reusable button bar component — button semantics, icon label strategy, tab order, focus indicator styling, keyboard activation, visual danger/normal distinction
   constraints:
-    - Icon-only buttons need labels
+    - Icon-only buttons need accessible labels (aria-label or visible text)
+    - Delete button must communicate destructive intent without relying on color alone
 
 expected_plan_sections:
   - Scope & Context
   - Button Semantics (native HTML button)
-  - Icon Labels (aria-label or text)
+  - Icon Labels (aria-label or accessible text)
   - Tab Order (left-to-right)
   - Focus Indicator (contrast and visibility)
   - Keyboard Activation (Enter/Space)
-  - Visual Styling
+  - Visual Styling (danger vs normal distinction)
   - Testing Strategy
 
 key_evaluation_criteria:
-  - Native HTML buttons used
-  - Icon labels specified
-  - Tab order documented
-  - Focus indicator contrast (3:1) specified
-  - WCAG 2.1.1 citation
+  - Native HTML button elements used (not div or span)
+  - Icon labels specified (aria-label or visible text alongside icon)
+  - Tab order documented (natural DOM left-to-right)
+  - Focus indicator contrast specified (3:1 minimum per WCAG 2.4.11)
+  - WCAG 2.1.1 citation for keyboard support
+  - Visual distinction for Delete (danger) vs Save/Cancel — non-color indicator required
   - Simple, proportional plan (1-2 pages)
 
 expected_findings:
   must_have:
-    - Native HTML button elements
-    - Icon labels (aria-label or text)
-    - Focus indicator contrast (3:1)
-    - Keyboard activation documentation
-    - WCAG 2.1.1 citation
+    - "Native HTML `<button>` elements — not `<div>` or `<span>` with click handlers"
+    - "Icon labels via aria-label (icon-only) or visible text adjacent to icon"
+    - "Focus indicator: minimum 3:1 contrast ratio against adjacent colors (WCAG 2.4.11)"
+    - "Keyboard activation: Enter and Space both fire button action (native behavior documented)"
+    - "WCAG 2.1.1 (Keyboard) citation for keyboard operability"
+    - "Delete button danger styling: non-color indicator alongside color (icon, text, or border pattern)"
 
   should_have:
-    - Tab order documentation
-    - Visual styling plan
-    - Simple test cases
+    - "Tab order documented: left-to-right matching visual order"
+    - "Visual styling plan: Save (primary), Cancel (secondary), Delete (danger) distinct states"
+    - "Test cases: Tab focus traversal, Enter activation, Space activation, screen reader label check"
+    - "WCAG 2.4.7 (Focus Visible) citation for focus indicator requirement"
+
+  nice_to_have:
+    - "type attribute specified: type='button' on Cancel/Delete to prevent accidental form submission"
+    - "aria-describedby or confirmation dialog strategy for the destructive Delete action"
+    - "Hover and active state styling not relying on color alone"
+    - "WCAG 1.4.1 (Use of Color) citation for non-color danger distinction"
+
+false_positive_traps:
+  - "Adding role='button' to a native `<button>` element — redundant; native button already has implicit button role"
+  - "Using aria-pressed on action buttons — aria-pressed is for toggle buttons that maintain on/off state, not for fire-once actions"
+  - "Recommending tabindex='0' on `<button>` — buttons are natively focusable; tabindex is unnecessary"
+  - "Wrapping icons in aria-hidden and then not providing any accessible name — plan must specify what replaces the icon label"
+  - "Treating icon alt text as sufficient when the icon is a background-image CSS — background images have no alt attribute"
+
+multi_perspective_coverage:
+  keyboard: "All three buttons reachable via Tab key in left-to-right DOM order. Enter and Space both activate. No trapped focus — Tab moves past the bar to next element. Delete button reachable and operable without requiring any additional keystrokes."
+  screen_reader: "Each button announced by its accessible name (Save, Cancel, Delete). NVDA/JAWS read 'Save, button' pattern. Icon images with aria-hidden='true' are skipped. Screen reader announces button role automatically from native `<button>`."
+  low_vision: "Focus indicator visible at 200% zoom — 3:1 contrast ratio maintained. Danger button distinction visible without color (icon, border style, or label suffix). Hover state available but not the only indication of button function."
+  cognitive: "Clear, predictable left-to-right order. Button labels are action words (Save, Cancel, Delete) — not abstract. Delete button visually distinct to prompt pause before destructive action."
+  mobile_touch: "Touch targets meet 44×44px minimum (WCAG 2.5.5). Sufficient spacing between buttons to prevent accidental taps. Touch-based activation consistent with click — no swipe-only interactions."
 
 notes: |
-  TRIVIAL fixture for keyboard button navigation.
+  TRIVIAL fixture — evaluation focus is on correct semantic element choice, precise icon labeling strategy, and proportional plan scope (1-2 pages).
+
+  The discriminating quality for this fixture: does the plan distinguish between icon-only labeling (aria-label on button) vs icon-plus-text labeling (aria-hidden on icon, visible text sufficient)? A plan that says "add alt text to the icon" without addressing that background-image icons have no alt attribute, or that SVG icons need aria-hidden + button label, is incomplete.
+
+  Second discriminating item: the Delete button's destructive nature. Plans that address color-only danger indication are incomplete — WCAG 1.4.1 requires non-color differentiation.
+
+  Expected verdict: ACCEPT for all three conditions (TRIVIAL). Baseline gaps are typically around aria-label vs visible text distinction, and the type='button' safety pattern.
+
+  Outlier indicators (flag for review):
+  - Uses div elements instead of native button
+  - Plan recommends role="button" on native button
+  - No icon label strategy documented
+  - No focus indicator contrast specified
+  - Plan >3 pages (scope creep for TRIVIAL)

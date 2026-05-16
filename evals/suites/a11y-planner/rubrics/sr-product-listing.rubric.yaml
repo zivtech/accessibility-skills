@@ -1,0 +1,179 @@
+fixture_id: sr-product-listing
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 plan phases addressed?"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: cart_action_feedback
+    name: "Add-to-Cart Confirmation (Pre-existing Live Region)"
+    description: "Is the pre-existing live region pattern specified? Is aria-live placed on the region, not the toast element?"
+    weight: 3
+    rule_based_checks:
+      - specifies_pre_existing_live_region_in_dom: true
+      - specifies_aria_live_polite_for_cart: true
+      - specifies_aria_atomic_true_for_cart: true
+      - does_not_apply_aria_live_to_toast_element: true
+      - specifies_cart_badge_as_aria_label_update: true
+      - cites_wcag_4_1_3: true
+    llm_judge_criteria:
+      - "Does the plan explain WHY the live region must pre-exist in DOM (toast inserted after creation cannot trigger live region detection)?"
+      - "Is the distinction between per-increment live region (wrong) vs aria-label update on cart button (right) explained?"
+
+  - id: star_rating_pattern
+    name: "Star Rating Accessible Label"
+    description: "Are decorative Unicode stars hidden from AT and replaced with an accessible text equivalent?"
+    weight: 3
+    rule_based_checks:
+      - specifies_aria_hidden_on_visual_stars: true
+      - specifies_sr_only_span_for_rating: true
+      - specifies_rating_format_text: true
+    llm_judge_criteria:
+      - "Is the star rating pattern specific enough? ('aria-hidden on visual stars + sr-only span' vs generic 'add aria-label')"
+
+  - id: sale_price_announcement
+    name: "Sale Price Announcement Sequence"
+    description: "Is the original price hidden from AT with sr-only 'Was $X, now' context text before the current price?"
+    weight: 2
+    rule_based_checks:
+      - specifies_aria_hidden_on_strikethrough_price: true
+      - specifies_sr_only_was_price_context: true
+      - addresses_del_element_announcement_issue: true
+    llm_judge_criteria:
+      - "Does the plan produce an announcement sequence that makes sense: 'Was $149, now $89' — not '$149 deleted $89'?"
+
+  - id: price_range_slider
+    name: "Price Range Slider ARIA"
+    description: "Are both slider thumbs specified with role=slider, aria-valuenow, aria-valuemin, aria-valuemax, and aria-valuetext?"
+    weight: 2
+    rule_based_checks:
+      - specifies_role_slider: true
+      - specifies_aria_valuenow: true
+      - specifies_aria_valuemin: true
+      - specifies_aria_valuemax: true
+      - specifies_aria_valuetext_with_price_format: true
+      - addresses_two_handle_coordination: true
+    llm_judge_criteria:
+      - "Is the aria-valuetext value specific? ('Minimum price: $25' vs 'selected value')"
+      - "Does the plan address how the two slider thumbs constrain each other (min cannot exceed max)?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Are WCAG 1.3.1, 1.4.1, 4.1.2, and 4.1.3 cited with criterion names?"
+    weight: 2
+    rule_based_checks:
+      - cites_1_3_1_info_and_relationships: true
+      - cites_1_4_1_use_of_color: true
+      - cites_4_1_2_name_role_value: true
+      - cites_4_1_3_status_messages: true
+    expected_citations:
+      - "WCAG 1.3.1 Info and Relationships"
+      - "WCAG 1.4.1 Use of Color"
+      - "WCAG 4.1.2 Name, Role, Value"
+      - "WCAG 4.1.3 Status Messages"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Are ARIA attribute values, DOM structure, and CSS class names specific enough to implement from?"
+    weight: 2
+    rule_based_checks:
+      - provides_product_list_html_example: true
+      - specifies_filter_panel_fieldset_legend: true
+      - specifies_availability_text_badge: true
+    llm_judge_criteria:
+      - "Would a developer know the exact HTML structure for the star rating (which element gets aria-hidden, which gets the sr-only span)?"
+      - "Is the pre-existing live region approach specific enough to implement correctly?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does testing include star rating NVDA check, cart live region verification, and slider keyboard test?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+    llm_judge_criteria:
+      - "Does the testing plan include: verify NVDA reads '4 out of 5 stars' not '★★★★☆'?"
+      - "Does the testing plan verify cart live region fires — not the toast element?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan 3-4 pages for MODERATE difficulty?"
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "3-4"
+      - no_scope_creep: true
+      - no_aria_live_on_toast_element: true
+      - no_role_alert_for_cart_confirmation: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "MODERATE fixture with breadth challenge. The 9-phase protocol covers the key sub-patterns. Pre-existing live region pattern and sale price annotation are non-obvious but within the skill's ARIA expertise."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-68
+    reasoning: "Generic planning may cover list semantics and sort control but misses: pre-existing live region vs toast, star rating pattern (aria-hidden + sr-only), sale price (<s aria-hidden> + sr-only context), price range ARIA."
+
+  - condition: baseline-few-shot
+    expected_score: 65-78
+    reasoning: "Structured examples improve list semantics and filter panel coverage. Still likely to apply aria-live to toast element and miss the sale price sr-only context text."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  MODERATE fixture — breadth is the challenge. Three discriminating items:
+  1. Pre-existing live region pattern for cart confirmation (aria-live on toast is the common mistake)
+  2. Star rating: aria-hidden on visual stars + sr-only span (not just "add aria-label")
+  3. Sale price: <s aria-hidden="true"> + sr-only "Was $149, now" text sequence
+
+  The price range slider ARIA is a fourth item that separates a11y-planner from baselines (role=slider + 5 attributes + two-handle coordination).
+
+  Outlier indicators (flag for rubric review):
+  - aria-live applied to toast element (not pre-existing region)
+  - <del> for original price without aria-hidden (announces as "deleted")
+  - role="gridcell" on product cards (not tabular data)
+  - No star rating accessible label strategy
+  - role="alert" for cart confirmation (assertive politeness for non-urgent message)

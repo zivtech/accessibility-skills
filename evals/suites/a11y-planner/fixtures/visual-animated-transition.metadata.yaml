@@ -1,0 +1,107 @@
+fixture_id: visual-animated-transition
+name: Animated Page Transition
+description: React SPA route transition (slide/fade, framer-motion). Plan prefers-reduced-motion detection, focus management after navigation, DOM overlap during exit animation.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: A PageTransition wrapper component using framer-motion AnimatePresence to animate route changes with a 300ms slide or 200ms fade. Currently has no motion preference detection and no post-navigation focus management.
+  user_need: Users with vestibular disorders need animation suppressed or replaced (not just disabled) when prefers-reduced-motion is set. Keyboard and screen reader users need a predictable focus landing point after route changes.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: PageTransition wrapper component applied to all routes in the SPA; does not cover in-page micro-animations
+  constraints:
+    - framer-motion must remain as animation library
+    - Slide variant: 300ms duration (designer spec)
+    - Fade variant: 200ms duration (designer spec)
+    - Both variants must be supported with separate reduced-motion behaviors
+    - Route change is instant (no server-side delay)
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - WCAG 2.3.3 grounding: animation from interactions must respect prefers-reduced-motion
+  - Reduced-motion strategy: replace (instant/short fade) not just disable; specifies framer-motion useReducedMotion()
+  - Focus management: concrete post-navigation strategy (main heading focus, route announcer, or aria-live)
+  - DOM overlap: outgoing page must not be readable by AT during exit animation (aria-hidden or inert)
+  - WCAG 2.4.3: focus must not remain on elements from the exiting route
+  - Calibration: 3-4 pages, not a framer-motion tutorial
+
+expected_findings:
+  must_have:
+    - WCAG 2.3.3 (Animation from Interactions) citation with user impact explanation
+    - Reduced-motion fallback defined for both slide and fade variants (not just "disable")
+    - framer-motion useReducedMotion() hook as the mechanism
+    - Post-navigation focus management strategy with concrete target
+    - DOM overlap mitigation: aria-hidden or inert on exiting page during animation
+    - WCAG 2.4.3 (Focus Order) citation for focus placement requirement
+    - Test case: simulate prefers-reduced-motion in browser devtools
+
+  should_have:
+    - WCAG 2.2.2 (Pause Stop Hide) — note it applies to content that moves automatically, distinguish from user-triggered transitions
+    - Distinction between "instant route switch" and "short cross-fade" as reduced-motion alternatives
+    - Route announcer pattern (aria-live="assertive" div for page title changes)
+    - NVDA/JAWS virtual cursor behavior during route transitions
+    - Specific framer-motion variants object for reduced-motion branch
+
+  nice_to_have:
+    - skip-navigation link behavior after route change
+    - Document title update strategy (window.document.title) combined with live region
+    - Scroll position reset after navigation
+    - Animation duration thresholds for all three WCAG motion SCs (2.3.1, 2.2.2, 2.3.3)
+
+false_positive_traps:
+  - Treating prefers-reduced-motion as binary on/off without specifying the fallback experience
+  - Ignoring the DOM overlap problem (outgoing page in DOM and readable by AT during exit)
+  - Focus management plan that only mentions "focus the first link" without handling the animation gap
+  - Citing only 2.3.3 and treating 2.2.2 as the same criterion (they cover different scenarios)
+  - No mention of framer-motion's useReducedMotion() API
+  - Plans that announce "page changed" via aria-live but also move focus (double-announcement risk)
+  - Assuming animation is always a WCAG 2.3.3 violation (user-triggered transitions at 300ms are not inherently non-compliant)
+
+multi_perspective_coverage:
+  keyboard: "After route change, focus must land on a visible, meaningful element (h1, skip link, or main). Tab order within new route must start from logical position."
+  screen_reader: "New page content must be readable immediately after route change. Exiting page must be hidden from AT during exit animation. Route change should be announced (live region or focus change)."
+  low_vision: "Animation duration 300ms: does not trigger vestibular symptoms for most users, but prefers-reduced-motion must still be honored. High-contrast mode must not interfere with transition timing."
+  cognitive: "Consistent transition direction (always left→right for forward nav) reduces disorientation. Reduced-motion users should see the same content, not a degraded experience."
+  mobile_touch: "Touch navigation gestures (swipe) may trigger the same transition. Reduced-motion preference on iOS must be respected. Focus management must work with VoiceOver swipe navigation."
+
+notes: |
+  MODERATE fixture testing two independent but equally required concerns: motion sensitivity and post-navigation focus management.
+
+  Expected verdict: ACCEPT
+
+  Scoring expectation: a11y-planner 85-95. A strong plan addresses both motion sensitivity (with framer-motion specifics) and the DOM overlap problem — that's the key differentiator from a baseline. Plans that only handle prefers-reduced-motion without addressing where focus goes after navigation should score in the adequate range.
+
+  The DOM overlap problem (outgoing page readable by AT during exit animation) is the most likely gap in baseline plans. It requires knowing how framer-motion AnimatePresence keeps exiting elements in the DOM.
+
+  Expected findings baseline:
+  - WCAG 2.3.3 citation: 90%+
+  - Reduced-motion via CSS media query: 90%+
+  - framer-motion useReducedMotion() hook: 50%+ (library-specific knowledge)
+  - Post-navigation focus management: 70%+
+  - DOM overlap / aria-hidden on exiting element: 40%+ (often missed)
+  - WCAG 2.4.3 citation: 60%+
+
+  Outlier indicators:
+  - Plan only mentions prefers-reduced-motion and nothing else (half the problem)
+  - No framer-motion specifics despite the constraint explicitly naming it
+  - Focus management vague ("focus goes somewhere logical")
+  - Plan treats the animation as non-compliant without explaining the threshold

@@ -1,0 +1,120 @@
+fixture_id: visual-form-validation
+name: Multi-Step Form with Inline Validation
+description: Healthcare portal multi-step form with blur-time and submit-time validation, error summary panel, and cross-step error consolidation. Plan aria-invalid, aria-describedby, focus management, cognitive load, color independence.
+language: jsx
+framework: React
+difficulty: COMPLEX
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: High
+
+scenario:
+  feature: A four-step healthcare registration form (personal info, insurance, medical history, review) with real-time blur validation, a step-level error summary panel with field links, red visual error treatments, and a cross-step consolidated error list on final submit.
+  user_need: Screen reader users need programmatic error association (aria-describedby) and focus-managed navigation to errors. Colorblind users need non-color error indicators. Cognitive users need manageable error presentation — not 20 errors at once.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Full multi-step form error communication system — inline validation, error summary, cross-step error consolidation; excludes server-side validation and data submission
+  constraints:
+    - React Hook Form must remain
+    - Visual error treatments (red border, red text) must remain as designed
+    - Real-time inline validation on blur is a product requirement
+    - Error summary panel placement (top of step) is a design constraint
+    - Cross-step consolidated error list is required at final submit step
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - aria-invalid="true" on invalid inputs, aria-describedby to error message IDs
+  - Error summary: role="alert" or aria-live="assertive"; focus moves to it on submit-time errors
+  - Error summary links: navigate to invalid field AND focus that field
+  - Blur-time announcement: non-disruptive strategy (polite, delayed, or post-first-submit)
+  - WCAG 1.4.1: non-color error indicator (icon + red, not red alone)
+  - Cognitive load: specific recommendation on all-errors vs. progressive, with justification
+  - Cross-step error list: links navigate back to correct step and field with focus
+  - WCAG 3.3.1, 3.3.3, 1.4.1, 4.1.3 citations
+
+expected_findings:
+  must_have:
+    - aria-invalid="true" on invalid inputs
+    - aria-describedby linking inputs to their error message elements by ID
+    - Non-color error indicator: icon (warning/error symbol) in addition to red treatment — WCAG 1.4.1
+    - Error summary focus management: focus moves to summary panel when it appears on submit
+    - Error summary links navigate to AND focus the invalid field
+    - Blur-time announcement strategy: specific recommendation (not just "use aria-live")
+    - WCAG 3.3.1 (Error Identification) citation
+    - WCAG 3.3.3 (Error Suggestion) citation
+    - WCAG 1.4.1 (Use of Color) citation for non-color indicator requirement
+    - Cognitive load recommendation: specific approach with justification
+
+  should_have:
+    - WCAG 4.1.3 (Status Messages) — error summary announced without requiring focus move
+    - WCAG 2.4.3 (Focus Order) — focus order maintained within error summary
+    - WCAG 3.3.4 (Error Prevention) — note for high-stakes healthcare form
+    - Blur vs. submit-time validation: different announcement strategies for each
+    - React Hook Form integration specifics (register, formState.errors, trigger)
+    - Error message content guidelines: specific, actionable, not "invalid input"
+    - Cross-step error list: step navigation + field focus in consolidated final summary
+    - Contrast of error messages and icons: 4.5:1 (text) — validate red against background
+
+  nice_to_have:
+    - WCAG 1.4.4 (Resize Text) — error messages must remain readable at 200%
+    - Error recovery: once user fixes a field, aria-invalid cleared and error message removed
+    - Progressive disclosure: show most critical error first vs. all errors
+    - Inline suggestion text (autocorrect or format hint) before validation fires
+
+false_positive_traps:
+  - Using role="alert" for blur-time inline validation (too aggressive — interrupts every field)
+  - aria-label on error messages without aria-describedby on the input (wrong direction)
+  - Error summary that announces count but has no links to fields
+  - Focus stays on submit button after error summary appears (no focus management)
+  - Conflating aria-required with aria-invalid (different purposes)
+  - Assuming red error text automatically meets contrast (validate the specific red value)
+  - Announcing all errors at once via a single aria-live region without field context
+  - No plan for cross-step error consolidation at final step
+
+multi_perspective_coverage:
+  keyboard: "Tab order through error summary links. Each link focuses the corresponding invalid field. In multi-step form, link navigates back to the correct step first. Error state persists when user returns via browser back."
+  screen_reader: "aria-invalid='true' causes NVDA/JAWS to announce 'invalid entry' when field receives focus. aria-describedby announces error message after field label. Error summary announced via role='alert' or aria-live='assertive' on appearance."
+  low_vision: "Error messages must meet 4.5:1 against background. Red left border must meet 3:1 (1.4.11). Icons must be visible at 200% zoom (1.4.4). Error summary must be visible at large text sizes without overflow."
+  cognitive: "Error summary shows all errors — manageable count (4-8 per step) — links reduce navigation burden. Inline blur errors appear one at a time as user leaves each field. Progressive: complex fields show hint text before user encounters an error."
+  mobile_touch: "Error summary must be reachable by swipe navigation (VoiceOver/TalkBack). Field-level error messages must not overlap the keyboard when input is focused. Touch target on error links meets 44px minimum."
+
+notes: |
+  COMPLEX fixture with four interdependent concerns: error identification, focus management, cognitive load, and cross-step consolidation. A plan that handles only the first (aria-describedby) without addressing the others is inadequate.
+
+  Expected verdict: ACCEPT for a11y-planner. REJECT or ACCEPT-WITH-RESERVATIONS for baselines.
+
+  Scoring expectation: a11y-planner 80-95. The key differentiators: (1) blur-time announcement strategy is specific and justified, not vague; (2) cognitive load section has a recommendation, not just a mention; (3) cross-step error consolidation is addressed; (4) WCAG 1.4.1 for the icon-not-color requirement is flagged.
+
+  A plan that only covers aria-invalid + aria-describedby without addressing blur-time strategy, cognitive load, or cross-step consolidation should score in the 45-60 range.
+
+  Expected findings baseline:
+  - aria-invalid: 90%+
+  - aria-describedby on input: 80%+
+  - Non-color error indicator (icon): 70%+
+  - Error summary focus management: 65%+
+  - Blur-time announcement strategy (specific): 50%+
+  - WCAG 3.3.1 citation: 85%+
+  - WCAG 1.4.1 citation for icons: 65%+
+  - Cognitive load recommendation (specific): 45%+
+  - Cross-step error consolidation: 40%+
+
+  Outlier indicators:
+  - role="alert" on every blur-time inline error (too aggressive)
+  - aria-describedby missing (aria-label used on error instead)
+  - No focus management plan for error summary
+  - No cross-step plan at all
+  - Cognitive load section is one sentence

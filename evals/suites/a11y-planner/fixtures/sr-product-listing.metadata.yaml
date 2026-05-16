@@ -1,0 +1,103 @@
+fixture_id: sr-product-listing
+name: E-Commerce Product Grid with Sort, Filter, and Add-to-Cart
+description: Outdoor gear e-commerce product listing page with sort dropdown, collapsible filter panel, star ratings, sale prices, price range slider, and Add-to-Cart button with confirmation. Tests grid vs list semantics, star rating pattern, sale price announcement, pre-existing live region pattern for cart feedback, and price range slider ARIA.
+language: jsx
+framework: Next.js
+difficulty: MODERATE
+domain: Screen Reader Experience
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: Product listing page displaying 24 product cards per page in a grid layout, each with product image, name (link), star rating (Unicode stars), price (with optional strikethrough sale price), availability badge, and Add-to-Cart button. Sort dropdown, collapsible filter panel (checkboxes for Category/Brand/Color, price range slider), cart badge count in header that increments on add, and a toast notification for cart confirmation.
+  user_need: Screen reader users need to understand product ratings without seeing stars, hear both original and sale price, receive confirmation that add-to-cart succeeded without focus disruption, and navigate the filter panel with proper group semantics. Current code uses div cards, Unicode stars without labels, and applies aria-live to the toast element rather than a pre-existing region.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Product list semantics, star rating accessible label, sale price announcement, price range slider ARIA, Add-to-Cart confirmation live region, cart badge count update, availability badge, filter panel landmark and grouping
+  constraints:
+    - Product cards rendered as <div> elements — needs semantic refactor to <ul>/<li>
+    - Star ratings are Unicode characters (★★★☆☆) — read as individual characters by some AT
+    - Price range slider is a third-party component with limited ARIA support
+    - Cart toast appears after DOM insertion — aria-live must pre-exist in DOM
+    - Cart badge count increments per add — live region per increment is too chatty
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Product list semantics: <ul>/<li> with product name as heading inside each card
+  - Star rating: aria-hidden="true" on Unicode stars, <span class="sr-only">4 out of 5 stars</span>
+  - Sale price announcement: <s aria-hidden="true"> for original price, sr-only "Was $149, now" text before current price
+  - Price range slider: role="slider" aria-valuenow aria-valuemin aria-valuemax aria-valuetext with formatted price
+  - Cart confirmation: pre-existing aria-live="polite" aria-atomic="true" region; NOT aria-live on toast element
+  - Cart badge: aria-label update on bell/cart button (not live region per increment)
+  - Availability badge: not color-only; text badge sufficient without additional ARIA
+  - Filter panel: role=complementary or <aside>, <fieldset>/<legend> for checkbox groups
+  - WCAG 1.3.1, 1.4.1, 4.1.2, 4.1.3 citations
+
+expected_findings:
+  must_have:
+    - "Product list as <ul role='list'> with <li> cards — not <div> grid"
+    - "Star rating: aria-hidden='true' on visual stars, <span class='sr-only'>4 out of 5 stars</span>"
+    - "Sale price: <s aria-hidden='true'>$149</s><span class='sr-only'>Was $149, now</span> $89"
+    - "Price range slider: role='slider' aria-valuenow aria-valuemin aria-valuemax aria-valuetext='Minimum price: $25'"
+    - "Two role='slider' elements for two-handle price range — coordinated min/max constraints via aria-valuemin/max"
+    - "Pre-existing aria-live='polite' aria-atomic='true' region in DOM for cart confirmation"
+    - "Cart badge: aria-label='Cart, 3 items' on cart button — NOT a live region per increment"
+    - "Availability: text badge (In Stock / Low Stock / Out of Stock) — color not sole indicator"
+    - "WCAG 1.4.1 (Use of Color) for availability badge"
+    - "WCAG 4.1.3 (Status Messages) for cart confirmation and count"
+
+  should_have:
+    - "Filter panel as <aside> or within <section> with aria-label='Product filters'"
+    - "<fieldset>/<legend> for Category, Brand, Color checkbox groups"
+    - "Sort <select> with visible <label>Sort by</label>"
+    - "Pagination: <nav aria-label='Product pagination'> with aria-current='page' on current page"
+    - "WCAG 1.3.1 (Info and Relationships) for product card heading structure"
+    - "WCAG 4.1.2 (Name, Role, Value) for price range slider"
+    - "Testing: verify NVDA reads '4 out of 5 stars' not '★★★★☆'; verify cart live region fires correctly"
+
+  nice_to_have:
+    - "Product card heading level: <h2> if cards are in a <section>, or <h3> if page has section headings"
+    - "Loading state for price range slider drag: aria-busy='true' on results container"
+    - "Filter panel collapsible state: aria-expanded on mobile filter toggle button"
+
+false_positive_traps:
+  - "Applying aria-live to the toast component element itself — toast is inserted into DOM after creation; live region must pre-exist"
+  - "Using <del> for original sale price — <del> announces as 'deleted' in some AT, not 'was'; aria-hidden + sr-only pattern is more reliable"
+  - "Recommending role='gridcell' for product cards — product listings are not tabular data; <ul>/<li> is correct"
+  - "Adding aria-live to cart badge count for every increment — announces '3', '4', '5' as each item is added; aria-label update is sufficient"
+  - "role='alert' for cart confirmation — maps to aria-live='assertive'; cart confirmation is informational, not urgent; polite is correct"
+
+multi_perspective_coverage:
+  keyboard: "Price range slider keyboard interaction: Tab to slider thumb, Left/Right arrow keys adjust value by $5 step, Home/End for min/max; filter checkboxes fully keyboard accessible; Add to Cart button in tab order"
+  screen_reader: "Star rating announced as '4 out of 5 stars'; sale price sequence 'Was $149, now $89'; price range slider announces 'Minimum price: $25' via aria-valuetext; cart confirmation announced after button press without focus move"
+  low_vision: "Availability badge not color-only — text label meets 1.4.1; sale badge 'Sale' with sufficient contrast against red background; product card layout stable at 200% zoom"
+  cognitive: "Consistent card structure across all 24 products; clear sort/filter labeling; cart confirmation reinforces action taken"
+  mobile_touch: "Price range slider touch-draggable with 44×44px minimum thumb size; filter checkboxes 44×44px touch targets; Add to Cart button full width on mobile"
+
+notes: |
+  MODERATE difficulty — breadth is the challenge (many sub-patterns), not a single complex interaction. The discriminating items are:
+  1. Pre-existing live region pattern for cart confirmation (zero-shot baselines commonly apply aria-live to the toast element itself)
+  2. Star rating pattern (not just "add aria-label" but specifically aria-hidden on visual stars + sr-only span)
+  3. Sale price announcement (<s aria-hidden> + sr-only "Was $X, now" text)
+
+  Differentiated from screenreader-liveregion: this fixture focuses on e-commerce interaction patterns (cart confirmation, star ratings, sale prices) rather than generic live region mechanics. The pre-existing live region pattern is a concrete implementation decision that generic planning misses.
+
+  Outlier indicators:
+  - aria-live on toast element (reveals misunderstanding of live region timing)
+  - <del> for sale price without aria-hidden (announces as "deleted")
+  - role="gridcell" on product cards
+  - No star rating plan

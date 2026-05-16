@@ -1,0 +1,109 @@
+fixture_id: test-modal
+name: Modal Dialog Testing
+description: Accessibility testing plan for a confirmation modal dialog — focus trap, Escape/backdrop close, focus restoration, background inert, screen reader mode announcement (role/title/description), and conditional button state testing.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: Medium
+
+scenario:
+  feature: A confirmation modal dialog with a text input pattern (type project name to confirm deletion), conditional disabled Delete button, and three close paths (Cancel, Escape, backdrop click)
+  user_need: Ensuring keyboard and screen reader users can successfully confirm or cancel a destructive action without being trapped, losing focus context, or missing the dialog announcement
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single modal dialog component with confirmation input pattern and three close paths
+  constraints:
+    - Must catch axe-core violations before PR merge
+    - Playwright and axe-core configured in CI
+    - QA engineer has Playwright experience but no screen reader experience
+    - Tests must cover all three close paths (Cancel button, Escape key, backdrop click)
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - APG Dialog pattern referenced with URL (https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/)
+  - Focus trap test: step-by-step keyboard script with Tab cycling and background unreachable
+  - Focus restoration: all three close paths tested (Cancel, Escape, backdrop)
+  - Background inert: verifies background elements not keyboard-reachable when modal open
+  - NVDA opening announcement: role + title + description sequence documented
+  - Conditional button state: aria-disabled transitions tested and announced
+  - Playwright assertions for inert, aria-labelledby, aria-describedby
+
+expected_findings:
+  must_have:
+    - APG Dialog Modal pattern URL citation
+    - Focus trap test: Tab through all focusable elements → verify no escape to background
+    - Escape key close test with focus restoration to trigger button
+    - Cancel button close test with focus restoration to trigger button
+    - Background inert test: verify background content not reachable during modal open
+    - NVDA announcement on open: role="dialog" announced, aria-labelledby title read, description read
+    - Conditional Delete button state test: aria-disabled="true" when input empty, changes on match
+    - WCAG 2.1.2 (No Keyboard Trap) cited — in the positive sense: focus is intentionally trapped by design
+    - WCAG 2.4.3 (Focus Order) cited for focus movement on open and restoration on close
+    - WCAG 4.1.2 (Name, Role, Value) cited for dialog role, labelledby, describedby
+    - Acceptance criteria: "Focus moves to dialog on open; Tab cycles within dialog; Escape closes and restores focus to trigger"
+
+  should_have:
+    - Playwright assertions: await expect(backdrop).toHaveAttribute('inert') for background elements
+    - Playwright assertions: await expect(dialog).toHaveAttribute('aria-labelledby', titleId)
+    - Backdrop click test implementation note (requires pointer event simulation in Playwright)
+    - WCAG 2.4.7 (Focus Visible) cited for focus indicator within modal
+    - JAWS behavior note: Virtual cursor navigation should be blocked by modal boundaries
+    - VoiceOver Web Rotor note: Elements outside modal should not appear in rotor navigation
+    - Visual regression states: modal-closed, modal-open-empty-input, modal-open-input-matches, deletion-success
+
+  nice_to_have:
+    - WCAG 1.3.1 (Info and Relationships) for aria-labelledby/describedby semantic structure
+    - Testing with both role="dialog" + aria-modal="true" (older SR compat) vs inert (modern)
+    - Testing that the modal title is unique and descriptive enough for SR users
+    - Scroll lock testing when modal is open on long pages
+    - Animation/transition testing if modal has open/close animation
+
+false_positive_traps:
+  - Prescribing aria-modal="true" as a required attribute — inert is the recommended modern approach; aria-modal is a compatibility workaround, not the primary mechanism
+  - Expecting focus to move to the dialog's first interactive element on open — the APG pattern recommends focus to the dialog container itself (or its heading), not the first input
+  - Recommending tabindex="0" on the dialog div — this is correct for focus management but should be cited against the APG pattern, not asserted as a general rule
+  - Testing that backdrop click triggers the browser's default close behavior — backdrop click is custom JavaScript, not a native behavior, and must be tested with a pointer event simulation
+
+multi_perspective_coverage:
+  keyboard: "Focus moves to dialog on open; Tab cycles through all interactive elements within dialog; Shift+Tab works in reverse; no Tab escape to background; Escape closes dialog and restores focus; Cancel and backdrop click also restore focus"
+  screen_reader: "Dialog role announced on focus entry; aria-labelledby title read; aria-describedby description read; conditional Delete button state changes announced; background content not navigable via virtual cursor"
+  low_vision: "Modal visible at 200% zoom without horizontal scroll; focus indicators visible within modal context; disabled Delete button visually distinct from enabled state; backdrop contrast does not obscure modal content"
+  cognitive: "Modal title clearly identifies the destructive action; confirmation input provides clear instruction; Delete button label matches required text; Cancel action clearly available"
+  mobile_touch: "Modal scrollable on small viewports; close areas (Cancel, X button) meet 44x44px; backdrop tap closes modal; on-screen keyboard does not push modal content off screen"
+
+notes: |
+  This MODERATE fixture tests whether a11y-planner:
+  1. Grounds the testing plan in the APG Dialog Modal pattern (the reference implementation)
+  2. Produces a testable focus lifecycle: open → trap → close → restore
+  3. Distinguishes the three close paths and tests each for focus restoration
+  4. Knows what NVDA announces when focus moves to a dialog element
+  5. Identifies background inert as the correct mechanism (not just aria-modal)
+  6. Tests conditional button state changes, not just static state
+
+  Expected verdict: ACCEPT
+  Baseline will likely cover focus trap and Escape key at a high level but miss:
+  - Background inert testing (vs aria-modal confusion)
+  - Specific NVDA announcement sequence
+  - Conditional button state testing
+  - All three close paths tested separately
+
+  Key discriminator: Does the plan test background inert as a separate test case?
+  Most baseline models treat "focus trap" and "background inaccessible" as the same test;
+  they are distinct — focus trap is about Tab cycling within the modal, background inert
+  is about whether elements outside receive focus or virtual cursor navigation.

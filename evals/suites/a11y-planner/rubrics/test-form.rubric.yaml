@@ -1,0 +1,174 @@
+fixture_id: test-form
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG form pattern context (fieldset/legend, label association) and correctly distinguish blur vs. submit error handling?"
+    weight: 3
+    rule_based_checks:
+      - mentions_label_for_association: true
+      - mentions_fieldset_legend_for_sections: true
+      - distinguishes_blur_vs_submit_errors: true
+      - maps_aria_invalid_to_visible_error: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every test category cite the WCAG criterion being verified?"
+    weight: 3
+    rule_based_checks:
+      - error_tests_cite_wcag_3_3_1: true
+      - label_tests_cite_wcag_3_3_2: true
+      - status_banner_cites_wcag_4_1_3: true
+      - input_purpose_cites_wcag_1_3_5: true
+    expected_citations:
+      - "WCAG 3.3.1 Error Identification (error message tests)"
+      - "WCAG 3.3.2 Labels or Instructions (label association tests)"
+      - "WCAG 4.1.3 Status Messages (role=alert submit banner)"
+      - "WCAG 1.3.5 Identify Input Purpose (autocomplete attributes)"
+      - "WCAG 4.1.2 Name, Role, Value (aria-invalid, aria-required state tests)"
+      - "WCAG 1.4.3 Contrast Minimum (error text color contrast)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a QA engineer with no screen reader experience follow this plan? Are axe rules named? Are error announcement steps scripted? Is NVDA Forms Mode documented?"
+    weight: 2
+    rule_based_checks:
+      - names_axe_rule_label: true
+      - names_axe_rule_aria_required_attr: true
+      - names_axe_rule_color_contrast: true
+      - documents_nvda_forms_mode: true
+      - provides_blur_error_test_steps: true
+      - provides_submit_error_test_steps: true
+      - tests_show_hide_password_toggle: true
+    llm_judge_criteria:
+      - "Could a QA engineer who has never used NVDA follow these screen reader test steps?"
+      - "Are the keyboard Tab order test steps specific enough to verify 8 named fields?"
+      - "Does the plan distinguish blur-time error announcement from submit-time banner announcement?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does the plan cover all required test types AND form-specific states (default, focused, error, valid, submit-error-banner)?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - tests_blur_error_state: true
+      - tests_submit_error_banner: true
+      - tests_password_toggle: true
+
+  - id: test_methodology
+    name: "Test Methodology"
+    description: "Does the plan specify a repeatable testing methodology? Prioritized test order, CI integration, runbook format?"
+    weight: 2
+    rule_based_checks:
+      - specifies_test_execution_order: true
+      - documents_ci_integration: true
+      - produces_runbook_for_non_experts: true
+      - specifies_playwright_assertions: true
+    llm_judge_criteria:
+      - "Is the plan organized in a way a non-expert QA engineer can follow it as a runbook?"
+      - "Are Playwright assertions shown with enough specificity to write the actual test code?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan proportional to MODERATE difficulty? Expected 3-4 pages. Must not confuse aria-label prescription with proper label association."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 3-4
+      - no_scope_creep: true
+      - avoids_aria_label_over_prescription: true
+    llm_judge_criteria:
+      - "Is the plan length appropriate for 8-field form with error handling?"
+      - "Does the plan avoid prescribing aria-label on fields that should use native label association?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "Should document NVDA Forms Mode, distinguish error mechanisms, name axe rules, provide runbook-level steps, cover show/hide password. May miss JAWS-specific behavior or mobile SR details."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Likely covers form labels and error messages at a high level, but will miss NVDA Forms Mode, conflate error mechanisms, stay generic on axe-core, and lack Playwright assertions."
+
+  - condition: baseline-few-shot
+    expected_score: 60-75
+    reasoning: "Structured approach may surface more of the right sections, but unlikely to know Forms Mode nuances or produce runbook-level SR steps without domain knowledge."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  Key discriminator for this MODERATE fixture: Does the plan know NVDA Forms Mode?
+  A plan that describes screen reader testing without covering Forms Mode will fail to
+  produce tests that actually verify how the form is experienced by most NVDA users.
+
+  Second discriminator: Does the plan distinguish blur-time (aria-describedby) from
+  submit-time (role="alert") error mechanisms? These require different tests and
+  different Playwright interactions to trigger.
+
+  Calibration note: Plans that prescribe aria-label on all form fields (instead of
+  native label association) indicate surface knowledge — the trap is planted in
+  false_positive_traps to catch it.
+
+  Baseline plans scoring 55-65 typically:
+  - Cover label association (generic)
+  - Cover keyboard navigation (generic)
+  - Miss NVDA Forms Mode
+  - Miss submit-time vs blur-time error distinction
+  - Provide no Playwright assertions
+  - Have vague acceptance criteria
+
+  a11y-planner scoring 85-95 should additionally:
+  - Name specific axe rules
+  - Document NVDA Forms Mode step-by-step
+  - Distinguish the two error mechanisms
+  - Show Playwright assertion syntax
+  - Produce runbook-quality SR steps

@@ -1,0 +1,184 @@
+fixture_id: test-data-table
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference correct APG patterns? Tables use semantic <table> (not grid role); per-row menus use APG Menu Button pattern. Correct pattern selection is critical here."
+    weight: 3
+    rule_based_checks:
+      - identifies_table_as_semantic_table_not_grid: true
+      - references_apg_menu_button_for_row_actions: true
+      - includes_apg_menu_button_url: "https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/"
+      - maps_aria_sort_to_column_headers: true
+      - maps_aria_live_to_sort_announcement: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every test category cite the WCAG criterion being verified?"
+    weight: 3
+    rule_based_checks:
+      - table_semantics_cites_wcag_1_3_1: true
+      - aria_sort_cites_wcag_4_1_2: true
+      - aria_live_cites_wcag_4_1_3: true
+      - responsive_cites_wcag_1_4_10: true
+    expected_citations:
+      - "WCAG 1.3.1 Info and Relationships (table semantics — scope, caption, header association)"
+      - "WCAG 4.1.2 Name, Role, Value (aria-sort state, menu button expanded state)"
+      - "WCAG 4.1.3 Status Messages (aria-live sort announcement)"
+      - "WCAG 2.1.1 Keyboard (keyboard navigation of cells, sort headers, menus, pagination)"
+      - "WCAG 1.4.10 Reflow (horizontal scroll on narrow viewports at 320px)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a QA engineer with limited axe experience follow this plan? Are axe rule IDs named? Is NVDA table mode documented? Is sort state transition scripted?"
+    weight: 2
+    rule_based_checks:
+      - names_axe_rule_td_headers_attr: true
+      - names_axe_rule_th_has_data_cells: true
+      - names_axe_rule_scope_attr_valid: true
+      - documents_nvda_table_mode_ctrl_alt_arrow: true
+      - scripts_sort_state_transition_test: true
+      - tests_aria_live_announcement_content: true
+      - tests_per_row_menu_arrow_keys: true
+    llm_judge_criteria:
+      - "Is NVDA table mode navigation (Ctrl+Alt+Arrow) documented with specific keystrokes?"
+      - "Is the aria-sort test a scripted sequence (none → ascending → descending → none) or a vague 'verify sort'?"
+      - "Are the per-row menu tests specific to APG menu button behavior (Arrow keys, Escape, focus restoration)?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does the plan cover all required test types AND table-specific scenarios (sort states, NVDA table mode, pagination focus, per-row menus, responsive scroll)?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - tests_sort_state_all_three_values: true
+      - tests_pagination_focus_management: true
+      - tests_per_row_action_menu: true
+      - tests_responsive_horizontal_scroll: true
+
+  - id: test_methodology
+    name: "Test Methodology"
+    description: "Does the plan specify a structured test execution order? Is the complexity managed with a prioritized test matrix?"
+    weight: 2
+    rule_based_checks:
+      - specifies_test_execution_order: true
+      - groups_tests_by_subsystem: true
+      - documents_playwright_aria_sort_assertion: true
+      - documents_playwright_aria_live_assertion: true
+    llm_judge_criteria:
+      - "Is the test plan organized so a QA engineer can work through it systematically without missing subsystems?"
+      - "Are Playwright assertions specific enough to write test code from directly?"
+      - "Does the plan address the interaction between subsystems (e.g., sorting resets pagination — is that tested)?"
+
+  - id: coverage_matrix
+    name: "Coverage Matrix"
+    description: "Does the plan specify which tests apply to which subsystems? A coverage matrix or equivalent structure is expected for COMPLEX scope."
+    weight: 2
+    rule_based_checks:
+      - covers_table_semantics_subsystem: true
+      - covers_sort_subsystem: true
+      - covers_pagination_subsystem: true
+      - covers_row_action_menu_subsystem: true
+      - covers_responsive_subsystem: true
+    llm_judge_criteria:
+      - "Is it clear which tests cover table structure vs. sort behavior vs. pagination vs. row menus?"
+      - "Does the plan identify the relative risk level of each subsystem (sort announcement being the highest, caption being the lowest)?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan proportional to COMPLEX difficulty? 5-7 pages expected. Must avoid over-prescribing headers attribute on a flat table."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 5-7
+      - avoids_headers_attribute_overprescription: true
+      - avoids_role_grid_prescription: true
+    llm_judge_criteria:
+      - "Is the depth proportional to the complexity of the component under test?"
+      - "Does the plan avoid prescribing headers attribute on all TD cells in a flat 7-column table?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 80-95
+    reasoning: "Should document NVDA table mode (Ctrl+Alt+Arrow), script sort state transitions, test all four subsystems, cite WCAG 1.4.10 for reflow. May miss JAWS-specific table shortcuts or VoiceOver table navigation."
+
+  - condition: baseline-zero-shot
+    expected_score: 45-60
+    reasoning: "Will likely cover table header association and keyboard navigation generically. Will almost certainly miss NVDA Ctrl+Alt+Arrow table mode, aria-live sort announcement testing, and per-row menu specifics. Responsive testing likely absent."
+
+  - condition: baseline-few-shot
+    expected_score: 50-65
+    reasoning: "Structured approach may surface subsystem coverage, but NVDA table mode navigation and sort state transition scripting are specialist knowledge that few-shot examples don't supply."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Critical discriminator: NVDA table mode (Ctrl+Alt+Arrow).
+  A plan that omits this or describes it incorrectly cannot produce valid table accessibility tests.
+  Most production table audits that miss screen reader defects do so because the tester
+  didn't know this mode exists.
+
+  Second critical discriminator: aria-sort as a 3-state transition (none → ascending → descending → none).
+  Plans that only test "sort ascending works" miss the default-state restoration and the
+  descending state entirely. Both are common production gaps.
+
+  Subsystem priority for scoring partial plans:
+  1. Table semantics + NVDA table mode (highest risk, most commonly failed)
+  2. Sort state + aria-live announcement (the dynamic state that requires specialist knowledge)
+  3. Pagination focus management (common production failure, lower specialist bar)
+  4. Per-row action menu (APG Menu Button — well-documented if you know to look)
+  5. Responsive testing (important but lowest specialist bar)
+
+  False-positive trap: Prescribing headers attribute on all TD cells.
+  scope="col" on <th> is correct for a flat 7-column table. headers="" is only needed
+  for complex multi-level headers (e.g., nested row/column headers). A plan that prescribes
+  headers="" on every cell signals confusion between simple and complex table markup.

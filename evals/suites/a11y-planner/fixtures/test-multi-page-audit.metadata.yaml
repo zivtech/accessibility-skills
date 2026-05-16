@@ -1,0 +1,122 @@
+fixture_id: test-multi-page-audit
+name: Multi-Page Audit Plan
+description: Accessibility audit methodology for a 20-page government benefits portal preparing a VPAT — WCAG-EM sampling, risk-based page prioritization, axe/WAVE/manual tool matrix, third-party component handling, CRITICAL/MAJOR/MINOR prioritization framework, and VPAT reporting structure.
+language: html
+framework: Server-rendered HTML with progressive JS enhancement
+difficulty: COMPLEX
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: High
+
+scenario:
+  feature: A pre-VPAT accessibility audit of a live 20-page government benefits portal with authenticated application flows, shared component patterns, and third-party dependencies (reCAPTCHA, YouTube, analytics)
+  user_need: Producing a legally defensible VPAT within 3 months with a 2-person QA team, prioritizing high-risk authenticated flows and shared component patterns to maximize coverage efficiency
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - iOS VoiceOver
+    - TalkBack (Android)
+    - Keyboard-only users
+    - Dragon NaturallySpeaking (voice input)
+  scope: 20 pages, 8 shared component patterns, 3 third-party integrations, ITTF VPAT 2.4 Rev 508 output
+  constraints:
+    - 3-month deadline for VPAT publication
+    - 2-person QA team (limited bandwidth)
+    - Government compliance documentation required (VPAT 2.4 Rev 508)
+    - axe DevTools Enterprise already licensed
+    - Third-party components (reCAPTCHA, YouTube) cannot be remediated but must be documented
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - WCAG-EM referenced as the evaluation methodology framework
+  - Risk-based page sampling (authenticated flows highest priority, public content lowest)
+  - Tool matrix: axe DevTools for automated, WAVE for visual overlay, manual for dynamic interactions, SR for human judgment
+  - Shared component leverage explicitly identified (fix nav = fixes all 20 pages)
+  - Third-party components addressed with VPAT documentation language
+  - Prioritization framework with user-impact-based definitions (CRITICAL/MAJOR/MINOR/ADVISORY)
+  - VPAT output structure connected to audit findings
+  - Mobile SR coverage (iOS VoiceOver, TalkBack) not just desktop
+
+expected_findings:
+  must_have:
+    - WCAG-EM methodology reference (https://www.w3.org/TR/WCAG-EM/)
+    - Risk-based page sampling strategy (authenticated flows first, shared components second)
+    - Tool selection rationale (axe DevTools + WAVE + manual keyboard + SR — complementary roles)
+    - Testing matrix (page type × test method)
+    - Prioritization framework definitions (CRITICAL blocks journey, MAJOR has workaround, MINOR is friction)
+    - Third-party handling: reCAPTCHA, YouTube documented as third-party in VPAT; best-effort testing only
+    - Shared component leverage: mega-menu, search, alerts, data table affect all pages
+    - VPAT reporting connection: audit output maps to VPAT 2.4 conformance claims
+    - Screen reader matrix covering at least NVDA, JAWS, VoiceOver desktop
+    - WCAG 2.2 AA most-common failure criteria for government portals (1.4.3, 2.4.3, 3.3.1, 4.1.2)
+    - a11y-critic checkpoints for each audit phase (automated complete, manual complete, SR complete, VPAT draft)
+
+  should_have:
+    - Mobile SR coverage (iOS VoiceOver, TalkBack) with page type assignment
+    - Dragon NaturallySpeaking testing scope (focus-visible labels, form activation by voice)
+    - Session timeout modal test (WCAG 2.2.1 Timing Adjustable) — government portal specific
+    - Authenticated flow pre-requisites (test accounts, test data for form submissions)
+    - Multi-step form testing strategy (all 6 steps, error recovery, back navigation)
+    - axe DevTools Enterprise configuration (rule set selection, exclusion list for known third-party violations)
+    - Remediation prioritization by user journey impact vs. WCAG criterion severity
+    - Estimated effort per page type (automated: 30min; manual keyboard: 2hr; SR: 3hr)
+
+  nice_to_have:
+    - WCAG-EM structured sample definition (random representative sample + critical pages)
+    - High contrast mode testing plan for government compliance
+    - Cognitive accessibility review (WCAG 2.1 + 2.2 cognitive criteria: 1.3.5, 2.4.6, 3.1.1, 3.3.2)
+    - Third-party vendor contact process for VPAT supplemental documentation
+    - Automated baseline scan before manual testing to establish known-issue exclusion list
+
+false_positive_traps:
+  - Recommending equal testing depth for all 20 pages — this is infeasible and shows unfamiliarity with audit methodology; sampling strategy is how audits are conducted
+  - Treating WAVE as equivalent to axe-core — WAVE provides a visual overlay for manual review; axe is rule-based automated; they are complementary, not substitutable
+  - Recommending remediation of reCAPTCHA — third-party inaccessibility is documented in VPAT under "third-party components outside contractor control"; requiring remediation is legally incorrect
+  - Prioritizing issues by WCAG criterion number (e.g., "1.x failures are highest priority") instead of user journey impact
+  - Recommending a11y testing tool X without explaining how it complements other tools in the matrix
+
+multi_perspective_coverage:
+  keyboard: "Full keyboard path through all 6 application form steps; mega-menu keyboard navigation; session timeout modal keyboard; document upload keyboard activation; date picker keyboard; search keyboard with live results; all interactive elements reachable via Tab"
+  screen_reader: "Page-by-page SR testing assignment (which SR covers which page type); landmark navigation efficiency; form error announcement in application steps; live region behavior in status dashboard; authenticated flow testing with SR including login and form submission"
+  low_vision: "200% zoom on all authenticated flow pages; color contrast audit using automated (axe color-contrast rule) + manual review for complex UI; focus indicator visibility across page types; text resize without layout breakage"
+  cognitive: "Multi-step form progress indicator clarity; error message specificity in application steps; session timeout warning adequacy (WCAG 2.2.1); instructions before irreversible actions; consistent navigation across all 20 pages"
+  mobile_touch: "iOS VoiceOver coverage on high-risk pages (login, application step 1, status dashboard); TalkBack coverage on equivalent pages; touch target testing on form inputs and navigation; mobile keyboard behavior on date picker and document upload"
+
+notes: |
+  This COMPLEX fixture tests whether a11y-planner can reason at audit methodology level,
+  not just single-component test planning. Key capabilities tested:
+
+  1. WCAG-EM knowledge: Does it know the W3C's own evaluation methodology?
+  2. Risk-based sampling: Does it prioritize by user journey risk, not alphabetical or arbitrary order?
+  3. Tool complementarity: Does it explain when to use each tool and why?
+  4. Third-party handling: Does it know the legal/VPAT implication of third-party components?
+  5. Shared component leverage: Does it identify efficiency through common patterns?
+  6. VPAT output connection: Does it connect the audit to the deliverable?
+
+  Expected verdict: ACCEPT
+  Baseline plans will likely produce a generic "test all pages with axe and SR" plan without
+  sampling strategy, WCAG-EM reference, tool matrix, or third-party handling.
+
+  Key discriminator: Does the plan reference WCAG-EM (https://www.w3.org/TR/WCAG-EM/)?
+  Government portal audits that produce VPATs are expected to follow WCAG-EM. A plan that
+  doesn't know this methodology exists cannot produce a legally defensible VPAT.
+
+  Second key discriminator: Does the plan address reCAPTCHA as a third-party documentation
+  issue rather than a remediation issue? This is a government compliance-specific distinction
+  that baseline models frequently miss.
+
+  Scoring note: At COMPLEX scope, plans scoring 78+ that cover WCAG-EM, risk-based sampling,
+  tool matrix, and third-party handling should be ACCEPT even if they miss mobile SR details
+  or Dragon NaturallySpeaking specifics.

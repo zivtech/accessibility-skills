@@ -1,0 +1,162 @@
+fixture_id: test-modal
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG Dialog Modal pattern with URL and map the focus lifecycle (open → trap → close → restore)?"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_dialog_pattern: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
+      - maps_focus_lifecycle_open_trap_close_restore: true
+      - distinguishes_focus_trap_from_background_inert: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every test category cite the WCAG criterion being verified?"
+    weight: 3
+    rule_based_checks:
+      - focus_trap_cites_wcag_2_1_2: true
+      - focus_order_cites_wcag_2_4_3: true
+      - name_role_value_cites_wcag_4_1_2: true
+      - focus_visible_cites_wcag_2_4_7: true
+    expected_citations:
+      - "WCAG 2.1.2 No Keyboard Trap — invoked in its positive/intentional form for dialog focus containment"
+      - "WCAG 2.4.3 Focus Order (focus moves to dialog on open; restoration on close)"
+      - "WCAG 4.1.2 Name, Role, Value (role=dialog, aria-labelledby, aria-describedby, aria-disabled)"
+      - "WCAG 2.4.7 Focus Visible (focus indicators within modal)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a QA engineer with Playwright experience but no SR experience follow these steps? Are focus lifecycle tests scripted? Is NVDA announcement sequence documented?"
+    weight: 2
+    rule_based_checks:
+      - provides_focus_trap_step_by_step: true
+      - tests_all_three_close_paths: true
+      - documents_nvda_dialog_announcement: true
+      - tests_background_inert: true
+      - includes_playwright_assertions: true
+      - tests_conditional_button_state: true
+    llm_judge_criteria:
+      - "Is the focus trap test specific enough to detect a partial trap (some elements leak focus, others don't)?"
+      - "Does the plan describe what NVDA should announce when focus moves into the dialog?"
+      - "Are all three close paths (Cancel, Escape, backdrop) tested as separate cases?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does the plan cover all required test types AND modal-specific scenarios (focus trap, focus restoration, background inert, SR announcement, conditional state)?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - tests_focus_trap: true
+      - tests_focus_restoration_all_paths: true
+      - tests_background_inert: true
+      - tests_sr_announcement_on_open: true
+
+  - id: test_methodology
+    name: "Test Methodology"
+    description: "Does the plan specify how to trigger and verify the focus lifecycle in Playwright? Does it account for the non-native backdrop click?"
+    weight: 2
+    rule_based_checks:
+      - specifies_playwright_dialog_trigger: true
+      - addresses_backdrop_click_implementation: true
+      - specifies_playwright_inert_assertion: true
+    llm_judge_criteria:
+      - "Does the plan acknowledge that backdrop click requires custom pointer event simulation in Playwright?"
+      - "Are the Playwright assertions specific enough to write real test code from them?"
+      - "Does the plan specify what 'pass' looks like for each test case (not just what to do)?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan proportional to MODERATE difficulty? 3-4 pages. Must correctly identify inert as primary mechanism, not aria-modal."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 3-4
+      - no_scope_creep: true
+      - identifies_inert_as_primary_mechanism: true
+    llm_judge_criteria:
+      - "Is the plan length appropriate for a single modal dialog component?"
+      - "Does the plan treat inert as the primary background isolation mechanism, not aria-modal?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 85-95
+    reasoning: "Should map to APG dialog pattern, script focus lifecycle tests, cover all three close paths, test background inert separately from focus trap, document NVDA announcement sequence"
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Likely covers focus trap and Escape key. Will likely confuse aria-modal with inert. Will miss NVDA announcement sequence specifics, conditional button state testing, and backdrop click implementation note."
+
+  - condition: baseline-few-shot
+    expected_score: 60-75
+    reasoning: "Structured approach may cover more close paths, but NVDA specifics, inert vs aria-modal distinction, and conditional state testing are specialist knowledge unlikely to surface without domain grounding."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  Key discriminator 1: Does the plan distinguish focus trap (Tab cycling within modal)
+  from background inert (elements outside not reachable)? These are tested separately
+  and require different Playwright assertions.
+
+  Key discriminator 2: Does the plan correctly identify inert as the primary mechanism
+  for background isolation, with aria-modal noted only as an older SR compatibility
+  fallback? Plans that require aria-modal without mentioning inert show outdated knowledge.
+
+  Key discriminator 3: Does the plan test all three close paths (Cancel, Escape, backdrop)?
+  Production modals routinely fail focus restoration on backdrop clicks specifically because
+  the backdrop is not a native button and focus restoration must be implemented manually.
+
+  False-positive trap: Plans that expect focus to move to the dialog's first interactive
+  element (the text input) on open rather than the dialog container or heading show
+  confusion between form focus and dialog focus. APG recommends focus to the container
+  or first relevant heading, not necessarily the first interactive element.

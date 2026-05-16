@@ -1,0 +1,104 @@
+fixture_id: sr-search-results-live
+name: Search Results Page with Live-Updating Count
+description: Legal research platform search page where result count updates on keystroke/filter/sort changes. Tests aria-live strategy, debounce timing, aria-busy for loading, filter chip state, and aria-sort misconception correction.
+language: jsx
+framework: Next.js
+difficulty: MODERATE
+domain: Screen Reader Experience
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: Search results page with a search input (autocomplete suggestions), dismissible filter chips (Subject, Date Range, Jurisdiction), sort dropdown (Relevance/Date/Citation Count), live-updating result count, paginated result cards, and a CSS loading spinner. Result count debounced at 300ms; filter/sort changes trigger re-queries via React Suspense.
+  user_need: Screen reader users need to know when results change without having their reading flow interrupted; filter chip state must be communicated; loading state must be announced; sort selection must communicate current state without incorrectly applying aria-sort to a select element.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Search results page — live region for count, filter chip aria-pressed state, sort control labeling, aria-busy loading pattern, role=search landmark, result list semantics
+  constraints:
+    - 300ms keystroke debounce — live region updates must align with debounce, not fire per keystroke
+    - React Suspense loading states — aria-busy="true" on container during suspend
+    - Filter chips appear/disappear dynamically
+    - Multiple simultaneous state changes (filter + sort + new query)
+    - Existing result count is a plain <p> with no ARIA
+    - Existing sort control is a <select> — aria-sort does not apply here
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Live region strategy: aria-live="polite" aria-atomic="true" on result count with WCAG 4.1.3 citation
+  - Debounce alignment: live region updates tied to 300ms debounce, not every keystroke
+  - aria-relevant: explain additions text value vs default for count element
+  - aria-busy: documented for loading state on results container
+  - Filter chip state: aria-pressed="true|false" on toggle buttons with accessible label including filter name
+  - aria-sort misconception: correctly identify that aria-sort applies to <th> in tables, not to <select> controls
+  - role=search landmark wrapping search interface
+  - Result list as <ul>/<li>, not a table
+  - Focus management: no focus move after filter/sort change
+  - WCAG 4.1.3, 1.3.1, 2.4.3 citations
+
+expected_findings:
+  must_have:
+    - "aria-live='polite' aria-atomic='true' on result count element"
+    - "Debounce alignment: live region update triggered at end of 300ms debounce, not on every keystroke"
+    - "aria-busy='true' on results container during loading; set to 'false' when results land"
+    - "aria-pressed='true|false' on filter chip buttons"
+    - "Filter chip label includes filter name: 'Subject: Case Law — remove filter'"
+    - "role='search' landmark wrapping search input, filter chips, sort control"
+    - "Sort <select> uses visible <label> and selected <option> to communicate state — not aria-sort"
+    - "Result list as <ul>/<li> — not a table"
+    - "No focus move after filter/sort change — WCAG 2.4.3"
+    - "WCAG 4.1.3 (Status Messages) citation for result count"
+    - "WCAG 1.3.1 (Info and Relationships) citation"
+
+  should_have:
+    - "aria-relevant='additions text' explanation — why this value vs default"
+    - "Explicit statement that aria-sort is a <th> attribute and does not apply to <select>"
+    - "Loading spinner aria-hidden='true' with adjacent sr-only text 'Loading results...'"
+    - "WCAG 2.4.3 (Focus Order) citation for no-focus-move decision"
+    - "Screen reader testing plan: verify count announced after filter without focus move"
+    - "Autocomplete suggestions: aria-autocomplete='list' on input, aria-expanded, aria-activedescendant"
+
+  nice_to_have:
+    - "Pagination: aria-label='Search results pagination' on nav landmark, aria-current='page' on current page"
+    - "Result count region given aria-label='Search results summary'"
+    - "Empty results state: live region announces '0 results found for your search'"
+
+false_positive_traps:
+  - "Applying aria-sort to the <select> sort control — aria-sort is only valid on <th> elements in sortable tables"
+  - "Using aria-live='assertive' for the result count — interrupts user typing"
+  - "Moving focus to the result list after every filter change — WCAG 2.4.3 violation"
+  - "Adding aria-live to each individual filter chip — chips don't need live regions; the result count announces the consequence of filtering"
+  - "Recommending role='grid' for the result cards — product cards are a list, not a grid table"
+
+multi_perspective_coverage:
+  keyboard: "Filter chips keyboard-dismissible (Enter/Space on × button); sort <select> full keyboard access; pagination prev/next reachable; Tab order: search → filters → sort → results → pagination"
+  screen_reader: "Result count live region polite announcement after debounce; aria-busy defers reading during load; filter chip pressed state announced; sort state via selected option; result list navigable by list item"
+  low_vision: "Active filter chips visually distinguished beyond color; loading spinner has visible text alternative; result count visible at 200% zoom"
+  cognitive: "Consistent filter chip interaction (toggle on/off); result count update reinforces filter action; clear sort labels in dropdown"
+  mobile_touch: "Filter chips 44×44px touch targets; sort <select> native mobile picker; result cards full-width tap targets"
+
+notes: |
+  MODERATE difficulty — discriminating items are the debounce-timing constraint (live region floods if not coordinated) and the aria-sort misconception (zero-shot baselines frequently apply aria-sort to the sort <select>).
+
+  This fixture is clearly differentiated from screenreader-liveregion: that fixture covers generic live region patterns; this fixture covers a specific search result scenario with debounce timing, filter chip state, loading state (aria-busy), and the aria-sort misconception — all requiring concrete decisions rather than general guidance.
+
+  Expected verdict: ACCEPT for a11y-planner. ACCEPT-WITH-RESERVATIONS for baselines that miss aria-sort correction or don't address debounce timing.
+
+  Outlier indicators:
+  - aria-sort applied to <select> (confirms no understanding of aria-sort)
+  - aria-live="assertive" on result count
+  - Focus move after filter change (WCAG 2.4.3 violation)
+  - No aria-busy pattern for loading state

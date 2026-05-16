@@ -1,0 +1,181 @@
+fixture_id: test-simple-button
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG Button pattern and correctly map keyboard interactions? For testing plans, this checks whether the tester knows what they're testing against."
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_button_pattern: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      - maps_keyboard_to_enter_and_space: true
+      - confirms_native_button_implicit_role: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does every test category cite the WCAG criterion being verified?"
+    weight: 3
+    rule_based_checks:
+      - keyboard_test_cites_wcag_2_1_1: true
+      - focus_indicator_cites_wcag_2_4_7: true
+      - aria_state_cites_wcag_4_1_2: true
+      - focus_ring_contrast_cites_wcag_1_4_11: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard (keyboard interaction testing)"
+      - "WCAG 4.1.2 Name, Role, Value (aria-busy, aria-disabled state testing)"
+      - "WCAG 2.4.7 Focus Visible (focus indicator test)"
+      - "WCAG 1.4.11 Non-text Contrast (focus ring contrast test)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a QA engineer execute these tests without guessing? Are axe rules named? Are keyboard steps scripted?"
+    weight: 2
+    rule_based_checks:
+      - names_axe_rule_button_name: true
+      - names_axe_rule_color_contrast: true
+      - provides_step_by_step_keyboard_script: true
+      - specifies_sr_keystrokes: true
+      - includes_playwright_assertion_example: true
+    llm_judge_criteria:
+      - "Would a QA engineer know exactly which axe rules to run and what to look for?"
+      - "Is the keyboard test script specific enough to follow without guessing?"
+      - "Are screen reader verification steps specific to named screen readers (not generic 'test with SR')?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Does the plan cover all required test types AND all component states?"
+    weight: 2
+    rule_based_checks:
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - tests_default_state: true
+      - tests_disabled_state: true
+      - tests_loading_state: true
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is the plan proportional to TRIVIAL difficulty? Expected 1-2 pages. Over-planning is a failure mode here."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: 1-2
+      - no_scope_creep: true
+      - avoids_tabindex_prescription: true
+    llm_judge_criteria:
+      - "Does the plan feel proportional to a single well-understood component?"
+      - "Does the plan avoid prescribing tabindex='0' on a native button element?"
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 90-100
+    reasoning: "Should name specific axe rules, provide keyboard scripts, cite WCAG criteria, cover all three states, stay appropriately brief"
+
+  - condition: baseline-zero-shot
+    expected_score: 70-80
+    reasoning: "Likely covers correct structure but stays generic — 'use axe-core', 'test keyboard', without rule IDs or step-by-step scripts. May miss isLoading state."
+
+  - condition: baseline-few-shot
+    expected_score: 75-85
+    reasoning: "Structured example may prompt axe-core specificity but less likely to supply exact rule IDs or SR keystrokes without domain knowledge"
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
+
+notes: |
+  This TRIVIAL fixture targets the testing domain's core discriminator: the difference between
+  a plan that says "use axe-core" and one that names button-name and color-contrast specifically.
+
+  Key evaluation focus:
+  - Does the plan name specific axe-core rule IDs?
+  - Is the keyboard test a step-by-step script (Tab → verify ring → Enter → verify)?
+  - Does it cover all three states (default, disabled, loading)?
+  - Does it correctly identify that native <button> doesn't need tabindex?
+  - Are WCAG criteria numbered, not generic?
+
+  False-positive trap: Plans that prescribe tabindex="0" on the button element signal
+  the planner doesn't know native HTML semantics. This should be caught by the rubric
+  as a quality indicator.
+
+  Expected findings baseline:
+  - axe-core referenced: 100% of evaluators
+  - Specific rule IDs named: 70% a11y-planner, 25% baseline
+  - Keyboard test as step-by-step script: 85% a11y-planner, 40% baseline
+  - All three states covered: 90% a11y-planner, 50% baseline
+  - WCAG criterion numbers cited: 95% a11y-planner, 40% baseline
+
+rule_based_scoring_details: |
+  Rule-based component (70% weight):
+  - Each check is binary (present/absent)
+  - Dimension scores are N_passed / N_total × 100
+  - Calibration checks verify no tabindex prescription (a false-positive catch)
+
+  LLM judge component (30% weight):
+  - Evaluate whether a QA engineer could follow the plan literally
+  - Evaluate whether keyboard test steps are scripted or abstract
+  - Evaluate whether screen reader steps name specific SRs and keystrokes
+
+example_excellent_response: |
+  A score of 95+ would:
+  - ✓ Name axe rules: button-name, color-contrast, aria-allowed-attr
+  - ✓ Provide keyboard script: 1. Tab to button 2. Verify 2px offset focus ring visible 3. Press Enter → action fires 4. Press Space → action fires 5. Tab to disabled button → verify no activation
+  - ✓ Screen reader steps: "In NVDA, navigate to button with Tab. Listen for 'Submit button'. Tab to disabled button. Listen for 'Submit button dimmed' or 'unavailable'. Tab to loading button. Listen for 'Submit button busy'."
+  - ✓ Cite WCAG 2.1.1, 4.1.2, 2.4.7, 1.4.11
+  - ✓ Playwright example: await expect(button).toHaveAttribute('aria-busy', 'true')
+  - ✓ Acceptance criteria: "Focus ring visible at 3:1 contrast against #FFFFFF; verified via Playwright screenshot diff"
+  - ✓ 1-2 pages, no discussion of focus traps or live regions (not relevant here)
+
+example_weak_response: |
+  A score of 45 would:
+  - ✗ "Run axe-core on the component" (no rule IDs)
+  - ✗ "Test keyboard navigation" (no step-by-step script)
+  - ✗ "Test with a screen reader" (no SR named, no keystrokes)
+  - ✗ Tests only default state; no disabled or loading coverage
+  - ✗ Acceptance criteria: "the button should work with keyboard"
+  - ✗ Prescribes tabindex="0" on the button element

@@ -1,5 +1,5 @@
 fixture_id: keyboard-menu-dropdown
-rubric_version: "1.0"
+rubric_version: "1.1"
 scoring_method: hybrid
 hybrid_weights:
   rule_based: 0.7
@@ -8,37 +8,134 @@ hybrid_weights:
 dimensions:
   - id: completeness
     name: "Completeness"
+    description: "Are all 9 plan phases addressed at depth appropriate for MODERATE difficulty?"
     weight: 3
     rule_based_checks:
-      - has_all_9_phases: true
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+    llm_judge_criteria:
+      - "Is each phase addressed at MODERATE depth — more than a bullet list, but not padded with out-of-scope subpatterns like nested submenus?"
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Is the APG Menu Button pattern correctly identified and mapped to this component?"
+    weight: 3
+    rule_based_checks:
+      - maps_to_apg_menubutton: true
+      - includes_apg_url: true
+    expected_citations:
+      - "https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/"
+    llm_judge_criteria:
+      - "Is the APG pattern applied specifically to this component — not just mentioned generically?"
+      - "Does the plan distinguish menu button (arrow navigation) from button that opens a listbox (select-like) — these are different patterns?"
 
   - id: wcag_grounding
     name: "WCAG Grounding"
+    description: "Are WCAG citations applied to specific design decisions with criterion names?"
     weight: 3
     rule_based_checks:
-      - includes_wcag_citations: true
+      - cites_wcag_2_1_1: true
+      - cites_wcag_4_1_2: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard — all menu functionality operable via keyboard"
+      - "WCAG 4.1.2 Name, Role, Value — aria-expanded communicates state to AT"
+    llm_judge_criteria:
+      - "Are WCAG criteria applied to specific decisions (aria-expanded → 4.1.2) rather than listed at the end as a generic block?"
 
-  - id: apg_pattern
-    name: "APG Pattern Mapping"
-    weight: 2
+  - id: aria_completeness
+    name: "ARIA Completeness"
+    description: "Are all required ARIA attributes specified with correct roles and values?"
+    weight: 3
     rule_based_checks:
-      - maps_to_apg_menubutton: true
-
-  - id: focus_management
-    name: "Focus Management"
-    weight: 2
-    rule_based_checks:
-      - clarifies_focus_on_open: true
+      - documents_aria_expanded: true
+      - documents_role_menu: true
+      - documents_role_menuitem: true
+      - documents_aria_disabled: true
+    llm_judge_criteria:
+      - "Is role='menu' on the list container (not on individual items)?"
+      - "Is aria-disabled='true' used for disabled items rather than removing them from DOM?"
+      - "Is aria-haspopup or aria-controls mentioned for the trigger button?"
 
   - id: keyboard_interaction
     name: "Keyboard Interaction"
+    description: "Are all key behaviors documented (Arrow keys, Enter, Escape, Tab)?"
+    weight: 3
+    rule_based_checks:
+      - documents_arrow_down: true
+      - documents_arrow_up: true
+      - documents_enter_key: true
+      - documents_escape_key: true
+      - documents_tab_key: true
+    llm_judge_criteria:
+      - "Is Tab behavior clear — does it exit the menu (not navigate within it) per APG?"
+      - "Are Enter and Space both documented as activating a focused menu item?"
+
+  - id: focus_management
+    name: "Focus Management"
+    description: "Does the plan specify where focus moves on open, on item selection, and on close?"
+    weight: 3
+    rule_based_checks:
+      - clarifies_focus_on_open: true
+      - documents_focus_restoration_to_trigger: true
+    llm_judge_criteria:
+      - "Is the focus-on-open decision explicit — first item (APG recommendation) vs trigger button — with rationale?"
+      - "Is focus restoration to the trigger documented for both Escape AND item selection paths?"
+      - "Does the plan address what happens when a disabled item receives focus (skip vs announce)?"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a React developer implement this plan without guessing?"
     weight: 2
     rule_based_checks:
-      - documents_arrow_keys: true
-      - documents_escape_key: true
+      - provides_react_implementation_guidance: true
+    llm_judge_criteria:
+      - "Does the plan reference how to implement keyboard trapping in React (useEffect + keydown listener, focus management ref, or a library)?"
+      - "Is the aria-expanded toggle tied to React state management — not just a static value?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+
+  - id: testing_coverage
+    name: "Testing Coverage"
+    description: "Are test cases defined for keyboard navigation, SR state announcements, and disabled items?"
+    weight: 2
+    rule_based_checks:
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+    llm_judge_criteria:
+      - "Is a test case for aria-expanded toggle (open/close state announcement) included?"
+      - "Is a test for disabled item behavior (announced, not activatable) included?"
+      - "Is focus restoration to trigger after item selection tested?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Is plan length appropriate for MODERATE difficulty (~3 pages)? No out-of-scope patterns introduced."
+    weight: 1
+    rule_based_checks:
+      - estimated_length_pages: "2-4"
+      - no_scope_creep: true
+    llm_judge_criteria:
+      - "Does the plan avoid introducing submenu/nested menu patterns that are explicitly out of scope?"
+      - "Is depth proportional to MODERATE — not a one-paragraph summary, not a 7-page treatise?"
 
 composite_score_formula: |
   score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
 
 scoring_thresholds:
   excellent: 90-100
@@ -50,10 +147,46 @@ scoring_thresholds:
 expected_reviewer_performance:
   - condition: a11y-planner
     expected_score: 87-98
-    reasoning: "Should handle MODERATE APG Menu Button pattern with focus management"
+    reasoning: "Should handle MODERATE APG Menu Button pattern with explicit focus management decision. Key differentiators: aria-disabled vs DOM removal for disabled items, focus-on-open specificity (first item, not trigger), and Tab exits menu behavior."
+
+  - condition: baseline-zero-shot
+    expected_score: 55-70
+    reasoning: "Likely covers aria-expanded, Arrow keys, and Escape. Common gaps: aria-controls/aria-haspopup on trigger, focus-on-open decision (often left ambiguous), aria-disabled vs DOM removal for disabled items, Tab key behavior."
+
+  - condition: baseline-few-shot
+    expected_score: 65-78
+    reasoning: "Structured approach improves ARIA completeness. Likely still gaps: Tab-exits-menu behavior, disabled item DOM strategy, and Home/End optional navigation."
 
 verdict_expectations:
   a11y-planner: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
 
 notes: |
-  MODERATE difficulty testing APG Menu Button pattern.
+  MODERATE fixture — two discriminating decision points that separate strong plans from adequate ones:
+
+  1. Focus on menu open: APG specifies focus moves to first menuitem when menu opens. Plans that leave this ambiguous ("focus moves into menu") or incorrectly say focus stays on trigger are incomplete on focus management.
+
+  2. Disabled item handling: aria-disabled="true" keeps items in DOM and focusable (NVDA/JAWS announces "unavailable"). Removing items from DOM hides them from AT. Using HTML disabled attribute on non-button elements doesn't work. Plans that only say "disable items" without specifying the mechanism are incomplete.
+
+  Key evaluation focus:
+  - APG Menu Button pattern with URL
+  - aria-expanded on trigger (not on list)
+  - role="menu" on list container, role="menuitem" on items
+  - Arrow Down/Up navigation, Enter/Space select, Escape close, Tab exits
+  - Focus moves to first item on open, returns to trigger on close
+  - aria-disabled on disabled items (not removed from DOM)
+  - WCAG 2.1.1 and 4.1.2 citations
+
+  False positive patterns (penalized in calibration):
+  - role="listbox" instead of role="menu"
+  - aria-selected on menuitem (belongs to listbox)
+  - Recommending Tab to navigate within menu (APG uses Arrow keys)
+  - aria-live on menu container (not needed; role="menu" handles AT announcement)
+
+  Outlier indicators:
+  - No APG pattern reference
+  - role="listbox" used
+  - Focus management entirely absent
+  - Tab navigates within menu items
+  - Plan <2 pages or >5 pages

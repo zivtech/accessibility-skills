@@ -1,0 +1,92 @@
+fixture_id: visual-status-colors
+name: Status Indicator Dots
+description: Color-only status dots (green/yellow/red) in a dashboard list. Plan WCAG 1.4.1 compliance via text alternatives, 1.4.11 contrast, compact-mode sr-only technique.
+language: jsx
+framework: React
+difficulty: TRIVIAL
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: Low
+
+scenario:
+  feature: A reusable StatusDot component rendering a colored circle (green/yellow/red) to convey status in list items, table rows, and card headers. A compact mode hides text labels leaving only the dot visible.
+  user_need: Users who are colorblind or use screen readers need to understand status without relying on color. Compact mode must not strip status meaning from AT users.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Single StatusDot component and its integration in list items, table rows, and card headers
+  constraints:
+    - Dot shape and color system must remain unchanged (design constraint)
+    - Compact mode (text label hidden) is a required product feature
+    - Same component used in both full-label and compact modes
+    - Existing component has no accessibility attributes
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - WCAG 1.4.1 grounding: must identify color-only failure and its user impact
+  - Non-color indicator: concrete strategy (visually-hidden text OR role="img" + aria-label, not title)
+  - WCAG 1.4.11 grounding: 3:1 minimum contrast for dot against background
+  - WCAG 1.1.1 grounding: non-text content pattern for icon-only variant
+  - Compact mode: sr-only / clip technique so label is hidden visually but not from AT
+  - aria-hidden on presentational dot when sibling text label exists
+  - Calibration: 1-2 pages, not an over-engineered epic for a 15-line fix
+
+expected_findings:
+  must_have:
+    - WCAG 1.4.1 (Use of Color) citation with explanation of failure
+    - Concrete text alternative strategy (sr-only span or role="img" + aria-label)
+    - Defined text labels for all three statuses (not "red dot")
+    - WCAG 1.4.11 (Non-Text Contrast) — 3:1 dot against background
+    - Compact mode accessibility: sr-only technique preserving text for AT
+    - aria-hidden="true" on decorative dot SVG/span when text label is adjacent
+
+  should_have:
+    - WCAG 1.1.1 (Non-Text Content) citation
+    - Windows High Contrast mode test case
+    - Specific CSS sr-only pattern (clip, not display:none)
+    - Guidance on matching text labels to product terminology (Active/Warning/Error)
+
+  nice_to_have:
+    - Color-blind simulation test (Chromatic/Storybook a11y addon)
+    - Pattern or shape differentiation as additional redundant cue (circle vs. triangle vs. diamond)
+    - Hover tooltip as supplementary label (not primary alternative)
+
+false_positive_traps:
+  - Using aria-label="red dot" — describes the visual, not the semantic status
+  - Relying on title attribute as the primary AT alternative (tooltip, not screen reader announcement)
+  - Adding text label without aria-hidden on the dot, causing double-announcement
+  - Skipping compact mode analysis entirely
+  - Checking dot-to-white contrast but not dot-to-actual-background contrast
+  - Over-engineering with aria-live regions (static indicator, not a live widget)
+  - Proposing role="status" (wrong — that's for live update regions, not a static dot)
+
+multi_perspective_coverage:
+  keyboard: "Dot itself is not focusable; no keyboard interaction required. Parent list items may be focusable — ensure status is included in accessible name."
+  screen_reader: "Status must be announced when the list item is read: 'Deploy frontend — Active' or equivalent. No separate announcement needed."
+  low_vision: "Dot must meet 3:1 contrast against background (1.4.11). Windows High Contrast mode must preserve status meaning via text, not color."
+  cognitive: "Consistent label vocabulary across all dot usages. Three states clearly named; avoid jargon (prefer 'Warning' over 'Degraded' unless product terminology requires it)."
+  mobile_touch: "Dot is a static indicator. No tap interaction required. Sufficient touch target on the parent list item, not the dot itself."
+
+notes: |
+  TRIVIAL fixture. The solution is well-known and small. The planner should produce a focused 1-2 page plan, not an exhaustive epic.
+
+  Expected verdict: ACCEPT with high confidence.
+
+  Scoring expectation: a11y-planner should score 90-100. A plan that identifies 1.4.1, specifies the sr-only compact mode technique, and cites 1.4.11 and 1.1.1 hits all required criteria. Deductions only for missing compact mode, wrong AT pattern (title), or double-announcement bug.
+
+  A plan that scores below 75 would need to: miss 1.4.1 entirely, recommend title attribute as the fix, or ignore compact mode.
+
+  The main calibration risk is over-engineering — a plan that produces 5+ pages with aria-live regions and focus management for a static dot has miscalibrated difficulty.

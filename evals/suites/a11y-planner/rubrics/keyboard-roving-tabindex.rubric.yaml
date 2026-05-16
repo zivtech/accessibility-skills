@@ -8,36 +8,133 @@ hybrid_weights:
 dimensions:
   - id: completeness
     name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
     weight: 3
     rule_based_checks:
-      - has_all_9_phases: true
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: apg_pattern_mapping
+    name: "APG Pattern Mapping"
+    description: "Does the plan reference the APG Toolbar pattern and correctly map keyboard interactions?"
+    weight: 3
+    rule_based_checks:
+      - mentions_apg_toolbar: true
+      - includes_url_to_apg: "https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/"
+      - maps_keyboard_to_pattern: true
+      - chooses_toolbar_over_menubar: true
+    llm_judge_criteria:
+      - "Does the plan explain WHY toolbar is correct and menubar is wrong?"
+      - "Is the mockup label ('Format Menu') addressed and distinguished from semantic role?"
 
   - id: wcag_grounding
     name: "WCAG Grounding"
+    description: "Does every design decision cite a WCAG 2.2 criterion or APG pattern?"
     weight: 3
     rule_based_checks:
-      - includes_wcag_citations: true
+      - keyboard_cites_wcag_2_1_1: true
+      - role_cites_wcag_4_1_2: true
+      - focus_visible_cites_wcag_2_4_7: true
+      - aria_pressed_cites_wcag: true
+    expected_citations:
+      - "WCAG 2.1.1 Keyboard (arrow key navigation, Tab entry/exit)"
+      - "WCAG 4.1.2 Name, Role, Value (toolbar role, aria-pressed, aria-label)"
+      - "WCAG 2.4.7 Focus Visible (focus indicator on all 24 buttons)"
+      - "WCAG 1.3.1 Info and Relationships (group structure)"
 
-  - id: pattern_mapping
-    name: "Pattern Mapping"
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can a developer implement roving tabindex from this plan without guessing?"
     weight: 2
     rule_based_checks:
-      - maps_to_apg_pattern: true
+      - specifies_tabindex_values: "0 on active, -1 on others"
+      - documents_arrow_key_behavior: "Left/Right cycle, wrapping"
+      - distinguishes_toggle_from_action: true
+      - specifies_aria_pressed_values: "true/false"
+      - includes_toolbar_aria_label: true
+    llm_judge_criteria:
+      - "Would a developer understand exactly how to implement roving tabindex?"
+      - "Are the toggle vs action button differences clear?"
+      - "Is the group navigation recommendation concrete?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Are keyboard, screen reader, low vision, cognitive, and mobile perspectives all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader: true
+      - addresses_low_vision: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
 
   - id: testing_coverage
     name: "Testing Coverage"
+    description: "Are keyboard test sequences, SR announcement tests, and visual tests planned?"
     weight: 2
     rule_based_checks:
-      - includes_testing_strategy: true
+      - documents_automated_testing: true
+      - documents_keyboard_testing: true
+      - documents_screen_reader_testing: true
+      - documents_visual_testing: true
+      - specifies_acceptance_criteria: true
+      - defines_a11y_critic_checkpoint: true
+      - includes_keyboard_test_sequence: true
 
   - id: calibration
-    name: "Proportionality"
+    name: "Calibration & Proportionality"
+    description: "Is the plan length appropriate for AMBIGUOUS difficulty? (3-5 pages expected)"
     weight: 1
     rule_based_checks:
-      - appropriate_length: true
+      - estimated_length_pages: 3-5
+      - no_scope_creep: true
+    llm_judge_criteria:
+      - "Does the plan address the toolbar/menubar ambiguity without over-researching?"
+      - "Is the group navigation ambiguity resolved with a clear recommendation?"
+
+  - id: role_decision
+    name: "Toolbar vs Menubar Decision"
+    description: "Does the plan correctly choose toolbar and justify it against the menubar alternative?"
+    weight: 3
+    rule_based_checks:
+      - chooses_role_toolbar: true
+      - explains_why_not_menubar: true
+      - addresses_format_menu_label: true
+    llm_judge_criteria:
+      - "Is the rationale technically correct (no submenus = not menubar)?"
+      - "Does it distinguish semantic role from visual label?"
+
+  - id: roving_tabindex_mechanism
+    name: "Roving Tabindex Implementation"
+    description: "Does the plan correctly document the roving tabindex mechanism?"
+    weight: 3
+    rule_based_checks:
+      - documents_tabindex_0_on_active: true
+      - documents_tabindex_minus1_on_others: true
+      - documents_state_update_on_arrow: true
+      - documents_focus_follows_tabindex: true
+      - documents_initial_focus_first_button: true
+
+  - id: ambiguity_handling
+    name: "Ambiguity Resolution"
+    description: "Does the plan acknowledge and resolve the group navigation ambiguity?"
+    weight: 2
+    llm_judge_criteria:
+      - "Does the plan identify the group navigation as an ambiguous design decision?"
+      - "Does it present options (within-group vs across-group arrow keys)?"
+      - "Does it make a clear recommendation with rationale?"
+      - "Are tradeoffs documented (simplicity vs efficiency)?"
 
 composite_score_formula: |
   score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
 
 scoring_thresholds:
   excellent: 90-100
@@ -48,11 +145,51 @@ scoring_thresholds:
 
 expected_reviewer_performance:
   - condition: a11y-planner
-    expected_score: 82-92
-    reasoning: "Should handle COMPLEX difficulty with WCAG citations and complete coverage"
+    expected_score: 75-90
+    reasoning: "Should choose toolbar, implement roving tabindex, handle toggle/action distinction; group navigation ambiguity is the ceiling"
+
+  - condition: baseline-zero-shot
+    expected_score: 40-60
+    reasoning: "Likely to choose menubar or miss roving tabindex; may default to tabindex='0' on all buttons"
+
+  - condition: baseline-few-shot
+    expected_score: 50-65
+    reasoning: "Example may guide roving tabindex understanding but role decision requires APG knowledge"
 
 verdict_expectations:
   a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
 
 notes: |
-  COMPLEX fixture for evaluating Roving Tabindex in Menu Grid implementation.
+  This AMBIGUOUS fixture tests two levels of decision-making:
+
+  Primary ambiguity: toolbar vs menubar role
+  - Correct: role="toolbar" (flat button collection, no submenus)
+  - Trap: role="menubar" (mockup says "Format Menu")
+  - The plan must explain that roles are semantic, not visual labels
+
+  Secondary ambiguity: group navigation strategy
+  - Option A: Left/Right arrows step through all 24 buttons (simpler)
+  - Option B: Left/Right within group, Tab/Shift+Tab between groups (faster)
+  - APG says groups are optional — both approaches are valid
+  - A strong plan chooses one and explains the tradeoff
+
+  Mixed button types:
+  - Toggle buttons (Bold, Italic, Underline): aria-pressed="true"/"false"
+  - Action buttons (Insert Image, Insert Link): no aria-pressed, open dialogs
+  - Both use native <button> elements
+  - Focus restoration needed when dialog-opening buttons return
+
+  Expected findings baseline:
+  - Toolbar role: 90% a11y-planner, 40% zero-shot, 55% few-shot
+  - Roving tabindex mechanism: 95% a11y-planner, 50% zero-shot, 70% few-shot
+  - Toggle vs action distinction: 80% a11y-planner, 35% zero-shot, 45% few-shot
+  - Group navigation recommendation: 60% a11y-planner, 15% zero-shot, 25% few-shot
+
+  Outlier indicators:
+  - Choosing role="menubar" (role confusion)
+  - Using aria-activedescendant without discussing roving tabindex as primary
+  - Not distinguishing toggle from action buttons
+  - Keeping tabindex="0" on all buttons (the existing bug)
+  - Plan >7 pages (scope creep for AMBIGUOUS)

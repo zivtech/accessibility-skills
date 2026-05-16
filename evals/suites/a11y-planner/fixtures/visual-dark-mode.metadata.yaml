@@ -1,0 +1,106 @@
+fixture_id: visual-dark-mode
+name: Dark Mode Toggle
+description: Dark mode toggle (icon-only button) with system preference detection. Plan aria-pressed/switch pattern, contrast validation in both modes, focus indicator re-evaluation, forced-colors distinction.
+language: jsx
+framework: React
+difficulty: MODERATE
+domain: Visual & Cognitive Accessibility
+work_type: component_plan
+risk_level: Medium
+
+scenario:
+  feature: A dark mode toggle button (icon-only, sun/moon) in the site nav that toggles a data-theme attribute on <html>. System preference is detected on first load via prefers-color-scheme. Choice persists to localStorage. Dark color tokens are drafted but unvalidated for contrast.
+  user_need: Low-vision users need sufficient contrast in both modes. Keyboard users need the toggle to be operable and its state announced. Users of Windows High Contrast mode need a separate solution that does not conflict with dark mode.
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - NVDA (Windows)
+    - JAWS (Windows)
+    - VoiceOver (macOS)
+    - Keyboard-only users
+  scope: Dark mode toggle button, system preference detection, localStorage persistence, and contrast validation framework for the dark token set
+  constraints:
+    - CSS custom properties architecture must remain (data-theme attribute on html)
+    - No JavaScript-in-CSS solutions
+    - Forced-colors mode is a separate concern from dark mode (different mechanism)
+    - Existing focus indicator is 2px solid #0066CC — not yet evaluated against dark backgrounds
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Toggle button ARIA: aria-pressed (toggle button) or role="switch" with justification; aria-label for icon-only button
+  - Contrast validation framework: 4.5:1 text, 3:1 non-text, in both modes
+  - Focus indicator: re-evaluate existing #0066CC against dark backgrounds (1.4.11, 2.4.7)
+  - Forced-colors distinction: separate CSS mechanism, not the same as dark mode
+  - No information loss between modes: 1.4.1 compliance not deferred to dark mode
+  - localStorage / aria-pressed sync: live DOM state, not stale storage
+
+expected_findings:
+  must_have:
+    - ARIA pattern for icon-only toggle: aria-pressed or role="switch" with aria-label
+    - WCAG 1.4.3 (Contrast Minimum) — 4.5:1 text, applies in both modes
+    - WCAG 1.4.11 (Non-Text Contrast) — 3:1 interactive elements and focus indicators, both modes
+    - WCAG 2.4.7 (Focus Visible) — focus indicator re-evaluation for dark backgrounds
+    - Flag that existing #0066CC focus indicator must be re-tested against dark background colors
+    - Forced-colors / Windows High Contrast: distinct from dark mode, requires own testing
+    - localStorage + aria-pressed synchronization: DOM state must match persisted preference
+
+  should_have:
+    - WCAG 1.4.1 — confirm no information is expressed by color alone in either mode
+    - Specific token pairs to test (primary text on background, link on background, border on background)
+    - System preference detection timing: class applied before first paint to avoid flash
+    - Announcement of mode change: should the toggle announce "Dark mode on/off" immediately?
+    - WCAG 1.4.12 (Text Spacing) — verify text spacing rules don't break dark mode layout
+
+  nice_to_have:
+    - WCAG 1.4.6 (Contrast Enhanced, AAA) — note as aspirational for documentation sites
+    - Color-blind simulation in dark mode (colors shift perceptually under dark backgrounds)
+    - Storybook a11y addon or equivalent for per-token contrast audit
+    - Transition animation on theme switch (if any, apply same prefers-reduced-motion logic)
+
+false_positive_traps:
+  - Conflating prefers-color-scheme (dark mode) with forced-colors (Windows High Contrast)
+  - Checking contrast only in light mode and assuming dark mode inherits compliance
+  - Using aria-label="Toggle dark mode" without also specifying aria-pressed (state not announced)
+  - Inverting light-mode colors and assuming the result meets contrast requirements
+  - Not flagging the existing focus indicator as needing re-evaluation
+  - Treating forced-colors as "a variant of dark mode" (they are architecturally different)
+  - Proposing role="switch" without noting that some ATs announce it differently than aria-pressed
+
+multi_perspective_coverage:
+  keyboard: "Toggle button must be reachable by Tab, activated by Enter/Space, and its pressed state must be announced. Focus indicator must be visible in both modes."
+  screen_reader: "State change must be announced: 'Dark mode, pressed' or 'Theme switch, on'. Icon-only button needs aria-label. Mode switch must not disrupt focus or reading position."
+  low_vision: "Dark mode palette requires full contrast audit (4.5:1 text, 3:1 UI components). #0066CC focus ring on dark backgrounds may fall below 3:1 — flag for re-measurement."
+  cognitive: "Mode choice persists — user does not need to re-select on each visit. Toggle position and icon must be consistent between modes. Mode change must not reflow content unexpectedly."
+  mobile_touch: "Toggle needs a minimum 44x44px touch target per WCAG 2.5.5. System preference honored on iOS (prefers-color-scheme respected automatically for first load)."
+
+notes: |
+  MODERATE fixture with three distinct but bounded concerns: toggle button ARIA pattern, dual-mode contrast validation, and forced-colors distinction.
+
+  Expected verdict: ACCEPT
+
+  Scoring expectation: a11y-planner 85-95. Key differentiators from a baseline plan: (1) explicitly flags existing focus indicator for re-testing, (2) correctly distinguishes prefers-color-scheme from forced-colors, (3) identifies localStorage/aria-pressed sync issue.
+
+  The forced-colors distinction is the highest signal item — it requires knowing that forced-colors is a separate CSS mechanism from prefers-color-scheme and that dark mode does not satisfy forced-colors requirements.
+
+  Expected findings baseline:
+  - aria-pressed or role="switch": 85%+
+  - aria-label for icon-only button: 90%+
+  - WCAG 1.4.3 in both modes: 70%+ (some only check light mode)
+  - Focus indicator re-evaluation: 60%+
+  - Forced-colors distinction: 40%+ (commonly conflated with dark mode)
+  - localStorage/aria-pressed sync: 50%+
+
+  Outlier indicators:
+  - Only checks contrast in light mode
+  - Conflates dark mode with forced-colors throughout
+  - No aria-label on icon-only button
+  - Focus indicator not mentioned in context of dark backgrounds
