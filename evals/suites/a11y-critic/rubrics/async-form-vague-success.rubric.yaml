@@ -1,0 +1,175 @@
+fixture_id: async-form-vague-success
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Semantic quality issues a competent reviewer should catch despite correct ARIA surface"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Timing/lifecycle bugs requiring state machine trace"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Post-action state management and re-readability gaps"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues in the well-implemented ARIA surface"
+    weight: -2
+    note: "No planted traps. Over-flagging correct attributes (aria-live, role='status', aria-atomic, aria-hidden on spinner, role='alert' on errors) is penalized."
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line references, code quotes, or SR behavior descriptions"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Success message is generic — doesn't identify what was submitted"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "Reference to success message text (lines 70-73) showing hardcoded generic string without form context"
+        expected_to_find: "60%"
+        discriminator: |
+          This is the key separator between surface-level and substantive review.
+          A surface check sees "success message announced via aria-live" and moves on.
+          A substantive review asks "what does the user actually HEAR?" and recognizes
+          that "Your submission was successful!" provides less information than a sighted
+          user receives (who sees the form title and context alongside the message).
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "aria-busy cleared 200ms before success content arrives in live region"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "Reference to the clearing/success state transition (lines 37-41) showing the 200ms gap between aria-busy=false and content insertion"
+        expected_to_find: "35%"
+        discriminator: |
+          Requires tracing the state machine: submitting → clearing → success.
+          The 'clearing' state sets aria-busy=false but renders no message content.
+          The reviewer must understand that NVDA/JAWS check live region content
+          when aria-busy transitions, and an empty region at that moment means
+          the announcement is silently dropped.
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Form fields remain editable after successful submission"
+        severity: MINOR
+        wcag: "3.3.4 Error Prevention"
+        evidence_requirement: "Reference to form fields (lines 82-115) showing no conditional disabled state after success"
+        expected_to_find: "35%"
+
+      - description: "Success confirmation not re-readable after navigation"
+        severity: ENHANCEMENT
+        wcag: "Best practice"
+        evidence_requirement: "Reference to status container (lines 60-76) lacking tabindex or focus management for re-discovery"
+        expected_to_find: "15%"
+
+  - category: false_positive_trap
+    count: 0
+    note: |
+      No planted traps. The following are correctly implemented and should NOT be flagged:
+      - aria-live="polite" on status container
+      - role="status" on status container
+      - aria-atomic="true" on status container
+      - aria-busy toggling (the PRESENCE of aria-busy is correct; the TIMING is wrong)
+      - aria-hidden="true" on decorative spinner
+      - role="alert" on error messages
+      - htmlFor label associations
+      - required attributes on fields
+      - Button disabled during submission
+      Flagging any of these as bugs is a false positive and penalized at -2 weight.
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  Bonus: +5 if reviewer explicitly describes what a screen reader user HEARS
+         (not just what ARIA attributes are present)
+  Bonus: +5 if reviewer traces the submitting → clearing → success state machine
+         and identifies the empty-region window
+  Penalty: -10 per false positive on correctly implemented ARIA attributes
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 70-85
+    reasoning: |
+      Should catch the vague message (must_find) by evaluating announcement quality,
+      not just presence. Should find the timing bug (should_find) by tracing the state
+      machine. May catch one or both nice-to-find items. The FLAWED surface makes this
+      harder than typical HAS-BUGS fixtures — the reviewer has to look past correct
+      attributes to find semantic and timing issues.
+
+  - condition: baseline-zero-shot
+    expected_score: 25-45
+    reasoning: |
+      Sees aria-live="polite", role="status", aria-busy toggling, success message
+      rendered — and concludes the live region pattern is correct. May flag the
+      generic message if specifically checking message content quality, but most
+      zero-shot reviewers check attribute presence, not announcement semantics.
+      Very unlikely to trace the clearing state timing issue.
+
+  - condition: baseline-few-shot
+    expected_score: 35-55
+    reasoning: |
+      Few-shot with live region quality examples may prompt checking what the
+      message actually says. Still unlikely to catch the timing desync unless
+      the few-shot example specifically demonstrates aria-busy timing issues.
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: REVISE
+
+notes: |
+  FLAWED fixture testing live region QUALITY, not just PRESENCE.
+
+  The surface ARIA is correct — all the right attributes are in place. The bugs
+  are in dimensions that surface-level checkers miss:
+
+  1. Announcement semantics: "Your submission was successful!" is technically a
+     status message, but it doesn't provide equivalent information to what a
+     sighted user receives. A sighted user sees the form title, the green
+     confirmation, and the context — a screen reader user may only hear the
+     generic message. This tests whether the reviewer evaluates message QUALITY
+     or just checks that an announcement EXISTS.
+
+  2. Timing lifecycle: The 200ms gap between aria-busy=false and content insertion
+     is a real-world antipattern. Developers add the intermediate state to "clean
+     up" the loading message before showing success, not realizing it creates a
+     window where SRs may check the (now empty) region and skip the announcement.
+     This tests whether the reviewer traces state transitions or just checks that
+     aria-busy is present.
+
+  3. Post-action completeness: After the async action, the form is in an
+     inconsistent state — success is announced but the form is still editable.
+     This tests whether the reviewer's scope extends beyond the status
+     announcement to the broader interaction lifecycle.
+
+  Expected baseline gap: zero-shot gives ACCEPT because all ARIA attributes are
+  present and a success message fires. Harsh-critic gives REVISE because the
+  message is vague, the timing is broken, and the post-submission state is
+  incomplete.

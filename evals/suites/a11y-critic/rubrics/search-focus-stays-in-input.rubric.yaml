@@ -1,0 +1,163 @@
+fixture_id: search-focus-stays-in-input
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: must_articulate
+    name: "Must Articulate the Focus-Management Tradeoff"
+    description: "Identifies and explains the tension between keeping focus in the search input (user agency, typing flow, industry convention) and the information gap for screen reader users who hear only a result count while sighted users see results updating in real time"
+    weight: 4
+    note: "This is NOT must_find — there is no clear bug. The reviewer must articulate WHY the focus behavior is debatable, with arguments for both sides."
+
+  - id: perspective_analysis
+    name: "Perspective-Specific Impact Analysis"
+    description: "Explains who benefits from focus-stays-in-input vs who is disadvantaged, with specifics about the screen reader experience vs sighted experience"
+    weight: 3
+
+  - id: recommendation_quality
+    name: "Recommendation Quality"
+    description: "Makes a recommendation with reasoning, acknowledging the tradeoff. May recommend either approach as long as the reasoning engages with both sides."
+    weight: 2
+
+  - id: false_positive_avoidance
+    name: "False Positive Avoidance"
+    description: "Does NOT flag the focus-stays-in-input behavior as a clear accessibility bug or WCAG violation"
+    weight: -3
+    note: "Heavy penalty for treating an industry-standard, deliberately chosen focus pattern as a defect"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "References specific code — aria-live='polite', lack of programmatic focus move, Down Arrow handler — to support analysis"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Focus-management tension for dynamically updating search results"
+        evidence_requirement: "References the aria-live region AND the lack of programmatic focus move, explaining why both the current approach and moving focus have legitimate arguments"
+        scoring_criteria:
+          full_credit: "Articulates both sides with specific reasons — naming user agency and typing flow for keeping focus, naming the SR information gap (count-only vs seeing results) for moving focus. Examines aria-live='polite' as a mitigation and its limitations."
+          partial_credit: "Notes the tension but only argues one side, or mentions aria-live without examining whether polite announcements are sufficient during typing"
+          no_credit: "Treats as a clear-cut bug (focus should move) or doesn't notice the tension at all (everything's fine, there's a live region)"
+        expected_to_find: "55%"
+
+  - category: perspective_analysis
+    count: 1
+    items:
+      - description: "Differential impact on screen reader users vs sighted users"
+        scoring_criteria:
+          full_credit: "Names at least 2 user groups and explains how each is differently served — e.g., sighted users see results updating in real time while SR users hear only a count and must take action (Down Arrow) to discover content. May also note keyboard-only users need to know Down Arrow convention."
+          partial_credit: "Mentions user impact generically ('some users might struggle') without perspective-specific analysis"
+          no_credit: "No user impact analysis"
+        expected_to_find: "40%"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "aria-live='polite' can be suppressed during active typing"
+        severity: MINOR
+        evidence_requirement: "Notes that polite announcements wait for speech queue gaps, which may not come during rapid typing"
+        expected_to_find: "40%"
+
+      - description: "Mixed interaction model — listbox role but Tab also navigates into results"
+        severity: MINOR
+        evidence_requirement: "Notes role='listbox' conventionally uses Arrow keys, but links in results are also Tab-focusable, creating two interaction models"
+        expected_to_find: "30%"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "No visible affordance or instruction for Down Arrow to reach results"
+        severity: ENHANCEMENT
+        expected_to_find: "20%"
+
+      - description: "Live region announces count but not result content — could provide richer summary"
+        severity: ENHANCEMENT
+        expected_to_find: "25%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "Focus-stays-in-input is a deliberate, industry-standard design choice, not a defect"
+        impact: "Flagging the focus behavior as a WCAG violation or clear bug demonstrates pattern-matching (focus should always follow content updates) rather than analysis (is this the right tradeoff for this interaction pattern?). The implementation follows the same model as Google Search, Algolia DocSearch, and VS Code Command Palette."
+        expected_to_find: "65%"
+
+composite_score_formula: |
+  score = (
+    must_articulate * 4 +
+    perspective_analysis * 3 +
+    recommendation_quality * 2 +
+    evidence_quality * 1 +
+    format_compliance * 1
+  ) / 11 * 100
+
+  false_positive_avoidance: -15 per false positive (flagging focus behavior as a bug/violation)
+
+  Bonus: +10 if reviewer explicitly names the information-equivalence gap (sighted users see results updating, SR users hear only a count)
+  Bonus: +5 if reviewer examines aria-live='polite' limitations during active typing
+  Bonus: +5 if reviewer recommends a specific approach while acknowledging the tradeoff
+
+scoring_thresholds:
+  excellent: 85-100
+  good: 65-84
+  adequate: 45-64
+  weak: 25-44
+  poor: 0-24
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 65-85
+    reasoning: "Should identify the focus tension and discuss SR impact. May lean too hard toward 'focus should move to results' without fully acknowledging why input focus is the industry standard. Strong critics will note the aria-live polite limitation."
+
+  - condition: baseline-zero-shot
+    expected_score: 15-40
+    reasoning: "Likely either flags focus behavior as a bug ('focus should move to results after search') — triggering the false positive penalty — or accepts without noting the SR information gap. Nuanced tradeoff analysis of focus management during dynamic search is rare in zero-shot."
+
+  - condition: baseline-few-shot
+    expected_score: 25-50
+    reasoning: "Few-shot with ADVERSARIAL example may prompt more balanced analysis, but the specific dynamics of aria-live polite during typing and the information-equivalence argument require domain knowledge most models lack."
+
+verdict_expectations:
+  best_response: "ACCEPT with detailed notes on the focus-management tradeoff — acknowledges aria-live as a mitigation, examines its limitations for SR users, and recommends enhancements (richer announcements, aria-describedby hint for Down Arrow) without claiming the current approach is wrong"
+  acceptable_responses:
+    - "REVISE recommending focus move to results (or aria-activedescendant virtual focus) with explicit acknowledgment that keeping focus in input is defensible and industry-standard"
+    - "ACCEPT with substantive discussion of the SR information gap and specific enhancement suggestions, even without a strong directional recommendation"
+  poor_responses:
+    - "ACCEPT with no discussion of the focus-management tension or SR information gap"
+    - "REVISE claiming focus management is broken or violates WCAG"
+    - "REVISE without acknowledging why focus stays in the input (typing flow, user agency, industry convention)"
+    - "Flags aria-live='polite' as wrong and demands 'assertive' (assertive during typing would be far worse)"
+
+notes: |
+  ADVERSARIAL fixture — different rubric shape than FLAWED/HAS-BUGS fixtures.
+
+  The scoring rewards TRADEOFF ANALYSIS QUALITY, not bug detection. A reviewer
+  that says "focus should move to results after search completes" without
+  acknowledging that this would interrupt typing and violate user expectations
+  from every major search UI scores lower than a reviewer that says "the
+  aria-live region is a real mitigation but has limitations during active
+  typing — here's who is affected and here's what could improve the SR
+  experience" — even if the second reviewer doesn't recommend changing the
+  focus behavior.
+
+  The LLM judge weight is 0.4 (vs the standard 0.3) because tradeoff
+  articulation quality — distinguishing between "both sides stated" and
+  "both sides understood" — is harder to score with rules alone.
+
+  Key domain knowledge this fixture tests:
+  1. aria-live="polite" behavior during active speech/typing (can be suppressed)
+  2. The difference between announcing count and announcing content
+  3. Information equivalence — whether sighted and SR users get comparable
+     passive information during the search interaction
+  4. The combobox/listbox pattern and aria-activedescendant as an alternative
+     to real focus management
+  5. Whether Tab and Arrow key navigation should coexist on a listbox

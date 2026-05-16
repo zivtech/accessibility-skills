@@ -1,0 +1,135 @@
+fixture_id: dashboard-heading-inconsistency
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Heading hierarchy inconsistency that breaks page structure for AT users"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Structural gaps in tables and metric cards that degrade AT experience"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Missing landmarks and skip link on a multi-region page"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging working features (captions, aria-label, th elements, semantic headings)"
+    weight: -2
+    note: "No planted traps. But captions, aria-label on sidebar list, th elements, and heading elements are all correct — over-flagging these is penalized."
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "Findings backed by file:line references or code quotes showing the structural gap"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Heading hierarchy inconsistent — h1 then mixed h2/h3 for peer-level cards, CSS hides the difference"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "Reference to specific heading elements showing h3 (lines 28, 40, 55) vs h2 (lines 34, 46, 90) for same-level content. Must note CSS styles them identically."
+        expected_to_find: "65%"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Data table headers missing scope='col' and scope='row' in both tables"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "Reference to <th> elements in thead and tbody of both tables (lines 60-63, 68/74/80, 95-97, 102/107/112) showing missing scope. Must distinguish from caption presence (which is correct)."
+        expected_to_find: "45%"
+
+      - description: "Metric cards use div-based key-value pairs instead of semantic structure"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "Reference to div.metric-value and div.metric-label (lines 29-30) showing flat div structure. Must recommend <dl>/<dt>/<dd> or table as alternative."
+        expected_to_find: "25%"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "No landmark regions — sidebar div not nav, content div not main"
+        severity: MINOR
+        wcag: "1.3.1, 2.4.1"
+        evidence_requirement: "Reference to sidebar <div> (line 12) and content <div> (line 22) as non-landmark elements"
+        expected_to_find: "30%"
+
+      - description: "No skip link to bypass sidebar navigation"
+        severity: ENHANCEMENT
+        wcag: "2.4.1 Bypass Blocks"
+        evidence_requirement: "Reference to sidebar navigation preceding content with no skip mechanism"
+        expected_to_find: "15%"
+
+  - category: false_positive_trap
+    count: 0
+    note: "No planted traps. Penalize flagging: (1) aria-label on sidebar ul as insufficient, (2) table captions as missing, (3) th elements as wrong element choice, (4) heading elements as non-semantic (they are semantic, just wrong levels)."
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  Bonus: +5 if reviewer builds explicit heading tree showing the inconsistency
+  Bonus: +3 if reviewer identifies the compounding effect (all issues together = unstructured page for AT)
+  Penalty: -10 per false positive on correct attributes (captions, aria-label, th elements)
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 75-90
+    reasoning: "Should build heading tree, find scope gap in tables, and catch at least one of landmarks or semantic metric structure. Unlikely to catch all 5 issues, but should nail must_find and at least one should_find."
+
+  - condition: baseline-zero-shot
+    expected_score: 25-50
+    reasoning: "Sees headings present (check), tables with captions and th (check), aria-label on sidebar (check) — likely concludes ACCEPT. May catch heading inconsistency if it builds a heading tree, but baseline rarely does structural analysis on 'passing' code."
+
+  - condition: baseline-few-shot
+    expected_score: 35-60
+    reasoning: "Few-shot example with heading analysis may prompt checking levels. Still unlikely to catch scope gap when captions are present."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: REVISE
+
+notes: |
+  FLAWED fixture testing structural analysis on a page that looks accessible.
+
+  The dashboard has real headings, real tables with captions and th elements,
+  and an aria-label on the sidebar list. A surface check sees correct elements
+  and moves on. The bugs are all about the RELATIONSHIPS between elements:
+  heading hierarchy broken, scope attributes missing, key-value pairs not
+  semantically paired, landmark regions absent.
+
+  The CSS is a deliberate trap: h2 and h3 are styled identically in metric
+  cards and table cards. A reviewer who checks the rendered appearance sees
+  consistent headings. Only a reviewer who reads the heading level attributes
+  (or builds a heading tree) finds the inconsistency.
+
+  Key discriminator between harsh-critic and baseline:
+  - Baseline: "Headings present? Yes. Tables have captions? Yes. ARIA on sidebar? Yes. → ACCEPT"
+  - Harsh-critic: "What's the heading tree? h1 → h3, h2, h3, h2... broken. Do tables have scope? No. Are metrics semantic? No. → REVISE"
+
+  The compounding effect is important: no single issue is CRITICAL on its own,
+  but together they mean the page is essentially unstructured for AT users
+  despite looking well-organized visually. A good review notes this compound impact.

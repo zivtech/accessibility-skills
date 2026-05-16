@@ -1,0 +1,99 @@
+fixture_id: tabs-incomplete-aria-selected
+name: Tabs with Incomplete Selection and Panel Binding
+description: Tab widget with arrow key navigation and aria-selected but focus doesn't follow selection, panels lack aria-labelledby, and tabs lack aria-controls. Surface-level ARIA looks complete.
+language: jsx
+framework: React
+difficulty: FLAWED
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Focus does not follow aria-selected on arrow key navigation"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard, 4.1.2 Name/Role/Value"
+        apa_pattern: "WAI-ARIA Tabs Pattern — focus MUST move to active tab on arrow key"
+        evidence: "Lines 16-19, 22-25: setActiveTab called but tabRefs.current[newIndex].focus() never called"
+        user_group: "Screen reader users (wrong tab announced), keyboard users (focus indicator on wrong tab)"
+        fix: "Add tabRefs.current[newIndex].focus() after setActiveTab in each arrow key handler"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Tab panels missing aria-labelledby linking back to tab"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships, 4.1.2 Name/Role/Value"
+        apa_pattern: "WAI-ARIA Tabs Pattern — each tabpanel must have aria-labelledby"
+        evidence: "Lines 60-68: tabpanel divs have id and role but no aria-labelledby"
+        user_group: "Screen reader users (can't identify which tab owns the panel)"
+        fix: "Add aria-labelledby={`tab-${product.id}`} to each tabpanel"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Tabs missing aria-controls linking to panels"
+        severity: MINOR
+        wcag: "4.1.2 Name/Role/Value (recommended)"
+        evidence: "Lines 40-52: tab buttons have id but no aria-controls"
+        user_group: "Screen reader users (breaks bidirectional tab↔panel association)"
+        expected_to_find: "40%"
+
+      - description: "Badge count not announced with accessible context"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence: "Lines 48-50: bare span with count, no aria-label explaining what the number means"
+        user_group: "Screen reader users (hear '42' with no context)"
+        expected_to_find: "20%"
+
+components_analyzed:
+  - name: Tablist container
+    aria_role: tablist
+    aria_attributes: ["aria-label='Product categories'"]
+    status: correct
+
+  - name: Tab buttons
+    aria_role: tab
+    aria_attributes: [aria-selected, "tabindex (roving)"]
+    status: "aria-selected correct, but focus doesn't follow selection; missing aria-controls"
+
+  - name: Tab panels
+    aria_role: tabpanel
+    aria_attributes: [id, hidden]
+    status: "Missing aria-labelledby back to tab"
+
+wcag_criteria:
+  - "2.1.1 Keyboard (focus must follow selection in managed widgets)"
+  - "1.3.1 Info and Relationships (tab↔panel association)"
+  - "4.1.2 Name/Role/Value (programmatic name for tabpanels)"
+
+apa_patterns:
+  - name: "WAI-ARIA Tabs Pattern"
+    link: "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+    required_features:
+      - "Arrow Left/Right cycles through tabs"
+      - "Focus moves to active tab on selection"
+      - "Each tab has aria-controls referencing its panel"
+      - "Each panel has aria-labelledby referencing its tab"
+      - "Roving tabindex on tabs"
+
+multi_perspective_coverage:
+  - screen_reader: "BROKEN: Arrow keys change aria-selected but focus stays on old tab. SR announces wrong tab. Panel has no accessible name linking it to its tab."
+  - keyboard: "DEGRADED: Arrow keys visually switch tabs but focus indicator stays on previous tab. User sees the wrong tab highlighted."
+  - low_vision: "Minimal impact — visual state updates correctly, focus indicator is the issue"
+  - cognitive: "Tab switching works visually, so the inconsistency is invisible to sighted users"
+
+false_positive_traps: 0
+
+notes: |
+  FLAWED difficulty — the surface-level ARIA looks complete (tablist, tab, tabpanel,
+  aria-selected, roving tabindex, arrow keys). The bugs are in the *connections*:
+  focus doesn't follow selection, panels aren't linked back to tabs.
+
+  Expected verdict: REVISE
+
+  Baseline detection rate: ~25%. A zero-shot reviewer sees the arrow key handler,
+  aria-selected toggling, correct roles — and concludes the pattern is complete.
+  Finding the focus bug requires tracing what happens AFTER the state update.
+  Finding missing aria-labelledby requires checking the panel side after verifying tabs.

@@ -1,0 +1,136 @@
+fixture_id: tabbed-nav-vs-tab-pattern
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: must_articulate
+    name: "Must Articulate the Tradeoff"
+    description: "Identifies and explains the tabs-vs-navigation semantic tension with arguments for both sides"
+    weight: 4
+    note: "This is NOT must_find — there is no clear bug. The reviewer must articulate WHY this is debatable."
+
+  - id: perspective_analysis
+    name: "Perspective-Specific Impact Analysis"
+    description: "Explains who benefits from tabs vs who benefits from nav, with specifics"
+    weight: 3
+
+  - id: recommendation_quality
+    name: "Recommendation Quality"
+    description: "Makes a recommendation with reasoning, acknowledging the other side"
+    weight: 2
+
+  - id: false_positive_avoidance
+    name: "False Positive Avoidance"
+    description: "Does NOT flag the tab implementation as broken (it's correct per APG)"
+    weight: -3
+    note: "Heavy penalty for treating this as a clear-cut bug"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "References specific code (router.push, button vs link) to support analysis"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Tabs pattern vs navigation pattern tension for route-based content"
+        evidence_requirement: "References router.push() or button-vs-link and explains why both patterns have legitimate arguments"
+        scoring_criteria:
+          full_credit: "Articulates both sides with specific reasons (interaction model vs semantic model, landmark navigation, link affordances)"
+          partial_credit: "Notes the tension but only argues one side"
+          no_credit: "Treats as clear-cut bug or doesn't notice the tension at all"
+        expected_to_find: "55%"
+
+  - category: perspective_analysis
+    count: 1
+    items:
+      - description: "Who is affected by each choice"
+        scoring_criteria:
+          full_credit: "Names at least 2 user groups and explains how each is differently served (e.g., keyboard users benefit from arrow keys, SR landmark users miss <nav>)"
+          partial_credit: "Mentions user impact generically without perspective-specific analysis"
+          no_credit: "No user impact analysis"
+        expected_to_find: "40%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Missing link affordances (right-click, cmd+click, crawlability)"
+        severity: MINOR
+        evidence_requirement: "Notes that buttons with router.push lose native link behaviors"
+        expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "The tabs ARIA implementation is correct per APG"
+        impact: "Flagging broken ARIA, missing aria-selected, or incomplete keyboard handling is a false positive — the implementation is correct, the question is whether tabs is the right pattern"
+        expected_to_find: "70%"
+
+composite_score_formula: |
+  score = (
+    must_articulate * 4 +
+    perspective_analysis * 3 +
+    recommendation_quality * 2 +
+    evidence_quality * 1 +
+    format_compliance * 1
+  ) / 11 * 100
+
+  false_positive_avoidance: -15 per false positive on correct ARIA implementation
+
+  Bonus: +10 if reviewer explicitly states "both approaches are defensible"
+  Bonus: +5 if reviewer recommends a specific approach while acknowledging the tradeoff
+
+scoring_thresholds:
+  excellent: 85-100
+  good: 65-84
+  adequate: 45-64
+  weak: 25-44
+  poor: 0-24
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 70-90
+    reasoning: "Should identify the semantic tension and articulate both sides. May lean too hard toward nav pattern without acknowledging tabs' strengths."
+
+  - condition: baseline-zero-shot
+    expected_score: 20-45
+    reasoning: "Likely either flags as broken (false positive) or accepts without noting the tension. Nuanced tradeoff analysis is rare in zero-shot."
+
+  - condition: baseline-few-shot
+    expected_score: 30-55
+    reasoning: "Few-shot with ADVERSARIAL example may prompt more nuanced analysis, but the specific tabs-vs-nav debate requires domain knowledge"
+
+verdict_expectations:
+  best_response: "ACCEPT with detailed notes on tabs-vs-nav tension and a reasoned recommendation"
+  acceptable_responses:
+    - "REVISE with clear reasoning for preferring nav, explicitly acknowledging tabs is defensible"
+    - "ACCEPT with substantive discussion of the tradeoff, even without a strong recommendation"
+  poor_responses:
+    - "ACCEPT with no discussion of the semantic tension"
+    - "REVISE claiming the tab ARIA implementation is broken"
+    - "REVISE without acknowledging why tabs pattern was chosen"
+
+notes: |
+  ADVERSARIAL fixture — different rubric shape than FLAWED/HAS-BUGS fixtures.
+
+  The scoring rewards ANALYSIS QUALITY, not bug detection. A reviewer that says
+  "this should be nav with links" without acknowledging why tabs were chosen
+  scores lower than a reviewer that says "tabs work here but nav would better
+  serve screen reader landmark navigation" — even though both reach the same
+  conclusion.
+
+  The LLM judge weight is higher (0.4 vs 0.3) because tradeoff articulation
+  quality is harder to score with rules alone.
+
+  This fixture also tests whether the critic can distinguish between:
+  1. "The ARIA is implemented wrong" (false — it's correct per APG)
+  2. "The wrong ARIA pattern was chosen" (debatable — depends on priorities)

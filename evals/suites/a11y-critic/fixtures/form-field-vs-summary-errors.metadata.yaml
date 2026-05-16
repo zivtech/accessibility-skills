@@ -1,0 +1,99 @@
+fixture_id: form-field-vs-summary-errors
+name: Registration Form with Dual Error Announcement Pattern
+description: Registration form implementing both a role="alert" error summary and aria-live="polite" inline errors. Both patterns are correctly implemented per APG and GOV.UK guidelines. The tension is whether simultaneous dual announcements on submit create redundancy and cognitive overload.
+language: jsx
+framework: React
+difficulty: ADVERSARIAL
+domain: Form & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Tension between dual error announcement patterns — role='alert' summary and aria-live='polite' inline errors fire simultaneously on submit, causing redundant announcements"
+        severity: "CONTEXT-DEPENDENT"
+        wcag: "4.1.3 Status Messages, 3.3.1 Error Identification"
+        evidence: "Lines 83-93: role='alert' on error summary fires assertive announcement of all errors. Lines 103-108: aria-live='polite' on each inline error region queues additional per-field announcements. On submit, both activate at once."
+        user_groups_affected:
+          dual_better_for: "Users correcting errors one at a time (aria-live announces each fix); users who navigate by landmark and encounter fields individually (aria-describedby provides context)"
+          dual_worse_for: "Screen reader users hearing the initial error blast (4 errors = up to 8 announcements); users with cognitive disabilities who may confuse summary and field-level messages as separate issues"
+        both_sides_required: true
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "The aria-live='polite' regions are primarily valuable for real-time correction feedback but create noise on initial submission — a conditional approach could suppress live announcements on first render"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "Lines 103-108: aria-live='polite' divs are always present. On submit, errors appear in all regions simultaneously, queuing polite announcements after the assertive summary."
+        user_group: "Screen reader users, especially NVDA and JAWS which handle live region queuing differently"
+        expected_to_find: "30%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Screen reader behavior varies — NVDA may interrupt polite regions when assertive fires; JAWS may queue all; VoiceOver may coalesce. The actual user experience depends on the AT."
+        severity: ENHANCEMENT
+        evidence: "role='alert' is assertive; aria-live='polite' queues behind it. But AT implementations differ in how they handle simultaneous live region updates."
+        expected_to_find: "10%"
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "Flagging the error summary role='alert' as incorrect — it is correctly implemented per the error message pattern"
+        impact: "The summary needs role='alert' to announce errors on submit. Removing it breaks the GOV.UK pattern and WCAG 4.1.3."
+        expected_to_find: "60%"
+
+      - description: "Flagging aria-describedby or aria-invalid as missing or broken — both are correctly implemented on every field"
+        impact: "The field-level associations are complete. aria-invalid is conditionally set, aria-describedby points to the inline error id. This is correct."
+        expected_to_find: "50%"
+
+components_analyzed:
+  - name: Error summary
+    aria_role: alert
+    aria_attributes: ["role='alert'", "tabIndex={-1}"]
+    status: "Correctly implemented — receives focus on submit, announces error count and links to fields"
+
+  - name: Inline error regions
+    aria_role: none (container)
+    aria_attributes: ["aria-live='polite'"]
+    status: "Correctly implemented — announces per-field error changes. The question is whether simultaneous activation with the summary is redundant."
+
+  - name: Form inputs
+    aria_attributes: ["aria-invalid (conditional)", "aria-describedby (conditional)"]
+    status: "Correctly implemented — invalid state and error description properly associated"
+
+  - name: Error summary links
+    html_element: "a href='#field-{name}'"
+    status: "Correctly implemented — jump links from summary to fields"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (both announcement mechanisms serve this criterion)"
+  - "3.3.1 Error Identification (errors identified in two locations)"
+  - "3.3.3 Error Suggestion (error messages provide correction guidance)"
+  - "1.3.1 Info and Relationships (aria-describedby links errors to fields)"
+
+apa_patterns:
+  - name: "Error Summary (GOV.UK pattern)"
+    status: "Correctly implemented"
+    tension: "Fires role='alert' which is assertive — announces immediately and interrupts"
+
+  - name: "Inline Error Messages"
+    status: "Correctly implemented with aria-live='polite'"
+    tension: "aria-live='polite' queues behind assertive summary — on submit this creates sequential redundant announcements"
+
+multi_perspective_coverage:
+  - screen_reader: "AMBIGUOUS: On submit, user hears the full error summary via role='alert', then each inline error via aria-live='polite'. This is thorough but potentially overwhelming. When correcting fields one at a time, inline live regions provide excellent per-field feedback."
+  - keyboard: "WORKS WELL: Focus moves to error summary on submit. Links in summary jump to fields. Tab order is natural. Not affected by the dual announcement question."
+  - low_vision: "Not significantly affected — error summary is visible at top, inline errors are visible at each field. Dual visual presentation is helpful for magnification users."
+  - cognitive: "AFFECTED: Hearing the same errors in two forms (summary then per-field) may cause confusion about whether these are the same problems or different ones. However, the dual visual presentation can be helpful for users who benefit from repetition."
+
+notes: |
+  ADVERSARIAL fixture — the correct review articulates the tradeoff, not flags a bug.
+
+  Expected verdicts:
+  - Best: ACCEPT with detailed notes on the dual-announcement tradeoff and a recommendation (e.g., "consider suppressing aria-live on initial submit, enabling it only for subsequent corrections")
+  - Acceptable: REVISE with clear reasoning about the redundancy concern, acknowledging that both patterns are individually correct
+  - Poor: ACCEPT with no discussion of the dual-announcement interaction
+  - Poor: REVISE claiming one of the error patterns is broken (neither is)

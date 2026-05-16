@@ -1,0 +1,138 @@
+fixture_id: app-focus-order-illogical
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "CSS order / DOM tab order mismatch that breaks keyboard navigation for the entire layout"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Skip link target not focusable; sidebar focus indicator insufficient contrast"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Positive tabindex anti-pattern on FAB"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "No planted traps. Penalize flagging: semantic HTML structure, ARIA landmarks/labels, skip link existence (vs function), or FAB aria-label as wrong"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "Findings backed by CSS property references, contrast ratios, or DOM order analysis"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Tab order does not match visual layout — CSS order: -1 on sidebar creates DOM/visual mismatch"
+        severity: MAJOR
+        wcag: "2.4.3 Focus Order, 1.3.2 Meaningful Sequence"
+        evidence_requirement: "Reference to CSS order: -1 on .sidebar AND DOM order showing <main> before <aside>. Must connect the flex layout to the tab order consequence, not just note the CSS property."
+        expected_to_find: "60%"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Skip link targets non-focusable div — href='#content' matches id='content' but div has no tabindex"
+        severity: MAJOR
+        wcag: "2.4.1 Bypass Blocks, 2.4.3 Focus Order"
+        evidence_requirement: "Reference to <div id='content'> lacking tabindex='-1'. Must note that the skip link APPEARS functional (matching href/id) but focus does not move."
+        expected_to_find: "40%"
+
+      - description: "Sidebar focus indicator has ~1.5:1 contrast — #a8d0f0 on #f8fafc"
+        severity: MAJOR
+        wcag: "2.4.7 Focus Visible, 2.4.13 Focus Appearance"
+        evidence_requirement: "Reference to the specific CSS colors (#a8d0f0 outline on #f8fafc background) and the contrast ratio failure. Bonus for noting the inconsistency with main content focus indicators (#2563eb, ~4.6:1)."
+        expected_to_find: "35%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Positive tabIndex={1} on FAB preempts all other content including skip link"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order"
+        evidence_requirement: "Reference to tabIndex={1} on the FAB button and the consequence that it receives focus before the skip link"
+        expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 0
+    note: "No planted traps. Over-flagging correct features is penalized: semantic landmarks (header, main, aside, nav), ARIA labels on navigations, section aria-labelledby associations, heading hierarchy, skip link presence (not a bug — the bug is the target), FAB aria-label."
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+  Bonuses:
+  +5 if reviewer explicitly traces the full tab sequence start-to-finish (FAB → skip link → header → main → sidebar)
+  +5 if reviewer notes the compounding effect: tabindex=1 on FAB defeats the skip link even if skip link target were fixed
+
+  Penalties:
+  -10 per false positive on correct semantic HTML, ARIA landmarks, or ARIA labels
+  -5 for flagging skip link existence rather than its target focusability
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 70-90
+    reasoning: "Focus management is the skill's strength. Should identify CSS order mismatch and trace tab sequence. Skip link target check and focus contrast measurement are more specialized — may catch one or both. Positive tabindex is well-known a11y anti-pattern."
+
+  - condition: baseline-zero-shot
+    expected_score: 20-40
+    reasoning: "Sees semantic HTML, skip link, ARIA landmarks, focus indicators — concludes layout is accessible. May catch positive tabindex if scanning for tabindex values, but unlikely to trace its page-level effect. CSS order mismatch requires connecting flex layout to tab order. Skip link target requires testing focusability, not just href/id matching."
+
+  - condition: baseline-few-shot
+    expected_score: 35-55
+    reasoning: "Few-shot with a focus order example may prompt checking tab sequence, which could surface the CSS order bug. Skip link target and contrast measurement still require specialized knowledge."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: REVISE
+
+notes: |
+  FLAWED fixture testing four distinct accessibility analysis skills:
+
+  1. CSS-DOM interaction awareness (must_find): Can the reviewer connect
+     CSS flex order to keyboard tab order? This requires reading CSS alongside
+     JSX — not just scanning HTML attributes.
+
+  2. Skip link functional testing (should_find): Does the reviewer check
+     that the skip link TARGET is focusable, not just that href and id match?
+     The skip link looks correct at a glance.
+
+  3. Focus indicator contrast measurement (should_find): Does the reviewer
+     evaluate focus indicator QUALITY (contrast ratio), not just PRESENCE?
+     Every element has a :focus rule — the bug is in the color values.
+
+  4. Tabindex anti-pattern recognition (nice_to_find): Does the reviewer
+     know that positive tabindex is harmful and trace its page-level effect?
+
+  Key discriminator: baseline sees "semantic HTML + skip link + landmarks +
+  focus indicators" and stops. Harsh-critic traces the actual keyboard
+  experience and finds the interactions are broken despite correct structure.
+
+  The compound observation — that Issues 1-4 together create a completely
+  broken keyboard experience where every navigation aid fails — is what
+  separates REVISE from ACCEPT verdicts.

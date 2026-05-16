@@ -1,0 +1,115 @@
+fixture_id: search-focus-stays-in-input
+name: Search with Focus Retained in Input During Live Results
+description: Live-filtering search component where focus stays in the input as results update below. aria-live announces result count, Down Arrow moves to results. The focus behavior is a deliberate design choice, not a bug — but the information gap between sighted and SR users is a genuine tension.
+language: jsx
+framework: React
+difficulty: ADVERSARIAL
+domain: Focus Management & Keyboard Navigation
+work_type: component_review
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Tension between keeping focus in the search input (user agency, typing flow, industry convention) and the information gap for screen reader users who hear only a result count while sighted users see results updating in real time"
+        severity: "CONTEXT-DEPENDENT"
+        wcag: "4.1.3 Status Messages, 1.3.1 Info and Relationships, 3.2.2 On Input"
+        evidence: "Focus never leaves the input (no programmatic focus move on results update). aria-live='polite' announces '4 results found' but not the result content. Sighted users can scan results visually while typing; SR users cannot."
+        user_groups_affected:
+          stays_better_for: "All users during typing (focus stability), sighted users (can visually scan while typing), motor impairment users (no unexpected focus jumps)"
+          move_better_for: "Screen reader users (would immediately hear result content), users unfamiliar with Down Arrow convention"
+        both_sides_required: true
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "aria-live='polite' announcements can be suppressed during active typing — screen readers may not announce the result count if the user is still generating speech output from keystrokes"
+        severity: MINOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "aria-live='polite' on the status div — polite announcements wait for a speech queue gap, which may not come during rapid typing"
+        user_group: "Screen reader users typing quickly"
+        expected_to_find: "40%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Mixed interaction model — listbox role implies Arrow key navigation, but Tab also moves into results because the links are in natural tab order"
+        severity: MINOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence: "role='listbox' on results list (line ~106), but result links are focusable via Tab (standard DOM order). The combobox/listbox pattern expects aria-activedescendant or Arrow-only navigation."
+        user_group: "Screen reader users who may receive conflicting interaction instructions from the listbox role"
+        expected_to_find: "30%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "No visible instruction or affordance telling keyboard users to press Down Arrow to reach results"
+        severity: ENHANCEMENT
+        evidence: "The Down Arrow convention is implicit — users familiar with search autocomplete patterns will know it, but there is no aria-describedby hint or visible instruction"
+        expected_to_find: "20%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "The live region announces count but not result content — an alternative design could announce the first result title or provide a richer summary"
+        severity: ENHANCEMENT
+        evidence: "Status div only renders '4 results found', not what the results are"
+        expected_to_find: "25%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "Flagging focus-stays-in-input as a clear accessibility bug or WCAG violation"
+        impact: "The focus behavior is a deliberate, industry-standard design choice supported by strong UX rationale. Treating it as a defect rather than a tradeoff demonstrates pattern-matching rather than analysis."
+        expected_to_find: "65%"
+
+components_analyzed:
+  - name: Search input
+    semantic_element: "input[type='search']"
+    aria_attributes: ["aria-autocomplete='list'", "aria-controls", "aria-expanded"]
+    status: "Correctly implemented — communicates autocomplete behavior to AT"
+
+  - name: Live region (status)
+    aria_role: status
+    aria_attributes: ["aria-live='polite'", "aria-atomic='true'"]
+    status: "Correctly implemented — the question is whether polite announcements are sufficient during active typing"
+
+  - name: Results list
+    aria_role: listbox
+    aria_attributes: ["aria-label with count"]
+    status: "Semantically present but interaction model is mixed (Tab + Arrow both work)"
+
+  - name: Result items
+    aria_role: option
+    status: "Contains anchor links — option role with links inside is a minor semantic mismatch"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (is the aria-live announcement sufficient?)"
+  - "1.3.1 Info and Relationships (does the semantic structure convey the input-to-results relationship?)"
+  - "3.2.2 On Input (focus does not move on input — is this the right call?)"
+  - "4.1.2 Name, Role, Value (listbox role with Tab-navigable links — mixed model)"
+
+apa_patterns:
+  - name: "Combobox with Listbox Popup"
+    status: "Partially implemented — has aria-autocomplete, aria-controls, aria-expanded but missing explicit role='combobox' and aria-activedescendant"
+    tension: "Full combobox pattern would use aria-activedescendant for virtual focus, avoiding the real-focus question entirely. Current hybrid approach uses real focus via Down Arrow."
+
+  - name: "Search Landmark with Live Results"
+    status: "Input is type='search', results use aria-live. No <search> or role='search' landmark."
+    tension: "Adding a search landmark would help SR users locate the search feature but doesn't resolve the focus-during-results question."
+
+multi_perspective_coverage:
+  - screen_reader: "AMBIGUOUS: aria-live='polite' announces count but can be missed during typing. User must press Down Arrow to discover what results are. Sighted users see results updating in real time — SR users do not get equivalent passive information."
+  - keyboard: "WORKS WELL: Down Arrow to enter results, Arrow Up/Down within results, Escape to clear. Tab also works as fallback. Industry-standard interaction pattern."
+  - low_vision: "NOT SIGNIFICANTLY AFFECTED: Results appear visually and are readable. Focus indicator visible on both input and results."
+  - cognitive: "WORKS WELL: Simple type-to-search with visible results. No unexpected focus jumps. Escape provides clear exit."
+  - motor: "WORKS WELL: No time pressure. Focus stays stable. Arrow keys provide efficient navigation without long Tab chains."
+
+notes: |
+  ADVERSARIAL fixture — the correct review articulates the tradeoff, not flags a bug.
+
+  Expected verdicts:
+  - Best: ACCEPT with detailed notes on the focus-management tradeoff and its differential impact on SR users vs sighted users
+  - Acceptable: REVISE recommending focus move to results with explicit acknowledgment that keeping focus in input is defensible and industry-standard
+  - Poor: ACCEPT with no discussion of the SR information gap
+  - Poor: REVISE claiming focus management is broken or that keeping focus in input violates WCAG

@@ -1,0 +1,104 @@
+fixture_id: dashboard-heading-inconsistency
+name: Analytics Dashboard with Structural Inconsistencies
+description: Analytics dashboard with sidebar, metric cards, and data tables. Surface-level a11y looks passable (headings, table captions, aria-label on sidebar, th elements) but heading hierarchy is broken, scope attributes are missing, metric cards lack semantic structure, and the page has no landmarks.
+language: jsx
+framework: React
+difficulty: FLAWED
+domain: Content & Semantic Structure
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Heading hierarchy inconsistent — h1 → h3 in some cards (skipping h2), h2 in others. CSS styles h2 and h3 identically, hiding the broken heading tree."
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships (heading hierarchy must be logical)"
+        evidence: "Lines 28, 40 (h3 for Total Users, Bounce Rate), lines 34, 46 (h2 for Active Sessions, Avg. Session Duration), line 55 (h3 for Traffic table), line 90 (h2 for Top Pages table). Mixed levels for peer-level content."
+        user_group: "Screen reader users navigating by heading level — pressing '2' finds only half the cards, pressing '3' finds the other half"
+        expected_behavior: "All card headings should be the same level (h2, as direct children of the h1 page title)"
+        fix: "Change all card and table section headings to h2 for consistent hierarchy under h1"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Data table headers missing scope attributes in both tables"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships (table header scope must be identified)"
+        evidence: "Lines 60-63: Traffic table column headers (<th> without scope='col'). Lines 68, 74, 80: Traffic table row headers (<th> without scope='row'). Lines 95-97, 102, 107, 112: same pattern in Top Pages table. Both tables have captions, so surface check passes."
+        user_group: "Screen reader users navigating tables with Ctrl+Alt+arrow keys — hear data values without associated header context"
+        fix: "Add scope='col' to all <th> in <thead>, scope='row' to all <th> in <tbody>, in both tables"
+
+      - description: "Metric cards use plain divs for key-value pairs instead of semantic structure"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships (information relationships must be programmatically determinable)"
+        evidence: "Lines 29-30: div.metric-value and div.metric-label present data without semantic label-value pairing. Pattern repeats in all 4 metric cards."
+        user_group: "Screen reader users — hear flat sequence of text with no semantic separation between metrics"
+        fix: "Use <dl>/<dt>/<dd> for metric name-value pairs, or a compact data table"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "No landmark regions — sidebar is div (not nav), content area is div (not main)"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships, 2.4.1 Bypass Blocks"
+        evidence: "Line 12: sidebar is <div> not <nav>. Line 22: content area is <div> not <main>. No <section> with accessible names."
+        user_group: "Screen reader users navigating by landmark (D key in NVDA, Rotor in VoiceOver)"
+        expected_to_find: "30%"
+
+      - description: "No skip link to bypass sidebar navigation"
+        severity: ENHANCEMENT
+        wcag: "2.4.1 Bypass Blocks"
+        evidence: "Lines 12-18: sidebar with 4 navigation links precedes main content. No skip link mechanism."
+        user_group: "Keyboard-only users, screen reader users"
+        expected_to_find: "15%"
+
+components_analyzed:
+  - name: Sidebar navigation
+    element: "div > ul with aria-label"
+    aria_attributes: ["aria-label='Main navigation' on ul"]
+    status: "aria-label present on list, but wrapping element is <div> not <nav> — no navigation landmark created"
+
+  - name: Metric cards (4 total)
+    element: "div.metric-card with heading + div.metric-value + div.metric-label"
+    aria_attributes: []
+    status: "Headings present but inconsistent levels (h2 vs h3 for peer content). Key-value pairs use plain divs — no semantic structure for label-value relationships."
+
+  - name: Data tables (2 total)
+    element: "table with caption, thead, tbody, th, td"
+    aria_attributes: []
+    status: "Captions present and descriptive. <th> used for column and row headers. But all <th> missing scope='col' and scope='row' — header-cell relationships not programmatically determined."
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (heading hierarchy, table scope, semantic structure, landmarks)"
+  - "2.4.1 Bypass Blocks (landmarks and skip links)"
+
+multi_perspective_coverage:
+  - screen_reader: "BROKEN: Heading tree is jumbled (pressing h2/h3 finds unpredictable subsets of cards). Table cell navigation doesn't announce column/row headers. Metric values heard as flat text without structure. No landmarks for page orientation."
+  - cognitive: "DEGRADED: Inconsistent heading hierarchy may confuse users who rely on consistent page structure to build mental models. Visual styling masks the inconsistency, but AT users experience the actual heading tree."
+  - keyboard: "MINOR: No skip link means tabbing through sidebar before reaching content. With 4 links this is manageable but degrades as navigation grows."
+  - low_vision: "Not directly affected — visual styling is consistent and legible"
+
+false_positive_traps: 0
+
+notes: |
+  FLAWED difficulty — the surface a11y looks passable. Headings are present,
+  tables have captions and <th> elements, the sidebar list has an aria-label.
+  A surface-level check sees "all the pieces" and moves on.
+
+  The bugs are structural: heading hierarchy broken but CSS-hidden, scope attributes
+  missing from tables that already have captions, divs masquerading as structured
+  data in metric cards, and no landmarks on a page with obvious visual regions.
+
+  Expected verdict: REVISE
+
+  Key discriminator: baseline sees headings (check), captions (check), aria-label
+  (check), th elements (check) — and concludes the component passes. Harsh-critic
+  builds the heading tree, checks scope attributes, audits semantic structure of
+  metric cards, and checks for landmarks.
+
+  Correct attributes that should NOT be flagged:
+  - aria-label="Main navigation" on the sidebar ul (correctly applied)
+  - <caption> elements on both tables (correctly present and descriptive)
+  - <th> elements for column and row headers (correct elements, just missing scope)
+  - Semantic heading elements (h1, h2, h3 are real headings, not styled divs)

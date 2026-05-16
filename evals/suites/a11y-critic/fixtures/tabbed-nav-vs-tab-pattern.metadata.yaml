@@ -1,0 +1,90 @@
+fixture_id: tabbed-nav-vs-tab-pattern
+name: Tabbed Navigation Using Tab Pattern for Page-Level Routes
+description: Next.js component using complete WAI-ARIA Tabs pattern for page-level route navigation. Technically correct tab implementation but semantic model arguably wrong — tabs vs nav is genuinely debatable.
+language: jsx
+framework: React (Next.js App Router)
+difficulty: ADVERSARIAL
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Tension between tabs interaction model and navigation semantic model"
+        severity: "CONTEXT-DEPENDENT"
+        wcag: "4.1.2 Name/Role/Value, 1.3.1 Info and Relationships"
+        evidence: "router.push() on tab click (line 55) — each tab triggers a route change, meaning the tabs pattern describes an interaction model while nav+links would describe the semantic model"
+        user_groups_affected:
+          tabs_better_for: "Keyboard users (arrow key navigation matches visual metaphor)"
+          nav_better_for: "Screen reader landmark navigation users; power users expecting link behaviors (right-click, cmd+click, URL sharing)"
+        both_sides_required: true
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Missing link affordances — buttons with router.push lose right-click, cmd+click, URL sharing, and crawlability"
+        severity: MINOR
+        wcag: "Not a WCAG violation — a usability and discoverability concern"
+        evidence: "Lines 53-55: button onClick with router.push instead of <a href>"
+        user_group: "Power users, screen reader users expecting link context menus"
+        expected_to_find: "35%"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "tabpanel wraps router-loaded content that doesn't exist in the initial DOM"
+        severity: ENHANCEMENT
+        evidence: "Lines 63-70: tabpanel contains router-rendered content — the panel's ARIA relationship is correct at render time but the content was fetched, not toggled"
+        expected_to_find: "15%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "The tabs pattern implementation itself is correct — flagging broken ARIA, missing aria-selected, or incomplete keyboard handling is wrong"
+        impact: "The ARIA is correctly implemented. The question is whether tabs is the RIGHT pattern, not whether the tab implementation is broken."
+        expected_to_find: "70%"
+
+components_analyzed:
+  - name: Tablist container
+    aria_role: tablist
+    aria_attributes: ["aria-label='Product sections'"]
+    status: "Correctly implemented — the question is whether tablist is the right role"
+
+  - name: Tab buttons
+    aria_role: tab
+    aria_attributes: [aria-selected, aria-controls, "tabindex (roving)"]
+    status: "Correctly implemented per APG Tabs pattern"
+
+  - name: Content panel
+    aria_role: tabpanel
+    aria_attributes: [aria-labelledby]
+    status: "Correctly implemented — wraps route-loaded content"
+
+wcag_criteria:
+  - "4.1.2 Name, Role, Value (is the role accurately describing the function?)"
+  - "1.3.1 Info and Relationships (is the semantic structure matching the actual structure?)"
+
+apa_patterns:
+  - name: "WAI-ARIA Tabs Pattern"
+    status: "Correctly implemented"
+    tension: "Pattern assumes panels are in the same DOM; here each panel is a separate route"
+
+  - name: "Navigation Landmark (alternative)"
+    status: "Not used, but arguably more semantically accurate"
+    tension: "Would require <nav> with <a> links instead of tablist with buttons"
+
+multi_perspective_coverage:
+  - screen_reader: "AMBIGUOUS: Tabs pattern announces 'tab 2 of 4, selected' which is accurate to the UI. But user navigating by landmarks won't find a <nav> element. User can't right-click or use link-specific shortcuts."
+  - keyboard: "WORKS WELL: Arrow key navigation matches the visual tabs metaphor. This is arguably better than Tab-to-each-link navigation."
+  - low_vision: "Not significantly affected — both patterns are visually equivalent"
+  - cognitive: "Tabs metaphor is clear and well-understood. Changing to nav+links wouldn't improve cognitive accessibility."
+
+notes: |
+  ADVERSARIAL fixture — the correct review articulates the tradeoff, not flags a bug.
+
+  Expected verdicts:
+  - Best: ACCEPT with detailed notes on the tabs-vs-nav tension and a recommendation
+  - Acceptable: REVISE with clear reasoning for preferring nav, acknowledging tabs is defensible
+  - Poor: ACCEPT with no discussion of the tension
+  - Poor: REVISE claiming the tab implementation is broken (it isn't)

@@ -181,37 +181,35 @@ These 5 keyboard fixtures have real `.md` content (51-62 lines) but some have st
 
 ---
 
-## Phase 3: Critic FLAWED + ADVERSARIAL Tiers
+## Phase 3: Critic FLAWED + ADVERSARIAL Tiers ✅ DONE (2026-05-15)
 
-Per `domain-sampling-strategy.md`, the target is 27-30 total fixtures. Current: 25 (5 CLEAN + 20 HAS-BUGS). Need: 5-8 more.
+Per `domain-sampling-strategy.md`, the target is 27-30 total fixtures. Now have 33 (4 CLEAN + 21 HAS-BUGS + 5 FLAWED + 3 ADVERSARIAL).
 
-### FLAWED fixtures (3-5 to create)
+### FLAWED fixtures (5 created)
 
-Subtle bugs, incomplete patterns. Baseline finder rate 15-35%. The domain-sampling-strategy already specifies examples:
+Subtle bugs, incomplete patterns. Baseline finder rate 15-35%.
 
-| Fixture ID (proposed) | Domain | What's wrong |
-|-----------------------|--------|-------------|
-| `tabs-incomplete-aria-selected` | Interactive Widgets | aria-selected + arrow keys present, but active tab not focused after selection; panel not referenced by aria-controls |
-| `multistep-form-error-clearing` | Form & Validation | Error messages specific but no announcement when errors clear; disabled Next button confusing |
-| `dashboard-heading-inconsistency` | Content & Semantic | Heading hierarchy inconsistent; list items in divs; table missing scope; regions not marked |
-| `app-focus-order-illogical` | Focus Management | Tab order illogical, skip link targets wrong element, focus indicator low contrast, roving tabindex not implemented |
-| `async-form-vague-success` | Dynamic Content | Success message announced but doesn't specify what succeeded; aria-busy removed too early |
+| Fixture ID | Domain | What's wrong |
+|------------|--------|-------------|
+| `tabs-incomplete-aria-selected` | Interactive Widgets | Focus doesn't follow aria-selected on arrow keys; panels missing aria-labelledby; tabs missing aria-controls |
+| `multistep-form-error-clearing` | Form & Validation | Error clearance is silent (no SR announcement); Next button uses disabled instead of aria-disabled; step indicator lacks aria-current |
+| `dashboard-heading-inconsistency` | Content & Semantic | Heading hierarchy h1→h3 skip; table th missing scope; metric cards use divs not dl/dt/dd; no landmarks |
+| `app-focus-order-illogical` | Focus Management | CSS order creates visual/DOM mismatch; skip link targets non-focusable div; focus indicator 1.55:1 contrast; positive tabindex on FAB |
+| `async-form-vague-success` | Dynamic Content | Generic success message; aria-busy clears 200ms before content arrives; form stays editable after submit |
 
-**Files per fixture**: `.md` (component code, 80-150 lines), `.metadata.yaml` (must/should/nice findings), `.rubric.yaml`
+### ADVERSARIAL fixtures (3 created)
 
-**Effort**: ~30-40 min per fixture (code + metadata + rubric). ~2.5-3 hours for 5.
+Genuinely ambiguous — rubrics use `must_articulate` (tradeoff analysis), not `must_find` (bug detection). LLM judge weight 0.4 (vs 0.3 standard).
 
-### ADVERSARIAL fixtures (2-3 to create)
+| Fixture ID | Domain | What's ambiguous |
+|------------|--------|-----------------|
+| `tabbed-nav-vs-tab-pattern` | Interactive Widgets | WAI-ARIA Tabs pattern used for page-level route navigation. Tabs interaction model vs nav semantic model — both defensible. |
+| `form-field-vs-summary-errors` | Form & Validation | Dual error announcement (role="alert" summary + aria-live inline). Thorough or redundant? GOV.UK recommends both; SR users hear errors twice. |
+| `search-focus-stays-in-input` | Focus Management | Focus stays in search box after results update. Google/Algolia do this. Lets user refine, but SR users may miss results. |
 
-Ambiguous implementations. Baseline finder rate 5-20%.
-
-| Fixture ID (proposed) | Domain | What's ambiguous |
-|-----------------------|--------|-----------------|
-| `modal-div-trigger-correct-aria` | Interactive Widgets | Div + ARIA instead of button for trigger; role="dialog" correct but trigger semantics wrong. Defensible if you squint. |
-| `dynamic-form-duplicate-announcements` | Form & Validation | Multiple validation sources, aria-live regions conflict, user hears duplicate announcements. Not clearly "wrong." |
-| `search-focus-stays-in-input` | Focus Management | Results update dynamically; where should focus go? Designer chose to leave focus in search box. Defensible. |
-
-**Effort**: ~40 min per fixture (more thought needed). ~2 hours for 3.
+**Design decisions during Phase 3:**
+- Replaced `modal-div-trigger-correct-aria` — div-instead-of-button is arguably just wrong, not genuinely ambiguous. Replaced with `tabbed-nav-vs-tab-pattern` (tabs-vs-nav is one of the most debated patterns in a11y).
+- Reframed `dynamic-form-duplicate-announcements` → `form-field-vs-summary-errors` — "duplicate announcements" framed it as a bug. The real ambiguity is whether field-level + summary errors is thorough or confusing.
 
 ---
 
@@ -287,13 +285,13 @@ Phase 1A: Write 8 missing critic rubrics ............... ✅ DONE (2026-05-15)
 Phase 1B: Reconcile planner eval.yaml vs files ......... ✅ DONE (2026-05-15, Option 1: replaced stubs)
 Phase 2:  Generate 15 planner fixture triplets .......... ✅ DONE (2026-05-15)
 Phase 2b: Enrich 5 keyboard fixtures ................... ✅ DONE (2026-05-15)
-Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ~5 hours
+Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ✅ DONE (2026-05-15, 5F+3A=8 new, 33 total)
 Phase 4A: Run critic benchmarks (18 fixtures) ........... ~8 hours (unattended)
 Phase 4C: Run perspective benchmarks (23 fixtures) ...... ~4 hours (unattended)
 Phase 4D: Test qwen3.5:latest on perspective-audit ...... ~2 hours (unattended)
 Phase 5:  Claude baseline (optional) .................... ~1 hour
                                                   Total: ~29 hours
-                                              Remaining: ~16 hours (5h human + 14h machine)
+                                              Remaining: ~15 hours (0h human + 15h machine)
 ```
 
 **Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
@@ -303,7 +301,7 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 1. ~~**Session A** — Phase 1A + 1B (fix structural issues). ~3 hours.~~ ✅ Complete
 2. ~~**Session B** — Phase 2 first half (SR + Visual domains, 10 fixtures). ~3 hours.~~ ✅ Complete
 3. ~~**Session C** — Phase 2 second half (Testing domain, 5 fixtures) + Phase 2b (keyboard enrichment).~~ ✅ Complete
-4. **Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.
+4. ~~**Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.~~ ✅ Complete
 5. **Session E** — Phase 4C + Phase 4D + Phase 5 + update BENCHMARK.md with full results. ~3 hours.
 
 ---

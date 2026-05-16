@@ -1,0 +1,122 @@
+fixture_id: tabs-incomplete-aria-selected
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical interaction bugs a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Pattern completeness gaps a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle contextual gaps"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "No planted traps in this fixture, but over-flagging correct ARIA attributes as wrong is penalized"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "Findings backed by file:line references or code quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Focus does not follow aria-selected on arrow key navigation"
+        severity: MAJOR
+        wcag: "2.1.1 Keyboard, 4.1.2 Name/Role/Value"
+        apa_pattern: "WAI-ARIA Tabs Pattern"
+        evidence_requirement: "Reference to arrow key handler (lines 15-25) showing setActiveTab without focus() call"
+        expected_to_find: "75%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Tab panels missing aria-labelledby linking to tab"
+        severity: MAJOR
+        wcag: "1.3.1, 4.1.2"
+        apa_pattern: "WAI-ARIA Tabs Pattern"
+        evidence_requirement: "Reference to tabpanel elements (lines 60-68) showing missing aria-labelledby"
+        expected_to_find: "45%"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Tabs missing aria-controls linking to panels"
+        severity: MINOR
+        wcag: "4.1.2"
+        evidence_requirement: "Reference to tab buttons showing missing aria-controls"
+        expected_to_find: "40%"
+
+      - description: "Badge count lacks accessible context"
+        severity: MINOR
+        wcag: "1.3.1"
+        evidence_requirement: "Reference to badge span showing bare number"
+        expected_to_find: "20%"
+
+  - category: false_positive_trap
+    count: 0
+    note: "No planted traps. Over-flagging correct aria-selected or roving tabindex implementation is penalized."
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  Bonus: +5 if reviewer explicitly traces the arrow key → setActiveTab → no focus() chain
+  Penalty: -10 per false positive on correct ARIA attributes (aria-selected, roving tabindex)
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-95
+    reasoning: "Should trace arrow key handler, find focus gap, and check both directions of tab↔panel association"
+
+  - condition: baseline-zero-shot
+    expected_score: 30-55
+    reasoning: "Likely sees correct ARIA attributes and arrow key handler, concludes pattern is complete. May miss focus gap and aria-labelledby."
+
+  - condition: baseline-few-shot
+    expected_score: 40-65
+    reasoning: "Few-shot with interaction tracing example may prompt checking focus after state update"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: REVISE
+
+notes: |
+  FLAWED fixture testing interaction tracing and bidirectional pattern verification.
+
+  The surface ARIA is correct — the bugs are in the connections between pieces.
+  This is the prototypical FLAWED pattern: looks right on attribute inspection,
+  breaks when you trace the actual user interaction.
+
+  Key discriminator: baseline sees "arrow keys implemented, aria-selected toggles"
+  and stops. Harsh-critic traces "arrow key → setActiveTab → where does focus go?"
+  and finds nothing.
+
+  Expected baseline gap: zero-shot gives ACCEPT because all ARIA attributes are present.
+  Harsh-critic gives REVISE because the interaction is broken despite correct attributes.

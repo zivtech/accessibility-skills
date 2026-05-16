@@ -1,0 +1,134 @@
+fixture_id: multistep-form-error-clearing
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical interaction lifecycle bugs a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Significant discoverability gaps a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle semantic and robustness gaps"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues — large correct-ARIA surface in this fixture"
+    weight: -2
+    note: "Labels, aria-invalid, aria-describedby, aria-live region, semantic headings are all correct. Flagging any of these as missing or broken is a false positive."
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "Findings backed by file:line references, code quotes, or interaction traces"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Error clearance is silent to screen readers — removing text from aria-live region produces no announcement"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        apa_pattern: "Forms Pattern — provide feedback when errors are corrected"
+        evidence_requirement: "Reference to update handler error deletion (lines 19-23) and/or live region conditional rendering (lines 51-57) showing that text removal is not announced"
+        expected_to_find: "70%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Next button uses HTML disabled attribute, removing it from tab order entirely"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value; 3.3.3 Error Suggestion"
+        apa_pattern: "Use aria-disabled when disabled state needs to remain discoverable"
+        evidence_requirement: "Reference to disabled={hasErrors} on Next button (lines 109-110) and explanation of tab order removal"
+        expected_to_find: "45%"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Step indicator lacks aria-current='step' on active step"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships"
+        evidence_requirement: "Reference to step indicator (lines 43-50) showing no aria-current"
+        expected_to_find: "25%"
+
+      - description: "Inactive step panels hidden off-screen but inputs remain keyboard-focusable"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order; 1.3.2 Meaningful Sequence"
+        evidence_requirement: "Reference to inactive panels (lines 58-93) showing aria-hidden with CSS clip but no inert attribute — keyboard focus enters invisible inputs"
+        expected_to_find: "15%"
+
+  - category: false_positive_trap
+    count: 0
+    note: "No planted traps, but large correct-ARIA surface invites over-flagging. Penalize if reviewer flags: labels as missing, aria-describedby as absent, aria-live region as missing, or aria-invalid as not toggling — all are correctly implemented."
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  Bonus: +5 if reviewer explicitly traces the error lifecycle (appear → fix → silent removal)
+  Bonus: +5 if reviewer identifies the compound effect of bugs #1 and #2 (silent clearing + vanished button = dead end)
+  Penalty: -10 per false positive on correctly implemented ARIA (labels, aria-describedby, aria-live, aria-invalid)
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-95
+    reasoning: "Should trace the full error lifecycle and find the silent clearing bug. Should identify disabled vs. aria-disabled distinction. May catch one or both nice-to-find items."
+
+  - condition: baseline-zero-shot
+    expected_score: 25-50
+    reasoning: "Sees aria-live region present, aria-describedby present, labels present — concludes form is accessible. May miss silent error clearing entirely. May miss disabled-vs-aria-disabled distinction. Likely produces ACCEPT."
+
+  - condition: baseline-few-shot
+    expected_score: 35-60
+    reasoning: "Few-shot example may prompt checking error lifecycle if the example includes error resolution. Still likely to miss disabled button discoverability issue."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: REVISE
+
+notes: |
+  FLAWED fixture testing error lifecycle tracing and disabled-state discoverability
+  in a multi-step form wizard.
+
+  The surface ARIA is correct — labels, aria-invalid, aria-describedby, aria-live,
+  semantic headings. The bugs are in what happens AFTER the initial error presentation:
+
+  1. Error resolution is silent (must-find) — aria-live announces additions, not removals
+  2. Next button vanishes from tab order (should-find) — disabled vs. aria-disabled
+  3. Step indicator has no programmatic current state (nice-to-find)
+  4. Inactive panels leak on older AT (nice-to-find)
+
+  Key discriminator: baseline checks "is aria-live present? yes" and stops.
+  Harsh-critic asks "what happens when the live region EMPTIES?" and finds silence.
+
+  Compound effect is the real test: a screen reader user who hits errors gets no
+  confirmation when they fix them (bug #1), and the button they need to proceed
+  has vanished from the tab order (bug #2). Together these create a dead end that
+  neither bug alone would produce. Reviewers who identify this compound effect
+  demonstrate interaction-tracing depth beyond attribute checking.
+
+  Expected baseline gap: 30-45 points between baseline-zero-shot and harsh-critic.
+  This gap comes from the difference between attribute presence checking (baseline)
+  and interaction lifecycle tracing (harsh-critic).

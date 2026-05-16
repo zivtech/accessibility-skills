@@ -1,0 +1,128 @@
+fixture_id: app-focus-order-illogical
+name: App Layout with Illogical Focus Order
+description: Web app layout with header, sidebar, main content, and FAB. CSS order property creates visual/DOM tab order mismatch, skip link targets non-focusable element, sidebar focus indicators have insufficient contrast, and positive tabindex on FAB preempts all content.
+language: jsx
+framework: React
+difficulty: FLAWED
+domain: Focus Management & Keyboard Navigation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Tab order does not match visual layout — CSS order: -1 on sidebar creates DOM/visual mismatch"
+        severity: MAJOR
+        wcag: "2.4.3 Focus Order, 1.3.2 Meaningful Sequence"
+        evidence: "JSX renders <main> before <aside>; CSS .sidebar { order: -1 } visually reorders sidebar to the left"
+        user_group: "Keyboard users (tab order confusion), screen reader users (reading order mismatch)"
+        fix: "Move <aside> before <main> in the DOM to match visual order; remove order: -1"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Skip link targets a non-focusable element — href='#content' points to a plain div without tabindex"
+        severity: MAJOR
+        wcag: "2.4.1 Bypass Blocks, 2.4.3 Focus Order"
+        evidence: "<div id='content'> has no tabindex='-1'; skip link click does not move focus"
+        user_group: "Keyboard users, screen reader users"
+        fix: "Add tabindex='-1' to the target div, or move id to <main> and add tabindex='-1'"
+
+      - description: "Sidebar navigation focus indicators have ~1.5:1 contrast ratio — #a8d0f0 on #f8fafc background"
+        severity: MAJOR
+        wcag: "2.4.7 Focus Visible, 2.4.13 Focus Appearance"
+        evidence: "CSS .sidebar-nav a:focus uses outline: 2px solid #a8d0f0 against .sidebar background: #f8fafc"
+        user_group: "Low-vision users, keyboard users"
+        fix: "Change sidebar focus outline color to #2563eb or #1e40af for 3:1+ contrast"
+
+  - category: nice_to_find
+    count: 1
+    items:
+      - description: "Positive tabIndex={1} on FAB forces it to receive focus before skip link and all content"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order"
+        evidence: "tabIndex={1} on <button className='fab'> — receives focus before any tabindex=0 element"
+        user_group: "Keyboard users"
+        expected_to_find: "30%"
+        fix: "Remove tabIndex={1}; use tabIndex={0} or no tabindex; rely on DOM order"
+
+components_analyzed:
+  - name: Skip link
+    aria_attributes: ["href='#content'"]
+    status: "Present but non-functional — target div is not focusable"
+
+  - name: App header
+    aria_role: banner (implicit from header)
+    aria_attributes: []
+    status: correct
+
+  - name: Header navigation
+    aria_role: navigation
+    aria_attributes: ["aria-label='Header navigation'"]
+    status: correct
+
+  - name: App body flex container
+    aria_attributes: []
+    status: "CSS order: -1 on sidebar creates visual/DOM mismatch for tab order"
+
+  - name: Main content area
+    aria_role: main
+    aria_attributes: []
+    status: "correct semantics, but DOM position before sidebar causes tab order issue"
+
+  - name: Content sections
+    aria_role: region (implicit from section with aria-labelledby)
+    aria_attributes: ["aria-labelledby"]
+    status: correct
+
+  - name: Sidebar navigation
+    aria_role: navigation
+    aria_attributes: ["aria-label='Sidebar navigation'"]
+    status: "Correct semantics; focus indicators have insufficient contrast (~1.5:1)"
+
+  - name: Floating action button
+    aria_attributes: ["aria-label='Create new report'", "tabIndex={1}"]
+    status: "Properly labeled but positive tabindex disrupts page focus order"
+
+wcag_criteria:
+  - "2.4.3 Focus Order (DOM/visual mismatch from CSS order; positive tabindex)"
+  - "2.4.1 Bypass Blocks (skip link target not focusable)"
+  - "2.4.7 Focus Visible (sidebar focus indicator insufficient contrast)"
+  - "2.4.13 Focus Appearance (focus indicator contrast below 3:1)"
+  - "1.3.2 Meaningful Sequence (visual order differs from DOM order)"
+
+apa_patterns:
+  - name: "Skip Navigation Link"
+    link: "https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/"
+    required_features:
+      - "Skip link target must be focusable (tabindex='-1' on target element)"
+      - "Skip link should bypass repeated navigation blocks"
+
+multi_perspective_coverage:
+  - keyboard: "BROKEN: All 4 issues affect keyboard users. Tab order is illogical (main content before sidebar due to CSS order). Skip link does nothing (target not focusable). Sidebar focus indicators are nearly invisible (~1.5:1 contrast). FAB receives focus before everything including the skip link (tabindex=1). The compound effect: first Tab goes to FAB in bottom-right, skip link is non-functional, content is tabbed before sidebar, and sidebar focus tracking is lost."
+  - low_vision: "DEGRADED: Sidebar focus indicator contrast (~1.5:1) makes it extremely difficult to track focus when tabbing through sidebar links. Main content focus indicators are fine (~5.2:1), creating an inconsistent experience that makes the sidebar particularly disorienting."
+  - screen_reader: "MINOR: Screen readers follow DOM order like keyboard, so the tab order mismatch affects them equally. Skip link failure means no bypass mechanism. However, landmarks and ARIA labels are correct, so experienced SR users can navigate by landmark to work around the tab order issues."
+  - cognitive: "MINOR: Sighted users with cognitive disabilities may not notice the tab order mismatch since the visual layout is logical. The broken skip link has no visual indicator of failure. The primary risk is confusion if they observe focus indicator behavior on screen."
+
+false_positive_traps: 0
+
+notes: |
+  FLAWED difficulty — the component has strong surface-level accessibility:
+  semantic HTML, landmarks, skip link, ARIA labels, focus indicators on
+  every element. The four bugs all live in the interaction layer:
+
+  - CSS visual reordering vs DOM tab order
+  - Skip link target focusability (not just href/id matching)
+  - Focus indicator contrast (not just presence)
+  - Positive tabindex anti-pattern
+
+  Expected verdict: REVISE
+
+  Baseline detection rate: 15-35%. A zero-shot reviewer sees semantic HTML,
+  skip link, landmarks, and focus indicators — and concludes the layout is
+  accessible. Each bug requires a different analysis skill: CSS/DOM interaction,
+  target element testing, color contrast calculation, tabindex semantics.
+
+  The compound effect distinguishes expert reviewers: tabindex=1 on the FAB
+  defeats the skip link even if the skip link target were fixed, because the
+  FAB receives focus before the skip link is even reachable.

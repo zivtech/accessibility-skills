@@ -1,0 +1,97 @@
+fixture_id: async-form-vague-success
+name: Async Form with Vague Success Announcement
+description: Feedback form with async submission using aria-live, aria-busy, and role="status". Surface ARIA looks correct, but success message is generic (doesn't identify what was submitted), aria-busy clears 200ms before content arrives, and form fields remain editable after success.
+language: jsx
+framework: React
+difficulty: FLAWED
+domain: Dynamic Content & Live Regions
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Success message is generic — doesn't identify what was submitted"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages (status must provide equivalent information)"
+        evidence: "Lines 70-73: hardcoded 'Your submission was successful!' with no reference to form purpose or submitted data"
+        user_group: "Screen reader users — especially those with multiple forms or who navigate away before announcement"
+        expected_behavior: "Message should identify the completed action: 'Your feedback has been sent' rather than generic 'submission successful'"
+        fix: "Include form context in success message: 'Your feedback has been sent. We'll respond to ${formData.email} within 2 business days.'"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "aria-busy cleared 200ms before success content arrives in live region"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages (announcement timing must ensure AT receives the message)"
+        evidence: "Lines 37-41: setStatus('clearing') removes aria-busy, setTimeout inserts content 200ms later"
+        user_group: "Screen reader users — NVDA and JAWS check live region content when aria-busy transitions to false; empty region means skipped announcement"
+        expected_behavior: "aria-busy should remain true until success message is ready; both should update in the same render cycle"
+        fix: "Remove intermediate 'clearing' state. Set status directly to 'success' so aria-busy and content update atomically."
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Form fields remain editable after successful submission"
+        severity: MINOR
+        wcag: "3.3.4 Error Prevention"
+        evidence: "Lines 82-115: no conditional disabled/aria-disabled based on success state"
+        user_group: "Screen reader users (no programmatic 'done' state), cognitive users (may re-submit), motor impairment users (accidental re-activation)"
+        expected_to_find: "35%"
+
+      - description: "Success confirmation cannot be re-read after navigation"
+        severity: ENHANCEMENT
+        wcag: "Best practice — persistent status should be discoverable, not just announced once"
+        evidence: "Lines 60-76: status div has no tabindex, no heading, not a landmark"
+        user_group: "Screen reader users (can't re-find confirmation), cognitive users (need to re-read to confirm)"
+        expected_to_find: "15%"
+
+components_analyzed:
+  - name: Live region container
+    aria_role: status
+    aria_attributes: ["aria-live='polite'", "aria-atomic='true'", "aria-busy (toggles)"]
+    status: "Attributes correct, but timing desync between aria-busy and content insertion. Message content is generic."
+
+  - name: Form inputs
+    aria_attributes: ["required", "autoComplete", "htmlFor labels"]
+    status: "Labels and validation correct. Missing post-submission disabled state."
+
+  - name: Submit button
+    aria_attributes: ["disabled during submission"]
+    status: "Disabled during async request, but not disabled after success"
+
+  - name: Error announcement
+    aria_role: alert
+    aria_attributes: ["role='alert'"]
+    status: "Correct — assertive announcement for errors"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (success message must provide equivalent information; timing must ensure AT receives announcement)"
+  - "3.3.4 Error Prevention (prevent unintentional duplicate submissions)"
+
+multi_perspective_coverage:
+  - screen_reader: "DEGRADED: Live region attributes are present, but (1) success announcement says 'Your submission was successful!' — doesn't say WHAT was submitted, so user can't distinguish between multiple form submissions, (2) aria-busy clears 200ms before content arrives, creating a window where NVDA/JAWS may skip the announcement entirely."
+  - keyboard: "Functional — all fields reachable, submit button works. No keyboard-specific bugs."
+  - low_vision: "Functional — success/error messages have sufficient contrast, color-coding supplemented by text."
+  - cognitive: "DEGRADED: (1) Generic success message requires user to remember what they just submitted, (2) form stays editable after success with no visual 'done' state — user may re-submit, (3) confirmation can't be re-read if user forgets they submitted."
+
+false_positive_traps: 0
+
+notes: |
+  FLAWED difficulty — the live region has all the right attributes (aria-live, role="status",
+  aria-atomic, aria-busy, aria-hidden on spinner, role="alert" on errors). The bugs are in
+  the QUALITY of announcements, TIMING of state transitions, and COMPLETENESS of post-action
+  state management.
+
+  Expected verdict: REVISE
+
+  Baseline detection rate: 15-35%. A zero-shot reviewer sees correct live region setup and
+  concludes the pattern is well-implemented. The vague message bug requires thinking about
+  what a screen reader user actually HEARS in isolation — not just whether an announcement
+  fires. The timing bug requires tracing the state machine through the 'clearing' intermediate
+  state and understanding how SRs respond to aria-busy transitions on empty regions.
+
+  Key discriminator: baseline sees "aria-live present, aria-busy toggling, success message
+  announced" and gives ACCEPT. Harsh-critic asks "what does the user actually hear?" and
+  "when does the content arrive relative to aria-busy?" and finds both are broken.

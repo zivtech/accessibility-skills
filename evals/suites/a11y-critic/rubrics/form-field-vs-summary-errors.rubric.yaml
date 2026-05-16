@@ -1,0 +1,153 @@
+fixture_id: form-field-vs-summary-errors
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.6
+  llm_judge: 0.4
+
+dimensions:
+  - id: must_articulate
+    name: "Must Articulate the Dual-Announcement Tradeoff"
+    description: "Identifies and explains the tension between role='alert' error summary and aria-live='polite' inline errors firing simultaneously on submit"
+    weight: 4
+    note: "This is NOT must_find — neither pattern is broken. The reviewer must articulate WHY the combination is debatable and what the user experiences."
+
+  - id: perspective_analysis
+    name: "Perspective-Specific Impact Analysis"
+    description: "Explains who benefits and who suffers from the dual-announcement pattern, with specifics about screen reader behavior and cognitive load"
+    weight: 3
+
+  - id: recommendation_quality
+    name: "Recommendation Quality"
+    description: "Makes a recommendation acknowledging the tradeoff — not just 'remove one' but a nuanced position (e.g., conditional suppression, timing, or explicit acceptance with reasoning)"
+    weight: 2
+
+  - id: false_positive_avoidance
+    name: "False Positive Avoidance"
+    description: "Does NOT flag role='alert' on the summary or aria-describedby on fields as broken — both are correctly implemented"
+    weight: -3
+    note: "Heavy penalty for treating either individual pattern as a clear-cut bug"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "References specific code (role='alert', aria-live='polite', simultaneous rendering) to support the analysis"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_articulate
+    count: 1
+    items:
+      - description: "Dual error announcement pattern — role='alert' summary and aria-live='polite' inline errors both fire on submit, creating redundant announcements"
+        evidence_requirement: "References both role='alert' on the summary and aria-live='polite' on inline errors, and explains the simultaneous-firing interaction"
+        scoring_criteria:
+          full_credit: "Articulates both sides: (1) why dual patterns are correct individually and useful at different moments, (2) why simultaneous firing creates redundancy/overload. Mentions the GOV.UK pattern or explains the different-purpose rationale."
+          partial_credit: "Notes the redundancy but only argues one side — e.g., says 'too many announcements' without acknowledging the correction-feedback benefit of aria-live"
+          no_credit: "Treats as clear-cut bug ('remove role=alert') or doesn't notice the interaction between the two announcement mechanisms at all"
+        expected_to_find: "55%"
+
+  - category: perspective_analysis
+    count: 1
+    items:
+      - description: "Who is affected by each choice — which users benefit from dual announcements, which are burdened"
+        scoring_criteria:
+          full_credit: "Names at least 2 user groups and explains differential impact — e.g., SR users on initial submit hear redundancy, but SR users correcting fields one-by-one get valuable per-field feedback. May also mention cognitive disability users confused by repeated messages."
+          partial_credit: "Mentions user impact generically ('screen reader users may hear too much') without distinguishing initial-submit vs correction scenarios"
+          no_credit: "No user impact analysis beyond generic 'accessibility concern'"
+        expected_to_find: "35%"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Conditional suppression recommendation — suppress aria-live on initial submit, enable for subsequent field corrections"
+        severity: ENHANCEMENT
+        evidence_requirement: "Proposes a specific mechanism (e.g., state flag, delayed live region activation) rather than just 'remove aria-live'"
+        expected_to_find: "15%"
+
+      - description: "AT behavior variance — different screen readers handle simultaneous live region updates differently (NVDA vs JAWS vs VoiceOver)"
+        severity: ENHANCEMENT
+        evidence_requirement: "Notes that the actual user experience depends on which assistive technology is used"
+        expected_to_find: "10%"
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "The error summary role='alert' is correctly implemented per the error message pattern"
+        impact: "Flagging role='alert' as wrong (e.g., 'should use aria-live=polite instead') is a false positive — the summary is assertive by design because errors on submit are urgent"
+        expected_to_find: "60%"
+
+      - description: "The aria-describedby associations on fields are correctly implemented"
+        impact: "Flagging missing aria-describedby or broken field-error association is a false positive — every field has correct conditional aria-describedby"
+        expected_to_find: "50%"
+
+composite_score_formula: |
+  score = (
+    must_articulate * 4 +
+    perspective_analysis * 3 +
+    recommendation_quality * 2 +
+    evidence_quality * 1 +
+    format_compliance * 1
+  ) / 11 * 100
+
+  false_positive_avoidance: -15 per false positive on correct error pattern implementation
+
+  Bonus: +10 if reviewer explicitly acknowledges both patterns are individually correct and the issue is the interaction effect
+  Bonus: +5 if reviewer proposes a conditional or nuanced solution (not just "remove one")
+
+scoring_thresholds:
+  excellent: 85-100
+  good: 65-84
+  adequate: 45-64
+  weak: 25-44
+  poor: 0-24
+
+expected_reviewer_performance:
+  - condition: a11y-critic
+    expected_score: 60-85
+    reasoning: "Should identify the dual-announcement interaction. May lean toward flagging redundancy without fully acknowledging the correction-feedback benefit. The form domain is well-covered in the skill but simultaneous live region interaction is subtle."
+
+  - condition: baseline-zero-shot
+    expected_score: 15-40
+    reasoning: "Likely either approves the form as correct (missing the interaction) or flags individual patterns as broken (false positive). The dual-announcement tension requires domain-specific reasoning about live region timing."
+
+  - condition: baseline-few-shot
+    expected_score: 25-50
+    reasoning: "Few-shot with ADVERSARIAL framing may prompt more nuanced analysis, but the specific interaction between role='alert' and aria-live='polite' on simultaneous render requires expertise most few-shot prompts don't provide."
+
+verdict_expectations:
+  best_response: "ACCEPT with detailed notes on the dual-announcement tradeoff — acknowledges both patterns are correct, explains the redundancy on submit vs the value during correction, and recommends a specific approach (conditional suppression, acceptance with documentation, or aria-live removal with noted tradeoff)"
+  acceptable_responses:
+    - "REVISE with clear reasoning about the redundancy concern, explicitly acknowledging both patterns are individually correct and the GOV.UK precedent"
+    - "ACCEPT with substantive discussion of the dual-announcement interaction, even without a strong recommendation"
+  poor_responses:
+    - "ACCEPT with no discussion of the dual-announcement interaction"
+    - "REVISE claiming role='alert' on the summary is broken or excessive"
+    - "REVISE claiming aria-describedby is missing or incomplete"
+    - "REVISE without acknowledging why both patterns were chosen"
+
+notes: |
+  ADVERSARIAL fixture — different rubric shape than FLAWED/HAS-BUGS fixtures.
+
+  The scoring rewards TRADEOFF ANALYSIS QUALITY, not bug detection. A reviewer
+  that says "remove aria-live from inline errors" without explaining what is lost
+  (per-field correction feedback) scores lower than a reviewer that says "the
+  dual pattern creates redundancy on submit but provides value during correction —
+  consider conditional suppression" — even if both reach a similar conclusion.
+
+  The LLM judge weight is higher (0.4 vs 0.3 default) because tradeoff
+  articulation quality and recommendation nuance are harder to score with
+  pattern-matching rules alone.
+
+  This fixture tests whether the critic can distinguish between:
+  1. "The ARIA implementation is broken" (false — both patterns are correct)
+  2. "The combination of two correct patterns creates an interaction effect" (the actual tension)
+  3. "One pattern should be removed" (possibly correct, but only with acknowledged tradeoff)
+
+  Key difference from the existing form-validation-missing-aria-describedby fixture:
+  That fixture has clear bugs (missing aria-describedby, missing role="alert").
+  This fixture has BOTH of those things correctly implemented — and the question
+  is whether having both simultaneously is too much.

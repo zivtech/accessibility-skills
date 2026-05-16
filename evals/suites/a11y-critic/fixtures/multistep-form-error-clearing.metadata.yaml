@@ -1,0 +1,131 @@
+fixture_id: multistep-form-error-clearing
+name: Multi-Step Form Wizard with Error Clearing Gaps
+description: A multi-step registration form with validation, aria-live error announcements, and aria-describedby field associations. Surface accessibility looks correct. Bugs are in the error resolution lifecycle (silent clearing), disabled-vs-aria-disabled on the Next button, missing aria-current on step indicator, and aria-hidden hiding that leaves inputs keyboard-focusable.
+language: jsx
+framework: React
+difficulty: FLAWED
+domain: Form & Validation
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Error clearance is silent to screen readers — removing text from aria-live region is not announced"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages (resolution of status must be communicated to AT)"
+        apa_pattern: "Forms Pattern — provide feedback when errors are corrected"
+        evidence: "Lines 19-23: update handler deletes error from state. Lines 51-57: live region conditionally renders errors — removal produces no announcement."
+        user_group: "Screen reader users (no feedback loop on error resolution)"
+        fix: "Inject a confirmation message into the live region when an error clears (e.g., 'Email error resolved') or maintain a persistent status like 'No errors' when list empties"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Next button uses disabled attribute, removing it from tab order entirely"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value; 3.3.3 Error Suggestion"
+        apa_pattern: "Use aria-disabled='true' when disabled state needs to remain discoverable"
+        evidence: "Lines 109-110: disabled={hasErrors} removes button from tab order. SR users cannot discover why progression is blocked."
+        user_group: "Screen reader users, keyboard-only users (button vanishes from interaction flow)"
+        fix: "Replace disabled with aria-disabled='true'. Keep button focusable. Add aria-describedby pointing to error summary. Prevent click when aria-disabled."
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Step indicator lacks aria-current='step' on active step"
+        severity: MINOR
+        wcag: "1.3.1 Info and Relationships (visual state must be conveyed programmatically)"
+        evidence: "Lines 43-50: step dots use className for visual state but no aria-current attribute"
+        user_group: "Screen reader users (cannot identify current step from indicator)"
+        expected_to_find: "25%"
+
+      - description: "Inactive step panels hidden off-screen but inputs remain keyboard-focusable"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order; 1.3.2 Meaningful Sequence"
+        evidence: "Lines 58-93: panels get aria-hidden='true' with CSS clip, but child inputs retain default tabindex — keyboard focus enters invisible fields"
+        user_group: "Keyboard-only users (tab into invisible fields), screen reader users (AT may expose aria-hidden subtrees)"
+        expected_to_find: "15%"
+
+components_analyzed:
+  - name: Error summary live region
+    aria_attributes: ["aria-live='polite'"]
+    status: "Announces errors when they appear, but silent when errors are resolved"
+    issues:
+      - present: "aria-live='polite' — errors announced on appearance"
+      - missing: "No announcement mechanism for error resolution"
+      - impact: "Screen reader user gets no confirmation that a fix worked"
+
+  - name: Next button
+    aria_attributes: []
+    status: "Uses HTML disabled attribute when errors exist"
+    issues:
+      - present: "disabled attribute prevents activation"
+      - missing: "Should use aria-disabled='true' to remain discoverable"
+      - impact: "Button vanishes from tab order — SR user cannot find it or learn why they are stuck"
+
+  - name: Step indicator
+    aria_role: "group"
+    aria_attributes: ["aria-label='Form progress'"]
+    status: "Visual state via CSS class, no programmatic state"
+    issues:
+      - present: "aria-label on group, text labels with step numbers"
+      - missing: "aria-current='step' on active indicator"
+      - impact: "SR user hears all steps identically — cannot determine current position from indicator"
+
+  - name: Step panels (inactive)
+    aria_attributes: ["aria-hidden='true'"]
+    status: "Hidden from AT via aria-hidden but inputs remain in DOM and tab order for older AT"
+    issues:
+      - present: "aria-hidden='true', CSS clip hiding"
+      - missing: "inert attribute — aria-hidden does not affect tab order, so inputs remain keyboard-focusable"
+      - impact: "Keyboard users tab into invisible off-screen inputs; AT may also expose aria-hidden subtrees"
+
+  - name: Form inputs
+    aria_attributes: [aria-invalid, aria-describedby]
+    status: "Correctly implemented — labels, error association, invalid state all present"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (error resolution must be communicated)"
+  - "4.1.2 Name, Role, Value (disabled state must be perceivable)"
+  - "3.3.3 Error Suggestion (user should understand how to fix errors)"
+  - "1.3.1 Info and Relationships (visual progress state must be programmatic)"
+  - "1.3.2 Meaningful Sequence (hidden content should not leak into reading order)"
+  - "2.4.3 Focus Order (focusable elements should follow logical sequence)"
+
+apa_patterns:
+  - name: "Forms Pattern"
+    link: "https://www.w3.org/WAI/ARIA/apg/patterns/forms/"
+    required_features:
+      - "Labels associated with inputs"
+      - "Error messages associated via aria-describedby"
+      - "Errors announced via live region"
+      - "Feedback when errors are corrected"
+
+multi_perspective_coverage:
+  - screen_reader: "DEGRADED: Errors are announced when they appear (aria-live works). But error resolution is silent — user gets no confirmation a fix worked. Next button vanishes from tab order when errors exist. Step indicator gives no current-step signal."
+  - keyboard: "DEGRADED: Next button is removed from tab order when disabled. User tabs past it without knowing it exists. Additionally, inactive step inputs are keyboard-focusable despite being off-screen (aria-hidden does not affect tab order). Combined with silent error clearing, creates a dead end."
+  - low_vision: "Minor impact. Visual error indicators and step styling work correctly. Focus indicators are visible."
+  - cognitive: "Moderate concern. The lack of positive feedback when fixing errors violates the expectation of cause-and-effect. User types a fix but gets no confirmation — must re-submit to discover whether it worked."
+
+false_positive_traps: 0
+
+notes: |
+  FLAWED difficulty — the surface accessibility is competent. Labels, aria-invalid,
+  aria-describedby, aria-live region, semantic headings, visible focus indicators —
+  all present and correct. The bugs are in the LIFECYCLE of error handling, not the
+  initial error presentation.
+
+  Expected verdict: REVISE (harsh-critic), ACCEPT (baseline-zero-shot)
+
+  Key discriminator: baseline sees "aria-live region exists, errors are announced" and
+  stops. Harsh-critic traces the full error lifecycle: appear → fix → what happens?
+  The answer — nothing is announced — is the must-find.
+
+  Compound effect: bugs #1 and #2 together create a dead end for screen reader users.
+  Errors resolve silently (bug #1) AND the button needed to proceed is gone from the
+  tab order (bug #2). Neither bug alone is as severe as the combination.
+
+  The false-positive surface is large: labeled inputs, aria-describedby present,
+  aria-live present, aria-invalid toggling. A reviewer who checks for attribute
+  presence will find nothing wrong.
