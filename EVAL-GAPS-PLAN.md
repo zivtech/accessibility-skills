@@ -286,12 +286,12 @@ Phase 1B: Reconcile planner eval.yaml vs files ......... ✅ DONE (2026-05-15, O
 Phase 2:  Generate 15 planner fixture triplets .......... ✅ DONE (2026-05-15)
 Phase 2b: Enrich 5 keyboard fixtures ................... ✅ DONE (2026-05-15)
 Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ✅ DONE (2026-05-15, 5F+3A=8 new, 33 total)
-Phase 4A: Run critic benchmarks (18 fixtures) ........... ~8 hours (unattended)
+Phase 4A: Run critic benchmarks (26 fixtures) ........... ✅ DONE (2026-05-15, 26/26 PASS, 97% must-find)
 Phase 4C: Run perspective benchmarks (23 fixtures) ...... ~4 hours (unattended)
 Phase 4D: Test qwen3.5:latest on perspective-audit ...... ~2 hours (unattended)
 Phase 5:  Claude baseline (optional) .................... ~1 hour
                                                   Total: ~29 hours
-                                              Remaining: ~15 hours (0h human + 15h machine)
+                                              Remaining: ~7 hours (0h human + 7h machine)
 ```
 
 **Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
@@ -302,7 +302,8 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 2. ~~**Session B** — Phase 2 first half (SR + Visual domains, 10 fixtures). ~3 hours.~~ ✅ Complete
 3. ~~**Session C** — Phase 2 second half (Testing domain, 5 fixtures) + Phase 2b (keyboard enrichment).~~ ✅ Complete
 4. ~~**Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.~~ ✅ Complete
-5. **Session E** — Phase 4C + Phase 4D + Phase 5 + update BENCHMARK.md with full results. ~3 hours.
+5. ~~**Session E (part 1)** — Phase 4A (full critic benchmark). 8 hours Ollama, 26/26 PASS.~~ ✅ Complete
+6. **Session E (part 2)** — Phase 4C + Phase 4D + Phase 5 + update BENCHMARK.md with full results. ~6 hours.
 
 ---
 
@@ -314,4 +315,4 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 - [x] `python3 ollama/run_benchmark.py score-all` runs without errors (verified 2026-05-15)
 - [ ] `python3 ollama/run_benchmark.py score-perspective` runs without errors
 - [x] No fixture has "Feature overview for" as its description (verified 2026-05-15)
-- [ ] BENCHMARK.md updated with latest results
+- [x] BENCHMARK.md updated with Phase 4A results (verified 2026-05-15)

@@ -2,10 +2,11 @@
 """Run a11y skill benchmarks on local Ollama models.
 
 Usage:
-    python3 ollama/run_benchmark.py ollama-clean       # CLEAN fixtures, all models
-    python3 ollama/run_benchmark.py ollama-bugs        # HAS-BUGS fixtures, all models
+    python3 ollama/run_benchmark.py critic-remaining [model]   # All un-benchmarked critic fixtures (default: qwen3:32b)
+    python3 ollama/run_benchmark.py ollama-clean               # CLEAN fixtures, all models
+    python3 ollama/run_benchmark.py ollama-bugs                # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>  # One fixture, one model
-    python3 ollama/run_benchmark.py score-all          # Score all response files in /tmp
+    python3 ollama/run_benchmark.py score-all                  # Score all response files in /tmp
     python3 ollama/run_benchmark.py perspective <model> <fixture-id>  # Perspective-audit single fixture
     python3 ollama/run_benchmark.py perspective-pilot [model]  # Pilot set of perspective fixtures
 """
@@ -56,6 +57,24 @@ HAS_BUGS_FIXTURES = [
     "form-validation-missing-aria-describedby",
     "tabs-missing-arrow-nav",
     "toast-notification-no-role",
+    "accordion-no-region-role",
+    "breadcrumb-navigation-no-nav-landmark",
+    "checkbox-group-no-fieldset",
+    "combobox-autocomplete-no-listbox-role",
+    "data-table-missing-scope",
+    "expandable-section-no-button",
+    "file-input-no-labels",
+    "heading-hierarchy-skipped",
+    "image-carousel-no-region",
+    "infinite-scroll-no-announcement",
+    "interactive-dropdown-focus-bug",
+    "loading-state-missing-aria-busy",
+    "megamenu-no-structure",
+    "pagination-no-nav-landmark",
+    "popover-no-focus-management",
+    "radio-button-group-no-grouping",
+    "tooltip-no-role-no-association",
+    "video-player-missing-captions",
 ]
 CLEAN_FIXTURES = [
     "button-skip-link-clean",
@@ -63,6 +82,24 @@ CLEAN_FIXTURES = [
     "modal-complete-clean",
     "search-results-dynamic-clean",
 ]
+FLAWED_FIXTURES = [
+    "tabs-incomplete-aria-selected",
+    "multistep-form-error-clearing",
+    "dashboard-heading-inconsistency",
+    "app-focus-order-illogical",
+    "async-form-vague-success",
+]
+ADVERSARIAL_FIXTURES = [
+    "tabbed-nav-vs-tab-pattern",
+    "form-field-vs-summary-errors",
+    "search-focus-stays-in-input",
+]
+ALL_CRITIC_FIXTURES = CLEAN_FIXTURES + HAS_BUGS_FIXTURES + FLAWED_FIXTURES + ADVERSARIAL_FIXTURES
+ALREADY_BENCHMARKED = {
+    "qwen3:32b": set(HAS_BUGS_FIXTURES[:3] + CLEAN_FIXTURES),
+    "llama3.3:70b": set(HAS_BUGS_FIXTURES[:3] + CLEAN_FIXTURES),
+    "qwen3.5:latest": set(HAS_BUGS_FIXTURES[:3] + CLEAN_FIXTURES),
+}
 
 
 def strip_frontmatter(content):
@@ -321,6 +358,20 @@ def main():
         for fixture_id in PERSPECTIVE_PILOT_FIXTURES:
             run_perspective(model, fixture_id, system_prompt)
 
+    elif cmd == "critic-remaining":
+        model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
+        already_done = ALREADY_BENCHMARKED.get(model, set())
+        remaining = [f for f in ALL_CRITIC_FIXTURES if f not in already_done]
+        print(f"Model: {model}")
+        print(f"Total fixtures: {len(ALL_CRITIC_FIXTURES)}")
+        print(f"Already done: {len(already_done)}")
+        print(f"Remaining: {len(remaining)}")
+        print(f"Fixtures: {', '.join(remaining)}")
+        system_prompt = load_system_prompt()
+        for i, fixture_id in enumerate(remaining, 1):
+            print(f"\n[{i}/{len(remaining)}]")
+            run_ollama(model, fixture_id, system_prompt)
+
     elif cmd == "score-all":
         import glob
         import subprocess
@@ -328,14 +379,17 @@ def main():
         responses = sorted(glob.glob("/tmp/ollama-bench-*-response.json"))
         responses += sorted(glob.glob("/tmp/ollama-fullproto-*-response.json"))
         for resp in responses:
-            basename = os.path.basename(resp)
-            parts = basename.replace("ollama-bench-", "").replace("-response.json", "")
-            model_tag = parts.split("-")[-1]
-            fixture_id = parts.rsplit(f"-{model_tag}", 1)[0]
+            with open(resp) as f:
+                bench = json.load(f).get("_benchmark", {})
+            fixture_id = bench.get("fixture_id", "")
+            model = bench.get("model", "unknown")
+            if not fixture_id:
+                print(f"SKIP: No _benchmark metadata in {os.path.basename(resp)}")
+                continue
             metadata = os.path.join(FIXTURES_DIR, f"{fixture_id}.metadata.yaml")
             if os.path.exists(metadata):
                 print(f"\n{'='*60}")
-                print(f"Scoring: {fixture_id} ({model_tag})")
+                print(f"Scoring: {fixture_id} ({model})")
                 print(f"{'='*60}")
                 subprocess.run([sys.executable, score_script, resp, metadata])
             else:
@@ -356,14 +410,17 @@ def main():
             sys.exit(1)
         responses = sorted(glob.glob("/tmp/ollama-perspective-*-response.json"))
         for resp in responses:
-            basename = os.path.basename(resp)
-            parts = basename.replace("ollama-perspective-", "").replace("-response.json", "")
-            model_tag = parts.split("-")[-1]
-            fixture_id = parts.rsplit(f"-{model_tag}", 1)[0]
+            with open(resp) as f:
+                bench = json.load(f).get("_benchmark", {})
+            fixture_id = bench.get("fixture_id", "")
+            model = bench.get("model", "unknown")
+            if not fixture_id:
+                print(f"SKIP: No _benchmark metadata in {os.path.basename(resp)}")
+                continue
             metadata = os.path.join(PERSPECTIVE_FIXTURES_DIR, f"{fixture_id}.metadata.yaml")
             if os.path.exists(metadata):
                 print(f"\n{'='*60}")
-                print(f"Scoring perspective: {fixture_id} ({model_tag})")
+                print(f"Scoring perspective: {fixture_id} ({model})")
                 print(f"{'='*60}")
                 subprocess.run([sys.executable, score_script, resp, metadata])
             else:

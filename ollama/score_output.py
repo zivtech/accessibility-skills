@@ -74,7 +74,7 @@ def check_finding(text: str, finding: dict) -> dict:
     elif "arrow" in description.lower() and "nav" in description.lower():
         keywords = ["arrow", "roving", "tabindex", "keyboard navigation"]
     elif "role" in description.lower():
-        role_match = re.search(r'role[="\s]+(\w+)', description.lower())
+        role_match = re.search(r"role[=\"'\s]+(\w+)", description.lower())
         if role_match:
             keywords = [role_match.group(1), "role"]
     elif "fieldset" in description.lower() or "group" in description.lower():
@@ -162,6 +162,43 @@ def score(response_path: str, rubric_path: str):
         if fp["structured_findings"] > 0 and passed:
             status = "WARN — correct verdict but raised findings (review manually)"
         print(f"Status: {status}")
+    elif difficulty == "ADVERSARIAL":
+        valid_verdicts = ("ACCEPT-WITH-RESERVATIONS", "REVISE")
+        print(f"Verdict: {verdict} (valid for ADVERSARIAL: {', '.join(valid_verdicts)})")
+        verdict_ok = verdict in valid_verdicts
+        print(f"Verdict acceptable: {'YES' if verdict_ok else 'NO'}")
+        print()
+
+        must_articulate = []
+        should_find = []
+        for cat in rubric.get("expected_findings", []):
+            category = cat.get("category", "")
+            for item in cat.get("items", []):
+                result = check_finding(text, item)
+                result["category"] = category
+                if category == "must_articulate":
+                    must_articulate.append(result)
+                elif category == "should_find":
+                    should_find.append(result)
+
+        if must_articulate:
+            print(f"Must-articulate tradeoffs: {sum(1 for r in must_articulate if r['found'])}/{len(must_articulate)}")
+            for r in must_articulate:
+                marker = "+" if r["found"] else "X"
+                print(f"  {marker} {r['description'][:80]}")
+            print()
+
+        if should_find:
+            print(f"Should-find issues: {sum(1 for r in should_find if r['found'])}/{len(should_find)}")
+            for r in should_find:
+                marker = "+" if r["found"] else "X"
+                print(f"  {marker} {r['description'][:80]}")
+            print()
+
+        articulate_score = sum(1 for r in must_articulate if r["found"]) / max(len(must_articulate), 1)
+        passed = verdict_ok and articulate_score >= 0.5
+        print(f"Must-articulate rate: {articulate_score:.0%}")
+        print(f"Status: {'PASS' if passed else 'FAIL'}")
     else:
         expected = rubric.get("notes", "")
         expected_verdict = "REVISE" if "REVISE" in expected else "unknown"
