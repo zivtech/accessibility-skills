@@ -2,13 +2,15 @@
 """Run a11y skill benchmarks on local Ollama models.
 
 Usage:
-    python3 ollama/run_benchmark.py critic-remaining [model]   # All un-benchmarked critic fixtures (default: qwen3:32b)
-    python3 ollama/run_benchmark.py ollama-clean               # CLEAN fixtures, all models
-    python3 ollama/run_benchmark.py ollama-bugs                # HAS-BUGS fixtures, all models
-    python3 ollama/run_benchmark.py single <model> <fixture-id>  # One fixture, one model
-    python3 ollama/run_benchmark.py score-all                  # Score all response files in /tmp
+    python3 ollama/run_benchmark.py critic-remaining [model]       # All un-benchmarked critic fixtures (default: qwen3:32b)
+    python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
+    python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
+    python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
+    python3 ollama/run_benchmark.py score-all                      # Score all critic response files in /tmp
     python3 ollama/run_benchmark.py perspective <model> <fixture-id>  # Perspective-audit single fixture
-    python3 ollama/run_benchmark.py perspective-pilot [model]  # Pilot set of perspective fixtures
+    python3 ollama/run_benchmark.py perspective-pilot [model]      # Pilot set (7 fixtures)
+    python3 ollama/run_benchmark.py perspective-remaining [model]  # All un-benchmarked perspective fixtures
+    python3 ollama/run_benchmark.py score-perspective              # Score all perspective response files in /tmp
 """
 
 import json
@@ -47,6 +49,34 @@ PERSPECTIVE_PILOT_FIXTURES = [
     "dense-admin-jargon",
     "login-form-clean",
     "article-page-clean",
+]
+
+ALL_PERSPECTIVE_FIXTURES = [
+    "animated-onboarding-flow",
+    "article-page-clean",
+    "autocomplete-fast-timeout",
+    "chat-cognitive-load",
+    "checkout-form-broken-errors",
+    "color-only-status-indicators",
+    "custom-select-combobox",
+    "dashboard-text-labels",
+    "data-table-sortable-columns",
+    "data-viz-color-encoding",
+    "dense-admin-jargon",
+    "hover-reveal-navigation",
+    "image-gallery-small-targets",
+    "infinite-scroll-cognitive",
+    "login-form-clean",
+    "map-interface-zoom",
+    "media-player-captions",
+    "modal-broken-focus-trap",
+    "multi-column-pricing",
+    "nav-menu-landmarks",
+    "podcast-audio-only",
+    "product-carousel-autoplay",
+    "search-results-dynamic-update",
+    "tab-panel-arrow-keys",
+    "video-tutorial-no-captions",
 ]
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
@@ -256,15 +286,25 @@ def run_planner(model, fixture_id, system_prompt):
     return out_path
 
 
+PERSPECTIVE_CTX = {
+    "qwen3:32b": 32768,
+    "llama3.3:70b": 32768,
+    "deepseek-r1:70b": 32768,
+    "qwen3.5:27b": 32768,
+}
+PERSPECTIVE_CTX_DEFAULT = 16384
+
+
 def run_perspective(model, fixture_id, system_prompt):
     prompt = build_escalation_prompt(fixture_id)
+    num_ctx = PERSPECTIVE_CTX.get(model, PERSPECTIVE_CTX_DEFAULT)
 
     payload = {
         "model": model,
         "system": system_prompt,
         "prompt": prompt,
-        "stream": False,
-        "options": {"num_ctx": 32768, "temperature": 0.3},
+        "stream": True,
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
 
     model_tag = model.split(":")[0].replace(".", "").replace("-", "")
@@ -281,22 +321,36 @@ def run_perspective(model, fixture_id, system_prompt):
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=1200) as resp:
-        data = json.loads(resp.read())
+    response_text = ""
+    final_chunk = {}
+    with urllib.request.urlopen(req, timeout=300) as resp:
+        for line in resp:
+            chunk = json.loads(line)
+            if chunk.get("response"):
+                response_text += chunk["response"]
+            if chunk.get("done"):
+                final_chunk = chunk
+                break
 
     elapsed = time.time() - start
-    data["_benchmark"] = {
-        "model": model,
-        "fixture_id": fixture_id,
-        "skill": "perspective-audit",
-        "elapsed_seconds": round(elapsed, 1),
-        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    data = {
+        "response": response_text,
+        "done": True,
+        "total_duration": final_chunk.get("total_duration"),
+        "eval_count": final_chunk.get("eval_count"),
+        "_benchmark": {
+            "model": model,
+            "fixture_id": fixture_id,
+            "skill": "perspective-audit",
+            "elapsed_seconds": round(elapsed, 1),
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        },
     }
 
     with open(out_path, "w") as f:
         json.dump(data, f, indent=2)
 
-    resp_len = len(data.get("response", ""))
+    resp_len = len(response_text)
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
     return out_path
 
@@ -356,6 +410,28 @@ def main():
         model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
         system_prompt = load_perspective_system_prompt()
         for fixture_id in PERSPECTIVE_PILOT_FIXTURES:
+            run_perspective(model, fixture_id, system_prompt)
+
+    elif cmd == "perspective-remaining":
+        import glob as _glob
+        model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
+        model_tag = model.split(":")[0].replace(".", "").replace("-", "")
+        done = set()
+        for f in _glob.glob(f"/tmp/ollama-perspective-*-{model_tag}-response.json"):
+            name = os.path.basename(f).replace("ollama-perspective-", "").replace(f"-{model_tag}-response.json", "")
+            done.add(name)
+        remaining = [f for f in ALL_PERSPECTIVE_FIXTURES if f not in done]
+        print(f"Model: {model}")
+        print(f"Total perspective fixtures: {len(ALL_PERSPECTIVE_FIXTURES)}")
+        print(f"Already done: {len(done)}")
+        print(f"Remaining: {len(remaining)}")
+        if not remaining:
+            print("All perspective fixtures benchmarked!")
+            sys.exit(0)
+        print(f"Fixtures: {', '.join(remaining)}")
+        system_prompt = load_perspective_system_prompt()
+        for i, fixture_id in enumerate(remaining, 1):
+            print(f"\n[{i}/{len(remaining)}]")
             run_perspective(model, fixture_id, system_prompt)
 
     elif cmd == "critic-remaining":

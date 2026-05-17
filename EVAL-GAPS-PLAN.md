@@ -287,11 +287,11 @@ Phase 2:  Generate 15 planner fixture triplets .......... ✅ DONE (2026-05-15)
 Phase 2b: Enrich 5 keyboard fixtures ................... ✅ DONE (2026-05-15)
 Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ✅ DONE (2026-05-15, 5F+3A=8 new, 33 total)
 Phase 4A: Run critic benchmarks (26 fixtures) ........... ✅ DONE (2026-05-15, 26/26 PASS, 97% must-find)
-Phase 4C: Run perspective benchmarks (23 fixtures) ...... ~4 hours (unattended)
-Phase 4D: Test qwen3.5:latest on perspective-audit ...... ~2 hours (unattended)
+Phase 4C: Run perspective benchmarks (18 fixtures) ...... ✅ DONE (2026-05-16, 20 PASS / 4 WARN / 1 FAIL)
+Phase 4D: Test qwen3.5:latest on perspective-audit ...... ✅ DONE (2026-05-17, NOT VIABLE — 50% empty responses)
 Phase 5:  Claude baseline (optional) .................... ~1 hour
                                                   Total: ~29 hours
-                                              Remaining: ~7 hours (0h human + 7h machine)
+                                              Remaining: ~3 hours (0h human + 3h machine)
 ```
 
 **Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
@@ -303,7 +303,8 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 3. ~~**Session C** — Phase 2 second half (Testing domain, 5 fixtures) + Phase 2b (keyboard enrichment).~~ ✅ Complete
 4. ~~**Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.~~ ✅ Complete
 5. ~~**Session E (part 1)** — Phase 4A (full critic benchmark). 8 hours Ollama, 26/26 PASS.~~ ✅ Complete
-6. **Session E (part 2)** — Phase 4C + Phase 4D + Phase 5 + update BENCHMARK.md with full results. ~6 hours.
+6. ~~**Session E (part 2)** — Phase 4C complete (20P/4W/1F). BENCHMARK.md updated. Fixture/rubric fixes for CLEAN scope.~~ ✅ Complete
+7. **Session F** — Phase 4D (qwen3.5:latest on perspective-audit) + Phase 5 (optional Claude baseline). ~3 hours.
 
 ---
 

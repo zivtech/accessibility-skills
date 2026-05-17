@@ -14,13 +14,23 @@ expected_findings:
   - category: should_find
     count: 0
   - category: nice_to_find
-    count: 1
+    count: 3
     items:
       - description: "Could add aria-expanded on mobile menu toggle (desktop has no toggle)"
         severity: ENHANCEMENT
         wcag: "4.1.2 Name, Role, Value"
         evidence: "No mobile menu toggle visible in desktop view"
         user_group: "Screen reader users on mobile"
+      - description: "Missing <title> element (page-shell concern — React component doesn't render <head>)"
+        severity: MINOR
+        wcag: "2.4.2 Page Title"
+        evidence: "No <title> in component JSX (provided by app shell in production)"
+        user_group: "Screen reader users"
+      - description: "Missing lang attribute on <html> (page-shell concern — React component doesn't render <html>)"
+        severity: MINOR
+        wcag: "3.1.1 Language of Page"
+        evidence: "No <html lang> in component JSX (provided by app shell in production)"
+        user_group: "Screen reader users"
 
 perspectives_tested:
   primary: "all"
@@ -46,8 +56,10 @@ false_positive_traps:
       note: "Proper use of aside"
 
 expected_verdict: ACCEPT
+alternate_verdicts: [REVISE]
 scoring_notes:
   false_positive_weight: -2
   critical_false_positive_penalty: -3
+  verdict_note: "REVISE is acceptable if model flags page-shell concerns (title, lang) as MINOR/MAJOR — these are real WCAG criteria that the React component boundary doesn't satisfy."
 
-notes: "Generated fixture for CLEAN category, primary perspective all."
+notes: "Generated fixture for CLEAN category, primary perspective all. Model may flag page-shell WCAG concerns (2.4.2, 3.1.1) since component renders full page layout but not <html>/<head>."

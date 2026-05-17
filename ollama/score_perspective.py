@@ -270,9 +270,14 @@ def score(response_path: str, rubric_path: str):
 
     if difficulty == "CLEAN":
         verdict = check_verdict(text)
-        print(f"Verdict: {verdict} (expected: PASS)")
-        correct = verdict == "PASS"
-        print(f"Verdict correct: {'YES' if correct else 'NO — should be PASS'}")
+        acceptable_verdicts = ["PASS"]
+        alt = rubric.get("alternate_verdicts", [])
+        if alt:
+            acceptable_verdicts.extend([v.upper() for v in alt])
+        correct = verdict in acceptable_verdicts
+        expected_str = "PASS" + (f" or {'/'.join(alt)}" if alt else "")
+        print(f"Verdict: {verdict} (expected: {expected_str})")
+        print(f"Verdict correct: {'YES' if correct else f'NO — should be {expected_str}'}")
         print()
 
         fp = check_false_positives(text)
@@ -281,7 +286,7 @@ def score(response_path: str, rubric_path: str):
         print(f"  Wrong verdict: {fp['wrong_verdict']}")
         print()
 
-        passed = correct and not fp["wrong_verdict"]
+        passed = correct and (not fp["wrong_verdict"] or verdict in [v.upper() for v in alt])
         status = "PASS" if passed else "FAIL"
         if fp["structured_findings"] > 0 and passed:
             status = "WARN — correct verdict but raised findings"

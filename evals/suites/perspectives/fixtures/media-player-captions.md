@@ -1,5 +1,9 @@
 # Fixture: Media Player With Full Caption Support (CLEAN)
 
+## Context
+
+This component renders inside a standard page shell that provides `<html lang="en">`, `<head><title>Tutorial | Acme Corp</title></head>`, and `<main>` landmark wrapper. Review the component code below, not page-level concerns.
+
 ## Component Code
 
 ```jsx
