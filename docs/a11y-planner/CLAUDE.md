@@ -50,12 +50,14 @@ Users install by copying files to their Claude Code config:
 
 ## Companion Skills
 
-- **a11y-critic** (read-only reviewer): Reviews the implementation AFTER a11y-planner design is built. Detects incomplete ARIA patterns, missing focus management, state communication gaps
-- **accessibility-testing** (testing & tooling): Runs automated axe-core, Pa11y-CI, and keyboard tests against the implemented feature
-- **a11y-test** (real keyboard testing): Manual keyboard navigation testing with real Playwright key presses
-- **accessibility-standards** (WCAG 2.2 AA reference): Standards enforcement, coding patterns, four-layer architecture
-- **brainstorming** (idea exploration): Explore accessibility design options before committing to the planner output
-- **writing-plans** (task breakdown): Convert a11y-planner output into implementation-ready tasks with exact file paths
+### This bundle
+- **a11y-critic** (read-only reviewer): Reviews the implementation AFTER a11y-planner design is built
+- **a11y-test** (real keyboard testing): Keyboard navigation testing with real Playwright key presses
+- **perspective-audit** (deep multi-perspective review): Escalated by planner when MEDIUM/HIGH alarm on specific perspectives
+
+### External
+- **brainstorming** (obra/superpowers): Explore accessibility design options before committing to the planner output
+- **writing-plans** (obra/superpowers): Convert a11y-planner output into implementation-ready tasks with exact file paths
 
 ## A11y Planning Workflow
 

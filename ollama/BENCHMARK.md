@@ -1,7 +1,7 @@
 # Ollama A11y-Critic Benchmark Results
 
 **Date**: 2026-05-14 (initial), 2026-05-15 (Phase 4A full benchmark)
-**Protocol**: Full 10-phase a11y-critic Investigation Protocol (single-shot, no orchestration)
+**Protocol**: Full 11-phase a11y-critic Investigation Protocol (Phase 0 + Phases 1-10, single-shot, no orchestration)
 **System prompt**: ~40K chars (Role + Investigation_Protocol + Severity_Scale + Output_Format from SKILL.md)
 **Scoring**: `ollama/score_output.py` against graded fixture rubrics
 
@@ -283,7 +283,7 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 1. **All Claude models achieve 100% must-find on the 7 core fixtures.** Opus, Sonnet, and Haiku all found every planted bug — including `role="alert"` on the toast fixture, which every Ollama model missed. This confirms the rubric item is valid (not a rubric overlap issue as previously hypothesized) and establishes a clear accuracy gap between Claude and local models on this specific detection.
 
-2. **qwen3:32b achieves 97% must-find across all 33 critic fixtures and 100% on perspective-audit.** Only 2 partial misses out of 72 critic must-find items — both are secondary findings where the primary issue was detected. On the 7-fixture comparison set, qwen3:32b scores 86% must-find vs Claude's 100%.
+2. **qwen3:32b achieves 96% must-find on HAS-BUGS critic fixtures (68/71) and 100% on perspective-audit.** Only 3 partial misses out of 71 HAS-BUGS must-find items — all are secondary findings where the primary issue was detected. On the 7-fixture comparison set, qwen3:32b scores 86% must-find vs Claude's 100%.
 
 3. **Even Haiku matches Opus on this task.** All three Claude tiers produced identical pass/fail results. The skill protocol is structured enough that model scale doesn't differentiate on these fixtures. Harder fixtures (FLAWED, ADVERSARIAL) may show tier separation — not yet tested on Claude.
 

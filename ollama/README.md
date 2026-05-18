@@ -33,47 +33,52 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 
 | Model | Size | Recommended | Notes |
 |-------|------|-------------|-------|
-| **qwen3:32b** | 18.8 GB | **Yes** | Best value — same detection rate, better WCAG citations, half the size |
-| llama3.3:70b | 39.6 GB | For verbose output | Follows all 11 protocol phases, larger responses |
-| qwen3.5:latest | 6.6 GB | **Lightweight** | Same accuracy as 32B, 3-6x faster (75-170s vs 300-500s) |
-| deepseek-r1:70b | 42.5 GB | Testing | Reasoning model, n=1 preliminary result |
-| qwen3.5:27b | 17.4 GB | Testing | Newer Qwen generation, not yet benchmarked |
+| **qwen3:32b** | 18.8 GB | **Yes — production** | 96% must-find (33 fixtures), 100% perspective-audit, 0% false positives, perfect planner. Reliable on all 3 skills. |
+| qwen3.5:27b | 17.4 GB | Detection-critical | 100% must-find (13 HAS-BUGS), found `role="alert"` (only local model to do so). Prone to `/think` stalls on some fixtures — use with retry. NOT tested on perspective-audit. |
+| llama3.3:70b | 39.6 GB | Phase-compliant output | 86% must-find (7 fixtures), follows all 11 protocol phases in output. |
+| qwen3.5:latest | 6.6 GB | Fast critic-only | 86% must-find (7 fixtures), 3-6x faster. **NOT viable for perspective-audit** (context exhaustion — 50% empty responses). |
+| deepseek-r1:70b | 42.5 GB | Preliminary | n=1 fixture only, not fully benchmarked. |
+
+### Claude Baselines (for comparison)
+
+All three Claude tiers scored **100% must-find, 0% false positives** on 7 core fixtures — including `role="alert"` which all Ollama models except qwen3.5:27b missed.
 
 See [BENCHMARK.md](BENCHMARK.md) for full results.
 
-## Benchmark Results
+## Benchmark Results Summary
 
-### a11y-critic (7 fixtures: 3 HAS-BUGS + 4 CLEAN)
+### a11y-critic
 
-| Metric | llama3.3:70b | qwen3:32b |
-|--------|-------------|-----------|
-| Must-find detection | 6/7 (86%) | 6/7 (86%) |
-| False positives on CLEAN | 0/4 (0%) | 0/4 (0%) |
-| Verdict accuracy | 7/7 (100%) | 7/7 (100%) |
+| Model | Fixtures | HAS-BUGS must-find | CLEAN FP | Overall |
+|-------|----------|-------------------|----------|---------|
+| Claude Opus/Sonnet/Haiku | 7 each | **100%** | 0% | 7/7 PASS |
+| qwen3.5:27b | 17* | **100%** | 0%† | 16/17 PASS |
+| qwen3:32b | 33 | 96% | 0% | 33/33 PASS |
+| llama3.3:70b | 7 | 86% | 0% | 7/7 PASS |
+| qwen3.5:latest | 7 | 86% | 0% | 7/7 PASS |
 
-Both models correctly identify real accessibility bugs (aria-describedby gaps, missing arrow nav, absent live regions) AND correctly accept well-implemented components without manufacturing false findings.
+*Run stopped at 17/33 due to `/think` stalls. †1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive.*
 
-### a11y-planner (2 fixtures: modal dialog + roving tabindex)
+### a11y-planner (2 of 25 fixtures benchmarked)
 
 | Metric | llama3.3:70b | qwen3:32b |
 |--------|-------------|-----------|
 | Modal (complex, 15 criteria) | 13/15 (87%) | **15/15 (100%)** |
 | Keyboard (focused, 8 criteria) | 8/8 (100%) | **8/8 (100%)** |
 
-Both models produce usable accessibility plans with APG pattern references, focus management strategies, ARIA attribute specs, and HTML stubs. qwen3 adds explicit WCAG criterion numbers.
+### perspective-audit (25 fixtures, qwen3:32b only)
 
-### What gets detected
+| Tier | Fixtures | PASS | WARN | FAIL | Must-find |
+|------|----------|------|------|------|-----------|
+| HAS-BUGS | 16 | 16 | 0 | 0 | 100% |
+| ADVERSARIAL | 4 | 4 | 0 | 0 | 100% |
+| CLEAN | 5 | 0 | 4 | 1* | n/a |
 
-Tested against graded fixtures covering:
-- Form validation errors not associated via `aria-describedby`
-- Missing `aria-live` regions for dynamic content
-- Tabs without arrow key navigation
-- Toast notifications missing `role`/`aria-live`
-- Skip links, dropdowns, modals, search results (CLEAN baselines)
+*1 CLEAN FAIL from page-shell scope issue (fixture since fixed).*
 
-### What gets missed
+### Key Detection Gap
 
-Both models missed `role="alert"` on a toast fixture while catching the overlapping `aria-live="assertive"`. This appears to be rubric overlap rather than a true blind spot.
+All Ollama models except qwen3.5:27b missed `role="alert"` on the toast fixture (scored 3/4 instead of 4/4). All Claude models found it. This is a real detection gap, not a rubric overlap issue (as initially hypothesized).
 
 ## Files
 
@@ -81,33 +86,31 @@ Both models missed `role="alert"` on a toast fixture while catching the overlapp
 |------|---------|
 | `ollama_a11y.py` | Main wrapper — sends skill protocol + input to Ollama |
 | `run_benchmark.py` | Benchmark runner — tests models against graded fixtures (critic, planner, perspective) |
-| `score_output.py` | Scorer — checks critic/planner output against fixture rubrics |
+| `score_output.py` | Scorer — checks critic output against fixture rubrics |
+| `score_planner.py` | Scorer — checks planner output against fixture rubrics |
 | `score_perspective.py` | Scorer — checks perspective-audit output (coverage, escalation, ARRM routing) |
 | `BENCHMARK.md` | Full benchmark results with per-fixture breakdowns |
 
 ## Benchmarking
 
 ```bash
-# Run CLEAN fixtures (false positive test) on all models
-python3 ollama/run_benchmark.py ollama-clean
+# Run remaining critic fixtures for a model (skips already-done fixtures)
+python3 ollama/run_benchmark.py critic-remaining qwen3:32b
 
-# Run HAS-BUGS fixtures on all models
-python3 ollama/run_benchmark.py ollama-bugs
+# Run remaining perspective fixtures for a model
+python3 ollama/run_benchmark.py perspective-remaining qwen3:32b
 
 # Score all critic results
 python3 ollama/run_benchmark.py score-all
 
+# Score all perspective results
+python3 ollama/run_benchmark.py score-perspective
+
 # Single fixture, single model
 python3 ollama/run_benchmark.py single qwen3:32b tabs-missing-arrow-nav
 
-# Perspective-audit: single fixture
-python3 ollama/run_benchmark.py perspective qwen3:32b animated-onboarding-flow
-
-# Perspective-audit: pilot set (7 fixtures, one model)
+# Perspective-audit: pilot set (7 fixtures)
 python3 ollama/run_benchmark.py perspective-pilot qwen3:32b
-
-# Score perspective results
-python3 ollama/run_benchmark.py score-perspective
 ```
 
 ## Architecture
@@ -116,20 +119,19 @@ The wrapper sends the full SKILL.md (minus YAML frontmatter) as the Ollama syste
 
 For perspective-audit, reference files (perspectives.md, arrm-perspective-mapping.md) are appended to the system prompt automatically. The escalation list (which perspectives are MEDIUM/HIGH) is injected into the user prompt from fixture metadata.
 
-### Tiered Model Routing (Planned)
+All Ollama API calls use streaming mode to prevent HTTP timeouts during long `/think` reasoning sessions.
 
-Route by task difficulty — use the smallest model that produces reliable results:
+### Model Routing
 
-| Tier | Model | Size | Use For |
-|------|-------|------|---------|
-| Cloud | Claude Sonnet | API | Adversarial/complex fixtures, baseline comparisons |
-| Local L | llama3.3:70b / deepseek-r1:70b | ~42 GB | Subtle bugs, multi-perspective reviews |
-| Local M | qwen3:32b / qwen3.5:27b | 17-20 GB | Standard HAS-BUGS, planner tasks |
-| Local S | qwen3.5:latest | 6.6 GB | CLEAN false-positive checks, obvious bugs |
+| Skill | Minimum model | Recommended |
+|-------|--------------|-------------|
+| a11y-critic | qwen3.5:latest (6.6 GB) | qwen3:32b (20 GB) |
+| a11y-planner | qwen3.5:latest (6.6 GB) | qwen3:32b (20 GB) |
+| perspective-audit | qwen3:32b (20 GB) | qwen3:32b (20 GB) |
 
 ### Performance Notes
 
-- **Memory**: Run one model at a time when possible. Loading two large models simultaneously (e.g., 78 GB) on a 128 GB system causes 1.5-2x slowdowns.
-- **Speed**: Expect 5-10 minutes per review on 70B models, 3-8 minutes on 32B models, potentially faster on smaller models.
-- **Context**: Default 32K token context window. Increase with `--ctx 65536` for very large components.
-- **DeepSeek-R1**: Emits `<think>...</think>` reasoning blocks — automatically stripped before scoring.
+- **Memory**: Run one model at a time when possible. Loading two large models simultaneously on a 128 GB system causes 1.5-2x slowdowns.
+- **Speed**: qwen3:32b averages ~4 min/fixture (critic), ~3 min/fixture (perspective). qwen3.5:latest averages ~2 min (critic only). 70B models average ~6-8 min.
+- **Context**: Default 16K token context for critic/planner, 32K for perspective-audit (configurable per model in `run_benchmark.py`).
+- **`/think` models**: qwen3 and qwen3.5 use extended reasoning by default. This is what enables high accuracy but can cause context exhaustion on smaller models with complex prompts.

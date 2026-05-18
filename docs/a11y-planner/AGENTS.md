@@ -60,10 +60,11 @@ Accessibility implementation planner skill for Claude Code and companion to a11y
 ### Internal
 - Companion: **a11y-critic** (reviews implementations after the a11y-planner design is built)
 
+### Bundle companions
+- **a11y-test** (this bundle): Keyboard navigation testing with real Playwright key presses
+- **perspective-audit** (this bundle): Deep review from 7 access perspectives, escalated by planner
+
 ### External
-- **accessibility-testing** (zivtech-claude-skills): Run automated axe-core, Pa11y-CI, and keyboard tests against the implemented feature
-- **a11y-test** (zivtech-claude-skills): Manual keyboard navigation testing with real Playwright key presses
-- **accessibility-standards** (zivtech-claude-skills): WCAG 2.2 AA reference patterns
 - **brainstorming** (obra/superpowers): Explore accessibility design options before committing to the planner output
 - **writing-plans** (obra/superpowers): Convert a11y-planner output into implementation-ready tasks with exact file paths
 

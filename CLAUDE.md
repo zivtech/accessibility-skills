@@ -78,14 +78,15 @@ See `.claude/skills/a11y-test/SKILL.md` for the full routing table and the inter
 
 The analysis-only skills (critic, planner, perspective-audit) run locally via Ollama with no cloud API. The `ollama/` directory contains the wrapper, benchmark tooling, and full results.
 
-**Recommended model**: `qwen3:32b` (18.8 GB) — 86% must-find detection, 0% false positives, 100% verdict accuracy, perfect planner scores.
+**Recommended model**: `qwen3:32b` (18.8 GB) — 96% must-find detection across 33 critic fixtures, 0% false positives, 100% perspective-audit must-find across 25 fixtures, perfect planner scores.
 
 ```bash
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
 python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3:32b
+python3 ollama/ollama_a11y.py perspective path/to/component.jsx --model qwen3:32b
 ```
 
-Benchmarked against 9 graded fixtures (3 HAS-BUGS critic, 4 CLEAN critic, 2 planner). See `ollama/BENCHMARK.md` for per-fixture results and `ollama/README.md` for usage.
+Benchmarked against 60 graded fixtures (33 critic, 25 perspective-audit, 2 planner) with Claude baselines (Opus/Sonnet/Haiku all 100% on 7 core fixtures). See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
 
 a11y-test is NOT portable — it requires Playwright, axe-core, and browser automation. Only reference knowledge ports.
 
