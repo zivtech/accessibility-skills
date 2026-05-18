@@ -240,9 +240,12 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 | Claude Opus 4.6 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
 | Claude Sonnet 4.6 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
 | Claude Haiku 4.5 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
+| qwen3.5:27b | 17* | **37/37 (100%)** | 1/4 FAIL† | — | — | 16/17 PASS |
 | qwen3:32b | 33 | 68/71 (96%) | 0/4 (0%) | 5/5 (100%) | 3/3 (100%) | **33/33 PASS** |
 | llama3.3:70b | 7 | 6/7 (86%) | 0/4 (0%) | — | — | 7/7 PASS |
 | qwen3.5:latest | 7 | 6/7 (86%) | 0/4 (0%) | — | — | 7/7 PASS |
+
+*qwen3.5:27b run stopped at 17/33 due to `/think` stalls. †CLEAN FAIL is context exhaustion (no verdict emitted), not a false positive.*
 
 *All Claude models found 4/4 must-find items on toast-notification-no-role including `role="alert"` — the item every Ollama model missed.*
 *qwen3:32b HAS-BUGS must-find: 62/64 on the 18 new fixtures + 6/7 on the 3 original = 68/71 total*
@@ -262,16 +265,19 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 ### Model Comparison (Updated with Claude Baselines)
 
-| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | qwen3:32b | llama3.3:70b | qwen3.5:latest |
-|-----------|----------------|-------------------|-----------------|-----------|-------------|----------------|
-| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=7)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
-| Critic false positive rate | 0% | 0% | 0% | 0% | 0% | 0% |
-| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
-| FLAWED detection | — | — | — | 100% (n=5) | — | — |
-| ADVERSARIAL articulation | — | — | — | 100% (n=3) | — | — |
-| Perspective-audit (25 fix) | — | — | — | 20P/4W/1F | — | NOT VIABLE |
-| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
-| Deployment | Cloud API | Cloud API | Cloud API | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
+| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | qwen3.5:27b | qwen3:32b | llama3.3:70b | qwen3.5:latest |
+|-----------|----------------|-------------------|-----------------|------------|-----------|-------------|----------------|
+| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=7)** | **100% (n=13)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
+| Critic false positive rate | 0% | 0% | 0% | 0%* | 0% | 0% | 0% |
+| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
+| FLAWED detection | — | — | — | — | 100% (n=5) | — | — |
+| ADVERSARIAL articulation | — | — | — | — | 100% (n=3) | — | — |
+| Perspective-audit (25 fix) | — | — | — | — | 20P/4W/1F | — | NOT VIABLE |
+| Reliability (completion) | 100% | 100% | 100% | 94% (16/17) | 100% | 100% | 100% |
+| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
+| Deployment | Cloud API | Cloud API | Cloud API | Local (17 GB) | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
+
+*qwen3.5:27b: 1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive. Run stopped at 17/33 due to stalls.*
 
 ### Key Findings (Updated with Claude Baselines)
 
@@ -484,16 +490,23 @@ Must-find: (1) Status indicators rely on color alone (1.4.1), (2) Hover-only too
 
 **Scorer note**: The search-results-dynamic-clean fixture initially scored as FAIL due to a verdict-detection bug — the scorer matched "REVISE" in a hypothetical section ("What would need to change for REVISE") rather than the declared verdict (ACCEPT-WITH-RESERVATIONS). Fixed in `score_output.py` by prioritizing explicit `# Verdict:` declarations.
 
-### qwen3.5:27b (17.4 GB) — a11y-critic (n=2)
+### qwen3.5:27b (17.4 GB) — a11y-critic (n=17 of 33, run stopped)
 
-| Fixture | Difficulty | Must-find | Verdict | Time | Tokens | Phases |
-|---------|-----------|----------|---------|------|--------|--------|
-| form-validation-missing-aria-describedby | HAS-BUGS | 2/2 (100%) | REVISE ✓ | 430s | 3,397 | 0/11 |
-| tabs-missing-arrow-nav | HAS-BUGS | 1/1 (100%) | REVISE ✓ | 486s | 4,372 | 9/11 |
+**Date**: 2026-05-17
+**Settings**: num_ctx=16384, temperature=0.3, streaming mode
+**Run stopped at 17/33**: fixture 12 (interactive-dropdown-focus-bug) stalled after 50 min with runner at 0.5% CPU — same `/think` context exhaustion pattern as qwen3.5:latest on perspective-audit.
 
-**Finding**: qwen3.5:27b passes both fixtures with correct detection. On tabs, it followed 9/11 phases — the only sub-70B model to show phase compliance. However, it is consistently 3-4x slower than qwen3.5:latest (430-486s vs 109-130s) with 60-90% more tokens, and no accuracy advantage on these fixtures. The phase compliance on the tabs fixture may indicate the model has more capacity to follow structured protocols, which could matter for harder fixtures.
+| Tier | Fixtures | PASS | Must-find rate | Avg time |
+|------|----------|------|---------------|----------|
+| HAS-BUGS | 13 | 13/13 | **37/37 (100%)** | ~460s |
+| CLEAN | 4 | 3/4 | n/a | ~580s |
+| **Total** | **17** | **16** | **100% (HAS-BUGS)** | ~500s |
 
-**Recommendation**: For the critic skill, qwen3.5:latest (6.6 GB) is the better choice. qwen3.5:27b's extra capacity doesn't improve detection accuracy on tested fixtures and significantly slows generation. The 27b model may be more valuable for perspective-audit where the protocol is more complex.
+**CLEAN results**: 3 PASS, 1 FAIL (search-results-dynamic-clean — context exhaustion produced malformed response with no verdict after 1399s), 1 WARN (button-skip-link-clean — correct verdict, minor findings).
+
+**Key finding**: qwen3.5:27b achieved **100% must-find on all 13 HAS-BUGS fixtures** including 4/4 on toast-notification (`role="alert"`) — matching Claude and surpassing qwen3:32b (which missed this item). This is the first local model to find it. However, the model is prone to `/think` context exhaustion on some fixtures (1 CLEAN FAIL, 1 stall) and is 2x slower than qwen3:32b on average.
+
+**Recommendation updated**: qwen3.5:27b has better detection accuracy than qwen3:32b on the tested fixtures (100% vs 86% on the 7-fixture comparison set), but its reliability is lower — some fixtures stall or produce empty output. For production use, qwen3:32b remains the safer choice due to consistent completion.
 
 ## Phase 4A: Full Critic Benchmark (qwen3:32b)
 
@@ -694,7 +707,7 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 - [x] ~~Phase 4A: Full critic benchmark (qwen3:32b, 26 fixtures)~~ — **26/26 PASS, 97% must-find**
 - [x] ~~Phase 4C: Full perspective-audit benchmark (qwen3:32b, 25 fixtures)~~ — **20 PASS, 4 WARN, 1 FAIL (page-shell scope)**
 - [x] ~~Phase 4D: Test qwen3.5:latest on perspective-audit~~ — **NOT VIABLE (50% empty responses, context exhaustion)**
-- [ ] Re-run media-player-captions with updated scope note (confirm fixture fix resolves FAIL)
-- [ ] Test qwen3.5:27b on remaining critic fixtures (2/7 done, both PASS)
-- [ ] Run deepseek-r1:70b on remaining critic fixtures
+- [x] ~~Re-run media-player-captions with updated scope note~~ — **FAIL → WARN (scope note fixed it)**
+- [x] ~~Test qwen3.5:27b on critic fixtures~~ — **17/33 completed, 100% must-find on 13 HAS-BUGS, stopped due to /think stalls**
+- [ ] Run deepseek-r1:70b on remaining critic fixtures (optional)
 - [x] ~~Establish Claude baseline (7 core fixtures)~~ — **All 3 tiers: 7/7 PASS, 100% must-find, 0% FP**

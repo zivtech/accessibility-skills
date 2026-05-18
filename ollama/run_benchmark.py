@@ -198,7 +198,7 @@ def run_ollama(model, fixture_id, system_prompt):
         "model": model,
         "system": system_prompt,
         "prompt": prompt,
-        "stream": False,
+        "stream": True,
         "options": {"num_ctx": 16384, "temperature": 0.3},
     }
 
@@ -216,21 +216,35 @@ def run_ollama(model, fixture_id, system_prompt):
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=1800) as resp:
-        data = json.loads(resp.read())
+    response_text = ""
+    final_chunk = {}
+    with urllib.request.urlopen(req, timeout=300) as resp:
+        for line in resp:
+            chunk = json.loads(line)
+            if chunk.get("response"):
+                response_text += chunk["response"]
+            if chunk.get("done"):
+                final_chunk = chunk
+                break
 
     elapsed = time.time() - start
-    data["_benchmark"] = {
-        "model": model,
-        "fixture_id": fixture_id,
-        "elapsed_seconds": round(elapsed, 1),
-        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    data = {
+        "response": response_text,
+        "done": True,
+        "total_duration": final_chunk.get("total_duration"),
+        "eval_count": final_chunk.get("eval_count"),
+        "_benchmark": {
+            "model": model,
+            "fixture_id": fixture_id,
+            "elapsed_seconds": round(elapsed, 1),
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        },
     }
 
     with open(out_path, "w") as f:
         json.dump(data, f, indent=2)
 
-    resp_len = len(data.get("response", ""))
+    resp_len = len(response_text)
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
     return out_path
 
@@ -435,13 +449,24 @@ def main():
             run_perspective(model, fixture_id, system_prompt)
 
     elif cmd == "critic-remaining":
+        import glob as _cglob
         model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
-        already_done = ALREADY_BENCHMARKED.get(model, set())
-        remaining = [f for f in ALL_CRITIC_FIXTURES if f not in already_done]
+        model_tag = model.replace(":", "-").replace(".", "")
+        done = set()
+        for f in _cglob.glob(f"/tmp/ollama-bench-*-{model_tag}-response.json") + \
+                 _cglob.glob(f"/tmp/ollama-fullproto-*-{model_tag}-response.json"):
+            name = os.path.basename(f)
+            name = name.replace("ollama-bench-", "").replace("ollama-fullproto-", "")
+            name = name.replace(f"-{model_tag}-response.json", "")
+            done.add(name)
+        remaining = [f for f in ALL_CRITIC_FIXTURES if f not in done]
         print(f"Model: {model}")
         print(f"Total fixtures: {len(ALL_CRITIC_FIXTURES)}")
-        print(f"Already done: {len(already_done)}")
+        print(f"Already done: {len(done)}")
         print(f"Remaining: {len(remaining)}")
+        if not remaining:
+            print("All critic fixtures benchmarked!")
+            sys.exit(0)
         print(f"Fixtures: {', '.join(remaining)}")
         system_prompt = load_system_prompt()
         for i, fixture_id in enumerate(remaining, 1):
