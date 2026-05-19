@@ -823,6 +823,54 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ---
 
+## Phase 7: Opus Subagent Benchmark (Claude Code, 8 Hard Fixtures)
+
+**Date**: 2026-05-19
+**Protocol**: Claude Code subagents using `a11y-critic` agent definition (Opus 4.6), single-shot.
+**Fixtures**: 5 FLAWED + 3 ADVERSARIAL — the tiers where model quality diverges.
+**Method**: Direct invocation via `Agent(subagent_type="a11y-critic")` from main session.
+
+### Results
+
+| Fixture | Difficulty | Verdict | Must-find | Quality |
+|---------|-----------|---------|-----------|---------|
+| tabs-incomplete-aria-selected | FLAWED | REVISE | 1/1 | Full compound analysis |
+| multistep-form-error-clearing | FLAWED | REVISE | 1/1 | Found compound dead-end |
+| dashboard-heading-inconsistency | FLAWED | REVISE | 1/1 | Upgraded landmarks to MAJOR |
+| app-focus-order-illogical | FLAWED | REVISE | 1/1 | Cascading failure analysis |
+| async-form-vague-success | FLAWED | REVISE | 1/1 | Found aria-busy timing bug |
+| tabbed-nav-vs-tab-pattern | ADVERSARIAL | ACCEPT-W-R | 1/1 | Best-tier (both sides) |
+| form-field-vs-summary-errors | ADVERSARIAL | ACCEPT-W-R | 1/1 | Best-tier (both sides) |
+| search-focus-stays-in-input | ADVERSARIAL | ACCEPT-W-R | 1/1 | Best-tier (both sides) |
+
+**Total: 8/8 PASS. 100% must-find. All ADVERSARIAL at best-tier verdict quality.**
+
+### Opus vs Other Tiers on Hard Fixtures
+
+| Metric | Opus | Sonnet-think | Haiku | GPT-5.2 |
+|--------|------|-------------|-------|---------|
+| FLAWED pass rate | 5/5 | 5/5 (inherited) | 5/5 | 5/5 |
+| ADVERSARIAL pass rate | 3/3 | 3/3 (resolved) | 0/3 | 3/3 |
+| ADVERSARIAL verdict quality | Best | Acceptable | N/A | Acceptable |
+| First-pass (no escalation) | Yes | No (needs Haiku triage) | No | Yes |
+
+**Decision**: Opus achieves best-tier verdicts on first pass. This confirms Opus-default routing for planner/critic/auditor in the a11y workflow team.
+
+### Phase 7B: Scout→Critic Workflow Validation
+
+**Method**: Haiku scout (general-purpose, ~8s) → Opus critic (a11y-critic agent) with scout context injected.
+**Fixtures**: 1 HAS-BUGS + 1 CLEAN + 1 ADVERSARIAL.
+
+| Fixture | Tier | Scout Time | Scout Flags | Critic Verdict | vs Standalone |
+|---------|------|-----------|-------------|----------------|---------------|
+| form-validation-missing-aria-describedby | HAS-BUGS | 8s | 4 accurate flags | REJECT (2/2 must-find) | Equivalent |
+| button-skip-link-clean | CLEAN | 7s | "None — clean" | ACCEPT (0 FP) | Equivalent |
+| tabbed-nav-vs-tab-pattern | ADVERSARIAL | 9s | Semantic tension flagged | ACCEPT-W-R (best-tier) | Equivalent |
+
+**Key finding**: The scout's "no flags — clean" signal on the CLEAN fixture helped the Opus critic avoid the false positive that Haiku alone produces (Haiku gave REVISE on this same fixture in Phase 5B). The scout→critic chain is at least as accurate as standalone Opus invocation, with the added benefit of structured pre-commitment context.
+
+---
+
 ## Next Steps
 
 - [x] ~~Build simple `ollama_a11y.py` wrapper (not orchestrator)~~
@@ -843,3 +891,5 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 - [x] ~~Phase 5B: Full Claude escalation (33 fixtures)~~ — **Haiku 85%, Sonnet resolves 4/5, Sonnet-think 100%**
 - [ ] Run deepseek-r1:70b on remaining critic fixtures (optional)
 - [x] ~~Phase 6: Codex/OpenAI escalation (33 fixtures)~~ — **GPT-5.2 91%, full pass at 5.5-low. 3/3 ADVERSARIAL pass (better than Haiku)**
+- [x] ~~Phase 7: Opus subagent benchmark (8 hard fixtures)~~ — **8/8 PASS, best-tier verdicts on all ADVERSARIAL. Confirms Opus-default routing.**
+- [x] ~~Phase 7B: Scout→Critic workflow validation (3 fixtures)~~ — **3/3 PASS. Haiku scout (~8s) + Opus critic chain works end-to-end.**
