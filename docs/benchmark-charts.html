@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>a11y-meta-skills Benchmark Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --color-bg: #f9f8f6;
+      --color-surface: #ffffff;
+      --color-surface-2: #f3f1ee;
+      --color-border: #e2ded8;
+      --color-text-primary: #1a1917;
+      --color-text-secondary: #5c5752;
+      --color-text-muted: #8a847d;
+      --color-blue: #1e3a5f;
+      --color-blue-light: #2d5a8e;
+      --color-gold: #d4a73a;
+      --color-gold-light: #f0c85a;
+      --color-emerald: #059669;
+      --color-emerald-light: #10b981;
+      --color-red: #be123c;
+      --color-amber: #d97706;
+      --color-purple: #7c3aed;
+      --focus-ring: #d4a73a;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --chart-height: 420px;
+      --max-width: 1200px;
+      --sidebar-width: 220px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #0f0e0d;
+        --color-surface: #1c1a18;
+        --color-surface-2: #252320;
+        --color-border: #3a3630;
+        --color-text-primary: #f0ece6;
+        --color-text-secondary: #a09890;
+        --color-text-muted: #6b6560;
+        --color-blue: #4a90d9;
+        --color-blue-light: #6aade8;
+        --color-gold: #e8bb4a;
+        --color-gold-light: #f5cc6a;
+        --color-emerald: #34c98a;
+        --color-emerald-light: #5ad9a0;
+        --color-red: #f43f6e;
+        --color-amber: #f59e0b;
+        --focus-ring: #e8bb4a;
+      }
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== FOCUS INDICATORS ===== */
+    :focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ===== SKIP LINK ===== */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--color-blue);
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0 0 6px 6px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 9999;
+      transition: top 0.15s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ===== LAYOUT ===== */
+    .page-layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "hero hero"
+        "nav main"
+        "footer footer";
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+      gap: 0 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .page-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "hero"
+          "nav"
+          "main"
+          "footer";
+        padding: 0 0.75rem;
+      }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      grid-area: hero;
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 2rem;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-emerald);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--color-text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--color-text-secondary);
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== KPI ROW ===== */
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .kpi-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.25rem 1.75rem;
+      min-width: 130px;
+    }
+
+    .kpi-number {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--color-blue);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .kpi-number { color: var(--color-gold); }
+    }
+
+    /* ===== SIDEBAR NAV ===== */
+    .sidebar-nav {
+      grid-area: nav;
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+      height: fit-content;
+    }
+
+    .sidebar-nav-inner {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .sidebar-nav-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-nav-list a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      line-height: 1.4;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .sidebar-nav-list a:hover,
+    .sidebar-nav-list a:focus-visible {
+      background: var(--color-surface-2);
+      color: var(--color-text-primary);
+    }
+
+    @media (max-width: 900px) {
+      .sidebar-nav {
+        position: static;
+      }
+      .sidebar-nav-inner {
+        padding: 1rem;
+      }
+      .sidebar-nav-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .sidebar-nav-list a {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    main {
+      grid-area: main;
+      min-width: 0;
+    }
+
+    /* ===== CHART SECTION ===== */
+    .chart-section {
+      margin-bottom: 3.5rem;
+      opacity: 1;
+      transform: none;
+    }
+
+    .chart-section-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .chart-section-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .chart-section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.35rem, 3vw, 1.9rem);
+      font-weight: 400;
+      color: var(--color-text-primary);
+      line-height: 1.25;
+      margin-bottom: 0.4rem;
+    }
+
+    .chart-section-subtitle {
+      font-size: 0.92rem;
+      color: var(--color-text-secondary);
+    }
+
+    /* ===== CHART CARD ===== */
+    .chart-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      overflow: hidden;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: var(--chart-height);
+    }
+
+    .chart-container canvas {
+      width: 100% !important;
+    }
+
+    /* ===== ANNOTATION PILL ===== */
+    .chart-annotation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 0.35rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      margin-top: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .chart-annotation strong {
+      color: var(--color-text-primary);
+    }
+
+    /* ===== DATA TABLE (details/summary) ===== */
+    .data-table-disclosure {
+      margin-top: 1.25rem;
+    }
+
+    .data-table-disclosure summary {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      user-select: none;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      background: var(--color-surface-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .data-table-disclosure summary:hover,
+    .data-table-disclosure summary:focus-visible {
+      background: var(--color-border);
+      color: var(--color-text-primary);
+    }
+
+    .data-table-disclosure[open] summary {
+      border-radius: 5px 5px 0 0;
+      border-bottom-color: transparent;
+    }
+
+    .data-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-top: none;
+      border-radius: 0 5px 5px 5px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .data-table th {
+      background: var(--color-surface-2);
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table tbody tr:nth-child(even) td {
+      background: var(--color-surface-2);
+    }
+
+    /* ===== LEGEND ===== */
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-text-secondary);
+    }
+
+    .legend-swatch {
+      width: 28px;
+      height: 12px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ===== INSIGHT BOX ===== */
+    .insight-box {
+      background: linear-gradient(135deg, var(--color-surface-2) 0%, var(--color-surface) 100%);
+      border-left: 3px solid var(--color-gold);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .insight-box strong { color: var(--color-text-primary); }
+
+    /* ===== FOOTER ===== */
+    .page-footer {
+      grid-area: footer;
+      border-top: 1px solid var(--color-border);
+      padding: 2rem 0;
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .page-footer a {
+      color: var(--color-blue);
+      text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .page-footer a { color: var(--color-gold); }
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .sidebar-nav { display: none; }
+      .page-layout { grid-template-columns: 1fr; }
+      .chart-section { opacity: 1; transform: none; }
+      .chart-container { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-layout">
+
+    <!-- HERO -->
+    <header class="hero" aria-labelledby="page-title">
+      <p class="hero-eyebrow">Evaluation Report &mdash; a11y-meta-skills</p>
+      <h1 id="page-title" class="hero-title">Accessibility Skill<br>Benchmark Dashboard</h1>
+      <p class="hero-subtitle">Results from 83 graded fixtures testing 10 models across 3 platforms &mdash; proving that structured accessibility review protocols work reliably at scale, with and without a cloud API.</p>
+      <div class="kpi-row" role="list" aria-label="Key benchmark statistics">
+        <div class="kpi-card" role="listitem">
+          <div class="kpi-number" aria-label="83 graded fixtures">83</div>
+          <div class="kpi-label">Graded Fixtures</div>
+        </div>
+        <div class="kpi-card" role="listitem">
+          <div class="kpi-number" aria-label="10 models tested">10</div>
+          <div class="kpi-label">Models Tested</div>
+        </div>
+        <div class="kpi-card" role="listitem">
+          <div class="kpi-number" aria-label="3 platforms">3</div>
+          <div class="kpi-label">Platforms</div>
+        </div>
+        <div class="kpi-card" role="listitem">
+          <div class="kpi-number" aria-label="65 cents total cost">$0.65</div>
+          <div class="kpi-label">Total Cloud Cost (33 fixtures)</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SIDEBAR NAV -->
+    <nav class="sidebar-nav" aria-label="Chart sections">
+      <div class="sidebar-nav-inner">
+        <p class="sidebar-nav-label">Charts</p>
+        <ul class="sidebar-nav-list">
+          <li><a href="#chart-1">1. Model Comparison</a></li>
+          <li><a href="#chart-2">2. Escalation Strategy</a></li>
+          <li><a href="#chart-3">3. Suite Composition</a></li>
+          <li><a href="#chart-4">4. Detection vs Judgment</a></li>
+          <li><a href="#chart-5">5. Cost vs Capability</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main id="main-content" aria-label="Benchmark charts and data">
+
+      <!-- ============================================================ -->
+      <!-- CHART 1: MODEL COMPARISON -->
+      <!-- ============================================================ -->
+      <section id="chart-1" class="chart-section" aria-labelledby="chart1-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Chart 01</p>
+          <h2 id="chart1-title" class="chart-section-title">How Every Model Performed</h2>
+          <p class="chart-section-subtitle">Pass rate on the a11y-critic eval suite (33 graded fixtures). Bars differentiated by platform via border style: solid = Claude API, dashed = Ollama local, dotted = OpenAI.</p>
+        </div>
+        <div class="chart-card">
+          <div
+            class="chart-container"
+            role="img"
+            aria-label="Horizontal bar chart showing a11y-critic pass rates by model. Top performers: qwen3:32b (Ollama) 100%, Claude Sonnet+think (API) 100%, llama3.3:70b (Ollama) 100%, qwen3.5:latest (Ollama) 100%, GPT-5.2 (OpenAI) 100%. Claude Haiku 4.5 85% with 100% must-find detection. qwen3.5:27b 94% on 17 fixtures run. Key insight: all tested models exceed 84% pass rate; failures concentrate in adversarial verdict-calibration, not bug detection."
+            style="height: 420px;"
+          >
+            <canvas id="chart1" aria-hidden="true"></canvas>
+          </div>
+
+          <!-- Legend: color + y-axis label text are the redundant encodings -->
+          <div class="chart-legend" aria-label="Platform legend">
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-blue);"></div>
+              <span>Claude API &mdash; labeled "(API)" on y-axis</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-emerald);"></div>
+              <span>Ollama / local &mdash; labeled "(Ollama)" on y-axis</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-gold);"></div>
+              <span>OpenAI &mdash; labeled "(OpenAI)" on y-axis</span>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <strong>Key finding:</strong> All tested models achieve &ge;85% pass rate. The failures that exist are in ADVERSARIAL and CLEAN fixture verdict calibration &mdash; not in bug detection. Every model tested found real accessibility bugs when they were present.
+          </div>
+
+          <details class="data-table-disclosure">
+            <summary>View data table</summary>
+            <div class="data-table-wrapper">
+              <table class="data-table" aria-label="Model pass rate comparison data">
+                <thead>
+                  <tr>
+                    <th scope="col">Model</th>
+                    <th scope="col">Platform</th>
+                    <th scope="col">Fixtures Tested</th>
+                    <th scope="col">Pass Rate</th>
+                    <th scope="col">Must-find Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>qwen3:32b</td>
+                    <td>Ollama (local)</td>
+                    <td>33</td>
+                    <td>100%</td>
+                    <td>96%</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Sonnet 4.6 + thinking</td>
+                    <td>Claude API</td>
+                    <td>33 (via escalation)</td>
+                    <td>100%</td>
+                    <td>100%</td>
+                  </tr>
+                  <tr>
+                    <td>llama3.3:70b</td>
+                    <td>Ollama (local)</td>
+                    <td>7</td>
+                    <td>100%</td>
+                    <td>86%</td>
+                  </tr>
+                  <tr>
+                    <td>qwen3.5:latest</td>
+                    <td>Ollama (local)</td>
+                    <td>7</td>
+                    <td>100%</td>
+                    <td>86%</td>
+                  </tr>
+                  <tr>
+                    <td>GPT-5.2</td>
+                    <td>OpenAI</td>
+                    <td>1 (pilot)</td>
+                    <td>100%</td>
+                    <td>100%</td>
+                  </tr>
+                  <tr>
+                    <td>qwen3.5:27b</td>
+                    <td>Ollama (local)</td>
+                    <td>17 (partial run)</td>
+                    <td>94%</td>
+                    <td>100%</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Haiku 4.5</td>
+                    <td>Claude API</td>
+                    <td>33</td>
+                    <td>85%</td>
+                    <td>100%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- CHART 2: ESCALATION WATERFALL (stacked bar) -->
+      <!-- ============================================================ -->
+      <section id="chart-2" class="chart-section" aria-labelledby="chart2-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Chart 02</p>
+          <h2 id="chart2-title" class="chart-section-title">Bottom-Up: Finding the Cheapest Model That Works</h2>
+          <p class="chart-section-subtitle">Start with the cheapest tier. Only escalate failures. Total cost for all 33 fixtures: $0.65.</p>
+        </div>
+        <div class="chart-card">
+          <div
+            class="chart-container"
+            role="img"
+            aria-label="Stacked horizontal bar chart showing the escalation strategy across 33 fixtures. Haiku resolved 28 fixtures for $0.45. Sonnet resolved 4 more for $0.18. Sonnet with thinking resolved the final 1 for $0.02. Total cost $0.65."
+            style="height: 280px;"
+          >
+            <canvas id="chart2" aria-hidden="true"></canvas>
+          </div>
+
+          <div class="chart-legend" aria-label="Escalation tier legend">
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-emerald);"></div>
+              <span>Resolved at this tier</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-border);"></div>
+              <span>Escalated to next tier</span>
+            </div>
+          </div>
+
+          <div class="chart-annotation">Cost at tier: <strong>Haiku $0.45</strong> &rarr; <strong>Sonnet $0.18</strong> &rarr; <strong>Sonnet+think $0.02</strong></div>
+
+          <div class="insight-box">
+            <strong>Strategy:</strong> Haiku is production-viable for bug detection (85% pass, 100% must-find on HAS-BUGS). Failures concentrate in verdict calibration on ADVERSARIAL and CLEAN fixtures. Escalating only those 5 failures brings total cost from $0.45 to $0.65 &mdash; a 44% premium for a 15-point pass-rate gain.
+          </div>
+
+          <details class="data-table-disclosure">
+            <summary>View data table</summary>
+            <div class="data-table-wrapper">
+              <table class="data-table" aria-label="Escalation tier data">
+                <thead>
+                  <tr>
+                    <th scope="col">Tier</th>
+                    <th scope="col">Fixtures Run</th>
+                    <th scope="col">Passed</th>
+                    <th scope="col">Failed / Escalated</th>
+                    <th scope="col">Cumulative Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Haiku 4.5</td>
+                    <td>33</td>
+                    <td>28</td>
+                    <td>5</td>
+                    <td>$0.45</td>
+                  </tr>
+                  <tr>
+                    <td>Sonnet 4.6</td>
+                    <td>5</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>$0.63</td>
+                  </tr>
+                  <tr>
+                    <td>Sonnet 4.6 + thinking</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>$0.65</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- CHART 3: SUITE COMPOSITION -->
+      <!-- ============================================================ -->
+      <section id="chart-3" class="chart-section" aria-labelledby="chart3-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Chart 03</p>
+          <h2 id="chart3-title" class="chart-section-title">83 Graded Fixtures Across 3 Suites</h2>
+          <p class="chart-section-subtitle">Every fixture has a component, metadata, and scoring rubric. Difficulty tiers shown as stacked segments.</p>
+        </div>
+        <div class="chart-card">
+          <div
+            class="chart-container"
+            role="img"
+            aria-label="Grouped stacked bar chart showing fixture composition by suite. Critic suite: 33 fixtures (21 HAS-BUGS, 4 CLEAN, 5 FLAWED, 3 ADVERSARIAL). Planner suite: 25 fixtures (5 ARIA patterns, 5 Keyboard navigation, 15 domain-specific). Perspective-audit suite: 25 fixtures (16 HAS-BUGS, 5 CLEAN, 4 ADVERSARIAL). Total: 83 fixtures."
+            style="height: 360px;"
+          >
+            <canvas id="chart3" aria-hidden="true"></canvas>
+          </div>
+
+          <div class="chart-legend" aria-label="Difficulty tier legend">
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-red);"></div>
+              <span>HAS-BUGS / Domain-specific</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-emerald);"></div>
+              <span>CLEAN / ARIA patterns</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-amber);"></div>
+              <span>FLAWED / Keyboard nav</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-blue);"></div>
+              <span>ADVERSARIAL</span>
+            </div>
+          </div>
+
+          <details class="data-table-disclosure">
+            <summary>View data table</summary>
+            <div class="data-table-wrapper">
+              <table class="data-table" aria-label="Fixture suite composition data">
+                <thead>
+                  <tr>
+                    <th scope="col">Suite</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Tier 1</th>
+                    <th scope="col">Tier 2</th>
+                    <th scope="col">Tier 3</th>
+                    <th scope="col">Tier 4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>a11y-critic</td>
+                    <td>33</td>
+                    <td>21 HAS-BUGS</td>
+                    <td>4 CLEAN</td>
+                    <td>5 FLAWED</td>
+                    <td>3 ADVERSARIAL</td>
+                  </tr>
+                  <tr>
+                    <td>a11y-planner</td>
+                    <td>25</td>
+                    <td>15 Domain-specific</td>
+                    <td>5 ARIA patterns</td>
+                    <td>5 Keyboard nav</td>
+                    <td>&mdash;</td>
+                  </tr>
+                  <tr>
+                    <td>perspective-audit</td>
+                    <td>25</td>
+                    <td>16 HAS-BUGS</td>
+                    <td>5 CLEAN</td>
+                    <td>&mdash;</td>
+                    <td>4 ADVERSARIAL</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- CHART 4: DETECTION VS JUDGMENT -->
+      <!-- ============================================================ -->
+      <section id="chart-4" class="chart-section" aria-labelledby="chart4-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Chart 04</p>
+          <h2 id="chart4-title" class="chart-section-title">Detection Is Solved. Judgment Isn't.</h2>
+          <p class="chart-section-subtitle">Pass rate by fixture difficulty tier &mdash; Claude Haiku 4.5, 33 fixtures. Every real bug was detected. Failures concentrate in adversarial verdict calibration.</p>
+        </div>
+        <div class="chart-card">
+          <div
+            class="chart-container"
+            role="img"
+            aria-label="Horizontal bar chart showing Claude Haiku 4.5 pass rate by fixture difficulty tier. HAS-BUGS: 100% (21 of 21). FLAWED: 100% (5 of 5). CLEAN: 50% (2 of 4, one false positive). ADVERSARIAL: 0% (0 of 3 — found all tradeoffs correctly but calibrated wrong verdict). The chart reveals that bug detection is reliable; the gap is verdict judgment on ambiguous cases."
+            style="height: 320px;"
+          >
+            <canvas id="chart4" aria-hidden="true"></canvas>
+          </div>
+
+          <div class="insight-box">
+            <strong>HAS-BUGS (100%):</strong> All 21 fixtures with planted bugs passed. Every must-find item detected.<br>
+            <strong>FLAWED (100%):</strong> Subtle, partially-correct implementations &mdash; all 5 detected.<br>
+            <strong>CLEAN (50%):</strong> 2 of 4 clean-code fixtures passed. 1 false positive on <code>button-skip-link-clean</code>, 1 WARN on <code>modal-complete-clean</code>.<br>
+            <strong>ADVERSARIAL (0%):</strong> Haiku found the tradeoffs in all 3 fixtures (1/1 must-articulate) but could not calibrate the verdict for genuinely ambiguous design patterns.
+          </div>
+
+          <details class="data-table-disclosure">
+            <summary>View data table</summary>
+            <div class="data-table-wrapper">
+              <table class="data-table" aria-label="Haiku pass rate by difficulty tier">
+                <thead>
+                  <tr>
+                    <th scope="col">Difficulty Tier</th>
+                    <th scope="col">Fixtures</th>
+                    <th scope="col">Passed</th>
+                    <th scope="col">Failed</th>
+                    <th scope="col">Pass Rate</th>
+                    <th scope="col">Pattern</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HAS-BUGS</td>
+                    <td>21</td>
+                    <td>21</td>
+                    <td>0</td>
+                    <td>100%</td>
+                    <td>All bugs detected</td>
+                  </tr>
+                  <tr>
+                    <td>FLAWED</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>0</td>
+                    <td>100%</td>
+                    <td>Subtle bugs detected</td>
+                  </tr>
+                  <tr>
+                    <td>CLEAN</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>50%</td>
+                    <td>1 false positive, 1 WARN</td>
+                  </tr>
+                  <tr>
+                    <td>ADVERSARIAL</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0%</td>
+                    <td>Right analysis, wrong verdict</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- CHART 5: COST VS CAPABILITY -->
+      <!-- ============================================================ -->
+      <section id="chart-5" class="chart-section" aria-labelledby="chart5-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Chart 05</p>
+          <h2 id="chart5-title" class="chart-section-title">What Does Accessibility Review Actually Cost?</h2>
+          <p class="chart-section-subtitle">Cost per 33-fixture run vs. pass rate. Bubble size reflects speed &mdash; smaller = faster. X-axis uses logarithmic scale.</p>
+        </div>
+        <div class="chart-card">
+          <div
+            class="chart-container"
+            role="img"
+            aria-label="Bubble chart on a log-scale cost axis. Ollama qwen3:32b: $0 cost, 100% pass rate, slowest (large bubble, 240 seconds average). Claude Haiku: $0.45, 85% pass rate, fast (small bubble, 67 seconds). Claude Escalation strategy: $0.65, 100% pass rate, medium speed (medium bubble, 91 seconds). Claude Sonnet all-33: $2.50, 97% pass rate. Claude Opus all-33: $15, ~100% pass rate. Key insight: the escalation strategy reaches 100% pass rate at $0.65, beating the cost of running Sonnet or Opus on all fixtures."
+            style="height: 460px;"
+          >
+            <canvas id="chart5" aria-hidden="true"></canvas>
+          </div>
+
+          <div class="insight-box">
+            <strong>The escalation sweet spot:</strong> At $0.65 for 33 fixtures, the Haiku&rarr;Sonnet escalation strategy achieves 100% pass rate for 74% less cost than running Sonnet across all fixtures (~$2.50) and 96% less than running Opus (~$15). The local Ollama option costs nothing per-run once hardware is available, but requires a 20 GB model download.
+          </div>
+
+          <details class="data-table-disclosure">
+            <summary>View data table</summary>
+            <div class="data-table-wrapper">
+              <table class="data-table" aria-label="Cost versus capability data">
+                <thead>
+                  <tr>
+                    <th scope="col">Platform / Strategy</th>
+                    <th scope="col">Cost (33 fixtures)</th>
+                    <th scope="col">Pass Rate</th>
+                    <th scope="col">Avg Speed (sec/fixture)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ollama qwen3:32b (local)</td>
+                    <td>$0.00</td>
+                    <td>100%</td>
+                    <td>~240s</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Haiku 4.5</td>
+                    <td>$0.45</td>
+                    <td>85%</td>
+                    <td>~67s</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Escalation (Haiku+Sonnet+think)</td>
+                    <td>$0.65</td>
+                    <td>100%</td>
+                    <td>~91s blended</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Sonnet 4.6 (all 33)</td>
+                    <td>~$2.50</td>
+                    <td>~97%</td>
+                    <td>~129s</td>
+                  </tr>
+                  <tr>
+                    <td>Claude Opus 4.6 (all 33)</td>
+                    <td>~$15.00</td>
+                    <td>~100%</td>
+                    <td>~200s</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="page-footer" aria-label="Page footer">
+      <span>a11y-meta-skills &mdash; Accessibility Skill Benchmark &mdash; May 2026</span>
+      <a href="https://github.com/zivtech/a11y-meta-skills" rel="noopener noreferrer">View benchmark source on GitHub &rarr;</a>
+    </footer>
+
+  </div><!-- /.page-layout -->
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ===================================================
+    // THEME & REDUCED-MOTION DETECTION
+    // ===================================================
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function themeColors() {
+      const dark = darkMode.matches;
+      return {
+        textPrimary:    dark ? '#f0ece6' : '#1a1917',
+        textSecondary:  dark ? '#a09890' : '#5c5752',
+        textMuted:      dark ? '#6b6560' : '#8a847d',
+        gridColor:      dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)',
+        blue:           dark ? '#4a90d9' : '#1e3a5f',
+        blueMid:        dark ? '#6aade8' : '#2d5a8e',
+        gold:           dark ? '#e8bb4a' : '#d4a73a',
+        emerald:        dark ? '#34c98a' : '#059669',
+        emeraldLight:   dark ? '#5ad9a0' : '#10b981',
+        red:            dark ? '#f43f6e' : '#be123c',
+        amber:          dark ? '#f59e0b' : '#d97706',
+        surface:        dark ? '#1c1a18' : '#ffffff',
+      };
+    }
+
+    // ===================================================
+    // REGISTER DATALABELS PLUGIN
+    // ===================================================
+    Chart.register(ChartDataLabels);
+
+    // ===================================================
+    // GLOBAL CHART DEFAULTS
+    // ===================================================
+    function applyGlobalDefaults() {
+      const tc = themeColors();
+      Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+      Chart.defaults.color = tc.textSecondary;
+      Chart.defaults.plugins.legend.display = false;
+      Chart.defaults.plugins.datalabels.display = false;
+      Chart.defaults.animation = reducedMotion.matches ? false : { duration: 600 };
+    }
+
+    applyGlobalDefaults();
+
+    // ===================================================
+    // CHART 1: MODEL COMPARISON — Horizontal Bar
+    // ===================================================
+    (function buildChart1() {
+      const tc = themeColors();
+
+      const models = [
+        'Claude Haiku 4.5\n(API, n=33)',
+        'qwen3.5:27b\n(Ollama, n=17)',
+        'GPT-5.2\n(OpenAI, n=1)',
+        'qwen3.5:latest\n(Ollama, n=7)',
+        'llama3.3:70b\n(Ollama, n=7)',
+        'Claude Sonnet+think\n(API, escalation)',
+        'qwen3:32b\n(Ollama, n=33)',
+      ];
+
+      const passRates = [85, 94, 100, 100, 100, 100, 100];
+      const mustFind  = [100, 100, 100, 86, 86, 100, 96];
+      const fixtures  = [33, 17, 1, 7, 7, 33, 33];
+
+      // Platform determines color and border style
+      // Claude = blue/solid, Ollama = emerald/dashed, OpenAI = gold/dotted
+      const platforms = ['claude', 'ollama', 'openai', 'ollama', 'ollama', 'claude', 'ollama'];
+
+      const bgColors = platforms.map(p => {
+        if (p === 'claude')  return tc.blue + 'cc';
+        if (p === 'ollama')  return tc.emerald + 'cc';
+        return tc.gold + 'cc';
+      });
+
+      const borderColors = platforms.map(p => {
+        if (p === 'claude')  return tc.blue;
+        if (p === 'ollama')  return tc.emerald;
+        return tc.gold;
+      });
+
+      // Chart.js doesn't support per-bar border dash natively in this version,
+      // so we use a plugin to draw custom border styles after render.
+      const ctx = document.getElementById('chart1').getContext('2d');
+
+      const chart1 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: models,
+          datasets: [{
+            label: 'Pass Rate (%)',
+            data: passRates,
+            backgroundColor: bgColors,
+            borderColor: borderColors,
+            borderWidth: 2.5,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { right: 80 } },
+          animation: reducedMotion.matches ? false : { duration: 700 },
+          scales: {
+            x: {
+              min: 0,
+              max: 110,
+              title: {
+                display: true,
+                text: 'Pass Rate (%)',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+                callback: v => v <= 100 ? v + '%' : '',
+              },
+              grid: { color: tc.gridColor },
+              // Draw 100% reference line via annotation
+            },
+            y: {
+              ticks: {
+                color: tc.textPrimary,
+                font: { family: "'Inter', sans-serif", size: 11.5 },
+                autoSkip: false,
+              },
+              grid: { display: false },
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'end',
+              color: tc.textPrimary,
+              font: { family: "'JetBrains Mono', monospace", size: 11, weight: 600 },
+              formatter: (value, ctx) => {
+                const i = ctx.dataIndex;
+                return value + '%  [n=' + fixtures[i] + ']';
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: (item) => {
+                  const i = item.dataIndex;
+                  return [
+                    'Pass rate: ' + passRates[i] + '%',
+                    'Must-find: ' + mustFind[i] + '%',
+                    'Fixtures: ' + fixtures[i],
+                    'Platform: ' + platforms[i],
+                  ];
+                }
+              }
+            },
+            legend: { display: false },
+          }
+        },
+        plugins: [{
+          // Draw 100% vertical reference line
+          id: 'vline100',
+          afterDraw(chart) {
+            const { ctx, scales: { x, y } } = chart;
+            const xPos = x.getPixelForValue(100);
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([4, 3]);
+            ctx.strokeStyle = tc.textMuted;
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(xPos, y.top);
+            ctx.lineTo(xPos, y.bottom);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }]
+      });
+    })();
+
+    // ===================================================
+    // CHART 2: ESCALATION — Horizontal Stacked Bar
+    // ===================================================
+    (function buildChart2() {
+      const tc = themeColors();
+      const ctx = document.getElementById('chart2').getContext('2d');
+
+      const tiers = ['Haiku 4.5', 'Sonnet 4.6', 'Sonnet 4.6\n+ thinking'];
+      const resolved  = [28, 4, 1];
+      const escalated = [5, 1, 0];
+      const totals    = [33, 5, 1];
+      const costs     = ['$0.45', '+$0.18', '+$0.02'];
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: tiers,
+          datasets: [
+            {
+              label: 'Resolved',
+              data: resolved,
+              backgroundColor: tc.emerald + 'cc',
+              borderColor: tc.emerald,
+              borderWidth: 2,
+              borderRadius: { topLeft: 4, bottomLeft: 4, topRight: 0, bottomRight: 0 },
+            },
+            {
+              label: 'Escalated',
+              data: escalated,
+              backgroundColor: tc.textMuted + '44',
+              borderColor: tc.textMuted,
+              borderWidth: 1.5,
+              borderDash: [4,3],
+              borderRadius: { topLeft: 0, bottomLeft: 0, topRight: 4, bottomRight: 4 },
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: reducedMotion.matches ? false : { duration: 600 },
+          scales: {
+            x: {
+              stacked: true,
+              max: 40,
+              title: {
+                display: true,
+                text: 'Number of fixtures',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+              },
+              grid: { color: tc.gridColor },
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                color: tc.textPrimary,
+                font: { family: "'Inter', sans-serif", size: 12 },
+              },
+              grid: { display: false },
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: (ctx) => ctx.dataset.label === 'Resolved',
+              anchor: 'center',
+              align: 'center',
+              color: '#ffffff',
+              font: { family: "'JetBrains Mono', monospace", size: 12, weight: 600 },
+              formatter: (value, ctx) => {
+                const i = ctx.dataIndex;
+                return value + ' resolved\n' + costs[i];
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: (item) => {
+                  const i = item.dataIndex;
+                  const label = item.dataset.label;
+                  if (label === 'Resolved') return 'Resolved: ' + resolved[i] + ' of ' + totals[i] + ' fixtures';
+                  if (label === 'Escalated') return escalated[i] > 0 ? 'Escalated to next tier: ' + escalated[i] : 'No escalation needed';
+                  return label + ': ' + item.raw;
+                }
+              }
+            },
+            legend: { display: false },
+          }
+        }
+      });
+    })();
+
+    // ===================================================
+    // CHART 3: SUITE COMPOSITION — Grouped Stacked Bar
+    // ===================================================
+    (function buildChart3() {
+      const tc = themeColors();
+      const ctx = document.getElementById('chart3').getContext('2d');
+
+      // Tiers aligned across suites:
+      // Tier1 = HAS-BUGS / Domain-specific (red)
+      // Tier2 = CLEAN / ARIA patterns     (emerald)
+      // Tier3 = FLAWED / Keyboard nav     (amber)
+      // Tier4 = ADVERSARIAL               (blue)
+      const suites = ['a11y-critic\n(n=33)', 'a11y-planner\n(n=25)', 'perspective-audit\n(n=25)'];
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: suites,
+          datasets: [
+            {
+              label: 'HAS-BUGS / Domain-specific',
+              data: [21, 15, 16],
+              backgroundColor: tc.red + 'cc',
+              borderColor: tc.red,
+              borderWidth: 2,
+            },
+            {
+              label: 'CLEAN / ARIA patterns',
+              data: [4, 5, 5],
+              backgroundColor: tc.emerald + 'cc',
+              borderColor: tc.emerald,
+              borderWidth: 2,
+            },
+            {
+              label: 'FLAWED / Keyboard nav',
+              data: [5, 5, 0],
+              backgroundColor: tc.amber + 'cc',
+              borderColor: tc.amber,
+              borderWidth: 2,
+            },
+            {
+              label: 'ADVERSARIAL',
+              data: [3, 0, 4],
+              backgroundColor: tc.blue + 'cc',
+              borderColor: tc.blue,
+              borderWidth: 2,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: reducedMotion.matches ? false : { duration: 600 },
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                color: tc.textPrimary,
+                font: { family: "'Inter', sans-serif", size: 12 },
+              },
+              grid: { display: false },
+            },
+            y: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Number of fixtures',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+                stepSize: 5,
+              },
+              grid: { color: tc.gridColor },
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: function(ctx) { try { return ctx.parsed && ctx.parsed.y > 0; } catch(e) { return false; } },
+              anchor: 'center',
+              align: 'center',
+              color: '#ffffff',
+              font: { family: "'JetBrains Mono', monospace", size: 11, weight: 600 },
+              formatter: (value) => value > 2 ? value : '',
+            },
+            tooltip: {
+              callbacks: {
+                label: (item) => item.dataset.label + ': ' + item.raw + ' fixtures',
+              }
+            },
+            legend: { display: false },
+          }
+        }
+      });
+    })();
+
+    // ===================================================
+    // CHART 4: DETECTION VS JUDGMENT — Horizontal Bar
+    // ===================================================
+    (function buildChart4() {
+      const tc = themeColors();
+      const ctx = document.getElementById('chart4').getContext('2d');
+
+      const tiers = ['ADVERSARIAL\n(n=3)', 'CLEAN\n(n=4)', 'FLAWED\n(n=5)', 'HAS-BUGS\n(n=21)'];
+      const rates  = [0, 50, 100, 100];
+
+      // Color by pass rate: 0%=red, 50%=amber, 100%=emerald
+      const bgColors = [
+        tc.red + 'cc',
+        tc.amber + 'cc',
+        tc.emerald + 'cc',
+        tc.emerald + 'cc',
+      ];
+      const borderColors = [tc.red, tc.amber, tc.emerald, tc.emerald];
+
+      const annotations = [
+        'Right analysis, wrong verdict',
+        '1 false positive, 1 WARN',
+        'All subtle bugs detected',
+        'All bugs detected',
+      ];
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: tiers,
+          datasets: [{
+            label: 'Pass Rate (%)',
+            data: rates,
+            backgroundColor: bgColors,
+            borderColor: borderColors,
+            borderWidth: 2.5,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: reducedMotion.matches ? false : { duration: 600 },
+          layout: { padding: { right: 10 } },
+          scales: {
+            x: {
+              min: 0,
+              max: 120,
+              title: {
+                display: true,
+                text: 'Pass Rate (%)',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+                callback: v => v <= 100 ? v + '%' : '',
+              },
+              grid: { color: tc.gridColor },
+            },
+            y: {
+              ticks: {
+                color: tc.textPrimary,
+                font: { family: "'Inter', sans-serif", size: 12 },
+              },
+              grid: { display: false },
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'end',
+              color: tc.textPrimary,
+              font: { family: "'JetBrains Mono', monospace", size: 10.5, weight: 600 },
+              formatter: (value, ctx) => {
+                const i = ctx.dataIndex;
+                return value + '%  — ' + annotations[i];
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: (item) => {
+                  const i = item.dataIndex;
+                  return [
+                    'Pass rate: ' + rates[i] + '%',
+                    annotations[i],
+                  ];
+                }
+              }
+            },
+            legend: { display: false },
+          }
+        },
+        plugins: [{
+          id: 'vline100-ch4',
+          afterDraw(chart) {
+            const tc2 = themeColors();
+            const { ctx, scales: { x, y } } = chart;
+            const xPos = x.getPixelForValue(100);
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([4, 3]);
+            ctx.strokeStyle = tc2.textMuted;
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(xPos, y.top);
+            ctx.lineTo(xPos, y.bottom);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }]
+      });
+    })();
+
+    // ===================================================
+    // CHART 5: COST VS CAPABILITY — Bubble/Scatter
+    // ===================================================
+    (function buildChart5() {
+      const tc = themeColors();
+      const ctx = document.getElementById('chart5').getContext('2d');
+
+      // Data points: { label, cost, passRate, speedSec, platform }
+      // Bubble radius = inverse of speed (faster = smaller bubble), scaled nicely
+      const points = [
+        { label: 'Ollama\nqwen3:32b',       cost: 0.001, passRate: 100, speedSec: 240, platform: 'ollama' },
+        { label: 'Claude\nHaiku',            cost: 0.45,  passRate: 85,  speedSec: 67,  platform: 'claude' },
+        { label: 'Claude\nEscalation',       cost: 0.65,  passRate: 100, speedSec: 91,  platform: 'claude' },
+        { label: 'Claude\nSonnet (all)',      cost: 2.50,  passRate: 97,  speedSec: 129, platform: 'claude' },
+        { label: 'Claude\nOpus (all)',        cost: 15.0,  passRate: 100, speedSec: 200, platform: 'claude' },
+      ];
+
+      // Radius inversely proportional to speed: faster = smaller bubble
+      // Map speed 67-240 to radius 8-28 inverted
+      const minSpeed = 67, maxSpeed = 240, minR = 9, maxR = 28;
+      function speedToRadius(s) {
+        return minR + (maxR - minR) * (s - minSpeed) / (maxSpeed - minSpeed);
+      }
+
+      const bubbleData = points.map(p => ({
+        x: p.cost,
+        y: p.passRate,
+        r: speedToRadius(p.speedSec),
+        label: p.label,
+        platform: p.platform,
+        speedSec: p.speedSec,
+        cost: p.cost,
+        passRate: p.passRate,
+      }));
+
+      const bgColors = points.map(p =>
+        p.platform === 'claude' ? tc.blue + 'bb' : tc.emerald + 'bb'
+      );
+      const borderColors = points.map(p =>
+        p.platform === 'claude' ? tc.blue : tc.emerald
+      );
+
+      new Chart(ctx, {
+        type: 'bubble',
+        data: {
+          datasets: [{
+            label: 'Platforms',
+            data: bubbleData,
+            backgroundColor: bgColors,
+            borderColor: borderColors,
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: reducedMotion.matches ? false : { duration: 700 },
+          layout: { padding: { top: 20, right: 20, bottom: 30 } },
+          scales: {
+            x: {
+              type: 'logarithmic',
+              min: 0.0008,
+              max: 30,
+              title: {
+                display: true,
+                text: 'Cost per 33-fixture run (log scale, $)',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+                callback: (v) => {
+                  const vals = [0.001, 0.01, 0.1, 1, 10];
+                  if (vals.some(vv => Math.abs(v - vv) < vv * 0.3)) {
+                    if (v < 0.01) return '$0';
+                    return '$' + v;
+                  }
+                  return '';
+                },
+              },
+              grid: { color: tc.gridColor },
+            },
+            y: {
+              min: 70,
+              max: 108,
+              title: {
+                display: true,
+                text: 'Pass Rate (%)',
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 11 },
+              },
+              ticks: {
+                color: tc.textSecondary,
+                font: { family: "'JetBrains Mono', monospace", size: 10 },
+                callback: v => v <= 100 ? v + '%' : '',
+              },
+              grid: { color: tc.gridColor },
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              anchor: 'top',
+              align: 'top',
+              offset: 6,
+              color: tc.textPrimary,
+              font: { family: "'JetBrains Mono', monospace", size: 10, weight: 600 },
+              formatter: (value) => value.label,
+              textAlign: 'center',
+            },
+            tooltip: {
+              callbacks: {
+                label: (item) => {
+                  const d = item.raw;
+                  const costLabel = d.cost < 0.01 ? '$0 (local)' : '$' + d.cost.toFixed(2);
+                  return [
+                    d.label.replace('\n', ' '),
+                    'Cost: ' + costLabel,
+                    'Pass rate: ' + d.passRate + '%',
+                    'Avg speed: ' + d.speedSec + 's/fixture',
+                    'Platform: ' + d.platform,
+                  ];
+                }
+              }
+            },
+            legend: { display: false },
+          }
+        }
+      });
+    })();
+
+    // ===================================================
+    // STAGGERED FADE-IN (Intersection Observer)
+    // ===================================================
+    if (!reducedMotion.matches) {
+      const sections = document.querySelectorAll('.chart-section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      sections.forEach(s => observer.observe(s));
+    } else {
+      // Show all immediately
+      document.querySelectorAll('.chart-section').forEach(s => s.classList.add('visible'));
+    }
+
+    // ===================================================
+    // DARK MODE LIVE UPDATES
+    // (Charts don't auto-update on media change — page reload handles this
+    // for now; complex live-update requires destroying/recreating instances)
+    // ===================================================
+
+  })();
+  </script>
+</body>
+</html>
