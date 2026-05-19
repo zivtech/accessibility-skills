@@ -6,7 +6,7 @@ Accessibility skill bundle for [Claude Code](https://claude.ai/code) — plan, t
 npx skills add zivtech/a11y-meta-skills
 ```
 
-**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)**
+**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
 
 This bundle packages four companion skills that cover the full accessibility development lifecycle:
 

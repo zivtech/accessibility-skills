@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a11y-meta-skills — Project Recap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Fragment+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'Fragment Mono', 'SF Mono', Consolas, monospace;
+
+  --bg: #f6f4f0;
+  --surface: #ffffff;
+  --surface2: #edeae4;
+  --surface-elevated: #fffcf7;
+  --surface-recessed: #f0ede7;
+  --border: rgba(0, 0, 0, 0.07);
+  --border-bright: rgba(0, 0, 0, 0.14);
+  --text: #1c1a16;
+  --text-dim: #7a7468;
+
+  --blue: #1e3a5f;
+  --blue-dim: rgba(30, 58, 95, 0.08);
+  --gold: #d4a73a;
+  --gold-dim: rgba(212, 167, 58, 0.10);
+  --green: #2d6a4f;
+  --green-dim: rgba(45, 106, 79, 0.08);
+  --red: #9b2226;
+  --red-dim: rgba(155, 34, 38, 0.08);
+  --amber: #b45309;
+  --amber-dim: rgba(180, 83, 9, 0.08);
+  --teal: #0f766e;
+  --teal-dim: rgba(15, 118, 110, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141210;
+    --surface: #1e1c19;
+    --surface2: #28261f;
+    --surface-elevated: #2a2720;
+    --surface-recessed: #171512;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-bright: rgba(255, 255, 255, 0.12);
+    --text: #e8e2d8;
+    --text-dim: #9a9285;
+
+    --blue: #6ba3d6;
+    --blue-dim: rgba(107, 163, 214, 0.12);
+    --gold: #f0ca5e;
+    --gold-dim: rgba(240, 202, 94, 0.12);
+    --green: #52b788;
+    --green-dim: rgba(82, 183, 136, 0.10);
+    --red: #e5737a;
+    --red-dim: rgba(229, 115, 122, 0.10);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251, 191, 36, 0.10);
+    --teal: #5eead4;
+    --teal-dim: rgba(94, 234, 212, 0.10);
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  background-image:
+    radial-gradient(at 25% 10%, var(--gold-dim) 0%, transparent 50%),
+    radial-gradient(at 75% 80%, var(--blue-dim) 0%, transparent 50%);
+  color: var(--text);
+  padding: 40px;
+  line-height: 1.5;
+}
+
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 0 40px;
+}
+
+.main { min-width: 0; }
+
+/* ── TOC ── */
+.toc {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  padding: 14px 0;
+  grid-row: 1 / -1;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+}
+.toc::-webkit-scrollbar { width: 3px; }
+.toc::-webkit-scrollbar-thumb { background: var(--surface-elevated); border-radius: 2px; }
+.toc-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  padding: 0 0 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.toc a {
+  display: block;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.4;
+  margin-bottom: 1px;
+}
+.toc a:hover { color: var(--text); background: var(--surface2); }
+.toc a.active { color: var(--text); border-left-color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  margin-bottom: 48px;
+}
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+.hero-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.kpi {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  animation: fadeScale 0.5s ease both;
+}
+.kpi:nth-child(1) { animation-delay: 0.1s; }
+.kpi:nth-child(2) { animation-delay: 0.2s; }
+.kpi:nth-child(3) { animation-delay: 0.3s; }
+.kpi:nth-child(4) { animation-delay: 0.4s; }
+.kpi-num {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+}
+
+/* ── SECTION HEADS ── */
+.sec-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin: 48px 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 24px;
+}
+.sec-head .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ── CARDS ── */
+.ve-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  position: relative;
+  animation: fadeUp 0.4s ease both;
+}
+.ve-card--elevated {
+  background: var(--surface-elevated);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.ve-card--recessed {
+  background: var(--surface-recessed);
+}
+.ve-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.ve-card p, .ve-card li {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.ve-card code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── SKILL GRID ── */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.skill-card {
+  border-left: 3px solid var(--blue);
+  padding-left: 16px;
+}
+.skill-card.planner { border-left-color: var(--green); }
+.skill-card.tester { border-left-color: var(--amber); }
+.skill-card.auditor { border-left-color: var(--teal); }
+.skill-type {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.skill-type.critic { color: var(--blue); }
+.skill-type.planner { color: var(--green); }
+.skill-type.tester { color: var(--amber); }
+.skill-type.auditor { color: var(--teal); }
+
+/* ── LIFECYCLE FLOW ── */
+.lifecycle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.lifecycle-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+.lifecycle-step.active {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.lifecycle-step.escalate {
+  background: var(--teal-dim);
+  border-color: var(--teal);
+  color: var(--teal);
+  font-size: 10px;
+}
+.lifecycle-arrow {
+  color: var(--text-dim);
+  font-size: 16px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── EVAL SUITE ── */
+.suite-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.suite-card {
+  text-align: center;
+  padding: 24px;
+}
+.suite-num {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.suite-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.suite-breakdown {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 11px;
+}
+.suite-tag {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* ── BENCHMARK TABLE ── */
+.bench-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+.bench-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border-bright);
+  white-space: nowrap;
+}
+.bench-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.bench-table tr:hover td {
+  background: var(--surface2);
+}
+.bench-table .num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+.badge--pass { background: var(--green-dim); color: var(--green); }
+.badge--fail { background: var(--red-dim); color: var(--red); }
+.badge--warn { background: var(--amber-dim); color: var(--amber); }
+.badge--info { background: var(--blue-dim); color: var(--blue); }
+.badge--pilot { background: var(--teal-dim); color: var(--teal); }
+
+/* ── ESCALATION FLOW ── */
+.escalation {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 20px 0;
+}
+.esc-tier {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  position: relative;
+}
+.esc-tier:first-child { border-radius: 10px 0 0 10px; }
+.esc-tier:last-child { border-radius: 0 10px 10px 0; }
+.esc-tier.winner { background: var(--green-dim); border-color: var(--green); }
+.esc-name {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.esc-stat {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+}
+.esc-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.esc-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  color: var(--text-dim);
+  font-size: 18px;
+}
+
+/* ── TEAM GRID ── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.team-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.team-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  font-weight: 800;
+  color: #fff;
+}
+.team-icon.runner { background: var(--blue); }
+.team-icon.reporter { background: var(--green); }
+.team-icon.reviewer { background: var(--amber); }
+.team-icon.builder { background: var(--teal); }
+.team-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ── NEXT STEPS ── */
+.next-list {
+  list-style: none;
+  padding: 0;
+}
+.next-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.next-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--border-bright);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-top: 1px;
+}
+.next-check.done {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1000px) {
+  body { padding: 20px; }
+  .wrap { grid-template-columns: 1fr; padding-top: 0; }
+
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    max-height: none;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    grid-row: auto;
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc-title { display: none; }
+  .toc a {
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 4px 4px 0 0;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+  .toc a.active { border-left: none; border-bottom-color: var(--gold); background: var(--surface); }
+  .main { padding-top: 20px; }
+  .sec-head { scroll-margin-top: 52px; }
+
+  .hero h1 { font-size: 28px; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .skill-grid { grid-template-columns: 1fr 1fr; }
+  .suite-row { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .escalation { flex-direction: column; }
+  .esc-tier:first-child { border-radius: 10px 10px 0 0; }
+  .esc-tier:last-child { border-radius: 0 0 10px 10px; }
+  .esc-arrow { justify-content: center; transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="toc" id="toc">
+  <div class="toc-title">Sections</div>
+  <a href="#s1">Skills</a>
+  <a href="#s2">Lifecycle</a>
+  <a href="#s3">Eval Suite</a>
+  <a href="#s4">Benchmarks</a>
+  <a href="#s5">Escalation</a>
+  <a href="#s6">Cross-Platform</a>
+  <a href="#s7">Team</a>
+  <a href="#s8">Next Steps</a>
+</nav>
+
+<div class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-date">2026-05-19 &mdash; a11y-meta-skills</div>
+  <h1>Accessibility Skill Bundle</h1>
+  <p class="hero-sub">Planner, critic, tester, and perspective auditor &mdash; with 83 graded fixtures, 10 benchmarked models, and a team of 6 agents.</p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-num" style="color: var(--blue);">4</div>
+      <div class="kpi-label">Skills</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num" style="color: var(--gold);">83</div>
+      <div class="kpi-label">Fixtures</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num" style="color: var(--green);">10</div>
+      <div class="kpi-label">Models Tested</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num" style="color: var(--teal);">6</div>
+      <div class="kpi-label">Agents</div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div id="s1" class="sec-head"><span class="dot" style="background: var(--blue);"></span>1 &mdash; Skills</div>
+
+<div class="skill-grid">
+  <div class="ve-card skill-card">
+    <div class="skill-type critic">Critic</div>
+    <h3>a11y-critic</h3>
+    <p>11-phase investigation protocol. Reviews ARIA patterns, focus management, state communication. Read-only.</p>
+  </div>
+  <div class="ve-card skill-card planner">
+    <div class="skill-type planner">Planner</div>
+    <h3>a11y-planner</h3>
+    <p>9-phase planning protocol. Maps to WAI-ARIA APG patterns, designs keyboard models, focus management.</p>
+  </div>
+  <div class="ve-card skill-card tester">
+    <div class="skill-type tester">Tester</div>
+    <h3>a11y-test</h3>
+    <p>Playwright keyboard tests, axe-core scans, WCAG 2.2 compliance. Real browser events, not synthetic.</p>
+  </div>
+  <div class="ve-card skill-card auditor">
+    <div class="skill-type auditor">Auditor</div>
+    <h3>perspective-audit</h3>
+    <p>7 access perspectives: screen reader, keyboard, low vision, cognitive, vestibular, auditory, environmental.</p>
+  </div>
+</div>
+
+<!-- LIFECYCLE -->
+<div id="s2" class="sec-head"><span class="dot" style="background: var(--green);"></span>2 &mdash; Lifecycle</div>
+
+<div class="ve-card ve-card--elevated">
+  <div class="lifecycle">
+    <div class="lifecycle-step active">Plan</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Critique Plan</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step escalate">[Perspective]</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Revise</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Implement</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step active">Test</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Critique Impl</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step escalate">[Perspective]</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Fix</div>
+    <div class="lifecycle-arrow">&rarr;</div>
+    <div class="lifecycle-step">Re-test</div>
+  </div>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">The critic serves at two checkpoints. Perspective-audit is escalated only when the planner or critic flags MEDIUM/HIGH alarm on specific access perspectives.</p>
+</div>
+
+<!-- EVAL SUITE -->
+<div id="s3" class="sec-head"><span class="dot" style="background: var(--gold);"></span>3 &mdash; Eval Suite</div>
+
+<div class="suite-row">
+  <div class="ve-card ve-card--elevated suite-card" style="animation-delay: 0.1s;">
+    <div class="suite-num" style="color: var(--blue);">33</div>
+    <div class="suite-label">Critic Fixtures</div>
+    <div class="suite-breakdown">
+      <span class="suite-tag" style="background: var(--green-dim); color: var(--green);">4 CLEAN</span>
+      <span class="suite-tag" style="background: var(--blue-dim); color: var(--blue);">21 HAS-BUGS</span>
+      <span class="suite-tag" style="background: var(--amber-dim); color: var(--amber);">5 FLAWED</span>
+      <span class="suite-tag" style="background: var(--red-dim); color: var(--red);">3 ADVERSARIAL</span>
+    </div>
+  </div>
+  <div class="ve-card ve-card--elevated suite-card" style="animation-delay: 0.2s;">
+    <div class="suite-num" style="color: var(--green);">25</div>
+    <div class="suite-label">Planner Fixtures</div>
+    <div class="suite-breakdown">
+      <span class="suite-tag" style="background: var(--blue-dim); color: var(--blue);">5 ARIA</span>
+      <span class="suite-tag" style="background: var(--green-dim); color: var(--green);">5 Keyboard</span>
+      <span class="suite-tag" style="background: var(--teal-dim); color: var(--teal);">15 Domain</span>
+    </div>
+  </div>
+  <div class="ve-card ve-card--elevated suite-card" style="animation-delay: 0.3s;">
+    <div class="suite-num" style="color: var(--teal);">25</div>
+    <div class="suite-label">Perspective Fixtures</div>
+    <div class="suite-breakdown">
+      <span class="suite-tag" style="background: var(--blue-dim); color: var(--blue);">16 HAS-BUGS</span>
+      <span class="suite-tag" style="background: var(--green-dim); color: var(--green);">5 CLEAN</span>
+      <span class="suite-tag" style="background: var(--amber-dim); color: var(--amber);">4 ADVERSARIAL</span>
+    </div>
+  </div>
+</div>
+
+<!-- BENCHMARKS -->
+<div id="s4" class="sec-head"><span class="dot" style="background: var(--amber);"></span>4 &mdash; Benchmark Results</div>
+
+<div class="ve-card" style="overflow-x: auto;">
+  <h3 style="margin-bottom: 16px;">Critic: All Models Compared (33 fixtures)</h3>
+  <table class="bench-table">
+    <thead>
+      <tr>
+        <th>Platform</th>
+        <th>Model</th>
+        <th>Fixtures</th>
+        <th class="num">Pass</th>
+        <th class="num">Must-find</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Claude</td>
+        <td><strong>Haiku 4.5</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>28</strong>/33</td>
+        <td class="num">100%</td>
+        <td><span class="badge badge--pass">85% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Claude</td>
+        <td>Sonnet 4.6</td>
+        <td class="num">5 (esc)</td>
+        <td class="num">4/5</td>
+        <td class="num">n/a</td>
+        <td><span class="badge badge--pass">80% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Claude</td>
+        <td>Sonnet 4.6 + think</td>
+        <td class="num">1 (esc)</td>
+        <td class="num">1/1</td>
+        <td class="num">n/a</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr style="border-top: 2px solid var(--border-bright);">
+        <td>Ollama</td>
+        <td><strong>qwen3:32b</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>33</strong>/33</td>
+        <td class="num">96%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td>qwen3.5:27b</td>
+        <td class="num">17</td>
+        <td class="num">16/17</td>
+        <td class="num">100%</td>
+        <td><span class="badge badge--warn">94% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td>llama3.3:70b</td>
+        <td class="num">7</td>
+        <td class="num">7/7</td>
+        <td class="num">86%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td>qwen3.5:latest</td>
+        <td class="num">7</td>
+        <td class="num">7/7</td>
+        <td class="num">86%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr style="border-top: 2px solid var(--border-bright);">
+        <td>OpenAI</td>
+        <td>GPT-5.2</td>
+        <td class="num">1</td>
+        <td class="num">1/1</td>
+        <td class="num">100%</td>
+        <td><span class="badge badge--pilot">PILOT</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ve-card" style="margin-top: 16px; overflow-x: auto;">
+  <h3 style="margin-bottom: 16px;">Perspective-Audit: qwen3:32b (25 fixtures)</h3>
+  <table class="bench-table">
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th class="num">Fixtures</th>
+        <th class="num">Pass</th>
+        <th class="num">Warn</th>
+        <th class="num">Fail</th>
+        <th class="num">Must-find</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>HAS-BUGS</td>
+        <td class="num">16</td>
+        <td class="num"><strong>16</strong></td>
+        <td class="num">0</td>
+        <td class="num">0</td>
+        <td class="num">100%</td>
+      </tr>
+      <tr>
+        <td>ADVERSARIAL</td>
+        <td class="num">4</td>
+        <td class="num"><strong>4</strong></td>
+        <td class="num">0</td>
+        <td class="num">0</td>
+        <td class="num">100%</td>
+      </tr>
+      <tr>
+        <td>CLEAN</td>
+        <td class="num">5</td>
+        <td class="num">0</td>
+        <td class="num">4</td>
+        <td class="num">1</td>
+        <td class="num">n/a</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ESCALATION -->
+<div id="s5" class="sec-head"><span class="dot" style="background: var(--red);"></span>5 &mdash; Claude Escalation Strategy</div>
+
+<div class="ve-card ve-card--elevated">
+  <h3>Bottom-up: Cheapest tier that passes all 33 fixtures</h3>
+  <div class="escalation" style="margin-top: 20px;">
+    <div class="esc-tier" style="background: var(--surface);">
+      <div class="esc-name">Haiku 4.5</div>
+      <div class="esc-stat" style="color: var(--blue);">85%</div>
+      <div class="esc-detail">28/33 pass &middot; ~$0.45</div>
+      <div class="esc-detail">5 failures: 2 CLEAN + 3 ADV</div>
+    </div>
+    <div class="esc-arrow">&rarr;</div>
+    <div class="esc-tier" style="background: var(--surface);">
+      <div class="esc-name">Sonnet 4.6</div>
+      <div class="esc-stat" style="color: var(--green);">97%</div>
+      <div class="esc-detail">4/5 escalated pass &middot; +$0.18</div>
+      <div class="esc-detail">1 remaining: modal-complete-clean</div>
+    </div>
+    <div class="esc-arrow">&rarr;</div>
+    <div class="esc-tier winner">
+      <div class="esc-name">Sonnet + think</div>
+      <div class="esc-stat" style="color: var(--green);">100%</div>
+      <div class="esc-detail">1/1 escalated pass &middot; +$0.02</div>
+      <div class="esc-detail">Total cost: ~$0.65</div>
+    </div>
+  </div>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: 16px;"><strong>Key finding:</strong> Haiku catches every real bug (21/21 HAS-BUGS, 5/5 FLAWED). Failures are judgment calls &mdash; false positives on CLEAN code, wrong verdicts on ADVERSARIAL ambiguity. Detection is not the issue; calibration is.</p>
+</div>
+
+<!-- CROSS-PLATFORM -->
+<div id="s6" class="sec-head"><span class="dot" style="background: var(--teal);"></span>6 &mdash; Cross-Platform</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+  <div class="ve-card ve-card--elevated" style="text-align: center;">
+    <h3 style="color: var(--blue);">Ollama (Local)</h3>
+    <p style="margin: 8px 0;"><strong>qwen3:32b</strong> recommended</p>
+    <p>33/33 PASS, 96% must-find, 0% false positives. 18.8 GB, ~4 min/fixture.</p>
+    <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
+  </div>
+  <div class="ve-card ve-card--elevated" style="text-align: center;">
+    <h3 style="color: var(--green);">Claude API</h3>
+    <p style="margin: 8px 0;"><strong>Haiku + Sonnet escalation</strong></p>
+    <p>100% pass via escalation. ~$0.65 for full suite. 67s avg per fixture.</p>
+    <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
+  </div>
+  <div class="ve-card" style="text-align: center;">
+    <h3 style="color: var(--teal);">Codex / OpenAI</h3>
+    <p style="margin: 8px 0;"><strong>GPT-5.2 &mdash; 5.5</strong></p>
+    <p>Runner built. 1 pilot fixture passed (GPT-5.2). Full escalation pending.</p>
+    <div style="margin-top: 8px;"><span class="badge badge--pilot">PENDING</span></div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div id="s7" class="sec-head"><span class="dot" style="background: var(--green);"></span>7 &mdash; Team Structure</div>
+
+<div class="team-grid">
+  <div class="ve-card">
+    <div class="team-card">
+      <div class="team-icon runner">R</div>
+      <div>
+        <h3>bench-runner</h3>
+        <p>Executes benchmarks (Claude API, Ollama), runs scoring scripts, reports raw results.</p>
+        <div class="team-meta">sonnet &middot; Bash, Read</div>
+      </div>
+    </div>
+  </div>
+  <div class="ve-card">
+    <div class="team-card">
+      <div class="team-icon reporter">W</div>
+      <div>
+        <h3>bench-reporter</h3>
+        <p>Updates BENCHMARK.md, README.md, and EVAL-GAPS-PLAN.md with results and analysis.</p>
+        <div class="team-meta">sonnet &middot; all tools</div>
+      </div>
+    </div>
+  </div>
+  <div class="ve-card">
+    <div class="team-card">
+      <div class="team-icon reviewer">Q</div>
+      <div>
+        <h3>bench-reviewer</h3>
+        <p>Read-only quality auditor. Checks fixture/rubric consistency, scoring accuracy, result validity.</p>
+        <div class="team-meta">sonnet &middot; read-only</div>
+      </div>
+    </div>
+  </div>
+  <div class="ve-card">
+    <div class="team-card">
+      <div class="team-icon builder">B</div>
+      <div>
+        <h3>fixture-builder</h3>
+        <p>Creates and enriches fixture triplets (.md, .metadata.yaml, .rubric.yaml) across all 3 suites.</p>
+        <div class="team-meta">sonnet &middot; all tools</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div id="s8" class="sec-head"><span class="dot" style="background: var(--gold);"></span>8 &mdash; What's Next</div>
+
+<div class="ve-card">
+  <ul class="next-list">
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Eval suite complete</strong> &mdash; 83 fixtures across 3 suites, all with rubrics</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Ollama benchmarks</strong> &mdash; qwen3:32b 33/33 PASS, perspective 20P/4W/1F</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Claude escalation</strong> &mdash; Haiku 85%, full pass at Sonnet+think, ~$0.65 total</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Team agents</strong> &mdash; 4 bench agents defined (runner, reporter, reviewer, builder)</div>
+    </li>
+    <li>
+      <div class="next-check"></div>
+      <div><strong>Codex/OpenAI benchmark</strong> &mdash; Run <code>bash ollama/codex-benchmark.sh</code> from Codex for GPT-5.2&ndash;5.5 escalation</div>
+    </li>
+    <li>
+      <div class="next-check"></div>
+      <div><strong>Claude perspective-audit escalation</strong> &mdash; Run <code>claude-escalate --skill perspective</code> for 25 perspective fixtures</div>
+    </li>
+    <li>
+      <div class="next-check"></div>
+      <div><strong>Planner benchmarks</strong> &mdash; Only 2 of 25 planner fixtures benchmarked via Ollama. Cloud baselines TBD.</div>
+    </li>
+  </ul>
+</div>
+
+</div><!-- /main -->
+</div><!-- /wrap -->
+
+<script>
+(function() {
+  const toc = document.getElementById('toc');
+  const links = toc.querySelectorAll('a');
+  const sections = [];
+  links.forEach(link => {
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ id, el, link });
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = sections.find(s => s.el === entry.target);
+        if (match) {
+          match.link.classList.add('active');
+          if (window.innerWidth <= 1000) {
+            match.link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s.el));
+})();
+</script>
+</body>
+</html>
