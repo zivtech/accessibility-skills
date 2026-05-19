@@ -290,9 +290,9 @@ Phase 4A: Run critic benchmarks (26 fixtures) ........... ✅ DONE (2026-05-15, 
 Phase 4C: Run perspective benchmarks (18 fixtures) ...... ✅ DONE (2026-05-16, 20 PASS / 4 WARN / 1 FAIL)
 Phase 4D: Test qwen3.5:latest on perspective-audit ...... ✅ DONE (2026-05-17, NOT VIABLE — 50% empty responses)
 Phase 5:  Claude baseline (optional) .................... ✅ DONE (2026-05-18, Haiku 85%, escalation to Sonnet-think 100%)
-Phase 6:  Cross-platform (Codex/OpenAI) ................. Runner built, pending user run
+Phase 6:  Cross-platform (Codex/OpenAI) ................. ✅ DONE (2026-05-19, GPT-5.2 91%, escalation to 5.5-low 100%)
                                                   Total: ~29 hours
-                                              Remaining: ~1 hour (Codex escalation, user-driven)
+                                              Remaining: 0 (all phases complete)
 ```
 
 **Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
@@ -306,7 +306,7 @@ Phase 6:  Cross-platform (Codex/OpenAI) ................. Runner built, pending 
 5. ~~**Session E (part 1)** — Phase 4A (full critic benchmark). 8 hours Ollama, 26/26 PASS.~~ ✅ Complete
 6. ~~**Session E (part 2)** — Phase 4C complete (20P/4W/1F). BENCHMARK.md updated. Fixture/rubric fixes for CLEAN scope.~~ ✅ Complete
 7. ~~**Session F** — Phase 4D + Phase 5 (Claude baseline).~~ ✅ Complete (2026-05-18)
-8. **Session G** — Phase 6 (Codex/OpenAI). User runs `bash ollama/codex-benchmark.sh` from Codex.
+8. ~~**Session G** — Phase 6 (Codex/OpenAI). `bash ollama/codex-benchmark.sh` from Codex.~~ ✅ Complete (2026-05-19)
 
 ---
 

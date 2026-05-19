@@ -95,7 +95,6 @@ CLAUDE_TIERS = [
 CODEX_TIERS = [
     {"name": "5.2", "model": "gpt-5.2", "effort": None, "label": "GPT-5.2"},
     {"name": "5.2-low", "model": "gpt-5.2", "effort": "low", "label": "GPT-5.2 (low)"},
-    {"name": "5.3", "model": "gpt-5.3", "effort": None, "label": "GPT-5.3"},
     {"name": "5.5", "model": "gpt-5.5", "effort": None, "label": "GPT-5.5"},
     {"name": "5.5-low", "model": "gpt-5.5", "effort": "low", "label": "GPT-5.5 (low)"},
 ]
@@ -537,12 +536,14 @@ def run_escalation(platform, skill="critic"):
             run_fn(tier, fixture_id)
 
         failed, not_run = get_failed_fixtures(platform, tier["name"], skill)
-        passed = len(all_fixtures) - len(failed) - len(not_run)
+        # Only count fixtures that were actually in this tier's scope
+        ran_this_tier = [f for f in remaining if f not in not_run]
+        passed = len(ran_this_tier) - len([f for f in failed if f in remaining])
 
         tier_results.append({
             "tier": tier["name"],
             "label": tier["label"],
-            "ran": len(remaining),
+            "ran": len(ran_this_tier),
             "passed": passed,
             "failed": len(failed),
             "not_run": len(not_run),
@@ -551,7 +552,8 @@ def run_escalation(platform, skill="critic"):
         print(f"\n{'─' * 60}")
         print(f"Tier {tier['label']}: {passed} PASS / {len(failed)} FAIL / {len(not_run)} NOT_RUN")
 
-        remaining = failed
+        # Escalate both failures AND not-run (model didn't exist, API error, etc.)
+        remaining = failed + [f for f in not_run if f in remaining]
         if not remaining:
             print(f"\nAll fixtures passed at {tier['label']} tier!")
             break

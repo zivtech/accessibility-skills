@@ -772,11 +772,54 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 
 ## Phase 6: Cross-Platform Benchmark (Codex/OpenAI)
 
-**Status**: Runner built (`run_cloud_benchmark.py`), entry point for Codex (`codex-benchmark.sh`).
-**Tiers**: GPT-5.2 → GPT-5.2 (low effort) → GPT-5.3 → GPT-5.5 → GPT-5.5 (low effort)
-**Method**: Same bottom-up escalation as Claude. Run from Codex via `bash ollama/codex-benchmark.sh`.
+**Date**: 2026-05-19
+**Protocol**: Codex CLI (`codex exec`) via `run_cloud_benchmark.py`, same SKILL.md prompt, read-only sandbox.
+**Fixtures**: All 33 critic fixtures.
+**Method**: Bottom-up escalation via `bash ollama/codex-benchmark.sh`. GPT-5.3 does not exist in Codex — escalation skipped from 5.2-low directly to 5.5.
 
-Pilot result: GPT-5.2 passed `form-validation-missing-aria-describedby` (2/2 must-find, correct REVISE verdict). Full escalation run pending.
+#### Escalation Results
+
+| Tier | Fixtures Run | PASS | WARN | FAIL | Time |
+|------|-------------|------|------|------|------|
+| **GPT-5.2** | 33 | 30 | 2 | 1 | 22 min (41s avg) |
+| **GPT-5.2 (low)** | 3 | 1 | 2 | 0 | 1.5 min (31s avg) |
+| **GPT-5.5** | 2 | 1 | 0 | 1 | 1 min (32s avg) |
+| **GPT-5.5 (low)** | 1 | 1 | 0 | 0 | 34s |
+
+**Cheapest path to 100% pass:**
+- GPT-5.2 handles 30/33 (91%)
+- GPT-5.2 (low effort) clears `button-skip-link-clean`
+- GPT-5.5 clears `modal-complete-clean`
+- GPT-5.5 (low effort) clears `search-results-dynamic-clean`
+
+#### Failure Cascade
+
+| Fixture | Difficulty | GPT-5.2 | 5.2-low | 5.5 | 5.5-low |
+|---------|-----------|---------|---------|-----|---------|
+| button-skip-link-clean | CLEAN | WARN | **PASS** | — | — |
+| modal-complete-clean | CLEAN | WARN | WARN | **PASS** | — |
+| search-results-dynamic-clean | CLEAN | FAIL | WARN | FAIL | **PASS** |
+
+**Pattern**: Identical to Claude — all HAS-BUGS (21/21), FLAWED (5/5), and ADVERSARIAL (3/3) pass at the cheapest tier. Only CLEAN fixtures cause failures (false positives or raised findings on clean code). Bug detection is solved across both platforms; false positive suppression requires larger models or lower effort settings.
+
+#### GPT-5.2 vs Claude Haiku Comparison
+
+| Metric | GPT-5.2 | Claude Haiku 4.5 |
+|--------|---------|-----------------|
+| Fixtures at base tier | 33 | 33 |
+| PASS at base tier | 30 (91%) | 28 (85%) |
+| All HAS-BUGS pass? | Yes (21/21) | Yes (21/21) |
+| All FLAWED pass? | Yes (5/5) | Yes (5/5) |
+| All ADVERSARIAL pass? | **Yes (3/3)** | No (0/3) |
+| CLEAN failures | 3 (all WARN/FAIL) | 2 (1 FAIL, 1 WARN) |
+| Avg time/fixture | 41s | 67s |
+| Total cost (33 fix) | included in Codex sub | ~$0.45 |
+
+GPT-5.2 outperforms Haiku on ADVERSARIAL fixtures (3/3 vs 0/3) — it calibrates verdicts on genuinely ambiguous tradeoffs. Haiku beats GPT-5.2 on CLEAN fixture count (2 failures vs 3). Both achieve 100% must-find detection on all HAS-BUGS and FLAWED fixtures.
+
+#### Bug in escalation script (fixed)
+
+The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec` to fail with rc=1. The escalation script incorrectly counted the failed tier as 100% pass because `not_run` fixtures weren't treated as failures to escalate. Fixed in `run_cloud_benchmark.py`: `not_run` fixtures now escalate alongside failures, and GPT-5.3 has been removed from the tier list.
 
 ---
 
@@ -799,4 +842,4 @@ Pilot result: GPT-5.2 passed `form-validation-missing-aria-describedby` (2/2 mus
 - [x] ~~Establish Claude baseline (7 core fixtures)~~ — **All 3 tiers: 7/7 PASS, 100% must-find, 0% FP**
 - [x] ~~Phase 5B: Full Claude escalation (33 fixtures)~~ — **Haiku 85%, Sonnet resolves 4/5, Sonnet-think 100%**
 - [ ] Run deepseek-r1:70b on remaining critic fixtures (optional)
-- [ ] Phase 6: Codex/OpenAI escalation benchmark (33 fixtures via `codex-benchmark.sh`)
+- [x] ~~Phase 6: Codex/OpenAI escalation (33 fixtures)~~ — **GPT-5.2 91%, full pass at 5.5-low. 3/3 ADVERSARIAL pass (better than Haiku)**

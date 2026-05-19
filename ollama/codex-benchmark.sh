@@ -7,7 +7,7 @@
 #   bash ollama/codex-benchmark.sh all 5.2            # All 33 fixtures, one tier
 #   bash ollama/codex-benchmark.sh score              # Score all Codex results
 #
-# Tiers: 5.2, 5.2-low, 5.3, 5.5, 5.5-low
+# Tiers: 5.2, 5.2-low, 5.5, 5.5-low
 
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel 2>/dev/null || echo "$(dirname "$0")/..")"

@@ -39,9 +39,14 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 | qwen3.5:latest | 6.6 GB | Fast critic-only | 86% must-find (7 fixtures), 3-6x faster. **NOT viable for perspective-audit** (context exhaustion — 50% empty responses). |
 | deepseek-r1:70b | 42.5 GB | Preliminary | n=1 fixture only, not fully benchmarked. |
 
-### Claude Cloud Baselines (for comparison)
+### Cloud Baselines (Claude + OpenAI)
 
-Full 33-fixture escalation benchmark (2026-05-18): Haiku 85% pass (all HAS-BUGS + FLAWED perfect), Sonnet resolves 4/5 failures, Sonnet+thinking 100%. Total cost: ~$0.65 for all 33 fixtures.
+All three platforms benchmarked on 33 critic fixtures with bottom-up escalation:
+- **Claude**: Haiku 85% → Sonnet+thinking 100%. Cost: ~$0.65.
+- **OpenAI**: GPT-5.2 91% → GPT-5.5-low 100%. Included in Codex subscription.
+- **Ollama**: qwen3:32b 100%. Free, local.
+
+All platforms achieve 100% on HAS-BUGS and FLAWED fixtures. Failures are CLEAN (false positives) and ADVERSARIAL (verdict calibration). GPT-5.2 outperforms Haiku on ADVERSARIAL (3/3 vs 0/3).
 
 See [BENCHMARK.md](BENCHMARK.md) for full results.
 
@@ -51,14 +56,17 @@ See [BENCHMARK.md](BENCHMARK.md) for full results.
 
 | Model | Fixtures | HAS-BUGS must-find | CLEAN FP | Overall |
 |-------|----------|-------------------|----------|---------|
-| Claude Haiku 4.5 | **33** | **100%** | 1 FP | **28/33 PASS** |
+| **GPT-5.2** | **33** | **100%** | 3 CLEAN | **30/33 PASS** |
+| Claude Haiku 4.5 | **33** | **100%** | 2 CLEAN | **28/33 PASS** |
 | Claude Sonnet 4.6 | 5 (escalated) | n/a | 0% | 4/5 PASS |
 | Claude Sonnet 4.6 + think | 1 (escalated) | n/a | 0% | 1/1 PASS |
+| GPT-5.2 (low) | 3 (escalated) | n/a | 0% | 1/3 PASS |
+| GPT-5.5 | 2 (escalated) | n/a | 0% | 1/2 PASS |
+| GPT-5.5 (low) | 1 (escalated) | n/a | 0% | 1/1 PASS |
 | qwen3.5:27b | 17* | **100%** | 0%† | 16/17 PASS |
 | qwen3:32b | 33 | 96% | 0% | 33/33 PASS |
 | llama3.3:70b | 7 | 86% | 0% | 7/7 PASS |
 | qwen3.5:latest | 7 | 86% | 0% | 7/7 PASS |
-| GPT-5.2 (pilot) | 1 | 100% | — | 1/1 PASS |
 
 *Run stopped at 17/33 due to `/think` stalls. †1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive.*
 
