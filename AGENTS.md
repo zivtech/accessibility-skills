@@ -20,3 +20,16 @@ plan → critique plan → [perspective audit] → revise → implement → test
 - `perspective-audit` provides deep review from 7 access perspectives when escalated by the planner or critic (steps 2b and 6b).
 - `a11y-test` runs automated Playwright keyboard tests and axe-core scans (step 5).
 - All four skills are shipped from this repository.
+
+## Benchmark Team Agents
+
+Agents for running, scoring, documenting, and maintaining the eval suite.
+
+| Agent | Type | Model | Tools | Job |
+|-------|------|-------|-------|-----|
+| bench-runner | executor | sonnet | Bash, Read | Execute benchmarks (Claude API, Ollama), run scoring scripts |
+| bench-reporter | writer | sonnet | all | Update BENCHMARK.md, README.md, EVAL-GAPS-PLAN.md with results |
+| bench-reviewer | reviewer | sonnet | read-only | Audit fixture/rubric quality, verify scoring accuracy |
+| fixture-builder | builder | sonnet | all | Create/enrich fixture triplets (.md, .metadata.yaml, .rubric.yaml) |
+
+See `.claude/teams/README.md` for team workflows.
