@@ -289,9 +289,10 @@ Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ✅ DONE (2026-05-15, 
 Phase 4A: Run critic benchmarks (26 fixtures) ........... ✅ DONE (2026-05-15, 26/26 PASS, 97% must-find)
 Phase 4C: Run perspective benchmarks (18 fixtures) ...... ✅ DONE (2026-05-16, 20 PASS / 4 WARN / 1 FAIL)
 Phase 4D: Test qwen3.5:latest on perspective-audit ...... ✅ DONE (2026-05-17, NOT VIABLE — 50% empty responses)
-Phase 5:  Claude baseline (optional) .................... ~1 hour
+Phase 5:  Claude baseline (optional) .................... ✅ DONE (2026-05-18, Haiku 85%, escalation to Sonnet-think 100%)
+Phase 6:  Cross-platform (Codex/OpenAI) ................. Runner built, pending user run
                                                   Total: ~29 hours
-                                              Remaining: ~3 hours (0h human + 3h machine)
+                                              Remaining: ~1 hour (Codex escalation, user-driven)
 ```
 
 **Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
@@ -304,7 +305,8 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 4. ~~**Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.~~ ✅ Complete
 5. ~~**Session E (part 1)** — Phase 4A (full critic benchmark). 8 hours Ollama, 26/26 PASS.~~ ✅ Complete
 6. ~~**Session E (part 2)** — Phase 4C complete (20P/4W/1F). BENCHMARK.md updated. Fixture/rubric fixes for CLEAN scope.~~ ✅ Complete
-7. **Session F** — Phase 4D (qwen3.5:latest on perspective-audit) + Phase 5 (optional Claude baseline). ~3 hours.
+7. ~~**Session F** — Phase 4D + Phase 5 (Claude baseline).~~ ✅ Complete (2026-05-18)
+8. **Session G** — Phase 6 (Codex/OpenAI). User runs `bash ollama/codex-benchmark.sh` from Codex.
 
 ---
 
@@ -314,6 +316,6 @@ Phase 5:  Claude baseline (optional) .................... ~1 hour
 - [x] Every `.metadata.yaml` has a matching `.rubric.yaml` (verified 2026-05-15)
 - [x] eval.yaml fixture IDs match actual filenames (25/25 match, verified 2026-05-15)
 - [x] `python3 ollama/run_benchmark.py score-all` runs without errors (verified 2026-05-15)
-- [ ] `python3 ollama/run_benchmark.py score-perspective` runs without errors
+- [x] `python3 ollama/run_benchmark.py score-perspective` runs without errors (verified 2026-05-18, 49 scored: 34P/10W/5F)
 - [x] No fixture has "Feature overview for" as its description (verified 2026-05-15)
 - [x] BENCHMARK.md updated with Phase 4A results (verified 2026-05-15)

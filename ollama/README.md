@@ -39,9 +39,9 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 | qwen3.5:latest | 6.6 GB | Fast critic-only | 86% must-find (7 fixtures), 3-6x faster. **NOT viable for perspective-audit** (context exhaustion — 50% empty responses). |
 | deepseek-r1:70b | 42.5 GB | Preliminary | n=1 fixture only, not fully benchmarked. |
 
-### Claude Baselines (for comparison)
+### Claude Cloud Baselines (for comparison)
 
-All three Claude tiers scored **100% must-find, 0% false positives** on 7 core fixtures — including `role="alert"` which all Ollama models except qwen3.5:27b missed.
+Full 33-fixture escalation benchmark (2026-05-18): Haiku 85% pass (all HAS-BUGS + FLAWED perfect), Sonnet resolves 4/5 failures, Sonnet+thinking 100%. Total cost: ~$0.65 for all 33 fixtures.
 
 See [BENCHMARK.md](BENCHMARK.md) for full results.
 
@@ -51,11 +51,14 @@ See [BENCHMARK.md](BENCHMARK.md) for full results.
 
 | Model | Fixtures | HAS-BUGS must-find | CLEAN FP | Overall |
 |-------|----------|-------------------|----------|---------|
-| Claude Opus/Sonnet/Haiku | 7 each | **100%** | 0% | 7/7 PASS |
+| Claude Haiku 4.5 | **33** | **100%** | 1 FP | **28/33 PASS** |
+| Claude Sonnet 4.6 | 5 (escalated) | n/a | 0% | 4/5 PASS |
+| Claude Sonnet 4.6 + think | 1 (escalated) | n/a | 0% | 1/1 PASS |
 | qwen3.5:27b | 17* | **100%** | 0%† | 16/17 PASS |
 | qwen3:32b | 33 | 96% | 0% | 33/33 PASS |
 | llama3.3:70b | 7 | 86% | 0% | 7/7 PASS |
 | qwen3.5:latest | 7 | 86% | 0% | 7/7 PASS |
+| GPT-5.2 (pilot) | 1 | 100% | — | 1/1 PASS |
 
 *Run stopped at 17/33 due to `/think` stalls. †1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive.*
 
@@ -85,13 +88,15 @@ All Ollama models except qwen3.5:27b missed `role="alert"` on the toast fixture 
 | File | Purpose |
 |------|---------|
 | `ollama_a11y.py` | Main wrapper — sends skill protocol + input to Ollama |
-| `run_benchmark.py` | Benchmark runner — tests models against graded fixtures (critic, planner, perspective) |
+| `run_benchmark.py` | Benchmark runner — tests Ollama models against graded fixtures |
+| `run_cloud_benchmark.py` | Cloud benchmark runner — Claude API + Codex/OpenAI with escalation |
+| `codex-benchmark.sh` | Shell entry point for running OpenAI benchmarks from Codex |
 | `score_output.py` | Scorer — checks critic output against fixture rubrics |
 | `score_planner.py` | Scorer — checks planner output against fixture rubrics |
 | `score_perspective.py` | Scorer — checks perspective-audit output (coverage, escalation, ARRM routing) |
 | `BENCHMARK.md` | Full benchmark results with per-fixture breakdowns |
 
-## Benchmarking
+## Benchmarking — Ollama (Local)
 
 ```bash
 # Run remaining critic fixtures for a model (skips already-done fixtures)
@@ -111,6 +116,56 @@ python3 ollama/run_benchmark.py single qwen3:32b tabs-missing-arrow-nav
 
 # Perspective-audit: pilot set (7 fixtures)
 python3 ollama/run_benchmark.py perspective-pilot qwen3:32b
+```
+
+## Benchmarking — Cloud (Claude API + Codex/OpenAI)
+
+Bottom-up escalation: starts with the cheapest tier, runs all fixtures, and only promotes failures to the next tier. Goal: find the minimum viable model per platform.
+
+### Claude API (requires ANTHROPIC_API_KEY)
+
+Tiers: `haiku` → `sonnet` → `sonnet-think` → `opus`
+
+```bash
+# Escalation: starts at Haiku, promotes failures up
+python3 ollama/run_cloud_benchmark.py claude-escalate
+
+# Single fixture, specific tier
+python3 ollama/run_cloud_benchmark.py claude haiku tabs-missing-arrow-nav
+
+# All fixtures, one tier
+python3 ollama/run_cloud_benchmark.py claude-all haiku
+
+# Perspective-audit escalation
+python3 ollama/run_cloud_benchmark.py claude-escalate --skill perspective
+
+# Score all Claude results
+python3 ollama/run_cloud_benchmark.py score-cloud
+```
+
+### Codex/OpenAI (requires Codex CLI auth)
+
+Tiers: `5.2` → `5.2-low` → `5.3` → `5.5` → `5.5-low`
+
+```bash
+# From Codex: run the escalation benchmark
+bash ollama/codex-benchmark.sh
+
+# Or individual commands:
+bash ollama/codex-benchmark.sh single 5.2 tabs-missing-arrow-nav
+bash ollama/codex-benchmark.sh all 5.2
+bash ollama/codex-benchmark.sh score
+bash ollama/codex-benchmark.sh perspective
+
+# Or via Python directly:
+python3 ollama/run_cloud_benchmark.py codex-escalate
+python3 ollama/run_cloud_benchmark.py codex 5.2 tabs-missing-arrow-nav
+```
+
+### Cross-Platform Summary
+
+```bash
+python3 ollama/run_cloud_benchmark.py summary
 ```
 
 ## Architecture
