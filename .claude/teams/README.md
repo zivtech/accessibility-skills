@@ -1,4 +1,23 @@
-# A11y Benchmark Team
+# A11y Teams
+
+Two teams operate in this repo: the **Workflow Team** (production accessibility reviews) and the **Benchmark Team** (eval suite maintenance).
+
+## A11y Workflow Team
+
+See [a11y-workflow.md](a11y-workflow.md) for full details. Invoked via `/a11y-workflow`.
+
+| Role | Agent | Model | Job |
+|------|-------|-------|-----|
+| **Orchestrator** | `/a11y-workflow` skill | main session | Sequence lifecycle, manage escalation |
+| **Scout** | `a11y-scout` | haiku | File discovery, ARIA inventory |
+| **Planner** | `a11y-planner` | opus | Design accessibility (9-phase) |
+| **Critic** | `a11y-critic` | opus | Review ARIA patterns (8-phase) |
+| **Tester** | `a11y-test` skill | n/a | Playwright + axe-core |
+| **Auditor** | `perspective-audit` | opus | Deep 7-perspective review |
+
+---
+
+## A11y Benchmark Team
 
 Default team structure for the a11y-meta-skills eval suite.
 

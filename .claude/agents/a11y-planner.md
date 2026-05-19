@@ -2,6 +2,8 @@
 name: a11y-planner
 description: "Accessibility Design Planner — 9-phase protocol for designing accessible implementations before coding. Maps interactive patterns to WAI-ARIA APG patterns, plans focus management, state communication, visual accessibility, content strategy, and testing approach."
 model: claude-opus-4-6
+team: a11y
+role: planner
 disallowedTools: Bash
 ---
 

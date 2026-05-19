@@ -40,10 +40,34 @@ plan → critique plan → [perspective audit] → revise → implement → test
 
 | Skill | Type | Command |
 |-------|------|---------|
+| a11y-workflow | orchestrator | `/a11y-workflow` |
 | a11y-planner | planner | `/a11y-planner` |
 | a11y-critic | critic | `/a11y-critic` |
 | a11y-test | tester | `/a11y-test` |
 | perspective-audit | auditor | `/perspective-audit` |
+
+## Team Workflow
+
+The `/a11y-workflow` skill orchestrates the full lifecycle by spawning specialist agents from the main session (depth-1, no nested delegation).
+
+**Quick start:**
+```
+/a11y-workflow full src/components/Modal.tsx    # full lifecycle
+/a11y-workflow step scout src/components/Modal.tsx  # single step
+```
+
+**Model routing** (validated on 8 hard fixtures, 2025-05-19):
+- Scout: Haiku (recon only)
+- Planner/Critic/Auditor: Opus (judgment-heavy — best-tier verdicts on ADVERSARIAL fixtures)
+- Orchestrator: main session (sequencing, not judgment)
+
+**Agents:**
+- `a11y-scout` — Haiku, read-only. File discovery and ARIA inventory.
+- `a11y-planner` — Opus, no Bash. 9-phase accessibility design.
+- `a11y-critic` — Opus, read-only. 8-phase investigation protocol.
+- `perspective-audit` — Opus, read-only. 7-perspective deep review (escalation only).
+
+See `.claude/teams/a11y-workflow.md` for full team definition and escalation signals.
 
 ## Structure
 

@@ -2,6 +2,8 @@
 name: a11y-critic
 description: "Standalone accessibility design reviewer evaluating ARIA patterns, focus management, state communication, and multi-perspective access (screen reader, keyboard, low vision, cognitive). 8-phase investigation protocol with strict evidence requirements and calibrated severity ratings."
 model: claude-opus-4-6
+team: a11y
+role: critic
 disallowedTools: Write, Edit
 ---
 
