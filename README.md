@@ -76,7 +76,13 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 
 ### `a11y-test`
 
-`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review:
+`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with three browser automation modes:
+
+- **`npx playwright test`** — Codified CI keyboard tests, visual regression, axe-core scans. Primary path.
+- **`agent-browser`** — Interactive reconnaissance: snapshot ARIA structure, verify fixes, probe widgets. Fastest for exploratory work (~1.5-2.6s per task).
+- **`/webwright:run`** — Generate complete Python Playwright test scripts from prose descriptions. LLM-generated, ~30-130s first run, then ~4s re-runs with no LLM cost. Produces reusable `.py` artifacts.
+
+Test capabilities:
 
 - Playwright keyboard interaction tests (Tab, Enter, Escape, arrow keys — real key presses, not attribute checks)
 - axe-core scanning via Playwright injection for automated WCAG violation detection
@@ -84,6 +90,7 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 - Visual regression testing with Playwright screenshots and optional BackstopJS
 - WCAG 2.2 compliance checks including new criteria (2.4.11, 2.4.13, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
 - Dynamic test prioritization based on automated scan findings
+- ARIA tree inspection via `aria_snapshot()` (Webwright) or `snapshot -i` (agent-browser)
 
 ### `perspective-audit`
 
@@ -104,18 +111,19 @@ Each perspective uses a Jobs-to-be-Done checklist derived from CivicActions acce
 ## Lifecycle
 
 ```
-plan → critique plan → [perspective audit] → revise → implement → test → critique implementation → [perspective audit] → fix → re-test
+plan → [generate test scripts] → critique plan → [perspective audit] → revise → implement → test → critique implementation → [perspective audit] → fix → re-test
 ```
 
 1. Run `/a11y-planner` to design the feature before implementation.
-2. Run `/a11y-critic` on the plan to catch gaps before coding.
-3. If the critic escalates perspectives at MEDIUM/HIGH, run `/perspective-audit` for deep review.
-4. Revise the plan based on critic and audit findings.
-5. Build the feature.
-6. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
-7. Run `/a11y-critic` on the implementation after tests pass.
-8. If the critic escalates perspectives, run `/perspective-audit` again.
-9. Fix findings, re-test.
+2. Optionally run `/webwright:run` to generate test scripts from the planner's output.
+3. Run `/a11y-critic` on the plan to catch gaps before coding.
+4. If the critic escalates perspectives at MEDIUM/HIGH, run `/perspective-audit` for deep review.
+5. Revise the plan based on critic and audit findings.
+6. Build the feature.
+7. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
+8. Run `/a11y-critic` on the implementation after tests pass.
+9. If the critic escalates perspectives, run `/perspective-audit` again.
+10. Fix findings, re-test.
 
 ## Commands
 
@@ -167,6 +175,7 @@ docs/
 templates/
 evals/
   suites/
+    webwright-benchmark/                 # Webwright vs agent-browser speed + correctness data
   harness/
 ```
 

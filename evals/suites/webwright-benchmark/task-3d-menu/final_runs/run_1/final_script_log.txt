@@ -1,0 +1,58 @@
+======================================================================
+Task 3D: Menu Button Active Descendant
+Run: 2026-05-26T10:28:17.605985
+URL: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-actions-active-descendant/
+======================================================================
+
+[SETUP] Navigating to page...
+  Page loaded.
+
+[STEP 0] Focus the menu button (#menubutton1)
+  Key pressed: (Tab/focus — no keyboard press, direct .focus() call)
+  Focused element id: 'menubutton1'
+  PASS  Button has focus: got 'menubutton1'
+  PASS  Menu closed before Enter: got 'false'
+  Screenshot: 01_button_focused.png
+
+[STEP 1] Press Enter to open menu
+  Key pressed: Enter
+  aria-expanded on button: 'true'
+  menu #menu1 visible: True
+  DOM focused element: 'menu1'
+  aria-activedescendant on #menu1: 'mi1'
+  PASS  aria-expanded=true after Enter: got 'true'
+  PASS  Menu is visible: got 'True'
+  PASS  Focus moved to #menu1: got 'menu1'
+  PASS  aria-activedescendant = mi1 (first item): got 'mi1'
+  Screenshot: 02_menu_opened_enter.png
+
+[STEP 2] Press ArrowDown — expect focus moves to second menuitem (mi2)
+  Key pressed: ArrowDown
+  DOM focused element: 'menu1'
+  aria-activedescendant on #menu1: 'mi2'
+  PASS  Focus on #menu1 still: got 'menu1'
+  PASS  aria-activedescendant = mi2 (second item): got 'mi2'
+  Screenshot: 03_arrowdown_mi2.png
+
+[STEP 3] Press End — expect focus moves to last menuitem (mi4)
+  Key pressed: End
+  DOM focused element: 'menu1'
+  aria-activedescendant on #menu1: 'mi4'
+  PASS  Focus on #menu1 still: got 'menu1'
+  PASS  aria-activedescendant = mi4 (last item): got 'mi4'
+  Screenshot: 04_end_mi4.png
+
+[STEP 4] Press Escape — expect menu closes, focus returns to button
+  Key pressed: Escape
+  aria-expanded on button: 'false'
+  menu #menu1 visible: False
+  DOM focused element: 'menubutton1'
+  PASS  aria-expanded=false after Escape: got 'false'
+  PASS  Menu is hidden: got 'False'
+  PASS  Focus returned to #menubutton1: got 'menubutton1'
+  Screenshot: 05_escaped_menu_closed.png
+
+======================================================================
+SUMMARY: 13/13 checks passed
+STATUS: ALL PASS
+======================================================================

@@ -1,0 +1,57 @@
+=== axe-core Accessibility Audit ===
+Timestamp: 2026-05-26T08:08:23.365583
+URL: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-faq/
+axe-core: https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js
+
+Navigating to target URL...
+Page loaded (networkidle).
+Screenshot saved: page-initial.png
+Injecting axe-core from CDN...
+axe defined: True
+Running axe.run(document)...
+Screenshot saved: page-post-audit.png
+
+=== AUDIT RESULTS ===
+Violations:   3
+Passes:       50
+Incomplete:   2
+Inapplicable: 36
+
+=== VIOLATIONS (3) ===
+
+[1] frame-title
+    Impact:      serious
+    Description: Ensure <iframe> and <frame> elements have an accessible name
+    Help:        Frames must have an accessible name
+    Help URL:    https://dequeuniversity.com/rules/axe/4.10/frame-title?application=axeAPI
+    Affected nodes: 1
+      Node 1: ['iframe']
+        HTML: <iframe class="support-levels-disclosure-faq" src="https://aria-at.w3.org/embed/reports/apg/disclosure-faq" height="100"
+        Failure: Fix any of the following:
+  Element has no title attribute
+  aria-label attribute does not exist or is empty
+  aria-labelledby attribute does not exist, references elements that do not exist or refere
+
+[2] landmark-no-duplicate-contentinfo
+    Impact:      moderate
+    Description: Ensure the document has at most one contentinfo landmark
+    Help:        Document should not have more than one contentinfo landmark
+    Help URL:    https://dequeuniversity.com/rules/axe/4.10/landmark-no-duplicate-contentinfo?application=axeAPI
+    Affected nodes: 1
+      Node 1: ['#wai-site-footer']
+        HTML: <footer id="wai-site-footer" class="page-footer default-grid" aria-label="Page">
+        Failure: Fix any of the following:
+  Document has more than one contentinfo landmark
+
+[3] region
+    Impact:      moderate
+    Description: Ensure all page content is contained by landmarks
+    Help:        All page content should be contained by landmarks
+    Help URL:    https://dequeuniversity.com/rules/axe/4.10/region?application=axeAPI
+    Affected nodes: 1
+      Node 1: ['.button-backtotop']
+        HTML: <a class="button button-backtotop" href="#top"><span><svg focusable="false" aria-hidden="true" class="icon-arrow-up "><u
+        Failure: Fix any of the following:
+  Some page content is not contained by landmarks
+
+Raw JSON results written to: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3c-axecore/final_runs/run_1/axe-results-raw.json

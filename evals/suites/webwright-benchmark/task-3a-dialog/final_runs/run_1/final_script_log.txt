@@ -1,0 +1,73 @@
+[10:28:22.278] ============================================================
+[10:28:22.278] Task 3a: Dialog Modal Focus Trap
+[10:28:22.278] URL: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/
+[10:28:22.278] Run dir: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3a-dialog/final_runs/run_1
+[10:28:22.278] ============================================================
+[10:28:23.096] 
+── CP1: Load page ──
+[10:28:24.360] Page title: Modal Dialog Example | APG | WAI | W3C
+[10:28:24.364] dialog1 before open: hidden=False display=none
+[10:28:24.421]   Screenshot saved: 01-initial-page.png
+[10:28:24.421] CP1 PASS: Page loaded
+[10:28:24.421] 
+── CP2: Click 'Add Delivery Address', verify focus moves inside dialog ──
+[10:28:24.421] Keyboard API: page.click() — mouse click on trigger button
+[10:28:24.423] Trigger button: {'tag': 'BUTTON', 'id': '', 'text': 'Add Delivery Address', 'rect': {'x': 80, 'y': 786.8499755859375, 'width': 167.01666259765625, 'height': 38.19999694824219, 'top': 786.8499755859375, 'right': 247.01666259765625, 'bottom': 825.0499725341797, 'left': 80}}
+[10:28:24.824]   Screenshot saved: 02-dialog-opened.png
+[10:28:24.826] dialog1 after open: hidden=False display=block aria-modal=true
+[10:28:24.826]   dialog1 is visible (hidden=False)
+[10:28:24.827] Active element after dialog opens: tag=INPUT id= type=text isInsideDialog=True dialogId=dialog1
+[10:28:24.827] CP2 PASS: Focus moved inside dialog after open
+[10:28:24.827] 
+── CP3: Tab through all focusable elements ──
+[10:28:24.827] Keyboard API: page.keyboard.press('Tab') — CDP Input.dispatchKeyEvent — real keyboard events
+[10:28:24.827] NOT using: page.evaluate('element.dispatchEvent(new KeyboardEvent(...))')
+[10:28:24.827]   Position 0 (initial): tag=INPUT id='' type=text isInsideDialog=True
+[10:28:24.981]   Screenshot saved: 03-tab-1.png
+[10:28:24.981]   Tab 1 → Position 1: tag=INPUT id='' type=text text='' isInsideDialog=True
+[10:28:25.131]   Screenshot saved: 04-tab-2.png
+[10:28:25.131]   Tab 2 → Position 2: tag=INPUT id='' type=text text='' isInsideDialog=True
+[10:28:25.281]   Screenshot saved: 05-tab-3.png
+[10:28:25.281]   Tab 3 → Position 3: tag=INPUT id='' type=text text='' isInsideDialog=True
+[10:28:25.436]   Screenshot saved: 06-tab-4.png
+[10:28:25.436]   Tab 4 → Position 4: tag=INPUT id='special_instructions' type=text text='' isInsideDialog=True
+[10:28:25.589]   Screenshot saved: 07-tab-5.png
+[10:28:25.589]   Tab 5 → Position 5: tag=BUTTON id='' type=button text='Verify Address' isInsideDialog=True
+[10:28:25.744]   Screenshot saved: 08-tab-6.png
+[10:28:25.744]   Tab 6 → Position 6: tag=BUTTON id='' type=button text='Add' isInsideDialog=True
+[10:28:25.890]   Screenshot saved: 09-tab-7.png
+[10:28:25.890]   Tab 7 → Position 7: tag=BUTTON id='' type=button text='Cancel' isInsideDialog=True
+[10:28:26.037]   Screenshot saved: 10-tab-8.png
+[10:28:26.037]   Tab 8 → Position 8: tag=INPUT id='' type=text text='' isInsideDialog=True
+[10:28:26.037] 
+  Total positions recorded: 9
+[10:28:26.037]   All 8 tabbed positions remained inside dialog
+[10:28:26.037] CP3 PASS: Tabbed through all focusable elements, none escaped dialog
+[10:28:26.037] 
+── CP4: Verify focus wraps from last element back to first ──
+[10:28:26.037] Keyboard API: page.keyboard.press('Tab') — CDP Input.dispatchKeyEvent
+[10:28:26.037]   First element (position 0): tag=INPUT id='' type=text
+[10:28:26.037]   After 8 tabs (position 8):  tag=INPUT id='' type=text
+[10:28:26.037] CP4 PASS: Focus wrapped from last element back to first inside dialog
+[10:28:26.076]   Screenshot saved: 11-focus-wrapped-to-first.png
+[10:28:26.076] 
+── CP5: Press Escape, verify dialog closes and focus returns to trigger ──
+[10:28:26.076] Keyboard API: page.keyboard.press('Escape') — CDP Input.dispatchKeyEvent
+[10:28:26.418]   Screenshot saved: 12-after-escape.png
+[10:28:26.419] dialog1 after Escape: hidden=False display=none
+[10:28:26.419] CP5a PASS: Dialog is closed after Escape (hidden=True or display=none)
+[10:28:26.420] Active element after Escape: tag=BUTTON id= text='Add Delivery Address'
+[10:28:26.420] CP5b PASS: Focus returned to 'Add Delivery Address' trigger button
+[10:28:26.453]   Screenshot saved: 13-focus-returned-to-trigger.png
+[10:28:26.604] 
+============================================================
+[10:28:26.604] RESULTS SUMMARY
+[10:28:26.604] ============================================================
+[10:28:26.604]   CP1_page_loaded: PASS
+[10:28:26.604]   CP2_focus_inside_dialog: PASS
+[10:28:26.604]   CP3_all_elements_tabbed: PASS
+[10:28:26.604]   CP4_focus_wraps: PASS
+[10:28:26.604]   CP5_escape_closes: PASS
+[10:28:26.604]   CP5_focus_returns: PASS
+[10:28:26.604] 
+[10:28:26.604] OVERALL: ALL CHECKPOINTS PASSED

@@ -44,10 +44,11 @@ These signals trigger promotion to a higher tier (in `--triage` mode) or perspec
 ```
 1. Scout discovers files, inventories ARIA state
 2. Planner designs accessibility (writes plan file)
-3. Critic reviews the plan (reads plan + source files)
-4. [If MEDIUM/HIGH alarm] Perspective audit on escalated perspectives
-5. User revises and implements
-6. Test runs automated scans
+3. [Optional] Script generation: when the planner's output includes specific test scenarios without existing .spec.js coverage, use `/webwright:craft` (reusable) or `/webwright:run` (one-shot) to generate Python Playwright test scripts. The operator must review generated scripts before treating them as test evidence.
+4. Critic reviews the plan (reads plan + source files)
+5. [If MEDIUM/HIGH alarm] Perspective audit on escalated perspectives
+6. User revises and implements
+7. Test runs automated scans
 7. Critic reviews implementation
 8. [If MEDIUM/HIGH alarm] Perspective audit
 9. User fixes

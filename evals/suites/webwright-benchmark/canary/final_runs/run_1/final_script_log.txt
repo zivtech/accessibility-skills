@@ -1,0 +1,16 @@
+step 1 action: Navigating to WAI-ARIA APG disclosure FAQ example
+step 2 action: Locating first disclosure button (button[aria-expanded], first match)
+step 3 action: Reading aria-expanded BEFORE keyboard interaction
+step 3 action: aria-expanded BEFORE = 'false'
+step 4 action: Taking BEFORE screenshot
+step 5 action: Focusing the button then pressing Enter via Playwright keyboard API
+step 6 action: Reading aria-expanded AFTER keyboard interaction
+step 6 action: aria-expanded AFTER  = 'true'
+step 7 action: Taking AFTER screenshot
+step 8 action: Asserting before != after: 'false' != 'true'
+step 8 action: ASSERTION PASSED: aria-expanded changed as expected
+step 9 action: Summary
+step 9 action:   Before: aria-expanded='false'
+step 9 action:   After:  aria-expanded='true'
+step 9 action:   Keyboard method: locator.press('Enter') via CDP Input.dispatchKeyEvent
+step 9 action:   Screenshots: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/canary/final_runs/run_1/screenshots/before.png, /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/canary/final_runs/run_1/screenshots/after.png

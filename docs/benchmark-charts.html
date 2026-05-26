@@ -551,7 +551,7 @@
           <div
             class="chart-container"
             role="img"
-            aria-label="Horizontal bar chart showing a11y-critic pass rates by model. Top performers: qwen3:32b (Ollama) 100%, Claude Sonnet+think (API) 100%, llama3.3:70b (Ollama) 100%, qwen3.5:latest (Ollama) 100%, GPT-5.2 (OpenAI) 100%. Claude Haiku 4.5 85% with 100% must-find detection. qwen3.5:27b 94% on 17 fixtures run. Key insight: all tested models exceed 84% pass rate; failures concentrate in adversarial verdict-calibration, not bug detection."
+            aria-label="Horizontal bar chart showing a11y-critic pass rates by model. Top performers include qwen3:32b (Ollama), Claude escalation, and OpenAI escalation at 100%. GPT-5.2 base tier passed 30 of 33 fixtures, or 91%, with 100% must-find detection. Claude Haiku 4.5 passed 85% with 100% must-find detection. qwen3.5:27b passed 94% on 17 fixtures run. Key insight: all tested models exceed 84% pass rate; failures concentrate in verdict calibration and false positive suppression, not bug detection."
             style="height: 420px;"
           >
             <canvas id="chart1" aria-hidden="true"></canvas>
@@ -622,7 +622,14 @@
                   <tr>
                     <td>GPT-5.2</td>
                     <td>OpenAI</td>
-                    <td>1 (pilot)</td>
+                    <td>33</td>
+                    <td>91%</td>
+                    <td>100%</td>
+                  </tr>
+                  <tr>
+                    <td>GPT-5.2 → GPT-5.5-low escalation</td>
+                    <td>OpenAI</td>
+                    <td>33 (via escalation)</td>
                     <td>100%</td>
                     <td>100%</td>
                   </tr>
@@ -1027,21 +1034,22 @@
 
       const models = [
         'Claude Haiku 4.5\n(API, n=33)',
+        'GPT-5.2\n(OpenAI, n=33)',
         'qwen3.5:27b\n(Ollama, n=17)',
-        'GPT-5.2\n(OpenAI, n=1)',
         'qwen3.5:latest\n(Ollama, n=7)',
         'llama3.3:70b\n(Ollama, n=7)',
-        'Claude Sonnet+think\n(API, escalation)',
+        'Claude path\n(API, n=33)',
+        'OpenAI path\n(OpenAI, n=33)',
         'qwen3:32b\n(Ollama, n=33)',
       ];
 
-      const passRates = [85, 94, 100, 100, 100, 100, 100];
-      const mustFind  = [100, 100, 100, 86, 86, 100, 96];
-      const fixtures  = [33, 17, 1, 7, 7, 33, 33];
+      const passRates = [85, 91, 94, 100, 100, 100, 100, 100];
+      const mustFind  = [100, 100, 100, 86, 86, 100, 100, 96];
+      const fixtures  = [33, 33, 17, 7, 7, 33, 33, 33];
 
       // Platform determines color and border style
       // Claude = blue/solid, Ollama = emerald/dashed, OpenAI = gold/dotted
-      const platforms = ['claude', 'ollama', 'openai', 'ollama', 'ollama', 'claude', 'ollama'];
+      const platforms = ['claude', 'openai', 'ollama', 'ollama', 'ollama', 'claude', 'openai', 'ollama'];
 
       const bgColors = platforms.map(p => {
         if (p === 'claude')  return tc.blue + 'cc';
@@ -1076,7 +1084,7 @@
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
-          layout: { padding: { right: 80 } },
+          layout: { padding: { left: 20, right: 80 } },
           animation: reducedMotion.matches ? false : { duration: 700 },
           scales: {
             x: {
@@ -1097,6 +1105,9 @@
               // Draw 100% reference line via annotation
             },
             y: {
+              afterFit: (scale) => {
+                scale.width = Math.max(scale.width, 220);
+              },
               ticks: {
                 color: tc.textPrimary,
                 font: { family: "'Inter', sans-serif", size: 11.5 },

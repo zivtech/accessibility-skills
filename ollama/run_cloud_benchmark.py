@@ -31,7 +31,6 @@ Claude tiers (cheapest first):
 Codex/OpenAI tiers (cheapest first):
     5.2             GPT-5.2
     5.2-low         GPT-5.2, reasoning_effort=low
-    5.3             GPT-5.3
     5.5             GPT-5.5
     5.5-low         GPT-5.5, reasoning_effort=low
 """

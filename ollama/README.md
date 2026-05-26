@@ -153,7 +153,9 @@ python3 ollama/run_cloud_benchmark.py score-cloud
 
 ### Codex/OpenAI (requires Codex CLI auth)
 
-Tiers: `5.2` → `5.2-low` → `5.3` → `5.5` → `5.5-low`
+Tiers: `5.2` → `5.2-low` → `5.5` → `5.5-low`
+
+`5.3` is intentionally omitted: the Codex CLI does not expose a GPT-5.3 tier.
 
 ```bash
 # From Codex: run the escalation benchmark

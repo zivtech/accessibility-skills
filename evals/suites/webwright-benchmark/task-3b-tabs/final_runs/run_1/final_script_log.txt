@@ -1,0 +1,140 @@
+======================================================================
+Task 3b: Tabs Automatic Activation
+URL: https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/
+Run: 2026-05-26T10:28:12.805685
+======================================================================
+
+Discovered 4 tabs and 4 tabpanels
+
+Tab inventory:
+  Tab 0: id='tab-1', aria-controls='tabpanel-1', text='Maria Ahlefeldt'
+  Tab 1: id='tab-2', aria-controls='tabpanel-2', text='Carl Andersen'
+  Tab 2: id='tab-3', aria-controls='tabpanel-3', text='Ida da Fonseca'
+  Tab 3: id='tab-4', aria-controls='tabpanel-4', text='Peter Müller'
+
+Panel inventory:
+  Panel: id='tabpanel-1'
+  Panel: id='tabpanel-2'
+  Panel: id='tabpanel-3'
+  Panel: id='tabpanel-4'
+
+──────────────────────────────────────────────────────────────────────
+SECTION 1: Click each tab
+──────────────────────────────────────────────────────────────────────
+
+[Tab 1/4] Clicking: 'Maria Ahlefeldt' (id='tab-1')
+  aria-selected state after click:
+    tab-1: aria-selected='true' <-- clicked
+    tab-2: aria-selected='false'
+    tab-3: aria-selected='false'
+    tab-4: aria-selected='false'
+  tabpanel visibility after click:
+    tabpanel-1: visible=True <-- expected visible
+    tabpanel-2: visible=False
+    tabpanel-3: visible=False
+    tabpanel-4: visible=False
+  RESULT: PASS — only 'tab-1' selected, 'tabpanel-1' visible, all others hidden
+  Screenshot: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3b-tabs/final_runs/run_1/screenshots/tab_1_click_tab-1.png
+
+[Tab 2/4] Clicking: 'Carl Andersen' (id='tab-2')
+  aria-selected state after click:
+    tab-1: aria-selected='false'
+    tab-2: aria-selected='true' <-- clicked
+    tab-3: aria-selected='false'
+    tab-4: aria-selected='false'
+  tabpanel visibility after click:
+    tabpanel-1: visible=False
+    tabpanel-2: visible=True <-- expected visible
+    tabpanel-3: visible=False
+    tabpanel-4: visible=False
+  RESULT: PASS — only 'tab-2' selected, 'tabpanel-2' visible, all others hidden
+  Screenshot: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3b-tabs/final_runs/run_1/screenshots/tab_2_click_tab-2.png
+
+[Tab 3/4] Clicking: 'Ida da Fonseca' (id='tab-3')
+  aria-selected state after click:
+    tab-1: aria-selected='false'
+    tab-2: aria-selected='false'
+    tab-3: aria-selected='true' <-- clicked
+    tab-4: aria-selected='false'
+  tabpanel visibility after click:
+    tabpanel-1: visible=False
+    tabpanel-2: visible=False
+    tabpanel-3: visible=True <-- expected visible
+    tabpanel-4: visible=False
+  RESULT: PASS — only 'tab-3' selected, 'tabpanel-3' visible, all others hidden
+  Screenshot: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3b-tabs/final_runs/run_1/screenshots/tab_3_click_tab-3.png
+
+[Tab 4/4] Clicking: 'Peter Müller' (id='tab-4')
+  aria-selected state after click:
+    tab-1: aria-selected='false'
+    tab-2: aria-selected='false'
+    tab-3: aria-selected='false'
+    tab-4: aria-selected='true' <-- clicked
+  tabpanel visibility after click:
+    tabpanel-1: visible=False
+    tabpanel-2: visible=False
+    tabpanel-3: visible=False
+    tabpanel-4: visible=True <-- expected visible
+  RESULT: PASS — only 'tab-4' selected, 'tabpanel-4' visible, all others hidden
+  Screenshot: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3b-tabs/final_runs/run_1/screenshots/tab_4_click_tab-4.png
+
+──────────────────────────────────────────────────────────────────────
+SECTION 1 SUMMARY: ALL PASS
+──────────────────────────────────────────────────────────────────────
+
+──────────────────────────────────────────────────────────────────────
+SECTION 2: Keyboard test — ArrowRight from first tab
+──────────────────────────────────────────────────────────────────────
+
+Page reloaded. Initial state:
+  tab-1: aria-selected='true'
+  tab-2: aria-selected='false'
+  tab-3: aria-selected='false'
+  tab-4: aria-selected='false'
+
+Focused first tab: 'tab-1'
+
+BEFORE ArrowRight:
+  aria-selected:
+    tab-1: aria-selected='true'
+    tab-2: aria-selected='false'
+    tab-3: aria-selected='false'
+    tab-4: aria-selected='false'
+  panel visibility:
+    tabpanel-1: visible=True
+    tabpanel-2: visible=False
+    tabpanel-3: visible=False
+    tabpanel-4: visible=False
+
+Pressing ArrowRight via page.keyboard.press('ArrowRight')...
+
+AFTER ArrowRight:
+  aria-selected:
+    tab-1: aria-selected='false'
+    tab-2: aria-selected='true'
+    tab-3: aria-selected='false'
+    tab-4: aria-selected='false'
+  panel visibility:
+    tabpanel-1: visible=False
+    tabpanel-2: visible=True
+    tabpanel-3: visible=False
+    tabpanel-4: visible=False
+
+Keyboard transition detail:
+  'tab-1': 'true' → 'false'  (expected: 'true' → 'false')
+  'tab-2': 'false' → 'true'  (expected: 'false' → 'true')
+
+KEYBOARD RESULT: PASS — ArrowRight moved selection from 'tab-1' to 'tab-2'
+Screenshot: /Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/webwright-benchmark/task-3b-tabs/final_runs/run_1/screenshots/keyboard_after_arrow_right.png
+
+──────────────────────────────────────────────────────────────────────
+SECTION 2 SUMMARY: PASS
+──────────────────────────────────────────────────────────────────────
+
+======================================================================
+OVERALL SUMMARY
+======================================================================
+  Click tests:    PASS
+  Keyboard test:  PASS
+  OVERALL:        PASS
+======================================================================

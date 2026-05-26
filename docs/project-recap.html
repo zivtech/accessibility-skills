@@ -755,10 +755,34 @@ body {
       <tr style="border-top: 2px solid var(--border-bright);">
         <td>OpenAI</td>
         <td>GPT-5.2</td>
-        <td class="num">1</td>
-        <td class="num">1/1</td>
+        <td class="num">33</td>
+        <td class="num"><strong>30</strong>/33</td>
         <td class="num">100%</td>
-        <td><span class="badge badge--pilot">PILOT</span></td>
+        <td><span class="badge badge--pass">91% PASS</span></td>
+      </tr>
+      <tr>
+        <td>OpenAI</td>
+        <td>GPT-5.2 low</td>
+        <td class="num">3 (esc)</td>
+        <td class="num">1/3</td>
+        <td class="num">n/a</td>
+        <td><span class="badge badge--warn">33% PASS</span></td>
+      </tr>
+      <tr>
+        <td>OpenAI</td>
+        <td>GPT-5.5</td>
+        <td class="num">2 (esc)</td>
+        <td class="num">1/2</td>
+        <td class="num">n/a</td>
+        <td><span class="badge badge--warn">50% PASS</span></td>
+      </tr>
+      <tr>
+        <td>OpenAI</td>
+        <td>GPT-5.5 low</td>
+        <td class="num">1 (esc)</td>
+        <td class="num">1/1</td>
+        <td class="num">n/a</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
       </tr>
     </tbody>
   </table>
@@ -854,9 +878,9 @@ body {
   </div>
   <div class="ve-card" style="text-align: center;">
     <h3 style="color: var(--teal);">Codex / OpenAI</h3>
-    <p style="margin: 8px 0;"><strong>GPT-5.2 &mdash; 5.5</strong></p>
-    <p>Runner built. 1 pilot fixture passed (GPT-5.2). Full escalation pending.</p>
-    <div style="margin-top: 8px;"><span class="badge badge--pilot">PENDING</span></div>
+    <p style="margin: 8px 0;"><strong>GPT-5.2 &rarr; 5.5-low</strong></p>
+    <p>GPT-5.2 passed 30/33. Escalation cleared the remaining CLEAN fixtures at GPT-5.5-low.</p>
+    <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
   </div>
 </div>
 
@@ -928,8 +952,8 @@ body {
       <div><strong>Team agents</strong> &mdash; 4 bench agents defined (runner, reporter, reviewer, builder)</div>
     </li>
     <li>
-      <div class="next-check"></div>
-      <div><strong>Codex/OpenAI benchmark</strong> &mdash; Run <code>bash ollama/codex-benchmark.sh</code> from Codex for GPT-5.2&ndash;5.5 escalation</div>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Codex/OpenAI benchmark</strong> &mdash; GPT-5.2 91%, full pass at GPT-5.5-low via <code>bash ollama/codex-benchmark.sh</code></div>
     </li>
     <li>
       <div class="next-check"></div>
