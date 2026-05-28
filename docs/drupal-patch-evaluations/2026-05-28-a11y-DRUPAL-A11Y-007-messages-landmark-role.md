@@ -14,7 +14,8 @@
 | Target commit checked | `3728741f23122018f1f26206fe563cb6c9ad49f8` (`main` on 2026-05-28) |
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
 | Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact: `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-codex-reroll-status-alert-007.patch` |
-| Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
+| Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
+| Role smoke | `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-drupal-a11y-007-role-smoke.md` |
 | AI assistance disclosed? | Required if this packet is reused upstream |
 
 ## Source Links
@@ -47,7 +48,7 @@ The original upstream patch only changed `core/modules/system/templates/status-m
 | Pattern ID(s) | `DRU-2E022F2F`, `DRU-1260AB7D` |
 | Instance ID(s) | `INS-176AF555`, `INS-1E1F5949`, `INS-F35573C5`, `INS-90DB76B9`, `INS-C77800EB`, `INS-E1083638`, `INS-33B07066`, `INS-8F094E37`, `INS-35544EB1`, `INS-83F42AFC`, `INS-54574906`, `INS-20150FA9`, `INS-32AE2346`, `INS-6340BB49`, `INS-8EA427CF`, `INS-44531B14`, `INS-B015FF40`, `INS-91297A72`, `INS-EBE0F49A`, `INS-FF71DDFC`; and `INS-0F387792`, `INS-594DA129`, `INS-D74E025B`, `INS-CD2D6DED`, `INS-217D3820`, `INS-1358DBF4` |
 | Theme/profile/modules | Evaluation setup requested default `olivero`, admin `claro` |
-| Auth/content state | Local disposable runtime installed with admin/admin; theming tools fixtures enabled; evaluator authenticated as uid 1 |
+| Auth/content state | Local disposable runtime installed with local admin credentials redacted; theming tools fixtures enabled; evaluator authenticated as uid 1 |
 | Viewport(s) | `1280x1024` desktop landscape in patch evaluation |
 | Color mode / forced colors / direction | Requested light, LTR; detected light, forced colors none, prefers contrast no-preference |
 
@@ -121,7 +122,7 @@ Runtime conditions:
 
 - DDEV v1.25.2, project `drupal-core`, PHP 8.5.
 - Drupal 12.0-dev installed with the `standard` profile.
-- Admin login available through Drush ULI and `admin/admin`.
+- Admin login available through Drush ULI and redacted local admin credentials.
 - Enabled fixture modules included `theming_tools`, `message`, `button`, `table`, `imagefile`, `actionlink`, `pager`, `dialog`, `tab`, `lang_hebrew`, and `themeswitcher`.
 - Local evaluator-only fixes were needed: `DRUPAL_BASE_URL` support and a missing `canonical-patch-map.js` helper.
 
@@ -185,6 +186,36 @@ Introduced new violations: 0
 ```
 
 Coverage note: the evaluator generated four cases from the pattern report. Three did not observe the historical baseline in this runtime, so this pass proves the observed target was fixed under the recorded conditions; it should not be worded as "all historical routes revalidated."
+
+### Cleaned Rerun and Role Smoke
+
+I reran the final `007` patch after cleaning runtime patch whitespace:
+
+```bash
+cd /Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime
+DRUPAL_BASE_URL=http://drupal-core.ddev.site:33000 \
+  A11Y_VARIANT_ID=codex-rerun-cleaned-007 \
+  node core/tests/playwright/scripts/evaluate-patch.js \
+  a11y-DRUPAL-A11Y-007-messages-landmark-role
+```
+
+Result:
+
+```text
+Status: PASS
+Outcome reason: targeted-issues-fixed-without-regressions
+Baseline observed instances: 1
+Fixed instances after patch: 1
+Remaining instances after patch: 0
+Fixed rules:
+- landmark-contentinfo-is-top-level: 2 -> 0
+- landmark-no-duplicate-contentinfo: 1 -> 0
+Introduced new violations: 0
+```
+
+DOM/axe role smoke also passed for `/admin/appearance` and `/admin/modules`: server-rendered and JavaScript-created warnings use `role="status"` while errors use `role="alert"`.
+
+This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime, and I did not enable VoiceOver because that changes the user's desktop state. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
 
 ## Patch Hygiene
 

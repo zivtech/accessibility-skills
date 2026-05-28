@@ -1,0 +1,277 @@
+diff --git a/core/tests/playwright/scripts/evaluate-patch.js b/core/tests/playwright/scripts/evaluate-patch.js
+index 331450c47d..a509bf9bc5 100644
+--- a/core/tests/playwright/scripts/evaluate-patch.js
++++ b/core/tests/playwright/scripts/evaluate-patch.js
+@@ -72,7 +72,14 @@ if (canonicalPatchMap.warning) {
+   console.warn(`Warning: ${canonicalPatchMap.warning}`);
+ }
+
+-const BASE_URL = 'http://drupal-core.ddev.site';
++const BASE_URL = process.env.DRUPAL_BASE_URL
++  || process.env.DRUPAL_TEST_BASE_URL
++  || 'http://drupal-core.ddev.site';
++const AXE_RULE_ALIASES = {
++  // WCAG 2.5.3 commonly appears as "label-in-name" in human-facing packet
++  // labels. axe-core exposes the implemented rule with this concrete ID.
++  'label-in-name': 'label-content-name-mismatch',
++};
+ const PATCH_FILE = path.join(PATCHES_DIR, `${patchName}.patch`);
+ const variantIdRaw = process.env.A11Y_VARIANT_ID || 'default';
+ const variantId = String(variantIdRaw).replace(/[^a-zA-Z0-9._-]/g, '-');
+@@ -112,6 +119,27 @@ function toSingleLine(text) {
+     .trim();
+ }
+
++function resolveAxeRuleId(ruleId) {
++  const key = String(ruleId || '').trim();
++  return AXE_RULE_ALIASES[key] || key;
++}
++
++function resolveAxeRuleIds(ruleIds) {
++  return uniqueStrings((ruleIds || []).map(resolveAxeRuleId));
++}
++
++function ruleMatchesRequestedRule(patternRuleId, requestedRules) {
++  const normalizedPatternRule = resolveAxeRuleId(patternRuleId);
++  return resolveAxeRuleIds(requestedRules).includes(normalizedPatternRule);
++}
++
++function formatRulesForReport(ruleIds) {
++  return uniqueStrings(ruleIds).map((ruleId) => {
++    const resolved = resolveAxeRuleId(ruleId);
++    return resolved === ruleId ? ruleId : `${ruleId} (axe: ${resolved})`;
++  }).join(', ');
++}
++
+ function classifyPatchPreflightError(errorText) {
+   const text = String(errorText || '');
+   const corrupt = text.match(/corrupt patch at\s+(.+?):(\d+)/i);
+@@ -781,7 +809,7 @@ function uniqueStrings(values) {
+ }
+
+ function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules, currentUrl, maxCandidates = 10) {
+-  const rules = uniqueStrings(requestedRules);
++  const rules = resolveAxeRuleIds(requestedRules);
+   if (rules.length === 0 || !Array.isArray(reportPatterns) || reportPatterns.length === 0) {
+     return [];
+   }
+@@ -791,7 +819,7 @@ function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules,
+   const seen = new Set();
+
+   const eligible = reportPatterns
+-    .filter((pattern) => rules.includes(pattern.ruleId))
++    .filter((pattern) => ruleMatchesRequestedRule(pattern.ruleId, rules))
+     .sort((a, b) => {
+       const aTarget = targetPatternIds.has(a.patternId) ? 0 : 1;
+       const bTarget = targetPatternIds.has(b.patternId) ? 0 : 1;
+@@ -811,14 +839,15 @@ function collectReproductionCandidates(reportPatterns, patchCfg, requestedRules,
+
+     for (const pathItem of orderedPaths) {
+       for (const selector of selectors.length > 0 ? selectors : ['(pattern selector unavailable)']) {
+-        const key = `${pattern.patternId}|${pattern.ruleId}|${pathItem}|${selector}`;
++        const ruleId = resolveAxeRuleId(pattern.ruleId);
++        const key = `${pattern.patternId}|${ruleId}|${pathItem}|${selector}`;
+         if (seen.has(key)) {
+           continue;
+         }
+         seen.add(key);
+         candidates.push({
+           patternId: pattern.patternId,
+-          ruleId: pattern.ruleId,
++          ruleId,
+           path: pathItem,
+           selector,
+           preferred: targetPatternIds.has(pattern.patternId),
+@@ -852,10 +881,47 @@ async function captureHtml(page, selector) {
+   }
+ }
+
+-async function runAxeScan(page) {
++function mergeAxeViolations(groups) {
++  const byRule = new Map();
++
++  for (const violation of groups.flat()) {
++    if (!violation || !violation.id) {
++      continue;
++    }
++    if (!byRule.has(violation.id)) {
++      byRule.set(violation.id, { ...violation, nodes: [] });
++    }
++    const merged = byRule.get(violation.id);
++    const seenNodes = new Set(merged.nodes.map((node) =>
++      `${JSON.stringify(node.target || [])}|${node.html || ''}`,
++    ));
++    for (const node of violation.nodes || []) {
++      const key = `${JSON.stringify(node.target || [])}|${node.html || ''}`;
++      if (seenNodes.has(key)) {
++        continue;
++      }
++      seenNodes.add(key);
++      merged.nodes.push(node);
++    }
++  }
++
++  return Array.from(byRule.values()).filter((violation) => violation.nodes.length > 0);
++}
++
++async function runAxeScan(page, requiredRules = []) {
+   try {
+     await injectAxe(page);
+-    const violations = await getViolations(page);
++    const defaultViolations = await getViolations(page);
++    const requiredRuleIds = resolveAxeRuleIds(requiredRules);
++    const requiredViolations = requiredRuleIds.length > 0
++      ? await getViolations(page, null, {
++        runOnly: {
++          type: 'rule',
++          values: requiredRuleIds,
++        },
++      })
++      : [];
++    const violations = mergeAxeViolations([defaultViolations, requiredViolations]);
+     return { success: true, results: { violations } };
+   } catch (err) {
+     return { success: false, error: err.message };
+@@ -1184,6 +1250,48 @@ function selectorMatches(targetSelector, selectorKey) {
+   return false;
+ }
+
++function extractHasText(selector) {
++  const match = String(selector || '').match(/:has-text\((['"])(.*?)\1\)/);
++  return match ? match[2] : null;
++}
++
++function extractLastSelectorTag(selector) {
++  const withoutPseudos = String(selector || '').replace(/:[a-z-]+\(.*?\)/g, '');
++  const parts = withoutPseudos.split(/\s+|>/).map((part) => part.trim()).filter(Boolean);
++  const last = parts[parts.length - 1] || '';
++  const match = last.match(/^([a-z][a-z0-9-]*)/i);
++  return match ? match[1].toLowerCase() : null;
++}
++
++function extractHtmlTag(html) {
++  const match = String(html || '').match(/^<\s*([a-z][a-z0-9-]*)/i);
++  return match ? match[1].toLowerCase() : null;
++}
++
++function textFromHtml(html) {
++  return String(html || '')
++    .replace(/<script[\s\S]*?<\/script>/gi, '')
++    .replace(/<style[\s\S]*?<\/style>/gi, '')
++    .replace(/<[^>]+>/g, ' ')
++    .replace(/\s+/g, ' ')
++    .trim();
++}
++
++function selectorHintMatchesViolation(violation, selectorKey) {
++  const expectedText = extractHasText(selectorKey);
++  if (!expectedText) {
++    return false;
++  }
++
++  const expectedTag = extractLastSelectorTag(selectorKey);
++  const actualTag = extractHtmlTag(violation.html_snippet);
++  if (expectedTag && actualTag && expectedTag !== actualTag) {
++    return false;
++  }
++
++  return textFromHtml(violation.html_snippet).includes(expectedText);
++}
++
+ function findLatestPatternReport() {
+   const latestPath = path.join(REPORTS_DIR, 'pattern-report-latest.json');
+   if (fs.existsSync(latestPath)) {
+@@ -1402,7 +1510,8 @@ function findTargetMatches(annotatedViolations, target) {
+     if (v.page_path !== target.page_path) {
+       return false;
+     }
+-    return selectorMatches(v.selector, target.selector);
++    return selectorMatches(v.selector, target.selector)
++      || selectorHintMatchesViolation(v, target.selector);
+   });
+ }
+
+@@ -1531,7 +1640,7 @@ function findTargetMatches(annotatedViolations, target) {
+         direction: configuredDirection,
+         viewport: effectiveViewport,
+       };
+-      const caseRules = testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules;
++      const caseRules = resolveAxeRuleIds(testCase.sourceRuleId ? [testCase.sourceRuleId] : patchConfig.rules);
+       const fallbackPatternId = Array.isArray(patchConfig.patternIds) && patchConfig.patternIds.length === 1
+         ? patchConfig.patternIds[0]
+         : null;
+@@ -1614,7 +1723,7 @@ function findTargetMatches(annotatedViolations, target) {
+
+       // Axe scan
+       log(`  Running axe scan (before)`);
+-      const axeBefore = await runAxeScan(page);
++      const axeBefore = await runAxeScan(page, caseRules);
+       testResult.before.axe = formatAxeResults(axeBefore.results);
+       testResult.before.selectorCounts = await countSelectorsOnPage(page, testCase.selectors);
+       testResult.before.annotated_violations = annotateViolations(
+@@ -1714,7 +1823,7 @@ function findTargetMatches(annotatedViolations, target) {
+
+       // Axe scan
+       log(`  Running axe scan (after)`);
+-      const axeAfter = await runAxeScan(page);
++      const axeAfter = await runAxeScan(page, caseRules);
+       testResult.after.axe = formatAxeResults(axeAfter.results);
+       testResult.after.annotated_violations = annotateViolations(
+         testResult.after.axe.violations,
+@@ -1966,7 +2075,7 @@ function findTargetMatches(annotatedViolations, target) {
+     lines.push('');
+     lines.push(`- **Description:** ${patchConfig.description}`);
+     lines.push(`- **WCAG Criteria:** ${patchConfig.wcag.join(', ')}`);
+-    lines.push(`- **Affected Rules:** ${patchConfig.rules.join(', ')}`);
++    lines.push(`- **Affected Rules:** ${formatRulesForReport(patchConfig.rules)}`);
+     if (evaluation.patternReport.source) {
+       lines.push(`- **Pattern Source:** ${evaluation.patternReport.source.replace(`${REPO_ROOT}/`, '')}`);
+     }
+diff --git a/core/tests/playwright/scripts/lib/canonical-patch-map.js b/core/tests/playwright/scripts/lib/canonical-patch-map.js
+new file mode 100644
+index 0000000000..e162a21cca
+--- /dev/null
++++ b/core/tests/playwright/scripts/lib/canonical-patch-map.js
+@@ -0,0 +1,42 @@
++/**
++ * @file
++ * Loads the patch names that are safe for the evaluator to run.
++ */
++
++'use strict';
++
++const fs = require('fs');
++const path = require('path');
++
++function loadCanonicalPatchNames({ repoRoot, fallbackNames = [] } = {}) {
++  const patchesDir = repoRoot ? path.join(repoRoot, 'patches') : null;
++
++  if (!patchesDir) {
++    return {
++      names: fallbackNames,
++      source: null,
++      warning: 'No repo root supplied; using configured fallback patch names.',
++    };
++  }
++
++  try {
++    const names = fs.readdirSync(patchesDir)
++      .filter((filename) => filename.endsWith('.patch'))
++      .map((filename) => path.basename(filename, '.patch'))
++      .sort();
++
++    return {
++      names: names.length ? names : fallbackNames,
++      source: patchesDir,
++      warning: names.length ? null : 'No patch files found; using configured fallback patch names.',
++    };
++  } catch (err) {
++    return {
++      names: fallbackNames,
++      source: null,
++      warning: `Unable to read patches directory: ${err.message}`,
++    };
++  }
++}
++
++module.exports = { loadCanonicalPatchNames };
