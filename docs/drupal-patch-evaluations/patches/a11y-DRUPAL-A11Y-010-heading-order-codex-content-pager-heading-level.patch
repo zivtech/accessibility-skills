@@ -1,0 +1,13 @@
+diff --git a/core/modules/node/config/optional/views.view.content.yml b/core/modules/node/config/optional/views.view.content.yml
+index 09ba3dcc35..b9f74760f6 100644
+--- a/core/modules/node/config/optional/views.view.content.yml
++++ b/core/modules/node/config/optional/views.view.content.yml
+@@ -312,7 +312,7 @@ display:
+       pager:
+         type: full
+         options:
+-          pagination_heading_level: h4
++          pagination_heading_level: h2
+           items_per_page: 50
+           tags:
+             next: 'Next ›'
