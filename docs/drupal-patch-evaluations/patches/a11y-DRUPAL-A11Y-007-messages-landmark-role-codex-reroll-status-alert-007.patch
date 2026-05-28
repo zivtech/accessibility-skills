@@ -1,0 +1,340 @@
+diff --git a/core/misc/message.js b/core/misc/message.js
+index 4b93cb21ca..321c9376a8 100644
+--- a/core/misc/message.js
++++ b/core/misc/message.js
+@@ -253,7 +253,7 @@
+     messageWrapper.setAttribute('class', `messages messages--${type}`);
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+     messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/modules/system/templates/status-messages.html.twig b/core/modules/system/templates/status-messages.html.twig
+index be6711b270..d39df84c14 100644
+--- a/core/modules/system/templates/status-messages.html.twig
++++ b/core/modules/system/templates/status-messages.html.twig
+@@ -23,10 +23,10 @@
+ #}
+ <div data-drupal-messages>
+ {% for type, messages in message_list %}
+-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
+-    {% if type == 'error' %}
+-      <div role="alert">
+-    {% endif %}
++  {%
++    set message_role = type == 'error' ? 'alert' : 'status'
++  %}
++  <div role="{{ message_role }}" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
+     {% if status_headings[type] %}
+       <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+     {% endif %}
+@@ -39,9 +39,6 @@
+     {% else %}
+       {{ messages|first }}
+     {% endif %}
+-    {% if type == 'error' %}
+-      </div>
+-    {% endif %}
+   </div>
+ {% endfor %}
+ </div>
+diff --git a/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php b/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
+index 810d003cb0..8bf0804d21 100644
+--- a/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
++++ b/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
+@@ -76,21 +76,21 @@ public function testModulesListFormStatusMessage(): void {
+     // Enable a module that does not define permissions.
+     $edit = ['modules[layout_discovery][enable]' => 'layout_discovery'];
+     $this->submitForm($edit, 'Install');
+-    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Layout Discovery has been installed.');
+-    $this->assertSession()->elementNotExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a");
++    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Layout Discovery has been installed.');
++    $this->assertSession()->elementNotExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a");
+ 
+     // Enable a module that defines permissions.
+     $edit = ['modules[filter][enable]' => 'filter'];
+     $this->submitForm($edit, 'Install');
+-    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Filter has been installed.');
+-    $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
++    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Filter has been installed.');
++    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
+ 
+     // Enable a module that has dependencies and both define permissions.
+     $edit = ['modules[content_moderation][enable]' => 'content_moderation'];
+     $this->submitForm($edit, 'Install');
+     $this->submitForm([], 'Continue');
+-    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", '2 modules have been installed: Content Moderation, Workflows.');
+-    $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/content_moderation%2Cworkflows')]");
++    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", '2 modules have been installed: Content Moderation, Workflows.');
++    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/content_moderation%2Cworkflows')]");
+   }
+ 
+   /**
+diff --git a/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php b/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php
+index a30c31ee8e..088e696472 100644
+--- a/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php
++++ b/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php
+@@ -33,7 +33,7 @@ class PlaceholderMessageTest extends BrowserTestBase {
+    * Tests rendering of message placeholder.
+    */
+   public function testMessagePlaceholder(): void {
+-    $messages_markup = '<div role="contentinfo" aria-label="Status message"';
++    $messages_markup = '<div role="status" aria-label="Status message"';
+ 
+     $test_routes = [
+       // Messages placeholder rendered first.
+diff --git a/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig b/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig
+index 42f105d3df..0ad60e7a50 100644
+--- a/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig
++++ b/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig
+@@ -13,10 +13,10 @@
+       'messages--' ~ type,
+     ]
+   %}
+-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+-    {% if type == 'error' %}
+-      <div role="alert">
+-    {% endif %}
++  {%
++    set message_role = type == 'error' ? 'alert' : 'status'
++  %}
++  <div role="{{ message_role }}" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+       {% if status_headings[type] %}
+         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+       {% endif %}
+@@ -29,9 +29,6 @@
+       {% else %}
+         {{ messages|first }}
+       {% endif %}
+-    {% if type == 'error' %}
+-      </div>
+-    {% endif %}
+   </div>
+   {# Remove type specific classes. #}
+   {% set attributes = attributes.removeClass(classes) %}
+diff --git a/core/profiles/demo_umami/themes/umami/js/components/messages/messages.js b/core/profiles/demo_umami/themes/umami/js/components/messages/messages.js
+index 2b3c8e7a61..bce7d79e3c 100644
+--- a/core/profiles/demo_umami/themes/umami/js/components/messages/messages.js
++++ b/core/profiles/demo_umami/themes/umami/js/components/messages/messages.js
+@@ -42,7 +42,7 @@
+     messageWrapper.setAttribute('class', `messages messages--${type}`);
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+     messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/themes/claro/js/messages.js b/core/themes/claro/js/messages.js
+index 26632ae6bc..47c980dbae 100644
+--- a/core/themes/claro/js/messages.js
++++ b/core/themes/claro/js/messages.js
+@@ -31,7 +31,7 @@
+     );
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('aria-labelledby', `${id}-title`);
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+diff --git a/core/themes/claro/templates/misc/status-messages.html.twig b/core/themes/claro/templates/misc/status-messages.html.twig
+index 07b093c01f..dd2d698884 100644
+--- a/core/themes/claro/templates/misc/status-messages.html.twig
++++ b/core/themes/claro/templates/misc/status-messages.html.twig
+@@ -38,34 +38,31 @@
+       {%
+         set is_message_with_icon = type in ['error', 'status', 'warning']
+       %}
++      {%
++        set message_role = type == 'error' ? 'alert' : 'status'
++      %}
+ 
+-      <div role="contentinfo" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+-        {% if type == 'error' %}
+-          <div role="alert">
+-        {% endif %}
+-          {% if is_message_with_title or is_message_with_icon %}
+-            <div class="messages__header">
+-              {% if is_message_with_title %}
+-                <h2 id="{{ title_ids[type] }}" class="messages__title">
+-                  {{ status_headings[type] }}
+-                </h2>
+-              {% endif %}
+-            </div>
+-          {% endif %}
+-          <div class="messages__content">
+-            {% if messages|length > 1 %}
+-              <ul class="messages__list">
+-                {% for message in messages %}
+-                  <li class="messages__item">{{ message }}</li>
+-                {% endfor %}
+-              </ul>
+-            {% else %}
+-              {{ messages|first }}
++      <div role="{{ message_role }}" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
++        {% if is_message_with_title or is_message_with_icon %}
++          <div class="messages__header">
++            {% if is_message_with_title %}
++              <h2 id="{{ title_ids[type] }}" class="messages__title">
++                {{ status_headings[type] }}
++              </h2>
+             {% endif %}
+           </div>
+-        {% if type == 'error' %}
+-          </div>
+         {% endif %}
++        <div class="messages__content">
++          {% if messages|length > 1 %}
++            <ul class="messages__list">
++              {% for message in messages %}
++                <li class="messages__item">{{ message }}</li>
++              {% endfor %}
++            </ul>
++          {% else %}
++            {{ messages|first }}
++          {% endif %}
++        </div>
+       </div>
+       {# Remove type specific classes. #}
+       {% set attributes = attributes.removeClass(classes) %}
+diff --git a/core/themes/default_admin/js/messages.js b/core/themes/default_admin/js/messages.js
+index 26632ae6bc..47c980dbae 100644
+--- a/core/themes/default_admin/js/messages.js
++++ b/core/themes/default_admin/js/messages.js
+@@ -31,7 +31,7 @@
+     );
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('aria-labelledby', `${id}-title`);
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+diff --git a/core/themes/default_admin/migration/js/messages.js b/core/themes/default_admin/migration/js/messages.js
+index d81702d901..77b0691b1d 100644
+--- a/core/themes/default_admin/migration/js/messages.js
++++ b/core/themes/default_admin/migration/js/messages.js
+@@ -30,7 +30,7 @@
+     messageWrapper.setAttribute('class', `messages-list__item messages messages--${type}`);
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+     messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/themes/default_admin/templates/misc/status-messages.html.twig b/core/themes/default_admin/templates/misc/status-messages.html.twig
+index 5f4f3b27ea..b586233acd 100644
+--- a/core/themes/default_admin/templates/misc/status-messages.html.twig
++++ b/core/themes/default_admin/templates/misc/status-messages.html.twig
+@@ -38,8 +38,11 @@
+       {%
+         set is_message_with_icon = type in ['error', 'status', 'warning']
+       %}
++      {%
++        set message_role = type == 'error' ? 'alert' : 'status'
++      %}
+ 
+-      <div role="contentinfo" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
++      <div role="{{ message_role }}" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+         {% if is_message_with_title or is_message_with_icon %}
+           <div class="messages__header">
+             {% if is_message_with_title %}
+diff --git a/core/themes/olivero/js/message.theme.js b/core/themes/olivero/js/message.theme.js
+index 00c617e90f..3b141897cd 100644
+--- a/core/themes/olivero/js/message.theme.js
++++ b/core/themes/olivero/js/message.theme.js
+@@ -32,7 +32,7 @@
+     messageWrapper.setAttribute('data-drupal-selector', 'messages');
+     messageWrapper.setAttribute(
+       'role',
+-      type === 'error' || type === 'warning' ? 'alert' : 'status',
++      type === 'error' ? 'alert' : 'status',
+     );
+     messageWrapper.setAttribute('aria-labelledby', `${id}-title`);
+     messageWrapper.setAttribute('data-drupal-message-id', id);
+diff --git a/core/themes/olivero/templates/misc/status-messages.html.twig b/core/themes/olivero/templates/misc/status-messages.html.twig
+index 2dfe964a77..789ab605ef 100644
+--- a/core/themes/olivero/templates/misc/status-messages.html.twig
++++ b/core/themes/olivero/templates/misc/status-messages.html.twig
+@@ -31,14 +31,17 @@
+         'messages--' ~ type,
+       ]
+       %}
++      {%
++        set message_role = type == 'error' ? 'alert' : 'status'
++      %}
+ 
+       <div{{ attributes
+         .addClass(classes)
+         .setAttribute('data-drupal-selector', 'messages')
+-        .setAttribute('role', 'contentinfo')
++        .setAttribute('role', message_role)
+         .setAttribute('aria-label', status_headings[type])
+         }}>
+-        <div class="messages__container" data-drupal-selector="messages-container"{% if type == 'error' %} role="alert"{% endif %}>
++        <div class="messages__container" data-drupal-selector="messages-container">
+           {% if status_headings[type] %}
+             <div class="messages__header">
+             <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+diff --git a/core/themes/stable9/templates/media-library/status-messages.html.twig b/core/themes/stable9/templates/media-library/status-messages.html.twig
+index 767fb79f97..1589fb680c 100644
+--- a/core/themes/stable9/templates/media-library/status-messages.html.twig
++++ b/core/themes/stable9/templates/media-library/status-messages.html.twig
+@@ -21,10 +21,10 @@
+ #}
+ <div data-drupal-messages>
+ {% for type, messages in message_list %}
+-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
+-    {% if type == 'error' %}
+-      <div role="alert">
+-    {% endif %}
++  {%
++    set message_role = type == 'error' ? 'alert' : 'status'
++  %}
++  <div role="{{ message_role }}" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
+     {% if status_headings[type] %}
+       <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+     {% endif %}
+@@ -37,9 +37,6 @@
+     {% else %}
+       {{ messages|first }}
+     {% endif %}
+-    {% if type == 'error' %}
+-      </div>
+-    {% endif %}
+   </div>
+ {% endfor %}
+ </div>
+diff --git a/core/themes/starterkit_theme/templates/misc/status-messages.html.twig b/core/themes/starterkit_theme/templates/misc/status-messages.html.twig
+index 68960fe9ee..46ffb6bf40 100644
+--- a/core/themes/starterkit_theme/templates/misc/status-messages.html.twig
++++ b/core/themes/starterkit_theme/templates/misc/status-messages.html.twig
+@@ -28,10 +28,10 @@
+       'messages--' ~ type,
+     ]
+   %}
+-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+-    {% if type == 'error' %}
+-      <div role="alert">
+-    {% endif %}
++  {%
++    set message_role = type == 'error' ? 'alert' : 'status'
++  %}
++  <div role="{{ message_role }}" aria-label="{{ status_headings[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
+       {% if status_headings[type] %}
+         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+       {% endif %}
+@@ -44,9 +44,6 @@
+       {% else %}
+         {{ messages|first }}
+       {% endif %}
+-    {% if type == 'error' %}
+-      </div>
+-    {% endif %}
+   </div>
+   {# Remove type specific classes. #}
+   {% set attributes = attributes.removeClass(classes) %}

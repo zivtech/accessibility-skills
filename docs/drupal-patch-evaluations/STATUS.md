@@ -1,0 +1,101 @@
+# Drupal Accessibility Evaluation TODO Ledger
+
+> Purpose: Keep evaluation work from drifting. Update this file before and after each evaluation session.
+> Last updated: 2026-05-28
+> Canonical parallel model: `docs/plans/2026-05-28-drupal-all-items-evaluation-plan.md#parallel-subagent-operating-model`
+
+## Drift Rules
+
+- Work many rows in parallel only when each row has exactly one owner.
+- Do not mark `VERIFIED` unless baseline evidence, after-patch evidence, broad regression classification, and required manual checks all exist under the same conditions.
+- Do not trust old patch-hygiene results without rechecking the current raw patch and target file.
+- Keep `Next action` to one concrete command or decision.
+- Add or update the packet path as soon as work starts on an item.
+- If a finding depends on a live Drupal/DDEV site, mark it blocked until that environment is available.
+- Subagents may own packet drafts or read-only research, but the main agent owns this ledger.
+- Subagents must not edit the same packet unless the previous owner is closed or explicitly handed off.
+- After every parallel wave, update this ledger before starting another wave.
+- Keep source status separate from local evaluation status. Mike's upstream status is a claim to test; local status is our evidence state.
+- Use only the canonical local status enum below.
+
+## Canonical Local Status Enum
+
+`NOT STARTED`, `DRAFT`, `BASELINE VERIFIED`, `PATCH HYGIENE BLOCKED`, `TEST STATE BLOCKED`, `INCONCLUSIVE`, `NEEDS PATCH`, `FAILED`, `VERIFIED`, `OBSOLETE`
+
+Source status values are descriptive labels from the upstream/source material, such as `Core patch ready`, `Core investigation`, `Haven verified`, or `Haven patch needed`.
+
+## Parallel Wave Rules
+
+- Default wave size: 4-6 subagents when tasks are independent.
+- Assign one item per subagent whenever possible.
+- Use separate packet files per subagent-owned item.
+- Keep shared files (`STATUS.md`, evaluation plan, support plan) under main-agent control.
+- Run a critic gate on any packet that a subagent recommends as `VERIFIED` or upstream-ready.
+- Close or explicitly hand off subagents after their item report is integrated.
+- Save subagent reports under `docs/drupal-patch-evaluations/reports/{wave}/{item}-{run-id}.md`.
+- If global environment preflight fails, subagents may continue read-only source/provenance work, but item statuses remain unchanged until a per-item test is attempted.
+
+## Global Environment Preflight
+
+| Check | Status | Notes |
+|---|---|---|
+| DDEV/Drupal runtime reachable | `OK` | Disposable runtime clone `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` starts as DDEV project `drupal-core` with PHP 8.5; Drupal is installed; `ddev drush status` bootstraps successfully. |
+| Node/Yarn dependencies installed | `OK` | Runtime clone has tracked root `node_modules`; `yarn --version` reports 1.22.22; Playwright package is available. |
+| Playwright browsers available | `OK` | The local 007 evaluator run completed with screenshots and axe scans, so browser execution is available. |
+| Target Drupal checkout/worktree strategy settled | `OK` | Use the disposable runtime clone for evaluator runs. Do not use the source clone after Composer install mutated the core tree. |
+| Evaluator URL/base URL compatible | `PARTIAL` | Runtime-only patch added `DRUPAL_BASE_URL=http://drupal-core.ddev.site:33000` support. Upstream still needs the base-URL fix. |
+| Evaluator JS helper complete | `PARTIAL` | Runtime-only `canonical-patch-map.js` helper was added. Upstream still needs the missing helper restored or the import guarded. |
+| Evaluator rule IDs compatible | `OK (local runtime)` | Runtime evaluator now aliases `label-in-name` to axe-core's `label-content-name-mismatch`, runs required non-default rules explicitly, and maps broad selector hints to concrete axe selectors. Upstream still needs this support committed. |
+| Source permalink/SHA pinning complete | `PARTIAL` | Source inventory links are orientation links. Before upstream filing, add immutable permalinks plus source commit, patch-file SHA, target-file SHA, and tool versions to the packet. |
+
+## Parallel Review Log
+
+| Run | Agents | Integrated artifact | Notes |
+|---|---|---|---|
+| `2026-05-28-plan-review` | `a11y-planner`, `explorer`, `a11y-critic` | `docs/drupal-patch-evaluations/reports/plan-review/2026-05-28-parallel-subagent-review.md` | Parallel feedback integrated into plan, template, and ledger. |
+| `2026-05-28-runtime-preflight-critic` | `a11y-critic` | `docs/drupal-patch-evaluations/reports/plan-review/2026-05-28-runtime-preflight-critic-laplace.md` | Kept global runtime blockers separate from item statuses and deferred test-wave subagents until the evaluator target is settled. |
+| `2026-05-28-evaluator-runtime-inspection` | `explorer` | `docs/drupal-patch-evaluations/reports/runtime/2026-05-28-evaluator-runtime-assumptions-darwin.md` | Confirmed evaluator checkout coupling, hardcoded base URL, missing helper, and clean-runtime requirement. |
+| `2026-05-28-fixture-map` | `explorer` | `docs/drupal-patch-evaluations/reports/fixture-map/2026-05-28-theming-tools-fixture-map-lorentz.md` | Mapped item IDs to theming tools fixture modules, deterministic routes, and seed-data requirements. |
+| `2026-05-28-haven-packet-readiness` | `explorer` | `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-packet-readiness-faraday.md` | Converted Haven source statuses into local `DRAFT` packet stubs with explicit manual and runtime gaps. |
+| `2026-05-28-heading-order-route-triage` | `explorer` | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-heading-order-route-triage-noether.md` | Resolved `DRUPAL-A11Y-010` to `/admin/content` `#pagination-heading`, not `/admin/modules`. |
+| `2026-05-28-empty-heading-id-triage` | `explorer` | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-empty-heading-id-triage-hume.md` | Marked stale `011-empty-heading` obsolete and opened active `012-empty-heading` tracking. |
+| `2026-05-28-final-critic-gate` | `a11y-critic` | `docs/drupal-patch-evaluations/reports/plan-review/2026-05-28-final-critic-gate-locke.md` | Tightened wording, next actions, generated-report errata, and manual evidence reproducibility. |
+| `2026-05-28-evaluator-support-reroll-wave` | `explorer`, `a11y-critic` | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-evaluator-support-reroll-and-next-items.md`; `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-critic-gate-carver.md` | Confirmed evaluator alias/runOnly/selector-hint support, rerolled `DRUPAL-A11Y-007`, resolved the server/client warning-role mismatch, and split `010`/`012` into next patch lanes. |
+
+## Current Focus
+
+1. Run a short NVDA or VoiceOver smoke check on the `DRUPAL-A11Y-007` reroll before upstream filing.
+2. Upstream the evaluator support fixes: configurable base URL, missing canonical patch map helper, required-rule scans, rule aliases, and selector-hint matching.
+3. Start the next patch wave with `DRUPAL-A11Y-012-empty-heading-elements`, then split `DRUPAL-A11Y-010-heading-order` by route family.
+
+## TODO Ledger
+
+| Item | Repo | Wave | Owner | Run ID | Claimed at | Environment lock | Checkout/worktree | DDEV project | Allowed files/scope | Source status | Local status | Packet | Report path | Integrated by/at | Upstream issue/status | Next action |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `DRUPAL-A11Y-007-messages-landmark-role` | `mgifford/drupal-core` | Current focus | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, runtime-only evaluator patch, local evaluator artifacts, reroll patch artifact, DOM role probe | `Core patch ready` | `VERIFIED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-007-messages-landmark-role.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.md`; `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-codex-reroll-status-alert-007.patch` | Main / `2026-05-28` | TBD | Run NVDA or VoiceOver smoke check, then prepare the reroll patch for upstream review. |
+| `HAVEN-001-logo-link-name` | `mgifford/drupal-cms` | Haven verified QA | Main | `2026-05-28-main` | `2026-05-28` | `read-only/no-lock` | n/a | n/a | Packet stub and source triage | `Haven verified` | `DRAFT` | `docs/drupal-patch-evaluations/2026-05-28-a11y-HAVEN-001-logo-link-name.md` | `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-source-triage-boyle.md`; `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-packet-readiness-faraday.md` | Main / `2026-05-28` | TBD | Run local `git apply --check` against a current Drupal CMS/Haven checkout. |
+| `HAVEN-002-secondary-button-contrast` | `mgifford/drupal-cms` | Haven verified QA | Main | `2026-05-28-main` | `2026-05-28` | `read-only/no-lock` | n/a | n/a | Packet stub and source triage | `Haven verified` | `DRAFT` | `docs/drupal-patch-evaluations/2026-05-28-a11y-HAVEN-002-secondary-button-contrast.md` | `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-source-triage-boyle.md`; `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-packet-readiness-faraday.md` | Main / `2026-05-28` | TBD | Run local `git apply --check` against a current Drupal CMS/Haven checkout. |
+| `HAVEN-003-email-input-boundary-contrast` | `mgifford/drupal-cms` | New patch decisions | Main | `2026-05-28-main` | `2026-05-28` | `read-only/no-lock` | n/a | n/a | Packet stub and source triage | `Haven patch needed` | `DRAFT` | `docs/drupal-patch-evaluations/2026-05-28-a11y-HAVEN-003-email-input-boundary-contrast.md` | `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-source-triage-boyle.md`; `docs/drupal-patch-evaluations/reports/haven-verified-qa/2026-05-28-haven-packet-readiness-faraday.md` | Main / `2026-05-28` | TBD | Reproduce the `#edit-email` boundary contrast baseline under the Haven scan setup. |
+| `LABEL-IN-NAME-004-filter-format-aria-label` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts, manual axe check | `Core patch ready` | `VERIFIED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-LABEL-IN-NAME-004-filter-format-aria-label.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation-codex-selector-hint-label-004.md`; `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-label-in-name-004-manual-axe.md` | Main / `2026-05-28` | TBD | Optional voice-control smoke check, then prepare upstream evidence with evaluator support note. |
+| `DRUPAL-A11Y-002-submit-button-contrast` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `TEST STATE BLOCKED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-002-submit-button-contrast.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-002-submit-button-contrast-evaluation-codex-runtime-smoke-002.md` | Main / `2026-05-28` | TBD | Identify the canonical route/state for the yellow-accent contrast baseline. |
+| `DRUPAL-A11Y-005-language-switcher-contrast` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `TEST STATE BLOCKED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-005-language-switcher-contrast.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-005-language-switcher-contrast-evaluation-codex-runtime-smoke-005.md` | Main / `2026-05-28` | TBD | Choose whether the canonical target is Hebrew language-link contrast or yellow-accent button contrast. |
+| `DRUPAL-A11Y-006-theme-switcher-landmark` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `FAILED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-006-theme-switcher-landmark.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-006-theme-switcher-landmark-evaluation-codex-runtime-smoke-006.md` | Main / `2026-05-28` | TBD | Identify the actual theme switcher render path. |
+| `DRUPAL-A11Y-008-empty-table-headers` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `TEST STATE BLOCKED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-008-empty-table-headers.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-008-empty-table-headers-evaluation-codex-runtime-smoke-008.md` | Main / `2026-05-28` | TBD | Enable or repair the `/autocomplete` route. |
+| `DRUPAL-A11Y-009-module-summary-names` | `mgifford/drupal-core` | Core hygiene | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `TEST STATE BLOCKED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-009-module-summary-names.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-009-module-summary-names-evaluation-codex-runtime-smoke-009.md` | Main / `2026-05-28` | TBD | Recreate the missing `nyan_cat` module-summary fixture. |
+| `DRUPAL-A11Y-001-file-widget-display-labels` | `mgifford/drupal-core` | Baseline repair | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `INCONCLUSIVE` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-001-file-widget-display-labels.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-001-file-widget-display-labels-evaluation-codex-runtime-smoke-001.md` | Main / `2026-05-28` | TBD | Reconcile the configured pattern IDs for this patch. |
+| `DRUPAL-A11Y-003-select-all-checkbox-label` | `mgifford/drupal-core` | Baseline repair | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `FAILED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-003-select-all-checkbox-label.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-003-select-all-checkbox-label-evaluation-codex-runtime-smoke-003.md` | Main / `2026-05-28` | TBD | Retarget the evaluator to deterministic `/table` baseline evidence. |
+| `DRUPAL-A11Y-004-tabindex-buttons-test-form` | `mgifford/drupal-core` | Baseline repair | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet, local evaluator artifacts | `Core patch ready` | `FAILED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.md` | `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-evaluation-codex-runtime-smoke-004.md` | Main / `2026-05-28` | TBD | Reroll the patch against `ButtonTestForm`. |
+| `DRUPAL-A11Y-010-heading-order` | `mgifford/drupal-core` | New patch decisions | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet and source triage | `Core investigation` | `BASELINE VERIFIED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-010-heading-order.md` | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-baseline-source-triage-herschel.md`; `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-heading-order-route-triage-noether.md`; `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-focused-baseline-check-main.md` | Main / `2026-05-28` | TBD | Split by route family: pager `#pagination-heading`, datetime wrapper `h4`, multiple-value field `h4`, and admin-block `h3`; patch the central render path only after each baseline is classified. |
+| `DRUPAL-A11Y-011-empty-heading-elements` | `mgifford/drupal-core` | New patch decisions | Main | `2026-05-28-main` | `2026-05-28` | `read-only/no-lock` | Source clone | n/a | Obsolete packet and source triage | `Core investigation` | `OBSOLETE` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-011-empty-heading-elements.md` | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-baseline-source-triage-herschel.md`; `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-empty-heading-id-triage-hume.md` | Main / `2026-05-28` | TBD | Keep empty-heading work under `DRUPAL-A11Y-012-empty-heading-elements`. |
+| `DRUPAL-A11Y-012-empty-heading-elements` | `mgifford/drupal-core` | New patch decisions | Main | `2026-05-28-main` | `2026-05-28` | `runtime-lock:drupal-core` | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` | `drupal-core` | Packet and source triage | `Core investigation` | `BASELINE VERIFIED` | `docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-012-empty-heading-elements.md` | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-empty-heading-id-triage-hume.md`; `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-focused-baseline-check-main.md` | Main / `2026-05-28` | TBD | Patch/test the filter tips shape mismatch first, especially `DialogController.php` and `TabController.php`; separately classify the empty home-page title `h1`. |
+
+## Session Close Checklist
+
+- [x] Every item touched this session has an updated status.
+- [x] Every packet created or changed is linked from this ledger.
+- [x] Every blocker has one concrete next action.
+- [x] No item is marked `VERIFIED` without before/after evidence, broad regression classification, and completed required manual checks.
+- [x] Every subagent-owned row has a saved report path or an explicit `TBD` handoff reason.
+- [x] Global environment preflight has been recorded before any test wave.
+- [x] Upstream issue/status has been updated for every packet that is ready to file or share; no local packet is ready to file yet after critic review.
+- [x] `git diff --check` or an equivalent whitespace check has run for changed docs.

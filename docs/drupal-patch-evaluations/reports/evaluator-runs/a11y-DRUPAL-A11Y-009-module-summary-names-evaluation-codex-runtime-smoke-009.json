@@ -1,0 +1,809 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-009-module-summary-names",
+  "config": {
+    "description": "Add aria-label to module details on /admin/modules",
+    "wcag": [
+      "4.1.2 (A)"
+    ],
+    "rules": [
+      "summary-name"
+    ],
+    "patternIds": [
+      "DRU-4422E904"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/admin/modules",
+        "selectors": [
+          "summary",
+          "details summary"
+        ],
+        "expectedFix": "Module summary elements should have discernible text",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-28T16:48:11.443Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site:33000",
+    "variantId": "codex-runtime-smoke-009",
+    "testCaseSource": "pattern-report",
+    "requestedColorMode": "light",
+    "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": true,
+      "error": null,
+      "kind": "applicable",
+      "targetFile": null,
+      "line": null,
+      "details": null
+    },
+    "requestedViewport": null,
+    "requestedDevice": null,
+    "requestedOrientation": null,
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "drupalInitialState": {
+      "capturedAt": "2026-05-28T16:48:08.041Z",
+      "success": true,
+      "commands": [
+        {
+          "name": "enabled-modules",
+          "command": "ddev drush pm:list --type=module --status=enabled --format=json",
+          "success": true
+        },
+        {
+          "name": "system-theme",
+          "command": "ddev drush cget system.theme --format=json",
+          "success": true
+        },
+        {
+          "name": "core-extension",
+          "command": "ddev drush cget core.extension --format=json",
+          "success": true
+        },
+        {
+          "name": "drush-status",
+          "command": "ddev drush status --format=json",
+          "success": true
+        }
+      ],
+      "errors": [],
+      "themes": {
+        "requested": {
+          "default": "olivero",
+          "admin": "claro"
+        },
+        "detected": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        },
+        "systemThemeConfig": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        }
+      },
+      "enabledModules": [
+        "actionlink",
+        "announcements_feed",
+        "automated_cron",
+        "big_pipe",
+        "block",
+        "block_content",
+        "breakpoint",
+        "button",
+        "ckeditor5",
+        "comment",
+        "config",
+        "contact",
+        "contextual",
+        "datetime",
+        "dblog",
+        "dialog",
+        "dynamic_page_cache",
+        "editor",
+        "field",
+        "field_ui",
+        "file",
+        "filter",
+        "help",
+        "image",
+        "imagefile",
+        "lang_hebrew",
+        "language",
+        "layout_builder",
+        "layout_discovery",
+        "link",
+        "locale",
+        "menu_link_content",
+        "menu_ui",
+        "message",
+        "mysql",
+        "navigation",
+        "node",
+        "options",
+        "page_cache",
+        "pager",
+        "path",
+        "path_alias",
+        "system",
+        "tab",
+        "table",
+        "taxonomy",
+        "text",
+        "themeswitcher",
+        "theming_tools",
+        "update",
+        "user",
+        "views",
+        "views_ui"
+      ],
+      "enabledModuleCount": 53,
+      "enabledModuleHash": "e0133986f3906e2439787af017dcbe0cf6e13cf9cb9271c69393741da46673dd",
+      "environment": {
+        "drushStatus": {
+          "drupal-version": "12.0-dev",
+          "uri": "https://drupal-core.ddev.site:33001",
+          "db-driver": "mysql",
+          "db-hostname": "db",
+          "db-port": 3306,
+          "db-username": "db",
+          "db-password": "db",
+          "db-name": "db",
+          "db-status": "Connected",
+          "bootstrap": "Successful",
+          "theme": "olivero",
+          "admin-theme": "claro",
+          "php-bin": "/usr/bin/php8.5",
+          "php-conf": [
+            "/etc/php/8.5/cli/php.ini"
+          ],
+          "php-os": "Linux",
+          "php-version": "8.5.5",
+          "drush-script": "/var/www/html/vendor/bin/drush.php",
+          "drush-version": "14.9999999.9999999.9999999-dev",
+          "drush-temp": "/tmp",
+          "drush-conf": [],
+          "drush-alias-files": [],
+          "alias-searchpaths": [],
+          "install-profile": "standard",
+          "root": "/var/www/html",
+          "drupal-settings-file": "sites/default/settings.php",
+          "site": "sites/default",
+          "themes": "sites/all/themes",
+          "modules": "sites/all/modules",
+          "files": "sites/default/files",
+          "temp": "/tmp",
+          "config-sync": "sites/default/files/sync",
+          "config": "sites/default/files/sync",
+          "%paths": {
+            "%root": "/var/www/html",
+            "%site": "sites/default",
+            "%modules": "sites/all/modules",
+            "%themes": "sites/all/themes",
+            "%config-sync": "sites/default/files/sync",
+            "%config": "sites/default/files/sync",
+            "%files": "sites/default/files",
+            "%temp": "/tmp"
+          }
+        }
+      },
+      "fingerprints": {
+        "coreExtensionHash": "31b259471c42afbd3e30d71ad307fb06ea209bbb58152af62111117b20cec91c",
+        "coreExtensionModulesHash": "8bb798d045e892a1aaab3573344f1d0b647d655676db6ee85261d446a4942963",
+        "coreExtensionThemesHash": "30bfe9325153ff420bc86f2bc9e447ecd63a74f52d8d0e329bf8420f15e9c0a3"
+      }
+    },
+    "authSetup": {
+      "attempted": true,
+      "success": true,
+      "method": "uli",
+      "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779986891/[REDACTED]/login",
+      "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+      "authState": {
+        "loggedInClass": true,
+        "logoutLink": true,
+        "loginForm": true,
+        "uid": 1,
+        "authenticated": true
+      },
+      "credentialAttempted": false,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test.",
+    "caseGeneration": {
+      "selectedCaseCount": 1,
+      "usedFallbackConfigCases": false,
+      "diagnostics": {
+        "usePatternReportCases": true,
+        "configuredTestCases": 1,
+        "configuredPatternIds": [
+          "DRU-4422E904"
+        ],
+        "reportPatternCount": 13,
+        "matchedPatternIds": [
+          "DRU-4422E904"
+        ],
+        "fallbackReason": null
+      }
+    }
+  },
+  "testCases": [
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        "#edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-67f25cdc",
+          "pattern_id": "DRU-4422E904",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+          "rule_id": "summary-name"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+          }
+        ],
+        "html": [
+          {
+            "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+            "success": false,
+            "error": "Element not found: #edit-modules-nyan-cat-enable-description > .module-list__module-summary"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "#edit-modules-nyan-cat-enable-description > .module-list__module-summary": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "summary-name"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "summary-name": 0
+        },
+        "selectorCountsBefore": {
+          "#edit-modules-nyan-cat-enable-description > .module-list__module-summary": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-4422E904",
+            "ruleId": "summary-name",
+            "path": "/admin/modules",
+            "selector": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779986891/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 4,
+      "byRule": {
+        "landmark-contentinfo-is-top-level": 2,
+        "landmark-no-duplicate-contentinfo": 1,
+        "region": 1
+      }
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "inconclusive",
+    "outcomeReason": "no-baseline-instances-observed",
+    "eligibleForPatchRecommendation": false
+  },
+  "patternReport": {
+    "source": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-4422E904",
+        "ruleId": "summary-name",
+        "selectorKey": "#edit-modules-nyan-cat-enable-description > .module-list__module-summary",
+        "concretePaths": [
+          "/admin/modules"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    },
+    "markdownSource": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.md",
+    "sourceDiagnostics": {
+      "selectedExists": true,
+      "selectedMtimeIso": "2026-05-28T16:34:13.257Z",
+      "selectedAgeHours": 0.23,
+      "candidates": [
+        {
+          "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+          "mtimeIso": "2026-05-28T16:34:13.257Z"
+        }
+      ]
+    },
+    "targetPatternIds": [
+      "DRU-4422E904"
+    ]
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 5,
+    "instanceIdsSeen": 5,
+    "inconsistentPatternIds": [],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 0,
+    "baselineObservedInstances": 0,
+    "patternObservedBeforePatchAttempt": false,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 0,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "codex-runtime-smoke-009",
+    "patchFile": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-009-module-summary-names.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}

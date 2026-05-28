@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch Evaluation: a11y-LABEL-IN-NAME-004-filter-format-aria-label</title>
+  <style>
+    :root {
+      --page-bg: #eef2f8;
+      --card-bg: #ffffff;
+      --surface-bg: #f7f9fc;
+      --text: #1c2431;
+      --muted: #546173;
+      --border: #d5dce7;
+      --link: #0e4fb5;
+      --accent: #b7ccf6;
+      --table-stripe: #f5f8ff;
+      --shadow: 0 12px 34px rgba(20, 35, 60, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #111722;
+        --card-bg: #1a2331;
+        --surface-bg: #131b27;
+        --text: #e8edf5;
+        --muted: #93a0b5;
+        --border: #2b3950;
+        --link: #8cb8ff;
+        --accent: #23395f;
+        --table-stripe: #162032;
+        --shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { color-scheme: light dark; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 2rem 1rem 4rem;
+      font: 16px/1.7 Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      background:
+        radial-gradient(circle at top left, rgba(14, 79, 181, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 16%),
+        var(--page-bg);
+      color: var(--text);
+    }
+    a { color: var(--link); }
+    a:hover, a:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.25rem;
+    }
+    .hero,
+    .toc,
+    .content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 1.5rem;
+    }
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      line-height: 1.15;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+    .lede,
+    .meta {
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .toc {
+      padding: 1rem 1.25rem;
+    }
+    .toc h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .toc ol {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      gap: 0.4rem;
+    }
+    .toc li.level-3 {
+      margin-left: 1rem;
+      color: var(--muted);
+    }
+    .content {
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.25;
+      scroll-margin-top: 1rem;
+    }
+    h2, h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 {
+      margin-top: 2.4rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      margin-top: 1.8rem;
+    }
+    .heading-anchor {
+      text-decoration: none;
+      opacity: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    h2:hover .heading-anchor,
+    h2:focus-within .heading-anchor,
+    h3:hover .heading-anchor,
+    h3:focus-within .heading-anchor {
+      opacity: 1;
+    }
+    p, ul, ol, blockquote, pre, .table-wrap, hr {
+      margin: 1rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+    li + li {
+      margin-top: 0.35rem;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    code {
+      background: rgba(127, 127, 127, 0.14);
+      padding: 0.1rem 0.35rem;
+      border-radius: 0.3rem;
+      font-size: 0.95em;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--surface-bg);
+    }
+    blockquote {
+      border-left: 4px solid var(--link);
+      padding: 0.25rem 0 0.25rem 1rem;
+      color: var(--muted);
+      margin-left: 0;
+      background: linear-gradient(90deg, rgba(14, 79, 181, 0.08), transparent 60%);
+    }
+    details {
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 0.75rem 0;
+      background: var(--surface-bg);
+    }
+    details[open] {
+      padding-bottom: 0.75rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.25rem 0;
+      list-style: none;
+      color: var(--text);
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before {
+      content: '▶ ';
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+    details[open] summary::before { content: '▼ '; }
+    details table {
+      margin-top: 0.75rem;
+      min-width: 0;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      background: var(--surface-bg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 0.7rem 0.85rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--accent);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.92rem;
+    }
+    tbody tr:nth-child(even) td {
+      background: var(--table-stripe);
+    }
+    @media (min-width: 900px) {
+      .page {
+        grid-template-columns: minmax(0, 1fr) 280px;
+        align-items: start;
+      }
+      .hero,
+      .content {
+        grid-column: 1;
+      }
+      .toc {
+        grid-column: 2;
+        position: sticky;
+        top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>Patch Evaluation: a11y-LABEL-IN-NAME-004-filter-format-aria-label</h1>
+      <p class="lede">undefined</p>
+      <p class="meta">Source markdown: <code>evaluate-patch.js</code></p>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li class="level-2"><a href="#summary">Summary</a></li><li class="level-3"><a href="#replication-instructions">Replication Instructions</a></li><li class="level-3"><a href="#drupal-initial-state-snapshot">Drupal Initial State Snapshot</a></li><li class="level-3"><a href="#pattern-source-candidates">Pattern Source Candidates</a></li><li class="level-3"><a href="#validation-proof-before-after">Validation Proof (Before/After)</a></li><li class="level-3"><a href="#instance-id-coverage">Instance ID Coverage</a></li><li class="level-3"><a href="#violation-counts">Violation Counts</a></li><li class="level-3"><a href="#fixed-rules">Fixed Rules</a></li><li class="level-2"><a href="#test-cases">Test Cases</a></li><li class="level-3"><a href="#test-1-admin-config-content-formats">Test 1: /admin/config/content/formats</a></li><li class="level-2"><a href="#screenshots">Screenshots</a></li><li class="level-2"><a href="#html-snapshots">HTML Snapshots</a></li>
+      </ol>
+    </nav>
+    <main class="content">
+      <h1 id="patch-evaluation-report-a11y-label-in-name-004-filter-format-aria-label-codex-selector-hint-label-004">Patch Evaluation Report: a11y-LABEL-IN-NAME-004-filter-format-aria-label-codex-selector-hint-label-004</h1>
+<p><strong>Generated:</strong> 2026-05-28 at 1:28:39 PM</p>
+<h2 id="summary">Summary<a class="heading-anchor" href="#summary" aria-label="Link to Summary section">#</a></h2>
+<ul><li><strong>Description:</strong> Fix label-in-name violation for filter format configure link</li><li><strong>WCAG Criteria:</strong> 2.5.3 (A)</li><li><strong>Affected Rules:</strong> label-in-name (axe: label-content-name-mismatch)</li><li><strong>Pattern Source:</strong> reports/pattern-report-2026-05-06.json</li><li><strong>Pattern Source (Markdown):</strong> reports/pattern-report-2026-05-06.md</li><li><strong>Pattern ID Match Type:</strong> runtime-generated-only</li><li><strong>Matched Pattern IDs (pattern source):</strong> none</li><li><strong>Generated Pattern IDs (current run):</strong> DRU-90c99d19</li><li><strong>Status:</strong> ✅ <strong>PASS</strong> — Patch resolves targeted issues without introducing new violations</li><li><strong>Outcome Reason:</strong> <code>targeted-issues-fixed-without-regressions</code></li><li><strong>Eligible For Patch Recommendation:</strong> yes</li><li><strong>Requested color mode:</strong> light</li><li><strong>Patch preflight applicability:</strong> applicable</li><li><strong>Drupal initial state capture:</strong> complete</li><li><strong>Enabled modules (captured):</strong> 53</li><li><strong>Enabled modules hash:</strong> e0133986f3906e2439787af017dcbe0cf6e13cf9cb9271c69393741da46673dd</li><li><strong>Core extension hash:</strong> 31b259471c42afbd3e30d71ad307fb06ea209bbb58152af62111117b20cec91c</li><li><strong>Pattern source modified:</strong> 2026-05-28T16:34:13.257Z</li><li><strong>Pattern source age (hours):</strong> 0.91</li><li><strong>Case generation mode:</strong> fallback-config-testCases</li><li><strong>Case generation count:</strong> 1</li><li><strong>Case generation fallback reason:</strong> no-configured-pattern-ids</li><li><strong>Page load HTTP statuses (baseline):</strong> 200x1</li><li><strong>Pages loaded successfully (2xx):</strong> 1/1</li><li><strong>Pages not loaded as 2xx:</strong> 0/1</li><li><strong>ID consistency issues:</strong> patterns=0, instances=0</li><li><strong>Pattern observed before patch attempt:</strong> yes</li><li><strong>Baseline observed instances:</strong> 1</li><li><strong>Fixed instances after patch:</strong> 1</li><li><strong>Remaining instances after patch:</strong> 0</li></ul>
+<h3 id="replication-instructions">Replication Instructions<a class="heading-anchor" href="#replication-instructions" aria-label="Link to Replication Instructions section">#</a></h3>
+<p>Use the following deterministic steps to reproduce this exact evaluation run:</p>
+<ul><li>Setup: <code>ddev drush cset system.theme default olivero -y</code></li><li>Setup: <code>ddev drush cset system.theme admin claro -y</code></li><li>Setup: <code>ddev drush cache-rebuild</code></li><li>Flow: Navigate to each test case URL under requested conditions and capture baseline evidence.</li><li>Flow: Apply patch with: git apply &quot;/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch&quot;</li><li>Flow: Clear Drupal cache with: ddev drush cache-rebuild</li><li>Flow: Revisit same URL + conditions and capture post-patch evidence.</li><li>Flow: Revert patch with: git apply -R &quot;/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label.patch&quot;</li><li>Variant ID: <code>codex-selector-hint-label-004</code></li><li>Expected proof: Problem must be observed before patch and not observed after patch under the same recorded conditions.</li></ul>
+<h3 id="drupal-initial-state-snapshot">Drupal Initial State Snapshot<a class="heading-anchor" href="#drupal-initial-state-snapshot" aria-label="Link to Drupal Initial State Snapshot section">#</a></h3>
+<ul><li><strong>Captured at:</strong> 2026-05-28T17:28:29.552Z</li><li><strong>Capture status:</strong> complete</li><li><strong>Default theme:</strong> olivero</li><li><strong>Admin theme:</strong> claro</li><li><strong>Enabled modules count:</strong> 53</li><li><strong>Enabled modules hash (sha256):</strong> e0133986f3906e2439787af017dcbe0cf6e13cf9cb9271c69393741da46673dd</li><li><strong>Core extension hash (sha256):</strong> 31b259471c42afbd3e30d71ad307fb06ea209bbb58152af62111117b20cec91c</li><li><strong>Core extension modules hash (sha256):</strong> 8bb798d045e892a1aaab3573344f1d0b647d655676db6ee85261d446a4942963</li><li><strong>Core extension themes hash (sha256):</strong> 30bfe9325153ff420bc86f2bc9e447ecd63a74f52d8d0e329bf8420f15e9c0a3</li><li><strong>Drush status:</strong> {&quot;drupal-version&quot;:&quot;12.0-dev&quot;,&quot;uri&quot;:&quot;https://drupal-core.ddev.site:33001&quot;,&quot;db-driver&quot;:&quot;mysql&quot;,&quot;db-hostname&quot;:&quot;db&quot;,&quot;db-port&quot;:3306,&quot;db-username&quot;:&quot;db&quot;,&quot;db-password&quot;:&quot;db&quot;,&quot;db-name&quot;:&quot;db&quot;,&quot;db-status&quot;:&quot;Connected&quot;,&quot;bootstrap&quot;:&quot;Successful&quot;,&quot;theme&quot;:&quot;olivero&quot;,&quot;admin-theme&quot;:&quot;claro&quot;,&quot;php-bin&quot;:&quot;/usr/bin/php8.5&quot;,&quot;php-conf&quot;:[&quot;/etc/php/8.5/cli/php.ini&quot;],&quot;php-os&quot;:&quot;Linux&quot;,&quot;php-version&quot;:&quot;8.5.5&quot;,&quot;drush-script&quot;:&quot;/var/www/html/vendor/bin/drush.php&quot;,&quot;drush-version&quot;:&quot;14.9999999.9999999.9999999-dev&quot;,&quot;drush-temp&quot;:&quot;/tmp&quot;,&quot;drush-conf&quot;:[],&quot;drush-alias-files&quot;:[],&quot;alias-searchpaths&quot;:[],&quot;install-profile&quot;:&quot;standard&quot;,&quot;root&quot;:&quot;/var/www/html&quot;,&quot;drupal-settings-file&quot;:&quot;sites/default/settings.php&quot;,&quot;site&quot;:&quot;sites/default&quot;,&quot;themes&quot;:&quot;sites/all/themes&quot;,&quot;modules&quot;:&quot;sites/all/modules&quot;,&quot;files&quot;:&quot;sites/default/files&quot;,&quot;temp&quot;:&quot;/tmp&quot;,&quot;config-sync&quot;:&quot;sites/default/files/sync&quot;,&quot;config&quot;:&quot;sites/default/files/sync&quot;,&quot;%paths&quot;:{&quot;%root&quot;:&quot;/var/www/html&quot;,&quot;%site&quot;:&quot;sites/default&quot;,&quot;%modules&quot;:&quot;sites/all/modules&quot;,&quot;%themes&quot;:&quot;sites/all/themes&quot;,&quot;%config-sync&quot;:&quot;sites/default/files/sync&quot;,&quot;%config&quot;:&quot;sites/default/files/sync&quot;,&quot;%files&quot;:&quot;sites/default/files&quot;,&quot;%temp&quot;:&quot;/tmp&quot;}}</li><li><strong>Enabled modules sample (first 40):</strong> actionlink, announcements_feed, automated_cron, big_pipe, block, block_content, breakpoint, button, ckeditor5, comment, config, contact, contextual, datetime, dblog, dialog, dynamic_page_cache, editor, field, field_ui, file, filter, help, image, imagefile, lang_hebrew, language, layout_builder, layout_discovery, link, locale, menu_link_content, menu_ui, message, mysql, navigation, node, options, page_cache, pager</li><li><strong>Commands used:</strong></li><li>✅ <code>ddev drush pm:list --type=module --status=enabled --format=json</code></li><li>✅ <code>ddev drush cget system.theme --format=json</code></li><li>✅ <code>ddev drush cget core.extension --format=json</code></li><li>✅ <code>ddev drush status --format=json</code></li></ul>
+<h3 id="pattern-source-candidates">Pattern Source Candidates<a class="heading-anchor" href="#pattern-source-candidates" aria-label="Link to Pattern Source Candidates section">#</a></h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Path</th><th scope="col">Modified</th></tr></thead><tbody><tr><td>reports/pattern-report-2026-05-06.json</td><td>2026-05-28T16:34:13.257Z</td></tr></tbody></table></div>
+<h3 id="validation-proof-before-after">Validation Proof (Before/After)<a class="heading-anchor" href="#validation-proof-before-after" aria-label="Link to Validation Proof (Before/After) section">#</a></h3>
+<p>This run captured the target violation before patch application and confirmed it was absent after patch application under the same recorded conditions.</p>
+<ul><li>Baseline observed: 1</li><li>Fixed after patch: 1</li><li>Remaining after patch: 0</li><li>New violations introduced: 0</li></ul>
+<h3 id="instance-id-coverage">Instance ID Coverage<a class="heading-anchor" href="#instance-id-coverage" aria-label="Link to Instance ID Coverage section">#</a></h3>
+<ul><li><strong>Targeted instance IDs:</strong> 1</li><li><strong>Seen before patch:</strong> 1</li><li><strong>Fixed instances:</strong> 1</li><li><strong>Remaining instances:</strong> 0</li><li><strong>Not observed in baseline:</strong> 0</li></ul>
+<div class="table-wrap"><table><thead><tr><th scope="col">Instance ID</th><th scope="col">Pattern ID</th><th scope="col">Rule</th><th scope="col">Path</th><th scope="col">Status</th><th scope="col">Before IDs</th><th scope="col">After IDs</th></tr></thead><tbody><tr><td>DRU-bb2f2dd6</td><td>DRU-90c99d19</td><td>label-content-name-mismatch</td><td>/admin/config/content/formats</td><td>fixed</td><td>DRU-bb2f2dd6, DRU-8a215924, DRU-fb14af17, DRU-8701c8e8</td><td>-</td></tr></tbody></table></div>
+<h3 id="violation-counts">Violation Counts<a class="heading-anchor" href="#violation-counts" aria-label="Link to Violation Counts section">#</a></h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Metric</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Change</th></tr></thead><tbody><tr><td><strong>Total violations</strong></td><td>5</td><td>1</td><td>-4</td></tr></tbody></table></div>
+<h3 id="fixed-rules">Fixed Rules<a class="heading-anchor" href="#fixed-rules" aria-label="Link to Fixed Rules section">#</a></h3>
+<ul><li><code>label-content-name-mismatch</code>: 4 → 0 (−4)</li></ul>
+<hr>
+<h2 id="test-cases">Test Cases<a class="heading-anchor" href="#test-cases" aria-label="Link to Test Cases section">#</a></h2>
+<h3 id="test-1-admin-config-content-formats">Test 1: /admin/config/content/formats<a class="heading-anchor" href="#test-1-admin-config-content-formats" aria-label="Link to Test 1: /admin/config/content/formats section">#</a></h3>
+<p><strong>URL:</strong> <code>http://drupal-core.ddev.site:33000/admin/config/content/formats</code></p>
+<p><strong>Elements tested:</strong> table a:has-text(&quot;Configure&quot;)</p>
+<p><strong>Conditions:</strong></p>
+<ul><li>Requested: {&quot;screenType&quot;:&quot;desktop&quot;,&quot;orientation&quot;:&quot;landscape&quot;,&quot;colorMode&quot;:&quot;light&quot;,&quot;direction&quot;:&quot;ltr&quot;,&quot;viewport&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1024}}</li><li>Before: {&quot;screenType&quot;:&quot;desktop&quot;,&quot;orientation&quot;:&quot;landscape&quot;,&quot;viewport&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1024},&quot;colorMode&quot;:&quot;light&quot;,&quot;direction&quot;:&quot;ltr&quot;,&quot;language&quot;:&quot;en&quot;,&quot;colorSchemeDetected&quot;:&quot;light&quot;,&quot;prefersContrast&quot;:&quot;no-preference&quot;,&quot;forcedColors&quot;:&quot;none&quot;,&quot;theme&quot;:&quot;unknown&quot;,&quot;bodyClasses&quot;:[&quot;user-logged-in&quot;,&quot;path-admin&quot;]}</li><li>After: {&quot;screenType&quot;:&quot;desktop&quot;,&quot;orientation&quot;:&quot;landscape&quot;,&quot;viewport&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1024},&quot;colorMode&quot;:&quot;light&quot;,&quot;direction&quot;:&quot;ltr&quot;,&quot;language&quot;:&quot;en&quot;,&quot;colorSchemeDetected&quot;:&quot;light&quot;,&quot;prefersContrast&quot;:&quot;no-preference&quot;,&quot;forcedColors&quot;:&quot;none&quot;,&quot;theme&quot;:&quot;unknown&quot;,&quot;bodyClasses&quot;:[&quot;user-logged-in&quot;,&quot;path-admin&quot;]}</li></ul>
+<p><strong>Authentication:</strong></p>
+<ul><li>Before case: {&quot;ensured&quot;:true,&quot;neededRelogin&quot;:false,&quot;before&quot;:{&quot;loggedInClass&quot;:true,&quot;logoutLink&quot;:true,&quot;loginForm&quot;:true,&quot;uid&quot;:1,&quot;authenticated&quot;:true},&quot;after&quot;:{&quot;loggedInClass&quot;:true,&quot;logoutLink&quot;:true,&quot;loginForm&quot;:true,&quot;uid&quot;:1,&quot;authenticated&quot;:true},&quot;loginAttempt&quot;:null}</li></ul>
+<h4 id="before-patch">Before Patch<a class="heading-anchor" href="#before-patch" aria-label="Link to Before Patch section">#</a></h4>
+<ul><li><strong>Total violations:</strong> 5</li><li><strong>By rule:</strong></li><li><code>region</code>: 1</li><li><code>label-content-name-mismatch</code>: 4</li></ul>
+<h4 id="after-patch">After Patch<a class="heading-anchor" href="#after-patch" aria-label="Link to After Patch section">#</a></h4>
+<ul><li><strong>Total violations:</strong> 1</li><li><strong>By rule:</strong></li><li><code>region</code>: 1</li></ul>
+<hr>
+<h2 id="screenshots">Screenshots<a class="heading-anchor" href="#screenshots" aria-label="Link to Screenshots section">#</a></h2>
+<p>Captured 2 screenshot(s) for this run. See the reports directory.</p>
+<h2 id="html-snapshots">HTML Snapshots<a class="heading-anchor" href="#html-snapshots" aria-label="Link to HTML Snapshots section">#</a></h2>
+<p>Captured 2 HTML snapshot(s) for this run.</p>
+    </main>
+  </div>
+</body>
+</html>

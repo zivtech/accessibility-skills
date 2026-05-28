@@ -1,0 +1,3004 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-007-messages-landmark-role",
+  "config": {
+    "description": "Wrap status messages in proper landmark with role",
+    "wcag": [
+      "1.3.6 (AAA)"
+    ],
+    "rules": [
+      "landmark-contentinfo-is-top-level",
+      "landmark-no-duplicate-contentinfo"
+    ],
+    "patternIds": [
+      "DRU-2E022F2F",
+      "DRU-1260AB7D"
+    ],
+    "maxPathsPerPattern": 2,
+    "testCases": [
+      {
+        "url": "/admin/appearance",
+        "selectors": [
+          ".messages",
+          "[role=\"contentinfo\"]"
+        ],
+        "expectedFix": "Messages should not use contentinfo landmark",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-28T16:38:28.391Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site:33000",
+    "variantId": "codex-runtime-smoke-007",
+    "testCaseSource": "pattern-report",
+    "requestedColorMode": "light",
+    "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": true,
+      "error": null,
+      "kind": "applicable",
+      "targetFile": null,
+      "line": null,
+      "details": null
+    },
+    "requestedViewport": null,
+    "requestedDevice": null,
+    "requestedOrientation": null,
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "drupalInitialState": {
+      "capturedAt": "2026-05-28T16:38:25.026Z",
+      "success": true,
+      "commands": [
+        {
+          "name": "enabled-modules",
+          "command": "ddev drush pm:list --type=module --status=enabled --format=json",
+          "success": true
+        },
+        {
+          "name": "system-theme",
+          "command": "ddev drush cget system.theme --format=json",
+          "success": true
+        },
+        {
+          "name": "core-extension",
+          "command": "ddev drush cget core.extension --format=json",
+          "success": true
+        },
+        {
+          "name": "drush-status",
+          "command": "ddev drush status --format=json",
+          "success": true
+        }
+      ],
+      "errors": [],
+      "themes": {
+        "requested": {
+          "default": "olivero",
+          "admin": "claro"
+        },
+        "detected": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        },
+        "systemThemeConfig": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        }
+      },
+      "enabledModules": [
+        "actionlink",
+        "announcements_feed",
+        "automated_cron",
+        "big_pipe",
+        "block",
+        "block_content",
+        "breakpoint",
+        "button",
+        "ckeditor5",
+        "comment",
+        "config",
+        "contact",
+        "contextual",
+        "datetime",
+        "dblog",
+        "dialog",
+        "dynamic_page_cache",
+        "editor",
+        "field",
+        "field_ui",
+        "file",
+        "filter",
+        "help",
+        "image",
+        "imagefile",
+        "lang_hebrew",
+        "language",
+        "layout_builder",
+        "layout_discovery",
+        "link",
+        "locale",
+        "menu_link_content",
+        "menu_ui",
+        "message",
+        "mysql",
+        "navigation",
+        "node",
+        "options",
+        "page_cache",
+        "pager",
+        "path",
+        "path_alias",
+        "system",
+        "tab",
+        "table",
+        "taxonomy",
+        "text",
+        "themeswitcher",
+        "theming_tools",
+        "update",
+        "user",
+        "views",
+        "views_ui"
+      ],
+      "enabledModuleCount": 53,
+      "enabledModuleHash": "e0133986f3906e2439787af017dcbe0cf6e13cf9cb9271c69393741da46673dd",
+      "environment": {
+        "drushStatus": {
+          "drupal-version": "12.0-dev",
+          "uri": "https://drupal-core.ddev.site:33001",
+          "db-driver": "mysql",
+          "db-hostname": "db",
+          "db-port": 3306,
+          "db-username": "db",
+          "db-password": "db",
+          "db-name": "db",
+          "db-status": "Connected",
+          "bootstrap": "Successful",
+          "theme": "olivero",
+          "admin-theme": "claro",
+          "php-bin": "/usr/bin/php8.5",
+          "php-conf": [
+            "/etc/php/8.5/cli/php.ini"
+          ],
+          "php-os": "Linux",
+          "php-version": "8.5.5",
+          "drush-script": "/var/www/html/vendor/bin/drush.php",
+          "drush-version": "14.9999999.9999999.9999999-dev",
+          "drush-temp": "/tmp",
+          "drush-conf": [],
+          "drush-alias-files": [],
+          "alias-searchpaths": [],
+          "install-profile": "standard",
+          "root": "/var/www/html",
+          "drupal-settings-file": "sites/default/settings.php",
+          "site": "sites/default",
+          "themes": "sites/all/themes",
+          "modules": "sites/all/modules",
+          "files": "sites/default/files",
+          "temp": "/tmp",
+          "config-sync": "sites/default/files/sync",
+          "config": "sites/default/files/sync",
+          "%paths": {
+            "%root": "/var/www/html",
+            "%site": "sites/default",
+            "%modules": "sites/all/modules",
+            "%themes": "sites/all/themes",
+            "%config-sync": "sites/default/files/sync",
+            "%config": "sites/default/files/sync",
+            "%files": "sites/default/files",
+            "%temp": "/tmp"
+          }
+        }
+      },
+      "fingerprints": {
+        "coreExtensionHash": "31b259471c42afbd3e30d71ad307fb06ea209bbb58152af62111117b20cec91c",
+        "coreExtensionModulesHash": "8bb798d045e892a1aaab3573344f1d0b647d655676db6ee85261d446a4942963",
+        "coreExtensionThemesHash": "30bfe9325153ff420bc86f2bc9e447ecd63a74f52d8d0e329bf8420f15e9c0a3"
+      }
+    },
+    "authSetup": {
+      "attempted": true,
+      "success": true,
+      "method": "uli",
+      "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779986308/[REDACTED]/login",
+      "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+      "authState": {
+        "loggedInClass": true,
+        "logoutLink": true,
+        "loginForm": true,
+        "uid": 1,
+        "authenticated": true
+      },
+      "credentialAttempted": false,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test.",
+    "caseGeneration": {
+      "selectedCaseCount": 4,
+      "usedFallbackConfigCases": false,
+      "diagnostics": {
+        "usePatternReportCases": true,
+        "configuredTestCases": 1,
+        "configuredPatternIds": [
+          "DRU-2E022F2F",
+          "DRU-1260AB7D"
+        ],
+        "reportPatternCount": 13,
+        "matchedPatternIds": [
+          "DRU-2E022F2F",
+          "DRU-1260AB7D"
+        ],
+        "fallbackReason": null
+      }
+    }
+  },
+  "testCases": [
+    {
+      "url": "/admin/appearance",
+      "selectors": [
+        ".messages--error",
+        ".messages-list__item"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-c59ff778",
+          "pattern_id": "DRU-2E022F2F",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": ".messages--error",
+          "rule_id": "landmark-contentinfo-is-top-level"
+        },
+        {
+          "instance_id": "DRU-4b16856d",
+          "pattern_id": "DRU-2E022F2F",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": ".messages-list__item",
+          "rule_id": "landmark-contentinfo-is-top-level"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-appearance-1779986310943.png"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-appearance-1779986310971.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          },
+          {
+            "selector": ".messages-list__item",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          ".messages--error": 1,
+          ".messages-list__item": 2
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-c59ff778",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-4413d389",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-3430d034",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-f196e08d",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-appearance-1779986314515.png"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-appearance-1779986314541.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages__wrapper\"><div class=\"messages messages--error messages-list__item\" role=\"alert\" aria-labelledby=\"error-061249087786312-title\" data-drupal-message-id=\"error-061249087786312\" data-drupal-message-type=\"error\">\n    <div class=\"messages__header\">\n      <h2 id=\"error-061249087786312-title\" class=\"messages__title\">\n        Error message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div><div class=\"messages messages--warning messages-list__item\" role=\"alert\" aria-labelledby=\"warning-042313534484298-title\" data-drupal-message-id=\"warning-042313534484298\" data-drupal-message-type=\"warning\">\n    <div class=\"messages__header\">\n      <h2 id=\"warning-042313534484298-title\" class=\"messages__title\">\n        Warning message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div></div>"
+          },
+          {
+            "selector": ".messages-list__item",
+            "success": true,
+            "html": "<div class=\"messages__wrapper\"><div class=\"messages messages--error messages-list__item\" role=\"alert\" aria-labelledby=\"error-061249087786312-title\" data-drupal-message-id=\"error-061249087786312\" data-drupal-message-type=\"error\">\n    <div class=\"messages__header\">\n      <h2 id=\"error-061249087786312-title\" class=\"messages__title\">\n        Error message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div><div class=\"messages messages--warning messages-list__item\" role=\"alert\" aria-labelledby=\"warning-042313534484298-title\" data-drupal-message-id=\"warning-042313534484298\" data-drupal-message-type=\"warning\">\n    <div class=\"messages__header\">\n      <h2 id=\"warning-042313534484298-title\" class=\"messages__title\">\n        Warning message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div></div>"
+          }
+        ],
+        "axe": {
+          "total": 1,
+          "byRule": {
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-f196e08d",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        }
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        }
+      }
+    },
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        ".messages--error",
+        ".messages-list__item"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-53ec2bb1",
+          "pattern_id": "DRU-2E022F2F",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": ".messages--error",
+          "rule_id": "landmark-contentinfo-is-top-level"
+        },
+        {
+          "instance_id": "DRU-98d69441",
+          "pattern_id": "DRU-2E022F2F",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": ".messages-list__item",
+          "rule_id": "landmark-contentinfo-is-top-level"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-modules-1779986315447.png"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-modules-1779986315467.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          },
+          {
+            "selector": ".messages-list__item",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          ".messages--error": 1,
+          ".messages-list__item": 2
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-modules-1779986319420.png"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-modules-1779986319443.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          },
+          {
+            "selector": ".messages-list__item",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        }
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        }
+      }
+    },
+    {
+      "url": "/admin/appearance",
+      "selectors": [
+        ".messages--error"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-3430d034",
+          "pattern_id": "DRU-1260AB7D",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": ".messages--error",
+          "rule_id": "landmark-no-duplicate-contentinfo"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-appearance-1779986320744.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          ".messages--error": 1
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-c59ff778",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-4413d389",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-3430d034",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-f196e08d",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-appearance-1779986324268.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages__wrapper\"><div class=\"messages messages--error messages-list__item\" role=\"alert\" aria-labelledby=\"error-922172522654764-title\" data-drupal-message-id=\"error-922172522654764\" data-drupal-message-type=\"error\">\n    <div class=\"messages__header\">\n      <h2 id=\"error-922172522654764-title\" class=\"messages__title\">\n        Error message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div><div class=\"messages messages--warning messages-list__item\" role=\"alert\" aria-labelledby=\"warning-827547869915768-title\" data-drupal-message-id=\"warning-827547869915768\" data-drupal-message-type=\"warning\">\n    <div class=\"messages__header\">\n      <h2 id=\"warning-827547869915768-title\" class=\"messages__title\">\n        Warning message\n      </h2>\n    </div>\n    <div class=\"messages__content\">\n      There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n    </div>\n  </div></div>"
+          }
+        ],
+        "axe": {
+          "total": 1,
+          "byRule": {
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-f196e08d",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        }
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        }
+      }
+    },
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        ".messages--error"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-e6e58987",
+          "pattern_id": "DRU-1260AB7D",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": ".messages--error",
+          "rule_id": "landmark-no-duplicate-contentinfo"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/before--admin-modules-1779986325152.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          ".messages--error": 1
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-007-messages-landmark-role/codex-runtime-smoke-007/screenshots/after--admin-modules-1779986329087.png"
+          }
+        ],
+        "html": [
+          {
+            "selector": ".messages--error",
+            "success": true,
+            "html": "<div class=\"messages-list__wrapper\">\n                      \n      <div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">\n                  <div role=\"alert\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-error-title\" class=\"messages__title\">\n                  Error message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n                  </div>\n              </div>\n                                  \n      <div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">\n                              <div class=\"messages__header\">\n                              <h2 id=\"message-warning-title\" class=\"messages__title\">\n                  Warning message\n                </h2>\n                          </div>\n                    <div class=\"messages__content\">\n                          There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the <a href=\"/admin/reports/updates\">available updates</a> page for more information.\n                      </div>\n              </div>\n                  </div>"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        }
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 16,
+      "byRule": {
+        "landmark-contentinfo-is-top-level": 8,
+        "landmark-no-duplicate-contentinfo": 4,
+        "region": 4
+      }
+    },
+    "after": {
+      "total": 10,
+      "byRule": {
+        "region": 4,
+        "landmark-contentinfo-is-top-level": 4,
+        "landmark-no-duplicate-contentinfo": 2
+      }
+    },
+    "fixed": [
+      {
+        "rule": "landmark-contentinfo-is-top-level",
+        "beforeCount": 2,
+        "afterCount": 0,
+        "fixed": 2
+      },
+      {
+        "rule": "landmark-no-duplicate-contentinfo",
+        "beforeCount": 1,
+        "afterCount": 0,
+        "fixed": 1
+      },
+      {
+        "rule": "landmark-contentinfo-is-top-level",
+        "beforeCount": 2,
+        "afterCount": 0,
+        "fixed": 2
+      },
+      {
+        "rule": "landmark-no-duplicate-contentinfo",
+        "beforeCount": 1,
+        "afterCount": 0,
+        "fixed": 1
+      }
+    ],
+    "new": [],
+    "resolved": false,
+    "outcome": "fail",
+    "outcomeReason": "targeted-instances-not-fixed",
+    "eligibleForPatchRecommendation": true
+  },
+  "patternReport": {
+    "source": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-2E022F2F",
+        "ruleId": "landmark-contentinfo-is-top-level",
+        "selectorKey": ".messages--error",
+        "concretePaths": [
+          "/admin/appearance",
+          "/admin/modules",
+          "/message"
+        ],
+        "beforeCount": 2,
+        "afterCount": 1,
+        "status": "partially-fixed"
+      },
+      {
+        "patternId": "DRU-1260AB7D",
+        "ruleId": "landmark-no-duplicate-contentinfo",
+        "selectorKey": ".messages--error",
+        "concretePaths": [
+          "/admin/appearance",
+          "/admin/modules"
+        ],
+        "beforeCount": 2,
+        "afterCount": 1,
+        "status": "partially-fixed"
+      }
+    ],
+    "summary": {
+      "targeted": 2,
+      "observedBefore": 2,
+      "fullyFixed": 0,
+      "partiallyFixed": 2,
+      "unchanged": 0
+    },
+    "markdownSource": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.md",
+    "sourceDiagnostics": {
+      "selectedExists": true,
+      "selectedMtimeIso": "2026-05-28T16:34:13.257Z",
+      "selectedAgeHours": 0.07,
+      "candidates": [
+        {
+          "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+          "mtimeIso": "2026-05-28T16:34:13.257Z"
+        }
+      ]
+    },
+    "targetPatternIds": [
+      "DRU-2E022F2F",
+      "DRU-1260AB7D"
+    ]
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 6,
+      "observedBefore": 4,
+      "fixed": 2,
+      "remaining": 2,
+      "notObserved": 2
+    },
+    "entries": [
+      {
+        "instanceId": "DRU-c59ff778",
+        "patternId": "DRU-2E022F2F",
+        "ruleId": "landmark-contentinfo-is-top-level",
+        "pagePath": "/admin/appearance",
+        "selector": ".messages--error",
+        "status": "fixed",
+        "seenBefore": true,
+        "seenAfter": false,
+        "beforeCount": 1,
+        "afterCount": 0,
+        "beforeInstanceIds": [
+          "DRU-c59ff778"
+        ],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      },
+      {
+        "instanceId": "DRU-4b16856d",
+        "patternId": "DRU-2E022F2F",
+        "ruleId": "landmark-contentinfo-is-top-level",
+        "pagePath": "/admin/appearance",
+        "selector": ".messages-list__item",
+        "status": "not-observed",
+        "seenBefore": false,
+        "seenAfter": false,
+        "beforeCount": 0,
+        "afterCount": 0,
+        "beforeInstanceIds": [],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      },
+      {
+        "instanceId": "DRU-53ec2bb1",
+        "patternId": "DRU-2E022F2F",
+        "ruleId": "landmark-contentinfo-is-top-level",
+        "pagePath": "/admin/modules",
+        "selector": ".messages--error",
+        "status": "remaining",
+        "seenBefore": true,
+        "seenAfter": true,
+        "beforeCount": 1,
+        "afterCount": 1,
+        "beforeInstanceIds": [
+          "DRU-53ec2bb1"
+        ],
+        "afterInstanceIds": [
+          "DRU-53ec2bb1"
+        ],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      },
+      {
+        "instanceId": "DRU-98d69441",
+        "patternId": "DRU-2E022F2F",
+        "ruleId": "landmark-contentinfo-is-top-level",
+        "pagePath": "/admin/modules",
+        "selector": ".messages-list__item",
+        "status": "not-observed",
+        "seenBefore": false,
+        "seenAfter": false,
+        "beforeCount": 0,
+        "afterCount": 0,
+        "beforeInstanceIds": [],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      },
+      {
+        "instanceId": "DRU-3430d034",
+        "patternId": "DRU-1260AB7D",
+        "ruleId": "landmark-no-duplicate-contentinfo",
+        "pagePath": "/admin/appearance",
+        "selector": ".messages--error",
+        "status": "fixed",
+        "seenBefore": true,
+        "seenAfter": false,
+        "beforeCount": 1,
+        "afterCount": 0,
+        "beforeInstanceIds": [
+          "DRU-3430d034"
+        ],
+        "afterInstanceIds": [],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      },
+      {
+        "instanceId": "DRU-e6e58987",
+        "patternId": "DRU-1260AB7D",
+        "ruleId": "landmark-no-duplicate-contentinfo",
+        "pagePath": "/admin/modules",
+        "selector": ".messages--error",
+        "status": "remaining",
+        "seenBefore": true,
+        "seenAfter": true,
+        "beforeCount": 1,
+        "afterCount": 1,
+        "beforeInstanceIds": [
+          "DRU-e6e58987"
+        ],
+        "afterInstanceIds": [
+          "DRU-e6e58987"
+        ],
+        "conditions": {
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "before": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          },
+          "after": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "idValidation": {
+    "patternIdsSeen": 6,
+    "instanceIdsSeen": 10,
+    "inconsistentPatternIds": [
+      {
+        "id": "DRU-2E022F2F",
+        "signatures": [
+          "landmark-contentinfo-is-top-level|.messages--error|desktop|landscape|light|ltr|unknown",
+          "landmark-contentinfo-is-top-level|.messages-list__item|desktop|landscape|light|ltr|unknown"
+        ]
+      }
+    ],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 6,
+    "baselineObservedInstances": 4,
+    "patternObservedBeforePatchAttempt": true,
+    "fixedInstances": 2,
+    "remainingInstances": 2,
+    "notObservedInstances": 2,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "codex-runtime-smoke-007",
+    "patchFile": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}

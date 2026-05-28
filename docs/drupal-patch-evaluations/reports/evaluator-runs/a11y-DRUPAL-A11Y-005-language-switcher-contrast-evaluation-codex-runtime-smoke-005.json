@@ -1,0 +1,3830 @@
+{
+  "patch": "a11y-DRUPAL-A11Y-005-language-switcher-contrast",
+  "config": {
+    "description": "Ensure language switcher links maintain WCAG AA contrast",
+    "wcag": [
+      "1.4.3 (AA)"
+    ],
+    "rules": [
+      "color-contrast"
+    ],
+    "patternIds": [
+      "DRU-F75A07EF"
+    ],
+    "maxPathsPerPattern": 6,
+    "testCases": [
+      {
+        "url": "/action-link",
+        "selectors": [
+          "a",
+          "[role=\"link\"]"
+        ],
+        "expectedFix": "Language switcher links should meet WCAG AA contrast",
+        "viewport": {
+          "width": 1280,
+          "height": 1024
+        }
+      }
+    ]
+  },
+  "timestamp": "2026-05-28T16:53:12.044Z",
+  "runContext": {
+    "baseUrl": "http://drupal-core.ddev.site:33000",
+    "variantId": "codex-runtime-smoke-005",
+    "testCaseSource": "pattern-report",
+    "requestedColorMode": "light",
+    "requestedDirection": "ltr",
+    "patchApplicability": {
+      "success": true,
+      "error": null,
+      "kind": "applicable",
+      "targetFile": null,
+      "line": null,
+      "details": null
+    },
+    "requestedViewport": null,
+    "requestedDevice": null,
+    "requestedOrientation": null,
+    "deterministicThemeSetup": {
+      "requested": {
+        "default": "olivero",
+        "admin": "claro"
+      },
+      "commands": [
+        "ddev drush cset system.theme default olivero -y",
+        "ddev drush cset system.theme admin claro -y",
+        "ddev drush cache-rebuild",
+        "ddev drush cget system.theme --format=json"
+      ],
+      "detected": {
+        "_core": {
+          "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+        },
+        "admin": "claro",
+        "default": "olivero"
+      },
+      "success": true,
+      "error": null
+    },
+    "drupalInitialState": {
+      "capturedAt": "2026-05-28T16:53:08.007Z",
+      "success": true,
+      "commands": [
+        {
+          "name": "enabled-modules",
+          "command": "ddev drush pm:list --type=module --status=enabled --format=json",
+          "success": true
+        },
+        {
+          "name": "system-theme",
+          "command": "ddev drush cget system.theme --format=json",
+          "success": true
+        },
+        {
+          "name": "core-extension",
+          "command": "ddev drush cget core.extension --format=json",
+          "success": true
+        },
+        {
+          "name": "drush-status",
+          "command": "ddev drush status --format=json",
+          "success": true
+        }
+      ],
+      "errors": [],
+      "themes": {
+        "requested": {
+          "default": "olivero",
+          "admin": "claro"
+        },
+        "detected": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        },
+        "systemThemeConfig": {
+          "_core": {
+            "default_config_hash": "eJ529VM1gSIA_vgTy2PdiDvJuG0xhSxfQjCyl5WKlv4"
+          },
+          "admin": "claro",
+          "default": "olivero"
+        }
+      },
+      "enabledModules": [
+        "actionlink",
+        "announcements_feed",
+        "automated_cron",
+        "big_pipe",
+        "block",
+        "block_content",
+        "breakpoint",
+        "button",
+        "ckeditor5",
+        "comment",
+        "config",
+        "contact",
+        "contextual",
+        "datetime",
+        "dblog",
+        "dialog",
+        "dynamic_page_cache",
+        "editor",
+        "field",
+        "field_ui",
+        "file",
+        "filter",
+        "help",
+        "image",
+        "imagefile",
+        "lang_hebrew",
+        "language",
+        "layout_builder",
+        "layout_discovery",
+        "link",
+        "locale",
+        "menu_link_content",
+        "menu_ui",
+        "message",
+        "mysql",
+        "navigation",
+        "node",
+        "options",
+        "page_cache",
+        "pager",
+        "path",
+        "path_alias",
+        "system",
+        "tab",
+        "table",
+        "taxonomy",
+        "text",
+        "themeswitcher",
+        "theming_tools",
+        "update",
+        "user",
+        "views",
+        "views_ui"
+      ],
+      "enabledModuleCount": 53,
+      "enabledModuleHash": "e0133986f3906e2439787af017dcbe0cf6e13cf9cb9271c69393741da46673dd",
+      "environment": {
+        "drushStatus": {
+          "drupal-version": "12.0-dev",
+          "uri": "https://drupal-core.ddev.site:33001",
+          "db-driver": "mysql",
+          "db-hostname": "db",
+          "db-port": 3306,
+          "db-username": "db",
+          "db-password": "db",
+          "db-name": "db",
+          "db-status": "Connected",
+          "bootstrap": "Successful",
+          "theme": "olivero",
+          "admin-theme": "claro",
+          "php-bin": "/usr/bin/php8.5",
+          "php-conf": [
+            "/etc/php/8.5/cli/php.ini"
+          ],
+          "php-os": "Linux",
+          "php-version": "8.5.5",
+          "drush-script": "/var/www/html/vendor/bin/drush.php",
+          "drush-version": "14.9999999.9999999.9999999-dev",
+          "drush-temp": "/tmp",
+          "drush-conf": [],
+          "drush-alias-files": [],
+          "alias-searchpaths": [],
+          "install-profile": "standard",
+          "root": "/var/www/html",
+          "drupal-settings-file": "sites/default/settings.php",
+          "site": "sites/default",
+          "themes": "sites/all/themes",
+          "modules": "sites/all/modules",
+          "files": "sites/default/files",
+          "temp": "/tmp",
+          "config-sync": "sites/default/files/sync",
+          "config": "sites/default/files/sync",
+          "%paths": {
+            "%root": "/var/www/html",
+            "%site": "sites/default",
+            "%modules": "sites/all/modules",
+            "%themes": "sites/all/themes",
+            "%config-sync": "sites/default/files/sync",
+            "%config": "sites/default/files/sync",
+            "%files": "sites/default/files",
+            "%temp": "/tmp"
+          }
+        }
+      },
+      "fingerprints": {
+        "coreExtensionHash": "31b259471c42afbd3e30d71ad307fb06ea209bbb58152af62111117b20cec91c",
+        "coreExtensionModulesHash": "8bb798d045e892a1aaab3573344f1d0b647d655676db6ee85261d446a4942963",
+        "coreExtensionThemesHash": "30bfe9325153ff420bc86f2bc9e447ecd63a74f52d8d0e329bf8420f15e9c0a3"
+      }
+    },
+    "authSetup": {
+      "attempted": true,
+      "success": true,
+      "method": "uli",
+      "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+      "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+      "authState": {
+        "loggedInClass": true,
+        "logoutLink": true,
+        "loginForm": true,
+        "uid": 1,
+        "authenticated": true
+      },
+      "credentialAttempted": false,
+      "error": null
+    },
+    "note": "Evaluator applies deterministic theme setup and explicit runtime condition overrides for each test.",
+    "caseGeneration": {
+      "selectedCaseCount": 6,
+      "usedFallbackConfigCases": false,
+      "diagnostics": {
+        "usePatternReportCases": true,
+        "configuredTestCases": 1,
+        "configuredPatternIds": [
+          "DRU-F75A07EF"
+        ],
+        "reportPatternCount": 13,
+        "matchedPatternIds": [
+          "DRU-F75A07EF"
+        ],
+        "fallbackReason": null
+      }
+    }
+  },
+  "testCases": [
+    {
+      "url": "/action-link",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-a94dcccd",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-f22f822e",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "#edit-submit",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-eb6dfba6",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": ".button--action",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-236b4483",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "p:nth-child(1) > a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-7ca5d192",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": ".feed-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-05e4891c",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "#action-link-no-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-e3220f24",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "#action-link-plus",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-0de461e0",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/action-link",
+          "selector": "#action-link-trash--N",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "Element has no bounding box: #edit-submit"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--action-link-1779987194527.png"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--action-link-1779987194546.png"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": true,
+            "html": "<li data-drupal-language=\"he\" data-drupal-link-system-path=\"action-link\"><a href=\"/he/action-link\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"action-link\">עברית</a></li>"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": true,
+            "html": "<div class=\"js-hide form-actions js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" id=\"edit-actions\"><input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Save\" class=\"button button--primary js-form-submit form-submit\" style=\"\">\n</div>"
+          },
+          {
+            "selector": ".button--action",
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "selector": "p:nth-child(1) > a",
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "selector": ".feed-icon",
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "selector": "#action-link-no-icon",
+            "success": true,
+            "html": "<div class=\"action-links\"><div><small>Default size</small>\n</div>\n<a href=\"/action-link\" class=\"action-link\" id=\"action-link-no-icon\">Action link</a> <a href=\"/action-link\" class=\"action-link action-link--danger\" id=\"action-link-no-icon--2\">Action link</a> </div>"
+          },
+          {
+            "selector": "#action-link-plus",
+            "success": true,
+            "html": "<div class=\"action-links\"><div><small>Default size</small>\n</div>\n<a href=\"/action-link\" class=\"action-link action-link--icon-plus\" id=\"action-link-plus\">Action link</a> <a href=\"/action-link\" class=\"action-link action-link--icon-plus action-link--danger\" id=\"action-link-plus--2\">Action link</a> </div>"
+          },
+          {
+            "selector": "#action-link-trash--N",
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "axe": {
+          "total": 1,
+          "byRule": {
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 1,
+          "#action-link-plus": 1,
+          "#action-link-trash--N": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-bd57f178",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/action-link",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item form-type-select js-form-type-select form-item-preferred-theme js-form-item-preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-action-link"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/action-link",
+          "finalUrl": "http://drupal-core.ddev.site:33000/action-link",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Action Links | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": false,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-action-link"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "color-contrast": 0
+        },
+        "selectorCountsBefore": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 1,
+          "#action-link-plus": 1,
+          "#action-link-trash--N": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/action-link",
+          "finalUrl": "http://drupal-core.ddev.site:33000/action-link",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Action Links | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/form_style",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    },
+    {
+      "url": "/admin",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-c36ea975",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-eaa8796c",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "#edit-submit",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-50521b77",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": ".button--action",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-68383ca6",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "p:nth-child(1) > a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-7800dbce",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": ".feed-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-c149949c",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "#action-link-no-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-209628b5",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "#action-link-plus",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-ae58f63d",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin",
+          "selector": "#action-link-trash--N",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "Element has no bounding box: #edit-submit"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": true,
+            "html": "<li data-drupal-language=\"he\" data-drupal-link-system-path=\"admin\" class=\"he\"><a href=\"/he/admin\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"admin\">עברית</a></li>"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": true,
+            "html": "<div class=\"js-hide form-actions js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" id=\"edit-actions\">  <input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Save\" class=\"button button--primary js-form-submit form-submit\" style=\"\"></div>"
+          },
+          {
+            "selector": ".button--action",
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "selector": "p:nth-child(1) > a",
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "selector": ".feed-icon",
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "selector": "#action-link-no-icon",
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "selector": "#action-link-plus",
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "selector": "#action-link-trash--N",
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "axe": {
+          "total": 1,
+          "byRule": {
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-10356e11",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Administration | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "color-contrast": 0
+        },
+        "selectorCountsBefore": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Administration | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/form_style",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    },
+    {
+      "url": "/admin/appearance",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-9b8afb95",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-da37b9ad",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "#edit-submit",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-0b9a308d",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": ".button--action",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-3bab81a7",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "p:nth-child(1) > a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-055f7667",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": ".feed-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-c5075b33",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "#action-link-no-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-34469282",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "#action-link-plus",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-526b2ae8",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/appearance",
+          "selector": "#action-link-trash--N",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--admin-appearance-1779987196210.png"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": true,
+            "html": "<li data-drupal-language=\"he\" data-drupal-link-system-path=\"admin/appearance\" class=\"he\"><a href=\"/he/admin/appearance\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"admin/appearance\">עברית</a></li>"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": true,
+            "html": "<div data-drupal-selector=\"edit-actions\" class=\"form-actions js-form-wrapper form-wrapper\" id=\"edit-actions\">  <input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Save configuration\" class=\"button button--primary js-form-submit form-submit\" style=\"\"></div>"
+          },
+          {
+            "selector": ".button--action",
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "selector": "p:nth-child(1) > a",
+            "success": true,
+            "html": "<p>Set and configure the default theme for your website.  Alternative <a href=\"https://www.drupal.org/project/project_theme\">themes</a> are available.</p>"
+          },
+          {
+            "selector": ".feed-icon",
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "selector": "#action-link-no-icon",
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "selector": "#action-link-plus",
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "selector": "#action-link-trash--N",
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 1,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-c59ff778",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-4413d389",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-3430d034",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-f196e08d",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/appearance",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "color-contrast": 0
+        },
+        "selectorCountsBefore": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 1,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/appearance",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Appearance | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/form_style",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    },
+    {
+      "url": "/admin/content",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-71e6ebe9",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-82d8d21f",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "#edit-submit",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-5f9d61c3",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": ".button--action",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-94dfbd6d",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "p:nth-child(1) > a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-5b2cb407",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": ".feed-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-14b83302",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "#action-link-no-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-4f18a7b2",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "#action-link-plus",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-07b69a96",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/content",
+          "selector": "#action-link-trash--N",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--admin-content-1779987197011.png"
+          },
+          {
+            "success": false,
+            "error": "Element has no bounding box: #edit-submit"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--admin-content-1779987197031.png"
+          },
+          {
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": true,
+            "html": "<li data-drupal-language=\"he\" data-drupal-link-system-path=\"admin/content\" class=\"he\"><a href=\"/he/admin/content\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"admin/content\">עברית</a></li>"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": true,
+            "html": "<div class=\"js-hide form-actions js-form-wrapper form-wrapper\" data-drupal-selector=\"edit-actions\" id=\"edit-actions--2\">  <input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Save\" class=\"button button--primary js-form-submit form-submit\" style=\"\"></div>"
+          },
+          {
+            "selector": ".button--action",
+            "success": true,
+            "html": "<li class=\"local-actions__item\"><a href=\"/node/add\" class=\"button button--action button--primary\" data-drupal-link-system-path=\"node/add\">Add content</a></li>"
+          },
+          {
+            "selector": "p:nth-child(1) > a",
+            "success": false,
+            "error": "Element not found: p:nth-child(1) > a"
+          },
+          {
+            "selector": ".feed-icon",
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "selector": "#action-link-no-icon",
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "selector": "#action-link-plus",
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "selector": "#action-link-trash--N",
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "axe": {
+          "total": 2,
+          "byRule": {
+            "empty-table-header": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "empty-table-header",
+              "impact": "minor",
+              "tags": [
+                "cat.name-role-value",
+                "best-practice"
+              ],
+              "description": "Ensure table headers have discernible text",
+              "help": "Table header text should not be empty",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/empty-table-header?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "has-visible-text",
+                      "data": null,
+                      "relatedNodes": [],
+                      "impact": "minor",
+                      "message": "Element does not have text that is visible to screen readers"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "minor",
+                  "html": "<th class=\"select-all views-field views-field-node-bulk-form\" scope=\"col\"></th>",
+                  "target": [
+                    ".select-all"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Element does not have text that is visible to screen readers"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 1,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-c38b108d",
+            "pattern_id": "DRU-53229275",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/content",
+            "selector": ".select-all",
+            "rule_id": "empty-table-header",
+            "impact": "minor",
+            "html_snippet": "<th class=\"select-all views-field views-field-node-bulk-form\" scope=\"col\"></th>"
+          },
+          {
+            "instance_id": "DRU-71da4971",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/content",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/content",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/content",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Content | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "color-contrast": 0
+        },
+        "selectorCountsBefore": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 1,
+          "p:nth-child(1) > a": 0,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/content",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/content",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Content | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/form_style",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    },
+    {
+      "url": "/admin/form_style",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [],
+      "before": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/form_style",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/form_style",
+          "httpStatus": 404,
+          "redirected": false,
+          "title": "Page not found | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "route-unavailable",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/form_style",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/form_style",
+          "httpStatus": 404,
+          "redirected": false,
+          "title": "Page not found | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    },
+    {
+      "url": "/admin/modules",
+      "selectors": [
+        "a[hreflang=\"he\"]",
+        "#edit-submit",
+        ".button--action",
+        "p:nth-child(1) > a",
+        ".feed-icon",
+        "#action-link-no-icon",
+        "#action-link-plus",
+        "#action-link-trash--N"
+      ],
+      "expected_targets": [
+        {
+          "instance_id": "DRU-976361b9",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "a[hreflang=\"he\"]",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-42bcf274",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "#edit-submit",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-62d30e01",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": ".button--action",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-f3b9a381",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "p:nth-child(1) > a",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-ad1ce778",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": ".feed-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-64d65077",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "#action-link-no-icon",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-b837aaab",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "#action-link-plus",
+          "rule_id": "color-contrast"
+        },
+        {
+          "instance_id": "DRU-222b13b5",
+          "pattern_id": "DRU-F75A07EF",
+          "screen_type": "desktop",
+          "orientation": "landscape",
+          "color_mode": "light",
+          "color_scheme_detected": "light",
+          "direction": "ltr",
+          "theme": "unknown",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "language": "en",
+          "page_path": "/admin/modules",
+          "selector": "#action-link-trash--N",
+          "rule_id": "color-contrast"
+        }
+      ],
+      "before": {
+        "screenshots": [
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "page.screenshot: Clipped area is either empty or outside the resulting image\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "success": true,
+            "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/artifacts/a11y-DRUPAL-A11Y-005-language-switcher-contrast/codex-runtime-smoke-005/screenshots/before--admin-modules-1779987198505.png"
+          },
+          {
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "html": [
+          {
+            "selector": "a[hreflang=\"he\"]",
+            "success": true,
+            "html": "<li data-drupal-language=\"he\" data-drupal-link-system-path=\"admin/modules\" class=\"he\"><a href=\"/he/admin/modules\" class=\"language-link\" hreflang=\"he\" data-drupal-link-system-path=\"admin/modules\">עברית</a></li>"
+          },
+          {
+            "selector": "#edit-submit",
+            "success": true,
+            "html": "<div data-drupal-selector=\"edit-actions\" class=\"form-actions js-form-wrapper form-wrapper\" id=\"edit-actions\">  <input data-drupal-selector=\"edit-submit\" type=\"submit\" id=\"edit-submit\" name=\"op\" value=\"Install\" class=\"button button--primary js-form-submit form-submit\" style=\"\"></div>"
+          },
+          {
+            "selector": ".button--action",
+            "success": false,
+            "error": "Element not found: .button--action"
+          },
+          {
+            "selector": "p:nth-child(1) > a",
+            "success": true,
+            "html": "<p>Add <a href=\"https://www.drupal.org/project/project_module\">contributed modules</a> to extend your site's functionality.</p>"
+          },
+          {
+            "selector": ".feed-icon",
+            "success": false,
+            "error": "Element not found: .feed-icon"
+          },
+          {
+            "selector": "#action-link-no-icon",
+            "success": false,
+            "error": "Element not found: #action-link-no-icon"
+          },
+          {
+            "selector": "#action-link-plus",
+            "success": false,
+            "error": "Element not found: #action-link-plus"
+          },
+          {
+            "selector": "#action-link-trash--N",
+            "success": false,
+            "error": "Element not found: #action-link-trash--N"
+          }
+        ],
+        "axe": {
+          "total": 4,
+          "byRule": {
+            "landmark-contentinfo-is-top-level": 2,
+            "landmark-no-duplicate-contentinfo": 1,
+            "region": 1
+          },
+          "violations": [
+            {
+              "id": "landmark-contentinfo-is-top-level",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the contentinfo landmark is at top level",
+              "help": "Contentinfo landmark should not be contained in another landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-contentinfo-is-top-level?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                },
+                {
+                  "any": [
+                    {
+                      "id": "landmark-is-top-level",
+                      "data": {
+                        "role": "contentinfo"
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "The contentinfo landmark is contained in another landmark."
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                  "target": [
+                    ".messages--warning"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  The contentinfo landmark is contained in another landmark."
+                }
+              ]
+            },
+            {
+              "id": "landmark-no-duplicate-contentinfo",
+              "impact": "moderate",
+              "tags": [
+                "cat.semantics",
+                "best-practice"
+              ],
+              "description": "Ensure the document has at most one contentinfo landmark",
+              "help": "Document should not have more than one contentinfo landmark",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/landmark-no-duplicate-contentinfo?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "page-no-duplicate-contentinfo",
+                      "data": null,
+                      "relatedNodes": [
+                        {
+                          "html": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">",
+                          "target": [
+                            ".messages--warning"
+                          ]
+                        }
+                      ],
+                      "impact": "moderate",
+                      "message": "Document has more than one contentinfo landmark"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">",
+                  "target": [
+                    ".messages--error"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Document has more than one contentinfo landmark"
+                }
+              ]
+            },
+            {
+              "id": "region",
+              "impact": "moderate",
+              "tags": [
+                "cat.keyboard",
+                "best-practice",
+                "RGAAv4",
+                "RGAA-9.2.1"
+              ],
+              "description": "Ensure all page content is contained by landmarks",
+              "help": "All page content should be contained by landmarks",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/region?application=axeAPI",
+              "nodes": [
+                {
+                  "any": [
+                    {
+                      "id": "region",
+                      "data": {
+                        "isIframe": false
+                      },
+                      "relatedNodes": [],
+                      "impact": "moderate",
+                      "message": "Some page content is not contained by landmarks"
+                    }
+                  ],
+                  "all": [],
+                  "none": [],
+                  "impact": "moderate",
+                  "html": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">",
+                  "target": [
+                    ".themeswitcher-form__form-item"
+                  ],
+                  "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+                }
+              ]
+            }
+          ]
+        },
+        "selectorCounts": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 1,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "annotated_violations": [
+          {
+            "instance_id": "DRU-53ec2bb1",
+            "pattern_id": "DRU-1fa173b5",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-9962442e",
+            "pattern_id": "DRU-f7ab2d31",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--warning",
+            "rule_id": "landmark-contentinfo-is-top-level",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-warning-title\" class=\"messages-list__item messages messages--warning\">"
+          },
+          {
+            "instance_id": "DRU-e6e58987",
+            "pattern_id": "DRU-afb1eb65",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".messages--error",
+            "rule_id": "landmark-no-duplicate-contentinfo",
+            "impact": "moderate",
+            "html_snippet": "<div role=\"contentinfo\" aria-labelledby=\"message-error-title\" class=\"messages-list__item messages messages--error\">"
+          },
+          {
+            "instance_id": "DRU-a8233cb0",
+            "pattern_id": "DRU-05d5e8d1",
+            "screen_type": "desktop",
+            "orientation": "landscape",
+            "color_mode": "light",
+            "color_scheme_detected": "light",
+            "direction": "ltr",
+            "theme": "unknown",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "language": "en",
+            "page_path": "/admin/modules",
+            "selector": ".themeswitcher-form__form-item",
+            "rule_id": "region",
+            "impact": "moderate",
+            "html_snippet": "<div class=\"themeswitcher-form__form-item js-form-item form-item js-form-type-select form-type--select js-form-item-preferred-theme form-item--preferred-theme\">"
+          }
+        ]
+      },
+      "after": {
+        "screenshots": [],
+        "html": [],
+        "axe": {}
+      },
+      "auth": {
+        "beforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      },
+      "conditions": {
+        "requested": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "colorMode": "light",
+          "direction": "ltr",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          }
+        },
+        "before": {
+          "screenType": "desktop",
+          "orientation": "landscape",
+          "viewport": {
+            "width": 1280,
+            "height": 1024
+          },
+          "colorMode": "light",
+          "direction": "ltr",
+          "language": "en",
+          "colorSchemeDetected": "light",
+          "prefersContrast": "no-preference",
+          "forcedColors": "none",
+          "theme": "unknown",
+          "bodyClasses": [
+            "user-logged-in",
+            "path-admin"
+          ]
+        },
+        "after": null
+      },
+      "navigation": {
+        "before": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "after": null
+      },
+      "skipped": true,
+      "skipReason": "baseline-target-not-observed",
+      "skipDiagnostics": {
+        "requestedRules": [
+          "color-contrast"
+        ],
+        "requiredConditions": {
+          "authRequired": true,
+          "requested": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "colorMode": "light",
+            "direction": "ltr",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            }
+          },
+          "observedBefore": {
+            "screenType": "desktop",
+            "orientation": "landscape",
+            "viewport": {
+              "width": 1280,
+              "height": 1024
+            },
+            "colorMode": "light",
+            "direction": "ltr",
+            "language": "en",
+            "colorSchemeDetected": "light",
+            "prefersContrast": "no-preference",
+            "forcedColors": "none",
+            "theme": "unknown",
+            "bodyClasses": [
+              "user-logged-in",
+              "path-admin"
+            ]
+          }
+        },
+        "matchingRuleViolationsBefore": {
+          "color-contrast": 0
+        },
+        "selectorCountsBefore": {
+          "a[hreflang=\"he\"]": 1,
+          "#edit-submit": 1,
+          ".button--action": 0,
+          "p:nth-child(1) > a": 1,
+          ".feed-icon": 0,
+          "#action-link-no-icon": 0,
+          "#action-link-plus": 0,
+          "#action-link-trash--N": 0
+        },
+        "navigationBefore": {
+          "requestedUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "finalUrl": "http://drupal-core.ddev.site:33000/admin/modules",
+          "httpStatus": 200,
+          "redirected": false,
+          "title": "Extend | Drupal A11y Eval",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "selectorCounts": {}
+        },
+        "reproductionCandidates": [
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/action-link",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": "#edit-submit",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/appearance",
+            "selector": ".button--action",
+            "preferred": true
+          },
+          {
+            "patternId": "DRU-F75A07EF",
+            "ruleId": "color-contrast",
+            "path": "/admin/content",
+            "selector": "a[hreflang=\"he\"]",
+            "preferred": true
+          }
+        ],
+        "authSetup": {
+          "attempted": true,
+          "success": true,
+          "method": "uli",
+          "uli": "http://drupal-core.ddev.site:33000/user/reset/1/1779987192/[REDACTED]/login",
+          "finalUrl": "http://drupal-core.ddev.site:33000/user/1/edit?pass-reset-token=[REDACTED]&check_logged_in=1",
+          "authState": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": true,
+            "uid": 1,
+            "authenticated": true
+          },
+          "credentialAttempted": false,
+          "error": null
+        },
+        "authBeforeCase": {
+          "ensured": true,
+          "neededRelogin": false,
+          "before": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "after": {
+            "loggedInClass": true,
+            "logoutLink": true,
+            "loginForm": false,
+            "uid": 1,
+            "authenticated": true
+          },
+          "loginAttempt": null
+        }
+      }
+    }
+  ],
+  "summary": {
+    "before": {
+      "total": 12,
+      "byRule": {
+        "region": 5,
+        "landmark-contentinfo-is-top-level": 4,
+        "landmark-no-duplicate-contentinfo": 2,
+        "empty-table-header": 1
+      }
+    },
+    "after": {
+      "total": 0,
+      "byRule": {}
+    },
+    "fixed": [],
+    "new": [],
+    "resolved": false,
+    "outcome": "inconclusive",
+    "outcomeReason": "baseline-not-observed-due-to-route-unavailable",
+    "eligibleForPatchRecommendation": false
+  },
+  "patternReport": {
+    "source": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+    "matchedPatterns": [
+      {
+        "patternId": "DRU-F75A07EF",
+        "ruleId": "color-contrast",
+        "selectorKey": "a[hreflang=\"he\"]",
+        "concretePaths": [
+          "/action-link",
+          "/admin",
+          "/admin/appearance",
+          "/admin/content",
+          "/admin/form_style",
+          "/admin/modules",
+          "/admin/structure",
+          "/admin/structure/block",
+          "/admin/structure/taxonomy",
+          "/admin/structure/taxonomy/add",
+          "/admin/structure/types",
+          "/admin/structure/types/add",
+          "/node/add/article",
+          "/node/add/page",
+          "/search/node",
+          "/user/login",
+          "/user/password"
+        ],
+        "beforeCount": 0,
+        "afterCount": 0,
+        "status": "unchanged"
+      }
+    ],
+    "summary": {
+      "targeted": 1,
+      "observedBefore": 0,
+      "fullyFixed": 0,
+      "partiallyFixed": 0,
+      "unchanged": 1
+    },
+    "markdownSource": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.md",
+    "sourceDiagnostics": {
+      "selectedExists": true,
+      "selectedMtimeIso": "2026-05-28T16:34:13.257Z",
+      "selectedAgeHours": 0.32,
+      "candidates": [
+        {
+          "path": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/reports/pattern-report-2026-05-06.json",
+          "mtimeIso": "2026-05-28T16:34:13.257Z"
+        }
+      ]
+    },
+    "targetPatternIds": [
+      "DRU-F75A07EF"
+    ]
+  },
+  "instanceReport": {
+    "summary": {
+      "targeted": 0,
+      "observedBefore": 0,
+      "fixed": 0,
+      "remaining": 0,
+      "notObserved": 0
+    },
+    "entries": []
+  },
+  "idValidation": {
+    "patternIdsSeen": 6,
+    "instanceIdsSeen": 52,
+    "inconsistentPatternIds": [
+      {
+        "id": "DRU-F75A07EF",
+        "signatures": [
+          "color-contrast|a[hreflang=\"he\"]|desktop|landscape|light|ltr|unknown",
+          "color-contrast|#edit-submit|desktop|landscape|light|ltr|unknown",
+          "color-contrast|.button--action|desktop|landscape|light|ltr|unknown",
+          "color-contrast|p:nth-child(1) > a|desktop|landscape|light|ltr|unknown",
+          "color-contrast|.feed-icon|desktop|landscape|light|ltr|unknown",
+          "color-contrast|#action-link-no-icon|desktop|landscape|light|ltr|unknown",
+          "color-contrast|#action-link-plus|desktop|landscape|light|ltr|unknown",
+          "color-contrast|#action-link-trash--N|desktop|landscape|light|ltr|unknown"
+        ]
+      }
+    ],
+    "inconsistentInstanceIds": []
+  },
+  "validationEvidence": {
+    "targetedInstances": 0,
+    "baselineObservedInstances": 0,
+    "patternObservedBeforePatchAttempt": false,
+    "fixedInstances": 0,
+    "remainingInstances": 0,
+    "notObservedInstances": 0,
+    "hasCaseErrors": false,
+    "introducedNewViolations": 0
+  },
+  "replication": {
+    "variantId": "codex-runtime-smoke-005",
+    "patchFile": "/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch",
+    "setupSteps": [
+      "ddev drush cset system.theme default olivero -y",
+      "ddev drush cset system.theme admin claro -y",
+      "ddev drush cache-rebuild"
+    ],
+    "testFlow": [
+      "Navigate to each test case URL under requested conditions and capture baseline evidence.",
+      "Apply patch with: git apply \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\"",
+      "Clear Drupal cache with: ddev drush cache-rebuild",
+      "Revisit same URL + conditions and capture post-patch evidence.",
+      "Revert patch with: git apply -R \"/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime/patches/a11y-DRUPAL-A11Y-005-language-switcher-contrast.patch\""
+    ],
+    "expectedProof": "Problem must be observed before patch and not observed after patch under the same recorded conditions."
+  }
+}
