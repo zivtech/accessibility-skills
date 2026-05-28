@@ -2,7 +2,7 @@
 name: a11y-planner
 description: "Use when you know what component, flow, or interface you need but not yet the right accessibility approach. Best for turning WCAG 2.2 requirements into an accessible implementation plan with WAI-ARIA APG patterns before code hardens bad interaction and state patterns."
 license: Apache-2.0
-compatibility: Claude Code-compatible; protocol is model-agnostic
+compatibility: Codex-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
   version: "1.1.0"
@@ -134,8 +134,8 @@ The cheapest time to prevent an a11y bug is before the first line of code.
    - Note what's working well
 
 4. **Invoke the a11y-planner agent**: Delegate planning to a subagent with the full 9-phase protocol below.
-   - **With oh-my-claudecode (preferred)**: Use the `a11y-planner` agent type if available, fallback to `general-purpose`
-   - **Without oh-my-claudecode**: Route to `general-purpose` subagent with the full protocol
+   - **With oh-my-Codex (preferred)**: Use the `a11y-planner` agent type if available, fallback to `general-purpose`
+   - **Without oh-my-Codex**: Route to `general-purpose` subagent with the full protocol
 
 The planning prompt to send to the subagent is embedded in the section below: **Full_A11y_Planning_Protocol**
 
@@ -647,7 +647,7 @@ Copy this protocol into the subagent prompt:
     ```markdown
     # [Feature Name] Accessibility Design Plan
 
-    > **For Claude:** Use a11y-planner protocol. Review with a11y-critic after implementation.
+    > **For Codex:** Use a11y-planner protocol. Review with a11y-critic after implementation.
     > **Compliance target:** WCAG 2.2 AA
     > **Users who need accessibility:** [Screen reader users, keyboard-only users, low vision users, ...]
     > **Assistive technologies:** [NVDA, JAWS, VoiceOver, keyboard-only, ...]
@@ -775,7 +775,7 @@ Copy this protocol into the subagent prompt:
     - [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
     - [WCAG 2.2 Specification](https://www.w3.org/WAI/WCAG22/quickref/)
     - [a11y-critic skill](https://github.com/zivtech/a11y-meta-skills) — for post-implementation review
-    - [accessibility-testing skill](https://github.com/zivtech/zivtech-claude-skills) — for automated testing
+    - [accessibility-testing skill](https://github.com/zivtech/zivtech-Codex-skills) — for automated testing
     ```
 
   </Planning_Protocol>

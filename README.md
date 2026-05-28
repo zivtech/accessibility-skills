@@ -1,6 +1,6 @@
 # a11y-meta-skills
 
-Accessibility skill bundle for [Claude Code](https://claude.ai/code) — plan, test, review, and audit from real perspectives.
+Cross-model accessibility skill and evaluation bundle — plan, test, review, and audit from real perspectives. It ships Claude Code-compatible skills and benchmark assets used across Claude, Codex/OpenAI, Gemini-ready hosted runs, and local Ollama models.
 
 ```bash
 npx skills add zivtech/a11y-meta-skills
@@ -132,6 +132,18 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/a11y-test` — run keyboard, axe-core, and visual regression tests
 - `/perspective-audit` — deep review from escalated disability/situational access perspectives
 
+## Model Baselines
+
+The evaluation story is cross-provider. The benchmark suite compares the same fixtures and rubrics across hosted and local model families.
+
+Current committed result summaries cover:
+
+- **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
+- **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
+- **Ollama local models** — qwen3:32b, qwen3.5:27b, llama3.3:70b, qwen3.5:latest, and deepseek-r1 probes
+
+Gemini and other hosted model baselines should be tracked as peer model-family rows when their raw result artifacts are present. See [ollama/BENCHMARK.md](ollama/BENCHMARK.md) and [ollama/README.md](ollama/README.md) for the detailed tables, commands, and caveats.
+
 ## Install
 
 ```bash
@@ -167,6 +179,10 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
       references/
         perspectives.md                # 7 JTBD checklists (CivicActions personas)
         arrm-perspective-mapping.md    # W3C WAI ARRM role routing
+.agents/
+  skills/                              # Codex-compatible skill mirrors
+.codex/
+  agents/                              # Codex agent definitions for planner/critic
 docs/
   EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
   PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
@@ -177,9 +193,10 @@ evals/
   suites/
     webwright-benchmark/                 # Webwright vs agent-browser speed + correctness data
   harness/
+ollama/                                  # Local + hosted benchmark runners and score scripts
 ```
 
-Skills and agents live at root `.claude/` for Claude Code discovery. Per-skill documentation lives under `docs/`.
+Tracked install surfaces now include `.claude/` for Claude Code-compatible discovery, `.agents/skills/` for Codex-compatible skills, and `.codex/agents/` for Codex agent definitions. The protocols, fixtures, rubrics, and benchmark runners are model-agnostic. Per-skill documentation lives under `docs/`.
 
 ## Testing & Contributing
 
@@ -208,7 +225,7 @@ python3 strip_bug_comments.py
 # Creates fixtures-eval/ with clean versions
 ```
 
-The eval harness runs fixtures under 3 conditions:
+The perspective eval harness runs fixtures under 3 prompt conditions. These are prompt-condition baselines, separate from model-family baselines such as Claude, Codex/OpenAI, Gemini, and local Ollama runs:
 - **A** — Standard a11y-critic (Sonnet, no perspectives)
 - **B** — Standard a11y-critic + "also review for auditory, vestibular, cognitive, and contrast" (Sonnet)
 - **C** — Enhanced a11y-critic + perspective-audit (Opus, with alarm levels)
@@ -238,7 +255,7 @@ See `evals/suites/perspectives/PILOT-REPORT.md` for full evaluation methodology 
 
 ## Evaluation Assets
 
-This repo includes eval suites for `a11y-critic` and `perspectives`. The fixture and rubric assets are included here; the broader harness originated in the source monorepo.
+This repo includes eval suites for `a11y-planner`, `a11y-critic`, and `perspectives`. The fixture and rubric assets are included here; the broader harness originated in the source monorepo.
 
 ## License
 

@@ -1,6 +1,6 @@
-# Ollama Local A11y Skills
+# A11y Model Benchmarks and Local Skills
 
-Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama — no cloud API required.
+Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini-ready hosted adapters, and local models all belong in the same results story when raw result artifacts exist.
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ cat component.jsx | python3 ollama/ollama_a11y.py critic -
 python3 ollama/ollama_a11y.py critic component.jsx --json
 ```
 
-## Tested Models
+## Tested Local Models
 
 | Model | Size | Recommended | Notes |
 |-------|------|-------------|-------|
@@ -39,12 +39,14 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 | qwen3.5:latest | 6.6 GB | Fast critic-only | 86% must-find (7 fixtures), 3-6x faster. **NOT viable for perspective-audit** (context exhaustion — 50% empty responses). |
 | deepseek-r1:70b | 42.5 GB | Preliminary | n=1 fixture only, not fully benchmarked. |
 
-### Cloud Baselines (Claude + OpenAI)
+### Cross-Platform Baselines
 
-All three platforms benchmarked on 33 critic fixtures with bottom-up escalation:
+Committed result tables currently cover three platform families on 33 critic fixtures with bottom-up escalation:
 - **Claude**: Haiku 85% → Sonnet+thinking 100%. Cost: ~$0.65.
 - **OpenAI**: GPT-5.2 91% → GPT-5.5-low 100%. Included in Codex subscription.
 - **Ollama**: qwen3:32b 100%. Free, local.
+
+Gemini and other hosted providers should be added as peer rows when their runner output is committed; do not collapse the benchmark narrative back to single-provider wording.
 
 All platforms achieve 100% on HAS-BUGS and FLAWED fixtures. Failures are CLEAN (false positives) and ADVERSARIAL (verdict calibration). GPT-5.2 outperforms Haiku on ADVERSARIAL (3/3 vs 0/3).
 
@@ -56,6 +58,8 @@ See [BENCHMARK.md](BENCHMARK.md) for full results.
 
 | Model | Fixtures | HAS-BUGS must-find | CLEAN FP | Overall |
 |-------|----------|-------------------|----------|---------|
+| **Codex/OpenAI escalation** | **33** | **100%** | 0 remaining | **33/33 PASS** |
+| **Claude API escalation** | **33** | **100%** | 0 remaining | **33/33 PASS** |
 | **GPT-5.2** | **33** | **100%** | 3 CLEAN | **30/33 PASS** |
 | Claude Haiku 4.5 | **33** | **100%** | 2 CLEAN | **28/33 PASS** |
 | Claude Sonnet 4.6 | 5 (escalated) | n/a | 0% | 4/5 PASS |
@@ -89,7 +93,7 @@ See [BENCHMARK.md](BENCHMARK.md) for full results.
 
 ### Key Detection Gap
 
-All Ollama models except qwen3.5:27b missed `role="alert"` on the toast fixture (scored 3/4 instead of 4/4). All Claude models found it. This is a real detection gap, not a rubric overlap issue (as initially hypothesized).
+Ollama qwen3:32b, llama3.3:70b, and qwen3.5:latest missed `role="alert"` on the toast fixture (scored 3/4 instead of 4/4). Claude models, GPT-5.2, and qwen3.5:27b found it. This is a real detection gap, not a rubric overlap issue (as initially hypothesized).
 
 ## Files
 
@@ -97,7 +101,7 @@ All Ollama models except qwen3.5:27b missed `role="alert"` on the toast fixture 
 |------|---------|
 | `ollama_a11y.py` | Main wrapper — sends skill protocol + input to Ollama |
 | `run_benchmark.py` | Benchmark runner — tests Ollama models against graded fixtures |
-| `run_cloud_benchmark.py` | Cloud benchmark runner — Claude API + Codex/OpenAI with escalation |
+| `run_cloud_benchmark.py` | Hosted benchmark runner — Claude API + Codex/OpenAI with escalation; extend with Gemini/other adapters as result sets are added |
 | `codex-benchmark.sh` | Shell entry point for running OpenAI benchmarks from Codex |
 | `score_output.py` | Scorer — checks critic output against fixture rubrics |
 | `score_planner.py` | Scorer — checks planner output against fixture rubrics |
@@ -126,9 +130,9 @@ python3 ollama/run_benchmark.py single qwen3:32b tabs-missing-arrow-nav
 python3 ollama/run_benchmark.py perspective-pilot qwen3:32b
 ```
 
-## Benchmarking — Cloud (Claude API + Codex/OpenAI)
+## Benchmarking — Hosted (Claude API + Codex/OpenAI)
 
-Bottom-up escalation: starts with the cheapest tier, runs all fixtures, and only promotes failures to the next tier. Goal: find the minimum viable model per platform.
+Bottom-up escalation: starts with the cheapest tier, runs all fixtures, and only promotes failures to the next tier. Goal: find the minimum viable model per platform. Add Gemini or other hosted model commands here as adapters land; use the same fixtures, rubrics, and scoring scripts.
 
 ### Claude API (requires ANTHROPIC_API_KEY)
 

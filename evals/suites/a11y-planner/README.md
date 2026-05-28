@@ -147,21 +147,23 @@ Each plan is scored on 7 dimensions (0-100 per dimension). Composite score = wei
 
 ## Baseline Conditions (3 conditions)
 
+These are prompt-condition baselines. The original controlled design used Claude Opus 4.6 for all three conditions so prompt quality, not model family, was the variable. For model-family baselines, rerun the same conditions across Claude, Codex/OpenAI, Gemini, and local models and record those rows separately in the benchmark docs.
+
 ### Condition 1: a11y-planner (Target Skill)
 - **Type:** Agent with 9-phase protocol
-- **Model:** Claude Opus 4.6
+- **Reference model:** Claude Opus 4.6
 - **Structure:** Detailed protocol covering all phases, mandatory WCAG/APG citations, explicit pattern mapping
 - **Expected score:** 85-95 (strong across all dimensions)
 
 ### Condition 2: baseline-zero-shot (Generic Zero-Shot)
 - **Type:** Simple unstructured prompt
-- **Model:** Claude Opus 4.6
+- **Reference model:** Claude Opus 4.6
 - **Structure:** "Create a comprehensive accessibility design plan" with no guidance
 - **Expected score:** 65-75 (covers basics, lacks structure and citations)
 
 ### Condition 3: baseline-few-shot (Generic Few-Shot)
 - **Type:** Structured prompt with example
-- **Model:** Claude Opus 4.6
+- **Reference model:** Claude Opus 4.6
 - **Structure:** Explicit sections + example response
 - **Expected score:** 70-80 (better than zero-shot, still lacks protocol rigor)
 
@@ -335,9 +337,9 @@ a11y-planner should significantly outperform baselines on composite score:
 - Small true differences may not reach significance
 
 ### Model Variation
-- **Claude Opus 4.6** was current at evaluation time
-- Model updates may affect performance
-- Results specific to this model version
+- **Claude Opus 4.6** was the reference model for the original prompt-condition design
+- Model updates and model-family changes may affect performance
+- Cross-model baselines should be reported as separate Claude, Codex/OpenAI, Gemini, and local-model rows rather than replacing the prompt-condition comparison
 
 ### Fixture Quality
 - **25 fixtures** is broad but not exhaustive
@@ -389,4 +391,3 @@ For questions about:
 - **Evaluation methodology:** See `statistical-design.md`
 - **Specific fixtures:** See `fixtures/{id}.metadata.yaml`
 - **Scoring:** See `rubrics/{id}.rubric.yaml`
-

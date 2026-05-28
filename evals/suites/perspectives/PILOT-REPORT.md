@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The pilot validated the evaluation infrastructure (fixtures, rubrics, scoring methodology) but revealed that **the finding-count metric does not discriminate between conditions** for these fixtures. Claude models (both Sonnet and Opus) are strong enough accessibility reviewers that they find all planted bugs from code structure alone, regardless of whether perspective-aware prompting is used.
+The pilot validated the evaluation infrastructure (fixtures, rubrics, scoring methodology) but revealed that **the finding-count metric does not discriminate between conditions** for these fixtures. The Claude models used in the pilot (Sonnet and Opus) were strong enough accessibility reviewers to find all planted bugs from code structure alone, regardless of whether perspective-aware prompting was used. Treat this as the pilot's model-specific result, not as a scope boundary for future baselines.
 
 The perspective enhancement's measurable value lies in **qualitative dimensions** — structured alarm levels, user group specificity, cross-perspective reasoning, and escalation protocols — not in raw finding detection rates.
 
@@ -187,7 +187,7 @@ The perspective enhancement is validated on two axes:
 
 **2. Qualitative output quality (observed across 48+ evaluations):** Condition C consistently produces structured alarm level tables, specific user group naming (BPPV, deuteranopia), cross-perspective reasoning, and escalation signals that conditions A and B do not.
 
-The finding-count metric does not capture this value because Claude models find code-level bugs mechanically regardless of prompting. The perspective enhancement's contribution is not "find more bugs" but "understand who is affected, how severely, and which dimensions need deep review" — exactly what the hybrid escalation architecture was designed to do.
+The finding-count metric does not capture this value because the pilot's Claude models find code-level bugs mechanically regardless of prompting. The perspective enhancement's contribution is not "find more bugs" but "understand who is affected, how severely, and which dimensions need deep review" — exactly what the hybrid escalation architecture was designed to do. Future Codex/OpenAI, Gemini, and local-model baselines should keep that distinction intact.
 
 ### Total Evaluations: 53
 - Round 1: 15 (all-Opus, BUG comments)

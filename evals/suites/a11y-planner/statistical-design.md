@@ -108,9 +108,11 @@ Composite Score = sum(dimension_score × weight) / sum(weights) × 100
 
 ## Baseline Conditions
 
+These are prompt-condition baselines, not a single-provider claim about the suite. The original controlled design used the same reference model for every condition to isolate prompt/protocol effects. Cross-model baselines should rerun the same conditions across Claude, Codex/OpenAI, Gemini, and local models and document those as model-family rows.
+
 ### Baseline A: Zero-Shot Generic Planning
 **Prompt:** Simple accessibility planning request without structure or examples
-**Model:** Claude Opus 4.6
+**Reference model:** Claude Opus 4.6
 **Example prompt:**
 ```
 Create an accessibility design plan for [feature]. Ensure it covers
@@ -122,7 +124,7 @@ screen reader support, visual accessibility, and testing.
 
 ### Baseline B: Few-Shot Generic Planning
 **Prompt:** Simple planning request + structured approach + example response
-**Model:** Claude Opus 4.6
+**Reference model:** Claude Opus 4.6
 **Example structured approach:**
 ```
 Your response should include:
@@ -142,7 +144,7 @@ Also reference WAI-ARIA patterns where applicable and WCAG criteria.
 
 ### Target: A11y-Planner
 **Agent:** 9-phase protocol embedded in agent prompt
-**Model:** Claude Opus 4.6
+**Reference model:** Claude Opus 4.6
 **Structure:** Detailed protocol covering all phases, explicit WCAG/APG citations, failure mode prevention
 **Expected performance:** ~85-95 on composite score
 **Why higher:** Comprehensive protocol, explicit pattern mapping requirement, WCAG grounding enforced
@@ -417,4 +419,3 @@ Observations >2 SD from condition mean (identified per condition, per dimension)
 6. **Report generation:** Statistical results, visualizations, narrative
 
 **Estimated timeline:** 2-3 weeks (depending on evaluation latency)
-

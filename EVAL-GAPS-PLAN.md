@@ -1,7 +1,7 @@
 # Eval Suite Gap-Fill Plan
 
 **Created**: 2026-05-15
-**Purpose**: Close all gaps across the 3 eval suites + Ollama benchmarks so every suite is production-ready.
+**Purpose**: Historical gap-fill plan for the 3 eval suites plus the cross-model benchmark suite. The benchmark scope now includes local Ollama models, Claude API, Codex/OpenAI, and peer hosted families such as Gemini when result artifacts are added.
 **Note**: This plan supersedes the dashboard at `~/.agent/diagrams/a11y-testing-architecture.html` — fixture counts there are stale (says 20 critic / 1 real planner; actual is 25 critic / 10 real planner).
 
 ---
@@ -10,10 +10,10 @@
 
 | Area | Built | Stubs/Missing | Benchmarked | Blocking Issues |
 |------|-------|---------------|-------------|-----------------|
-| Critic eval | 25 fixtures (5 CLEAN + 20 HAS-BUGS) | 8 fixtures missing rubrics; 0 FLAWED; 0 ADVERSARIAL | 7/25 Ollama | Missing rubrics, missing tiers |
-| Planner eval | 10 real (5 ARIA + 5 keyboard) | 15 stubs + eval.yaml ID mismatch | 2/25 Ollama | Stubs need real content; eval.yaml out of sync |
-| Perspectives eval | 30 fixtures (all real) | 0 | 7/30 Ollama pilot | Needs full benchmark run |
-| Ollama wrapper | Production-ready | N/A | Yes | N/A |
+| Critic eval | 33 fixtures (4 CLEAN + 21 HAS-BUGS + 5 FLAWED + 3 ADVERSARIAL) | 0 | Ollama, Claude API, Codex/OpenAI | Add Gemini/other hosted rows when raw results are committed |
+| Planner eval | 25 fixtures | 0 | 2/25 Ollama | Broaden planner baselines across hosted/local models |
+| Perspectives eval | 30 fixtures (25 main + 5 calibration) | 0 | qwen3:32b full run + calibration results | Hosted perspective-audit baselines still optional |
+| Benchmark runners | Production-ready for Ollama, Claude API, and Codex/OpenAI | Gemini/other provider adapters as needed | Yes | Keep result tables model-family neutral |
 
 ---
 
@@ -213,7 +213,7 @@ Genuinely ambiguous — rubrics use `must_articulate` (tradeoff analysis), not `
 
 ---
 
-## Phase 4: Ollama Benchmark Completion
+## Phase 4: Local Model Benchmark Completion
 
 ### 4A. Critic benchmarks (remaining 18/25 fixtures)
 
@@ -268,13 +268,13 @@ done
 
 ---
 
-## Phase 5: Claude Baseline (optional, lower priority)
+## Phase 5: Hosted Baselines (Claude API complete; extend with Gemini/other providers)
 
-Establish how Claude performs on the same fixtures to calibrate the eval suite's expected performance ranges.
+Establish how hosted model families perform on the same fixtures to calibrate the eval suite's expected performance ranges.
 
-Run the 7 benchmarked fixtures through Claude Opus via the actual a11y-critic and a11y-planner skills (not Ollama). Compare scores.
+The historical Phase 5 run sent the 7 benchmarked fixtures through Claude Opus via the actual a11y-critic and a11y-planner skills (not Ollama). Later phases expanded this to a full Claude escalation run and a Codex/OpenAI escalation run. Gemini or other hosted baselines should follow the same fixture/rubric discipline.
 
-**Effort**: ~1 hour of API cost. Can be done via the run_benchmark.py with a Claude adapter.
+**Effort**: ~1 hour of API cost per hosted family. Use `ollama/run_cloud_benchmark.py` or the equivalent provider adapter.
 
 ---
 
@@ -289,13 +289,13 @@ Phase 3:  Create 5 FLAWED + 3 ADVERSARIAL critic fixtures ✅ DONE (2026-05-15, 
 Phase 4A: Run critic benchmarks (26 fixtures) ........... ✅ DONE (2026-05-15, 26/26 PASS, 97% must-find)
 Phase 4C: Run perspective benchmarks (18 fixtures) ...... ✅ DONE (2026-05-16, 20 PASS / 4 WARN / 1 FAIL)
 Phase 4D: Test qwen3.5:latest on perspective-audit ...... ✅ DONE (2026-05-17, NOT VIABLE — 50% empty responses)
-Phase 5:  Claude baseline (optional) .................... ✅ DONE (2026-05-18, Haiku 85%, escalation to Sonnet-think 100%)
+Phase 5:  Claude API baseline ........................... ✅ DONE (2026-05-18, Haiku 85%, escalation to Sonnet-think 100%)
 Phase 6:  Cross-platform (Codex/OpenAI) ................. ✅ DONE (2026-05-19, GPT-5.2 91%, escalation to 5.5-low 100%)
                                                   Total: ~29 hours
                                               Remaining: 0 (all phases complete)
 ```
 
-**Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended Ollama runs that can be kicked off at the end of any session.
+**Session strategy**: Phases 1-3 are generation work that benefits from one session per phase. Phase 4 is unattended local-model runtime that can be kicked off at the end of any session. Hosted baselines should be tracked as model-family additions, not as a return to single-provider framing.
 
 ### Recommended session breakdown
 
@@ -305,7 +305,7 @@ Phase 6:  Cross-platform (Codex/OpenAI) ................. ✅ DONE (2026-05-19, 
 4. ~~**Session D** — Phase 3 (FLAWED + ADVERSARIAL). ~5 hours. Kick off Phase 4A overnight.~~ ✅ Complete
 5. ~~**Session E (part 1)** — Phase 4A (full critic benchmark). 8 hours Ollama, 26/26 PASS.~~ ✅ Complete
 6. ~~**Session E (part 2)** — Phase 4C complete (20P/4W/1F). BENCHMARK.md updated. Fixture/rubric fixes for CLEAN scope.~~ ✅ Complete
-7. ~~**Session F** — Phase 4D + Phase 5 (Claude baseline).~~ ✅ Complete (2026-05-18)
+7. ~~**Session F** — Phase 4D + Phase 5 (Claude API baseline).~~ ✅ Complete (2026-05-18)
 8. ~~**Session G** — Phase 6 (Codex/OpenAI). `bash ollama/codex-benchmark.sh` from Codex.~~ ✅ Complete (2026-05-19)
 
 ---

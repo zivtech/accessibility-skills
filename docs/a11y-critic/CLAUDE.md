@@ -1,6 +1,6 @@
 # a11y-critic
 
-**a11y-critic** is a Claude Code skill for thorough accessibility design review. It evaluates accessibility *design decisions* in code — not just automated test violations.
+**a11y-critic** is a prompt-only accessibility design review skill. The tracked install files target Claude Code-compatible discovery, while the protocol and benchmarks are model-agnostic across hosted and local model families. It evaluates accessibility *design decisions* in code — not just automated test violations.
 
 ## What This Is
 
@@ -46,10 +46,10 @@ Both files encode the same 11-phase a11y-specific review protocol.
 
 ## Installation Paths
 
-Users install by copying files to their Claude Code config:
+Users install the Claude Code-compatible surface by copying files to their config:
 - Skill: `cp -r .claude/skills/a11y-critic ~/.claude/skills/`
 - Agent: `cp .claude/agents/a11y-critic.md ~/.claude/agents/`
-- Or via package manager: `npx claude-skills add https://github.com/zivtech/a11y-meta-skills`
+- Or via package manager: `npx skills add zivtech/a11y-meta-skills`
 
 ## Companion Skills
 

@@ -100,9 +100,9 @@ Scoring: exact match = 1.0, within +/-1 level = 0.5, off by 2 levels = 0.0.
 
 ## Reproducibility
 
-- Model version: pin to claude-opus-4-6
+- Model version: pin each model-family run explicitly (the original controlled design used claude-opus-4-6)
 - Temperature: 0 for all conditions
-- Seed: not available for Claude API; rely on 3 repeats for variance measurement
+- Seed: not always available for hosted APIs; rely on 3 repeats for variance measurement
 - All fixture files, rubrics, and baselines versioned in this repository
 
 ## Success Criteria

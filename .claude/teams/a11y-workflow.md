@@ -69,7 +69,7 @@ Runs critic at Sonnet first, escalates to Opus on signals.
 
 ## Benchmark Basis
 
-Model routing validated on 8 hard fixtures (5 FLAWED + 3 ADVERSARIAL) via Claude Code subagents (2025-05-19):
+Model routing validated on 8 hard fixtures (5 FLAWED + 3 ADVERSARIAL) via Claude Code subagents (2026-05-19):
 
 | Tier | FLAWED (5) | ADVERSARIAL (3) | Quality |
 |------|-----------|----------------|---------|

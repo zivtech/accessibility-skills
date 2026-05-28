@@ -252,7 +252,7 @@ See [pilot-results.md](./pilot-results.md) for actual results.
 
 ### Prerequisites
 
-- Claude Opus 4.6 (or latest available)
+- A benchmark-capable model runner. The original prompt-condition design used Claude Opus 4.6 as the controlled reference model, but model-family baselines should be recorded separately for Claude, Codex/OpenAI, Gemini, and local models.
 - Evaluation harness supporting:
   - Wilcoxon signed-rank testing
   - Bootstrap confidence intervals

@@ -1,6 +1,6 @@
 # We Built an Accessibility Reviewer That Has to Pass Its Own Test
 
-I've been building Claude Code Skills for about six months now — Markdown files that teach AI how to do specific jobs. The latest one is an accessibility skill bundle, and it forced me to answer a question I wasn't expecting: how do you know the reviewer is any good?
+I've been building AI agent skills for about six months now — Markdown protocols that teach models how to do specific jobs. The latest one is an accessibility skill bundle, and it forced me to answer a question I wasn't expecting: how do you know the reviewer is any good?
 
 ## The bundle
 
@@ -21,7 +21,7 @@ npx skills add zivtech/a11y-meta-skills
 
 Here's where it gets interesting. I built 83 graded evaluation fixtures — React components with intentional accessibility patterns (some correct, some broken, some deliberately ambiguous). Every fixture has a rubric that defines what a competent reviewer should find.
 
-Then I ran 10 different AI models against them.
+Then I ran hosted and local AI models against them, including Claude, Codex/OpenAI, and Ollama local models, with the benchmark structure ready to track Gemini and other hosted baselines as peer rows.
 
 The fixtures come in four difficulty tiers:
 - **CLEAN** — no bugs, tests false positive resistance
@@ -46,7 +46,7 @@ The escalation strategy costs $0.65 total for 33 components. Start at Haiku, pro
 
 The local model story is just as good. qwen3:32b (an 18.8 GB model running on Ollama, on my laptop) passed 100% of all 33 fixtures with 96% must-find detection. No API key, no cloud dependency, no per-token cost.
 
-The one thing the local model consistently misses? `role="alert"` on toast notifications — every Ollama model scores 3/4 on that fixture instead of 4/4. Every Claude model gets it. It's a real detection gap, not a rubric issue. But it's one item out of 83 fixtures.
+The one thing several local models consistently miss? `role="alert"` on toast notifications — qwen3:32b, llama3.3:70b, and qwen3.5:latest score 3/4 on that fixture instead of 4/4. Claude, GPT-5.2, and qwen3.5:27b get it. It's a real detection gap, not a rubric issue. But it's one item out of 83 fixtures.
 
 ## The meta part
 
@@ -64,4 +64,4 @@ npx skills add zivtech/a11y-meta-skills
 
 The full benchmark data, eval fixtures, and scoring scripts are all in the repo. If you want to test your own model against the fixtures, there's a runner for that too.
 
-If you're using Claude Code and care about accessibility — or if you just want to see what a rigorous AI skill eval suite looks like — [take a look](https://github.com/zivtech/a11y-meta-skills).
+If you're using agentic coding tools and care about accessibility — or if you just want to see what a rigorous AI skill eval suite looks like — [take a look](https://github.com/zivtech/a11y-meta-skills).

@@ -132,7 +132,7 @@ The skill explicitly guards against:
 
 - **Fallback routing**: (if used with OMC) routes through agent tier
 - **Tool usage**: Read (load source code), Grep (verify ARIA attributes), Glob (find related files), Bash (git commands for verification)
-- **Model tier**: Requires Claude Opus 4.6 for depth of multi-perspective reasoning
+- **Model tier**: Use a high-reasoning tier for depth of multi-perspective reasoning. Opus 4.6 is the validated Claude reference; compare Codex/OpenAI, Gemini, and local model families as separate baselines rather than treating one model as the suite definition.
 
 ## Example Component Types & Expected Findings
 

@@ -138,7 +138,7 @@ Perspective audit escalation (MEDIUM/HIGH alarm) always runs at Opus regardless 
 
 ## Benchmark Validation
 
-Phase 1 benchmark (8 hard fixtures via Claude Code subagents, 2025-05-19):
+Phase 1 benchmark (8 hard fixtures via Claude Code subagents, 2026-05-19):
 
 | Tier | FLAWED (5) | ADVERSARIAL (3) | Total |
 |------|-----------|----------------|-------|

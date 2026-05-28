@@ -3,3 +3,4 @@
 .DS_Store
 fixtures-eval/
 evals/suites/perspectives/.omc/
+.playwright-mcp/

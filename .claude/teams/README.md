@@ -35,7 +35,7 @@ Default team structure for the a11y-meta-skills eval suite.
 
 ### Full Benchmark Cycle
 1. Lead creates team and tasks
-2. Runner executes benchmark (e.g., `claude-escalate`)
+2. Runner executes benchmark (e.g., `claude-escalate`, `codex-escalate`, or a local Ollama run)
 3. Runner scores results and reports summary
 4. Reporter updates documentation with results
 5. Reviewer spot-checks a sample of results and fixtures
@@ -61,7 +61,7 @@ Default team structure for the a11y-meta-skills eval suite.
 
 From Claude Code, say:
 ```
-Create the a11y-bench team and run a full benchmark cycle on Claude Haiku
+Create the a11y-bench team and run a full benchmark cycle on Claude Haiku, Codex GPT-5.2, or qwen3:32b
 ```
 
 Or for fixture work:

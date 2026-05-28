@@ -38,7 +38,7 @@ Includes Webwright's explore phase, script generation, iteration, and final exec
 
 ## Fair Comparison Notes
 
-- agent-browser commands were pre-composed by the operator. In real use, an LLM would compose them interactively, adding per-command inference latency (~1-3s per command via Claude).
+- agent-browser commands were pre-composed by the operator. In real use, an LLM would compose them interactively, adding per-command inference latency that varies by model/provider.
 - Webwright's total workflow includes the LLM composing AND executing. The "first run" cost is high, but the script is reusable.
 - agent-browser does NOT produce a persistent artifact — session logs exist but aren't re-runnable test scripts.
 - Webwright scripts are CI-runnable (with a Python runner) without any LLM at all.

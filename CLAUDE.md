@@ -1,6 +1,6 @@
 # a11y-meta-skills
 
-This repository contains the standalone Claude Code accessibility skill bundle — planner, critic, tester, and perspective auditor.
+This repository contains the standalone a11y-meta-skills accessibility bundle — planner, critic, tester, and perspective auditor — plus cross-model benchmark assets. Claude Code is one supported install/runtime surface; the evals and runners now compare Claude, Codex/OpenAI, local Ollama models, and other hosted model families as peer baselines.
 
 ## Dead Output
 
@@ -56,7 +56,7 @@ The `/a11y-workflow` skill orchestrates the full lifecycle by spawning specialis
 /a11y-workflow step scout src/components/Modal.tsx  # single step
 ```
 
-**Model routing** (validated on 8 hard fixtures, 2025-05-19):
+**Model routing** (validated on 8 hard fixtures, 2026-05-19):
 - Scout: Haiku (recon only)
 - Planner/Critic/Auditor: Opus (judgment-heavy — best-tier verdicts on ADVERSARIAL fixtures)
 - Orchestrator: main session (sequencing, not judgment)
@@ -74,6 +74,8 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 - `.claude/skills/*/SKILL.md` — installable skill definitions
 - `.claude/skills/*/references/external-skills-manifest.yaml` — external skill references
 - `.claude/agents/*.md` — companion agent prompts
+- `.agents/skills/*/SKILL.md` — Codex-compatible skill mirrors
+- `.codex/agents/*.toml` — Codex agent definitions for planner/critic
 - `docs/` — per-skill documentation and external skills inventory
 - `docs/EXTERNAL-SKILLS-INVENTORY.md` — landscape scan of 13 external a11y skills with adoption recommendations
 - `templates/` — copied base protocol templates required by the skills
@@ -111,7 +113,7 @@ python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3:32b
 python3 ollama/ollama_a11y.py perspective path/to/component.jsx --model qwen3:32b
 ```
 
-Benchmarked against 60 graded fixtures (33 critic, 25 perspective-audit, 2 planner) with Claude baselines (Opus/Sonnet/Haiku all 100% on 7 core fixtures). See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
+Benchmarked against 60 graded fixtures (33 critic, 25 perspective-audit, 2 planner) with cross-platform baselines for Claude API, Codex/OpenAI, and local Ollama models. Treat Gemini and other hosted providers as first-class baseline families when their raw result artifacts are present. See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
 
 a11y-test is NOT portable — it requires Playwright, axe-core, and browser automation. Only reference knowledge ports.
 

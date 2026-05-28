@@ -1,26 +1,29 @@
-# Ollama A11y-Critic Benchmark Results
+# A11y Model Benchmark Results
 
-**Date**: 2026-05-14 (initial), 2026-05-15 (Phase 4A full benchmark)
+**Date**: 2026-05-14 (initial), 2026-05-15 (Phase 4A full benchmark), 2026-05-19 (cross-platform baselines)
 **Protocol**: Full 11-phase a11y-critic Investigation Protocol (Phase 0 + Phases 1-10, single-shot, no orchestration)
 **System prompt**: ~40K chars (Role + Investigation_Protocol + Severity_Scale + Output_Format from SKILL.md)
 **Scoring**: `ollama/score_output.py` against graded fixture rubrics
 
-## Models Tested
+## Baseline Families
 
-| Model | Size | Tier |
-|-------|------|------|
-| Claude Opus 4.6 | cloud | Baseline |
-| Claude Sonnet 4.6 | cloud | Baseline |
-| Claude Haiku 4.5 | cloud | Baseline |
-| llama3.3:70b | 39.6 GB | Tier 1 (full protocol) |
-| qwen3:32b | 18.8 GB | Tier 2 (compressed) |
+This file began as an Ollama benchmark log and now serves as the cross-model benchmark record. Keep Claude, Codex/OpenAI, Gemini, and local models as peer baseline families when result artifacts exist.
+
+| Family | Models / Tiers in committed results | Status |
+|--------|-------------------------------------|--------|
+| Claude API | Opus 4.6, Sonnet 4.6, Sonnet 4.6 + thinking, Haiku 4.5 | 33-fixture escalation complete |
+| Codex/OpenAI | GPT-5.2, GPT-5.2 low, GPT-5.5, GPT-5.5 low | 33-fixture escalation complete |
+| Ollama local | qwen3:32b, qwen3.5:27b, llama3.3:70b, qwen3.5:latest, deepseek-r1:70b probe | Critic, planner, and perspective coverage varies by model |
+| Gemini / other hosted | Add rows when raw results are committed | In scope; not represented by committed result tables in this file |
+
+The first fixture tables below are historical Phase 4 local-model rows. Hosted results were added later in Phases 5-7.
 
 ## Fixture 1: form-validation-missing-aria-describedby
 
 **Difficulty**: HAS-BUGS | **Must-find**: 2 | **Should-find**: 1 | **Expected verdict**: REVISE
 
-| Metric | llama3.3:70b | qwen3:32b | Claude (TODO) |
-|--------|-------------|-----------|---------------|
+| Metric | llama3.3:70b | qwen3:32b | Hosted baselines |
+|--------|-------------|-----------|------------------|
 | Must-find detection | 2/2 (100%) | 2/2 (100%) | |
 | Should-find detection | 1/1 (100%) | 1/1 (100%) | |
 | Verdict | REVISE ✓ | REVISE ✓ | |
@@ -42,8 +45,8 @@
 
 **Difficulty**: HAS-BUGS | **Must-find**: 1 | **Should-find**: 1 | **Expected verdict**: REVISE
 
-| Metric | llama3.3:70b | qwen3:32b | Claude (TODO) |
-|--------|-------------|-----------|---------------|
+| Metric | llama3.3:70b | qwen3:32b | Hosted baselines |
+|--------|-------------|-----------|------------------|
 | Must-find detection | 1/1 (100%) | 1/1 (100%) | |
 | Should-find detection | 1/1 (100%) | 1/1 (100%) | |
 | Verdict | REVISE ✓ | REVISE ✓ | |
@@ -64,8 +67,8 @@
 
 **Difficulty**: HAS-BUGS | **Must-find**: 4 | **Should-find**: 0 | **Expected verdict**: REVISE
 
-| Metric | llama3.3:70b | qwen3:32b | Claude (TODO) |
-|--------|-------------|-----------|---------------|
+| Metric | llama3.3:70b | qwen3:32b | Hosted baselines |
+|--------|-------------|-----------|------------------|
 | Must-find detection | 3/4 (75%) | 3/4 (75%) | |
 | Verdict | REVISE ✓ | REVISE ✓ | |
 | Phases followed | 11/11 | 0/11 | |
@@ -81,12 +84,12 @@
 3. No way for keyboard user to dismiss toast — **Both found**
 4. Message not labeled or described — **Both found**
 
-**Note**: Both models missed the same item (`role="alert"`) but caught `aria-live`. This is a rubric overlap — `aria-live="assertive"` functionally covers the same semantic as `role="alert"`. The miss may reflect the rubric double-counting rather than a true blind spot.
+**Historical note**: The initial local-only interpretation suspected rubric overlap because both models caught `aria-live="assertive"` but missed `role="alert"`. Later hosted and qwen3.5:27b results found both items, so this is now treated as a real model-specific detection gap rather than a rubric issue.
 
 ## Abort Threshold
 
 - **Gate**: < 40% must-find detection rate across all fixtures
-- **Claude baseline needed** to calibrate — if Claude scores 80%, 40% is a real gate; if Claude scores 60%, 40% is permissive
+- **Hosted/local baselines calibrate the gate** — later Claude API, Codex/OpenAI, and local-model results show that 40% is permissive for these fixtures; current comparisons should use the cross-platform tables below.
 
 ## CLEAN Fixture Results (False Positive Test)
 
@@ -235,11 +238,14 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 ### a11y-critic — All Models
 
-| Model | Fixtures | HAS-BUGS must-find | CLEAN FP | FLAWED | ADVERSARIAL | Overall |
-|-------|----------|-------------------|----------|--------|-------------|---------|
+| Model | Fixtures | HAS-BUGS must-find | CLEAN failures / FP | FLAWED | ADVERSARIAL | Overall |
+|-------|----------|-------------------|---------------------|--------|-------------|---------|
+| Claude API escalation | 33 | **100%** | 0 remaining | 5/5 (100%) | 3/3 resolved | **33/33 PASS** |
+| Codex/OpenAI escalation | 33 | **100%** | 0 remaining | 5/5 (100%) | 3/3 (100%) | **33/33 PASS** |
+| GPT-5.2 | 33 | **100%** | 3 CLEAN WARN/FAIL | 5/5 (100%) | 3/3 (100%) | 30/33 PASS |
+| Claude Haiku 4.5 | 33 | **100%** | 2 CLEAN WARN/FAIL | 5/5 (100%) | 0/3 verdict pass | 28/33 PASS |
 | Claude Opus 4.6 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
 | Claude Sonnet 4.6 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
-| Claude Haiku 4.5 | 7 | **7/7 (100%)** | 0/4 (0%) | — | — | **7/7 PASS** |
 | qwen3.5:27b | 17* | **37/37 (100%)** | 1/4 FAIL† | — | — | 16/17 PASS |
 | qwen3:32b | 33 | 68/71 (96%) | 0/4 (0%) | 5/5 (100%) | 3/3 (100%) | **33/33 PASS** |
 | llama3.3:70b | 7 | 6/7 (86%) | 0/4 (0%) | — | — | 7/7 PASS |
@@ -247,7 +253,7 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 *qwen3.5:27b run stopped at 17/33 due to `/think` stalls. †CLEAN FAIL is context exhaustion (no verdict emitted), not a false positive.*
 
-*All Claude models found 4/4 must-find items on toast-notification-no-role including `role="alert"` — the item every Ollama model missed.*
+*Claude, GPT-5.2, and qwen3.5:27b found 4/4 must-find items on toast-notification-no-role including `role="alert"`; qwen3:32b, llama3.3:70b, and qwen3.5:latest missed that item.*
 *qwen3:32b HAS-BUGS must-find: 62/64 on the 18 new fixtures + 6/7 on the 3 original = 68/71 total*
 
 ### a11y-planner (2 fixtures)
@@ -263,35 +269,35 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 |-------|----------|-------|-----------|---------------------|-----------------|
 | qwen3:32b | 16/16 PASS | 4/5 PASS + 4 WARN | 100% | 100% | 24/25 correct |
 
-### Model Comparison (Updated with Claude Baselines)
+### Model Comparison (Updated with Cross-Platform Baselines)
 
-| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | qwen3.5:27b | qwen3:32b | llama3.3:70b | qwen3.5:latest |
-|-----------|----------------|-------------------|-----------------|------------|-----------|-------------|----------------|
-| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=7)** | **100% (n=13)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
-| Critic false positive rate | 0% | 0% | 0% | 0%* | 0% | 0% | 0% |
-| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
-| FLAWED detection | — | — | — | — | 100% (n=5) | — | — |
-| ADVERSARIAL articulation | — | — | — | — | 100% (n=3) | — | — |
-| Perspective-audit (25 fix) | — | — | — | — | 20P/4W/1F | — | NOT VIABLE |
-| Reliability (completion) | 100% | 100% | 100% | 94% (16/17) | 100% | 100% | 100% |
-| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
-| Deployment | Cloud API | Cloud API | Cloud API | Local (17 GB) | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
+| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | GPT-5.2 | Codex/OpenAI escalation | qwen3.5:27b | qwen3:32b | llama3.3:70b | qwen3.5:latest |
+|-----------|----------------|-------------------|-----------------|---------|-------------------------|------------|-----------|-------------|----------------|
+| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=33)** | **100% (n=33)** | **100% (n=33)** | **100% (n=13)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
+| CLEAN failures / FP risk | 0% | 0% | 2 CLEAN failures | 3 CLEAN WARN/FAIL | 0 remaining after escalation | 0%* | 0% | 0% | 0% |
+| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
+| FLAWED detection | 5/5 via Phase 7 | 5/5 via escalation | 5/5 | 5/5 | 5/5 | — | 100% (n=5) | — | — |
+| ADVERSARIAL articulation | 3/3 best-tier via Phase 7 | 3/3 via escalation | 0/3 verdict pass | 3/3 | 3/3 | — | 100% (n=3) | — | — |
+| Perspective-audit (25 fix) | — | — | — | — | — | — | 20P/4W/1F | — | NOT VIABLE |
+| Reliability (completion) | 100% | 100% | 100% | 100% | 100% after script fix | 94% (16/17) | 100% | 100% | 100% |
+| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
+| Deployment | Cloud API | Cloud API | Cloud API | Codex CLI | Codex CLI | Local (17 GB) | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
 
 *qwen3.5:27b: 1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive. Run stopped at 17/33 due to stalls.*
 
-### Key Findings (Updated with Claude Baselines)
+### Key Findings (Updated with Cross-Platform Baselines)
 
-1. **All Claude models achieve 100% must-find on the 7 core fixtures.** Opus, Sonnet, and Haiku all found every planted bug — including `role="alert"` on the toast fixture, which every Ollama model missed. This confirms the rubric item is valid (not a rubric overlap issue as previously hypothesized) and establishes a clear accuracy gap between Claude and local models on this specific detection.
+1. **Bug detection is strong across hosted and local baselines.** Claude Haiku and GPT-5.2 both detect 100% of must-find items across the 33 critic fixtures at their base tiers. qwen3:32b passes all 33 fixtures locally with 96% HAS-BUGS must-find detection.
 
-2. **qwen3:32b achieves 96% must-find on HAS-BUGS critic fixtures (68/71) and 100% on perspective-audit.** Only 3 partial misses out of 71 HAS-BUGS must-find items — all are secondary findings where the primary issue was detected. On the 7-fixture comparison set, qwen3:32b scores 86% must-find vs Claude's 100%.
+2. **The hardest failures are calibration failures, not simple bug-finding failures.** Claude Haiku and GPT-5.2 failures concentrate in CLEAN false positives and ADVERSARIAL verdicts. Escalation resolves the remaining failures without changing the fixture/rubric set.
 
-3. **Even Haiku matches Opus on this task.** All three Claude tiers produced identical pass/fail results. The skill protocol is structured enough that model scale doesn't differentiate on these fixtures. Harder fixtures (FLAWED, ADVERSARIAL) may show tier separation — not yet tested on Claude.
+3. **qwen3:32b remains the best committed local default.** It achieves 96% must-find on HAS-BUGS critic fixtures (68/71), 33/33 critic PASS, and 100% perspective-audit must-find. Only 3 partial misses out of 71 HAS-BUGS must-find items are documented.
 
-4. **Perspective-audit false-positive pattern: page-shell WCAG concerns.** On CLEAN fixtures presenting React components, the model sometimes flags `<html lang>`, `<title>`, or `<main>` — real WCAG requirements that live at the page-shell level, not the component level.
+4. **`role="alert"` is a real model-differentiating item.** Claude, GPT-5.2, and qwen3.5:27b found it; qwen3:32b, llama3.3:70b, and qwen3.5:latest did not. The initial rubric-overlap hypothesis is no longer the best explanation.
 
-5. **Generation time scales with ambiguity, not fixture size.** Ollama critic HAS-BUGS: 2-5 min. Ollama FLAWED: 25-70 min. Perspective-audit: ~3 min avg. Claude response times are API-bounded (~5-15s per fixture).
+5. **Perspective-audit false-positive pattern: page-shell WCAG concerns.** On CLEAN fixtures presenting React components, the model sometimes flags `<html lang>`, `<title>`, or `<main>` — real WCAG requirements that live at the page-shell level, not the component level.
 
-6. **Architecture: simple wrapper, not orchestrator.** A Python script that sends the full SKILL.md protocol as system prompt is sufficient for both Ollama and Claude. No per-phase state management needed.
+6. **Architecture: simple wrapper, not orchestrator.** A Python script that sends the full SKILL.md protocol as system prompt is sufficient for local Ollama and hosted model runners. No per-phase state management needed.
 
 ## Wrapper
 

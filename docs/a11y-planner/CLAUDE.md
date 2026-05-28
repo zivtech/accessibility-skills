@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-a11y-planner is a Claude Code skill and companion to a11y-critic. It is a **prompt-only repository** — no build system, no runtime code, no dependencies. The deliverables are two markdown prompt files that get installed into a user's `~/.claude/` directory.
+a11y-planner is a prompt-only accessibility planning skill and companion to a11y-critic. Claude Code is the tracked install surface in this repository, but the protocol is evaluated across hosted and local model families through the shared benchmark assets.
 
 a11y-planner designs accessible implementations BEFORE coding, so accessibility is built in from the start rather than bolted on after review. It complements a11y-critic, which reviews accessibility design decisions post-implementation.
 
@@ -43,10 +43,10 @@ Both files encode the same 9-phase accessibility design protocol (Scope & Contex
 
 ## Installation Paths
 
-Users install by copying files to their Claude Code config:
+Users install the Claude Code-compatible surface by copying files to their config:
 - Skill: `cp -r .claude/skills/a11y-planner ~/.claude/skills/`
 - Agent: `cp .claude/agents/a11y-planner.md ~/.claude/agents/`
-- Or via: `npx claude-skills add https://github.com/zivtech/a11y-meta-skills`
+- Or via: `npx skills add zivtech/a11y-meta-skills`
 
 ## Companion Skills
 

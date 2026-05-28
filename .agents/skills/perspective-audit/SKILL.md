@@ -2,7 +2,7 @@
 name: perspective-audit
 description: "Deep accessibility review from 7 access perspectives — activated by escalation from a11y-planner or a11y-critic when one or more perspectives are flagged at MEDIUM or HIGH alarm level."
 license: Apache-2.0
-compatibility: Claude Code-compatible; protocol is model-agnostic
+compatibility: Codex-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
   version: "1.0.0"
@@ -62,8 +62,8 @@ Do not run checklists for perspectives at LOW.
 
 Read both reference files at invocation:
 
-1. `.claude/skills/perspective-audit/references/perspectives.md` — Read **only the sections** for escalated perspectives. Do not load sections for LOW-rated perspectives.
-2. `.claude/skills/perspective-audit/references/arrm-perspective-mapping.md` — Read in full for finding routing.
+1. `.Codex/skills/perspective-audit/references/perspectives.md` — Read **only the sections** for escalated perspectives. Do not load sections for LOW-rated perspectives.
+2. `.Codex/skills/perspective-audit/references/arrm-perspective-mapping.md` — Read in full for finding routing.
 
 ### Step 3 — Read the artifact under review
 
@@ -156,5 +156,5 @@ After all escalated perspectives are reviewed, output the combined summary:
 
 ## Reference Files
 
-- `.claude/skills/perspective-audit/references/perspectives.md` — JTBD checklists, red flags, and evidence requirements for all 7 perspectives.
-- `.claude/skills/perspective-audit/references/arrm-perspective-mapping.md` — ARRM role routing decision tree and finding output format.
+- `.Codex/skills/perspective-audit/references/perspectives.md` — JTBD checklists, red flags, and evidence requirements for all 7 perspectives.
+- `.Codex/skills/perspective-audit/references/arrm-perspective-mapping.md` — ARRM role routing decision tree and finding output format.

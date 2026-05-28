@@ -4,7 +4,7 @@
 # a11y-critic
 
 ## Purpose
-Accessibility design reviewer skill for Claude Code. Evaluates accessibility *design decisions* in code -- not automated test violations, but whether ARIA patterns are complete, focus management is coherent, state is communicated to assistive technology, and semantic structure matches intent. Uses an 11-phase investigation protocol with multi-perspective review (screen reader, keyboard, low vision, cognitive).
+Accessibility design reviewer skill with Claude Code-compatible install files and model-agnostic benchmark coverage. Evaluates accessibility *design decisions* in code -- not automated test violations, but whether ARIA patterns are complete, focus management is coherent, state is communicated to assistive technology, and semantic structure matches intent. Uses an 11-phase investigation protocol with multi-perspective review (screen reader, keyboard, low vision, cognitive).
 
 ## Key Files
 

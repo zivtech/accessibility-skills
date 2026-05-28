@@ -4,7 +4,7 @@
 # a11y-planner
 
 ## Purpose
-Accessibility implementation planner skill for Claude Code and companion to a11y-critic. Designs accessible implementations BEFORE coding so accessibility is built in from the start rather than bolted on after review. Uses a 9-phase planning protocol covering semantic structure, interaction patterns (mapped to WAI-ARIA APG), focus management, state communication, visual accessibility, content accessibility, and testing strategy.
+Accessibility implementation planner skill and companion to a11y-critic. The tracked install files target Claude Code-compatible discovery, while the planning protocol is model-agnostic and benchmarked through the shared eval assets. Designs accessible implementations BEFORE coding so accessibility is built in from the start rather than bolted on after review. Uses a 9-phase planning protocol covering semantic structure, interaction patterns (mapped to WAI-ARIA APG), focus management, state communication, visual accessibility, content accessibility, and testing strategy.
 
 ## Key Files
 

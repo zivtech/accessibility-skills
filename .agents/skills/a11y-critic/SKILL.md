@@ -2,7 +2,7 @@
 name: a11y-critic
 description: "Use when you have an existing component, flow, or interface and need an evidence-backed accessibility design review after basic checks pass. Best for WCAG 2.2 compliance, focus management, ARIA pattern quality, semantics, and state communication gaps automated tools miss."
 license: Apache-2.0
-compatibility: Claude Code-compatible; protocol is model-agnostic
+compatibility: Codex-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
   version: "1.1.0"
@@ -122,8 +122,8 @@ This skill surfaces design decisions, not violations.
 3. **Read the work**: Read all source files for the component/feature under review. Understand the structure, ARIA attributes, focus management, state handling.
 
 4. **Invoke the a11y-critic subagent**: Delegate to a subagent with the full 8-phase protocol below using the routing strategy:
-   - **With oh-my-claudecode (preferred)**: Use the `a11y-critic` agent type if available, fallback to `critic`, then `general-purpose`
-   - **Without oh-my-claudecode**: Route to `general-purpose` subagent with the full protocol
+   - **With oh-my-Codex (preferred)**: Use the `a11y-critic` agent type if available, fallback to `critic`, then `general-purpose`
+   - **Without oh-my-Codex**: Route to `general-purpose` subagent with the full protocol
 
 The review prompt to send to the subagent is embedded in the section below: **Full_A11y_Review_Protocol**
 
@@ -698,7 +698,7 @@ Do NOT: invoke a11y-critic on untested code.
 
 ## Related Skills in Zivtech Tooling
 
-- **accessibility-testing** (from zivtech-claude-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
-- **a11y-test** (from zivtech-claude-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
-- **accessibility-standards** (from zivtech-claude-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
+- **accessibility-testing** (from zivtech-Codex-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
+- **a11y-test** (from zivtech-Codex-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
+- **accessibility-standards** (from zivtech-Codex-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
 - **ui-design-critic** (from zivtech-design-skill): Comprehensive design review — accessibility is one of many perspectives.

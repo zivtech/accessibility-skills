@@ -27,7 +27,7 @@ Agents for running, scoring, documenting, and maintaining the eval suite.
 
 | Agent | Type | Model | Tools | Job |
 |-------|------|-------|-------|-----|
-| bench-runner | executor | sonnet | Bash, Read | Execute benchmarks (Claude API, Ollama), run scoring scripts |
+| bench-runner | executor | sonnet | Bash, Read | Execute benchmarks (Claude API, Codex/OpenAI, Ollama, Gemini/other hosted adapters when present), run scoring scripts |
 | bench-reporter | writer | sonnet | all | Update BENCHMARK.md, README.md, EVAL-GAPS-PLAN.md with results |
 | bench-reviewer | reviewer | sonnet | read-only | Audit fixture/rubric quality, verify scoring accuracy |
 | fixture-builder | builder | sonnet | all | Create/enrich fixture triplets (.md, .metadata.yaml, .rubric.yaml) |
