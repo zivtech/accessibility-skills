@@ -63,11 +63,12 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-28-evaluator-support-reroll-wave` | `explorer`, `a11y-critic` | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-evaluator-support-reroll-and-next-items.md`; `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-critic-gate-carver.md` | Confirmed evaluator alias/runOnly/selector-hint support, rerolled `DRUPAL-A11Y-007`, resolved the server/client warning-role mismatch, and split `010`/`012` into next patch lanes. |
 | `2026-05-28-continuation-007-012` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-continuation-007-012-evidence.md`; `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-012-critic-gate.md` | Re-ran cleaned `007`, saved evaluator-support patch artifact, recorded a non-AT role smoke, and locally verified the `012` filter-tips preprocess patch candidate. |
 | `2026-05-28-evaluator-support-handoff` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-evaluator-support-upstream-handoff.md` | Packaged the evaluator support patch as infrastructure handoff, with validation commands and explicit boundaries. |
+| `2026-05-28-mike-review-queue` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-mike-review-queue.md` | Organized the current packets into share order: evaluator infrastructure, `012`, `010`, and `007` after AT smoke. |
 
 ## Current Focus
 
 1. Run a short human NVDA or VoiceOver smoke check on the `DRUPAL-A11Y-007` reroll before upstream filing; local DOM/axe role smoke is complete but is not AT verification.
-2. Decide whether to upstream the evaluator support patch as one infrastructure patch or split it into helper restoration, base-URL portability, and rule/selector matching patches.
+2. Use `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-mike-review-queue.md` to decide which current artifact to share first: evaluator infrastructure, `012`, `010`, or `007` after AT smoke.
 3. Post or adapt the upstream handoff draft for the locally verified `DRUPAL-A11Y-012-empty-heading-elements` filter-tips preprocess patch, now including a focused kernel regression test.
 4. Decide whether to post the narrow upstream handoff for `DRUPAL-A11Y-010-heading-order` as a scoped default-config patch, add an update path, or broaden to pager/Views defaults with tests; use the follow-on backlog for datetime wrapper, multiple-value field, and admin block heading-order families.
 
