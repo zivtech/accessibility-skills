@@ -21,6 +21,8 @@
 | Focused baseline check | `docs/drupal-patch-evaluations/reports/baseline-repair/2026-05-28-focused-baseline-check-main.md` |
 | Route-family reproduction | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-route-family-reproduction.md` |
 | Critic gate | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-pager-candidate-critic-gate.md` |
+| Upstream handoff draft | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-upstream-handoff.md` |
+| Follow-on backlog | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-follow-on-family-backlog.md` |
 | AI assistance disclosed? | Required if this packet is reused upstream |
 
 ## Baseline Evidence
@@ -88,4 +90,4 @@ Boundary: this patch changes default optional View config. The local after-patch
 
 Keep `DRUPAL-A11Y-010` scoped to the pager family unless the tracking row is intentionally broadened. The other families need separate rows or explicit issue comments; a single mechanical heading-level patch would obscure different render contracts.
 
-Next action: decide whether the pager candidate should stay narrow with an explicit default-config scope note, add an update path, or broaden to pager/Views defaults with tests.
+Next action: decide whether to post the narrow upstream handoff as a scoped default-config patch, add an update path, or broaden to pager/Views defaults with tests.
