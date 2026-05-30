@@ -1,6 +1,6 @@
 # Drupal Accessibility Patch Evaluation Packet: DRUPAL-A11Y-007 Messages Landmark Role
 
-> Status: VERIFIED
+> Status: INCONCLUSIVE
 > Prepared: 2026-05-28
 > Purpose: Trial packet using `templates/drupal-a11y-patch-evaluation-template.md` against Mike Gifford's current Drupal core patch/report artifacts.
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |---|---|
 | Patch ID | `a11y-DRUPAL-A11Y-007-messages-landmark-role` |
-| Status | `VERIFIED` |
+| Status | `INCONCLUSIVE` |
 | Project/package | `mgifford/drupal-core` |
 | Target commit checked | `3728741f23122018f1f26206fe563cb6c9ad49f8` (`main` on 2026-05-28) |
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
@@ -30,7 +30,7 @@
 
 ## Current Verdict
 
-`VERIFIED` for the local reroll candidate, not for the original upstream raw patch.
+`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, but it is not AT-verified.
 
 The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates and JavaScript message themers. That reroll passed the standard evaluator with no patch-owned regressions.
 
@@ -372,9 +372,9 @@ Manual checks may remain open, but the packet must not imply they passed.
 
 ## Outcome
 
-`VERIFIED`
+`INCONCLUSIVE`
 
-The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced.
+The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced. The remaining gap is human AT behavior: the packet has DOM/axe role evidence, not NVDA or VoiceOver evidence.
 
 Before upstream filing, run at least one assistive-technology smoke check for message announcement behavior and landmark navigation. This packet does not claim that NVDA, VoiceOver, or Dragon testing has passed.
 
@@ -435,7 +435,7 @@ This packet was prepared with AI assistance. The accessibility finding must be v
 
 ## a11y-Critic Readiness Verdict
 
-Canonical local status recommendation: `VERIFIED` for the local reroll candidate
+Canonical local status recommendation: `INCONCLUSIVE` until human AT smoke evidence is recorded
 
 Readiness note: the reroll has automated before/after evidence and is a plausible upstream replacement candidate, but manual assistive-technology behavior still needs a short smoke check before filing as fully user-verified.
 

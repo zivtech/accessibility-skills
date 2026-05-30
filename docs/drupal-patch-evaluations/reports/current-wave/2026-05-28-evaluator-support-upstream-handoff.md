@@ -3,6 +3,7 @@
 > Date: 2026-05-28
 > Scope: Drupal accessibility evaluator infrastructure
 > Patch artifact: `docs/drupal-patch-evaluations/patches/evaluator-support/codex-evaluator-support-baseurl-rule-alias-runonly-selector-hints.patch`
+> Upstream PR: https://github.com/mgifford/drupal-core/pull/8
 
 ## Purpose
 
@@ -25,6 +26,17 @@ node --check core/tests/playwright/scripts/evaluate-patch.js
 node --check core/tests/playwright/scripts/evaluate-all-patches.js
 node --check core/tests/playwright/scripts/lib/canonical-patch-map.js
 ```
+
+Additional PR-branch validation passed on 2026-05-30 against `mgifford/drupal-core:main` at commit `2e9cd6812d`:
+
+```bash
+node --check core/tests/playwright/scripts/evaluate-patch.js
+node --check core/tests/playwright/scripts/evaluate-all-patches.js
+node --check core/tests/playwright/scripts/lib/canonical-patch-map.js
+git diff --check
+```
+
+The staged PR diff was also scanned for common credential patterns with no matches.
 
 The evaluator changes were also exercised by current-wave evidence:
 

@@ -7,6 +7,14 @@
 
 ### Evaluator Support Patch
 
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/8
+```
+
+State as of 2026-05-30: open, not draft. Branch: `AlexU-A:codex/evaluator-support-mike-20260529`.
+
 Artifact:
 
 ```text
@@ -19,7 +27,7 @@ Handoff:
 docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-evaluator-support-upstream-handoff.md
 ```
 
-Why first: several packet outcomes depend on evaluator behavior that was previously too brittle. This patch is not an accessibility remediation, but it makes the evidence pipeline more trustworthy.
+Why first: several packet outcomes depend on evaluator behavior that was previously too brittle. This patch is not an accessibility remediation, but it makes the evidence pipeline more trustworthy. It has now been opened upstream as PR #8 for Mike review.
 
 Review ask:
 
