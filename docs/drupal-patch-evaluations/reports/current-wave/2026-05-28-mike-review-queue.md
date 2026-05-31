@@ -290,6 +290,42 @@ Review ask:
 - Should this remain separate from the existing Content view pager heading PR?
 - Is leaving Stable 9 unchanged the right BC boundary for this patch?
 
+### `DRUPAL-A11Y-010-multiple-value-field-heading-order`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/16
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/multiple-value-field-heading-order-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-010-multiple-value-field-heading-order-codex-multiple-value-field-label.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-31-a11y-DRUPAL-A11Y-010-multiple-value-field-heading-order.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-010-multiple-value-field-heading-upstream-handoff.md
+```
+
+Why scoped: this is the multiple-value field label family split out from the broader `DRUPAL-A11Y-010` heading-order reproduction. The patch removes redundant nested `h4` markup from multiple-value field table labels while keeping the label text inside the existing table header cell and preserving the active theme styling classes. It includes core functional coverage, Olivero unit coverage, and exact-route `/contact/field_cardinality_test`, `/contact/presuf_formatted`, and `/contact/presuf_number` Playwright/axe smoke. It does not change datetime wrapper labels, pager headings, or admin block panel titles.
+
+Review ask:
+
+- Is replacing the nested heading with non-heading text inside the existing table header cell the right semantic treatment?
+- Should field table labeling stay scoped here, or does it need a broader follow-up beyond the heading-order violation?
+- Are the Claro, Default Admin, and Olivero styling updates broad enough for the supported active themes?
+
 ## Needs Human AT Smoke Before Upstream Wording
 
 ### `DRUPAL-A11Y-007-messages-landmark-role`

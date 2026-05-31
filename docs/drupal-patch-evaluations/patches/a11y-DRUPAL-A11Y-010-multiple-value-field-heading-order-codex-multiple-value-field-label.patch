@@ -1,0 +1,148 @@
+diff --git a/core/lib/Drupal/Core/Field/FieldPreprocess.php b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+index 4f06ce2403..ae4defae08 100644
+--- a/core/lib/Drupal/Core/Field/FieldPreprocess.php
++++ b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+@@ -108,7 +108,7 @@ public function preprocessFieldMultipleValueForm(array &$variables): void {
+         [
+           'data' => [
+             '#type' => 'html_tag',
+-            '#tag' => 'h4',
++            '#tag' => 'span',
+             '#value' => $element['#title'],
+             '#attributes' => $header_attributes,
+           ],
+diff --git a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
+index 121e1652d6..fe02b63d26 100644
+--- a/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
++++ b/core/modules/field/tests/src/Functional/MultipleWidgetFormTest.php
+@@ -177,6 +177,8 @@ public function testLabelOnMultiValueFields(): void {
+     $this->drupalGet('entity_test_base_field_display/manage/' . $entity->id());
+     $this->assertSession()->statusCodeEquals(200);
+     $this->assertSession()->pageTextContains('A field with multiple values');
++    $this->assertSession()->elementExists('css', 'th.field-label > span.label');
++    $this->assertSession()->elementNotExists('css', 'th.field-label > h4');
+     // Test if labels were XSS filtered.
+     $this->assertSession()->assertEscaped("<script>alert('a configurable field');</script>");
+   }
+diff --git a/core/themes/claro/css/components/form.css b/core/themes/claro/css/components/form.css
+index 70bb4c5201..9e04ebd766 100644
+--- a/core/themes/claro/css/components/form.css
++++ b/core/themes/claro/css/components/form.css
+@@ -71,7 +71,7 @@ tr .form-item,
+ /* Multiple selectors used to ensure styling even if modules override markup. */
+ 
+ .form-item__label--multiple-value-form,
+-.field-multiple-table .field-label h4.label {
++.field-multiple-table .field-label .label {
+   display: inline-block;
+   margin-block: 0;
+   align-self: center;
+diff --git a/core/themes/claro/css/components/form.pcss.css b/core/themes/claro/css/components/form.pcss.css
+index 2aad690142..ba5011414f 100644
+--- a/core/themes/claro/css/components/form.pcss.css
++++ b/core/themes/claro/css/components/form.pcss.css
+@@ -58,7 +58,7 @@ tr .form-item,
+ }
+ /* Multiple selectors used to ensure styling even if modules override markup. */
+ .form-item__label--multiple-value-form,
+-.field-multiple-table .field-label h4.label {
++.field-multiple-table .field-label .label {
+   display: inline-block;
+   margin-block: 0;
+   align-self: center;
+diff --git a/core/themes/default_admin/css/components/form.css b/core/themes/default_admin/css/components/form.css
+index f514594138..2aaf8f7c22 100644
+--- a/core/themes/default_admin/css/components/form.css
++++ b/core/themes/default_admin/css/components/form.css
+@@ -71,7 +71,7 @@ tr .form-item,
+ /* Multiple selectors used to ensure styling even if modules override markup. */
+ 
+ .form-item__label--multiple-value-form,
+-.field-multiple-table .field-label h4.label {
++.field-multiple-table .field-label .label {
+   display: inline-block;
+   margin-block: 0;
+   align-self: center;
+diff --git a/core/themes/default_admin/css/components/form.pcss.css b/core/themes/default_admin/css/components/form.pcss.css
+index 613beef8b3..fb3ca62ad2 100644
+--- a/core/themes/default_admin/css/components/form.pcss.css
++++ b/core/themes/default_admin/css/components/form.pcss.css
+@@ -58,7 +58,7 @@ tr .form-item,
+ }
+ /* Multiple selectors used to ensure styling even if modules override markup. */
+ .form-item__label--multiple-value-form,
+-.field-multiple-table .field-label h4.label {
++.field-multiple-table .field-label .label {
+   display: inline-block;
+   margin-block: 0;
+   align-self: center;
+diff --git a/core/themes/olivero/src/Hook/OliveroHooks.php b/core/themes/olivero/src/Hook/OliveroHooks.php
+index c5081b97b3..6c26541a84 100644
+--- a/core/themes/olivero/src/Hook/OliveroHooks.php
++++ b/core/themes/olivero/src/Hook/OliveroHooks.php
+@@ -373,7 +373,7 @@ public function preprocessFieldMultipleValueForm(array &$variables): void {
+       // @todo change this after https://www.drupal.org/node/3099026 has landed.
+       $variables['table']['#header'][0]['data'] = [
+         '#type' => 'html_tag',
+-        '#tag' => 'h4',
++        '#tag' => 'span',
+         '#value' => $variables['element']['#title'],
+         '#attributes' => $header_attributes,
+       ];
+diff --git a/core/themes/olivero/tests/src/Unit/OliveroFieldMultipleValueFormTest.php b/core/themes/olivero/tests/src/Unit/OliveroFieldMultipleValueFormTest.php
+new file mode 100644
+index 0000000000..5ab902bcb4
+--- /dev/null
++++ b/core/themes/olivero/tests/src/Unit/OliveroFieldMultipleValueFormTest.php
+@@ -0,0 +1,51 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\olivero\Unit;
++
++use Drupal\Core\Template\Attribute;
++use Drupal\olivero\Hook\OliveroHooks;
++use Drupal\Tests\UnitTestCase;
++use PHPUnit\Framework\Attributes\Group;
++
++/**
++ * Tests Olivero field multiple value form preprocessing.
++ */
++#[Group('olivero')]
++final class OliveroFieldMultipleValueFormTest extends UnitTestCase {
++
++  /**
++   * Tests multiple value field labels do not add heading markup.
++   */
++  public function testMultipleValueFieldHeaderUsesNonHeadingLabel(): void {
++    $variables = [
++      'multiple' => TRUE,
++      'element' => [
++        '#field_name' => 'field_multiple',
++        '#title' => 'Multiple field',
++      ],
++      'table' => [
++        '#header' => [
++          [
++            'data' => [
++              '#type' => 'html_tag',
++              '#tag' => 'h4',
++              '#value' => 'Old label',
++              '#attributes' => new Attribute(['class' => ['label']]),
++            ],
++          ],
++        ],
++      ],
++    ];
++
++    (new OliveroHooks())->preprocessFieldMultipleValueForm($variables);
++
++    $this->assertSame('span', $variables['table']['#header'][0]['data']['#tag']);
++    $this->assertSame('Multiple field', $variables['table']['#header'][0]['data']['#value']);
++    $classes = $variables['table']['#header'][0]['data']['#attributes']['class'];
++    $this->assertContains('form-item__label', $classes);
++    $this->assertContains('form-item__label--multiple-value-form', $classes);
++  }
++
++}
