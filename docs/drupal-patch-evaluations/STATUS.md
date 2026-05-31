@@ -71,10 +71,11 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-31-label-in-name-004-pr` | Main | https://github.com/mgifford/drupal-core/pull/11 | Opened the `LABEL-IN-NAME-004` filter format Configure link patch upstream from `AlexU-A:codex/filter-format-label-in-name-20260531`; GitHub reports PR #11 is open, not draft, mergeable cleanly, and AccessLint passing. |
 | `2026-05-31-004-tabindex-buttons-pr` | Main | https://github.com/mgifford/drupal-core/pull/12 | Opened the `DRUPAL-A11Y-004` theming tools button fixture patch upstream from `AlexU-A:codex/tabindex-buttons-test-form-20260531`; GitHub reports PR #12 is open, not draft, mergeable cleanly, and AccessLint passing. |
 | `2026-05-31-003-select-all-checkbox-pr` | Main | https://github.com/mgifford/drupal-core/pull/13 | Opened the `DRUPAL-A11Y-003` select-all checkbox label patch upstream from `AlexU-A:codex/select-all-checkbox-label-20260531`; GitHub reports PR #13 is open, not draft, mergeable cleanly, and AccessLint passing. |
+| `2026-05-31-evaluator-support-test-followup` | Main | https://github.com/mgifford/drupal-core/pull/8 | Added Node helper coverage for evaluator base URL precedence, axe rule alias/runOnly behavior, selector-hint matching, violation merging, and canonical patch loading; pushed commit `fac67e0a78` and updated the PR body. AccessLint rerun is pending as of the update. |
 
 ## Current Focus
 
-1. Track evaluator infrastructure PR #8 and use Mike's feedback to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
+1. Track evaluator infrastructure PR #8, including the AccessLint rerun after commit `fac67e0a78`, and use Mike's feedback to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
 2. Run a short human NVDA or VoiceOver smoke check on the `DRUPAL-A11Y-007` reroll before upstream filing; local DOM/axe role smoke is complete but is not AT verification.
 3. Track `DRUPAL-A11Y-012` PR #9 and use Mike's feedback to decide whether the shared `filter_tips` preprocess shape needs adjustment.
 4. Track `DRUPAL-A11Y-010` PR #10 and use Mike's feedback to decide whether the Content view pager update path is narrow enough.
@@ -112,5 +113,5 @@ Source status values are descriptive labels from the upstream/source material, s
 - [x] No item is marked `VERIFIED` without before/after evidence, broad regression classification, and completed required manual checks.
 - [x] Every subagent-owned row has a saved report path or an explicit `TBD` handoff reason.
 - [x] Global environment preflight has been recorded before any test wave.
-- [x] Upstream issue/status has been updated for every packet that is ready to file or share; no local packet is ready to file yet after critic review.
+- [x] Upstream issue/status has been updated for every packet filed or ready to share; packets that are not ready, including `DRUPAL-A11Y-007`, remain explicitly blocked with next actions.
 - [x] `git diff --check` or an equivalent whitespace check has run for changed docs.
