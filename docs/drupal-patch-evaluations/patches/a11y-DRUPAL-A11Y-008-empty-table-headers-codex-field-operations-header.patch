@@ -1,0 +1,36 @@
+diff --git a/core/lib/Drupal/Core/Field/FieldPreprocess.php b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+index 4f06ce2403..0fd3076b3a 100644
+--- a/core/lib/Drupal/Core/Field/FieldPreprocess.php
++++ b/core/lib/Drupal/Core/Field/FieldPreprocess.php
+@@ -115,7 +115,16 @@ public function preprocessFieldMultipleValueForm(array &$variables): void {
+           'colspan' => 2,
+           'class' => ['field-label'],
+         ],
+-        [],
++        [
++          'data' => [
++            '#type' => 'html_tag',
++            '#tag' => 'span',
++            '#value' => $this->t('Operations'),
++            '#attributes' => [
++              'class' => ['visually-hidden'],
++            ],
++          ],
++        ],
+         $this->t('Order', [], ['context' => 'Sort order']),
+       ];
+       $rows = [];
+diff --git a/core/modules/field/tests/src/Functional/FormTest.php b/core/modules/field/tests/src/Functional/FormTest.php
+index 61b489b2a0..5a6d130590 100644
+--- a/core/modules/field/tests/src/Functional/FormTest.php
++++ b/core/modules/field/tests/src/Functional/FormTest.php
+@@ -284,6 +284,9 @@ public function testFieldFormUnlimited(): void {
+ 
+     // Check if aria-describedby attribute is placed on multiple value widgets.
+     $this->assertSession()->elementAttributeContains('xpath', '//table[@id="field-unlimited-values"]', 'aria-describedby', 'edit-field-unlimited--description');
++    // The operations column header is visually hidden, but still available to
++    // assistive technology.
++    $this->assertSession()->elementExists('xpath', '//table[@id="field-unlimited-values"]/thead/tr/th[2]/span[contains(@class, "visually-hidden") and normalize-space(.) = "Operations"]');
+ 
+     // Press 'add more' button -> 2 widgets.
+     $this->submitForm([], 'Add another item');
