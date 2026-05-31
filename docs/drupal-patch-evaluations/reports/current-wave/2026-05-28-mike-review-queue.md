@@ -111,6 +111,42 @@ Review ask:
 - Is the post-update narrow enough: update only existing active Content views that still have `h4`, and preserve other values?
 - Should the non-pager route families become separate follow-up issues rather than one broad heading-order patch?
 
+### `LABEL-IN-NAME-004-filter-format-aria-label`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/11
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/filter-format-label-in-name-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-LABEL-IN-NAME-004-filter-format-aria-label-codex-configure-link-label.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-28-a11y-LABEL-IN-NAME-004-filter-format-aria-label.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-label-in-name-004-upstream-handoff.md
+```
+
+Why scoped: the issue is limited to filter format Configure operation links whose visible text is changed after the parent entity list builder has already assigned an `Edit ...` accessible name. The patch aligns the accessible name with the visible label and adds functional regression coverage.
+
+Review ask:
+
+- Is updating the operation URL attributes in `FilterFormatListBuilder` the right local fix for this override?
+- Should any broader entity-list-builder follow-up be separate from this scoped filter-format patch?
+- Is the functional assertion enough, given the added keyboard-user smoke evidence?
+
 ## Needs Human AT Smoke Before Upstream Wording
 
 ### `DRUPAL-A11Y-007-messages-landmark-role`

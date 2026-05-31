@@ -15,6 +15,8 @@
 | Local runtime | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-runtime` |
 | Evaluation artifact | PASS: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation-codex-selector-hint-label-004.{md,json,html}`; earlier inconclusive run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-LABEL-IN-NAME-004-filter-format-aria-label-evaluation-codex-runtime-smoke-label-004.{md,json}` |
 | Manual check | `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-label-in-name-004-manual-axe.md` |
+| Upstream PR | https://github.com/mgifford/drupal-core/pull/11 |
+| Upstream handoff | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-label-in-name-004-upstream-handoff.md` |
 | AI assistance disclosed? | Required if this packet is reused upstream |
 
 ## Local Evaluator Result
@@ -94,3 +96,5 @@ After patch:
 `VERIFIED`
 
 The patch now passes the standard evaluator in the repaired local runtime, and the independent manual axe check confirms the accessible-name contract before and after patching. Optional voice-control smoke testing would strengthen an upstream filing, but the local patch evaluation is no longer blocked by the axe rule ID mismatch.
+
+Follow-up upstream filing on 2026-05-31 added a functional regression assertion and a keyboard-user smoke check: Tab reached all Configure links, Enter activated the focused Configure link, and axe reported zero `label-content-name-mismatch` violations after the patch. The filed PR is https://github.com/mgifford/drupal-core/pull/11.

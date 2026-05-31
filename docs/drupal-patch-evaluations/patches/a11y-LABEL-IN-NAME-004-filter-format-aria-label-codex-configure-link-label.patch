@@ -1,0 +1,37 @@
+diff --git a/core/modules/filter/src/FilterFormatListBuilder.php b/core/modules/filter/src/FilterFormatListBuilder.php
+index e6a90f7a9e..2500a5a9b7 100644
+--- a/core/modules/filter/src/FilterFormatListBuilder.php
++++ b/core/modules/filter/src/FilterFormatListBuilder.php
+@@ -133,6 +133,15 @@ protected function getDefaultOperations(EntityInterface $entity, CacheableMetada
+ 
+     if (isset($operations['edit'])) {
+       $operations['edit']['title'] = $this->t('Configure');
++      // Keep the accessible name aligned with the overridden title.
++      if (isset($operations['edit']['url'])) {
++        $url = $operations['edit']['url'];
++        $attributes = $url->getOption('attributes') ?: [];
++        $attributes['aria-label'] = $this->t('Configure @entity_label', [
++          '@entity_label' => $entity->label(),
++        ]);
++        $url->setOption('attributes', $attributes);
++      }
+     }
+ 
+     // The fallback format may not be disabled.
+diff --git a/core/modules/filter/tests/src/Functional/FilterAdminTest.php b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+index b9776c852a..245bd05931 100644
+--- a/core/modules/filter/tests/src/Functional/FilterAdminTest.php
++++ b/core/modules/filter/tests/src/Functional/FilterAdminTest.php
+@@ -498,7 +498,11 @@ public function testFilterEnableAndDisable(): void {
+     $this->assertSession()->linkByHrefNotExists('/admin/config/content/formats/manage/filter_test/enable');
+ 
+     // Test the configure link appears for Filter test.
+-    $this->assertSession()->elementExists('xpath', '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]');
++    $configure_link = $this->assertSession()->elementExists(
++      'xpath',
++      '//a[contains(@href, "/admin/config/content/formats/manage/filter_test") and text()="Configure"]',
++    );
++    $this->assertSame('Configure Filter test', $configure_link->getAttribute('aria-label'));
+ 
+     // Disable 'Filter test'.
+     $this->getSession()->getPage()->find('css', '[href*="/admin/config/content/formats/manage/filter_test/disable"]')->click();
