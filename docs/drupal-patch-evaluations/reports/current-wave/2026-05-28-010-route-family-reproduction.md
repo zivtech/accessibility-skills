@@ -138,15 +138,15 @@ Focused result: /admin/content #pagination-heading rendered as h2; heading-order
 Default axe after patch: remaining color-contrast, label-title-only, region
 ```
 
-This is not yet a final upstream-ready verdict. The critic question is whether a default optional config change is sufficient, or whether existing installs need an update path or explicit scope note.
+Status update 2026-05-31: the pager family was opened upstream as PR #10 after adding an update path and focused tests.
 
 Open or track follow-on rows for:
 
-- datetime wrapper heading-order;
+- datetime wrapper heading-order. Opened as `DRUPAL-A11Y-010-datetime-wrapper-heading-order` and upstream PR #17 on 2026-05-31;
 - multiple-value field heading-order. Opened as `DRUPAL-A11Y-010-multiple-value-field-heading-order` and upstream PR #16 on 2026-05-31;
 - admin block heading-order. Opened as `DRUPAL-A11Y-010-admin-block-heading-order` and upstream PR #15 on 2026-05-31.
 
-The next patch should target one family at a time. The safest first candidate is the pager family, because `/admin/content` has a specific default Views config value and a narrow reproduced selector. The form-label families need design review before changing heading tags globally.
+All known agent-only route families from this reproduction have now been split into separate upstream PRs. Do not open another `DRUPAL-A11Y-010` follow-on lane from this report unless review identifies new evidence or asks for broader scope.
 
 ## Negative Space
 

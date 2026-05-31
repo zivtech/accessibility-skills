@@ -21,6 +21,14 @@ Drush also installed dependencies: `testfilters`, `textfixtures`, `datetime_rang
 
 ## Family 1: Datetime Wrapper Headings
 
+Status update 2026-05-31: split out and opened upstream as PR #17.
+
+```text
+Packet: docs/drupal-patch-evaluations/2026-05-31-a11y-DRUPAL-A11Y-010-datetime-wrapper-heading-order.md
+Patch: docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-010-datetime-wrapper-heading-order-codex-datetime-wrapper-label.patch
+PR: https://github.com/mgifford/drupal-core/pull/17
+```
+
 Routes:
 
 - `/admin/form_style`
@@ -111,7 +119,7 @@ Should admin block titles be `h2` under admin overview page `h1` headings, or sh
 
 Create separate follow-on rows or issue comments for:
 
-- `heading-order`: datetime wrapper headings;
+- `heading-order`: datetime wrapper headings. Done locally as `DRUPAL-A11Y-010-datetime-wrapper-heading-order`, pending upstream review in PR #17;
 - `heading-order`: multiple-value field headings. Done locally as `DRUPAL-A11Y-010-multiple-value-field-heading-order`, pending upstream review in PR #16;
 - `heading-order`: admin block panel headings. Done locally as `DRUPAL-A11Y-010-admin-block-heading-order`, pending upstream review in PR #15.
 
