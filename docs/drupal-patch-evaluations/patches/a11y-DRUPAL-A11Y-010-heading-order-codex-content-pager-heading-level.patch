@@ -11,3 +11,121 @@ index 09ba3dcc35..b9f74760f6 100644
            items_per_page: 50
            tags:
              next: 'Next ›'
+diff --git a/core/modules/node/node.post_update.php b/core/modules/node/node.post_update.php
+index 4a831dc407..050a81c490 100644
+--- a/core/modules/node/node.post_update.php
++++ b/core/modules/node/node.post_update.php
+@@ -20,3 +20,18 @@ function node_removed_post_updates(): array {
+     'node_post_update_add_rebuild_permission_to_roles' => '12.0.0',
+   ];
+ }
++
++/**
++ * Updates the content overview pager heading level.
++ */
++function node_post_update_content_view_pager_heading_level(): void {
++  $config = \Drupal::configFactory()->getEditable('views.view.content');
++  if ($config->isNew()) {
++    return;
++  }
++
++  $pager_heading_level = 'display.default.display_options.pager.options.pagination_heading_level';
++  if ($config->get($pager_heading_level) === 'h4') {
++    $config->set($pager_heading_level, 'h2')->save();
++  }
++}
+diff --git a/core/modules/node/tests/src/Functional/NodeAdminTest.php b/core/modules/node/tests/src/Functional/NodeAdminTest.php
+index 57660092c6..a53ff0cc0d 100644
+--- a/core/modules/node/tests/src/Functional/NodeAdminTest.php
++++ b/core/modules/node/tests/src/Functional/NodeAdminTest.php
+@@ -140,6 +140,23 @@ public function testContentAdminSort(): void {
+     $this->assertSession()->elementAttributeContains('css', 'table thead tr th.views-field-title', 'aria-sort', 'ascending');
+   }
+ 
++  /**
++   * Tests the content overview pager heading level.
++   */
++  public function testContentAdminPagerHeadingLevel(): void {
++    $this->config('views.view.content')
++      ->set('display.default.display_options.pager.options.items_per_page', 1)
++      ->save();
++
++    $this->drupalCreateNode(['type' => 'page']);
++    $this->drupalCreateNode(['type' => 'page']);
++
++    $this->drupalLogin($this->adminUser);
++    $this->drupalGet('admin/content');
++
++    $this->assertSame('h2', $this->assertSession()->elementExists('css', '#pagination-heading')->getTagName());
++  }
++
+   /**
+    * Tests content overview with different user permissions.
+    *
+diff --git a/core/modules/node/tests/src/Kernel/NodePostUpdateTest.php b/core/modules/node/tests/src/Kernel/NodePostUpdateTest.php
+new file mode 100644
+index 0000000000..2acb9b6a9a
+--- /dev/null
++++ b/core/modules/node/tests/src/Kernel/NodePostUpdateTest.php
+@@ -0,0 +1,61 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\node\Kernel;
++
++use Drupal\Core\Config\Config;
++use Drupal\KernelTests\KernelTestBase;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests node post update functions.
++ */
++#[Group('node')]
++#[RunTestsInSeparateProcesses]
++class NodePostUpdateTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = ['field', 'filter', 'node', 'system', 'text', 'user', 'views'];
++
++  /**
++   * The content View pager heading level config path.
++   */
++  private const PAGER_HEADING_LEVEL = 'display.default.display_options.pager.options.pagination_heading_level';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++    $this->installEntitySchema('user');
++    $this->installConfig(['node']);
++    require_once $this->root . '/core/modules/node/node.post_update.php';
++  }
++
++  /**
++   * Tests content View pager heading level updates.
++   */
++  public function testContentViewPagerHeadingLevelPostUpdate(): void {
++    $this->assertSame('h2', $this->contentViewConfig()->get(self::PAGER_HEADING_LEVEL));
++
++    $this->contentViewConfig()->set(self::PAGER_HEADING_LEVEL, 'h4')->save();
++    node_post_update_content_view_pager_heading_level();
++    $this->assertSame('h2', $this->contentViewConfig()->get(self::PAGER_HEADING_LEVEL));
++
++    $this->contentViewConfig()->set(self::PAGER_HEADING_LEVEL, 'h3')->save();
++    node_post_update_content_view_pager_heading_level();
++    $this->assertSame('h3', $this->contentViewConfig()->get(self::PAGER_HEADING_LEVEL));
++  }
++
++  /**
++   * Gets the editable content View configuration.
++   */
++  private function contentViewConfig(): Config {
++    return $this->container->get('config.factory')->getEditable('views.view.content');
++  }
++
++}

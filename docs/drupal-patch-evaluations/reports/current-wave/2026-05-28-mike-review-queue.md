@@ -73,9 +73,17 @@ Review ask:
 - Are the normalized `tip.name`, `tip.list`, format attributes, and per-item attributes the right public shape for Claro and Default Admin templates?
 - Should the separate home-page empty `h1` evidence stay out of this issue?
 
-## Ready For Discussion, Not Final Filing
+## Opened Upstream As A Scoped Accessibility Patch
 
 ### `DRUPAL-A11Y-010-heading-order`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/10
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/content-pager-heading-20260531`.
 
 Patch:
 
@@ -95,13 +103,13 @@ Handoff:
 docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-upstream-handoff.md
 ```
 
-Why not final: the pager finding is real and the candidate fixes the default `/admin/content` View config, but it does not handle existing active config unless an update path is added. It also does not address the datetime wrapper, multiple-value field, or admin block heading-order families.
+Why scoped: the pager finding is real and now has default config, post-update, rendered-page, and post-update test coverage. It still does not address the datetime wrapper, multiple-value field, or admin block heading-order families.
 
 Review ask:
 
-- Is a default-config-only patch useful enough to post?
-- Should this include an update path for existing installed sites?
-- Should the non-pager route families become separate issues rather than one broad heading-order patch?
+- Is changing the default Content view pager heading to `h2` the right semantic level for `/admin/content`?
+- Is the post-update narrow enough: update only existing active Content views that still have `h4`, and preserve other values?
+- Should the non-pager route families become separate follow-up issues rather than one broad heading-order patch?
 
 ## Needs Human AT Smoke Before Upstream Wording
 
