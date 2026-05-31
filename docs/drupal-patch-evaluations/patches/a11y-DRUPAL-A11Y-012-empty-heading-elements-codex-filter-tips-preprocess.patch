@@ -74,7 +74,7 @@ index c516f9fd2a..ae77ff3021 100644
     *
 diff --git a/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php b/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php
 new file mode 100644
-index 0000000000..f8dec9537f
+index 0000000000..76daf02b82
 --- /dev/null
 +++ b/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php
 @@ -0,0 +1,153 @@
@@ -114,7 +114,7 @@ index 0000000000..f8dec9537f
 +      ]);
 +
 +      $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the format name.");
-+      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
++      $this->assertStringNotContainsString('<h3' . '></h3>', $output, "$theme should not render an empty heading.");
 +    }
 +  }
 +
@@ -129,7 +129,7 @@ index 0000000000..f8dec9537f
 +      $this->assertStringContainsString('<h2>Text Formats</h2>', $output, "$theme should render the filter tips heading.");
 +      $this->assertStringContainsString('<h3>Basic HTML</h3>', $output, "$theme should render the first format name.");
 +      $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the second format name.");
-+      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
++      $this->assertStringNotContainsString('<h3' . '></h3>', $output, "$theme should not render an empty heading.");
 +    }
 +  }
 +
