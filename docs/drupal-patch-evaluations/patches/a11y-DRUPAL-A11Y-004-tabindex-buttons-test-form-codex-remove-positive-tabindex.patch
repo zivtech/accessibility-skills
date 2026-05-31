@@ -1,0 +1,110 @@
+diff --git a/modules/contrib/theming_tools/modules/button/src/Form/ButtonTestForm.php b/modules/contrib/theming_tools/modules/button/src/Form/ButtonTestForm.php
+index 34c9320636..a60a8e26f9 100644
+--- a/modules/contrib/theming_tools/modules/button/src/Form/ButtonTestForm.php
++++ b/modules/contrib/theming_tools/modules/button/src/Form/ButtonTestForm.php
+@@ -14,14 +14,14 @@ class ButtonTestForm extends FormBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function getFormId() {
++  public function getFormId(): string {
+     return 'button_test_form';
+   }
+ 
+   /**
+    * Returns a renderable array for a test page.
+    */
+-  public function buildForm(array $form, FormStateInterface $form_state, $disabled = FALSE) {
++  public function buildForm(array $form, FormStateInterface $form_state, $disabled = FALSE): array {
+ 
+     //
+     // Buttons.
+@@ -56,7 +56,6 @@ public function buildForm(array $form, FormStateInterface $form_state, $disabled
+         '#button_type' => 'primary',
+         '#attributes' => [
+           'class' => $value['extra_classes'] ?? [],
+-          'tabindex' => 1,
+         ],
+         '#disabled' => $disabled,
+       ];
+@@ -66,7 +65,6 @@ public function buildForm(array $form, FormStateInterface $form_state, $disabled
+         '#button_type' => 'danger',
+         '#attributes' => [
+           'class' => $value['extra_classes'] ?? [],
+-          'tabindex' => 1,
+         ],
+         '#disabled' => $disabled,
+       ];
+@@ -75,7 +73,6 @@ public function buildForm(array $form, FormStateInterface $form_state, $disabled
+         '#value' => $this->t('Default'),
+         '#attributes' => [
+           'class' => $value['extra_classes'] ?? [],
+-          'tabindex' => 1,
+         ],
+         '#disabled' => $disabled,
+       ];
+@@ -224,7 +221,7 @@ public function buildForm(array $form, FormStateInterface $form_state, $disabled
+   /**
+    * {@inheritdoc}
+    */
+-  public function submitForm(array &$form, FormStateInterface $form_state) {
++  public function submitForm(array &$form, FormStateInterface $form_state): void {
+   }
+ 
+ }
+diff --git a/modules/contrib/theming_tools/tests/src/Functional/ButtonTestFormTest.php b/modules/contrib/theming_tools/tests/src/Functional/ButtonTestFormTest.php
+new file mode 100644
+index 0000000000..7151c1ad6c
+--- /dev/null
++++ b/modules/contrib/theming_tools/tests/src/Functional/ButtonTestFormTest.php
+@@ -0,0 +1,50 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\theming_tools\Functional;
++
++use Drupal\Tests\BrowserTestBase;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests button fixture markup.
++ *
++ * @group theming_tools
++ */
++#[RunTestsInSeparateProcesses]
++class ButtonTestFormTest extends BrowserTestBase {
++
++  /**
++   * Modules to enable.
++   *
++   * @var string[]
++   */
++  public static $modules = ['button'];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->drupalLogin($this->drupalCreateUser(['access content']));
++  }
++
++  /**
++   * Tests that button fixture controls use the natural tab order.
++   */
++  public function testButtonFixturesUseNaturalTabOrder() {
++    foreach (['/buttons', '/buttons/disabled'] as $path) {
++      $this->drupalGet($path);
++      $this->assertSession()->statusCodeEquals(200);
++      $this->assertSession()->elementNotExists('css', '#button-test-form [tabindex]');
++    }
++  }
++
++}

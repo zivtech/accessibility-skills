@@ -147,6 +147,42 @@ Review ask:
 - Should any broader entity-list-builder follow-up be separate from this scoped filter-format patch?
 - Is the functional assertion enough, given the added keyboard-user smoke evidence?
 
+### `DRUPAL-A11Y-004-tabindex-buttons-test-form`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/12
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/tabindex-buttons-test-form-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form-codex-remove-positive-tabindex.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-004-tabindex-buttons-test-form.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-004-tabindex-buttons-upstream-handoff.md
+```
+
+Why scoped: the failing route is `/buttons`, rendered by `ButtonTestForm`, not the earlier `FormTestClickedButtonForm` target. The patch removes positive `tabindex` instead of replacing it with `-1`, preserving native keyboard reachability and DOM tab order.
+
+Review ask:
+
+- Was the positive `tabindex` in the button fixture intentional as an anti-pattern demo, or should the fixture avoid shipping axe-detectable keyboard failures?
+- Is the functional assertion enough alongside the evaluator pass and real keyboard Tab-order smoke?
+- Should the two remaining `/buttons` `region` violations stay in a separate fixture/layout issue?
+
 ## Needs Human AT Smoke Before Upstream Wording
 
 ### `DRUPAL-A11Y-007-messages-landmark-role`
