@@ -73,6 +73,7 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-31-003-select-all-checkbox-pr` | Main | https://github.com/mgifford/drupal-core/pull/13 | Opened the `DRUPAL-A11Y-003` select-all checkbox label patch upstream from `AlexU-A:codex/select-all-checkbox-label-20260531`; GitHub reports PR #13 is open, not draft, mergeable cleanly, and AccessLint passing. |
 | `2026-05-31-evaluator-support-test-followup` | Main | https://github.com/mgifford/drupal-core/pull/8 | Added Node helper coverage for evaluator base URL precedence, axe rule alias/runOnly behavior, selector-hint matching, violation merging, and canonical patch loading; pushed commit `fac67e0a78` and updated the PR body. AccessLint rerun is pending as of the update. |
 | `2026-05-31-006-theme-switcher-pr` | Main | https://github.com/mgifford/drupal-core/pull/14 | Opened the `DRUPAL-A11Y-006` theme switcher form landmark patch upstream from `AlexU-A:codex/theme-switcher-form-landmark-20260531`; GitHub reports PR #14 is open, not draft, mergeable cleanly, and AccessLint passing. |
+| `2026-05-31-fresh-chat-handoff-after-pr-14` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-fresh-chat-handoff-after-pr-14.md` | Captured restart state after PRs #8-#14, including live PR status, worktree roles, keyboard-test requirements, `core-philosophy-query` trigger guidance, and hard boundaries for the next chat. |
 
 ## Current Focus
 
