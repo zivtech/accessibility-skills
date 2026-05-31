@@ -1,0 +1,43 @@
+From 6d6ce230d9b13037efbcd61ee7158099b9b1ddae Mon Sep 17 00:00:00 2001
+From: Alex Urevick-Ackelsberg <alex@zivtech.com>
+Date: Sun, 31 May 2026 17:47:31 -0400
+Subject: [PATCH] fix: darken default admin orange accent
+
+---
+ core/themes/default_admin/src/Helper.php                    | 2 +-
+ .../themes/default_admin/tests/src/Functional/AdminTest.php | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/core/themes/default_admin/src/Helper.php b/core/themes/default_admin/src/Helper.php
+index ba87af3a68..ae850242ba 100644
+--- a/core/themes/default_admin/src/Helper.php
++++ b/core/themes/default_admin/src/Helper.php
+@@ -60,7 +60,7 @@ public static function accentColors(): array {
+       ],
+       'orange' => [
+         'label' => t('Orange'),
+-        'hex' => '#c55228',
++        'hex' => '#bf4e25',
+       ],
+       'yellow' => [
+         'label' => t('Yellow'),
+diff --git a/core/themes/default_admin/tests/src/Functional/AdminTest.php b/core/themes/default_admin/tests/src/Functional/AdminTest.php
+index bed6e881a8..d599c00c1b 100644
+--- a/core/themes/default_admin/tests/src/Functional/AdminTest.php
++++ b/core/themes/default_admin/tests/src/Functional/AdminTest.php
+@@ -79,6 +79,12 @@ public function testAccentColorSetting(): void {
+     $response = $this->drupalGet('/admin/content');
+     $this->assertSession()->statusCodeEquals(200);
+     $this->assertStringContainsString('"preset_accent_color":"red"', $response);
++
++    \Drupal::configFactory()->getEditable('default_admin.settings')->set('preset_accent_color', 'orange')->save();
++    $response = $this->drupalGet('/admin/content');
++    $this->assertSession()->statusCodeEquals(200);
++    $this->assertStringContainsString('"preset_accent_color":"orange"', $response);
++    $this->assertStringContainsString('--accent-base: #bf4e25;', $response);
+   }
+ 
+   /**
+-- 
+2.50.1 (Apple Git-155)
+
