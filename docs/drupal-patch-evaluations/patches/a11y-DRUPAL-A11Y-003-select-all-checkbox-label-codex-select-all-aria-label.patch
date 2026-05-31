@@ -1,0 +1,100 @@
+diff --git a/core/misc/tableselect.js b/core/misc/tableselect.js
+index af1fe5fe11..5f6e487213 100644
+--- a/core/misc/tableselect.js
++++ b/core/misc/tableselect.js
+@@ -53,7 +53,7 @@
+           const stateChanged = $checkbox.prop('checked') !== state;
+ 
+           $checkbox.attr(
+-            'title',
++            'aria-label',
+             state ? strings.selectNone : strings.selectAll,
+           );
+ 
+@@ -69,7 +69,9 @@
+     // Find all <th> with class select-all, and insert the check all checkbox.
+     $table
+       .find('th.select-all')
+-      .prepend($(Drupal.theme('checkbox')).attr('title', strings.selectAll))
++      .prepend(
++        $(Drupal.theme('checkbox')).attr('aria-label', strings.selectAll),
++      )
+       .on('click', (event) => {
+         if (event.target.matches('input[type="checkbox"]')) {
+           // Loop through all checkboxes and set their state to the select all
+diff --git a/core/modules/system/tests/src/FunctionalJavascript/Form/ElementsTableSelectTest.php b/core/modules/system/tests/src/FunctionalJavascript/Form/ElementsTableSelectTest.php
+index 051381932a..fe121bea3e 100644
+--- a/core/modules/system/tests/src/FunctionalJavascript/Form/ElementsTableSelectTest.php
++++ b/core/modules/system/tests/src/FunctionalJavascript/Form/ElementsTableSelectTest.php
+@@ -33,6 +33,10 @@ public function testAjax(): void {
+     $this->drupalGet('form_test/tableselect/multiple-true');
+     $session = $this->getSession();
+     $page = $session->getPage();
++    $select_all_checkbox = $this->assertSession()->elementExists('css', 'th.select-all input[type="checkbox"]');
++    $this->assertSame('Select all rows in this table', $select_all_checkbox->getAttribute('aria-label'));
++    $this->assertFalse($select_all_checkbox->hasAttribute('title'));
++
+     for ($i = 1; $i <= 3; $i++) {
+       $row = 'row' . $i;
+       $page->hasUncheckedField($row);
+@@ -44,6 +48,8 @@ public function testAjax(): void {
+         $page->hasCheckedField($other_row);
+       }
+     }
++    $this->assertSame('Deselect all rows in this table', $select_all_checkbox->getAttribute('aria-label'));
++    $this->assertFalse($select_all_checkbox->hasAttribute('title'));
+ 
+     // Test radios (#multiple == FALSE).
+     $this->drupalGet('form_test/tableselect/multiple-false');
+diff --git a/core/themes/default_admin/migration/js/tableselect.js b/core/themes/default_admin/migration/js/tableselect.js
+index 4dbcfeaade..9b7f9a643d 100644
+--- a/core/themes/default_admin/migration/js/tableselect.js
++++ b/core/themes/default_admin/migration/js/tableselect.js
+@@ -54,7 +54,7 @@
+           const stateChanged = $checkbox.prop('checked') !== state;
+ 
+           $checkbox.attr(
+-            'title',
++            'aria-label',
+             state ? strings.selectNone : strings.selectAll,
+           );
+ 
+@@ -76,7 +76,9 @@
+ 
+     // Check if select-all already exists, if not add it.
+     if ($table.find('th.select-all').find('input[type="checkbox"]').length === 0) {
+-      $table.find('th.select-all').prepend($(Drupal.theme('checkbox')).attr('title', strings.selectAll));
++      $table.find('th.select-all').prepend(
++        $(Drupal.theme('checkbox')).attr('aria-label', strings.selectAll),
++      );
+     }
+ 
+     // Find all <th> with class select-all, and insert the check all checkbox.
+diff --git a/core/themes/default_admin/templates/dataset/table.html.twig b/core/themes/default_admin/templates/dataset/table.html.twig
+index 9bc07c5d41..6cc9658c58 100644
+--- a/core/themes/default_admin/templates/dataset/table.html.twig
++++ b/core/themes/default_admin/templates/dataset/table.html.twig
+@@ -67,8 +67,8 @@
+           {% if 'gin--sticky-bulk-select' in cell_classes %}
+             <input
+               type="checkbox"
++              aria-label="{{ 'Select all rows in this table'|t }}"
+               class="form-checkbox form-boolean form-boolean--type-checkbox"
+-              title="{{ 'Select all rows in this table'|t }}"
+             />
+           {% endif %}
+         </{{ cell.tag }}>
+diff --git a/core/themes/default_admin/templates/views/views-view-table.html.twig b/core/themes/default_admin/templates/views/views-view-table.html.twig
+index 50ab1ca4c4..31152a4700 100644
+--- a/core/themes/default_admin/templates/views/views-view-table.html.twig
++++ b/core/themes/default_admin/templates/views/views-view-table.html.twig
+@@ -61,8 +61,8 @@
+           {% if gin_is_sticky and fields[key] is defined and 'bulk-form' in fields[key] %}
+             <input
+               type="checkbox"
++              aria-label="{{ 'Select all rows in this table'|t }}"
+               class="form-checkbox form-boolean form-boolean--type-checkbox"
+-              title="{{ 'Select all rows in this table'|t }}"
+             />
+           {% endif %}
+           {%- if column.wrapper_element -%}

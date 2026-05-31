@@ -183,6 +183,42 @@ Review ask:
 - Is the functional assertion enough alongside the evaluator pass and real keyboard Tab-order smoke?
 - Should the two remaining `/buttons` `region` violations stay in a separate fixture/layout issue?
 
+### `DRUPAL-A11Y-003-select-all-checkbox-label`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/13
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/select-all-checkbox-label-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-003-select-all-checkbox-label-codex-select-all-aria-label.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-003-select-all-checkbox-label.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-003-select-all-checkbox-upstream-handoff.md
+```
+
+Why scoped: the original patch added `aria-label` only in a Default Admin Twig path, but the live Claro/core target can be inserted by `core/misc/tableselect.js`. The reroll replaces title-only labeling with `aria-label` across core table-select behavior and Default Admin sticky header paths, and removes `title` to avoid duplicate accessible name/description output.
+
+Review ask:
+
+- Is replacing the title-only select-all checkbox label with `aria-label` acceptable for core table-select behavior?
+- Should the Default Admin sticky header paths stay in this same patch because they hardcode the same checkbox?
+- Is removing `title` acceptable to avoid duplicate accessible name/description output, even though it removes the old browser tooltip?
+
 ## Needs Human AT Smoke Before Upstream Wording
 
 ### `DRUPAL-A11Y-007-messages-landmark-role`
