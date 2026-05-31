@@ -39,6 +39,14 @@ Review ask:
 
 ### `DRUPAL-A11Y-012-empty-heading-elements`
 
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/9
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`. Branch: `AlexU-A:codex/filter-tips-empty-heading-20260530`.
+
 Patch:
 
 ```text
@@ -57,7 +65,7 @@ Handoff:
 docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-012-upstream-handoff.md
 ```
 
-Why second: this is the cleanest remediation candidate. It has a narrow source cause, before/after axe evidence, and a focused kernel regression test.
+Why second: this is the cleanest remediation candidate. It has a narrow source cause, before/after axe evidence, and a focused kernel regression test. It has now been opened upstream as PR #9 for Mike review.
 
 Review ask:
 

@@ -1,14 +1,14 @@
 diff --git a/core/modules/filter/src/Hook/FilterThemeHooks.php b/core/modules/filter/src/Hook/FilterThemeHooks.php
-index c516f9fd2a..23fea6ce4a 100644
+index c516f9fd2a..ae77ff3021 100644
 --- a/core/modules/filter/src/Hook/FilterThemeHooks.php
 +++ b/core/modules/filter/src/Hook/FilterThemeHooks.php
 @@ -4,6 +4,7 @@
-
+ 
  use Drupal\Core\Hook\Attribute\Hook;
  use Drupal\Core\Session\AccountInterface;
 +use Drupal\Core\Template\Attribute;
  use Drupal\filter\FilterFormatRepositoryInterface;
-
+ 
  /**
 @@ -27,6 +28,7 @@ public function theme() : array {
            'tips' => NULL,
@@ -18,10 +18,10 @@ index c516f9fd2a..23fea6ce4a 100644
        ],
        'text_format_wrapper' => [
          'variables' => [
-@@ -53,6 +55,52 @@ public function theme() : array {
+@@ -53,6 +55,53 @@ public function theme() : array {
      ];
    }
-
+ 
 +  /**
 +   * Prepares variables for filter tips templates.
 +   *
@@ -40,7 +40,7 @@ index c516f9fd2a..23fea6ce4a 100644
 +      // Some callers or themes may already provide the normalized template
 +      // shape. Leave those values intact.
 +      if (isset($tip_list['list'])) {
-+        $tip_list['list'] = $this->normalizeFilterTipList($tip_list['list']);
++        $variables['tips'][$name]['list'] = $this->normalizeFilterTipList($tip_list['list']);
 +        $variables['tips'][$name] += [
 +          'name' => $name,
 +          'attributes' => new Attribute(),
@@ -65,6 +65,7 @@ index c516f9fd2a..23fea6ce4a 100644
 +        $item += ['attributes' => new Attribute()];
 +      }
 +    }
++    unset($item);
 +    return $tip_list;
 +  }
 +
@@ -73,10 +74,10 @@ index c516f9fd2a..23fea6ce4a 100644
     *
 diff --git a/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php b/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php
 new file mode 100644
-index 0000000000..f7e122ed95
+index 0000000000..f8dec9537f
 --- /dev/null
 +++ b/core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php
-@@ -0,0 +1,122 @@
+@@ -0,0 +1,153 @@
 +<?php
 +
 +declare(strict_types=1);
@@ -106,26 +107,30 @@ index 0000000000..f7e122ed95
 +   * Tests long filter tips with one format.
 +   */
 +  public function testSingleFormatLongTipsRenderNamedHeading(): void {
-+    $this->setActiveTheme('claro');
-+    $output = $this->renderFilterTips([
-+      'Plain text' => $this->filterTips()['Plain text'],
-+    ]);
++    foreach ($this->filterTipThemes() as $theme) {
++      $this->setActiveTheme($theme);
++      $output = $this->renderFilterTips([
++        'Plain text' => $this->filterTips()['Plain text'],
++      ]);
 +
-+    $this->assertStringContainsString('<h3>Plain text</h3>', $output);
-+    $this->assertStringNotContainsString('<h3></h3>', $output);
++      $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the format name.");
++      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
++    }
 +  }
 +
 +  /**
 +   * Tests long filter tips with multiple formats.
 +   */
 +  public function testMultipleFormatLongTipsRenderNamedHeadings(): void {
-+    $this->setActiveTheme('claro');
-+    $output = $this->renderFilterTips($this->filterTips());
++    foreach ($this->filterTipThemes() as $theme) {
++      $this->setActiveTheme($theme);
++      $output = $this->renderFilterTips($this->filterTips());
 +
-+    $this->assertStringContainsString('<h2>Text Formats</h2>', $output);
-+    $this->assertStringContainsString('<h3>Basic HTML</h3>', $output);
-+    $this->assertStringContainsString('<h3>Plain text</h3>', $output);
-+    $this->assertStringNotContainsString('<h3></h3>', $output);
++      $this->assertStringContainsString('<h2>Text Formats</h2>', $output, "$theme should render the filter tips heading.");
++      $this->assertStringContainsString('<h3>Basic HTML</h3>', $output, "$theme should render the first format name.");
++      $this->assertStringContainsString('<h3>Plain text</h3>', $output, "$theme should render the second format name.");
++      $this->assertStringNotContainsString('<h3></h3>', $output, "$theme should not render an empty heading.");
++    }
 +  }
 +
 +  /**
@@ -142,6 +147,26 @@ index 0000000000..f7e122ed95
 +    $this->assertSame('Basic HTML', $variables['tips']['Basic HTML']['name']);
 +    $this->assertArrayHasKey('attributes', $variables['tips']['Basic HTML']);
 +    $this->assertArrayHasKey('attributes', $variables['tips']['Basic HTML']['list']['filter_html']);
++
++    $variables = [
++      'tips' => [
++        'Existing format' => [
++          'name' => 'Provided format',
++          'list' => [
++            'filter_html' => [
++              'tip' => ['#markup' => 'Allowed HTML tags: <code>&lt;p&gt;</code>'],
++              'id' => 'filter_html',
++            ],
++          ],
++        ],
++      ],
++      'long' => TRUE,
++    ];
++    $this->filterThemeHooks()->preprocessFilterTips($variables);
++
++    $this->assertSame('Provided format', $variables['tips']['Existing format']['name']);
++    $this->assertArrayHasKey('attributes', $variables['tips']['Existing format']);
++    $this->assertArrayHasKey('attributes', $variables['tips']['Existing format']['list']['filter_html']);
 +  }
 +
 +  /**
@@ -153,6 +178,13 @@ index 0000000000..f7e122ed95
 +      ->get(ThemeInitializationInterface::class)
 +      ->initTheme($theme);
 +    $this->container->get('theme.manager')->setActiveTheme($active_theme);
++  }
++
++  /**
++   * Gets themes that render filter tips with format headings.
++   */
++  private function filterTipThemes(): array {
++    return ['claro', 'default_admin'];
 +  }
 +
 +  /**

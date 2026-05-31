@@ -2,6 +2,8 @@
 
 > Date: 2026-05-28
 > Patch artifact: `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-012-empty-heading-elements-codex-filter-tips-preprocess.patch`
+> Upstream PR: https://github.com/mgifford/drupal-core/pull/9
+> PR state as of 2026-05-31: open, not draft, merge state `CLEAN`
 
 ## Suggested Issue Comment
 
@@ -32,14 +34,15 @@ Regression coverage included in the patch:
 core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php
 ```
 
-The test covers single-format long tips and multi-format long tips rendered through Claro, plus direct preprocess normalization of `tip.name`, format-level attributes, and item-level attributes.
+The test covers single-format long tips and multi-format long tips rendered through Claro and Default Admin, plus direct preprocess normalization of `tip.name`, format-level attributes, and item-level attributes. It also covers the already-normalized input shape so provided values are preserved while list-item attributes are still added.
 
 Local validation:
 
 ```text
 php -l core/modules/filter/src/Hook/FilterThemeHooks.php: pass
 php -l core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php: pass
-phpunit core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php: OK (3 tests, 10 assertions)
+SIMPLETEST_DB=sqlite://localhost/sites/simpletest/db/test.sqlite BROWSERTEST_OUTPUT_DIRECTORY=sites/simpletest/browser_output vendor/bin/phpunit -c core/phpunit.xml.dist core/modules/filter/tests/src/Kernel/FilterTipsRenderTest.php: OK (3 tests, 19 assertions)
+git diff --check: pass
 ```
 
 I also ran broader axe checks on the affected routes. The patch did not introduce new axe rule families. Remaining `region` and `heading-order` findings on those pages were present before this patch and are not addressed here.
