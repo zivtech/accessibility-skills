@@ -219,6 +219,41 @@ Review ask:
 - Should the Default Admin sticky header paths stay in this same patch because they hardcode the same checkbox?
 - Is removing `title` acceptable to avoid duplicate accessible name/description output, even though it removes the old browser tooltip?
 
+### `DRUPAL-A11Y-006-theme-switcher-landmark`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/14
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/theme-switcher-form-landmark-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-006-theme-switcher-landmark-codex-form-landmark-006.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-28-a11y-DRUPAL-A11Y-006-theme-switcher-landmark.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-006-theme-switcher-upstream-handoff.md
+```
+
+Why scoped: the old patch wrapped a broad Default Admin layout in `nav`, which was neither the actual render path nor the right semantic claim. The reroll names the actual `ThemeSwitcherForm` wrapper so the fixed preference control is exposed as a native form landmark. The evaluator matched and fixed the targeted `region` instances it observed, but still returned overall FAIL because unrelated `/admin/config` heading-order state noise appeared after status-message state changed.
+
+Review ask:
+
+- Is a named native form landmark the right semantic treatment for the fixed theme switcher preference control?
+- Should the evaluator metadata be corrected separately so the issue is no longer described as a `nav` wrapper?
+
 ## Needs Human AT Smoke Before Upstream Wording
 
 ### `DRUPAL-A11Y-007-messages-landmark-role`
