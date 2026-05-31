@@ -1,0 +1,184 @@
+diff --git a/core/lib/Drupal/Core/Datetime/DatePreprocess.php b/core/lib/Drupal/Core/Datetime/DatePreprocess.php
+index 6206288b0b..91a7dfd731 100644
+--- a/core/lib/Drupal/Core/Datetime/DatePreprocess.php
++++ b/core/lib/Drupal/Core/Datetime/DatePreprocess.php
+@@ -93,6 +93,18 @@ public function preprocessDatetimeForm(array &$variables): void {
+    */
+   public function preprocessDatetimeWrapper(array &$variables): void {
+     $element = $variables['element'];
++    if (
++      !isset($variables['attributes'])
++      || !$variables['attributes'] instanceof Attribute
++    ) {
++      $variables['attributes'] = new Attribute($variables['attributes'] ?? []);
++    }
++    if (
++      !isset($variables['title_attributes'])
++      || !$variables['title_attributes'] instanceof Attribute
++    ) {
++      $variables['title_attributes'] = new Attribute($variables['title_attributes'] ?? []);
++    }
+ 
+     if (!empty($element['#title'])) {
+       $variables['title'] = $element['#title'];
+@@ -102,6 +114,13 @@ public function preprocessDatetimeWrapper(array &$variables): void {
+         $variables['title'] = ['#markup' => $variables['title']];
+       }
+     }
++    if (!empty($variables['title']) && !empty($element['#id'])) {
++      $title_id = $element['#id'] . '--label';
++      $variables['title_attributes']->setAttribute('id', $title_id);
++      $variables['attributes']
++        ->setAttribute('role', 'group')
++        ->setAttribute('aria-labelledby', $title_id);
++    }
+ 
+     // Suppress error messages.
+     $variables['errors'] = NULL;
+diff --git a/core/modules/system/templates/datetime-wrapper.html.twig b/core/modules/system/templates/datetime-wrapper.html.twig
+index a184449000..45fe88a684 100644
+--- a/core/modules/system/templates/datetime-wrapper.html.twig
++++ b/core/modules/system/templates/datetime-wrapper.html.twig
+@@ -22,7 +22,8 @@
+   ]
+ %}
+ {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++<div{{ attributes }}>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+ {% endif %}
+ {{ content }}
+ {% if errors %}
+@@ -35,3 +36,6 @@
+     {{ description }}
+   </div>
+ {% endif %}
++{% if title %}
++</div>
++{% endif %}
+diff --git a/core/modules/system/tests/src/Functional/Form/ElementsLabelsTest.php b/core/modules/system/tests/src/Functional/Form/ElementsLabelsTest.php
+index 55fde7ecb7..33b925eace 100644
+--- a/core/modules/system/tests/src/Functional/Form/ElementsLabelsTest.php
++++ b/core/modules/system/tests/src/Functional/Form/ElementsLabelsTest.php
+@@ -108,6 +108,13 @@ protected function testFormLabels(): void {
+     // Check Title/Label not displayed when 'visually-hidden' attribute is set
+     // in radios.
+     $this->assertSession()->elementExists('xpath', '//fieldset[@id="edit-form-radios-title-invisible--wrapper"]/legend/span[contains(@class, "visually-hidden")]');
++
++    foreach (['datelist', 'datetime'] as $type) {
++      $id = "edit-form-$type-title-no-xss";
++      $label_id = "$id--label";
++      $this->assertSession()->elementExists('css', "[role=\"group\"][aria-labelledby=\"$label_id\"] #$label_id");
++      $this->assertSession()->elementNotExists('css', "[role=\"group\"][aria-labelledby=\"$label_id\"] h4");
++    }
+   }
+ 
+   /**
+diff --git a/core/profiles/demo_umami/themes/umami/templates/classy/form/datetime-wrapper.html.twig b/core/profiles/demo_umami/themes/umami/templates/classy/form/datetime-wrapper.html.twig
+index a4ad21af06..894c6c3bc0 100644
+--- a/core/profiles/demo_umami/themes/umami/templates/classy/form/datetime-wrapper.html.twig
++++ b/core/profiles/demo_umami/themes/umami/templates/classy/form/datetime-wrapper.html.twig
+@@ -21,7 +21,8 @@
+   ]
+ %}
+ {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++<div{{ attributes }}>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+ {% endif %}
+ {{ content }}
+ {% if errors %}
+@@ -34,3 +35,6 @@
+     {{ description }}
+   </div>
+ {% endif %}
++{% if title %}
++</div>
++{% endif %}
+diff --git a/core/themes/claro/templates/datetime-wrapper.html.twig b/core/themes/claro/templates/datetime-wrapper.html.twig
+index 59d484150d..209e20fac8 100644
+--- a/core/themes/claro/templates/datetime-wrapper.html.twig
++++ b/core/themes/claro/templates/datetime-wrapper.html.twig
+@@ -14,9 +14,9 @@
+     errors ? 'has-error',
+   ]
+ %}
+-<div class="form-item form-datetime-wrapper">
++<div{{ attributes.addClass('form-item', 'form-datetime-wrapper') }}>
+ {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+ {% endif %}
+ {{ content }}
+ {% if errors %}
+diff --git a/core/themes/default_admin/templates/form/datetime-wrapper.html.twig b/core/themes/default_admin/templates/form/datetime-wrapper.html.twig
+index 76398c722f..2c8e429caf 100644
+--- a/core/themes/default_admin/templates/form/datetime-wrapper.html.twig
++++ b/core/themes/default_admin/templates/form/datetime-wrapper.html.twig
+@@ -35,7 +35,7 @@
+   <div class="help-icon">
+   {% endif %}
+   {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+   {% endif %}
+   {% if show_description_toggle %}
+     {{ attach_library('gin/description_toggle') }}
+diff --git a/core/themes/olivero/templates/datetime-wrapper.html.twig b/core/themes/olivero/templates/datetime-wrapper.html.twig
+index 57c83c0858..70fabedb13 100644
+--- a/core/themes/olivero/templates/datetime-wrapper.html.twig
++++ b/core/themes/olivero/templates/datetime-wrapper.html.twig
+@@ -13,9 +13,9 @@
+     required ? 'form-required',
+   ]
+ %}
+-<div class="form-item form-datetime-wrapper">
++<div{{ attributes.addClass('form-item', 'form-datetime-wrapper') }}>
+   {% if title %}
+-    <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++    <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+   {% endif %}
+   {{ content }}
+   {% if errors %}
+diff --git a/core/themes/stable9/templates/form/datetime-wrapper.html.twig b/core/themes/stable9/templates/form/datetime-wrapper.html.twig
+index 8c5995b592..234fd28cd5 100644
+--- a/core/themes/stable9/templates/form/datetime-wrapper.html.twig
++++ b/core/themes/stable9/templates/form/datetime-wrapper.html.twig
+@@ -20,7 +20,8 @@
+   ]
+ %}
+ {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++<div{{ attributes }}>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+ {% endif %}
+ {{ content }}
+ {% if errors %}
+@@ -33,3 +34,6 @@
+     {{ description }}
+   </div>
+ {% endif %}
++{% if title %}
++</div>
++{% endif %}
+diff --git a/core/themes/starterkit_theme/templates/form/datetime-wrapper.html.twig b/core/themes/starterkit_theme/templates/form/datetime-wrapper.html.twig
+index 456f17a7b0..e315284ae2 100644
+--- a/core/themes/starterkit_theme/templates/form/datetime-wrapper.html.twig
++++ b/core/themes/starterkit_theme/templates/form/datetime-wrapper.html.twig
+@@ -21,7 +21,8 @@
+   ]
+ %}
+ {% if title %}
+-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
++<div{{ attributes }}>
++  <div{{ title_attributes.addClass(title_classes) }}>{{ title }}</div>
+ {% endif %}
+ {{ content }}
+ {% if errors %}
+@@ -34,3 +35,6 @@
+     {{ description }}
+   </div>
+ {% endif %}
++{% if title %}
++</div>
++{% endif %}
