@@ -71,6 +71,14 @@ Should multiple-value field table captions/headers continue to use heading eleme
 
 ## Family 3: Admin Block Panel Headings
 
+Status update 2026-05-31: split out and opened upstream as PR #15.
+
+```text
+Packet: docs/drupal-patch-evaluations/2026-05-31-a11y-DRUPAL-A11Y-010-admin-block-heading-order.md
+Patch: docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-010-admin-block-heading-order-codex-admin-block-heading-level.patch
+PR: https://github.com/mgifford/drupal-core/pull/15
+```
+
 Route:
 
 - `/cd-navigation/config`
@@ -97,6 +105,6 @@ Create separate follow-on rows or issue comments for:
 
 - `heading-order`: datetime wrapper headings;
 - `heading-order`: multiple-value field headings;
-- `heading-order`: admin block panel headings.
+- `heading-order`: admin block panel headings. Done locally as `DRUPAL-A11Y-010-admin-block-heading-order`, pending upstream review in PR #15.
 
 Do not patch these inside the current pager candidate unless the upstream issue is explicitly broadened and the patch includes tests for each render family.

@@ -103,7 +103,7 @@ Handoff:
 docs/drupal-patch-evaluations/reports/current-wave/2026-05-28-010-upstream-handoff.md
 ```
 
-Why scoped: the pager finding is real and now has default config, post-update, rendered-page, and post-update test coverage. It still does not address the datetime wrapper, multiple-value field, or admin block heading-order families.
+Why scoped: the pager finding is real and now has default config, post-update, rendered-page, and post-update test coverage. It still does not address the datetime wrapper or multiple-value field heading-order families. The admin block family has since been split into PR #15.
 
 Review ask:
 
@@ -253,6 +253,42 @@ Review ask:
 
 - Is a named native form landmark the right semantic treatment for the fixed theme switcher preference control?
 - Should the evaluator metadata be corrected separately so the issue is no longer described as a `nav` wrapper?
+
+### `DRUPAL-A11Y-010-admin-block-heading-order`
+
+Upstream PR:
+
+```text
+https://github.com/mgifford/drupal-core/pull/15
+```
+
+State as of 2026-05-31: open, not draft, merge state `CLEAN`, AccessLint pass. Branch: `AlexU-A:codex/admin-block-heading-order-20260531`.
+
+Patch:
+
+```text
+docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-010-admin-block-heading-order-codex-admin-block-heading-level.patch
+```
+
+Packet:
+
+```text
+docs/drupal-patch-evaluations/2026-05-31-a11y-DRUPAL-A11Y-010-admin-block-heading-order.md
+```
+
+Handoff:
+
+```text
+docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-010-admin-block-heading-upstream-handoff.md
+```
+
+Why scoped: this is the admin block panel title family split out from the broader `DRUPAL-A11Y-010` heading-order reproduction. The patch changes active `admin_block` panel titles from `h3` to `h2` in the core system template and Default Admin override, with functional coverage and an exact-route `/cd-navigation/config` Playwright/axe smoke. It does not change datetime wrapper labels, multiple-value field labels, or Stable 9's deprecated compatibility markup.
+
+Review ask:
+
+- Is `h2` the right heading level for admin block panel titles under admin overview page `h1` headings?
+- Should this remain separate from the existing Content view pager heading PR?
+- Is leaving Stable 9 unchanged the right BC boundary for this patch?
 
 ## Needs Human AT Smoke Before Upstream Wording
 

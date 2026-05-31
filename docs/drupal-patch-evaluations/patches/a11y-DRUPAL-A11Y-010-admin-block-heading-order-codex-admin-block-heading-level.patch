@@ -1,0 +1,68 @@
+diff --git a/core/modules/system/templates/admin-block.html.twig b/core/modules/system/templates/admin-block.html.twig
+index 6d1fa535db..f3c756d342 100644
+--- a/core/modules/system/templates/admin-block.html.twig
++++ b/core/modules/system/templates/admin-block.html.twig
+@@ -22,7 +22,7 @@
+ %}
+ <div{{ attributes.addClass(classes) }}>
+   {% if block.title %}
+-    <h3 class="panel__title">{{ block.title }}</h3>
++    <h2 class="panel__title">{{ block.title }}</h2>
+   {% endif %}
+   {% if block.content %}
+     <div class="panel__content">{{ block.content }}</div>
+diff --git a/core/modules/system/tests/src/Functional/System/AdminTest.php b/core/modules/system/tests/src/Functional/System/AdminTest.php
+index 8996983f3e..3206279e34 100644
+--- a/core/modules/system/tests/src/Functional/System/AdminTest.php
++++ b/core/modules/system/tests/src/Functional/System/AdminTest.php
+@@ -192,6 +192,8 @@ public function testConfigBlocksDescription(): void {
+     // Go to Config administration page.
+     $this->drupalGet('admin/config');
+     $this->assertSession()->statusCodeEquals(200);
++    $this->assertSession()->elementExists('css', 'h2.panel__title');
++    $this->assertSession()->elementNotExists('css', 'h3.panel__title');
+     // Validates the content block without description.
+     $this->assertSession()->pageTextContains('Test custom admin block without description');
+     // Validates an empty description block.
+diff --git a/core/themes/default_admin/templates/admin/admin-block.html.twig b/core/themes/default_admin/templates/admin/admin-block.html.twig
+index 2b9af654c7..b3daa99392 100644
+--- a/core/themes/default_admin/templates/admin/admin-block.html.twig
++++ b/core/themes/default_admin/templates/admin/admin-block.html.twig
+@@ -21,7 +21,7 @@
+ %}
+ <div{{ attributes.addClass(classes) }}>
+   {% if block.title %}
+-    <h3 class="panel__title">{{ block.title }}</h3>
++    <h2 class="panel__title">{{ block.title }}</h2>
+   {% endif %}
+   {% if block.content %}
+     <div class="panel__content">{{ block.content }}</div>
+diff --git a/core/themes/default_admin/tests/src/Functional/AdminTest.php b/core/themes/default_admin/tests/src/Functional/AdminTest.php
+index bed6e881a8..526cb73ce1 100644
+--- a/core/themes/default_admin/tests/src/Functional/AdminTest.php
++++ b/core/themes/default_admin/tests/src/Functional/AdminTest.php
+@@ -44,6 +44,7 @@ protected function setUp(): void {
+     $adminUser = $this->drupalCreateUser([
+       'access administration pages',
+       'administer themes',
++      'administer site configuration',
+       'access toolbar',
+       'access content overview',
+     ]);
+@@ -91,6 +92,16 @@ public function testFocusColorSetting(): void {
+     $this->assertStringContainsString('"preset_focus_color":"blue"', $response);
+   }
+ 
++  /**
++   * Tests admin block title heading levels.
++   */
++  public function testAdminBlockHeadingLevel(): void {
++    $this->drupalGet('/admin/config');
++    $this->assertSession()->statusCodeEquals(200);
++    $this->assertSession()->elementExists('css', 'h2.panel__title');
++    $this->assertSession()->elementNotExists('css', 'h3.panel__title');
++  }
++
+   /**
+    * Test user settings.
+    */

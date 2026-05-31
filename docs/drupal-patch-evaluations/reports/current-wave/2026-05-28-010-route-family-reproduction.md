@@ -144,7 +144,7 @@ Open or track follow-on rows for:
 
 - datetime wrapper heading-order;
 - multiple-value field heading-order;
-- admin block heading-order.
+- admin block heading-order. Opened as `DRUPAL-A11Y-010-admin-block-heading-order` and upstream PR #15 on 2026-05-31.
 
 The next patch should target one family at a time. The safest first candidate is the pager family, because `/admin/content` has a specific default Views config value and a narrow reproduced selector. The form-label families need design review before changing heading tags globally.
 
