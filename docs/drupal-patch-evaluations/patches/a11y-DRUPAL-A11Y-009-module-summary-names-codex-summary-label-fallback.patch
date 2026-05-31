@@ -1,0 +1,94 @@
+diff --git a/core/modules/system/src/Theme/SystemAdminThemePreprocess.php b/core/modules/system/src/Theme/SystemAdminThemePreprocess.php
+index c57d5cf5ed..7c61e3805a 100644
+--- a/core/modules/system/src/Theme/SystemAdminThemePreprocess.php
++++ b/core/modules/system/src/Theme/SystemAdminThemePreprocess.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\system\Theme;
+ 
++use Drupal\Component\Render\PlainTextOutput;
+ use Drupal\Component\Utility\Html;
+ use Drupal\Component\Utility\Xss;
+ use Drupal\Core\Extension\ModuleExtensionList;
+@@ -214,6 +215,13 @@ public function preprocessSystemModulesDetails(array &$variables): void {
+         $module['version'] = $this->renderer->render($module['version']);
+       }
+ 
++      $module['summary_label'] = NULL;
++      if (trim(PlainTextOutput::renderFromHtml($module['description']['#markup'] ?? '')) === '') {
++        $module['summary_label'] = $this->t('Details for @module', [
++          '@module' => trim(PlainTextOutput::renderFromHtml($module['name']['#markup'] ?? '')),
++        ]);
++      }
++
+       $module['attributes'] = new Attribute($module['#attributes']);
+       $variables['modules'][] = $module;
+     }
+diff --git a/core/modules/system/templates/system-modules-details.html.twig b/core/modules/system/templates/system-modules-details.html.twig
+index 9726886106..ded47e1fb9 100644
+--- a/core/modules/system/templates/system-modules-details.html.twig
++++ b/core/modules/system/templates/system-modules-details.html.twig
+@@ -44,7 +44,7 @@
+         </td>
+         <td class="description expand priority-low">
+           <details class="js-form-wrapper form-wrapper" id="{{ module.enable_id }}-description">
+-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"><span class="text module-description">{{ module.description }}</span></summary>
++            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
+             <div class="details-wrapper">
+               <div class="details-description">
+                 <div class="requirements">
+diff --git a/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php b/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
+index 810d003cb0..c62d6e3be9 100644
+--- a/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
++++ b/core/modules/system/tests/src/Functional/Form/ModulesListFormWebTest.php
+@@ -150,6 +150,11 @@ public function testModulesListFormWithEmptyDescriptionInfoFile(): void {
+     $this->assertSession()
+       ->pageTextContains("Module with empty description");
+ 
++    $this->assertSession()
++      ->elementExists('xpath', '//details[@id="edit-modules-missing-description-enable-description"]/summary[@aria-label="Details for Module with empty description"]');
++    $this->assertSession()
++      ->elementNotExists('xpath', '//details[@id="edit-modules-system-test-enable-description"]/summary[@aria-label]');
++
+     // Check that the module filter text box is available.
+     $this->assertSession()->elementExists('xpath', '//input[@name="text"]');
+   }
+diff --git a/core/themes/claro/templates/admin/system-modules-details.html.twig b/core/themes/claro/templates/admin/system-modules-details.html.twig
+index 4f43915d5e..4af84058c1 100644
+--- a/core/themes/claro/templates/admin/system-modules-details.html.twig
++++ b/core/themes/claro/templates/admin/system-modules-details.html.twig
+@@ -43,7 +43,7 @@
+         </td>
+         <td class="expand priority-low module-list__description">
+           <details class="js-form-wrapper form-wrapper module-list__module-details claro-details" id="{{ module.enable_id }}-description">
+-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="claro-details__summary module-list__module-summary"><span class="text module-description">{{ module.description }}</span></summary>
++            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="claro-details__summary module-list__module-summary"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
+             <div class="claro-details__wrapper module-details__wrapper">
+               <div class="module-details__description">
+                 <div class="module-details__requirements">
+diff --git a/core/themes/default_admin/templates/admin/system-modules-details.html.twig b/core/themes/default_admin/templates/admin/system-modules-details.html.twig
+index cd5f24ec55..ecd4d3688b 100644
+--- a/core/themes/default_admin/templates/admin/system-modules-details.html.twig
++++ b/core/themes/default_admin/templates/admin/system-modules-details.html.twig
+@@ -43,7 +43,7 @@
+         </td>
+         <td class="expand priority-low module-list__description">
+           <details class="js-form-wrapper form-wrapper module-list__module-details gin-details" id="{{ module.enable_id }}-description">
+-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="gin-details__summary module-list__module-summary"><span class="text module-description">{{ module.description }}</span></summary>
++            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false" class="gin-details__summary module-list__module-summary"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
+             <div class="gin-details__wrapper module-details__wrapper">
+               <div class="module-details__description">
+                 <div class="module-details__requirements">
+diff --git a/core/themes/stable9/templates/admin/system-modules-details.html.twig b/core/themes/stable9/templates/admin/system-modules-details.html.twig
+index e2bf4a0dac..49a7ce70b1 100644
+--- a/core/themes/stable9/templates/admin/system-modules-details.html.twig
++++ b/core/themes/stable9/templates/admin/system-modules-details.html.twig
+@@ -42,7 +42,7 @@
+         </td>
+         <td class="description expand priority-low">
+           <details class="js-form-wrapper form-wrapper" id="{{ module.enable_id }}-description">
+-            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"><span class="text module-description">{{ module.description }}</span></summary>
++            <summary aria-controls="{{ module.enable_id }}-description" role="button" aria-expanded="false"{% if module.summary_label %} aria-label="{{ module.summary_label }}"{% endif %}><span class="text module-description">{{ module.description }}</span></summary>
+             <div class="details-wrapper">
+               <div class="details-description">
+                 <div class="requirements">
