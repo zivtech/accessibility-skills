@@ -1,7 +1,7 @@
 # Drupal Accessibility Evaluation TODO Ledger
 
 > Purpose: Keep evaluation work from drifting. Update this file before and after each evaluation session.
-> Last updated: 2026-05-31 (`2026-06-01T02:36Z` fresh-chat handoff after 007 VoiceOver page-world probe)
+> Last updated: 2026-05-31 (`2026-06-01T02:49Z` PR #8-#20 agent browser verification wave)
 > Canonical parallel model: `docs/plans/2026-05-28-drupal-all-items-evaluation-plan.md#parallel-subagent-operating-model`
 
 ## Drift Rules
@@ -88,10 +88,11 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-31-live-pr-tracking-after-pr-20` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-live-pr-tracking-after-pr-20.md` | Rechecked PRs #8-#20. PR #8 remains open but `UNSTABLE` because AccessLint is pending on commit `fac67e0a78`; PRs #9-#20 are open, not draft, merge state `CLEAN`, and AccessLint passing. No human review comments requiring action were visible. |
 | `2026-06-01-007-current-main-announce-priority` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md` | Updated the `007` reroll so JavaScript warnings keep polite announcement priority, added a FunctionalJavascript regression, reran evaluator/DOM/function tests, and recorded inconclusive VoiceOver + Chrome rotor/page-world smoke attempts. |
 | `2026-06-01-fresh-chat-handoff-after-007-voiceover-page-world` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-fresh-chat-handoff-after-007-voiceover-page-world.md` | Captured restart state after the `007` VoiceOver page-world probe, including live PR #8-#20 status, local-only `007` worktree state, runtime cleanup boundaries, and the next human AT gate. |
+| `2026-06-01-pr8-pr20-agent-browser-verification` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-pr8-pr20-agent-browser-verification.md` | Rechecked live PR state, applied missing PR patch artifacts to the evidence runtime, and ran focused Playwright keyboard/axe/DOM verification for PRs #9-#20. PR #8 passed local evaluator-helper checks but remains pending on GitHub AccessLint. No human AT verification is claimed. |
 
 ## Current Focus
 
-1. Track evaluator infrastructure PR #8, including the pending AccessLint status on commit `fac67e0a78`, and use Mike's feedback or a current check result to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
+1. Track evaluator infrastructure PR #8, including the pending AccessLint status on commit `fac67e0a78`. Local helper checks passed again on 2026-06-01, but use Mike's feedback or a current GitHub check result to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
 2. Have a human NVDA or VoiceOver tester run warning/status and error announcement checks for `DRUPAL-A11Y-007`; local DOM/axe/FunctionalJavascript evidence is strong, and the agent-observed VoiceOver + Chrome rotor/page-world smoke was useful but still inconclusive.
 3. Track `DRUPAL-A11Y-012` PR #9 and use Mike's feedback to decide whether the shared `filter_tips` preprocess shape needs adjustment.
 4. Track `DRUPAL-A11Y-010` PR #10 and use Mike's feedback to decide whether the Content view pager update path is narrow enough.
@@ -106,6 +107,7 @@ Source status values are descriptive labels from the upstream/source material, s
 13. Track `DRUPAL-A11Y-009-module-summary-names` PR #19 and use Mike's feedback to decide whether `Details for @module` is the right fallback label or whether empty module details disclosures should be handled more broadly.
 14. Track `DRUPAL-A11Y-002-submit-button-contrast` PR #20 and use Mike's feedback to decide whether the Default Admin orange accent value should be adjusted further or whether a broader accent-palette audit is wanted.
 15. Do not open more `DRUPAL-A11Y-010` follow-on families from the old route-family backlog unless review explicitly identifies new evidence or asks for broader scope.
+16. Use `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-pr8-pr20-agent-browser-verification.md` as the current agent-browser verification snapshot for PRs #9-#20; it does not replace human AT evidence where a packet explicitly requires it.
 
 ## TODO Ledger
 
