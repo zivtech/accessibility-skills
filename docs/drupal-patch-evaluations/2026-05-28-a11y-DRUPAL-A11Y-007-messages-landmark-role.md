@@ -35,7 +35,7 @@
 
 `INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, but it is not AT-verified.
 
-The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. That reroll passed the standard evaluator with no patch-owned regressions before the tabledrag extension; the current branch still needs a browser/runtime rerun before upstream filing.
+The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate has refreshed evaluator and DOM role evidence, but still needs human AT smoke before upstream filing.
 
 ## Issue Summary
 
@@ -312,6 +312,26 @@ Drupal PHPCS on changed PHP/Twig files: pass
 credential-pattern scan on changed files: no hits
 ```
 
+Runtime evaluator rerun with variant `codex-current-main-tabledrag-007`:
+
+```text
+Status: PASS
+Outcome reason: targeted-issues-fixed-without-regressions
+Baseline observed instances: 2
+Fixed instances after patch: 2
+Remaining instances after patch: 0
+New violations introduced: 0
+Total violations: 12 before, 3 after
+```
+
+Focused DOM role probe with the regenerated patch applied:
+
+```text
+Drupal.Message warning: role="status"
+Drupal.Message error: role="alert"
+Tabledrag warnings on /admin/structure/menu/manage/main, /admin/structure/block, and /admin/structure/taxonomy/manage/tags/overview: role="status"
+```
+
 Report: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`
 
 ## After-Patch Verification
@@ -323,11 +343,12 @@ The original upstream after-patch verification was valid for the repaired runtim
 - Overall targeted instance state: 4 observed before, 2 fixed, 2 remaining.
 - No new violations were introduced by the patch in this run.
 
-The local reroll after-patch verification passed:
+The local reroll after-patch verification passed in the refreshed runtime evaluator run:
 
 - `/admin/appearance`: target `contentinfo` landmark failures went from present to absent.
-- Observed pattern-report-derived target: `landmark-contentinfo-is-top-level` was removed from the after scan; `landmark-no-duplicate-contentinfo` was not observed in the baseline for the passing rerun.
-- Overall targeted instance state: 1 observed before, 1 fixed, 0 remaining.
+- `/admin/modules`: target `contentinfo` landmark failures went from present to absent.
+- Observed pattern-report-derived target: `landmark-contentinfo-is-top-level` was removed from the after scan; `landmark-no-duplicate-contentinfo` was also absent after patching.
+- Overall targeted instance state: 2 observed before, 2 fixed, 0 remaining.
 - No new violations were introduced by the reroll in this run.
 
 ### DOM Role Probe

@@ -1,6 +1,6 @@
 # DRUPAL-A11Y-007 Current-Main Reroll
 
-Checked at `2026-06-01T01:44Z` (`2026-05-31 21:44 -0400`).
+Checked at `2026-06-01T01:52Z` (`2026-05-31 21:52 -0400`).
 
 ## Worktree
 
@@ -62,17 +62,70 @@ Additional grep check:
 tabledrag-changed-warning hardcoded role="alert": no remaining matches in core/misc, Claro, or Default Admin tabledrag copies
 ```
 
+## Runtime Evaluator Rerun
+
+The regenerated candidate patch was copied into the disposable runtime patch slot and evaluated with:
+
+```bash
+DRUPAL_BASE_URL=http://drupal-core.ddev.site \
+  A11Y_VARIANT_ID=codex-current-main-tabledrag-007 \
+  node core/tests/playwright/scripts/evaluate-patch.js \
+  a11y-DRUPAL-A11Y-007-messages-landmark-role
+```
+
+Sanitized result:
+
+```text
+Status: PASS
+Outcome reason: targeted-issues-fixed-without-regressions
+Baseline observed instances: 2
+Fixed instances after patch: 2
+Remaining instances after patch: 0
+New violations introduced: 0
+Total violations: 12 before, 3 after
+```
+
+Route summary:
+
+| Route | Before | After | Target result |
+|---|---:|---:|---|
+| `/admin/appearance` | 4 violations | 1 violation | Target `contentinfo` landmark rules removed |
+| `/admin/modules` | 5 violations | 2 violations | Target `contentinfo` landmark rules removed |
+
+Remaining after-patch violations were pre-existing adjacent issues (`region`, `summary-name`), not patch-owned target regressions.
+
+Raw runtime artifacts were left in the disposable runtime under `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-current-main-tabledrag-007.*`. Do not copy those raw files into this repo without sanitizing because the evaluator captures local DDEV status fields.
+
+## DOM Role Probe
+
+With the regenerated patch applied in the runtime, a focused Playwright DOM probe confirmed:
+
+```text
+Drupal.Message warning: role="status"
+Drupal.Message error: role="alert"
+```
+
+Tabledrag warning probe:
+
+| Route | Result |
+|---|---|
+| `/admin/structure/menu/manage/main` | `Drupal.theme('tableDragChangedWarning')` available; emitted `role="status"` |
+| `/admin/structure/block` | `Drupal.theme('tableDragChangedWarning')` available; emitted `role="status"` |
+| `/admin/structure/taxonomy/manage/tags/overview` | `Drupal.theme('tableDragChangedWarning')` available; emitted `role="status"` |
+
+Two content-display routes did not load tabledrag in this runtime, so they were not counted as tabledrag evidence.
+
 ## Tests Not Run
 
-Browser/functional PHPUnit was not run from this fresh worktree because the checkout does not have its own Composer vendor tree or configured Drupal web-test environment. The dirty runtime has that tooling, but it is evidence space and should not be treated as the source branch.
+Browser/functional PHPUnit was not run from the fresh candidate worktree because the checkout does not have its own Composer vendor tree or configured Drupal web-test environment. The dirty runtime has that tooling, but it is evidence space and should not be treated as the source branch.
 
-The previous runtime evaluator pass and DOM/axe role smoke still support the reroll direction, but they do not include the new tabledrag warning adjustment.
+Human NVDA or VoiceOver smoke was not run in this session.
 
 ## Current Decision
 
 Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE`.
 
-The branch is now a cleaner upstream candidate, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
+The branch is now a cleaner upstream candidate with refreshed evaluator and DOM evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
 
 - status/warning message announcement;
 - error alert urgency;
