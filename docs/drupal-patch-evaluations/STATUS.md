@@ -1,7 +1,7 @@
 # Drupal Accessibility Evaluation TODO Ledger
 
 > Purpose: Keep evaluation work from drifting. Update this file before and after each evaluation session.
-> Last updated: 2026-05-31 (`2026-06-01T02:28Z` 007 VoiceOver page-world probe recorded)
+> Last updated: 2026-05-31 (`2026-06-01T02:36Z` fresh-chat handoff after 007 VoiceOver page-world probe)
 > Canonical parallel model: `docs/plans/2026-05-28-drupal-all-items-evaluation-plan.md#parallel-subagent-operating-model`
 
 ## Drift Rules
@@ -87,6 +87,7 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-31-fresh-chat-handoff-after-pr-20` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-fresh-chat-handoff-after-pr-20.md` | Captured restart state after PR #20, including source reconciliation for `DRUPAL-A11Y-002`, `DRUPAL-A11Y-005` obsolete status, validation summaries, and runtime/worktree boundaries. |
 | `2026-05-31-live-pr-tracking-after-pr-20` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-live-pr-tracking-after-pr-20.md` | Rechecked PRs #8-#20. PR #8 remains open but `UNSTABLE` because AccessLint is pending on commit `fac67e0a78`; PRs #9-#20 are open, not draft, merge state `CLEAN`, and AccessLint passing. No human review comments requiring action were visible. |
 | `2026-06-01-007-current-main-announce-priority` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md` | Updated the `007` reroll so JavaScript warnings keep polite announcement priority, added a FunctionalJavascript regression, reran evaluator/DOM/function tests, and recorded inconclusive VoiceOver + Chrome rotor/page-world smoke attempts. |
+| `2026-06-01-fresh-chat-handoff-after-007-voiceover-page-world` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-fresh-chat-handoff-after-007-voiceover-page-world.md` | Captured restart state after the `007` VoiceOver page-world probe, including live PR #8-#20 status, local-only `007` worktree state, runtime cleanup boundaries, and the next human AT gate. |
 
 ## Current Focus
 
