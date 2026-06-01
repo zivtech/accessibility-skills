@@ -12,6 +12,9 @@
 | Status | `INCONCLUSIVE` |
 | Project/package | `mgifford/drupal-core` |
 | Target commit checked | `3728741f23122018f1f26206fe563cb6c9ad49f8` (`main` on 2026-05-28) |
+| Current upstream base checked | `9ec853aac0cd` (`origin/main` on 2026-06-01 UTC) |
+| Current PR worktree | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-pr-007-messages-landmark-role-20260601` |
+| Current local candidate commit | `c297c18d98` (`fix: use status roles for non-error messages`) |
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
 | Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact: `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-codex-reroll-status-alert-007.patch` |
 | Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
@@ -32,7 +35,7 @@
 
 `INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, but it is not AT-verified.
 
-The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates and JavaScript message themers. That reroll passed the standard evaluator with no patch-owned regressions.
+The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. That reroll passed the standard evaluator with no patch-owned regressions before the tabledrag extension; the current branch still needs a browser/runtime rerun before upstream filing.
 
 ## Issue Summary
 
@@ -151,6 +154,7 @@ I rerolled the patch locally to use message semantics instead of `region`:
 - nested error-only `role="alert"` wrappers were removed,
 - the same pattern was applied to the default system template, Claro, Default Admin, Olivero, Starterkit, Stable 9 media-library status messages, and the system test message template,
 - JavaScript message themers in core, Claro, Default Admin, Olivero, and Umami were aligned so warnings are `status` rather than `alert`,
+- tabledrag "unsaved changes" warning generators in core, Claro, and Default Admin were aligned so non-error warnings are `status` rather than `alert`,
 - functional test expectations that asserted `role="contentinfo"` for status messages were updated to `role="status"`.
 
 Patch artifact:
@@ -288,6 +292,28 @@ git apply --check patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch
 
 The evaluator applied and reverted the reroll successfully during `codex-reroll-status-alert-js-007`.
 
+### Current-Main Reroll
+
+On 2026-06-01 UTC, the saved reroll patch was checked against current `origin/main` at `9ec853aac0cd` in a fresh worktree:
+
+```text
+/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-pr-007-messages-landmark-role-20260601
+```
+
+The saved patch applied cleanly. A critic pass then found that tabledrag warning messages still hardcoded `role="alert"` despite being non-error warning messages. The current local candidate commit `c297c18d98` extends the reroll to set those tabledrag warnings to `role="status"` as well.
+
+Static checks on the current branch:
+
+```text
+git diff --check: pass
+php -l changed PHP test files: pass
+node --check changed JS files: pass
+Drupal PHPCS on changed PHP/Twig files: pass
+credential-pattern scan on changed files: no hits
+```
+
+Report: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`
+
 ## After-Patch Verification
 
 The original upstream after-patch verification was valid for the repaired runtime, and it failed:
@@ -386,7 +412,7 @@ Drupal status messages are rendered with `role="contentinfo"`. When those messag
 
 ### Proposed Fix Under Review
 
-The local reroll follows the pattern report's semantic direction: non-error messages use `role="status"` and errors use `role="alert"`. This avoids exposing status messages as footer/contentinfo landmarks, avoids nested alert wrappers, and aligns server-rendered and JavaScript-created Drupal messages.
+The local reroll follows the pattern report's semantic direction: non-error messages use `role="status"` and errors use `role="alert"`. This avoids exposing status messages as footer/contentinfo landmarks, avoids nested alert wrappers, and aligns server-rendered messages, JavaScript-created Drupal messages, and tabledrag warning messages.
 
 Design caveat: `status` and `alert` are live-region roles. Because these messages are often present on page load as well as after actions, the upstream issue should include a short screen reader smoke note confirming message announcement is not duplicated or missed in Drupal's common message flows.
 

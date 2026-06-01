@@ -11,6 +11,19 @@ index 4b93cb21ca..321c9376a8 100644
      );
      messageWrapper.setAttribute('data-drupal-message-id', id);
      messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/misc/tabledrag.js b/core/misc/tabledrag.js
+index 2b8979e29b..b7827ffb5d 100644
+--- a/core/misc/tabledrag.js
++++ b/core/misc/tabledrag.js
+@@ -1734,7 +1734,7 @@
+        *   Markup for the warning.
+        */
+       tableDragChangedWarning() {
+-        return `<div class="tabledrag-changed-warning messages messages--warning" role="alert">${Drupal.theme(
++        return `<div class="tabledrag-changed-warning messages messages--warning" role="status">${Drupal.theme(
+           'tableDragChangedMarker',
+         )} ${Drupal.t('You have unsaved changes.')}</div>`;
+       },
 diff --git a/core/modules/system/templates/status-messages.html.twig b/core/modules/system/templates/status-messages.html.twig
 index be6711b270..d39df84c14 100644
 --- a/core/modules/system/templates/status-messages.html.twig
@@ -140,6 +153,19 @@ index 26632ae6bc..47c980dbae 100644
      );
      messageWrapper.setAttribute('aria-labelledby', `${id}-title`);
      messageWrapper.setAttribute('data-drupal-message-id', id);
+diff --git a/core/themes/claro/js/tabledrag.js b/core/themes/claro/js/tabledrag.js
+index 9f9d7b1e38..0cc72a4530 100644
+--- a/core/themes/claro/js/tabledrag.js
++++ b/core/themes/claro/js/tabledrag.js
+@@ -171,7 +171,7 @@
+        *   Markup for the warning.
+        */
+       tableDragChangedWarning() {
+-        return `<div class="tabledrag-changed-warning messages messages--warning" role="alert">${Drupal.theme(
++        return `<div class="tabledrag-changed-warning messages messages--warning" role="status">${Drupal.theme(
+           'tableDragChangedMarker',
+         )} ${Drupal.t('You have unsaved changes.')}</div>`;
+       },
 diff --git a/core/themes/claro/templates/misc/status-messages.html.twig b/core/themes/claro/templates/misc/status-messages.html.twig
 index 07b093c01f..dd2d698884 100644
 --- a/core/themes/claro/templates/misc/status-messages.html.twig
@@ -213,6 +239,19 @@ index 26632ae6bc..47c980dbae 100644
      );
      messageWrapper.setAttribute('aria-labelledby', `${id}-title`);
      messageWrapper.setAttribute('data-drupal-message-id', id);
+diff --git a/core/themes/default_admin/js/tabledrag.js b/core/themes/default_admin/js/tabledrag.js
+index 9f9d7b1e38..0cc72a4530 100644
+--- a/core/themes/default_admin/js/tabledrag.js
++++ b/core/themes/default_admin/js/tabledrag.js
+@@ -171,7 +171,7 @@
+        *   Markup for the warning.
+        */
+       tableDragChangedWarning() {
+-        return `<div class="tabledrag-changed-warning messages messages--warning" role="alert">${Drupal.theme(
++        return `<div class="tabledrag-changed-warning messages messages--warning" role="status">${Drupal.theme(
+           'tableDragChangedMarker',
+         )} ${Drupal.t('You have unsaved changes.')}</div>`;
+       },
 diff --git a/core/themes/default_admin/migration/js/messages.js b/core/themes/default_admin/migration/js/messages.js
 index d81702d901..77b0691b1d 100644
 --- a/core/themes/default_admin/migration/js/messages.js
@@ -226,6 +265,19 @@ index d81702d901..77b0691b1d 100644
      );
      messageWrapper.setAttribute('data-drupal-message-id', id);
      messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/themes/default_admin/migration/js/tabledrag.js b/core/themes/default_admin/migration/js/tabledrag.js
+index 2e645ec253..48e8637674 100644
+--- a/core/themes/default_admin/migration/js/tabledrag.js
++++ b/core/themes/default_admin/migration/js/tabledrag.js
+@@ -1788,7 +1788,7 @@
+        *   Markup for the warning.
+        */
+       tableDragChangedWarning() {
+-        return `<div class="tabledrag-changed-warning messages messages--warning" role="alert">${Drupal.theme(
++        return `<div class="tabledrag-changed-warning messages messages--warning" role="status">${Drupal.theme(
+           'tableDragChangedMarker',
+         )} ${Drupal.t('You have unsaved changes.')}</div>`;
+       },
 diff --git a/core/themes/default_admin/templates/misc/status-messages.html.twig b/core/themes/default_admin/templates/misc/status-messages.html.twig
 index 5f4f3b27ea..b586233acd 100644
 --- a/core/themes/default_admin/templates/misc/status-messages.html.twig
