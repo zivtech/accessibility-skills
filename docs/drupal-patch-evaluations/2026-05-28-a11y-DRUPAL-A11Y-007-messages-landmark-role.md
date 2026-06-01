@@ -332,6 +332,13 @@ Drupal.Message error: role="alert"
 Tabledrag warnings on /admin/structure/menu/manage/main, /admin/structure/block, and /admin/structure/taxonomy/manage/tags/overview: role="status"
 ```
 
+Functional test rerun in the runtime harness:
+
+```text
+PlaceholderMessageTest::testMessagePlaceholder: OK (1 test, 2 assertions)
+ModulesListFormWebTest::testModulesListFormStatusMessage: OK (1 test, 15 assertions)
+```
+
 Report: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`
 
 ## After-Patch Verification

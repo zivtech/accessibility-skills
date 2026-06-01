@@ -1,6 +1,6 @@
 # DRUPAL-A11Y-007 Current-Main Reroll
 
-Checked at `2026-06-01T01:52Z` (`2026-05-31 21:52 -0400`).
+Checked at `2026-06-01T01:54Z` (`2026-05-31 21:54 -0400`).
 
 ## Worktree
 
@@ -114,6 +114,17 @@ Tabledrag warning probe:
 | `/admin/structure/taxonomy/manage/tags/overview` | `Drupal.theme('tableDragChangedWarning')` available; emitted `role="status"` |
 
 Two content-display routes did not load tabledrag in this runtime, so they were not counted as tabledrag evidence.
+
+## Functional Test Rerun
+
+With the regenerated patch temporarily applied in the runtime harness:
+
+```text
+PlaceholderMessageTest::testMessagePlaceholder: OK (1 test, 2 assertions)
+ModulesListFormWebTest::testModulesListFormStatusMessage: OK (1 test, 15 assertions)
+```
+
+The patch was reverted after the test run, and a follow-up `git apply --check` confirmed the runtime target files were clean enough for the patch to apply again.
 
 ## Tests Not Run
 
