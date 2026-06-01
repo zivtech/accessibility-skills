@@ -18,7 +18,7 @@
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
 | Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact SHA-256 `b70efc3a4f20349dd082fce31da37cf0e2b204c72269ffd3bff291fa7fe1be8c` |
 | Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; current-main reroll: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
-| Role/AT smoke | DOM role smoke: `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-drupal-a11y-007-role-smoke.md`; VoiceOver attempt: `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md` |
+| Role/AT smoke | DOM role smoke: `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-drupal-a11y-007-role-smoke.md`; VoiceOver attempts: `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md` plus caption artifacts under `docs/drupal-patch-evaluations/reports/manual-checks/artifacts/2026-06-01-007-voiceover-caption/` |
 | AI assistance disclosed? | Required if this packet is reused upstream |
 
 ## Source Links
@@ -33,7 +33,7 @@
 
 ## Current Verdict
 
-`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and limited VoiceOver + Chrome rotor/page-world smoke did not expose duplicate `contentinfo` landmarks and confirmed the expected message DOM/live-region priority, but warning/error announcement behavior is not human-AT verified.
+`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and VoiceOver + Chrome testing now captured the error/assertive path in the caption panel. However, repeated timed captures did not show the warning/status polite announcement text, so warning/status behavior remains unresolved rather than verified.
 
 The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate also keeps JavaScript warnings at polite live-region priority while errors remain assertive. It has refreshed evaluator, DOM role, and FunctionalJavascript evidence, but still needs a human AT pass before upstream filing as AT-verified.
 
@@ -220,7 +220,7 @@ Introduced new violations: 0
 
 DOM/axe role smoke also passed for `/admin/appearance` and `/admin/modules`: server-rendered and JavaScript-created warnings use `role="status"` while errors use `role="alert"`.
 
-This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime. A later VoiceOver + Chrome attempt produced partial rotor evidence and a page-world message probe, but the actual VoiceOver live-region announcement text was not captured. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
+This is a partial assistive-technology smoke check, not a full human screen-reader-user pass. NVDA is unavailable on this macOS runtime. A later VoiceOver + Chrome caption-panel rerun captured dynamic error/assertive output, but did not capture polite warning/status output. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
 
 ## Patch Hygiene
 

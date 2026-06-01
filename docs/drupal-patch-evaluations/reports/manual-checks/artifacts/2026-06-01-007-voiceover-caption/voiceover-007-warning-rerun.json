@@ -1,0 +1,39 @@
+{
+  "captures": [
+    {
+      "name": "warning-ready",
+      "file": "/tmp/vo-007/06-warning-ready.png"
+    },
+    {
+      "name": "warning-after-1s",
+      "file": "/tmp/vo-007/07-warning-after-1s.png"
+    },
+    {
+      "name": "warning-after-3s",
+      "file": "/tmp/vo-007/08-warning-after-3s.png"
+    },
+    {
+      "name": "warning-after-6s",
+      "file": "/tmp/vo-007/09-warning-after-6s.png"
+    },
+    {
+      "name": "warning-after-10s",
+      "file": "/tmp/vo-007/10-warning-after-10s.png"
+    }
+  ],
+  "warningProbe": {
+    "message": "VoiceOver polite warning probe 007 delayed capture",
+    "liveTextImmediately": "",
+    "livePolitenessImmediately": "polite",
+    "matching": [
+      {
+        "role": "status",
+        "text": "Warning message VoiceOver polite warning probe 007 delayed capture"
+      }
+    ]
+  },
+  "liveAfter": {
+    "text": "VoiceOver polite warning probe 007 delayed capture",
+    "ariaLive": "polite"
+  }
+}

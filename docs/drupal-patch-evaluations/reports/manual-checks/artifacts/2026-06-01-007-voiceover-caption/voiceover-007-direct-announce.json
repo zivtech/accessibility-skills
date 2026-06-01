@@ -1,0 +1,38 @@
+{
+  "captures": [
+    {
+      "name": "announce-ready",
+      "file": "/tmp/vo-007/12-announce-ready.png"
+    },
+    {
+      "name": "direct-polite-1s",
+      "file": "/tmp/vo-007/13-direct-polite-1s.png"
+    },
+    {
+      "name": "direct-polite-4s",
+      "file": "/tmp/vo-007/14-direct-polite-4s.png"
+    },
+    {
+      "name": "direct-polite-8s",
+      "file": "/tmp/vo-007/15-direct-polite-8s.png"
+    },
+    {
+      "name": "direct-assertive",
+      "file": "/tmp/vo-007/16-direct-assertive.png"
+    }
+  ],
+  "polite": {
+    "message": "VoiceOver direct polite announce 007",
+    "liveText": "",
+    "ariaLive": "polite"
+  },
+  "politeAfter": {
+    "text": "VoiceOver direct polite announce 007",
+    "ariaLive": "polite"
+  },
+  "assertive": {
+    "message": "VoiceOver direct assertive announce 007",
+    "liveText": "VoiceOver direct polite announce 007",
+    "ariaLive": "polite"
+  }
+}

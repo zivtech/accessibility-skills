@@ -1,0 +1,102 @@
+{
+  "captures": [
+    {
+      "name": "ready",
+      "file": "/tmp/vo-007/02-dedicated-chrome-ready.png"
+    },
+    {
+      "name": "warning",
+      "file": "/tmp/vo-007/03-warning-live-region.png"
+    },
+    {
+      "name": "error",
+      "file": "/tmp/vo-007/04-error-live-region.png"
+    },
+    {
+      "name": "tabledrag",
+      "file": "/tmp/vo-007/05-tabledrag-warning.png"
+    }
+  ],
+  "initialRoles": [
+    {
+      "role": "alert",
+      "label": null,
+      "text": "Error message Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the available updates page for more information."
+    },
+    {
+      "role": "status",
+      "label": null,
+      "text": "Warning message There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the"
+    }
+  ],
+  "warningProbe": {
+    "message": "VoiceOver warning priority probe 007 June one",
+    "liveText": "",
+    "livePoliteness": "polite",
+    "matchingMessages": [
+      {
+        "role": "status",
+        "label": null,
+        "text": "Warning message VoiceOver warning priority probe 007 June one"
+      }
+    ],
+    "allRoles": [
+      {
+        "role": "alert",
+        "label": null,
+        "text": "Error message Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the available updates page for more information."
+      },
+      {
+        "role": "status",
+        "label": null,
+        "text": "Warning message There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the"
+      },
+      {
+        "role": "status",
+        "label": null,
+        "text": "Warning message VoiceOver warning priority probe 007 June one"
+      }
+    ]
+  },
+  "errorProbe": {
+    "message": "VoiceOver error priority probe 007 June one",
+    "liveText": "VoiceOver warning priority probe 007 June one",
+    "livePoliteness": "polite",
+    "matchingMessages": [
+      {
+        "role": "alert",
+        "label": null,
+        "text": "Error message VoiceOver error priority probe 007 June one"
+      }
+    ],
+    "allRoles": [
+      {
+        "role": "alert",
+        "label": null,
+        "text": "Error message Your version of Drupal is no longer supported. Upgrading is strongly recommended! See the available updates page for more information."
+      },
+      {
+        "role": "status",
+        "label": null,
+        "text": "Warning message There are updates available for one or more of your modules or themes. To ensure the proper functioning of your site, you should update as soon as possible. See the"
+      },
+      {
+        "role": "status",
+        "label": null,
+        "text": "Warning message VoiceOver warning priority probe 007 June one"
+      },
+      {
+        "role": "alert",
+        "label": null,
+        "text": "Error message VoiceOver error priority probe 007 June one"
+      }
+    ]
+  },
+  "tabledragProbe": {
+    "themeAvailable": true,
+    "inserted": {
+      "role": "status",
+      "text": "* You have unsaved changes."
+    }
+  }
+}
