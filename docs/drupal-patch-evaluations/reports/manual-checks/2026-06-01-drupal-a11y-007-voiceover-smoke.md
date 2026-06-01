@@ -1,6 +1,6 @@
 # DRUPAL-A11Y-007 VoiceOver Smoke Attempt
 
-> Date: 2026-06-01T02:08Z (`2026-05-31 22:08 -0400`)
+> Date: 2026-06-01T02:28Z (`2026-05-31 22:28 -0400`)
 > Patch: `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-codex-reroll-status-alert-007.patch`
 > Verdict: `INCONCLUSIVE`
 
@@ -21,19 +21,27 @@ The final regenerated patch was temporarily applied to the runtime, Drupal cache
 
 Safari was also attempted, but scripted JavaScript execution failed because Safari's "Allow JavaScript from Apple Events" setting is disabled. I did not change that user preference.
 
+A follow-up Chrome pass used `/admin/appearance` again. Direct Chrome AppleScript checks for `Drupal` were misleading because they run outside the page's JavaScript world, so I injected a page-world script that wrote probe results back to DOM attributes and then read those attributes from AppleScript.
+
 ## Observations
 
 - VoiceOver captions were visible and active while Chrome displayed the patched `/admin/appearance` page.
 - The page showed the expected rendered error and warning messages.
 - VoiceOver's Links rotor listed page links, including two `available updates` links from the visible messages.
 - VoiceOver's Landmarks rotor reported `No items in, Landmarks menu`; no duplicate `contentinfo` landmark entries were observed in this browser/AT pass.
-- Chrome AppleScript reported `has-message-api=false` for `Drupal.Message` on this loaded page, so dynamic warning/error message announcements were not exercised through VoiceOver.
+- The follow-up page-world probe confirmed `Drupal.Message` and `Drupal.announce` were available on `/admin/appearance`.
+- Injected warning message: rendered `role="status"`; `#drupal-live-announce` had `aria-live="polite"` and text `VoiceOver warning priority probe`.
+- Injected error message: rendered `role="alert"`; `#drupal-live-announce` had `aria-live="assertive"` and text `VoiceOver error priority probe`.
+- Screenshots showed both injected messages visible while VoiceOver was running.
+- The screenshots did not capture a readable VoiceOver caption containing either live-region probe text.
 
 ## Result
 
 This is not enough to mark the packet `VERIFIED`.
 
-The smoke attempt supports the narrow negative claim that this patched Chrome/VoiceOver page did not expose duplicate `contentinfo` landmarks in the rotor. It does not prove warning/status announcements are non-interruptive in VoiceOver, and it does not prove error messages are announced with alert urgency.
+The smoke attempt supports two narrow claims: this patched Chrome/VoiceOver page did not expose duplicate `contentinfo` landmarks in the rotor, and the actual page-world Drupal message APIs rendered the expected warning/status and error/alert DOM plus live-region priority.
+
+It still does not prove warning/status announcements are non-interruptive in VoiceOver, and it does not prove error messages are announced with alert urgency. The missing evidence is the actual VoiceOver caption/audio announcement, ideally observed by a human screen-reader user.
 
 Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE` until a human VoiceOver or NVDA tester can complete the checklist against warning/status and error announcement behavior.
 
@@ -41,5 +49,5 @@ Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE` until a human VoiceOver or NVDA tester 
 
 - This is not a human screen-reader-user test.
 - This is not VoiceOver + Safari verification.
-- This does not replace the FunctionalJavascript regression that verifies `Drupal.Message` live-region priority.
+- This complements, but does not replace, the FunctionalJavascript regression that verifies `Drupal.Message` live-region priority.
 - This does not cover all Drupal themes, message states, or dynamic Ajax flows.

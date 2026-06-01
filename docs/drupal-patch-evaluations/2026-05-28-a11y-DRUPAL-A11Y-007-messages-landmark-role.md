@@ -33,7 +33,7 @@
 
 ## Current Verdict
 
-`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and a limited VoiceOver + Chrome rotor smoke did not expose duplicate `contentinfo` landmarks, but warning/error announcement behavior is not human-AT verified.
+`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and limited VoiceOver + Chrome rotor/page-world smoke did not expose duplicate `contentinfo` landmarks and confirmed the expected message DOM/live-region priority, but warning/error announcement behavior is not human-AT verified.
 
 The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate also keeps JavaScript warnings at polite live-region priority while errors remain assertive. It has refreshed evaluator, DOM role, and FunctionalJavascript evidence, but still needs a human AT pass before upstream filing as AT-verified.
 
@@ -220,7 +220,7 @@ Introduced new violations: 0
 
 DOM/axe role smoke also passed for `/admin/appearance` and `/admin/modules`: server-rendered and JavaScript-created warnings use `role="status"` while errors use `role="alert"`.
 
-This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime. A later VoiceOver + Chrome attempt produced partial rotor evidence but did not exercise warning/error live-region announcements. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
+This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime. A later VoiceOver + Chrome attempt produced partial rotor evidence and a page-world message probe, but the actual VoiceOver live-region announcement text was not captured. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
 
 ## Patch Hygiene
 
@@ -422,7 +422,7 @@ Remaining evaluator improvements:
 |---|---|---|---|
 | Keyboard-only | Browser/version | `not run` | Not primary for this rule, but messages should not disrupt focus order. |
 | NVDA + Chrome | Versions | `not run` | Confirm error/status message announcement and landmark list behavior. |
-| VoiceOver + Chrome | macOS 26.4.1, VoiceOver app metadata version 10, Chrome 148.0.7778.215 | `INCONCLUSIVE` | Links rotor included message links and Landmarks rotor had no `contentinfo` duplicates, but warning/error announcement behavior was not exercised. |
+| VoiceOver + Chrome | macOS 26.4.1, VoiceOver app metadata version 10, Chrome 148.0.7778.215 | `INCONCLUSIVE` | Links rotor included message links and Landmarks rotor had no `contentinfo` duplicates. A page-world probe exercised `Drupal.Message` and `Drupal.announce`, confirming warning `role="status"`/polite live-region behavior and error `role="alert"`/assertive live-region behavior, but screenshots did not capture readable VoiceOver announcement captions. |
 | VoiceOver + Safari | Safari 26.4 | `blocked` | Scripted dynamic-message probe was blocked by Safari's disabled "Allow JavaScript from Apple Events" setting; preference was not changed. |
 | Voice control / label in name | Tool/version | `not run` | Not primary. |
 | Forced colors | Browser/version | `not run` | Not primary, but message affordances should remain visible. |
@@ -434,7 +434,7 @@ Manual checks may remain open, but the packet must not imply they passed.
 
 `INCONCLUSIVE`
 
-The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced. The remaining gap is human AT behavior: the packet has DOM/axe role evidence, a FunctionalJavascript live-region priority regression, and limited VoiceOver + Chrome rotor evidence, but not a human NVDA or VoiceOver announcement-behavior pass.
+The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced. The remaining gap is human AT behavior: the packet has DOM/axe role evidence, a FunctionalJavascript live-region priority regression, and limited VoiceOver + Chrome rotor/page-world evidence, but not a human NVDA or VoiceOver announcement-behavior pass.
 
 Before upstream filing, run at least one assistive-technology smoke check for message announcement behavior and landmark navigation. This packet does not claim that NVDA, VoiceOver, or Dragon testing has passed.
 
@@ -497,7 +497,7 @@ This packet was prepared with AI assistance. The accessibility finding must be v
 
 Canonical local status recommendation: `INCONCLUSIVE` until human AT smoke evidence is recorded
 
-Readiness note: the reroll has automated before/after evidence and is a plausible upstream replacement candidate, but manual assistive-technology behavior still needs a short smoke check before filing as fully user-verified. The VoiceOver + Chrome attempt reduced the landmark concern but did not close the announcement-behavior gap.
+Readiness note: the reroll has automated before/after evidence and is a plausible upstream replacement candidate, but manual assistive-technology behavior still needs a short smoke check before filing as fully user-verified. The VoiceOver + Chrome attempt reduced the landmark concern and confirmed page-world message/live-region behavior, but did not close the announcement-behavior gap.
 
 Findings:
 

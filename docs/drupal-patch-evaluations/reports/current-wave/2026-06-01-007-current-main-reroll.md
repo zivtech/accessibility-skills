@@ -138,17 +138,20 @@ VoiceOver was enabled and a limited Chrome smoke attempt was run on the patched 
 - The Links rotor listed page links, including the two visible `available updates` links inside the rendered messages.
 - The Landmarks rotor reported no items, so no duplicate `contentinfo` landmark entries were observed in that browser/AT pass.
 - Safari dynamic-message probing was blocked because "Allow JavaScript from Apple Events" is disabled.
-- Chrome dynamic-message probing did not exercise `Drupal.Message` because the loaded page returned `has-message-api=false`.
+- A first direct Chrome AppleScript probe misleadingly reported no `Drupal.Message` API because it ran outside the page's JavaScript world.
+- A follow-up page-world injection on the same patched route confirmed `Drupal.Message` and `Drupal.announce` were available, then created warning and error messages through the page APIs.
+- The injected warning rendered `role="status"` and updated `#drupal-live-announce` with `aria-live="polite"`; the injected error rendered `role="alert"` and updated the live region with `aria-live="assertive"`.
+- Screenshots showed the injected messages while VoiceOver was running, but did not capture readable VoiceOver captions for the live-region announcement text.
 
 Report: `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md`
 
-This is useful partial evidence, but it is not a human AT verification pass and it does not confirm warning/error announcement urgency.
+This is stronger browser/AT-adjacent evidence than the first rotor-only attempt, but it is not a human AT verification pass and it does not confirm warning/error announcement urgency.
 
 ## Current Decision
 
 Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE`.
 
-The branch is now a cleaner upstream candidate with refreshed evaluator, DOM, FunctionalJavascript, and limited VoiceOver rotor evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
+The branch is now a cleaner upstream candidate with refreshed evaluator, DOM, FunctionalJavascript, and limited VoiceOver rotor/page-world evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
 
 - status/warning message announcement;
 - error alert urgency;
