@@ -1,7 +1,7 @@
 # Drupal Accessibility Evaluation TODO Ledger
 
 > Purpose: Keep evaluation work from drifting. Update this file before and after each evaluation session.
-> Last updated: 2026-05-31
+> Last updated: 2026-05-31 (`2026-06-01T01:27Z` live PR queue recheck)
 > Canonical parallel model: `docs/plans/2026-05-28-drupal-all-items-evaluation-plan.md#parallel-subagent-operating-model`
 
 ## Drift Rules
@@ -85,10 +85,11 @@ Source status values are descriptive labels from the upstream/source material, s
 | `2026-05-31-fresh-chat-handoff-after-pr-19` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-fresh-chat-handoff-after-pr-19.md` | Captured restart state after PRs #18 and #19, including fixture repairs, validation summaries, runtime/worktree boundaries, and the current review-tracking focus. |
 | `2026-05-31-002-orange-accent-contrast-pr` | Main | https://github.com/mgifford/drupal-core/pull/20 | Reconciled the stale contrast packet labels against source pattern `DRU-F75A07EF`, darkened the Default Admin orange accent preset, and opened PR #20 from `AlexU-A:codex/orange-accent-contrast-20260531`; GitHub reports PR #20 is open, not draft, merge state `CLEAN`, and AccessLint passing. |
 | `2026-05-31-fresh-chat-handoff-after-pr-20` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-fresh-chat-handoff-after-pr-20.md` | Captured restart state after PR #20, including source reconciliation for `DRUPAL-A11Y-002`, `DRUPAL-A11Y-005` obsolete status, validation summaries, and runtime/worktree boundaries. |
+| `2026-05-31-live-pr-tracking-after-pr-20` | Main | `docs/drupal-patch-evaluations/reports/current-wave/2026-05-31-live-pr-tracking-after-pr-20.md` | Rechecked PRs #8-#20. PR #8 remains open but `UNSTABLE` because AccessLint is pending on commit `fac67e0a78`; PRs #9-#20 are open, not draft, merge state `CLEAN`, and AccessLint passing. No human review comments requiring action were visible. |
 
 ## Current Focus
 
-1. Track evaluator infrastructure PR #8, including the AccessLint rerun after commit `fac67e0a78`, and use Mike's feedback to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
+1. Track evaluator infrastructure PR #8, including the pending AccessLint status on commit `fac67e0a78`, and use Mike's feedback or a current check result to decide whether to keep it as one reliability patch or split helper restoration, base-URL portability, and rule/selector matching.
 2. Run a short human NVDA or VoiceOver smoke check on the `DRUPAL-A11Y-007` reroll before upstream filing; local DOM/axe role smoke is complete but is not AT verification.
 3. Track `DRUPAL-A11Y-012` PR #9 and use Mike's feedback to decide whether the shared `filter_tips` preprocess shape needs adjustment.
 4. Track `DRUPAL-A11Y-010` PR #10 and use Mike's feedback to decide whether the Content view pager update path is narrow enough.
