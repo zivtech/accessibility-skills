@@ -149,9 +149,11 @@ This is stronger browser/AT-adjacent evidence than the first rotor-only attempt,
 
 ## Current Decision
 
-Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE`.
+File the candidate as a bounded landmark-role fix, not as an AT-verified announcement-behavior fix.
 
-The branch is now a cleaner upstream candidate with refreshed evaluator, DOM, FunctionalJavascript, and limited VoiceOver rotor/page-world evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
+The branch is now upstream as https://github.com/mgifford/drupal-core/pull/22. The PR body explicitly states that Drupal messages should not be exposed as `contentinfo` landmarks and that the patch keeps warnings polite. Keep the packet's full AT announcement status `INCONCLUSIVE` because the VoiceOver caption-panel rerun did not capture warning/status polite output.
+
+If reviewers want stronger AT evidence or assertive warning announcements, that should be handled as an explicit follow-up decision. The remaining human NVDA or VoiceOver questions are:
 
 - status/warning message announcement;
 - error alert urgency;

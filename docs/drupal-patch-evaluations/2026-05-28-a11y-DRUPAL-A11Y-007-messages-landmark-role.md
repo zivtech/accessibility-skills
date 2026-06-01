@@ -15,6 +15,7 @@
 | Current upstream base checked | `9ec853aac0cd` (`origin/main` on 2026-06-01 UTC) |
 | Current PR worktree | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-pr-007-messages-landmark-role-20260601` |
 | Current local candidate commit | `e187965ce86e` (`fix: use status roles for non-error messages`) |
+| Upstream PR | https://github.com/mgifford/drupal-core/pull/22 |
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
 | Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact SHA-256 `b70efc3a4f20349dd082fce31da37cf0e2b204c72269ffd3bff291fa7fe1be8c` |
 | Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; current-main reroll: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
@@ -33,9 +34,9 @@
 
 ## Current Verdict
 
-`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and VoiceOver + Chrome testing now captured the error/assertive path in the caption panel. However, repeated timed captures did not show the warning/status polite announcement text, so warning/status behavior remains unresolved rather than verified.
+`INCONCLUSIVE` for full AT announcement behavior, with upstream PR #22 filed as a bounded landmark-role fix. Local automated evidence supports the reroll candidate, and VoiceOver + Chrome testing now captured the error/assertive path in the caption panel. However, repeated timed captures did not show the warning/status polite announcement text, so warning/status behavior remains unresolved rather than verified.
 
-The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate also keeps JavaScript warnings at polite live-region priority while errors remain assertive. It has refreshed evaluator, DOM role, and FunctionalJavascript evidence, but still needs a human AT pass before upstream filing as AT-verified.
+The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate also keeps JavaScript warnings at polite live-region priority while errors remain assertive. It has refreshed evaluator, DOM role, and FunctionalJavascript evidence, and PR #22 explicitly states that it is not a full human screen-reader-user verification of every announcement behavior.
 
 ## Issue Summary
 
