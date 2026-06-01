@@ -1,6 +1,6 @@
 # DRUPAL-A11Y-007 Current-Main Reroll
 
-Checked at `2026-06-01T01:54Z` (`2026-05-31 21:54 -0400`).
+Checked at `2026-06-01T02:06Z` (`2026-05-31 22:06 -0400`).
 
 ## Worktree
 
@@ -27,7 +27,7 @@ origin/main 9ec853aac0cd
 Local candidate commit:
 
 ```text
-c297c18d98 fix: use status roles for non-error messages
+e187965ce86e fix: use status roles for non-error messages
 ```
 
 ## What Changed From The Saved Reroll
@@ -45,6 +45,8 @@ The candidate branch extends the reroll so tabledrag warnings use `role="status"
 
 This does not change the original axe target from `contentinfo` landmarks. It keeps the broader message-role claim coherent: errors are alert-urgent; non-error messages are status/polite.
 
+During final review, one more inconsistency was found: `Drupal.Message.announce()` still defaulted warnings to assertive announcements. The final candidate now leaves warnings at Drupal's default polite priority and only promotes errors to assertive priority. A targeted FunctionalJavascript regression was added for that priority behavior.
+
 ## Checks Run
 
 ```text
@@ -53,6 +55,7 @@ git diff --check: pass
 php -l changed PHP test files: pass
 node --check changed JS files: pass
 Drupal PHPCS on changed PHP/Twig files: pass
+MessageCommandTest::testMessageDefaultAnnouncementPriorities: pass
 credential-pattern scan on changed files: no hits
 ```
 
@@ -68,7 +71,7 @@ The regenerated candidate patch was copied into the disposable runtime patch slo
 
 ```bash
 DRUPAL_BASE_URL=http://drupal-core.ddev.site \
-  A11Y_VARIANT_ID=codex-current-main-tabledrag-007 \
+  A11Y_VARIANT_ID=codex-current-main-announce-priority-007 \
   node core/tests/playwright/scripts/evaluate-patch.js \
   a11y-DRUPAL-A11Y-007-messages-landmark-role
 ```
@@ -94,15 +97,15 @@ Route summary:
 
 Remaining after-patch violations were pre-existing adjacent issues (`region`, `summary-name`), not patch-owned target regressions.
 
-Raw runtime artifacts were left in the disposable runtime under `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-current-main-tabledrag-007.*`. Do not copy those raw files into this repo without sanitizing because the evaluator captures local DDEV status fields.
+Raw runtime artifacts were left in the disposable runtime under `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-current-main-announce-priority-007.*`. Do not copy those raw files into this repo without sanitizing because the evaluator captures local DDEV status fields.
 
 ## DOM Role Probe
 
 With the regenerated patch applied in the runtime, a focused Playwright DOM probe confirmed:
 
 ```text
-Drupal.Message warning: role="status"
-Drupal.Message error: role="alert"
+Drupal.Message warning: role="status"; live region aria-live="polite"
+Drupal.Message error: role="alert"; live region aria-live="assertive"
 ```
 
 Tabledrag warning probe:
@@ -120,23 +123,32 @@ Two content-display routes did not load tabledrag in this runtime, so they were 
 With the regenerated patch temporarily applied in the runtime harness:
 
 ```text
+MessageCommandTest::testMessageDefaultAnnouncementPriorities: OK (1 test, 7 assertions)
 PlaceholderMessageTest::testMessagePlaceholder: OK (1 test, 2 assertions)
 ModulesListFormWebTest::testModulesListFormStatusMessage: OK (1 test, 15 assertions)
 ```
 
 The patch was reverted after the test run, and a follow-up `git apply --check` confirmed the runtime target files were clean enough for the patch to apply again.
 
-## Tests Not Run
+## VoiceOver Smoke Attempt
 
-Browser/functional PHPUnit was not run from the fresh candidate worktree because the checkout does not have its own Composer vendor tree or configured Drupal web-test environment. The dirty runtime has that tooling, but it is evidence space and should not be treated as the source branch.
+VoiceOver was enabled and a limited Chrome smoke attempt was run on the patched `/admin/appearance` page:
 
-Human NVDA or VoiceOver smoke was not run in this session.
+- VoiceOver captions were active.
+- The Links rotor listed page links, including the two visible `available updates` links inside the rendered messages.
+- The Landmarks rotor reported no items, so no duplicate `contentinfo` landmark entries were observed in that browser/AT pass.
+- Safari dynamic-message probing was blocked because "Allow JavaScript from Apple Events" is disabled.
+- Chrome dynamic-message probing did not exercise `Drupal.Message` because the loaded page returned `has-message-api=false`.
+
+Report: `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md`
+
+This is useful partial evidence, but it is not a human AT verification pass and it does not confirm warning/error announcement urgency.
 
 ## Current Decision
 
 Keep `DRUPAL-A11Y-007` as `INCONCLUSIVE`.
 
-The branch is now a cleaner upstream candidate with refreshed evaluator and DOM evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
+The branch is now a cleaner upstream candidate with refreshed evaluator, DOM, FunctionalJavascript, and limited VoiceOver rotor evidence, but it still should not be filed as AT-verified. The next gate remains a short human NVDA or VoiceOver smoke check for:
 
 - status/warning message announcement;
 - error alert urgency;

@@ -1,8 +1,20 @@
 diff --git a/core/misc/message.js b/core/misc/message.js
-index 4b93cb21ca..321c9376a8 100644
+index 4b93cb21ca..0bc5c61bf2 100644
 --- a/core/misc/message.js
 +++ b/core/misc/message.js
-@@ -253,7 +253,7 @@
+@@ -197,10 +197,7 @@
+      *   Message type, can be either 'status', 'error' or 'warning'.
+      */
+     static announce(message, options) {
+-      if (
+-        !options.priority &&
+-        (options.type === 'warning' || options.type === 'error')
+-      ) {
++      if (!options.priority && options.type === 'error') {
+         options.priority = 'assertive';
+       }
+       /**
+@@ -253,7 +250,7 @@
      messageWrapper.setAttribute('class', `messages messages--${type}`);
      messageWrapper.setAttribute(
        'role',
@@ -65,7 +77,7 @@ index 810d003cb0..8bf0804d21 100644
 -    $this->assertSession()->elementNotExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a");
 +    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Layout Discovery has been installed.');
 +    $this->assertSession()->elementNotExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a");
- 
+
      // Enable a module that defines permissions.
      $edit = ['modules[filter][enable]' => 'filter'];
      $this->submitForm($edit, 'Install');
@@ -73,7 +85,7 @@ index 810d003cb0..8bf0804d21 100644
 -    $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
 +    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", 'Module Filter has been installed.');
 +    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/filter')]");
- 
+
      // Enable a module that has dependencies and both define permissions.
      $edit = ['modules[content_moderation][enable]' => 'content_moderation'];
      $this->submitForm($edit, 'Install');
@@ -83,7 +95,7 @@ index 810d003cb0..8bf0804d21 100644
 +    $this->assertSession()->elementTextContains('xpath', "//div[@role='status' and h2[text()='Status message']]", '2 modules have been installed: Content Moderation, Workflows.');
 +    $this->assertSession()->elementExists('xpath', "//div[@role='status' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/content_moderation%2Cworkflows')]");
    }
- 
+
    /**
 diff --git a/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php b/core/modules/system/tests/src/Functional/Render/PlaceholderMessageTest.php
 index a30c31ee8e..088e696472 100644
@@ -95,7 +107,7 @@ index a30c31ee8e..088e696472 100644
    public function testMessagePlaceholder(): void {
 -    $messages_markup = '<div role="contentinfo" aria-label="Status message"';
 +    $messages_markup = '<div role="status" aria-label="Status message"';
- 
+
      $test_routes = [
        // Messages placeholder rendered first.
 diff --git a/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig b/core/modules/system/tests/themes/test_messages/templates/status-messages.html.twig
@@ -140,6 +152,38 @@ index 2b3c8e7a61..bce7d79e3c 100644
      );
      messageWrapper.setAttribute('data-drupal-message-id', id);
      messageWrapper.setAttribute('data-drupal-message-type', type);
+diff --git a/core/tests/Drupal/FunctionalJavascriptTests/Ajax/MessageCommandTest.php b/core/tests/Drupal/FunctionalJavascriptTests/Ajax/MessageCommandTest.php
+index 26efca46cf..82792ef7a4 100644
+--- a/core/tests/Drupal/FunctionalJavascriptTests/Ajax/MessageCommandTest.php
++++ b/core/tests/Drupal/FunctionalJavascriptTests/Ajax/MessageCommandTest.php
+@@ -172,6 +172,27 @@ public function testJsStatusMessageAssertions(): void {
+     $this->assertSession()->statusMessageExistsAfterWait('not a valid type');
+   }
+
++  /**
++   * Tests the default live-region priority for JavaScript messages.
++   */
++  public function testMessageDefaultAnnouncementPriorities(): void {
++    $session = $this->getSession();
++    $assert_session = $this->assertSession();
++
++    $this->drupalGet('ajax-test/message');
++    $session->executeScript("new Drupal.Message().add('Warning priority probe', { type: 'warning', id: 'warning-priority-probe' });");
++    $warning_message = $assert_session->waitForElement('css', '[data-drupal-message-id="warning-priority-probe"]');
++    $this->assertSame('status', $warning_message->getAttribute('role'));
++    $this->assertAnnounceContains('Warning priority probe');
++    $this->assertSame('polite', $session->evaluateScript("document.getElementById('drupal-live-announce').getAttribute('aria-live')"));
++
++    $session->executeScript("new Drupal.Message().add('Error priority probe', { type: 'error', id: 'error-priority-probe' });");
++    $error_message = $assert_session->waitForElement('css', '[data-drupal-message-id="error-priority-probe"]');
++    $this->assertSame('alert', $error_message->getAttribute('role'));
++    $this->assertAnnounceContains('Error priority probe');
++    $this->assertSame('assertive', $session->evaluateScript("document.getElementById('drupal-live-announce').getAttribute('aria-live')"));
++  }
++
+   /**
+    * Asserts that a message of the expected type appears.
+    *
 diff --git a/core/themes/claro/js/messages.js b/core/themes/claro/js/messages.js
 index 26632ae6bc..47c980dbae 100644
 --- a/core/themes/claro/js/messages.js
@@ -177,7 +221,7 @@ index 07b093c01f..dd2d698884 100644
 +      {%
 +        set message_role = type == 'error' ? 'alert' : 'status'
 +      %}
- 
+
 -      <div role="contentinfo" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
 -        {% if type == 'error' %}
 -          <div role="alert">
@@ -289,7 +333,7 @@ index 5f4f3b27ea..b586233acd 100644
 +      {%
 +        set message_role = type == 'error' ? 'alert' : 'status'
 +      %}
- 
+
 -      <div role="contentinfo" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
 +      <div role="{{ message_role }}" aria-labelledby="{{ title_ids[type] }}"{{ attributes.addClass(classes)|without('role', 'aria-label') }}>
          {% if is_message_with_title or is_message_with_icon %}
@@ -319,7 +363,7 @@ index 2dfe964a77..789ab605ef 100644
 +      {%
 +        set message_role = type == 'error' ? 'alert' : 'status'
 +      %}
- 
+
        <div{{ attributes
          .addClass(classes)
          .setAttribute('data-drupal-selector', 'messages')

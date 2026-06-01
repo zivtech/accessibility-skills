@@ -14,11 +14,11 @@
 | Target commit checked | `3728741f23122018f1f26206fe563cb6c9ad49f8` (`main` on 2026-05-28) |
 | Current upstream base checked | `9ec853aac0cd` (`origin/main` on 2026-06-01 UTC) |
 | Current PR worktree | `/Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-pr-007-messages-landmark-role-20260601` |
-| Current local candidate commit | `c297c18d98` (`fix: use status roles for non-error messages`) |
+| Current local candidate commit | `e187965ce86e` (`fix: use status roles for non-error messages`) |
 | Target file SHA | `core/modules/system/templates/status-messages.html.twig` blob `be6711b270df98d2aee223db7af2aa6b49c2ffa2` |
-| Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact: `docs/drupal-patch-evaluations/patches/a11y-DRUPAL-A11Y-007-messages-landmark-role-codex-reroll-status-alert-007.patch` |
-| Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
-| Role smoke | `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-drupal-a11y-007-role-smoke.md` |
+| Patch file SHA | Upstream raw patch: `patches/a11y-DRUPAL-A11Y-007-messages-landmark-role.patch` blob `59a6ebaac7d5fe500d1ab1d8b5cb848466060a93`; local reroll artifact SHA-256 `b70efc3a4f20349dd082fce31da37cf0e2b204c72269ffd3bff291fa7fe1be8c` |
+| Evaluation artifact | PASS reroll: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-reroll-status-alert-js-007.{md,json,html}`; cleaned rerun: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-rerun-cleaned-007.{md,json,html}`; current-main reroll: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; earlier failed run: `docs/drupal-patch-evaluations/reports/evaluator-runs/a11y-DRUPAL-A11Y-007-messages-landmark-role-evaluation-codex-runtime-smoke-007.{md,json}` |
+| Role/AT smoke | DOM role smoke: `docs/drupal-patch-evaluations/reports/manual-checks/2026-05-28-drupal-a11y-007-role-smoke.md`; VoiceOver attempt: `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md` |
 | AI assistance disclosed? | Required if this packet is reused upstream |
 
 ## Source Links
@@ -33,9 +33,9 @@
 
 ## Current Verdict
 
-`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, but it is not AT-verified.
+`INCONCLUSIVE` pending a human NVDA or VoiceOver smoke check. Local automated evidence supports the reroll candidate, and a limited VoiceOver + Chrome rotor smoke did not expose duplicate `contentinfo` landmarks, but warning/error announcement behavior is not human-AT verified.
 
-The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate has refreshed evaluator and DOM role evidence, but still needs human AT smoke before upstream filing.
+The original upstream patch only changed `core/modules/system/templates/status-messages.html.twig` from `contentinfo` to `region`; the repaired local evaluator showed that version still left targeted failures on `/admin/modules`. The local reroll saved in this packet changes message wrappers to `role="alert"` for errors and `role="status"` for non-error messages across server-rendered status-message templates, JavaScript message themers, and tabledrag warning generators. The current candidate also keeps JavaScript warnings at polite live-region priority while errors remain assertive. It has refreshed evaluator, DOM role, and FunctionalJavascript evidence, but still needs a human AT pass before upstream filing as AT-verified.
 
 ## Issue Summary
 
@@ -155,6 +155,7 @@ I rerolled the patch locally to use message semantics instead of `region`:
 - the same pattern was applied to the default system template, Claro, Default Admin, Olivero, Starterkit, Stable 9 media-library status messages, and the system test message template,
 - JavaScript message themers in core, Claro, Default Admin, Olivero, and Umami were aligned so warnings are `status` rather than `alert`,
 - tabledrag "unsaved changes" warning generators in core, Claro, and Default Admin were aligned so non-error warnings are `status` rather than `alert`,
+- `Drupal.Message.announce()` now promotes only errors to assertive priority; warnings keep Drupal's default polite live-region priority,
 - functional test expectations that asserted `role="contentinfo"` for status messages were updated to `role="status"`.
 
 Patch artifact:
@@ -219,7 +220,7 @@ Introduced new violations: 0
 
 DOM/axe role smoke also passed for `/admin/appearance` and `/admin/modules`: server-rendered and JavaScript-created warnings use `role="status"` while errors use `role="alert"`.
 
-This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime, and I did not enable VoiceOver because that changes the user's desktop state. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
+This is not a true assistive-technology smoke check. NVDA is unavailable on this macOS runtime. A later VoiceOver + Chrome attempt produced partial rotor evidence but did not exercise warning/error live-region announcements. Run one short human NVDA or VoiceOver check before describing the reroll as AT-verified upstream evidence.
 
 ## Patch Hygiene
 
@@ -300,7 +301,7 @@ On 2026-06-01 UTC, the saved reroll patch was checked against current `origin/ma
 /Users/AlexUA_1/claude/.cache/drupal-a11y-eval/mgifford-drupal-core-pr-007-messages-landmark-role-20260601
 ```
 
-The saved patch applied cleanly. A critic pass then found that tabledrag warning messages still hardcoded `role="alert"` despite being non-error warning messages. The current local candidate commit `c297c18d98` extends the reroll to set those tabledrag warnings to `role="status"` as well.
+The saved patch applied cleanly. A critic pass then found that tabledrag warning messages still hardcoded `role="alert"` despite being non-error warning messages. A final review then found `Drupal.Message.announce()` still treated warnings as assertive. The current local candidate commit `e187965ce86e` extends the reroll so tabledrag warnings use `role="status"` and JavaScript warnings keep polite announcement priority.
 
 Static checks on the current branch:
 
@@ -309,10 +310,11 @@ git diff --check: pass
 php -l changed PHP test files: pass
 node --check changed JS files: pass
 Drupal PHPCS on changed PHP/Twig files: pass
+MessageCommandTest::testMessageDefaultAnnouncementPriorities: OK (1 test, 7 assertions)
 credential-pattern scan on changed files: no hits
 ```
 
-Runtime evaluator rerun with variant `codex-current-main-tabledrag-007`:
+Runtime evaluator rerun with variant `codex-current-main-announce-priority-007`:
 
 ```text
 Status: PASS
@@ -328,18 +330,21 @@ Focused DOM role probe with the regenerated patch applied:
 
 ```text
 Drupal.Message warning: role="status"
+Drupal.Message warning live region: aria-live="polite"
 Drupal.Message error: role="alert"
+Drupal.Message error live region: aria-live="assertive"
 Tabledrag warnings on /admin/structure/menu/manage/main, /admin/structure/block, and /admin/structure/taxonomy/manage/tags/overview: role="status"
 ```
 
 Functional test rerun in the runtime harness:
 
 ```text
+MessageCommandTest::testMessageDefaultAnnouncementPriorities: OK (1 test, 7 assertions)
 PlaceholderMessageTest::testMessagePlaceholder: OK (1 test, 2 assertions)
 ModulesListFormWebTest::testModulesListFormStatusMessage: OK (1 test, 15 assertions)
 ```
 
-Report: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`
+Reports: `docs/drupal-patch-evaluations/reports/current-wave/2026-06-01-007-current-main-reroll.md`; `docs/drupal-patch-evaluations/reports/manual-checks/2026-06-01-drupal-a11y-007-voiceover-smoke.md`
 
 ## After-Patch Verification
 
@@ -417,7 +422,8 @@ Remaining evaluator improvements:
 |---|---|---|---|
 | Keyboard-only | Browser/version | `not run` | Not primary for this rule, but messages should not disrupt focus order. |
 | NVDA + Chrome | Versions | `not run` | Confirm error/status message announcement and landmark list behavior. |
-| VoiceOver + Safari | Versions | `not run` | Confirm message announcement and rotor landmarks do not show duplicate contentinfo. |
+| VoiceOver + Chrome | macOS 26.4.1, VoiceOver app metadata version 10, Chrome 148.0.7778.215 | `INCONCLUSIVE` | Links rotor included message links and Landmarks rotor had no `contentinfo` duplicates, but warning/error announcement behavior was not exercised. |
+| VoiceOver + Safari | Safari 26.4 | `blocked` | Scripted dynamic-message probe was blocked by Safari's disabled "Allow JavaScript from Apple Events" setting; preference was not changed. |
 | Voice control / label in name | Tool/version | `not run` | Not primary. |
 | Forced colors | Browser/version | `not run` | Not primary, but message affordances should remain visible. |
 | Zoom/reflow | Browser/version | `not run` | Not primary. |
@@ -428,7 +434,7 @@ Manual checks may remain open, but the packet must not imply they passed.
 
 `INCONCLUSIVE`
 
-The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced. The remaining gap is human AT behavior: the packet has DOM/axe role evidence, not NVDA or VoiceOver evidence.
+The issue is real in the local repaired runtime. The original upstream patch partially fixed the target but left the same failures on `/admin/modules`. The local reroll candidate applies, reverts, and passes the standard evaluator with observed targeted `contentinfo` landmark failures removed and no new violations introduced. The remaining gap is human AT behavior: the packet has DOM/axe role evidence, a FunctionalJavascript live-region priority regression, and limited VoiceOver + Chrome rotor evidence, but not a human NVDA or VoiceOver announcement-behavior pass.
 
 Before upstream filing, run at least one assistive-technology smoke check for message announcement behavior and landmark navigation. This packet does not claim that NVDA, VoiceOver, or Dragon testing has passed.
 
@@ -440,7 +446,7 @@ Drupal status messages are rendered with `role="contentinfo"`. When those messag
 
 ### Proposed Fix Under Review
 
-The local reroll follows the pattern report's semantic direction: non-error messages use `role="status"` and errors use `role="alert"`. This avoids exposing status messages as footer/contentinfo landmarks, avoids nested alert wrappers, and aligns server-rendered messages, JavaScript-created Drupal messages, and tabledrag warning messages.
+The local reroll follows the pattern report's semantic direction: non-error messages use `role="status"` and errors use `role="alert"`. JavaScript-created warnings also keep polite announcement priority while errors remain assertive. This avoids exposing status messages as footer/contentinfo landmarks, avoids nested alert wrappers, and aligns server-rendered messages, JavaScript-created Drupal messages, and tabledrag warning messages.
 
 Design caveat: `status` and `alert` are live-region roles. Because these messages are often present on page load as well as after actions, the upstream issue should include a short screen reader smoke note confirming message announcement is not duplicated or missed in Drupal's common message flows.
 
@@ -491,7 +497,7 @@ This packet was prepared with AI assistance. The accessibility finding must be v
 
 Canonical local status recommendation: `INCONCLUSIVE` until human AT smoke evidence is recorded
 
-Readiness note: the reroll has automated before/after evidence and is a plausible upstream replacement candidate, but manual assistive-technology behavior still needs a short smoke check before filing as fully user-verified.
+Readiness note: the reroll has automated before/after evidence and is a plausible upstream replacement candidate, but manual assistive-technology behavior still needs a short smoke check before filing as fully user-verified. The VoiceOver + Chrome attempt reduced the landmark concern but did not close the announcement-behavior gap.
 
 Findings:
 
@@ -500,4 +506,4 @@ Findings:
 3. Do not carry the evaluator's "eligible for patch recommendation" wording forward as full upstream readiness; it means the patch candidate has automated evidence, while manual AT evidence remains open.
 4. WCAG level mapping is inconsistent across artifacts. Before filing, cite the axe rule and correct WCAG mapping rather than preserving the pattern report's Level A wording for SC 1.3.6.
 
-Recommended next action: run a short NVDA or VoiceOver smoke check on error/status message announcement, then prepare the reroll patch for upstream review.
+Recommended next action: have a human NVDA or VoiceOver tester run the warning/status and error announcement checks, then prepare the reroll patch for upstream review with the AT boundary stated explicitly.
