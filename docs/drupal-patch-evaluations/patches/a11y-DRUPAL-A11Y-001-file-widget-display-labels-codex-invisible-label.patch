@@ -1,0 +1,44 @@
+diff --git a/core/modules/file/src/Hook/FileThemeHooks.php b/core/modules/file/src/Hook/FileThemeHooks.php
+index 635096db44..0c9c722396 100644
+--- a/core/modules/file/src/Hook/FileThemeHooks.php
++++ b/core/modules/file/src/Hook/FileThemeHooks.php
+@@ -282,7 +282,7 @@ public function preprocessFileWidgetMultiple(array &$variables): void {
+ 
+       // Arrange the row with the rest of the rendered columns.
+       if ($element['#display_field']) {
+-        unset($widget['display']['#title']);
++        $widget['display']['#title_display'] = 'invisible';
+         $row[] = [
+           'data' => $widget['display'],
+           'class' => ['checkbox'],
+diff --git a/core/modules/file/tests/src/Functional/FileFieldDisplayTest.php b/core/modules/file/tests/src/Functional/FileFieldDisplayTest.php
+index bbae99ac6c..c6cfbc7610 100644
+--- a/core/modules/file/tests/src/Functional/FileFieldDisplayTest.php
++++ b/core/modules/file/tests/src/Functional/FileFieldDisplayTest.php
+@@ -124,14 +124,26 @@ public function testNodeDisplay(): void {
+     $this->clickLink('Back to content editing');
+     // First file.
+     $this->assertSession()->responseContains($field_name . '[0][display]');
++    $this->assertFileDisplayCheckboxHasLabel($field_name, 0);
+     // Second file.
+     $this->assertSession()->responseContains($field_name . '[1][display]');
++    $this->assertFileDisplayCheckboxHasLabel($field_name, 1);
+     $this->assertSession()->responseContains($field_name . '[1][description]');
+ 
+     // Check that the file fields don't contain duplicate HTML IDs.
+     $this->assertSession()->pageContainsNoDuplicateId();
+   }
+ 
++  /**
++   * Asserts that a file display checkbox has an invisible label.
++   */
++  protected function assertFileDisplayCheckboxHasLabel(string $field_name, int $delta): void {
++    $display_checkbox = $this->assertSession()->fieldExists($field_name . "[$delta][display]");
++    $label = $this->assertSession()->elementExists('xpath', '//label[@for="' . $display_checkbox->getAttribute('id') . '"]');
++    $this->assertSame('Include file in display', $label->getText());
++    $this->assertStringContainsString('visually-hidden', $label->getAttribute('class'));
++  }
++
+   /**
+    * Tests default display of File Field.
+    */
