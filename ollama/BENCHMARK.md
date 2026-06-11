@@ -911,3 +911,63 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   bar). Results recorded above this line were produced by the pre-fix scorers
   and are not number-compatible with re-runs. Raw /tmp artifacts were not
   retained, so historical tables stand as-is.
+
+## Planner benchmark (post-002 scoring, 25 fixtures)
+
+**Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
+
+First full planner-suite measurement (previously 2/25 fixtures). Produced on the
+post-plan-002 scorers — this section sits below the scoring changelog because it is
+the first dataset on the corrected basis; it is not number-compatible with the
+pre-fix planner rows in earlier sections.
+
+**Scoring method**: `score_planner.py` resolves each must-have criterion through
+rubric-supplied `scoring_keywords` in the fixture metadata (exact-match table
+retained as fallback, `score_common.fallback_keywords` as last resort with WARN —
+zero WARN lines in this run). Instrument validated by a 3-fixture pilot audit with
+23/23 criterion agreement, operator-approved: `evals/suites/a11y-planner/PILOT-SCORING-AUDIT.md`.
+Raw per-fixture data: `evals/suites/a11y-planner/RESULTS-qwen3-32b.md`.
+
+| Fixture | Must-have hits | Status |
+|---------|---------------|--------|
+| aria-combobox-autocomplete | 11/11 | PASS |
+| aria-data-table-sorting | 10/10 | PASS |
+| aria-disclosure-widget | 9/9 | PASS |
+| aria-modal-form-validation | 11/11 | PASS |
+| aria-tab-dynamic-content | 10/10 | PASS |
+| keyboard-breadcrumb | 5/5 | PASS |
+| keyboard-button-bar | 6/6 | PASS |
+| keyboard-menu-dropdown | 9/9 | PASS |
+| keyboard-modal-focus-trap | 10/10 | PASS |
+| keyboard-roving-tabindex | 9/9 | PASS |
+| sr-article-page | 8/8 | PASS |
+| sr-form-field-help | 13/13 | PASS |
+| sr-notification-system | 12/12 | PASS |
+| sr-product-listing | 8/10 | PASS |
+| sr-search-results-live | 11/11 | PASS |
+| test-data-table | 13/13 | PASS |
+| test-form | 10/11 | PASS |
+| test-modal | 9/11 | PASS |
+| test-multi-page-audit | 11/11 | PASS |
+| test-simple-button | 7/9 | PASS |
+| visual-animated-transition | 7/7 | PASS |
+| visual-dark-mode | 6/7 | PASS |
+| visual-data-viz | 6/6 | PASS |
+| visual-form-validation | 10/10 | PASS |
+| visual-status-colors | 6/6 | PASS |
+| **Aggregate** | **227/235 (96.6%)** | **25/25 PASS** |
+
+Partial-hit fixtures (5): sr-product-listing (8/10), test-form (10/11), test-modal (9/11), test-simple-button (7/9), visual-dark-mode (6/7).
+
+**Caveats**:
+- Single local model lane (qwen3:32b). Hosted lanes (Claude subagents, Codex) have
+  not run for the planner suite — plan 006 Phase D is operator-cost-gated and was not exercised.
+- Section-presence keyword scoring is a structural proxy: it verifies a plan contains
+  the load-bearing tokens of each must-have criterion, not that the plan is good.
+  It cannot distinguish a brilliant plan from a checklist-shaped one (see plan 006
+  maintenance notes; an LLM-judge rubric is the next instrument if quality becomes contested).
+- One environmental incident during the run: a second resident copy of the model
+  (native app on port 11434, kept hot by an unrelated local service) caused GPU
+  contention and one 1200s timeout. The affected fixture (visual-data-viz) was re-run
+  cleanly after the duplicate was unloaded; scores are unaffected (timing column in the
+  raw results file reflects post-fix runs).
