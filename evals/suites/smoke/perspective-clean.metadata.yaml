@@ -1,0 +1,7 @@
+fixture_id: perspective-clean-smoke
+difficulty: CLEAN
+expected_verdict: PASS
+expected_alarm_levels:
+  vestibular_motion: LOW
+  auditory_access: LOW
+expected_findings: []

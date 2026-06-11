@@ -1,0 +1,1 @@
+{"response": "Phase 1 — Scope. Phase 2 — Findings.\nFinding #1: The email input lacks aria-describedby pointing at the error text. WCAG 3.3.1.\nFinding #2: Add aria-live=\"polite\" so the failure is announced. WCAG 4.1.3.\nVerdict: REVISE"}

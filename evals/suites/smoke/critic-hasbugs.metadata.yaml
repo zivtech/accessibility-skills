@@ -1,0 +1,10 @@
+fixture_id: critic-hasbugs-smoke
+difficulty: HAS-BUGS
+notes: "Expected verdict: REVISE"
+expected_findings:
+  - category: must_find
+    items:
+      - description: "Input missing aria-describedby link to its error message"
+        wcag: "WCAG 3.3.1"
+      - description: "Error message is not announced to screen readers (no live region)"
+        wcag: "WCAG 4.1.3"
