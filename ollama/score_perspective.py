@@ -14,10 +14,14 @@ Checks:
 """
 
 import json
+import os
 import re
 import sys
 
 import yaml
+
+sys.path.insert(0, os.path.dirname(__file__))
+from score_common import strip_thinking, detect_verdict, fallback_keywords, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
 
 
 PERSPECTIVE_NAMES = {
@@ -31,11 +35,7 @@ PERSPECTIVE_NAMES = {
 }
 
 
-def strip_thinking(text: str) -> str:
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
-
-
-def load_response(path: str) -> str:
+def load_response(path: str) -> tuple[str, bool]:
     with open(path) as f:
         data = json.load(f)
     return strip_thinking(data.get("response", ""))
@@ -59,14 +59,7 @@ def get_low(alarm_levels: dict) -> list[str]:
 
 
 def check_verdict(text: str) -> str:
-    text_upper = text.upper()
-    if "BLOCK" in text_upper:
-        return "BLOCK"
-    if "REVISE" in text_upper:
-        return "REVISE"
-    if "PASS" in text_upper:
-        return "PASS"
-    return "NONE"
+    return detect_verdict(text, ["BLOCK", "REVISE", "PASS"])
 
 
 def check_perspective_coverage(text: str, escalated: list[str]) -> dict:
@@ -217,8 +210,7 @@ def extract_keywords(description: str, wcag: str = "") -> list[str]:
     if "row" in desc_lower and "selection" in desc_lower:
         return ["row", "selection", "aria-selected", "background"]
 
-    words = description.split()[:4]
-    return [w.strip(".,;:") for w in words if len(w) > 3]
+    return fallback_keywords(description)
 
 
 def check_arrm_routing(text: str) -> bool:
@@ -234,7 +226,7 @@ def check_arrm_routing(text: str) -> bool:
     return any(re.search(p, text, re.IGNORECASE) for p in arrm_patterns)
 
 
-def check_false_positives(text: str) -> dict:
+def check_false_positives(text: str, declared_verdict: str) -> dict:
     finding_patterns = [
         r"(?:Finding|Issue)\s*#?\d+\s*[:.]",
         r"^\s*\d+\.\s+\*\*(?:CRITICAL|SERIOUS|MAJOR|MODERATE)",
@@ -245,12 +237,16 @@ def check_false_positives(text: str) -> dict:
     for pattern in finding_patterns:
         count += len(re.findall(pattern, text, re.MULTILINE | re.IGNORECASE))
 
-    wrong_verdict = bool(re.search(r"\b(BLOCK|REVISE)\b", text))
+    wrong_verdict = declared_verdict in ("BLOCK", "REVISE")
     return {"structured_findings": count, "wrong_verdict": wrong_verdict}
 
 
 def score(response_path: str, rubric_path: str):
-    text = load_response(response_path)
+    text, truncated = load_response(response_path)
+    if truncated:
+        print("Response truncated mid-<think> block — not scoring")
+        print("Status: INCOMPLETE — truncated response")
+        return
     rubric = load_rubric(rubric_path)
     difficulty = rubric.get("difficulty", "unknown")
     fixture_id = rubric.get("fixture_id", "unknown")
@@ -280,7 +276,7 @@ def score(response_path: str, rubric_path: str):
         print(f"Verdict correct: {'YES' if correct else f'NO — should be {expected_str}'}")
         print()
 
-        fp = check_false_positives(text)
+        fp = check_false_positives(text, verdict)
         print(f"False positive signals:")
         print(f"  Structured findings: {fp['structured_findings']}")
         print(f"  Wrong verdict: {fp['wrong_verdict']}")
@@ -318,7 +314,8 @@ def score(response_path: str, rubric_path: str):
         for r in must_results:
             marker = "+" if r["found"] else "X"
             wcag_marker = "W" if r["wcag_cited"] else "-"
-            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}")
+            kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}{kw_suffix}")
         print()
     else:
         must_results = []
@@ -332,7 +329,8 @@ def score(response_path: str, rubric_path: str):
         for r in should_results:
             marker = "+" if r["found"] else "X"
             wcag_marker = "W" if r["wcag_cited"] else "-"
-            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}")
+            kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}{kw_suffix}")
         print()
     else:
         should_results = []
@@ -360,8 +358,8 @@ def score(response_path: str, rubric_path: str):
 
     must_score = sum(1 for r in must_results if r["found"]) / max(len(must_results), 1)
     print(f"Must-find detection rate: {must_score:.0%}")
-    print(f"Abort threshold: 40%")
-    print(f"Status: {'PASS' if must_score >= 0.4 else 'FAIL'}")
+    print(f"Abort threshold: {MUST_FIND_ABORT_THRESHOLD:.0%} (escalation gate — see score_common.py)")
+    print(f"Status: {'PASS' if must_score >= MUST_FIND_ABORT_THRESHOLD else 'FAIL'}")
 
 
 if __name__ == "__main__":

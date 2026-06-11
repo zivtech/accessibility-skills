@@ -899,3 +899,15 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 - [x] ~~Phase 6: Codex/OpenAI escalation (33 fixtures)~~ — **GPT-5.2 91%, full pass at 5.5-low. 3/3 ADVERSARIAL pass (better than Haiku)**
 - [x] ~~Phase 7: Opus subagent benchmark (8 hard fixtures)~~ — **8/8 PASS, best-tier verdicts on all ADVERSARIAL. Confirms Opus-default routing.**
 - [x] ~~Phase 7B: Scout→Critic workflow validation (3 fixtures)~~ — **3/3 PASS. Haiku scout (~8s) + Opus critic chain works end-to-end.**
+
+## Scoring changelog
+
+- 2026-06-11 (plan 002): scorer fixes — two-tier verdict detection in
+  score_perspective.py (was: bare substring, BLOCK-first), CLEAN false-positive
+  check now uses the declared verdict (was: body-wide BLOCK|REVISE regex),
+  truncated `<think>` responses now score `Status: INCOMPLETE` (was: scored as
+  normal output), keyword fallback can no longer return an empty list, and the
+  40% gate is named MUST_FIND_ABORT_THRESHOLD (escalation gate, not a quality
+  bar). Results recorded above this line were produced by the pre-fix scorers
+  and are not number-compatible with re-runs. Raw /tmp artifacts were not
+  retained, so historical tables stand as-is.
