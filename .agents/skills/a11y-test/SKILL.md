@@ -12,14 +12,23 @@ metadata:
 
 ## Browser Tooling Routing (read first)
 
-This skill has two distinct execution modes. Pick the right one before running anything:
+This skill has three execution modes. Pick the right one before running anything:
 
 | Task | Tool | Why |
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
+| Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (generated in Claude Code; run the produced .py from Codex) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
+
+**Decision flowchart:**
+```
+Do you have a prose description of what to test, but no test script yet?
+  YES → /webwright:run in a Claude Code session (one-shot) or /webwright:craft (reusable); execute the generated .py from Codex via python3 <script>.py
+  NO, you need to run an existing test → npx playwright test
+  NO, you need to explore interactively → agent-browser
+```
 
 **CDP keyboard event delivery for `agent-browser` has been verified end-to-end** on both a vanilla JS disclosure widget (WAI-ARIA APG disclosure-faq example: `focus → press Enter → aria-expanded: false → true`) and a React state-driven modal (react.dev DocSearch: `Meta+K` → React global keydown listener → state-mounted searchbox). The MCP keyboard delivery bug does not apply to `agent-browser` because it calls CDP `Input.dispatchKeyEvent` directly rather than through an MCP wrapper.
 
@@ -40,6 +49,51 @@ agent-browser close
 Key flags: `--profile Default` (reuse the user's Chrome login state for authenticated sites), `--session <name>` (isolated browser per parallel agent), `--json` (parseable output for programmatic checks), `--allowed-domains` (safety).
 
 **When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
+
+## Test script generation with Webwright
+
+**When to use:** You have a prose a11y requirement (from the planner or a ticket) and need a runnable test script, without hand-writing it.
+
+**What it produces:** A Python Playwright script with navigation, keyboard interactions, ARIA state assertions, and screenshots. Webwright generates `sync_playwright` scripts by default — if you need async for an existing test harness, specify in the prompt.
+
+**Language mismatch warning:** Webwright generates Python. Existing CI is Node.js/.spec.js. Generated scripts are starting points — for CI, port logic to .spec.js using the APG templates below, or run Python directly if a Python test runner is available.
+
+**Example `/webwright:run`** (actual prompt that produced a passing dialog focus trap test in benchmark):
+```
+/webwright:run Navigate to https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/.
+Open the modal by clicking the trigger button.
+Verify focus moves into the modal.
+Tab through all focusable elements and verify focus wraps (focus trap).
+Press Escape and verify the modal closes and focus returns to the trigger.
+```
+
+**Quality gate:** The operator must review generated scripts before trusting results. Check that:
+- Keyboard events use `page.keyboard.press()` or `locator.press()`, NOT synthetic `dispatchEvent`
+- Assertions verify state changes (before/after), not just attribute presence
+- No `time.sleep()` > 5 seconds or hardcoded waits that mask timing issues
+
+**ARIA snapshot capability:** Webwright's Playwright environment captures `page.locator("body").aria_snapshot()` — the full accessibility tree with roles, states, and relationships as structured YAML. Richer than `agent-browser snapshot -i` for structural analysis (captures all 4 tab→panel relationships via aria-controls/aria-labelledby cross-references, vs. agent-browser which shows only interactive element refs).
+
+**Limitations:**
+- No built-in axe-core — the LLM must write injection code (it does this correctly; see benchmark task 3c)
+- May miss a11y-specific patterns unless the prompt is specific about what to check
+- Python scripts don't run in JS CI without a Python runner
+- Script GENERATION requires the Claude Code plugin (not available in Codex CLI); generated .py scripts run anywhere Python + Playwright are installed, including from Codex sessions.
+- Do not run simultaneously with agent-browser — both launch Chrome instances that may conflict on ports
+
+**Benchmark results (2026-05-26):** 25/25 across 5 WAI-ARIA APG tasks (dialog focus trap, tabs ARIA state, axe-core injection, menu keyboard navigation, ARIA tree inspection). All scripts used real `page.keyboard.press()` calls. Full results in `evals/suites/webwright-benchmark/`.
+
+### Installation
+
+**Prerequisites:** Python 3.10+, Playwright Python (`pip install playwright && playwright install chromium`)
+
+**Two-step install:**
+1. `/plugin marketplace add microsoft/Webwright`
+2. `/plugin install webwright@webwright`
+
+**If marketplace fails:** `git clone https://github.com/microsoft/Webwright && /plugin install ./Webwright`
+
+**Platform note:** Script GENERATION requires the Claude Code plugin (not available in Codex CLI). Generated `.py` scripts can be executed from Codex via `python3 script.py`.
 
 ## 1. Keyboard Accessibility Tests
 
