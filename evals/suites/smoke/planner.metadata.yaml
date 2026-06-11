@@ -2,3 +2,10 @@ fixture_id: planner-smoke
 key_evaluation_criteria:
   - "Focus trap plan (Tab, Shift+Tab behavior)"
   - 'aria-modal="true" and aria-labelledby'
+  - 'aria-current="page" on breadcrumb current item'
+
+scoring_keywords:
+  'aria-current="page" on breadcrumb current item':
+    - 'aria-current="page"'
+    - "aria-current='page'"
+    - "aria-current"

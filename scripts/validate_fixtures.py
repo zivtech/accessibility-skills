@@ -99,11 +99,14 @@ def check_registries():
 
     critic_dir = os.path.join(SUITES_DIR, "a11y-critic", "fixtures")
     perspective_dir = os.path.join(SUITES_DIR, "perspectives", "fixtures")
+    planner_dir = os.path.join(SUITES_DIR, "a11y-planner", "fixtures")
 
     fs_critic = set(fs_fixture_ids(critic_dir))
     fs_perspective = set(fs_fixture_ids(perspective_dir))
+    fs_planner = set(fs_fixture_ids(planner_dir))
     rb_critic = set(run_benchmark.ALL_CRITIC_FIXTURES)
     rb_perspective = set(run_benchmark.ALL_PERSPECTIVE_FIXTURES)
+    rb_planner = set(run_benchmark.PLANNER_FIXTURES)
     rcb_critic = set(run_cloud_benchmark.ALL_CRITIC_FIXTURES)
     rcb_perspective = set(run_cloud_benchmark.ALL_PERSPECTIVE_FIXTURES)
 
@@ -119,6 +122,12 @@ def check_registries():
         problems.append(f"  run_benchmark.ALL_PERSPECTIVE_FIXTURES: {fid} not on filesystem")
     for fid in sorted(fs_perspective - rb_perspective):
         problems.append(f"  run_benchmark.ALL_PERSPECTIVE_FIXTURES: filesystem has {fid} not in list")
+
+    # planner registry vs filesystem
+    for fid in sorted(rb_planner - fs_planner):
+        problems.append(f"  run_benchmark.PLANNER_FIXTURES: {fid} not on filesystem")
+    for fid in sorted(fs_planner - rb_planner):
+        problems.append(f"  run_benchmark.PLANNER_FIXTURES: filesystem has {fid} not in list")
 
     # run_cloud_benchmark vs run_benchmark (the two in-code copies)
     for fid in sorted(rcb_critic - rb_critic):
@@ -200,7 +209,7 @@ def main():
                 print(p)
             errors.extend(reg_problems)
         else:
-            print("Registries: 4 checks OK")
+            print("Registries: 5 checks OK")
     except Exception as e:
         msg = f"  Registry check failed: {e}"
         print(f"Registries: ERROR")

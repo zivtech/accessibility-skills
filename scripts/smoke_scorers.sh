@@ -77,14 +77,22 @@ run_case \
     "Verdict: PASS" \
     "Status: PASS"
 
-# Case 5: planner
+# Case 5: planner (SECTION_KEYWORDS path — existing criteria)
 run_case \
-    "planner (score 2/2, PASS)" \
+    "planner (score 3/3, PASS)" \
     "ollama/score_planner.py" \
     "planner-response.json" \
     "planner.metadata.yaml" \
-    "Score: 2/2" \
+    "Score: 3/3" \
     "Status: PASS"
+
+# Case 9: planner scoring_keywords path — third criterion resolves via scoring_keywords only
+run_case \
+    "planner scoring_keywords criterion (aria-current detected)" \
+    "ollama/score_planner.py" \
+    "planner-response.json" \
+    "planner.metadata.yaml" \
+    '+ aria-current="page" on breadcrumb current item'
 
 # Case 6: critic truncated response (must NOT pass)
 run_case \
