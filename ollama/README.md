@@ -2,6 +2,16 @@
 
 Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini-ready hosted adapters, and local models all belong in the same results story when raw result artifacts exist.
 
+## Prerequisites
+
+- Python 3.10+
+- Python packages: `pip3 install -r ollama/requirements.txt` (PyYAML for all
+  scorers; `anthropic` only needed for Claude API runs)
+- [Ollama](https://ollama.com) installed and serving (`ollama serve`), with at
+  least one supported model pulled (see Quick Start)
+- For hosted runs only: `ANTHROPIC_API_KEY` exported (Claude) or Codex CLI
+  authenticated (OpenAI) — see "Cross-platform baselines" below
+
 ## Quick Start
 
 ```bash
