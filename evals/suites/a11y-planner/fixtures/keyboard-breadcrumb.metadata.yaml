@@ -97,3 +97,23 @@ notes: |
   - aria-label missing from nav (ambiguous with other nav landmarks)
   - Separator characters read aloud to screen reader users
   - Plan >3 pages (scope creep for TRIVIAL)
+
+scoring_keywords:
+  "Semantic `<nav>` element with aria-label='Breadcrumb' (disambiguates from site nav)":
+    - "aria-label=\"Breadcrumb\""
+    - "aria-label='Breadcrumb'"
+    - "<nav"
+  "Ordered list `<ol>` with `<li>` items — ol communicates sequential/hierarchical relationship":
+    - "<ol"
+    - "ordered list"
+  "aria-current='page' on the current page item (last breadcrumb item)":
+    - "aria-current=\"page\""
+    - "aria-current='page'"
+    - "aria-current"
+  "Current page item is not wrapped in `<a>` — static text or `<span>` only":
+    - "not a link"
+    - "<span"
+    - "static text"
+    - "not wrapped"
+  "WCAG 1.3.1 (Info and Relationships) citation":
+    - "1.3.1"

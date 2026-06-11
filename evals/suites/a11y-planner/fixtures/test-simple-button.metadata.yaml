@@ -96,3 +96,38 @@ notes: |
   Key discriminator between a11y-planner and baseline: a11y-planner will name axe rule IDs,
   provide step-by-step keyboard scripts, and cite WCAG criterion numbers. Baseline may
   produce the right structure but stay generic on all three.
+
+scoring_keywords:
+  "Specific axe-core rule IDs for buttons (button-name, color-contrast)":
+    - "button-name"
+    - "color-contrast"
+    - "axe"
+  "Step-by-step keyboard test script (Tab focus, Enter activation, Space activation)":
+    - "Tab focus"
+    - "Enter"
+    - "Space"
+    - "step-by-step"
+    - "keyboard script"
+  "Screen reader verification steps for at least one SR (NVDA or VoiceOver)":
+    - "NVDA"
+    - "VoiceOver"
+    - "screen reader"
+  "Test cases for the disabled state (announced as unavailable, not activatable)":
+    - "disabled"
+    - "unavailable"
+    - "not activatable"
+  "Test cases for the isLoading state (aria-busy=\"true\" announced)":
+    - "aria-busy"
+    - "loading"
+    - "isLoading"
+  "Measurable acceptance criteria for focus indicator (contrast ratio threshold)":
+    - "acceptance criteria"
+    - "contrast ratio"
+    - "focus indicator"
+    - "measurable"
+  "WCAG 2.1.1 (Keyboard) cited for keyboard interaction":
+    - "2.1.1"
+  "WCAG 4.1.2 (Name, Role, Value) cited for ARIA state testing":
+    - "4.1.2"
+  "WCAG 2.4.7 (Focus Visible) cited for focus indicator test":
+    - "2.4.7"

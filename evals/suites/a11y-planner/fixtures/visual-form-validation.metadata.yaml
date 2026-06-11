@@ -118,3 +118,45 @@ notes: |
   - No focus management plan for error summary
   - No cross-step plan at all
   - Cognitive load section is one sentence
+
+scoring_keywords:
+  "aria-invalid=\"true\" on invalid inputs":
+    - "aria-invalid"
+    - "aria-invalid=\"true\""
+  "aria-describedby linking inputs to their error message elements by ID":
+    - "aria-describedby"
+  "Non-color error indicator: icon (warning/error symbol) in addition to red treatment — WCAG 1.4.1":
+    - "icon"
+    - "non-color"
+    - "1.4.1"
+    - "warning symbol"
+    - "error symbol"
+  "Error summary focus management: focus moves to summary panel when it appears on submit":
+    - "focus moves"
+    - "summary"
+    - "submit"
+    - "focus management"
+  "Error summary links navigate to AND focus the invalid field":
+    - "navigate"
+    - "focus the"
+    - "focus invalid"
+    - "error summary"
+    - "links"
+  "Blur-time announcement strategy: specific recommendation (not just \"use aria-live\")":
+    - "blur"
+    - "blur-time"
+    - "aria-describedby"
+    - "polite"
+    - "announcement"
+  "WCAG 3.3.1 (Error Identification) citation":
+    - "3.3.1"
+  "WCAG 3.3.3 (Error Suggestion) citation":
+    - "3.3.3"
+  "WCAG 1.4.1 (Use of Color) citation for non-color indicator requirement":
+    - "1.4.1"
+  "Cognitive load recommendation: specific approach with justification":
+    - "cognitive"
+    - "progressive"
+    - "all errors"
+    - "specific approach"
+    - "justification"

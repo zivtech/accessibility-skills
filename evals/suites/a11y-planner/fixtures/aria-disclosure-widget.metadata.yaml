@@ -96,3 +96,39 @@ notes: |
   - Keyboard interaction design (Tab, Space, Enter, not custom keys)
   - Screen reader testing (what gets announced)
   - Proportional effort (1-2 pages is right for TRIVIAL, not 5-10)
+
+scoring_keywords:
+  "APG Disclosure pattern reference with URL citation":
+    - "w3.org/WAI/ARIA/apg/patterns/disclosure"
+    - "apg/patterns/disclosure"
+    - "APG"
+  "aria-expanded attribute (true/false) documented":
+    - "aria-expanded"
+  "aria-controls attribute documented (linking button to panel)":
+    - "aria-controls"
+  "Keyboard interaction model: Tab focuses button, Space/Enter toggles":
+    - "Space"
+    - "Enter"
+    - "Tab"
+    - "toggle"
+  "HTML structure stub showing button and panel":
+    - "<button"
+    - "button"
+    - "```"
+  "Focus indicator visibility requirement":
+    - "focus indicator"
+    - "focus visible"
+    - "3:1"
+  "Screen reader announcement on state change":
+    - "screen reader"
+    - "aria-expanded"
+    - "announced"
+  "Test case: aria-expanded toggles on Space/Enter":
+    - "aria-expanded"
+    - "Space"
+    - "Enter"
+    - "test"
+  "WCAG citations for each design decision":
+    - "WCAG"
+    - "2.1.1"
+    - "4.1.2"

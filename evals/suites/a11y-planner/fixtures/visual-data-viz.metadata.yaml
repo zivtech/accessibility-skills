@@ -111,3 +111,38 @@ notes: |
   - Reflow at 320px not addressed
   - data table with display:none
   - aria-label describing the visual not the data
+
+scoring_keywords:
+  "Single committed accessibility architecture with explicit justification":
+    - "architecture"
+    - "approach"
+    - "justification"
+    - "tradeoff"
+    - "committed"
+  "WCAG 1.4.1 (Use of Color) citation for legend swatches with concrete non-color alternative":
+    - "1.4.1"
+    - "legend"
+    - "non-color"
+    - "color"
+  "WCAG 1.4.13 (Content on Hover or Focus) — tooltip accessible on keyboard focus":
+    - "1.4.13"
+    - "tooltip"
+    - "keyboard focus"
+    - "hover"
+  "WCAG 1.4.10 (Reflow) — chart behavior at 320px CSS width":
+    - "1.4.10"
+    - "reflow"
+    - "320px"
+    - "320"
+  "Screen reader data access path: specific strategy named and described":
+    - "screen reader"
+    - "sr-only"
+    - "aria-describedby"
+    - "data table"
+    - "specific strategy"
+  "SVG root ARIA attributes specified (role, aria-label, aria-labelledby, or aria-describedby)":
+    - "<svg"
+    - "svg"
+    - "role"
+    - "aria-label"
+    - "aria-labelledby"

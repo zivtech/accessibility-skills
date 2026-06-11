@@ -106,3 +106,55 @@ notes: |
   - aria-live on expandable help region
   - aria-disabled instead of HTML disabled for auto-filled field
   - No conditional field announcement strategy
+
+scoring_keywords:
+  "Explicit decision: aria-describedby on all help-text fields — justified by financial services context where instructions are actionable":
+    - "aria-describedby"
+    - "financial"
+    - "actionable"
+  "Multiple-ID aria-describedby order: aria-describedby='email-error email-help' — error ID first, help text ID second":
+    - "aria-describedby"
+    - "email-error"
+    - "error ID"
+    - "error first"
+  "display:none confirmed to remove fields from accessibility tree — no additional aria-hidden needed":
+    - "display:none"
+    - "display: none"
+    - "accessibility tree"
+  "Conditional field announcement: documented choice (focus-move to first field OR aria-live on section) with justification":
+    - "aria-live"
+    - "focus move"
+    - "conditional"
+    - "announcement"
+  "Expandable help button: aria-expanded='false|true' aria-controls='tax-id-help-region'":
+    - "aria-expanded"
+    - "aria-controls"
+    - "help button"
+    - "expandable"
+  "Expandable help: focus stays on button after toggle — help region does NOT get aria-live":
+    - "focus stays on button"
+    - "not aria-live"
+    - "no aria-live"
+    - "focus stays"
+  "HTML disabled (not aria-disabled) for auto-filled Phone field — with explanation that disabled removes from tab order":
+    - "disabled"
+    - "tab order"
+    - "HTML disabled"
+    - "phone"
+  "<fieldset>/<legend> for Business Account conditional group ('Business Details')":
+    - "fieldset"
+    - "legend"
+    - "Business"
+  "Ambiguity noted explicitly and resolved with documented reasoning":
+    - "ambiguity"
+    - "decision"
+    - "justification"
+    - "reason"
+  "WCAG 3.3.2 (Labels or Instructions) citation for help text strategy":
+    - "3.3.2"
+  "WCAG 3.3.1 (Error Identification) citation for error message placement":
+    - "3.3.1"
+  "WCAG 1.3.1 (Info and Relationships) citation for form structure":
+    - "1.3.1"
+  "WCAG 4.1.2 (Name, Role, Value) citation for expandable help button state":
+    - "4.1.2"

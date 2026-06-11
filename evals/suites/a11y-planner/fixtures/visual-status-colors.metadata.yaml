@@ -90,3 +90,34 @@ notes: |
   A plan that scores below 75 would need to: miss 1.4.1 entirely, recommend title attribute as the fix, or ignore compact mode.
 
   The main calibration risk is over-engineering — a plan that produces 5+ pages with aria-live regions and focus management for a static dot has miscalibrated difficulty.
+
+scoring_keywords:
+  "WCAG 1.4.1 (Use of Color) citation with explanation of failure":
+    - "1.4.1"
+    - "color alone"
+    - "not color alone"
+  "Concrete text alternative strategy (sr-only span or role=\"img\" + aria-label)":
+    - "sr-only"
+    - "role=\"img\""
+    - "role='img'"
+    - "aria-label"
+    - "visually-hidden"
+  "Defined text labels for all three statuses (not \"red dot\")":
+    - "Active"
+    - "Warning"
+    - "Error"
+    - "text label"
+    - "status text"
+  "WCAG 1.4.11 (Non-Text Contrast) — 3:1 dot against background":
+    - "1.4.11"
+    - "3:1"
+    - "non-text contrast"
+  "Compact mode accessibility: sr-only technique preserving text for AT":
+    - "sr-only"
+    - "compact"
+    - "clip"
+    - "visually hidden"
+  "aria-hidden=\"true\" on decorative dot SVG/span when text label is adjacent":
+    - "aria-hidden"
+    - "decorative"
+    - "dot"

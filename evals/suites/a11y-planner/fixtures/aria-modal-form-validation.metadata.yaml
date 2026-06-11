@@ -112,3 +112,48 @@ notes: |
   - Nested modal handling (if applicable)
   - 4-5 pages of detailed planning
   - Addresses ambiguity explicitly
+
+scoring_keywords:
+  "APG Dialog pattern reference with URL":
+    - "w3.org/WAI/ARIA/apg/patterns/dialogmodal"
+    - "apg/patterns/dialogmodal"
+    - "apg/patterns/dialog"
+    - "APG Dialog"
+  "Focus trap plan (Tab, Shift+Tab behavior)":
+    - "focus trap"
+    - "Shift+Tab"
+    - "trap focus"
+  "Focus restoration plan":
+    - "focus restoration"
+    - "return focus"
+    - "restore focus"
+    - "trigger button"
+  "aria-modal=\"true\" and aria-labelledby":
+    - "aria-modal"
+    - "aria-labelledby"
+  "Form structure with fieldset/legend":
+    - "fieldset"
+    - "legend"
+  "aria-invalid for error states":
+    - "aria-invalid"
+  "aria-describedby linking input to error message":
+    - "aria-describedby"
+  "Keyboard interaction (Tab, Escape, Shift+Tab)":
+    - "Escape"
+    - "Shift+Tab"
+    - "Tab"
+  "HTML structure stub":
+    - "<dialog"
+    - 'role="dialog"'
+    - "role='dialog'"
+    - "<form"
+    - "```"
+  "Validation approach decision (real-time vs submit)":
+    - "validation"
+    - "submit"
+    - "real-time"
+    - "on-submit"
+  "WCAG citations":
+    - "WCAG"
+    - "2.1.1"
+    - "4.1.2"

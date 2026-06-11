@@ -102,3 +102,47 @@ notes: |
   - aria-live="assertive" on result count
   - Focus move after filter change (WCAG 2.4.3 violation)
   - No aria-busy pattern for loading state
+
+scoring_keywords:
+  "aria-live='polite' aria-atomic='true' on result count element":
+    - "aria-live"
+    - "polite"
+    - "aria-atomic"
+    - "result count"
+  "Debounce alignment: live region update triggered at end of 300ms debounce, not on every keystroke":
+    - "debounce"
+    - "300ms"
+    - "300"
+    - "keystroke"
+  "aria-busy='true' on results container during loading; set to 'false' when results land":
+    - "aria-busy"
+  "aria-pressed='true|false' on filter chip buttons":
+    - "aria-pressed"
+  "Filter chip label includes filter name: 'Subject: Case Law — remove filter'":
+    - "filter"
+    - "remove filter"
+    - "chip"
+    - "label"
+  "role='search' landmark wrapping search input, filter chips, sort control":
+    - "role=\"search\""
+    - "role='search'"
+    - "search landmark"
+  "Sort <select> uses visible <label> and selected <option> to communicate state — not aria-sort":
+    - "aria-sort"
+    - "<select"
+    - "select"
+    - "not aria-sort"
+  "Result list as <ul>/<li> — not a table":
+    - "<ul"
+    - "not a table"
+    - "unordered list"
+    - "<li"
+  "No focus move after filter/sort change — WCAG 2.4.3":
+    - "no focus move"
+    - "focus does not move"
+    - "focus stays"
+    - "2.4.3"
+  "WCAG 4.1.3 (Status Messages) citation for result count":
+    - "4.1.3"
+  "WCAG 1.3.1 (Info and Relationships) citation":
+    - "1.3.1"

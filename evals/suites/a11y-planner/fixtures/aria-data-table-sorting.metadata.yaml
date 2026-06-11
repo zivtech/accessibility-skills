@@ -104,3 +104,47 @@ notes: |
   - Large data/pagination strategy
   - Visual sort indicator planning
   - 4-5 pages of detailed planning
+
+scoring_keywords:
+  "Semantic table structure (thead, tbody, th, td)":
+    - "<thead"
+    - "<tbody"
+    - "<th"
+    - "thead"
+    - "tbody"
+  "scope=\"col\" attributes on headers":
+    - 'scope="col"'
+    - "scope='col'"
+    - "scope"
+  "aria-sort documentation (none, ascending, descending)":
+    - "aria-sort"
+    - "ascending"
+    - "descending"
+  "WCAG citations for table structure and aria-sort":
+    - "WCAG"
+    - "1.3.1"
+  "Keyboard navigation plan":
+    - "Tab"
+    - "keyboard"
+    - "navigation"
+  "Focus indicator visibility requirements":
+    - "focus indicator"
+    - "focus visible"
+    - "2.4.7"
+  "HTML structure stub with proper table markup":
+    - "<table"
+    - "table"
+    - "```"
+  "Sort state announcement strategy":
+    - "aria-sort"
+    - "aria-live"
+    - "announcement"
+    - "announce"
+  "Visual sort indicator planning":
+    - "sort indicator"
+    - "icon"
+    - "non-color"
+    - "visual"
+  "Test cases for keyboard, sort, screen reader":
+    - "test"
+    - "aria-sort"

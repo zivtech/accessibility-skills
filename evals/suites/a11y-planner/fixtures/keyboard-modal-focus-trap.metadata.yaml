@@ -122,3 +122,39 @@ notes: |
   - Background content accessible via keyboard while modal is open
   - No form structure (fieldset/legend) for grouped fields
   - Plan <3 pages (calibration failure for COMPLEX)
+
+scoring_keywords:
+  "APG Dialog (Modal) pattern reference with URL: https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/":
+    - "w3.org/WAI/ARIA/apg/patterns/dialog-modal"
+    - "apg/patterns/dialog-modal"
+    - "APG Dialog"
+  "Focus trap implementation: Tab/Shift+Tab cycle within modal, wrapping at last/first focusable element":
+    - "focus trap"
+    - "Shift+Tab"
+    - "wraps"
+    - "wrap"
+  "Initial focus: moves into modal on open — to first focusable element or dialog heading (not stays on trigger)":
+    - "initial focus"
+    - "first focusable"
+    - "dialog heading"
+    - "focus moves"
+  "Focus restoration: trigger button regains focus when modal closes (Escape, Close button, or successful submit)":
+    - "focus restoration"
+    - "return focus"
+    - "restore focus"
+    - "trigger button"
+  "role='dialog' on modal container element":
+    - "role=\"dialog\""
+    - "role='dialog'"
+  "aria-modal='true' to exclude background content from AT virtual reading cursor":
+    - "aria-modal"
+  "aria-labelledby on dialog element pointing to modal title element":
+    - "aria-labelledby"
+  "Escape key closes modal and restores focus to trigger":
+    - "Escape"
+    - "focus restoration"
+    - "trigger"
+  "WCAG 2.1.1 (Keyboard) citation":
+    - "2.1.1"
+  "WCAG 4.1.2 (Name, Role, Value) citation for dialog semantics":
+    - "4.1.2"
