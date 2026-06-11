@@ -44,6 +44,7 @@ import time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.path.dirname(BASE_DIR)
+RESULTS_DIR = os.environ.get("BENCHMARK_RESULTS_DIR", "/tmp")
 
 SKILL_PATH = os.path.join(REPO_DIR, ".claude", "skills", "a11y-critic", "SKILL.md")
 FIXTURES_DIR = os.path.join(REPO_DIR, "evals", "suites", "a11y-critic", "fixtures")
@@ -132,6 +133,23 @@ ALL_PERSPECTIVE_FIXTURES = [
 ]
 
 
+import re as _re
+
+
+def write_json_atomic(path, data):
+    """Write JSON to path atomically via a .tmp sibling (safe under Ctrl-C)."""
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(data, f, indent=2)
+    os.replace(tmp, path)
+
+
+def validate_fixture_id(fixture_id):
+    """Exit with error if fixture_id is not safe kebab-case."""
+    if not _re.fullmatch(r"[a-z0-9][a-z0-9-]*", fixture_id):
+        sys.exit(f"Invalid fixture id: {fixture_id!r} (expected kebab-case)")
+
+
 def strip_frontmatter(content):
     if content.startswith("---"):
         end = content.index("---", 3)
@@ -202,15 +220,21 @@ def output_path(platform, tier_name, fixture_id, skill="critic"):
     prefix = "cloud" if platform == "claude" else "codex"
     tag = tier_name.replace(".", "").replace("-", "")
     skill_tag = f"-{skill}" if skill != "critic" else ""
-    return f"/tmp/{prefix}-bench{skill_tag}-{fixture_id}-{tag}-response.json"
+    return os.path.join(RESULTS_DIR, f"{prefix}-bench{skill_tag}-{fixture_id}-{tag}-response.json")
 
 
 def result_exists(platform, tier_name, fixture_id, skill="critic"):
     path = output_path(platform, tier_name, fixture_id, skill)
     if not os.path.exists(path):
         return False
-    with open(path) as f:
-        data = json.load(f)
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        print(f"WARN: corrupt result file, will re-run: {path}")
+        return False
+    if data.get("error"):
+        return False  # error placeholder from infra failure — re-run, don't skip
     return len(data.get("response", "")) > 100
 
 
@@ -239,7 +263,27 @@ def run_claude(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         del kwargs["temperature"]
 
     start = time.time()
-    response = client.messages.create(**kwargs)
+    try:
+        response = client.messages.create(**kwargs)
+    except Exception as e:
+        elapsed = time.time() - start
+        err_msg = f"{type(e).__name__}: {e}"
+        print(f"ERROR (infra, not model): {err_msg}")
+        write_json_atomic(out, {
+            "response": "",
+            "done": False,
+            "error": err_msg,
+            "_benchmark": {
+                "platform": "claude",
+                "model": tier["model"],
+                "tier": tier["name"],
+                "fixture_id": fixture_id,
+                "skill": skill,
+                "elapsed_seconds": round(elapsed, 1),
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            },
+        })
+        return out
     elapsed = time.time() - start
 
     response_text = ""
@@ -267,8 +311,7 @@ def run_claude(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         },
     }
 
-    with open(out, "w") as f:
-        json.dump(data, f, indent=2)
+    write_json_atomic(out, data)
 
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.1f}s, {len(response_text)} chars)")
     print(f"Tokens: {response.usage.input_tokens} in / {response.usage.output_tokens} out")
@@ -293,7 +336,7 @@ def run_claude_perspective(tier, fixture_id):
 
 def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
     out = output_path("codex", tier["name"], fixture_id, skill)
-    msg_out = f"/tmp/codex-msg-{tier['name']}-{fixture_id}-{skill}.txt"
+    msg_out = os.path.join(RESULTS_DIR, f"codex-msg-{tier['name']}-{fixture_id}-{skill}.txt")
 
     print(f"\n{'=' * 60}")
     print(f"CODEX | {tier['label']} | {fixture_id} ({skill})")
@@ -322,13 +365,34 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         cmd.extend(["-c", f'model_reasoning_effort="{tier["effort"]}"'])
 
     start = time.time()
-    proc = subprocess.run(
-        cmd,
-        input=full_prompt,
-        capture_output=True,
-        text=True,
-        timeout=300,
-    )
+    try:
+        proc = subprocess.run(
+            cmd,
+            input=full_prompt,
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+    except Exception as e:
+        elapsed = time.time() - start
+        err_msg = f"{type(e).__name__}: {e}"
+        print(f"ERROR (infra, not model): {err_msg}")
+        write_json_atomic(out, {
+            "response": "",
+            "done": False,
+            "error": err_msg,
+            "_benchmark": {
+                "platform": "codex",
+                "model": tier["model"],
+                "tier": tier["name"],
+                "fixture_id": fixture_id,
+                "skill": skill,
+                "effort": tier.get("effort"),
+                "elapsed_seconds": round(elapsed, 1),
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            },
+        })
+        return out
     elapsed = time.time() - start
 
     response_text = ""
@@ -338,10 +402,26 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         os.unlink(msg_out)
 
     if proc.returncode != 0 and not response_text:
-        print(f"ERROR: codex exec failed (rc={proc.returncode})")
+        err_msg = f"codex exec failed (rc={proc.returncode})"
+        print(f"ERROR (infra, not model): {err_msg}")
         if proc.stderr:
             print(f"STDERR: {proc.stderr[:500]}")
-        return None
+        write_json_atomic(out, {
+            "response": "",
+            "done": False,
+            "error": err_msg,
+            "_benchmark": {
+                "platform": "codex",
+                "model": tier["model"],
+                "tier": tier["name"],
+                "fixture_id": fixture_id,
+                "skill": skill,
+                "effort": tier.get("effort"),
+                "elapsed_seconds": round(elapsed, 1),
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            },
+        })
+        return out
 
     data = {
         "response": response_text,
@@ -358,8 +438,7 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         },
     }
 
-    with open(out, "w") as f:
-        json.dump(data, f, indent=2)
+    write_json_atomic(out, data)
 
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.1f}s, {len(response_text)} chars)")
     return out
@@ -384,11 +463,11 @@ def run_codex_perspective(tier, fixture_id):
 def score_cloud_results(skill="critic"):
     if skill == "critic":
         score_script = os.path.join(BASE_DIR, "score_output.py")
-        pattern = "/tmp/cloud-bench-*-response.json"
+        pattern = os.path.join(RESULTS_DIR, "cloud-bench-*-response.json")
         fixtures_dir = FIXTURES_DIR
     else:
         score_script = os.path.join(BASE_DIR, "score_perspective.py")
-        pattern = "/tmp/cloud-bench-perspective-*-response.json"
+        pattern = os.path.join(RESULTS_DIR, "cloud-bench-perspective-*-response.json")
         fixtures_dir = PERSPECTIVE_FIXTURES_DIR
 
     responses = sorted(glob.glob(pattern))
@@ -429,11 +508,11 @@ def score_cloud_results(skill="critic"):
 def score_codex_results(skill="critic"):
     if skill == "critic":
         score_script = os.path.join(BASE_DIR, "score_output.py")
-        pattern = "/tmp/codex-bench-*-response.json"
+        pattern = os.path.join(RESULTS_DIR, "codex-bench-*-response.json")
         fixtures_dir = FIXTURES_DIR
     else:
         score_script = os.path.join(BASE_DIR, "score_perspective.py")
-        pattern = "/tmp/codex-bench-perspective-*-response.json"
+        pattern = os.path.join(RESULTS_DIR, "codex-bench-perspective-*-response.json")
         fixtures_dir = PERSPECTIVE_FIXTURES_DIR
 
     responses = sorted(glob.glob(pattern))
@@ -475,7 +554,11 @@ def score_codex_results(skill="critic"):
 
 
 def get_failed_fixtures(platform, tier_name, skill="critic"):
-    """Score all results for a tier and return fixture IDs that didn't PASS."""
+    """Score all results for a tier; return (failed, not_run, errored).
+
+    errored: result file exists but has a non-empty "error" field (infra failure).
+    These are excluded from scorer runs and reported separately.
+    """
     if skill == "critic":
         score_script = os.path.join(BASE_DIR, "score_output.py")
         fixtures_dir = FIXTURES_DIR
@@ -487,6 +570,7 @@ def get_failed_fixtures(platform, tier_name, skill="critic"):
 
     failed = []
     not_run = []
+    errored = []
     for fixture_id in all_fixtures:
         out = output_path(platform, tier_name, fixture_id, skill)
         if not os.path.exists(out):
@@ -497,6 +581,17 @@ def get_failed_fixtures(platform, tier_name, skill="critic"):
             not_run.append(fixture_id)
             continue
 
+        # Check for infra-error placeholder before running scorer
+        try:
+            with open(out) as f:
+                result_data = json.load(f)
+            if result_data.get("error"):
+                errored.append(fixture_id)
+                continue
+        except (json.JSONDecodeError, OSError):
+            errored.append(fixture_id)
+            continue
+
         proc = subprocess.run(
             [sys.executable, score_script, out, metadata],
             capture_output=True, text=True,
@@ -504,7 +599,7 @@ def get_failed_fixtures(platform, tier_name, skill="critic"):
         if "Status: PASS" not in proc.stdout:
             failed.append(fixture_id)
 
-    return failed, not_run
+    return failed, not_run, errored
 
 
 def run_escalation(platform, skill="critic"):
@@ -534,10 +629,10 @@ def run_escalation(platform, skill="critic"):
             print(f"\n[{i}/{len(remaining)}]")
             run_fn(tier, fixture_id)
 
-        failed, not_run = get_failed_fixtures(platform, tier["name"], skill)
+        failed, not_run, errored = get_failed_fixtures(platform, tier["name"], skill)
         # Only count fixtures that were actually in this tier's scope
         ran_this_tier = [f for f in remaining if f not in not_run]
-        passed = len(ran_this_tier) - len([f for f in failed if f in remaining])
+        passed = len(ran_this_tier) - len([f for f in failed if f in remaining]) - len([f for f in errored if f in remaining])
 
         tier_results.append({
             "tier": tier["name"],
@@ -545,14 +640,15 @@ def run_escalation(platform, skill="critic"):
             "ran": len(ran_this_tier),
             "passed": passed,
             "failed": len(failed),
+            "errored": len(errored),
             "not_run": len(not_run),
         })
 
         print(f"\n{'─' * 60}")
-        print(f"Tier {tier['label']}: {passed} PASS / {len(failed)} FAIL / {len(not_run)} NOT_RUN")
+        print(f"Tier {tier['label']}: {passed} PASS / {len(failed)} FAIL / {len(errored)} INFRA-ERROR / {len(not_run)} NOT_RUN")
 
-        # Escalate both failures AND not-run (model didn't exist, API error, etc.)
-        remaining = failed + [f for f in not_run if f in remaining]
+        # Escalate failures, not-run, and infra errors
+        remaining = failed + errored + [f for f in not_run if f in remaining]
         if not remaining:
             print(f"\nAll fixtures passed at {tier['label']} tier!")
             break
@@ -562,7 +658,8 @@ def run_escalation(platform, skill="critic"):
     print(f"{'=' * 60}")
     for r in tier_results:
         pct = r["passed"] / max(r["passed"] + r["failed"], 1) * 100
-        print(f"  {r['label']}: ran {r['ran']}, {r['passed']} pass ({pct:.0f}%), {r['failed']} fail")
+        infra_err_str = f", {r['errored']} infra-error" if r.get("errored") else ""
+        print(f"  {r['label']}: ran {r['ran']}, {r['passed']} pass ({pct:.0f}%), {r['failed']} fail{infra_err_str}")
 
     if remaining:
         print(f"\n  {len(remaining)} fixtures still failing after all tiers:")
@@ -591,7 +688,7 @@ def show_summary():
     for platform, info in platforms.items():
         for skill in ["critic", "perspective"]:
             skill_tag = f"-{skill}" if skill != "critic" else ""
-            pattern = f"/tmp/{info['prefix']}-bench{skill_tag}-*-response.json"
+            pattern = os.path.join(RESULTS_DIR, f"{info['prefix']}-bench{skill_tag}-*-response.json")
             files = glob.glob(pattern)
             if not files:
                 continue
@@ -623,20 +720,28 @@ def main():
     cmd = sys.argv[1]
 
     if cmd == "claude":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            sys.exit("ANTHROPIC_API_KEY is not set — refusing to start a paid run.")
         if len(sys.argv) != 4:
             print("Usage: run_cloud_benchmark.py claude <tier> <fixture-id>")
             sys.exit(1)
         tier = get_tier("claude", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
         run_claude_critic(tier, sys.argv[3])
 
     elif cmd == "claude-perspective":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            sys.exit("ANTHROPIC_API_KEY is not set — refusing to start a paid run.")
         if len(sys.argv) != 4:
             print("Usage: run_cloud_benchmark.py claude-perspective <tier> <fixture-id>")
             sys.exit(1)
         tier = get_tier("claude", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
         run_claude_perspective(tier, sys.argv[3])
 
     elif cmd == "claude-all":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            sys.exit("ANTHROPIC_API_KEY is not set — refusing to start a paid run.")
         if len(sys.argv) < 3:
             print("Usage: run_cloud_benchmark.py claude-all <tier> [--skill critic|perspective]")
             sys.exit(1)
@@ -654,6 +759,8 @@ def main():
             run_fn(tier, fid)
 
     elif cmd == "claude-escalate":
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            sys.exit("ANTHROPIC_API_KEY is not set — refusing to start a paid run.")
         skill = "critic"
         if "--skill" in sys.argv:
             skill = sys.argv[sys.argv.index("--skill") + 1]
@@ -664,6 +771,7 @@ def main():
             print("Usage: run_cloud_benchmark.py codex <tier> <fixture-id>")
             sys.exit(1)
         tier = get_tier("codex", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
         run_codex_critic(tier, sys.argv[3])
 
     elif cmd == "codex-perspective":
@@ -671,6 +779,7 @@ def main():
             print("Usage: run_cloud_benchmark.py codex-perspective <tier> <fixture-id>")
             sys.exit(1)
         tier = get_tier("codex", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
         run_codex_perspective(tier, sys.argv[3])
 
     elif cmd == "codex-all":
