@@ -50,8 +50,8 @@ expected_findings:
     - aria-selected attribute (true/false)
     - aria-controls linking tab to panel
     - aria-labelledby for panel labeling
-    - Keyboard model: Left/Right arrows, Home/End, Tab
-    - HTML structure stub: tablist, tab, tabpanel
+    - 'Keyboard model: Left/Right arrows, Home/End, Tab'
+    - 'HTML structure stub: tablist, tab, tabpanel'
     - aria-busy during loading
     - Live region for load completion announcements
     - Error state handling with aria-describedby

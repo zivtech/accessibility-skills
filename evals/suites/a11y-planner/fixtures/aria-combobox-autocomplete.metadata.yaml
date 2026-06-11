@@ -52,9 +52,9 @@ expected_findings:
     - aria-owns or aria-controls linking input to listbox
     - aria-activedescendant for keyboard navigation within results
     - aria-autocomplete="list" on input
-    - Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab
-    - HTML structure stub: input, listbox, option elements
-    - Focus management plan: focus remains in input during navigation
+    - 'Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab'
+    - 'HTML structure stub: input, listbox, option elements'
+    - 'Focus management plan: focus remains in input during navigation'
     - aria-busy during async loading
     - WCAG citations for each design decision
     - Test cases for keyboard, screen reader, async scenarios

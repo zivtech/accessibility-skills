@@ -50,9 +50,9 @@ expected_findings:
     - Reduced-motion fallback defined for both slide and fade variants (not just "disable")
     - framer-motion useReducedMotion() hook as the mechanism
     - Post-navigation focus management strategy with concrete target
-    - DOM overlap mitigation: aria-hidden or inert on exiting page during animation
+    - 'DOM overlap mitigation: aria-hidden or inert on exiting page during animation'
     - WCAG 2.4.3 (Focus Order) citation for focus placement requirement
-    - Test case: simulate prefers-reduced-motion in browser devtools
+    - 'Test case: simulate prefers-reduced-motion in browser devtools'
 
   should_have:
     - WCAG 2.2.2 (Pause Stop Hide) — note it applies to content that moves automatically, distinguish from user-triggered transitions

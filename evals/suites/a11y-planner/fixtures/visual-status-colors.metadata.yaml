@@ -50,7 +50,7 @@ expected_findings:
     - Concrete text alternative strategy (sr-only span or role="img" + aria-label)
     - Defined text labels for all three statuses (not "red dot")
     - WCAG 1.4.11 (Non-Text Contrast) — 3:1 dot against background
-    - Compact mode accessibility: sr-only technique preserving text for AT
+    - 'Compact mode accessibility: sr-only technique preserving text for AT'
     - aria-hidden="true" on decorative dot SVG/span when text label is adjacent
 
   should_have:

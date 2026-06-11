@@ -55,8 +55,8 @@ expected_findings:
     - WCAG 3.3.1 (Error Identification) cited for error message tests
     - WCAG 3.3.2 (Labels or Instructions) cited for label association tests
     - WCAG 4.1.3 (Status Messages) cited for the role="alert" banner
-    - Acceptance criteria: aria-invalid="true" present when field has visible error
-    - Acceptance criteria: aria-describedby links input to visible error text
+    - 'Acceptance criteria: aria-invalid="true" present when field has visible error'
+    - 'Acceptance criteria: aria-describedby links input to visible error text'
 
   should_have:
     - JAWS-specific form mode behavior (Forms Mode auto-activates on <form>)

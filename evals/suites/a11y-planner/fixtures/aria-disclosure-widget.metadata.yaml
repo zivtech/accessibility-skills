@@ -46,11 +46,11 @@ expected_findings:
     - APG Disclosure pattern reference with URL citation
     - aria-expanded attribute (true/false) documented
     - aria-controls attribute documented (linking button to panel)
-    - Keyboard interaction model: Tab focuses button, Space/Enter toggles
+    - 'Keyboard interaction model: Tab focuses button, Space/Enter toggles'
     - HTML structure stub showing button and panel
     - Focus indicator visibility requirement
     - Screen reader announcement on state change
-    - Test case: aria-expanded toggles on Space/Enter
+    - 'Test case: aria-expanded toggles on Space/Enter'
     - WCAG citations for each design decision
 
   should_have:

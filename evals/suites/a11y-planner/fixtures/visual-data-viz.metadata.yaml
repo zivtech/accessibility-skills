@@ -50,7 +50,7 @@ expected_findings:
     - WCAG 1.4.1 (Use of Color) citation for legend swatches with concrete non-color alternative
     - WCAG 1.4.13 (Content on Hover or Focus) — tooltip accessible on keyboard focus
     - WCAG 1.4.10 (Reflow) — chart behavior at 320px CSS width
-    - Screen reader data access path: specific strategy named and described
+    - 'Screen reader data access path: specific strategy named and described'
     - SVG root ARIA attributes specified (role, aria-label, aria-labelledby, or aria-describedby)
 
   should_have:
