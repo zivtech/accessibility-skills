@@ -112,8 +112,10 @@ scoring_keywords:
     - "aria-current"
   "Current page item is not wrapped in `<a>` — static text or `<span>` only":  # weak-match criterion
     - "not a link"
-    - "<span"
+    - "no link"
     - "static text"
-    - "not wrapped"
+    - "plain text"
+    - "<span"
+    - "aria-current=\"page\">Laptops"
   "WCAG 1.3.1 (Info and Relationships) citation":
     - "1.3.1"

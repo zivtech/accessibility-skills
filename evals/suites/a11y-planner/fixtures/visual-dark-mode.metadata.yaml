@@ -121,8 +121,7 @@ scoring_keywords:
     - "3:1"
   "WCAG 2.4.7 (Focus Visible) — focus indicator re-evaluation for dark backgrounds":
     - "2.4.7"
-    - "dark background"
-    - "focus indicator"
+    - "Focus Visible"
   "Flag that existing #0066CC focus indicator must be re-tested against dark background colors":
     - "#0066CC"
     - "0066CC"
