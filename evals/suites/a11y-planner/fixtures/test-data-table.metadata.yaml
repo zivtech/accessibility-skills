@@ -67,8 +67,8 @@ expected_findings:
     - Playwright assertions for aria-sort attribute values
     - Playwright assertions for aria-live region content after sort
     - Screen reader testing matrix (NVDA+Chrome, JAWS+Chrome, VO+Safari)
-    - Pagination screen reader announcement: "Page 3 of 15" announced after navigation
-    - Caption tested: "Transaction Records — 742 results" announced on table entry
+    - 'Pagination screen reader announcement: "Page 3 of 15" announced after navigation'
+    - 'Caption tested: "Transaction Records — 742 results" announced on table entry'
     - WCAG 2.4.1 (Bypass Blocks) noted if table navigation landmarks are missing
 
   nice_to_have:

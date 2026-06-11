@@ -128,7 +128,7 @@ dimensions:
         For each finding, award 1 point if it includes all four components:
         element reference, problem, user group, fix.
         Score = (complete_findings / total_findings).
-      target: >= 0.85
+      target: ">= 0.85"
 
   - id: severity_calibration
     name: "Severity Calibration"
