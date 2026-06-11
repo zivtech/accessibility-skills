@@ -15,7 +15,7 @@ import sys
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import strip_thinking, PLANNER_SECTION_PASS_THRESHOLD  # noqa: E402
+from score_common import strip_thinking, PLANNER_SECTION_PASS_THRESHOLD, fallback_keywords  # noqa: E402
 
 
 def load_response(path: str) -> tuple[str, bool]:
@@ -109,16 +109,20 @@ def score_planner(text: str, rubric: dict):
         desc = item if isinstance(item, str) else item.get("description", str(item))
         total += 1
 
-        keywords = SECTION_KEYWORDS.get(desc, [])
+        rubric_keywords = rubric.get("scoring_keywords", {})
+        keywords = rubric_keywords.get(desc) or SECTION_KEYWORDS.get(desc, [])
         if not keywords:
-            words = desc.lower().split()[:4]
-            keywords = [w.strip(".,;:()") for w in words if len(w) > 3]
+            keywords = fallback_keywords(desc)
+            print(f"  WARN: fallback keywords for criterion: {desc[:60]}")
 
         hit = any(kw.lower() in text_lower for kw in keywords)
         marker = "+" if hit else "X"
         if hit:
             found += 1
-        print(f"  {marker} {desc[:80]}")
+        if not hit:
+            print(f"  {marker} {desc[:80]}  (keywords: {keywords[:3]})")
+        else:
+            print(f"  {marker} {desc[:80]}")
 
     print()
     print(f"Score: {found}/{total}")
