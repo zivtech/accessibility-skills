@@ -2,7 +2,8 @@ chain_fixture: app-focus-order-illogical
 source_suite: a11y-critic
 source_metadata: evals/suites/a11y-critic/fixtures/app-focus-order-illogical.metadata.yaml
 target_dir: evals/suites/chain/targets/app-focus-order-illogical/
-expected_escalation: false
+expected_escalation: null
+s4_graded: false  # source suite (a11y-critic) carries no expected_alarm_levels — no escalation ground truth
 expected_alarm_levels: null
 s3_scoring_mode: must_find
 must_find_items:
@@ -25,12 +26,11 @@ stage_notes: |
   spot because the component renders semantic landmarks and the sidebar visually appears
   first — a pure ARIA scan will not catch this.
 
-  S4 scoring: expected_escalation=false. Focus order issues are primarily keyboard_motor
-  concerns; the fixture doesn't carry expected_alarm_levels, so escalation cannot be
-  derived from alarm levels. The correct chain behaviour is to surface the focus order
-  issues in the critic stage without invoking audit (no MEDIUM/HIGH alarms defined).
-
-  For a run where the chain does escalate here, scorer should note it as a possible
-  over-escalation and check the critic's alarm output to understand the trigger.
+  S4 scoring: UNGRADED (s4_graded: false). The source suite carries no
+  expected_alarm_levels, so escalation cannot be derived from ground truth. A critic
+  may legitimately flag keyboard_motor at MEDIUM/HIGH here — this IS a focus-order
+  fixture — and that escalation would be neither correct nor incorrect by this rubric.
+  Record the escalation decision and any critic alarm levels as observational data
+  only; they do not count toward escalation accuracy or the PASS rule.
 
   Acceptable critic verdicts: REVISE (there are MAJOR findings).

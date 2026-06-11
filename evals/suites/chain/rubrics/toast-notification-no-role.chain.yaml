@@ -2,7 +2,8 @@ chain_fixture: toast-notification-no-role
 source_suite: a11y-critic
 source_metadata: evals/suites/a11y-critic/fixtures/toast-notification-no-role.metadata.yaml
 target_dir: evals/suites/chain/targets/toast-notification-no-role/
-expected_escalation: false
+expected_escalation: null
+s4_graded: false  # source suite (a11y-critic) carries no expected_alarm_levels — no escalation ground truth
 expected_alarm_levels: null
 s3_scoring_mode: must_find
 must_find_items:
@@ -20,9 +21,11 @@ stage_notes: |
   missed item in real production code, and the one that historically separates superficial
   reviews from substantive ones.
 
-  S4 scoring: expected_escalation=false. This is a small component with well-understood
-  ARIA pattern gaps; it should not trigger perspective audit unless the critic emits
-  MEDIUM/HIGH alarm levels for any perspective.
+  S4 scoring: UNGRADED (s4_graded: false). The source suite carries no
+  expected_alarm_levels, so there is no escalation ground truth. A critic could
+  legitimately flag screen_reader_semantic at MEDIUM/HIGH given the missing alert
+  role. Record the escalation decision as observational data only — it does not
+  count toward escalation accuracy or the PASS rule.
 
   The fixture has zero false positive traps. A clean detection of all 4 must_find items
   is the expected outcome at S3. Any ACCEPT verdict is a failure.

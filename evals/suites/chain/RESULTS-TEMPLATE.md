@@ -22,16 +22,20 @@
 
 ## Per-Fixture Scores
 
-| # | Fixture | S1 Scout (0–2) | S2 Handoff (0–2) | S3 Critic (0–1) | S4 Escalation (0/1) | S5 Audit (0–2 or N/A) | Tracer (1/0/N/A) | PASS | Wall clock | Notes |
-|---|---------|---------------|-----------------|-----------------|--------------------|-----------------------|-----------------|------|-----------|-------|
-| 1 | modal-broken-focus-trap | | | | | | | | | |
-| 2 | product-carousel-autoplay | | | | | | | | | |
-| 3 | video-tutorial-no-captions | | | | | | | | | |
-| 4 | login-form-clean | | | | | N/A | N/A | | | |
-| 5 | article-page-clean | | | | | N/A | N/A | | | |
-| 6 | tabbed-nav-vs-tab-pattern | | | | | N/A | | | | |
-| 7 | app-focus-order-illogical | | | | | N/A | | | | |
-| 8 | toast-notification-no-role | | | | | N/A | | | | |
+| # | Fixture | S1 Scout (0–2) | S2 Handoff (0–2) | S3 Critic (0–1) | S4 Escalation (0/1) | S5 Audit (0–2 or N/A) | Audit Verdict | Tracer (1/0/N/A) | PASS | Wall clock | Notes |
+|---|---------|---------------|-----------------|-----------------|--------------------|-----------------------|---------------|-----------------|------|-----------|-------|
+| 1 | modal-broken-focus-trap | | | | | | — | | | | |
+| 2 | product-carousel-autoplay | | | | | | — | | | | |
+| 3 | video-tutorial-no-captions | | | | | | — | | | | |
+| 4 | login-form-clean | | | | | | exp PASS: | N/A | | | |
+| 5 | article-page-clean | | | | | | exp PASS: | N/A | | | |
+| 6 | tabbed-nav-vs-tab-pattern | | | | N/A (ungraded) | N/A | — | | | | |
+| 7 | app-focus-order-illogical | | | | N/A (ungraded) | N/A | — | | | | |
+| 8 | toast-notification-no-role | | | | N/A (ungraded) | N/A | — | | | | |
+
+**Row notes:**
+- Fixtures 4–5 (CLEAN): the audit IS expected to run (narrow escalation on `cognitive_neurodivergent` only). S4 correct = audit ran AND escalated scope == `[cognitive_neurodivergent]`. Record the audit verdict in the Audit Verdict column — expected PASS (no MAJOR/CRITICAL findings); any non-PASS verdict fails the fixture.
+- Fixtures 6–8: S4 is ungraded (`s4_graded: false` — the a11y-critic source suite carries no alarm ground truth). Record the observed escalation decision in Notes; it does not enter the S4 aggregate or the PASS rule.
 
 ---
 
@@ -53,7 +57,8 @@ Check the planner output (plan file path and contents):
 
 | Metric | Formula | This Run | Watch Threshold |
 |--------|---------|----------|----------------|
-| **S4 Escalation accuracy** | n correct / 8 | | ≥ 7/8 |
+| **S4 Escalation accuracy** | n correct / 5 (graded fixtures 1–5 only) | | 5/5 target; any miss investigated |
+| Audit verdict (CLEAN fixtures) | n PASS / 2 (fixtures 4–5) | | 2/2; any non-PASS is a false-positive failure |
 | S1 mean | sum S1 / 8 | | ≥ 1.5 |
 | S2 mean | sum S2 / 8 | | ≥ 1.5 |
 | S3 mean | sum S3 / 8 | | ≥ 0.7 |
@@ -66,9 +71,10 @@ Check the planner output (plan file path and contents):
 ## PASS Rule Reminder
 
 A fixture PASSES if ALL of:
-1. S4 = 1
+1. S4 = 1 — only where `s4_graded` is not false (fixtures 1–5); skipped for fixtures 6–8
 2. No stage scored 0
 3. Tracer survives (where defined)
+4. Audit verdict matches `expected_audit_verdict` (where defined — fixtures 4–5, expected PASS)
 
 ---
 

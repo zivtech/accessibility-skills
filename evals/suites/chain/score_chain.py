@@ -12,8 +12,7 @@ import os, re, sys, yaml
 
 LEVELS = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 RUBRICS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rubrics")
-# keyword → canonical perspective key
-P_MAP = {
+P_MAP = {  # keyword → canonical perspective key
     "magnification": "magnification_reflow", "reflow": "magnification_reflow",
     "contrast": "environmental_contrast", "environmental": "environmental_contrast",
     "vestibular": "vestibular_motion", "motion": "vestibular_motion",
@@ -68,8 +67,26 @@ def s3_must_find(rubric, critic):
     return score, detail
 
 
-def s4(rubric, escalated):
-    return 1 if (rubric.get("expected_escalation", False) == escalated) else 0
+def s4(rubric, escalated, critic):
+    if rubric.get("s4_graded", True) is False:
+        return None, "ungraded — no alarm ground truth in source suite (observational only)"
+    exp = rubric.get("expected_escalation", False)
+    if exp != escalated:
+        return 0, f"expected={exp} actual={escalated}"
+    scope = rubric.get("expected_escalated_perspectives")
+    if scope and escalated:  # CLEAN fixtures: escalated set must match exactly
+        act = sorted(p for p, lv in parse_alarms(critic).items() if lv in ("MEDIUM", "HIGH"))
+        if act != sorted(scope):
+            return 0, f"scope mismatch: expected={sorted(scope)} critic-flagged={act}"
+    return 1, f"expected={exp} actual={escalated}"
+
+
+def audit_verdict(rubric, audit):
+    exp = rubric.get("expected_audit_verdict")
+    if not exp: return None, "not defined for this fixture"
+    if not audit.strip(): return 0, "audit output empty — verdict cannot match"
+    hit = re.search(rf"\b{re.escape(exp)}\b", audit, re.I) is not None
+    return int(hit), f"  provisional token match '{exp}': {'FOUND' if hit else 'MISSING'} — confirm by hand"
 
 
 def s5(rubric, audit):
@@ -78,12 +95,10 @@ def s5(rubric, audit):
     low_ps = [p for p, v in alarms.items() if v == "LOW"]
     esc_ps = [p for p, v in alarms.items() if v in ("MEDIUM", "HIGH")]
     alo = audit.lower()
-    impact_words = {"critical", "major", "finding", "issue", "fail"}
-    # S5a: no LOW perspective discussed with findings-level treatment
-    leak = any(p.split("_")[0] in alo and any(w in alo for w in impact_words) for p in low_ps)
-    a = 0 if leak else 1
-    # S5b: every escalated perspective mentioned
-    b = 1 if all(p.split("_")[0] in alo for p in esc_ps) else 0
+    impact = {"critical", "major", "finding", "issue", "fail"}
+    leak = any(p.split("_")[0] in alo and any(w in alo for w in impact) for p in low_ps)
+    a = 0 if leak else 1  # S5a: no LOW perspective at findings level
+    b = 1 if all(p.split("_")[0] in alo for p in esc_ps) else 0  # S5b: escalated covered
     return a + b, f"  S5a(no-low-leak)={a}  S5b(esc-covered)={b}"
 
 
@@ -114,18 +129,21 @@ def main():
 
     mode = rb.get("s3_scoring_mode", "alarm")
     s3v, s3d = (s3_must_find if mode == "must_find" else s3_alarm)(rb, critic_t)
-    s4v = s4(rb, escalated)
+    s4v, s4d = s4(rb, escalated, critic_t)
     final_t = audit_t if audit_t.strip() else critic_t
     s5v, s5d = s5(rb, audit_t)
+    avv, avd = audit_verdict(rb, audit_t)
     tv, td = tracer(rb, final_t)
 
-    ok = s4v == 1 and (s3v is None or s3v > 0) and (tv is None or tv == 1)
+    ok = ((s4v is None or s4v == 1) and (s3v is None or s3v > 0)
+          and (tv is None or tv == 1) and (avv is None or avv == 1))
     print(f"\n=== {fid} ===")
     print(f"S3 [{mode}]: {s3v}\n{s3d}")
-    print(f"S4 [escalation]: {s4v}  expected={rb.get('expected_escalation')} actual={escalated}")
+    print(f"S4 [escalation]: {s4v}  {s4d}")
     print(f"S5 [audit scope]: {s5v}\n{s5d}")
+    print(f"Audit verdict: {avv}  {avd}")
     print(f"Tracer: {tv}\n{td}")
-    print(f"\nPASS: {ok}  (S1/S2 human-scored separately)")
+    print(f"\nPASS: {ok}  (S1/S2 human-scored separately; audit verdict is provisional)")
 
 
 if __name__ == "__main__":
