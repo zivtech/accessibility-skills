@@ -115,7 +115,7 @@ response-reading could catch.
 - Gate: agreement ≥ 90% — **met at round 0 (91.3%) and round 1 (100%)**,
   within the plan's two-revision-round budget (one round used).
 - Revision policy honored: re-scored the same stored responses; no re-runs.
-- **Awaiting operator approval of this audit before Phase C results are
-  treated as final** (per plan 006 Step 5 gate). Phase C response generation
-  is scoring-independent; any further keyword revision re-scores stored
+- **APPROVED by operator (Alex), 2026-06-11** — Phase C results are treated
+  as final on this instrument. Phase C response generation was
+  scoring-independent; any further keyword revision re-scores stored
   responses at zero model cost.
