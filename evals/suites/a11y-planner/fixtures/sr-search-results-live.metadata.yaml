@@ -119,10 +119,9 @@ scoring_keywords:
   "aria-pressed='true|false' on filter chip buttons":
     - "aria-pressed"
   "Filter chip label includes filter name: 'Subject: Case Law — remove filter'":
-    - "filter"
     - "remove filter"
-    - "chip"
-    - "label"
+    - "Subject: Case Law"
+    - "Remove Subject"
   "role='search' landmark wrapping search input, filter chips, sort control":
     - "role=\"search\""
     - "role='search'"

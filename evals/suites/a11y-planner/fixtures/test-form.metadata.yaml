@@ -104,11 +104,9 @@ notes: |
 
 scoring_keywords:
   "Specific axe-core rule IDs for forms (label, label-content-name-mismatch, aria-required-attr, color-contrast)":
-    - "label"
+    - "label-content-name-mismatch"
     - "aria-required-attr"
     - "color-contrast"
-    - "axe"
-    - "label-content-name-mismatch"
   "NVDA Forms Mode documentation (F to enter, field labels read, blur errors in context)":
     - "Forms Mode"
     - "forms mode"

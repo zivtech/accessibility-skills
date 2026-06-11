@@ -108,27 +108,23 @@ scoring_keywords:
     - "aria-controls"
   "Keyboard interaction model: Tab focuses button, Space/Enter toggles":
     - "Space"
-    - "Enter"
-    - "Tab"
-    - "toggle"
+    - "Enter/Space"
+    - "Enter or Space"
+    - "Enter key"
+    - "press Enter"
   "HTML structure stub showing button and panel":
     - "<button"
-    - "button"
-    - "```"
   "Focus indicator visibility requirement":
     - "focus indicator"
     - "focus visible"
     - "3:1"
   "Screen reader announcement on state change":
-    - "screen reader"
+    - "announc"
     - "aria-expanded"
-    - "announced"
-  "Test case: aria-expanded toggles on Space/Enter":
-    - "aria-expanded"
-    - "Space"
-    - "Enter"
-    - "test"
+  "Test case: aria-expanded toggles on Space/Enter":  # weak-match criterion
+    - "test case"
+    - "testing"
+    - "verify"
   "WCAG citations for each design decision":
-    - "WCAG"
     - "2.1.1"
     - "4.1.2"

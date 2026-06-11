@@ -125,14 +125,15 @@ scoring_keywords:
     - "focus indicator"
   "Flag that existing #0066CC focus indicator must be re-tested against dark background colors":
     - "#0066CC"
-    - "focus indicator"
+    - "0066CC"
     - "re-test"
-    - "dark"
+    - "retest"
+    - "re-evaluat"
   "Forced-colors / Windows High Contrast: distinct from dark mode, requires own testing":
     - "forced-colors"
+    - "forced colors"
     - "windows high contrast"
-    - "high contrast"
-    - "distinct"
+    - "high contrast mode"
   "localStorage + aria-pressed synchronization: DOM state must match persisted preference":
     - "localStorage"
     - "local storage"

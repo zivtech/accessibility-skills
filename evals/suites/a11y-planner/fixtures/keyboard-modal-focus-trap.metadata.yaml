@@ -132,7 +132,7 @@ scoring_keywords:
     - "focus trap"
     - "Shift+Tab"
     - "wraps"
-    - "wrap"
+    - "wrap around"
   "Initial focus: moves into modal on open — to first focusable element or dialog heading (not stays on trigger)":
     - "initial focus"
     - "first focusable"

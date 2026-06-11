@@ -119,10 +119,9 @@ scoring_keywords:
   "Keyboard model: Left/Right arrows, Home/End, Tab":
     - "ArrowLeft"
     - "ArrowRight"
-    - "Left"
-    - "Right"
-    - "Home"
-    - "End"
+    - "Left/Right"
+    - "Left Arrow"
+    - "Home/End"
   "HTML structure stub: tablist, tab, tabpanel":
     - "role=\"tablist\""
     - "role='tablist'"
@@ -139,7 +138,6 @@ scoring_keywords:
     - "aria-describedby"
     - "error"
   "WCAG citations":
-    - "WCAG"
     - "2.1.1"
     - "4.1.2"
     - "4.1.3"

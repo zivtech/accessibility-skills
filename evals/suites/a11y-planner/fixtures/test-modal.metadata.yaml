@@ -114,11 +114,12 @@ scoring_keywords:
     - "apg/patterns/dialog"
     - "APG Dialog"
     - "APG"
-  "Focus trap test: Tab through all focusable elements → verify no escape to background":
-    - "focus trap"
+  "Focus trap test: Tab through all focusable elements → verify no escape to background":  # weak-match criterion
     - "no escape"
-    - "background"
-    - "Tab"
+    - "does not escape"
+    - "cannot escape"
+    - "stays within"
+    - "remains within"
   "Escape key close test with focus restoration to trigger button":
     - "Escape"
     - "focus restoration"

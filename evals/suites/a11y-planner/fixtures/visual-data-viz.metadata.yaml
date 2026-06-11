@@ -135,14 +135,13 @@ scoring_keywords:
     - "320px"
     - "320"
   "Screen reader data access path: specific strategy named and described":
-    - "screen reader"
     - "sr-only"
     - "aria-describedby"
     - "data table"
-    - "specific strategy"
+    - "<table"
+    - "visually hidden"
   "SVG root ARIA attributes specified (role, aria-label, aria-labelledby, or aria-describedby)":
+    - "role=\"img\""
+    - "role='img'"
     - "<svg"
-    - "svg"
-    - "role"
-    - "aria-label"
     - "aria-labelledby"

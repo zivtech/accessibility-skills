@@ -122,8 +122,9 @@ scoring_keywords:
   "Post-navigation focus management strategy with concrete target":
     - "focus management"
     - "post-navigation"
-    - "route"
-    - "focus"
+    - "tabindex=\"-1\""
+    - "tabindex='-1'"
+    - "focus target"
   "DOM overlap mitigation: aria-hidden or inert on exiting page during animation":
     - "aria-hidden"
     - "inert"

@@ -134,8 +134,8 @@ scoring_keywords:
     - "unread"
   "Dismiss button as <button> element with label: 'Dismiss: Critical lab result, Patient Doe John'":
     - "<button"
-    - "dismiss"
-    - "button"
+    - "Dismiss:"
+    - "Dismiss Critical"
   "Focus management on dismiss: next notification dismiss button or bell button if last":
     - "focus management"
     - "next notification"

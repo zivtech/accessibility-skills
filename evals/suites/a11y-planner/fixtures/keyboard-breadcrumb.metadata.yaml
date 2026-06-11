@@ -110,7 +110,7 @@ scoring_keywords:
     - "aria-current=\"page\""
     - "aria-current='page'"
     - "aria-current"
-  "Current page item is not wrapped in `<a>` — static text or `<span>` only":
+  "Current page item is not wrapped in `<a>` — static text or `<span>` only":  # weak-match criterion
     - "not a link"
     - "<span"
     - "static text"

@@ -118,7 +118,6 @@ scoring_keywords:
   "APG Combobox pattern reference with URL":
     - "w3.org/WAI/ARIA/apg/patterns/combobox"
     - "apg/patterns/combobox"
-    - "combobox"
   "aria-expanded attribute (true/false) for dropdown visibility":
     - "aria-expanded"
   "aria-owns or aria-controls linking input to listbox":
@@ -147,10 +146,9 @@ scoring_keywords:
   "aria-busy during async loading":
     - "aria-busy"
   "WCAG citations for each design decision":
-    - "WCAG"
     - "2.1.1"
     - "4.1.2"
-  "Test cases for keyboard, screen reader, async scenarios":
-    - "test"
-    - "keyboard"
-    - "screen reader"
+  "Test cases for keyboard, screen reader, async scenarios":  # weak-match criterion
+    - "test case"
+    - "test plan"
+    - "testing"

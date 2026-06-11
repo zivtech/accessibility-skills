@@ -111,7 +111,6 @@ scoring_keywords:
   "Screen reader verification steps for at least one SR (NVDA or VoiceOver)":
     - "NVDA"
     - "VoiceOver"
-    - "screen reader"
   "Test cases for the disabled state (announced as unavailable, not activatable)":
     - "disabled"
     - "unavailable"

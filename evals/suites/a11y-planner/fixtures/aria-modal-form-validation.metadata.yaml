@@ -141,19 +141,16 @@ scoring_keywords:
   "Keyboard interaction (Tab, Escape, Shift+Tab)":
     - "Escape"
     - "Shift+Tab"
-    - "Tab"
   "HTML structure stub":
     - "<dialog"
-    - 'role="dialog"'
+    - "role=\"dialog\""
     - "role='dialog'"
     - "<form"
-    - "```"
   "Validation approach decision (real-time vs submit)":
     - "validation"
     - "submit"
     - "real-time"
     - "on-submit"
   "WCAG citations":
-    - "WCAG"
     - "2.1.1"
     - "4.1.2"

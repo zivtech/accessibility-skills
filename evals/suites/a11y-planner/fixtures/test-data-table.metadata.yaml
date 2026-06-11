@@ -127,16 +127,17 @@ scoring_keywords:
     - "aria-live"
     - "verify"
   "Sort state acceptance criteria (\"aria-sort cycles none→ascending→descending→none\")":
-    - "none"
+    - "aria-sort=\"none\""
+    - "aria-sort='none'"
     - "ascending"
     - "descending"
-    - "aria-sort"
     - "cycles"
-  "Pagination focus management test (Previous/Next click → verify focus target)":
-    - "pagination"
-    - "focus"
-    - "Previous"
-    - "Next"
+  "Pagination focus management test (Previous/Next click → verify focus target)":  # weak-match criterion
+    - "focus target"
+    - "focus lands"
+    - "focus moves"
+    - "focus after"
+    - "focus placement"
   "Per-row dropdown test using APG Menu Button pattern":
     - "APG"
     - "menu button"
@@ -146,12 +147,10 @@ scoring_keywords:
     - "ArrowDown"
     - "ArrowUp"
     - "arrow key"
-    - "menu"
   "Escape key closes per-row menu and restores focus to trigger button":
-    - "Escape"
+    - "restor"
     - "trigger button"
-    - "focus"
-    - "restores"
+    - "Escape closes"
   "WCAG 1.3.1 (Info and Relationships) cited for table semantics":
     - "1.3.1"
   "WCAG 4.1.2 (Name, Role, Value) cited for aria-sort and menu button states":

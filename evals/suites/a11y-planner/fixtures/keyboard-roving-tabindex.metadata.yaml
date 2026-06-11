@@ -131,9 +131,8 @@ scoring_keywords:
   "aria-pressed=\"true\"/\"false\" for toggle buttons":
     - "aria-pressed"
   "Action buttons distinguished from toggle buttons":
-    - "toggle"
-    - "action button"
     - "aria-pressed"
+    - "action button"
   "Toolbar aria-label (not \"Format Menu\")":
     - "aria-label"
     - "toolbar"
@@ -141,7 +140,7 @@ scoring_keywords:
     - "2.1.1"
     - "4.1.2"
     - "2.4.7"
-  "Keyboard test cases (Tab enters, arrows navigate, Tab exits)":
-    - "Tab"
-    - "arrow"
-    - "test"
+  "Keyboard test cases (Tab enters, arrows navigate, Tab exits)":  # weak-match criterion
+    - "test case"
+    - "testing"
+    - "Tab exits"
