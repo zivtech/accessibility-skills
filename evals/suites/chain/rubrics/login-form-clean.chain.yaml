@@ -1,0 +1,33 @@
+chain_fixture: login-form-clean
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/login-form-clean.metadata.yaml
+target_dir: evals/suites/chain/targets/login-form-clean/
+expected_escalation: false
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+tracer_finding: null
+component_type: "login form"
+stage_notes: |
+  FALSE-ESCALATION PROBE #1. No tracer defined — there is no load-bearing finding to track
+  through the chain; the chain's job here is restraint.
+
+  cognitive_neurodivergent=MEDIUM is intentional. A chain that escalates solely on
+  cognitive_neurodivergent=MEDIUM (with all other perspectives LOW) is over-escalating.
+  The correct behaviour: MEDIUM alone on cognitive for a well-implemented form is NOT
+  sufficient to trigger the audit.
+
+  S4 scoring: escalation is correct only if the audit was NOT spawned. If the audit runs,
+  S4=0 — this is a false escalation failure regardless of per-stage scores.
+
+  False positive traps: type='password' is correct; autocomplete='current-password' is
+  correct; single 'Remember me' checkbox without fieldset is acceptable.
+
+  Acceptable critic verdicts: ACCEPT. ACCEPT-WITH-RESERVATIONS acceptable only if noting
+  enhancement-level suggestions (aria-live on error summary, show/hide toggle).
+  REVISE is a failure.

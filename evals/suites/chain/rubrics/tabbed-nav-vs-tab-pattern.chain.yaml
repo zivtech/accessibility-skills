@@ -1,0 +1,37 @@
+chain_fixture: tabbed-nav-vs-tab-pattern
+source_suite: a11y-critic
+source_metadata: evals/suites/a11y-critic/fixtures/tabbed-nav-vs-tab-pattern.metadata.yaml
+target_dir: evals/suites/chain/targets/tabbed-nav-vs-tab-pattern/
+expected_escalation: false
+expected_alarm_levels: null
+s3_scoring_mode: must_find
+must_find_items:
+  - "Tension between tabs interaction model and navigation semantic model"
+tracer_finding: "Tension between tabs interaction model and navigation semantic model"
+component_type: "tabbed navigation"
+stage_notes: |
+  ADVERSARIAL fixture. No expected_alarm_levels in source metadata — S3 scored on
+  must_find detection (s3_scoring_mode: must_find).
+
+  The correct verdict is NOT about whether the ARIA is broken — the tab implementation
+  is technically correct per APG Tabs pattern. The key question is whether the chain
+  articulates the tabs-vs-nav semantic tradeoff.
+
+  Must-find: the critic (or the chain's critic stage) must articulate the tension between
+  the tabs interaction model (arrow key nav, correct) and the navigation semantic model
+  (nav+links would be more semantically accurate for page-level routes using router.push).
+
+  S4 scoring: expected_escalation=false. The ADVERSARIAL nature of this fixture should
+  NOT trigger audit escalation — this is a verdict calibration issue, not a per-perspective
+  severity issue. A well-calibrated chain reaches ACCEPT or ACCEPT-WITH-RESERVATIONS with
+  detailed notes on the tradeoff.
+
+  False positive trap (from source metadata): the tabs pattern ARIA is correctly
+  implemented — flagging broken aria-selected, missing keyboard handling, or incorrect
+  tabindex is a false positive. Award 0 for S3 if the critic claims the ARIA is broken.
+
+  Acceptable critic verdicts: ACCEPT (with detailed tradeoff notes) or
+  ACCEPT-WITH-RESERVATIONS (reasoning for nav preference, acknowledging tabs is defensible).
+  REVISE claiming implementation is broken is a failure.
+
+  Tracer: the tabs-vs-nav tension articulation must appear in the critic output.

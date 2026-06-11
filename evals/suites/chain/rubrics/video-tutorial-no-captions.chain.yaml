@@ -1,0 +1,31 @@
+chain_fixture: video-tutorial-no-captions
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/video-tutorial-no-captions.metadata.yaml
+target_dir: evals/suites/chain/targets/video-tutorial-no-captions/
+expected_escalation: true
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: HIGH
+  keyboard_motor: LOW
+  screen_reader_semantic: MEDIUM
+  cognitive_neurodivergent: LOW
+tracer_finding: "Missing <track kind=\"captions\"> element on <video>"
+component_type: "video tutorial player"
+stage_notes: |
+  Auditory access fixture. Keyboard navigation is intentionally correct (play, pause,
+  seek, volume, mute all work). A reviewer who conflates keyboard and auditory access
+  will over-report keyboard issues and under-report auditory issues.
+
+  auditory_access=HIGH and screen_reader_semantic=MEDIUM → audit MUST trigger.
+  The audit must address the auditory perspective with findings-level treatment (S5b).
+
+  Tracer is the missing <track kind="captions"> finding (WCAG 1.2.2) — the most critical
+  auditory failure. This is also the historically under-weighted dimension, making it
+  the most important chain survival check for this fixture.
+
+  False positive traps: keyboard controls (play, pause, seek, volume, mute) are all
+  correctly implemented — do NOT flag as broken.
+
+  Acceptable critic verdicts: REVISE.
