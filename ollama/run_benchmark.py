@@ -102,7 +102,7 @@ ALL_PERSPECTIVE_FIXTURES = [
     "video-tutorial-no-captions",
 ]
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/generate")
 
 OLLAMA_MODELS = ["llama3.3:70b", "qwen3:32b", "deepseek-r1:70b", "qwen3.5:27b"]
 SMALL_MODELS = ["qwen3.5:latest"]  # 6.6 GB — test as lightweight tier
