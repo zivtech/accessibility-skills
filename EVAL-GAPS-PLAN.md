@@ -15,8 +15,8 @@
 
 | Area | Built | Stubs/Missing | Benchmarked | Blocking Issues |
 |------|-------|---------------|-------------|-----------------|
-| Critic eval | 33 fixtures (4 CLEAN + 21 HAS-BUGS + 5 FLAWED + 3 ADVERSARIAL) | 0 | Ollama, Claude API, Codex/OpenAI | Add Gemini/other hosted rows when raw results are committed |
-| Planner eval | 25 fixtures | 0 | 2/25 Ollama | Broaden planner baselines across hosted/local models |
+| Critic eval | 33 fixtures (4 CLEAN + 21 HAS-BUGS + 5 FLAWED + 3 ADVERSARIAL) | 0 | Ollama, Claude API, Codex/OpenAI, Gemini (flash, 2026-06-12) | Resolved — Gemini artifacts committed (`evals/results/gemini/`) |
+| Planner eval | 25 fixtures | 0 | 25/25 Ollama (qwen3:32b) + 25/25 Claude subagents (2026-06-12) | Resolved (plans 006 + Phase D); Codex lane is plan 010 |
 | Perspectives eval | 30 fixtures (25 main + 5 calibration) | 0 | qwen3:32b full run + calibration results | Hosted perspective-audit baselines still optional |
 | Benchmark runners | Production-ready for Ollama, Claude API, and Codex/OpenAI | Gemini/other provider adapters as needed | Yes | Keep result tables model-family neutral |
 

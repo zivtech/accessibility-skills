@@ -271,17 +271,17 @@ qwen3:32b produced perfect plans on both fixtures with explicit WCAG citations. 
 
 ### Model Comparison (Updated with Cross-Platform Baselines)
 
-| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | GPT-5.2 | Codex/OpenAI escalation | qwen3.5:27b | qwen3:32b | llama3.3:70b | qwen3.5:latest |
-|-----------|----------------|-------------------|-----------------|---------|-------------------------|------------|-----------|-------------|----------------|
-| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=33)** | **100% (n=33)** | **100% (n=33)** | **100% (n=13)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
-| CLEAN failures / FP risk | 0% | 0% | 2 CLEAN failures | 3 CLEAN WARN/FAIL | 0 remaining after escalation | 0%* | 0% | 0% | 0% |
-| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
-| FLAWED detection | 5/5 via Phase 7 | 5/5 via escalation | 5/5 | 5/5 | 5/5 | — | 100% (n=5) | — | — |
-| ADVERSARIAL articulation | 3/3 best-tier via Phase 7 | 3/3 via escalation | 0/3 verdict pass | 3/3 | 3/3 | — | 100% (n=3) | — | — |
-| Perspective-audit (25 fix) | — | — | — | — | — | — | 20P/4W/1F | — | NOT VIABLE |
-| Reliability (completion) | 100% | 100% | 100% | 100% | 100% after script fix | 94% (16/17) | 100% | 100% | 100% |
-| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
-| Deployment | Cloud API | Cloud API | Cloud API | Codex CLI | Codex CLI | Local (17 GB) | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
+| Dimension | Claude Opus 4.6 | Claude Sonnet 4.6 | Claude Haiku 4.5 | GPT-5.2 | Codex/OpenAI escalation | Gemini 2.5 Flash | qwen3.5:27b | qwen3:32b | llama3.3:70b | qwen3.5:latest |
+|-----------|----------------|-------------------|-----------------|---------|-------------------------|------------------|------------|-----------|-------------|----------------|
+| Critic must-find (HAS-BUGS) | **100% (n=7)** | **100% (n=7)** | **100% (n=33)** | **100% (n=33)** | **100% (n=33)** | 98% (n=33) | **100% (n=13)** | 96% (n=33) | 86% (n=7) | 86% (n=7) |
+| CLEAN failures / FP risk | 0% | 0% | 2 CLEAN failures | 3 CLEAN WARN/FAIL | 0 remaining after escalation | 1 CLEAN failure | 0%* | 0% | 0% | 0% |
+| toast `role="alert"` (4/4) | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | **Yes** | No (3/4) | No (3/4) | No (3/4) |
+| FLAWED detection | 5/5 via Phase 7 | 5/5 via escalation | 5/5 | 5/5 | 5/5 | 5/5 | — | 100% (n=5) | — | — |
+| ADVERSARIAL articulation | 3/3 best-tier via Phase 7 | 3/3 via escalation | 0/3 verdict pass | 3/3 | 3/3 | 2/3 | — | 100% (n=3) | — | — |
+| Perspective-audit (25 fix) | — | — | — | — | — | — | — | 20P/4W/1F | — | NOT VIABLE |
+| Reliability (completion) | 100% | 100% | 100% | 100% | 100% after script fix | 100% (flash; pro quota-blocked) | 94% (16/17) | 100% | 100% | 100% |
+| WCAG citation quality | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Consistent | Inconsistent | Consistent |
+| Deployment | Cloud API | Cloud API | Cloud API | Codex CLI | Codex CLI | Gemini CLI | Local (17 GB) | Local (20 GB) | Local (40 GB) | Local (6.6 GB) |
 
 *qwen3.5:27b: 1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive. Run stopped at 17/33 due to stalls.*
 
@@ -1029,3 +1029,37 @@ Reported as scored; this is the documented section-presence-proxy limitation.
 
 Codex planner lane: not run — requires a planner path in `run_cloud_benchmark.py`
 (plan 010, authored 2026-06-12, operator-gated).
+
+## Gemini baseline — critic suite (2026-06-12, post-002 scoring)
+
+**Run**: plan 007 (operator-approved 2026-06-12). **Transport**: authenticated
+`gemini` CLI v0.46.0 (plan 007 amendment — mirrors the codex lane), per-call
+isolation: neutral temp cwd + `--skip-trust` (prevents the CLI loading this
+repo's own `.agents` skills into the model prompt), `--approval-mode default`,
+headless preamble forbidding file writes (the gate-1 probe caught the CLI agent
+saving — and then hallucinating — a report file instead of answering; the
+fixed adapter re-probed 3/3 PASS before the full run).
+**Raw artifacts committed**: `evals/results/gemini/` (33 flash responses + 2
+pro error placeholders). Per-call token counts in each `_benchmark` block;
+CLI harness overhead ~18.7K input tokens/call.
+
+| Tier | Ran | Pass | Fail | Infra-error |
+|------|-----|------|------|-------------|
+| Gemini 2.5 Flash | 33 | 31 (94%) | 2 | 0 |
+| Gemini 2.5 Pro (escalation) | 2 | 0 | 0 | 2 (capacity exhausted — resumable) |
+
+- **Must-find, criteria level (HAS-BUGS + FLAWED)**: 130/132 (98%); 26/26
+  fixtures PASS. Partial-hit fixtures: file-input-no-labels (3/4),
+  tooltip-no-role-no-association (2/3).
+- **CLEAN**: 3/4 PASS — 1 false positive (interactive-dropdown-clean).
+- **ADVERSARIAL**: 2/3 — form-field-vs-summary-errors at 0% must-articulate;
+  search-focus-stays-in-input and tabbed-nav-vs-tab-pattern at 100%.
+- **Cheap-tier ladder across lanes**: Haiku 85% → GPT-5.2 91% → Gemini 2.5
+  Flash 94% → qwen3:32b 100% (local).
+- **Pro escalation pending**: the 2 flash failures escalate to
+  gemini-2.5-pro, which was capacity-exhausted on this account at run time
+  (6 retries with backoff, then the resumable errored lane). Re-run
+  `python3 ollama/run_cloud_benchmark.py gemini-escalate` after quota reset
+  to complete the ladder; the flash rows above are final either way.
+- Zero scorer fallback-keyword warnings; every number re-derives from
+  `evals/results/gemini/` via `score_output.py`.

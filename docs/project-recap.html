@@ -567,9 +567,9 @@ body {
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-date">2026-05-19 &mdash; a11y-meta-skills</div>
+  <div class="hero-date">2026-05-19 &middot; updated 2026-06-12 &mdash; a11y-meta-skills</div>
   <h1>Accessibility Skill Bundle</h1>
-  <p class="hero-sub">Planner, critic, tester, and perspective auditor &mdash; with 83 graded fixtures, 10 benchmarked models, and a team of 6 agents.</p>
+  <p class="hero-sub">Planner, critic, tester, and perspective auditor &mdash; with 83 graded fixtures, 11 benchmarked models, and a team of 6 agents.</p>
 
   <div class="kpi-row">
     <div class="kpi">
@@ -581,7 +581,7 @@ body {
       <div class="kpi-label">Fixtures</div>
     </div>
     <div class="kpi">
-      <div class="kpi-num" style="color: var(--green);">10</div>
+      <div class="kpi-num" style="color: var(--green);">11</div>
       <div class="kpi-label">Models Tested</div>
     </div>
     <div class="kpi">
@@ -784,6 +784,14 @@ body {
         <td class="num">n/a</td>
         <td><span class="badge badge--pass">100% PASS</span></td>
       </tr>
+      <tr style="border-top: 2px solid var(--border-bright);">
+        <td>Gemini</td>
+        <td><strong>2.5 Flash</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>31</strong>/33</td>
+        <td class="num">98%</td>
+        <td><span class="badge badge--warn">94% PASS &mdash; 1 CLEAN FP, 1 ADVERSARIAL miss; pro escalation quota-pending</span></td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -863,7 +871,7 @@ body {
 <!-- CROSS-PLATFORM -->
 <div id="s6" class="sec-head"><span class="dot" style="background: var(--teal);"></span>6 &mdash; Cross-Platform</div>
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
   <div class="ve-card ve-card--elevated" style="text-align: center;">
     <h3 style="color: var(--blue);">Ollama (Local)</h3>
     <p style="margin: 8px 0;"><strong>qwen3:32b</strong> recommended</p>
@@ -876,11 +884,17 @@ body {
     <p>100% pass via escalation. ~$0.65 for full suite. 67s avg per fixture.</p>
     <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
   </div>
-  <div class="ve-card" style="text-align: center;">
+  <div class="ve-card ve-card--elevated" style="text-align: center;">
     <h3 style="color: var(--teal);">Codex / OpenAI</h3>
     <p style="margin: 8px 0;"><strong>GPT-5.2 &rarr; 5.5-low</strong></p>
     <p>GPT-5.2 passed 30/33. Escalation cleared the remaining CLEAN fixtures at GPT-5.5-low.</p>
     <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
+  </div>
+  <div class="ve-card" style="text-align: center;">
+    <h3 style="color: var(--amber);">Gemini</h3>
+    <p style="margin: 8px 0;"><strong>2.5 Flash via gemini CLI</strong></p>
+    <p>31/33 (94%) via gemini CLI; raw artifacts committed; pro escalation pending quota.</p>
+    <div style="margin-top: 8px;"><span class="badge badge--warn">BASELINE</span></div>
   </div>
 </div>
 
@@ -960,8 +974,12 @@ body {
       <div><strong>Claude perspective-audit escalation</strong> &mdash; Run <code>claude-escalate --skill perspective</code> for 25 perspective fixtures</div>
     </li>
     <li>
-      <div class="next-check"></div>
-      <div><strong>Planner benchmarks</strong> &mdash; 2 of 25 planner fixtures benchmarked via Ollama; add hosted/Gemini rows when raw runs are committed.</div>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Gemini critic baseline</strong> &mdash; 2.5 Flash 31/33 (94%) via gemini CLI; raw artifacts committed to <code>evals/results/gemini/</code>; pro escalation pending quota</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>Planner benchmarks</strong> &mdash; 25/25 on two lanes: qwen3:32b 227/235 (96.6%), Claude Opus subagents 234/235 (99.6%); Codex lane gated (plan 010)</div>
     </li>
   </ul>
 </div>

@@ -113,7 +113,7 @@ python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3:32b
 python3 ollama/ollama_a11y.py perspective path/to/component.jsx --model qwen3:32b
 ```
 
-Benchmarked against the 33 critic fixtures and 25 perspective-audit fixtures in full, plus 2 of the 25 planner fixtures (planner coverage is a known gap — see EVAL-GAPS-PLAN.md), with cross-platform baselines for Claude API, Codex/OpenAI, and local Ollama models. Treat Gemini and other hosted providers as first-class baseline families when their raw result artifacts are present. See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
+Benchmarked against the 33 critic fixtures, 25 perspective-audit fixtures, and 25 planner fixtures in full, with cross-platform baselines for Claude API, Claude Code subagents (planner lane, 25/25 PASS), Codex/OpenAI, Gemini (CLI lane, 31/33 critic PASS), and local Ollama models. Hosted-run raw artifacts are committed under `evals/results/` — every hosted family is a first-class peer row. See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
 
 a11y-test is NOT portable — it requires Playwright, axe-core, and browser automation. Only reference knowledge ports.
 

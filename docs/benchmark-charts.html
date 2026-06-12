@@ -500,18 +500,18 @@
     <header class="hero" aria-labelledby="page-title">
       <p class="hero-eyebrow">Evaluation Report &mdash; a11y-meta-skills</p>
       <h1 id="page-title" class="hero-title">Accessibility Skill<br>Benchmark Dashboard</h1>
-      <p class="hero-subtitle">Results from 83 graded fixtures testing 10 models across 3 platforms &mdash; proving that structured accessibility review protocols work reliably at scale, with and without a cloud API.</p>
+      <p class="hero-subtitle">Results from 83 graded fixtures testing 11 models across 4 platforms &mdash; proving that structured accessibility review protocols work reliably at scale, with and without a cloud API.</p>
       <div class="kpi-row" role="list" aria-label="Key benchmark statistics">
         <div class="kpi-card" role="listitem">
           <div class="kpi-number" aria-label="83 graded fixtures">83</div>
           <div class="kpi-label">Graded Fixtures</div>
         </div>
         <div class="kpi-card" role="listitem">
-          <div class="kpi-number" aria-label="10 models tested">10</div>
+          <div class="kpi-number" aria-label="11 models tested">11</div>
           <div class="kpi-label">Models Tested</div>
         </div>
         <div class="kpi-card" role="listitem">
-          <div class="kpi-number" aria-label="3 platforms">3</div>
+          <div class="kpi-number" aria-label="4 platforms">4</div>
           <div class="kpi-label">Platforms</div>
         </div>
         <div class="kpi-card" role="listitem">
@@ -545,13 +545,13 @@
         <div class="chart-section-header">
           <p class="chart-section-number">Chart 01</p>
           <h2 id="chart1-title" class="chart-section-title">How Every Model Performed</h2>
-          <p class="chart-section-subtitle">Pass rate on the a11y-critic eval suite (33 graded fixtures). Bars differentiated by platform via border style: solid = Claude API, dashed = Ollama local, dotted = OpenAI.</p>
+          <p class="chart-section-subtitle">Pass rate on the a11y-critic eval suite (33 graded fixtures). Bars differentiated by platform via border style: solid = Claude API, dashed = Ollama local, dotted = OpenAI, double = Gemini.</p>
         </div>
         <div class="chart-card">
           <div
             class="chart-container"
             role="img"
-            aria-label="Horizontal bar chart showing a11y-critic pass rates by model. Top performers include qwen3:32b (Ollama), Claude escalation, and OpenAI escalation at 100%. GPT-5.2 base tier passed 30 of 33 fixtures, or 91%, with 100% must-find detection. Claude Haiku 4.5 passed 85% with 100% must-find detection. qwen3.5:27b passed 94% on 17 fixtures run. Key insight: all tested models exceed 84% pass rate; failures concentrate in verdict calibration and false positive suppression, not bug detection."
+            aria-label="Horizontal bar chart showing a11y-critic pass rates by model. Top performers include qwen3:32b (Ollama), Claude escalation, and OpenAI escalation at 100%. GPT-5.2 base tier passed 30 of 33 fixtures, or 91%, with 100% must-find detection. Claude Haiku 4.5 passed 85% with 100% must-find detection. qwen3.5:27b passed 94% on 17 fixtures run. Gemini 2.5 Flash passed 31 of 33 fixtures, or 94%, with 98% must-find detection. Key insight: all tested models exceed 84% pass rate; failures concentrate in verdict calibration and false positive suppression, not bug detection."
             style="height: 420px;"
           >
             <canvas id="chart1" aria-hidden="true"></canvas>
@@ -570,6 +570,10 @@
             <div class="legend-item">
               <div class="legend-swatch" style="background: var(--color-gold);"></div>
               <span>OpenAI &mdash; labeled "(OpenAI)" on y-axis</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-swatch" style="background: var(--color-purple);"></div>
+              <span>Gemini &mdash; labeled "(Gemini)" on y-axis</span>
             </div>
           </div>
 
@@ -646,6 +650,13 @@
                     <td>33</td>
                     <td>85%</td>
                     <td>100%</td>
+                  </tr>
+                  <tr>
+                    <td>Gemini 2.5 Flash</td>
+                    <td>Gemini</td>
+                    <td>33</td>
+                    <td>94%</td>
+                    <td>98%</td>
                   </tr>
                 </tbody>
               </table>
@@ -969,11 +980,50 @@
         </div>
       </section>
 
+      <!-- ============================================================ -->
+      <!-- PLANNER BENCHMARK LANES -->
+      <!-- ============================================================ -->
+      <section id="planner-lanes" class="chart-section" aria-labelledby="planner-lanes-title">
+        <div class="chart-section-header">
+          <p class="chart-section-number">Planner Suite</p>
+          <h2 id="planner-lanes-title" class="chart-section-title">Planner Benchmark Results</h2>
+          <p class="chart-section-subtitle">25-fixture planner suite, section-presence scoring (post-002 instrument). Codex planner lane pending (plan 010); Gemini planner lane out of scope.</p>
+        </div>
+        <div class="chart-card">
+          <div class="data-table-wrapper">
+            <table class="data-table" aria-label="Planner benchmark lane results">
+              <thead>
+                <tr>
+                  <th scope="col">Lane</th>
+                  <th scope="col">PASS</th>
+                  <th scope="col">Must-have criteria</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>qwen3:32b (local)</td>
+                  <td>25/25</td>
+                  <td>227/235 (96.6%)</td>
+                  <td>2026-06-11</td>
+                </tr>
+                <tr>
+                  <td>Claude Opus subagents</td>
+                  <td>25/25</td>
+                  <td>234/235 (99.6%)</td>
+                  <td>2026-06-12</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </main>
 
     <!-- FOOTER -->
     <footer class="page-footer" aria-label="Page footer">
-      <span>a11y-meta-skills &mdash; Accessibility Skill Benchmark &mdash; May 2026</span>
+      <span>a11y-meta-skills &mdash; Accessibility Skill Benchmark &mdash; 2026-06-12</span>
       <a href="https://github.com/zivtech/a11y-meta-skills" rel="noopener noreferrer">View benchmark source on GitHub &rarr;</a>
     </footer>
 
@@ -1003,6 +1053,7 @@
         emeraldLight:   dark ? '#5ad9a0' : '#10b981',
         red:            dark ? '#f43f6e' : '#be123c',
         amber:          dark ? '#f59e0b' : '#d97706',
+        purple:         dark ? '#a78bfa' : '#7c3aed',
         surface:        dark ? '#1c1a18' : '#ffffff',
       };
     }
@@ -1041,25 +1092,28 @@
         'Claude path\n(API, n=33)',
         'OpenAI path\n(OpenAI, n=33)',
         'qwen3:32b\n(Ollama, n=33)',
+        'Gemini 2.5 Flash\n(Gemini, n=33)',
       ];
 
-      const passRates = [85, 91, 94, 100, 100, 100, 100, 100];
-      const mustFind  = [100, 100, 100, 86, 86, 100, 100, 96];
-      const fixtures  = [33, 33, 17, 7, 7, 33, 33, 33];
+      const passRates = [85, 91, 94, 100, 100, 100, 100, 100, 94];
+      const mustFind  = [100, 100, 100, 86, 86, 100, 100, 96, 98];
+      const fixtures  = [33, 33, 17, 7, 7, 33, 33, 33, 33];
 
       // Platform determines color and border style
-      // Claude = blue/solid, Ollama = emerald/dashed, OpenAI = gold/dotted
-      const platforms = ['claude', 'openai', 'ollama', 'ollama', 'ollama', 'claude', 'openai', 'ollama'];
+      // Claude = blue/solid, Ollama = emerald/dashed, OpenAI = gold/dotted, Gemini = purple
+      const platforms = ['claude', 'openai', 'ollama', 'ollama', 'ollama', 'claude', 'openai', 'ollama', 'gemini'];
 
       const bgColors = platforms.map(p => {
         if (p === 'claude')  return tc.blue + 'cc';
         if (p === 'ollama')  return tc.emerald + 'cc';
+        if (p === 'gemini')  return tc.purple + 'cc';
         return tc.gold + 'cc';
       });
 
       const borderColors = platforms.map(p => {
         if (p === 'claude')  return tc.blue;
         if (p === 'ollama')  return tc.emerald;
+        if (p === 'gemini')  return tc.purple;
         return tc.gold;
       });
 

@@ -1,0 +1,14 @@
+{
+  "response": "",
+  "done": false,
+  "error": "gemini CLI failed (rc=1)",
+  "_benchmark": {
+    "platform": "gemini",
+    "model": "gemini-2.5-pro",
+    "tier": "pro",
+    "fixture_id": "interactive-dropdown-clean",
+    "skill": "critic",
+    "elapsed_seconds": 276.5,
+    "timestamp": "2026-06-12T09:50:01"
+  }
+}

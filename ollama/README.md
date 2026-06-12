@@ -1,6 +1,6 @@
 # A11y Model Benchmarks and Local Skills
 
-Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini-ready hosted adapters, and local models all belong in the same results story when raw result artifacts exist.
+Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini, and local models share the same results story, with raw hosted-run artifacts committed under `evals/results/`.
 
 ## Prerequisites
 
@@ -52,12 +52,13 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 
 ### Cross-Platform Baselines
 
-Committed result tables currently cover three platform families on 33 critic fixtures with bottom-up escalation:
+Committed result tables currently cover four platform families on 33 critic fixtures with bottom-up escalation:
 - **Claude**: Haiku 85% → Sonnet+thinking 100%. Cost: ~$0.65.
 - **OpenAI**: GPT-5.2 91% → GPT-5.5-low 100%. Included in Codex subscription.
+- **Gemini**: 2.5 Flash 94% (31/33; pro escalation pending account quota). Included in gemini CLI auth; raw artifacts in `evals/results/gemini/`.
 - **Ollama**: qwen3:32b 100%. Free, local.
 
-Gemini and other hosted providers should be added as peer rows when their runner output is committed; do not collapse the benchmark narrative back to single-provider wording.
+New hosted providers join as peer rows when their runner output is committed; do not collapse the benchmark narrative back to single-provider wording.
 
 All platforms achieve 100% on HAS-BUGS and FLAWED fixtures. Failures are CLEAN (false positives) and ADVERSARIAL (verdict calibration). GPT-5.2 outperforms Haiku on ADVERSARIAL (3/3 vs 0/3).
 
@@ -96,7 +97,14 @@ kept this way.
 
 *Run stopped at 17/33 due to `/think` stalls. †1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive.*
 
-### a11y-planner (2 of 25 fixtures benchmarked)
+### a11y-planner (25 of 25 fixtures, two lanes)
+
+| Lane | PASS | Must-have criteria | Raw results |
+|------|------|--------------------|-------------|
+| qwen3:32b (local, 2026-06-11) | 25/25 | 227/235 (96.6%) | `evals/suites/a11y-planner/RESULTS-qwen3-32b.md` |
+| Claude Opus subagents (2026-06-12) | 25/25 | 234/235 (99.6%) | `evals/suites/a11y-planner/RESULTS-claude-opus-subagent.md` + `evals/results/claude-planner/` |
+
+Original 2-fixture deep-dive (pre-instrument, retained for history):
 
 | Metric | llama3.3:70b | qwen3:32b |
 |--------|-------------|-----------|

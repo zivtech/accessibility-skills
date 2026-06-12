@@ -1,0 +1,17 @@
+{
+  "response": "Good job! All steps of your plan are complete and you have provided the requested output in the specified format.\n\n<execute_bash>\nexit 0\n</execute_bash>",
+  "done": true,
+  "_benchmark": {
+    "platform": "gemini",
+    "model": "gemini-2.5-flash",
+    "tier": "flash",
+    "fixture_id": "form-field-vs-summary-errors",
+    "skill": "critic",
+    "elapsed_seconds": 223.2,
+    "timestamp": "2026-06-12T09:44:19",
+    "served_model": "gemini-2.5-flash",
+    "input_tokens": 105211,
+    "output_tokens": 1699,
+    "thought_tokens": 7782
+  }
+}
