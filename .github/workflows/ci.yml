@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', '.github/workflows/ci.yml']
+  pull_request:
+    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', '.github/workflows/ci.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r ollama/requirements.txt
+      - name: Compile check
+        run: python3 -m py_compile ollama/*.py evals/suites/perspectives/*.py
+      - name: Validate fixtures and registries
+        run: python3 scripts/validate_fixtures.py
+      - name: Scorer smoke tests
+        run: bash scripts/smoke_scorers.sh
+      - name: Mirror drift report (non-blocking)
+        run: python3 scripts/check_mirrors.py

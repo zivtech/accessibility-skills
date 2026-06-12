@@ -1,0 +1,5 @@
+# Third-party deps for the benchmark tooling.
+# pyyaml: used by all three score_*.py scripts and build_escalation_prompt()
+# anthropic: used only by run_cloud_benchmark.py claude paths (lazy import)
+pyyaml>=6.0
+anthropic>=0.40

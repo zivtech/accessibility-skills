@@ -1,0 +1,11 @@
+fixture_id: perspective-hasbugs-smoke
+difficulty: HAS-BUGS
+expected_verdict: REVISE
+expected_alarm_levels:
+  vestibular_motion: HIGH
+  auditory_access: LOW
+expected_findings:
+  - category: must_find
+    items:
+      - description: "Carousel autoplay ignores prefers-reduced-motion"
+        wcag: "2.3.3"

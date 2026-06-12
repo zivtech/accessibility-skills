@@ -237,12 +237,12 @@ expected_reviewer_performance:
   # C should NOT over-flag compared to A.
   # Acceptable: C_false_positives <= A_false_positives + 1
   # Failure: C_false_positives > A_false_positives + 1
-  key_differentiator: >
-    The critical measurement is false_positive_rate(C) <= false_positive_rate(A) + 10%.
-    If condition C raises more false positives on this CLEAN fixture than
-    condition A, the perspective enhancement is miscalibrated and introduces
-    noise without quality gain. This fixture is the primary guard against
-    that failure mode.
+key_differentiator: >
+  The critical measurement is false_positive_rate(C) <= false_positive_rate(A) + 10%.
+  If condition C raises more false positives on this CLEAN fixture than
+  condition A, the perspective enhancement is miscalibrated and introduces
+  noise without quality gain. This fixture is the primary guard against
+  that failure mode.
 
 verdict_expectations:
   condition_A: ACCEPT

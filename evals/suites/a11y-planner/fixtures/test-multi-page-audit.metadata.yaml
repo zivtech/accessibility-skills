@@ -71,7 +71,7 @@ expected_findings:
     - Multi-step form testing strategy (all 6 steps, error recovery, back navigation)
     - axe DevTools Enterprise configuration (rule set selection, exclusion list for known third-party violations)
     - Remediation prioritization by user journey impact vs. WCAG criterion severity
-    - Estimated effort per page type (automated: 30min; manual keyboard: 2hr; SR: 3hr)
+    - 'Estimated effort per page type (automated: 30min; manual keyboard: 2hr; SR: 3hr)'
 
   nice_to_have:
     - WCAG-EM structured sample definition (random representative sample + critical pages)
