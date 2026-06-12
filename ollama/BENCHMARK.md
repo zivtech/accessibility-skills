@@ -962,6 +962,8 @@ Partial-hit fixtures (5): sr-product-listing (8/10), test-form (10/11), test-mod
 **Caveats**:
 - Single local model lane (qwen3:32b). Hosted lanes (Claude subagents, Codex) have
   not run for the planner suite — plan 006 Phase D is operator-cost-gated and was not exercised.
+  *(Superseded 2026-06-12: the Claude subagent lane has run — see "Claude subagent lane"
+  below. The Codex planner lane is plan 010, still gated.)*
 - Section-presence keyword scoring is a structural proxy: it verifies a plan contains
   the load-bearing tokens of each must-have criterion, not that the plan is good.
   It cannot distinguish a brilliant plan from a checklist-shaped one (see plan 006
@@ -971,3 +973,59 @@ Partial-hit fixtures (5): sr-product-listing (8/10), test-form (10/11), test-mod
   contention and one 1200s timeout. The affected fixture (visual-data-viz) was re-run
   cleanly after the duplicate was unloaded; scores are unaffected (timing column in the
   raw results file reflects post-fix runs).
+
+### Claude subagent lane (2026-06-12, post-002 scoring)
+
+**Run**: plan 006 Phase D Claude lane, operator-approved 2026-06-12.
+**Mechanism**: Claude Code subagents — `Agent(subagent_type="a11y-planner", model="opus")`,
+one background subagent per fixture, all 25 in parallel (~12.5 min wall-clock) —
+the production mechanism per the standing benchmarking rule.
+**Scorer**: same instrument as the qwen3:32b section above (rubric `scoring_keywords`,
+zero fallback warnings). Raw artifacts committed: `evals/results/claude-planner/`
+(25 response JSONs + README); per-fixture table with timings:
+`evals/suites/a11y-planner/RESULTS-claude-opus-subagent.md`.
+
+| Fixture | Must-have hits | Status |
+|---------|---------------|--------|
+| aria-combobox-autocomplete | 10/11 | PASS |
+| aria-data-table-sorting | 10/10 | PASS |
+| aria-disclosure-widget | 9/9 | PASS |
+| aria-modal-form-validation | 11/11 | PASS |
+| aria-tab-dynamic-content | 10/10 | PASS |
+| keyboard-breadcrumb | 5/5 | PASS |
+| keyboard-button-bar | 6/6 | PASS |
+| keyboard-menu-dropdown | 9/9 | PASS |
+| keyboard-modal-focus-trap | 10/10 | PASS |
+| keyboard-roving-tabindex | 9/9 | PASS |
+| sr-article-page | 8/8 | PASS |
+| sr-form-field-help | 13/13 | PASS |
+| sr-notification-system | 12/12 | PASS |
+| sr-product-listing | 10/10 | PASS |
+| sr-search-results-live | 11/11 | PASS |
+| test-data-table | 13/13 | PASS |
+| test-form | 11/11 | PASS |
+| test-modal | 11/11 | PASS |
+| test-multi-page-audit | 11/11 | PASS |
+| test-simple-button | 9/9 | PASS |
+| visual-animated-transition | 7/7 | PASS |
+| visual-dark-mode | 7/7 | PASS |
+| visual-data-viz | 6/6 | PASS |
+| visual-form-validation | 10/10 | PASS |
+| visual-status-colors | 6/6 | PASS |
+| **Aggregate** | **234/235 (99.6%)** | **25/25 PASS** |
+
+The single miss (aria-combobox-autocomplete, "focus remains in input during
+navigation") is a keyword-phrasing miss, not a content gap: the response states
+"DOM focus stays on the `<input>` at all times" and "focus does NOT move to the
+list. It stays in the input" — phrasing outside the criterion's keyword set.
+Reported as scored; this is the documented section-presence-proxy limitation.
+
+**Cross-lane planner summary (same instrument, same 25 fixtures)**:
+
+| Lane | Aggregate | PASS | Partial-hit fixtures |
+|------|-----------|------|----------------------|
+| qwen3:32b (local, 2026-06-11) | 227/235 (96.6%) | 25/25 | 5 |
+| Claude Opus subagents (2026-06-12) | 234/235 (99.6%) | 25/25 | 1 |
+
+Codex planner lane: not run — requires a planner path in `run_cloud_benchmark.py`
+(plan 010, authored 2026-06-12, operator-gated).
