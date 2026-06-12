@@ -4,3 +4,4 @@
 fixtures-eval/
 evals/suites/perspectives/.omc/
 .playwright-mcp/
+__pycache__/
