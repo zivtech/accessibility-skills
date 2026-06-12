@@ -1,0 +1,204 @@
+/* ---- Skip Link ---- */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 16px;
+  padding: 8px 16px;
+  background: #1e293b;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 100;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* ---- Header ---- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.logo a {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  list-style: none;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.header-nav a:hover {
+  color: #ffffff;
+}
+
+.header-nav a:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* ---- App Body (Flex Layout) ---- */
+
+.app-body {
+  display: flex;
+  min-height: calc(100vh - 56px);
+}
+
+.sidebar {
+  order: -1;
+  width: 240px;
+  flex-shrink: 0;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  padding: 24px 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 40px;
+}
+
+/* ---- Sidebar Nav ---- */
+.sidebar-heading {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 0 0 12px 0;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 2px;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 8px 12px;
+  color: #334155;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.sidebar-nav a:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.sidebar-nav a:focus {
+  outline: 2px solid #a8d0f0;
+  outline-offset: 2px;
+}
+
+/* ---- Main Content ---- */
+.main-content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 24px 0;
+}
+
+.main-content h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+}
+
+.activity-list,
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+}
+
+.activity-list li,
+.task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.activity-list a,
+.task-list a {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.activity-list a:hover,
+.task-list a:hover {
+  text-decoration: underline;
+}
+
+/* Good focus indicator on main content links — 
+   #2563eb on #ffffff is ~5.2:1, well above 3:1 */
+.activity-list a:focus,
+.task-list a:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.activity-date,
+.task-status {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ---- Floating Action Button ---- */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+}
+
+.fab:hover {
+  background: #1d4ed8;
+}
+
+.fab:focus {
+  outline: 3px solid #1e40af;
+  outline-offset: 3px;
+}

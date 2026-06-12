@@ -1,0 +1,159 @@
+.page-main {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+}
+
+.btn-open {
+  padding: 12px 24px;
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-open:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+}
+
+/* Works: backdrop visually dims background — conveyed non-accessibly */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  color: #1a1a1a;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #424242;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.modal-close:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+}
+
+.modal-form .form-group {
+  margin-bottom: 16px;
+}
+
+.modal-form label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.modal-form input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.modal-form input:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+  border-color: #1565c0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+}
+
+.modal-success {
+  font-size: 16px;
+  color: #2e7d32;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.background-nav {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+}
+
+.background-nav a {
+  color: #1565c0;
+  text-decoration: underline;
+}
+
+.background-nav a:focus {
+  outline: 3px solid #1565c0;
+  outline-offset: 2px;
+}

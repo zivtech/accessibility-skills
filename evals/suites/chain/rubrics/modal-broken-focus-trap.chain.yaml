@@ -1,0 +1,28 @@
+chain_fixture: modal-broken-focus-trap
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/modal-broken-focus-trap.metadata.yaml
+target_dir: evals/suites/chain/targets/modal-broken-focus-trap/
+expected_escalation: true
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: HIGH
+  screen_reader_semantic: HIGH
+  cognitive_neurodivergent: MEDIUM
+tracer_finding: "Focus not moved to modal on open — stays on trigger button"
+component_type: "modal dialog"
+stage_notes: |
+  Classic modal failure fixture. keyboard_motor and screen_reader_semantic are both HIGH,
+  so audit MUST trigger. The tracer (focus not moved on open) must survive to the LAST
+  stage that runs — audit output if audit ran, critic output otherwise.
+
+  S4 scoring: escalation is correct only if the perspective-audit agent was spawned.
+  A critic that flags all the ARIA issues but fails to escalate still scores S4=0.
+
+  False positive traps in source metadata: overlay dimming is correct (do not flag);
+  form field labels inside the modal are correct (do not flag). Penalise if the chain
+  flags either.
+
+  Acceptable critic verdicts: REVISE.

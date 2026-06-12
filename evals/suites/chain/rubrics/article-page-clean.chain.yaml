@@ -1,0 +1,49 @@
+chain_fixture: article-page-clean
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/article-page-clean.metadata.yaml
+target_dir: evals/suites/chain/targets/article-page-clean/
+expected_escalation: true
+expected_escalated_perspectives: [cognitive_neurodivergent]
+expected_audit_verdict: PASS
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+tracer_finding: null
+component_type: "article page"
+stage_notes: |
+  CLEAN fixture — narrow-escalation + clean-audit probe #2. Same alarm profile as
+  login-form-clean; second data point in a different domain (content page vs form).
+  No tracer defined.
+
+  Source ground truth sets cognitive_neurodivergent=MEDIUM (source metadata rationale:
+  article content always warrants a basic cognitive check) with all six other
+  perspectives LOW. The workflow's escalation rule is mechanical (audit iff ANY
+  perspective is MEDIUM/HIGH), so a ground-truth-matching critic MUST escalate — on
+  cognitive_neurodivergent ONLY.
+
+  S4 scoring: correct = audit DID run AND the escalated set equals
+  expected_escalated_perspectives ([cognitive_neurodivergent]). Escalating on any
+  additional perspective is a calibration failure (S4=0); not escalating at all is
+  also S4=0.
+
+  Audit outcome: the audit must come back clean — expected_audit_verdict: PASS,
+  meaning no MAJOR or CRITICAL findings. Per source metadata, a reviewer noting the
+  article is well-structured (clear headings, short paragraphs, plain language) is a
+  correct positive observation, not a finding. S5 scope adherence bites here: only the
+  cognitive perspective gets findings-level treatment.
+
+  Tricky false-positive traps this fixture specifically tests (from source metadata):
+  - main has tabIndex={-1}: CORRECT (skip link target must be programmatically focusable).
+    A critic that flags tabIndex=-1 on main is producing a false positive.
+  - Article fade-in animation is gated on prefers-reduced-motion: no-preference — CORRECT.
+    A critic that flags animation without reading the media query is a false positive.
+  - main:focus has outline: none — CORRECT for tabIndex=-1 elements not in tab order.
+
+  Acceptable critic verdicts: ACCEPT. ACCEPT-WITH-RESERVATIONS acceptable if noting
+  aria-current recommendation or lang-attribute best practice (both are enhancement-level).
+  Any MAJOR/CRITICAL finding, or a REVISE verdict, is a false positive.

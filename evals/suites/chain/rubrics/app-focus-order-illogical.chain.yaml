@@ -1,0 +1,36 @@
+chain_fixture: app-focus-order-illogical
+source_suite: a11y-critic
+source_metadata: evals/suites/a11y-critic/fixtures/app-focus-order-illogical.metadata.yaml
+target_dir: evals/suites/chain/targets/app-focus-order-illogical/
+expected_escalation: null
+s4_graded: false  # source suite (a11y-critic) carries no expected_alarm_levels — no escalation ground truth
+expected_alarm_levels: null
+s3_scoring_mode: must_find
+must_find_items:
+  - "Tab order does not match visual layout — CSS order: -1 on sidebar creates DOM/visual mismatch"
+tracer_finding: "Tab order does not match visual layout — CSS order: -1 on sidebar creates DOM/visual mismatch"
+component_type: "application layout"
+stage_notes: |
+  FLAWED fixture. No expected_alarm_levels in source metadata — S3 scored on
+  must_find detection (s3_scoring_mode: must_find).
+
+  Surface-level accessibility is strong: semantic HTML, landmarks, skip link, ARIA labels,
+  focus indicators on every element. All four bugs live in the interaction layer and require
+  different analysis skills to catch:
+  - CSS visual reordering vs DOM tab order (CSS order: -1 on .sidebar)
+  - Skip link target focusability (div#content has no tabindex=-1)
+  - Focus indicator contrast (~1.5:1 on sidebar, insufficient)
+  - Positive tabindex anti-pattern (tabIndex={1} on FAB)
+
+  The tracer is the CSS order/DOM mismatch (the must_find item). This is the hardest to
+  spot because the component renders semantic landmarks and the sidebar visually appears
+  first — a pure ARIA scan will not catch this.
+
+  S4 scoring: UNGRADED (s4_graded: false). The source suite carries no
+  expected_alarm_levels, so escalation cannot be derived from ground truth. A critic
+  may legitimately flag keyboard_motor at MEDIUM/HIGH here — this IS a focus-order
+  fixture — and that escalation would be neither correct nor incorrect by this rubric.
+  Record the escalation decision and any critic alarm levels as observational data
+  only; they do not count toward escalation accuracy or the PASS rule.
+
+  Acceptable critic verdicts: REVISE (there are MAJOR findings).

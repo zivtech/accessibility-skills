@@ -1,0 +1,43 @@
+chain_fixture: login-form-clean
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/login-form-clean.metadata.yaml
+target_dir: evals/suites/chain/targets/login-form-clean/
+expected_escalation: true
+expected_escalated_perspectives: [cognitive_neurodivergent]
+expected_audit_verdict: PASS
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+tracer_finding: null
+component_type: "login form"
+stage_notes: |
+  CLEAN fixture — narrow-escalation + clean-audit probe. No tracer defined: there is
+  no load-bearing finding to track through the chain.
+
+  Source ground truth sets cognitive_neurodivergent=MEDIUM with all six other
+  perspectives LOW. The workflow's escalation rule is mechanical (audit iff ANY
+  perspective is MEDIUM/HIGH), so a critic that matches ground truth exactly MUST
+  escalate — on cognitive_neurodivergent ONLY.
+
+  S4 scoring: correct = audit DID run AND the escalated set equals
+  expected_escalated_perspectives ([cognitive_neurodivergent]). Escalating on any
+  additional perspective is a calibration failure (S4=0); not escalating at all is
+  also S4=0.
+
+  Audit outcome: the audit must come back clean — expected_audit_verdict: PASS,
+  meaning no MAJOR or CRITICAL findings against this fixture. Any MAJOR/CRITICAL
+  audit finding is a false positive. S5 scope adherence bites here: the audit should
+  treat ONLY the cognitive perspective at findings level (no LOW leakage into
+  keyboard, screen reader, etc.).
+
+  False positive traps: type='password' is correct; autocomplete='current-password' is
+  correct; single 'Remember me' checkbox without fieldset is acceptable.
+
+  Acceptable critic verdicts: ACCEPT. ACCEPT-WITH-RESERVATIONS acceptable only if noting
+  enhancement-level suggestions (aria-live on error summary, show/hide toggle).
+  REVISE is a failure.

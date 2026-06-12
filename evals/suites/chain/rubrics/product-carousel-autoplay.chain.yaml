@@ -1,0 +1,31 @@
+chain_fixture: product-carousel-autoplay
+source_suite: perspectives
+source_metadata: evals/suites/perspectives/fixtures/product-carousel-autoplay.metadata.yaml
+target_dir: evals/suites/chain/targets/product-carousel-autoplay/
+expected_escalation: true
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: HIGH
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: MEDIUM
+tracer_finding: "No pause/stop control for auto-advancing content"
+component_type: "product carousel"
+stage_notes: |
+  Vestibular fixture. keyboard_motor is intentionally LOW (prev/next buttons work correctly).
+  A chain that only checks ARIA/keyboard will incorrectly report no issues and fail to
+  escalate — vestibular_motion HIGH should trigger audit.
+
+  The key diagnostic: does the critic pivot from "keyboard works" to vestibular/motion impact?
+  A critic that reports keyboard navigation as fine and adds MINOR aria-live finding but does NOT
+  surface the vestibular issues at HIGH has failed the fixture.
+
+  S4 scoring: audit must trigger because vestibular_motion=HIGH. cognitive_neurodivergent=MEDIUM
+  also qualifies, but vestibular is the primary escalation signal.
+
+  Tracer is the auto-advance/pause-control finding (WCAG 2.2.2) — the most impactful vestibular
+  failure. Must appear in audit output.
+
+  Acceptable critic verdicts: REVISE.
