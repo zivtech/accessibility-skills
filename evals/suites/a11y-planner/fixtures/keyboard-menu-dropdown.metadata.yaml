@@ -97,3 +97,39 @@ notes: |
   - No APG pattern reference
   - Focus management not addressed
   - Plan <2 pages or >5 pages
+
+scoring_keywords:
+  "APG Menu Button pattern reference with URL: https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/":
+    - "w3.org/WAI/ARIA/apg/patterns/menubutton"
+    - "apg/patterns/menubutton"
+    - "APG Menu"
+    - "APG menu button"
+  "aria-expanded='true'/'false' on trigger button, toggling on open/close":
+    - "aria-expanded"
+  "role='menu' on dropdown list container":
+    - "role=\"menu\""
+    - "role='menu'"
+  "role='menuitem' on each selectable item":
+    - "role=\"menuitem\""
+    - "role='menuitem'"
+    - "menuitem"
+  "Arrow Down/Up navigation within open menu":
+    - "ArrowDown"
+    - "ArrowUp"
+    - "arrow down"
+    - "arrow up"
+    - "Arrow Down"
+    - "Arrow Up"
+  "Escape key closes menu and restores focus to trigger button":
+    - "Escape"
+    - "focus restoration"
+    - "trigger button"
+  "Focus management decision: where focus goes on menu open (APG recommends first menuitem)":
+    - "first item"
+    - "first menuitem"
+    - "focus moves"
+    - "focus goes"
+  "WCAG 2.1.1 (Keyboard) citation":
+    - "2.1.1"
+  "WCAG 4.1.2 (Name, Role, Value) citation for aria-expanded":
+    - "4.1.2"

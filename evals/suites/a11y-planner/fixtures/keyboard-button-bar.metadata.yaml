@@ -91,3 +91,31 @@ notes: |
   - No icon label strategy documented
   - No focus indicator contrast specified
   - Plan >3 pages (scope creep for TRIVIAL)
+
+scoring_keywords:
+  "Native HTML `<button>` elements — not `<div>` or `<span>` with click handlers":
+    - "<button"
+    - "native button"
+    - "native <button"
+    - "button element"
+  "Icon labels via aria-label (icon-only) or visible text adjacent to icon":
+    - "aria-label"
+    - "aria-hidden"
+    - "icon"
+  "Focus indicator: minimum 3:1 contrast ratio against adjacent colors (WCAG 2.4.11)":
+    - "3:1"
+    - "focus indicator"
+    - "2.4.11"
+  "Keyboard activation: Enter and Space both fire button action (native behavior documented)":
+    - "Enter"
+    - "Space"
+    - "keyboard activation"
+    - "native"
+  "WCAG 2.1.1 (Keyboard) citation for keyboard operability":
+    - "2.1.1"
+  "Delete button danger styling: non-color indicator alongside color (icon, text, or border pattern)":
+    - "non-color"
+    - "icon"
+    - "1.4.1"
+    - "color alone"
+    - "danger"

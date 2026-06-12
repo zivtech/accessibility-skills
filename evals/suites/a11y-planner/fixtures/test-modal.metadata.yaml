@@ -47,16 +47,16 @@ key_evaluation_criteria:
 expected_findings:
   must_have:
     - APG Dialog Modal pattern URL citation
-    - Focus trap test: Tab through all focusable elements → verify no escape to background
+    - 'Focus trap test: Tab through all focusable elements → verify no escape to background'
     - Escape key close test with focus restoration to trigger button
     - Cancel button close test with focus restoration to trigger button
-    - Background inert test: verify background content not reachable during modal open
-    - NVDA announcement on open: role="dialog" announced, aria-labelledby title read, description read
-    - Conditional Delete button state test: aria-disabled="true" when input empty, changes on match
-    - WCAG 2.1.2 (No Keyboard Trap) cited — in the positive sense: focus is intentionally trapped by design
+    - 'Background inert test: verify background content not reachable during modal open'
+    - 'NVDA announcement on open: role="dialog" announced, aria-labelledby title read, description read'
+    - 'Conditional Delete button state test: aria-disabled="true" when input empty, changes on match'
+    - 'WCAG 2.1.2 (No Keyboard Trap) cited — in the positive sense: focus is intentionally trapped by design'
     - WCAG 2.4.3 (Focus Order) cited for focus movement on open and restoration on close
     - WCAG 4.1.2 (Name, Role, Value) cited for dialog role, labelledby, describedby
-    - Acceptance criteria: "Focus moves to dialog on open; Tab cycles within dialog; Escape closes and restores focus to trigger"
+    - 'Acceptance criteria: "Focus moves to dialog on open; Tab cycles within dialog; Escape closes and restores focus to trigger"'
 
   should_have:
     - Playwright assertions: await expect(backdrop).toHaveAttribute('inert') for background elements
@@ -107,3 +107,52 @@ notes: |
   Most baseline models treat "focus trap" and "background inaccessible" as the same test;
   they are distinct — focus trap is about Tab cycling within the modal, background inert
   is about whether elements outside receive focus or virtual cursor navigation.
+
+scoring_keywords:
+  "APG Dialog Modal pattern URL citation":
+    - "w3.org/WAI/ARIA/apg/patterns/dialog-modal"
+    - "apg/patterns/dialog"
+    - "APG Dialog"
+    - "APG"
+  "Focus trap test: Tab through all focusable elements → verify no escape to background":  # weak-match criterion
+    - "no escape"
+    - "does not escape"
+    - "cannot escape"
+    - "stays within"
+    - "remains within"
+  "Escape key close test with focus restoration to trigger button":
+    - "Escape"
+    - "focus restoration"
+    - "trigger button"
+  "Cancel button close test with focus restoration to trigger button":
+    - "Cancel"
+    - "focus restoration"
+    - "trigger"
+  "Background inert test: verify background content not reachable during modal open":
+    - "inert"
+    - "background"
+    - "not reachable"
+    - "not reach"
+  "NVDA announcement on open: role=\"dialog\" announced, aria-labelledby title read, description read":
+    - "NVDA"
+    - "role=\"dialog\""
+    - "aria-labelledby"
+    - "announced"
+  "Conditional Delete button state test: aria-disabled=\"true\" when input empty, changes on match":
+    - "aria-disabled"
+    - "delete"
+    - "conditional"
+    - "empty"
+  "WCAG 2.1.2 (No Keyboard Trap) cited — in the positive sense: focus is intentionally trapped by design":
+    - "2.1.2"
+    - "keyboard trap"
+    - "intentionally"
+  "WCAG 2.4.3 (Focus Order) cited for focus movement on open and restoration on close":
+    - "2.4.3"
+  "WCAG 4.1.2 (Name, Role, Value) cited for dialog role, labelledby, describedby":
+    - "4.1.2"
+  "Acceptance criteria: \"Focus moves to dialog on open; Tab cycles within dialog; Escape closes and restores focus to trigger\"":
+    - "focus moves to dialog"
+    - "Tab cycles"
+    - "Escape closes"
+    - "acceptance criteria"

@@ -56,9 +56,9 @@ expected_findings:
     - Tool selection rationale (axe DevTools + WAVE + manual keyboard + SR — complementary roles)
     - Testing matrix (page type × test method)
     - Prioritization framework definitions (CRITICAL blocks journey, MAJOR has workaround, MINOR is friction)
-    - Third-party handling: reCAPTCHA, YouTube documented as third-party in VPAT; best-effort testing only
-    - Shared component leverage: mega-menu, search, alerts, data table affect all pages
-    - VPAT reporting connection: audit output maps to VPAT 2.4 conformance claims
+    - 'Third-party handling: reCAPTCHA, YouTube documented as third-party in VPAT; best-effort testing only'
+    - 'Shared component leverage: mega-menu, search, alerts, data table affect all pages'
+    - 'VPAT reporting connection: audit output maps to VPAT 2.4 conformance claims'
     - Screen reader matrix covering at least NVDA, JAWS, VoiceOver desktop
     - WCAG 2.2 AA most-common failure criteria for government portals (1.4.3, 2.4.3, 3.3.1, 4.1.2)
     - a11y-critic checkpoints for each audit phase (automated complete, manual complete, SR complete, VPAT draft)
@@ -120,3 +120,54 @@ notes: |
   Scoring note: At COMPLEX scope, plans scoring 78+ that cover WCAG-EM, risk-based sampling,
   tool matrix, and third-party handling should be ACCEPT even if they miss mobile SR details
   or Dragon NaturallySpeaking specifics.
+
+scoring_keywords:
+  "WCAG-EM methodology reference (https://www.w3.org/TR/WCAG-EM/)":
+    - "WCAG-EM"
+    - "w3.org/TR/WCAG-EM"
+  "Risk-based page sampling strategy (authenticated flows first, shared components second)":
+    - "risk-based"
+    - "sampling"
+    - "authenticated"
+    - "priorit"
+  "Tool selection rationale (axe DevTools + WAVE + manual keyboard + SR — complementary roles)":
+    - "axe"
+    - "WAVE"
+    - "complementary"
+    - "manual"
+  "Testing matrix (page type × test method)":
+    - "matrix"
+    - "page type"
+    - "test method"
+  "Prioritization framework definitions (CRITICAL blocks journey, MAJOR has workaround, MINOR is friction)":
+    - "CRITICAL"
+    - "MAJOR"
+    - "MINOR"
+    - "prioritization"
+  "Third-party handling: reCAPTCHA, YouTube documented as third-party in VPAT; best-effort testing only":
+    - "reCAPTCHA"
+    - "YouTube"
+    - "third-party"
+    - "VPAT"
+  "Shared component leverage: mega-menu, search, alerts, data table affect all pages":
+    - "shared component"
+    - "mega-menu"
+    - "leverage"
+  "VPAT reporting connection: audit output maps to VPAT 2.4 conformance claims":
+    - "VPAT"
+    - "conformance"
+    - "2.4"
+  "Screen reader matrix covering at least NVDA, JAWS, VoiceOver desktop":
+    - "NVDA"
+    - "JAWS"
+    - "VoiceOver"
+    - "matrix"
+  "WCAG 2.2 AA most-common failure criteria for government portals (1.4.3, 2.4.3, 3.3.1, 4.1.2)":
+    - "1.4.3"
+    - "3.3.1"
+    - "4.1.2"
+    - "2.4.3"
+  "a11y-critic checkpoints for each audit phase (automated complete, manual complete, SR complete, VPAT draft)":
+    - "a11y-critic"
+    - "checkpoint"
+    - "phase"

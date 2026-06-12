@@ -45,13 +45,13 @@ key_evaluation_criteria:
 
 expected_findings:
   must_have:
-    - ARIA pattern for icon-only toggle: aria-pressed or role="switch" with aria-label
+    - 'ARIA pattern for icon-only toggle: aria-pressed or role="switch" with aria-label'
     - WCAG 1.4.3 (Contrast Minimum) — 4.5:1 text, applies in both modes
     - WCAG 1.4.11 (Non-Text Contrast) — 3:1 interactive elements and focus indicators, both modes
     - WCAG 2.4.7 (Focus Visible) — focus indicator re-evaluation for dark backgrounds
-    - Flag that existing #0066CC focus indicator must be re-tested against dark background colors
-    - Forced-colors / Windows High Contrast: distinct from dark mode, requires own testing
-    - localStorage + aria-pressed synchronization: DOM state must match persisted preference
+    - 'Flag that existing #0066CC focus indicator must be re-tested against dark background colors'
+    - 'Forced-colors / Windows High Contrast: distinct from dark mode, requires own testing'
+    - 'localStorage + aria-pressed synchronization: DOM state must match persisted preference'
 
   should_have:
     - WCAG 1.4.1 — confirm no information is expressed by color alone in either mode
@@ -104,3 +104,37 @@ notes: |
   - Conflates dark mode with forced-colors throughout
   - No aria-label on icon-only button
   - Focus indicator not mentioned in context of dark backgrounds
+
+scoring_keywords:
+  "ARIA pattern for icon-only toggle: aria-pressed or role=\"switch\" with aria-label":
+    - "aria-pressed"
+    - "role=\"switch\""
+    - "role='switch'"
+    - "aria-label"
+    - "icon-only"
+  "WCAG 1.4.3 (Contrast Minimum) — 4.5:1 text, applies in both modes":
+    - "1.4.3"
+    - "4.5:1"
+    - "both modes"
+  "WCAG 1.4.11 (Non-Text Contrast) — 3:1 interactive elements and focus indicators, both modes":
+    - "1.4.11"
+    - "3:1"
+  "WCAG 2.4.7 (Focus Visible) — focus indicator re-evaluation for dark backgrounds":
+    - "2.4.7"
+    - "Focus Visible"
+  "Flag that existing #0066CC focus indicator must be re-tested against dark background colors":
+    - "#0066CC"
+    - "0066CC"
+    - "re-test"
+    - "retest"
+    - "re-evaluat"
+  "Forced-colors / Windows High Contrast: distinct from dark mode, requires own testing":
+    - "forced-colors"
+    - "forced colors"
+    - "windows high contrast"
+    - "high contrast mode"
+  "localStorage + aria-pressed synchronization: DOM state must match persisted preference":
+    - "localStorage"
+    - "local storage"
+    - "synchronization"
+    - "persisted"

@@ -90,3 +90,35 @@ notes: |
   The fixture's intentional trap is the dangerouslySetInnerHTML constraint — plans that ignore it and recommend automated linting as sufficient will miss a real limitation. The CMS-driven heading order problem is the second trap — plans that say "use H1/H2/H3" without addressing how editorial staff controls heading levels (and that visual tokens can produce H3 before H2) are incomplete.
 
   Key differentiator from existing screenreader-landmark-regions fixture: this fixture provides existing broken code context (no landmarks, alt="" everywhere), gives a specific CMS constraint (editorial heading authoring), and requires an alt text decision tree rather than just landmark mapping. It is not a generic landmark exercise.
+
+scoring_keywords:
+  "Landmark regions: <header>, <nav aria-label='Primary'>, <main id='main-content'>, <aside aria-label='Related articles'>, <footer>":
+    - "<header"
+    - "<main"
+    - "<nav"
+    - "<footer"
+    - "aria-label"
+  "Heading hierarchy rule: H1 = article title only; H2 = major sections; H3 = subsections; no levels skipped":
+    - "heading hierarchy"
+    - "H1"
+    - "H2"
+    - "H3"
+    - "no levels skipped"
+    - "heading level"
+  "Alt text decision tree covering decorative, informative, and complex image cases":
+    - "alt text"
+    - "alt="
+    - "decorative"
+    - "informative"
+  "Skip link: <a href='#main-content' class='sr-only skip-link'>Skip to main content</a>":
+    - "skip link"
+    - "skip to main"
+    - "#main-content"
+  "WCAG 1.1.1 (Non-text Content) citation for images":
+    - "1.1.1"
+  "WCAG 1.3.1 (Info and Relationships) citation for heading hierarchy and landmarks":
+    - "1.3.1"
+  "WCAG 2.4.1 (Bypass Blocks) citation for skip link":
+    - "2.4.1"
+  "WCAG 2.4.6 (Headings and Labels) citation for heading strategy":
+    - "2.4.6"

@@ -50,8 +50,8 @@ expected_findings:
     - aria-selected attribute (true/false)
     - aria-controls linking tab to panel
     - aria-labelledby for panel labeling
-    - Keyboard model: Left/Right arrows, Home/End, Tab
-    - HTML structure stub: tablist, tab, tabpanel
+    - 'Keyboard model: Left/Right arrows, Home/End, Tab'
+    - 'HTML structure stub: tablist, tab, tabpanel'
     - aria-busy during loading
     - Live region for load completion announcements
     - Error state handling with aria-describedby
@@ -103,3 +103,41 @@ notes: |
   - Keyboard interaction with arrow keys
   - Error handling and recovery
   - 3-4 pages of detailed planning
+
+scoring_keywords:
+  "APG Tab pattern reference with URL":
+    - "w3.org/WAI/ARIA/apg/patterns/tabs"
+    - "apg/patterns/tabs"
+    - "APG Tab"
+    - "APG Tabs"
+  "aria-selected attribute (true/false)":
+    - "aria-selected"
+  "aria-controls linking tab to panel":
+    - "aria-controls"
+  "aria-labelledby for panel labeling":
+    - "aria-labelledby"
+  "Keyboard model: Left/Right arrows, Home/End, Tab":
+    - "ArrowLeft"
+    - "ArrowRight"
+    - "Left/Right"
+    - "Left Arrow"
+    - "Home/End"
+  "HTML structure stub: tablist, tab, tabpanel":
+    - "role=\"tablist\""
+    - "role='tablist'"
+    - "tablist"
+    - "tabpanel"
+    - "role=\"tab\""
+  "aria-busy during loading":
+    - "aria-busy"
+  "Live region for load completion announcements":
+    - "aria-live"
+    - "live region"
+    - "polite"
+  "Error state handling with aria-describedby":
+    - "aria-describedby"
+    - "error"
+  "WCAG citations":
+    - "2.1.1"
+    - "4.1.2"
+    - "4.1.3"

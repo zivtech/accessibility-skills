@@ -46,11 +46,11 @@ expected_findings:
     - APG Disclosure pattern reference with URL citation
     - aria-expanded attribute (true/false) documented
     - aria-controls attribute documented (linking button to panel)
-    - Keyboard interaction model: Tab focuses button, Space/Enter toggles
+    - 'Keyboard interaction model: Tab focuses button, Space/Enter toggles'
     - HTML structure stub showing button and panel
     - Focus indicator visibility requirement
     - Screen reader announcement on state change
-    - Test case: aria-expanded toggles on Space/Enter
+    - 'Test case: aria-expanded toggles on Space/Enter'
     - WCAG citations for each design decision
 
   should_have:
@@ -96,3 +96,35 @@ notes: |
   - Keyboard interaction design (Tab, Space, Enter, not custom keys)
   - Screen reader testing (what gets announced)
   - Proportional effort (1-2 pages is right for TRIVIAL, not 5-10)
+
+scoring_keywords:
+  "APG Disclosure pattern reference with URL citation":
+    - "w3.org/WAI/ARIA/apg/patterns/disclosure"
+    - "apg/patterns/disclosure"
+    - "APG"
+  "aria-expanded attribute (true/false) documented":
+    - "aria-expanded"
+  "aria-controls attribute documented (linking button to panel)":
+    - "aria-controls"
+  "Keyboard interaction model: Tab focuses button, Space/Enter toggles":
+    - "Space"
+    - "Enter/Space"
+    - "Enter or Space"
+    - "Enter key"
+    - "press Enter"
+  "HTML structure stub showing button and panel":
+    - "<button"
+  "Focus indicator visibility requirement":
+    - "focus indicator"
+    - "focus visible"
+    - "3:1"
+  "Screen reader announcement on state change":
+    - "announc"
+    - "aria-expanded"
+  "Test case: aria-expanded toggles on Space/Enter":  # weak-match criterion
+    - "test case"
+    - "testing"
+    - "verify"
+  "WCAG citations for each design decision":
+    - "2.1.1"
+    - "4.1.2"

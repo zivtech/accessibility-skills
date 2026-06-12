@@ -109,3 +109,58 @@ notes: |
   Scoring note: COMPLEX fixture tolerance for missing nice-to-have items is higher.
   A plan scoring 82+ that covers all must-have items is ACCEPT even without
   JAWS/VoiceOver-specific navigation details.
+
+scoring_keywords:
+  "Specific axe-core table rules (td-headers-attr, th-has-data-cells, scope-attr-valid)":
+    - "td-headers-attr"
+    - "th-has-data-cells"
+    - "scope-attr-valid"
+    - "axe"
+  "NVDA table mode navigation steps (Ctrl+Alt+Arrow, column header announcement per cell)":
+    - "Ctrl+Alt+Arrow"
+    - "Ctrl+Alt"
+    - "NVDA table mode"
+    - "table mode"
+  "aria-sort transition test (click → verify attribute → verify aria-live region content)":
+    - "aria-sort"
+    - "transition"
+    - "aria-live"
+    - "verify"
+  "Sort state acceptance criteria (\"aria-sort cycles none→ascending→descending→none\")":
+    - "aria-sort=\"none\""
+    - "aria-sort='none'"
+    - "ascending"
+    - "descending"
+    - "cycles"
+  "Pagination focus management test (Previous/Next click → verify focus target)":  # weak-match criterion
+    - "focus target"
+    - "focus lands"
+    - "focus moves"
+    - "focus after"
+    - "focus placement"
+  "Per-row dropdown test using APG Menu Button pattern":
+    - "APG"
+    - "menu button"
+    - "dropdown"
+    - "per-row"
+  "Arrow key navigation within per-row menu":
+    - "ArrowDown"
+    - "ArrowUp"
+    - "arrow key"
+  "Escape key closes per-row menu and restores focus to trigger button":
+    - "restor"
+    - "trigger button"
+    - "Escape closes"
+  "WCAG 1.3.1 (Info and Relationships) cited for table semantics":
+    - "1.3.1"
+  "WCAG 4.1.2 (Name, Role, Value) cited for aria-sort and menu button states":
+    - "4.1.2"
+  "WCAG 4.1.3 (Status Messages) cited for aria-live sort announcement":
+    - "4.1.3"
+  "WCAG 1.4.10 (Reflow) cited for responsive testing":
+    - "1.4.10"
+    - "reflow"
+  "Acceptance criteria per test area (measurable, not abstract)":
+    - "acceptance criteria"
+    - "measurable"
+    - "criteria"

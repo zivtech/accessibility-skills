@@ -108,3 +108,57 @@ notes: |
   - Appending DOM nodes to live region (announce reliability issue)
   - No WCAG 2.2.1 analysis for auto-dismiss timing
   - No focus management plan for dismiss action
+
+scoring_keywords:
+  "Three separate aria-live regions: id='critical-announcer' aria-live='assertive', id='warning-announcer' aria-live='polite', id='info-announcer' aria-live='polite'":
+    - "assertive"
+    - "polite"
+    - "aria-live"
+    - "three"
+    - "separate"
+  "role='alert' on all tiers is incorrect — role='alert' maps to aria-live='assertive'; must use explicit aria-live attributes instead":
+    - "role=\"alert\""
+    - "role='alert'"
+    - "incorrect"
+    - "assertive"
+    - "polite"
+  "Inject/replace pattern for live region content — do not append notification elements to the region":
+    - "inject"
+    - "replace"
+    - "not append"
+    - "inject/"
+  "Badge count: aria-label='Notifications, 5 unread' on bell button — updated on badge change":
+    - "aria-label"
+    - "bell button"
+    - "badge"
+    - "unread"
+  "Dismiss button as <button> element with label: 'Dismiss: Critical lab result, Patient Doe John'":
+    - "<button"
+    - "Dismiss:"
+    - "Dismiss Critical"
+  "Focus management on dismiss: next notification dismiss button or bell button if last":
+    - "focus management"
+    - "next notification"
+    - "bell button"
+    - "dismiss"
+  "WCAG 2.2.1 (Timing Adjustable): 10s Info auto-dismiss requires pause/stop/hide control":
+    - "2.2.1"
+    - "auto-dismiss"
+    - "pause"
+    - "timing"
+  "Notification history: <section aria-label='Notification history'> with aria-live='off'":
+    - "aria-live=\"off\""
+    - "aria-live='off'"
+    - "history"
+    - "notification history"
+  "WCAG 4.1.3 (Status Messages) citation for announcement strategy":
+    - "4.1.3"
+  "WCAG 2.2.1 (Timing Adjustable) citation for auto-dismiss":
+    - "2.2.1"
+  "WCAG 2.1.1 (Keyboard) citation for dismiss buttons":
+    - "2.1.1"
+  "Safety implication noted: missed Critical notification in EHR context is a patient safety risk":
+    - "patient safety"
+    - "EHR"
+    - "critical"
+    - "safety"

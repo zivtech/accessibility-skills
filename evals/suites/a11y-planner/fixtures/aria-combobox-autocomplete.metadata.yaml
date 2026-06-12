@@ -52,9 +52,9 @@ expected_findings:
     - aria-owns or aria-controls linking input to listbox
     - aria-activedescendant for keyboard navigation within results
     - aria-autocomplete="list" on input
-    - Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab
-    - HTML structure stub: input, listbox, option elements
-    - Focus management plan: focus remains in input during navigation
+    - 'Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab'
+    - 'HTML structure stub: input, listbox, option elements'
+    - 'Focus management plan: focus remains in input during navigation'
     - aria-busy during async loading
     - WCAG citations for each design decision
     - Test cases for keyboard, screen reader, async scenarios
@@ -113,3 +113,42 @@ notes: |
   - Dynamic updates and announcements
   - Async state handling (loading, delays, errors)
   - 3-4 pages of detailed planning
+
+scoring_keywords:
+  "APG Combobox pattern reference with URL":
+    - "w3.org/WAI/ARIA/apg/patterns/combobox"
+    - "apg/patterns/combobox"
+  "aria-expanded attribute (true/false) for dropdown visibility":
+    - "aria-expanded"
+  "aria-owns or aria-controls linking input to listbox":
+    - "aria-owns"
+    - "aria-controls"
+  "aria-activedescendant for keyboard navigation within results":
+    - "aria-activedescendant"
+  "aria-autocomplete=\"list\" on input":
+    - "aria-autocomplete"
+    - 'aria-autocomplete="list"'
+  "Keyboard model: typing, Arrow Up/Down, Enter, Escape, Tab":
+    - "ArrowDown"
+    - "ArrowUp"
+    - "arrow down"
+    - "arrow up"
+    - "Escape"
+  "HTML structure stub: input, listbox, option elements":
+    - "role=\"listbox\""
+    - "role='listbox'"
+    - "listbox"
+    - "<input"
+  "Focus management plan: focus remains in input during navigation":
+    - "focus remains in input"
+    - "focus stays in input"
+    - "focus in the input"
+  "aria-busy during async loading":
+    - "aria-busy"
+  "WCAG citations for each design decision":
+    - "2.1.1"
+    - "4.1.2"
+  "Test cases for keyboard, screen reader, async scenarios":  # weak-match criterion
+    - "test case"
+    - "test plan"
+    - "testing"

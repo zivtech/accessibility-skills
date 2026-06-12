@@ -38,8 +38,31 @@ PROMPT_PREFIX = "Review the following React component for accessibility design i
 PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
 
 PLANNER_FIXTURES = [
+    "aria-combobox-autocomplete",
+    "aria-data-table-sorting",
+    "aria-disclosure-widget",
     "aria-modal-form-validation",
+    "aria-tab-dynamic-content",
+    "keyboard-breadcrumb",
+    "keyboard-button-bar",
+    "keyboard-menu-dropdown",
+    "keyboard-modal-focus-trap",
     "keyboard-roving-tabindex",
+    "sr-article-page",
+    "sr-form-field-help",
+    "sr-notification-system",
+    "sr-product-listing",
+    "sr-search-results-live",
+    "test-data-table",
+    "test-form",
+    "test-modal",
+    "test-multi-page-audit",
+    "test-simple-button",
+    "visual-animated-transition",
+    "visual-dark-mode",
+    "visual-data-viz",
+    "visual-form-validation",
+    "visual-status-colors",
 ]
 
 PERSPECTIVE_PILOT_FIXTURES = [
@@ -80,7 +103,7 @@ ALL_PERSPECTIVE_FIXTURES = [
     "video-tutorial-no-captions",
 ]
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/generate")
 
 OLLAMA_MODELS = ["llama3.3:70b", "qwen3:32b", "deepseek-r1:70b", "qwen3.5:27b"]
 SMALL_MODELS = ["qwen3.5:latest"]  # 6.6 GB — test as lightweight tier

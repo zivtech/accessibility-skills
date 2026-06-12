@@ -55,8 +55,8 @@ expected_findings:
     - WCAG 3.3.1 (Error Identification) cited for error message tests
     - WCAG 3.3.2 (Labels or Instructions) cited for label association tests
     - WCAG 4.1.3 (Status Messages) cited for the role="alert" banner
-    - Acceptance criteria: aria-invalid="true" present when field has visible error
-    - Acceptance criteria: aria-describedby links input to visible error text
+    - 'Acceptance criteria: aria-invalid="true" present when field has visible error'
+    - 'Acceptance criteria: aria-describedby links input to visible error text'
 
   should_have:
     - JAWS-specific form mode behavior (Forms Mode auto-activates on <form>)
@@ -101,3 +101,48 @@ notes: |
   Key discriminator: Does the plan distinguish NVDA Browse Mode from Forms Mode?
   A plan that describes "pressing Tab to navigate to form fields" without acknowledging
   that NVDA's Forms Mode is active shows a surface-level understanding of screen reader testing.
+
+scoring_keywords:
+  "Specific axe-core rule IDs for forms (label, label-content-name-mismatch, aria-required-attr, color-contrast)":
+    - "label-content-name-mismatch"
+    - "aria-required-attr"
+    - "color-contrast"
+  "NVDA Forms Mode documentation (F to enter, field labels read, blur errors in context)":
+    - "Forms Mode"
+    - "forms mode"
+    - "NVDA"
+    - "F key"
+  "Keyboard Tab order test covering all 8 fields and submit button":
+    - "Tab order"
+    - "tab order"
+    - "8 fields"
+    - "fields"
+  "Blur error announcement test (focus field → leave empty → Tab out → verify NVDA announces error text)":
+    - "blur"
+    - "Tab out"
+    - "NVDA"
+    - "error text"
+  "Submit-time error summary banner test (role=\"alert\", focus management to banner)":
+    - "role=\"alert\""
+    - "role='alert'"
+    - "error summary"
+    - "banner"
+  "Show/hide password toggle test (focus stays in password area, role=\"button\" announced, state change announced)":
+    - "show/hide password"
+    - "password toggle"
+    - "show password"
+    - "hide password"
+  "WCAG 3.3.1 (Error Identification) cited for error message tests":
+    - "3.3.1"
+  "WCAG 3.3.2 (Labels or Instructions) cited for label association tests":
+    - "3.3.2"
+  "WCAG 4.1.3 (Status Messages) cited for the role=\"alert\" banner":
+    - "4.1.3"
+  "Acceptance criteria: aria-invalid=\"true\" present when field has visible error":
+    - "aria-invalid"
+    - "aria-invalid=\"true\""
+    - "acceptance criteria"
+  "Acceptance criteria: aria-describedby links input to visible error text":
+    - "aria-describedby"
+    - "links input"
+    - "error text"

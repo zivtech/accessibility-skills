@@ -108,3 +108,39 @@ notes: |
   - a11y-planner: 75-90 (should handle role decision and roving tabindex; group navigation ambiguity is the differentiator)
   - baseline-zero-shot: 40-60 (likely to choose menubar or miss roving tabindex entirely)
   - baseline-few-shot: 50-65 (may get roving tabindex from example but miss the role decision)
+
+scoring_keywords:
+  "role=\"toolbar\" chosen over role=\"menubar\" with rationale":
+    - "role=\"toolbar\""
+    - "role='toolbar'"
+    - "toolbar"
+  "APG Toolbar pattern reference with URL":
+    - "w3.org/WAI/ARIA/apg/patterns/toolbar"
+    - "apg/patterns/toolbar"
+    - "APG Toolbar"
+  "Roving tabindex documented (tabindex=\"0\" on active, tabindex=\"-1\" on others)":
+    - "tabindex=\"0\""
+    - "tabindex='0'"
+    - "tabindex=\"-1\""
+    - "roving tabindex"
+  "Arrow key navigation (Left/Right cycle, wrapping)":
+    - "ArrowLeft"
+    - "ArrowRight"
+    - "arrow key"
+    - "Left/Right"
+  "aria-pressed=\"true\"/\"false\" for toggle buttons":
+    - "aria-pressed"
+  "Action buttons distinguished from toggle buttons":
+    - "aria-pressed"
+    - "action button"
+  "Toolbar aria-label (not \"Format Menu\")":
+    - "aria-label"
+    - "toolbar"
+  "WCAG citations for each design decision":
+    - "2.1.1"
+    - "4.1.2"
+    - "2.4.7"
+  "Keyboard test cases (Tab enters, arrows navigate, Tab exits)":  # weak-match criterion
+    - "test case"
+    - "testing"
+    - "Tab exits"

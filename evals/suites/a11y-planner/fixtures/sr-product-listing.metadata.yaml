@@ -101,3 +101,53 @@ notes: |
   - <del> for sale price without aria-hidden (announces as "deleted")
   - role="gridcell" on product cards
   - No star rating plan
+
+scoring_keywords:
+  "Product list as <ul role='list'> with <li> cards — not <div> grid":
+    - "<ul"
+    - "role=\"list\""
+    - "role='list'"
+    - "<li"
+  "Star rating: aria-hidden='true' on visual stars, <span class='sr-only'>4 out of 5 stars</span>":
+    - "aria-hidden"
+    - "sr-only"
+    - "out of 5 stars"
+    - "star rating"
+  "Sale price: <s aria-hidden='true'>$149</s><span class='sr-only'>Was $149, now</span> $89":
+    - "<s "
+    - "sr-only"
+    - "sale price"
+    - "$149"
+    - "Was $149"
+  "Price range slider: role='slider' aria-valuenow aria-valuemin aria-valuemax aria-valuetext='Minimum price: $25'":
+    - "role=\"slider\""
+    - "role='slider'"
+    - "aria-valuenow"
+    - "aria-valuemin"
+    - "aria-valuemax"
+  "Two role='slider' elements for two-handle price range — coordinated min/max constraints via aria-valuemin/max":
+    - "two-handle"
+    - "aria-valuemin"
+    - "aria-valuemax"
+    - "role=\"slider\""
+    - "role='slider'"
+  "Pre-existing aria-live='polite' aria-atomic='true' region in DOM for cart confirmation":
+    - "aria-live"
+    - "aria-atomic"
+    - "pre-existing"
+    - "polite"
+  "Cart badge: aria-label='Cart, 3 items' on cart button — NOT a live region per increment":  # weak-match criterion
+    - "Cart, 3 items"
+    - "not a live"
+    - "not live"
+    - "no live region"
+  "Availability: text badge (In Stock / Low Stock / Out of Stock) — color not sole indicator":
+    - "text badge"
+    - "in stock"
+    - "out of stock"
+    - "not color"
+    - "color alone"
+  "WCAG 1.4.1 (Use of Color) for availability badge":
+    - "1.4.1"
+  "WCAG 4.1.3 (Status Messages) for cart confirmation and count":
+    - "4.1.3"
