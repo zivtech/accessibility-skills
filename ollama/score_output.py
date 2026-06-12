@@ -12,20 +12,16 @@ Checks:
 """
 
 import json
+import os
 import sys
 import re
 import yaml
 
-
-def strip_thinking(text: str) -> str:
-    """Strip <think>...</think> blocks emitted by reasoning models (e.g., DeepSeek-R1).
-
-    Scoring should only evaluate the final output, not internal chain-of-thought.
-    """
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+sys.path.insert(0, os.path.dirname(__file__))
+from score_common import strip_thinking, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
 
 
-def load_response(path: str) -> str:
+def load_response(path: str) -> tuple[str, bool]:
     with open(path) as f:
         data = json.load(f)
     return strip_thinking(data.get("response", ""))
@@ -80,7 +76,8 @@ def check_finding(text: str, finding: dict) -> dict:
     elif "fieldset" in description.lower() or "group" in description.lower():
         keywords = ["fieldset", "group", "legend"]
     else:
-        keywords = description.lower().split()[:3]
+        from score_common import fallback_keywords
+        keywords = [kw.lower() for kw in fallback_keywords(description)]
 
     found = any(kw.lower() in text.lower() for kw in keywords)
 
@@ -98,11 +95,12 @@ def check_finding(text: str, finding: dict) -> dict:
     }
 
 
-def count_false_positives(text: str) -> dict:
+def count_false_positives(text: str, declared_verdict: str) -> dict:
     """For CLEAN fixtures: check if the model raised actual accessibility findings.
 
     Uses structured signals (numbered findings, severity-tagged items) rather than
     keyword matching, which false-fires on section headers and positive statements.
+    Accepts the already-computed verdict to avoid re-deriving it.
     """
     finding_patterns = [
         r"(?:Finding|Issue)\s*#?\d+\s*[:.]",
@@ -114,9 +112,7 @@ def count_false_positives(text: str) -> dict:
     for pattern in finding_patterns:
         finding_count += len(re.findall(pattern, text, re.MULTILINE | re.IGNORECASE))
 
-    # Check if the declared verdict (not mentions in hypothetical sections) is REJECT/REVISE
-    declared = check_verdict(text)
-    reject_revise = declared in ("REJECT", "REVISE")
+    reject_revise = declared_verdict in ("REJECT", "REVISE")
 
     return {
         "structured_findings": finding_count,
@@ -125,7 +121,11 @@ def count_false_positives(text: str) -> dict:
 
 
 def score(response_path: str, rubric_path: str):
-    text = load_response(response_path)
+    text, truncated = load_response(response_path)
+    if truncated:
+        print("Response truncated mid-<think> block — not scoring")
+        print("Status: INCOMPLETE — truncated response")
+        return
     rubric = load_rubric(rubric_path)
     difficulty = rubric.get("difficulty", "unknown")
 
@@ -151,7 +151,7 @@ def score(response_path: str, rubric_path: str):
         print(f"Verdict correct: {'YES' if correct_verdict else 'NO — FALSE ALARM'}")
         print()
 
-        fp = count_false_positives(text)
+        fp = count_false_positives(text, verdict)
         print(f"False positive signals:")
         print(f"  Structured findings (numbered/tagged): {fp['structured_findings']}")
         print(f"  Wrong verdict (REJECT/REVISE): {fp['wrong_verdict']}")
@@ -185,14 +185,16 @@ def score(response_path: str, rubric_path: str):
             print(f"Must-articulate tradeoffs: {sum(1 for r in must_articulate if r['found'])}/{len(must_articulate)}")
             for r in must_articulate:
                 marker = "+" if r["found"] else "X"
-                print(f"  {marker} {r['description'][:80]}")
+                kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+                print(f"  {marker} {r['description'][:80]}{kw_suffix}")
             print()
 
         if should_find:
             print(f"Should-find issues: {sum(1 for r in should_find if r['found'])}/{len(should_find)}")
             for r in should_find:
                 marker = "+" if r["found"] else "X"
-                print(f"  {marker} {r['description'][:80]}")
+                kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+                print(f"  {marker} {r['description'][:80]}{kw_suffix}")
             print()
 
         articulate_score = sum(1 for r in must_articulate if r["found"]) / max(len(must_articulate), 1)
@@ -221,20 +223,22 @@ def score(response_path: str, rubric_path: str):
         for r in must_find:
             marker = "+" if r["found"] else "X"
             wcag_marker = "W" if r["wcag_cited"] else "-"
-            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}")
+            kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}{kw_suffix}")
         print()
 
         print(f"Should-find issues: {sum(1 for r in should_find if r['found'])}/{len(should_find)}")
         for r in should_find:
             marker = "+" if r["found"] else "X"
             wcag_marker = "W" if r["wcag_cited"] else "-"
-            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}")
+            kw_suffix = f"  (keywords: {r['keywords_checked']})" if not r["found"] else ""
+            print(f"  {marker} [{wcag_marker}] {r['description'][:80]}{kw_suffix}")
         print()
 
         must_score = sum(1 for r in must_find if r["found"]) / max(len(must_find), 1)
         print(f"Must-find detection rate: {must_score:.0%}")
-        print(f"Abort threshold: 40%")
-        print(f"Status: {'PASS' if must_score >= 0.4 else 'FAIL'}")
+        print(f"Abort threshold: {MUST_FIND_ABORT_THRESHOLD:.0%} (escalation gate — see score_common.py)")
+        print(f"Status: {'PASS' if must_score >= MUST_FIND_ABORT_THRESHOLD else 'FAIL'}")
 
 
 if __name__ == "__main__":

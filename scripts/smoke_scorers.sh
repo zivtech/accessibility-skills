@@ -86,6 +86,31 @@ run_case \
     "Score: 2/2" \
     "Status: PASS"
 
+# Case 6: critic truncated response (must NOT pass)
+run_case \
+    "critic truncated <think> (INCOMPLETE, not PASS)" \
+    "ollama/score_output.py" \
+    "critic-truncated-response.json" \
+    "critic-hasbugs.metadata.yaml" \
+    "Status: INCOMPLETE"
+
+# Case 7: perspective truncated response (must NOT pass)
+run_case \
+    "perspective truncated <think> (INCOMPLETE, not PASS)" \
+    "ollama/score_perspective.py" \
+    "perspective-truncated-response.json" \
+    "perspective-hasbugs.metadata.yaml" \
+    "Status: INCOMPLETE"
+
+# Case 8: perspective hedged-clean response (PASS despite mentioning revise)
+run_case \
+    "perspective hedged-clean (Verdict: PASS despite hedged language)" \
+    "ollama/score_perspective.py" \
+    "perspective-hedged-clean-response.json" \
+    "perspective-clean.metadata.yaml" \
+    "Verdict: PASS" \
+    "Status: PASS"
+
 echo
 echo "Results: $pass_count passed, $fail_count failed"
 if [ "$fail_count" -gt 0 ]; then

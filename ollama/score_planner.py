@@ -8,17 +8,17 @@ Checks key sections and content quality per the planner evaluation criteria.
 """
 
 import json
+import os
 import re
 import sys
 
 import yaml
 
+sys.path.insert(0, os.path.dirname(__file__))
+from score_common import strip_thinking, PLANNER_SECTION_PASS_THRESHOLD  # noqa: E402
 
-def strip_thinking(text: str) -> str:
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
-
-def load_response(path: str) -> str:
+def load_response(path: str) -> tuple[str, bool]:
     with open(path) as f:
         data = json.load(f)
     return strip_thinking(data.get("response", ""))
@@ -129,7 +129,7 @@ def score_planner(text: str, rubric: dict):
     has_html = bool(re.search(r"```(?:html|jsx|tsx)?[\s\S]*?```", text))
     print(f"HTML/JSX code stubs: {'YES' if has_html else 'NO'}")
 
-    print(f"\nStatus: {'PASS' if found / max(total, 1) >= 0.7 else 'NEEDS REVIEW'}")
+    print(f"\nStatus: {'PASS' if found / max(total, 1) >= PLANNER_SECTION_PASS_THRESHOLD else 'NEEDS REVIEW'}")
 
 
 if __name__ == "__main__":
@@ -137,6 +137,10 @@ if __name__ == "__main__":
         print(f"Usage: {sys.argv[0]} <response.json> <metadata.yaml>")
         sys.exit(1)
 
-    text = load_response(sys.argv[1])
+    text, truncated = load_response(sys.argv[1])
+    if truncated:
+        print("Response truncated mid-<think> block — not scoring")
+        print("Status: INCOMPLETE — truncated response")
+        sys.exit(0)
     rubric = load_rubric(sys.argv[2])
     score_planner(text, rubric)
