@@ -25,5 +25,5 @@ jobs:
         run: python3 scripts/validate_fixtures.py
       - name: Scorer smoke tests
         run: bash scripts/smoke_scorers.sh
-      - name: Mirror drift report (non-blocking)
-        run: python3 scripts/check_mirrors.py
+      - name: Mirror drift check (strict)
+        run: python3 scripts/check_mirrors.py --strict

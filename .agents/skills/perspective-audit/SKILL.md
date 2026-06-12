@@ -62,8 +62,8 @@ Do not run checklists for perspectives at LOW.
 
 Read both reference files at invocation:
 
-1. `.Codex/skills/perspective-audit/references/perspectives.md` — Read **only the sections** for escalated perspectives. Do not load sections for LOW-rated perspectives.
-2. `.Codex/skills/perspective-audit/references/arrm-perspective-mapping.md` — Read in full for finding routing.
+1. `.agents/skills/perspective-audit/references/perspectives.md` — Read **only the sections** for escalated perspectives. Do not load sections for LOW-rated perspectives.
+2. `.agents/skills/perspective-audit/references/arrm-perspective-mapping.md` — Read in full for finding routing.
 
 ### Step 3 — Read the artifact under review
 
@@ -156,5 +156,5 @@ After all escalated perspectives are reviewed, output the combined summary:
 
 ## Reference Files
 
-- `.Codex/skills/perspective-audit/references/perspectives.md` — JTBD checklists, red flags, and evidence requirements for all 7 perspectives.
-- `.Codex/skills/perspective-audit/references/arrm-perspective-mapping.md` — ARRM role routing decision tree and finding output format.
+- `.agents/skills/perspective-audit/references/perspectives.md` — JTBD checklists, red flags, and evidence requirements for all 7 perspectives.
+- `.agents/skills/perspective-audit/references/arrm-perspective-mapping.md` — ARRM role routing decision tree and finding output format.
