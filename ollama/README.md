@@ -52,6 +52,17 @@ All platforms achieve 100% on HAS-BUGS and FLAWED fixtures. Failures are CLEAN (
 
 See [BENCHMARK.md](BENCHMARK.md) for full results.
 
+### Persistent results
+
+By default raw responses land in `/tmp` (cleared on reboot). To keep artifacts
+for reproducible scoring, set `BENCHMARK_RESULTS_DIR`, e.g.:
+
+    export BENCHMARK_RESULTS_DIR="$HOME/a11y-bench-results"
+    mkdir -p "$BENCHMARK_RESULTS_DIR"
+
+Published tables in BENCHMARK.md should only cite runs whose artifacts were
+kept this way.
+
 ## Benchmark Results Summary
 
 ### a11y-critic

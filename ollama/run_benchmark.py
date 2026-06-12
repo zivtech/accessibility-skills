@@ -20,6 +20,7 @@ import time
 import urllib.request
 
 BASE_DIR = os.path.dirname(__file__)
+RESULTS_DIR = os.environ.get("BENCHMARK_RESULTS_DIR", "/tmp")
 FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-critic", "fixtures")
 SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "a11y-critic", "SKILL.md")
 
@@ -132,6 +133,28 @@ ALREADY_BENCHMARKED = {
 }
 
 
+import re as _re
+
+
+def make_model_tag(model):
+    """qwen3:32b -> qwen3-32b ; deepseek-r1:70b -> deepseek-r1-70b (dots dropped)."""
+    return model.replace(":", "-").replace(".", "")
+
+
+def validate_fixture_id(fixture_id):
+    """Exit with error if fixture_id is not safe kebab-case."""
+    if not _re.fullmatch(r"[a-z0-9][a-z0-9-]*", fixture_id):
+        sys.exit(f"Invalid fixture id: {fixture_id!r} (expected kebab-case)")
+
+
+def write_json_atomic(path, data):
+    """Write JSON to path atomically via a .tmp sibling (safe under Ctrl-C)."""
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(data, f, indent=2)
+    os.replace(tmp, path)
+
+
 def strip_frontmatter(content):
     if content.startswith("---"):
         end = content.index("---", 3)
@@ -202,8 +225,8 @@ def run_ollama(model, fixture_id, system_prompt):
         "options": {"num_ctx": 16384, "temperature": 0.3},
     }
 
-    model_tag = model.replace(":", "-").replace(".", "")
-    out_path = f"/tmp/ollama-bench-{fixture_id}-{model_tag}-response.json"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-bench-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"Model: {model} | Fixture: {fixture_id}")
@@ -241,8 +264,7 @@ def run_ollama(model, fixture_id, system_prompt):
         },
     }
 
-    with open(out_path, "w") as f:
-        json.dump(data, f, indent=2)
+    write_json_atomic(out_path, data)
 
     resp_len = len(response_text)
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
@@ -266,8 +288,8 @@ def run_planner(model, fixture_id, system_prompt):
         "options": {"num_ctx": 32768, "temperature": 0.3},
     }
 
-    model_tag = model.split(":")[0].replace(".", "").replace("-", "")
-    out_path = f"/tmp/ollama-planner-{fixture_id}-{model_tag}-response.json"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-planner-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"PLANNER | Model: {model} | Fixture: {fixture_id}")
@@ -292,8 +314,7 @@ def run_planner(model, fixture_id, system_prompt):
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
     }
 
-    with open(out_path, "w") as f:
-        json.dump(data, f, indent=2)
+    write_json_atomic(out_path, data)
 
     resp_len = len(data.get("response", ""))
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
@@ -321,8 +342,8 @@ def run_perspective(model, fixture_id, system_prompt):
         "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
 
-    model_tag = model.split(":")[0].replace(".", "").replace("-", "")
-    out_path = f"/tmp/ollama-perspective-{fixture_id}-{model_tag}-response.json"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-perspective-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"PERSPECTIVE | Model: {model} | Fixture: {fixture_id}")
@@ -361,8 +382,7 @@ def run_perspective(model, fixture_id, system_prompt):
         },
     }
 
-    with open(out_path, "w") as f:
-        json.dump(data, f, indent=2)
+    write_json_atomic(out_path, data)
 
     resp_len = len(response_text)
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
@@ -393,6 +413,7 @@ def main():
             print("Usage: run_benchmark.py single <model> <fixture-id>")
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
         system_prompt = load_system_prompt()
         run_ollama(model, fixture_id, system_prompt)
 
@@ -401,6 +422,7 @@ def main():
             print("Usage: run_benchmark.py planner <model> <fixture-id>")
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
         system_prompt = load_planner_system_prompt()
         run_planner(model, fixture_id, system_prompt)
 
@@ -417,6 +439,7 @@ def main():
             print("Usage: run_benchmark.py perspective <model> <fixture-id>")
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
         system_prompt = load_perspective_system_prompt()
         run_perspective(model, fixture_id, system_prompt)
 
@@ -429,9 +452,9 @@ def main():
     elif cmd == "perspective-remaining":
         import glob as _glob
         model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
-        model_tag = model.split(":")[0].replace(".", "").replace("-", "")
+        model_tag = make_model_tag(model)
         done = set()
-        for f in _glob.glob(f"/tmp/ollama-perspective-*-{model_tag}-response.json"):
+        for f in _glob.glob(os.path.join(RESULTS_DIR, f"ollama-perspective-*-{model_tag}-response.json")):
             name = os.path.basename(f).replace("ollama-perspective-", "").replace(f"-{model_tag}-response.json", "")
             done.add(name)
         remaining = [f for f in ALL_PERSPECTIVE_FIXTURES if f not in done]
@@ -451,10 +474,10 @@ def main():
     elif cmd == "critic-remaining":
         import glob as _cglob
         model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
-        model_tag = model.replace(":", "-").replace(".", "")
+        model_tag = make_model_tag(model)
         done = set()
-        for f in _cglob.glob(f"/tmp/ollama-bench-*-{model_tag}-response.json") + \
-                 _cglob.glob(f"/tmp/ollama-fullproto-*-{model_tag}-response.json"):
+        for f in _cglob.glob(os.path.join(RESULTS_DIR, f"ollama-bench-*-{model_tag}-response.json")) + \
+                 _cglob.glob(os.path.join(RESULTS_DIR, f"ollama-fullproto-*-{model_tag}-response.json")):
             name = os.path.basename(f)
             name = name.replace("ollama-bench-", "").replace("ollama-fullproto-", "")
             name = name.replace(f"-{model_tag}-response.json", "")
@@ -477,8 +500,8 @@ def main():
         import glob
         import subprocess
         score_script = os.path.join(os.path.dirname(__file__), "score_output.py")
-        responses = sorted(glob.glob("/tmp/ollama-bench-*-response.json"))
-        responses += sorted(glob.glob("/tmp/ollama-fullproto-*-response.json"))
+        responses = sorted(glob.glob(os.path.join(RESULTS_DIR, "ollama-bench-*-response.json")))
+        responses += sorted(glob.glob(os.path.join(RESULTS_DIR, "ollama-fullproto-*-response.json")))
         for resp in responses:
             with open(resp) as f:
                 bench = json.load(f).get("_benchmark", {})
@@ -509,7 +532,7 @@ def main():
         if not os.path.exists(score_script):
             print(f"ERROR: {score_script} not found")
             sys.exit(1)
-        responses = sorted(glob.glob("/tmp/ollama-perspective-*-response.json"))
+        responses = sorted(glob.glob(os.path.join(RESULTS_DIR, "ollama-perspective-*-response.json")))
         for resp in responses:
             with open(resp) as f:
                 bench = json.load(f).get("_benchmark", {})
