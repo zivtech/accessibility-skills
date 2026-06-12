@@ -14,6 +14,8 @@ Usage:
     python3 ollama/run_cloud_benchmark.py codex <tier> <fixture-id>
     python3 ollama/run_cloud_benchmark.py codex-all <tier>
     python3 ollama/run_cloud_benchmark.py codex-escalate [--skill critic|perspective]
+    python3 ollama/run_cloud_benchmark.py codex-planner <tier> <fixture-id>
+    python3 ollama/run_cloud_benchmark.py codex-planner-all <tier>
 
     # Gemini (requires gemini CLI auth; critic suite only — plan 007)
     python3 ollama/run_cloud_benchmark.py gemini <tier> <fixture-id>
@@ -25,6 +27,7 @@ Usage:
     python3 ollama/run_cloud_benchmark.py score-cloud
     python3 ollama/run_cloud_benchmark.py score-cloud-perspective
     python3 ollama/run_cloud_benchmark.py score-gemini
+    python3 ollama/run_cloud_benchmark.py score-codex-planner
 
     # Show escalation summary
     python3 ollama/run_cloud_benchmark.py summary
@@ -106,6 +109,9 @@ CLAUDE_TIERS = [
 ]
 
 CODEX_TIERS = [
+    # 2026-06-12: ChatGPT-account codex CLI rejects gpt-5.2 (and the CLI
+    # default gpt-5.3-codex) with "model is not supported"; gpt-5.5 works.
+    # The 5.2 tiers are retained for the historical critic-lane results.
     {"name": "5.2", "model": "gpt-5.2", "effort": None, "label": "GPT-5.2"},
     {"name": "5.2-low", "model": "gpt-5.2", "effort": "low", "label": "GPT-5.2 (low)"},
     {"name": "5.5", "model": "gpt-5.5", "effort": None, "label": "GPT-5.5"},
@@ -150,6 +156,39 @@ ALL_PERSPECTIVE_FIXTURES = [
     "tab-panel-arrow-keys", "video-tutorial-no-captions",
 ]
 
+# KEEP IN SYNC with run_benchmark.py (planner constants)
+PLANNER_SKILL_PATH = os.path.join(REPO_DIR, ".claude", "skills", "a11y-planner", "SKILL.md")
+PLANNER_FIXTURES_DIR = os.path.join(REPO_DIR, "evals", "suites", "a11y-planner", "fixtures")
+PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
+
+PLANNER_FIXTURES = [
+    "aria-combobox-autocomplete",
+    "aria-data-table-sorting",
+    "aria-disclosure-widget",
+    "aria-modal-form-validation",
+    "aria-tab-dynamic-content",
+    "keyboard-breadcrumb",
+    "keyboard-button-bar",
+    "keyboard-menu-dropdown",
+    "keyboard-modal-focus-trap",
+    "keyboard-roving-tabindex",
+    "sr-article-page",
+    "sr-form-field-help",
+    "sr-notification-system",
+    "sr-product-listing",
+    "sr-search-results-live",
+    "test-data-table",
+    "test-form",
+    "test-modal",
+    "test-multi-page-audit",
+    "test-simple-button",
+    "visual-animated-transition",
+    "visual-dark-mode",
+    "visual-data-viz",
+    "visual-form-validation",
+    "visual-status-colors",
+]
+
 
 import re as _re
 
@@ -188,6 +227,11 @@ def load_perspective_system_prompt():
             with open(ref_path) as f:
                 content += "\n\n---\n\n" + f.read()
     return content
+
+
+def load_planner_system_prompt():
+    with open(PLANNER_SKILL_PATH) as f:
+        return strip_frontmatter(f.read())
 
 
 def load_fixture(fixture_id, fixtures_dir=None):
@@ -356,6 +400,28 @@ def run_claude_perspective(tier, fixture_id):
 # ── Codex/OpenAI ────────────────────────────────────────────────────────
 
 
+# Critic and perspective strings must stay byte-identical to the preamble
+# hardcoded before the planner lane landed — changing them invalidates
+# comparability with the committed benchmark results.
+PREAMBLES = {
+    "critic": (
+        "You are an accessibility design reviewer. "
+        "Analyze ONLY the component provided below — do not read files, "
+        "run commands, or use any tools. Output your complete review as text."
+    ),
+    "perspective": (
+        "You are an accessibility design reviewer. "
+        "Analyze ONLY the component provided below — do not read files, "
+        "run commands, or use any tools. Output your complete review as text."
+    ),
+    "planner": (
+        "You are an accessibility design planner. "
+        "Plan ONLY from the requirements provided below — do not read files, "
+        "run commands, or use any tools. Output your complete plan document as text."
+    ),
+}
+
+
 def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
     out = output_path("codex", tier["name"], fixture_id, skill)
     msg_out = os.path.join(RESULTS_DIR, f"codex-msg-{tier['name']}-{fixture_id}-{skill}.txt")
@@ -366,9 +432,7 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
     print(f"Started: {time.strftime('%H:%M:%S')}")
 
     full_prompt = (
-        "You are an accessibility design reviewer. "
-        "Analyze ONLY the component provided below — do not read files, "
-        "run commands, or use any tools. Output your complete review as text.\n\n"
+        f"{PREAMBLES[skill]}\n\n"
         f"## Investigation Protocol\n\n{system_prompt}\n\n"
         f"## Task\n\n{user_prompt}"
     )
@@ -477,6 +541,13 @@ def run_codex_perspective(tier, fixture_id):
     system_prompt = load_perspective_system_prompt()
     user_prompt = build_escalation_prompt(fixture_id)
     return run_codex(tier, fixture_id, system_prompt, user_prompt, "perspective")
+
+
+def run_codex_planner(tier, fixture_id):
+    system_prompt = load_planner_system_prompt()
+    fixture_content = load_fixture(fixture_id, PLANNER_FIXTURES_DIR)
+    user_prompt = PLANNER_PROMPT_PREFIX + fixture_content
+    return run_codex(tier, fixture_id, system_prompt, user_prompt, "planner")
 
 
 # ── Gemini CLI ──────────────────────────────────────────────────────────
@@ -685,6 +756,10 @@ def score_codex_results(skill="critic"):
         score_script = os.path.join(BASE_DIR, "score_output.py")
         pattern = os.path.join(RESULTS_DIR, "codex-bench-*-response.json")
         fixtures_dir = FIXTURES_DIR
+    elif skill == "planner":
+        score_script = os.path.join(BASE_DIR, "score_planner.py")
+        pattern = os.path.join(RESULTS_DIR, "codex-bench-planner-*-response.json")
+        fixtures_dir = PLANNER_FIXTURES_DIR
     else:
         score_script = os.path.join(BASE_DIR, "score_perspective.py")
         pattern = os.path.join(RESULTS_DIR, "codex-bench-perspective-*-response.json")
@@ -715,12 +790,19 @@ def score_codex_results(skill="critic"):
             capture_output=True, text=True,
         )
         print(proc.stdout)
+        # score_planner.py emits PASS / NEEDS REVIEW; the other scorers
+        # emit PASS / FAIL / WARN.
+        bucket = results.setdefault(
+            tier, {"pass": 0, "fail": 0, "warn": 0, "needs_review": 0}
+        )
         if "Status: PASS" in proc.stdout:
-            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["pass"] += 1
+            bucket["pass"] += 1
+        elif "Status: NEEDS REVIEW" in proc.stdout:
+            bucket["needs_review"] += 1
         elif "Status: FAIL" in proc.stdout:
-            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["fail"] += 1
+            bucket["fail"] += 1
         elif "Status: WARN" in proc.stdout:
-            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["warn"] += 1
+            bucket["warn"] += 1
 
     return results
 
@@ -1027,6 +1109,26 @@ def main():
             skill = sys.argv[sys.argv.index("--skill") + 1]
         run_escalation("codex", skill)
 
+    elif cmd == "codex-planner":
+        if len(sys.argv) != 4:
+            print("Usage: run_cloud_benchmark.py codex-planner <tier> <fixture-id>")
+            sys.exit(1)
+        tier = get_tier("codex", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
+        run_codex_planner(tier, sys.argv[3])
+
+    elif cmd == "codex-planner-all":
+        if len(sys.argv) < 3:
+            print("Usage: run_cloud_benchmark.py codex-planner-all <tier>")
+            sys.exit(1)
+        tier = get_tier("codex", sys.argv[2])
+        for i, fid in enumerate(PLANNER_FIXTURES, 1):
+            if result_exists("codex", tier["name"], fid, "planner"):
+                print(f"[{i}/{len(PLANNER_FIXTURES)}] {fid} — already done, skipping")
+                continue
+            print(f"\n[{i}/{len(PLANNER_FIXTURES)}]")
+            run_codex_planner(tier, fid)
+
     elif cmd == "gemini":
         require_gemini_cli()
         if len(sys.argv) != 4:
@@ -1070,6 +1172,9 @@ def main():
 
     elif cmd == "score-codex-perspective":
         score_codex_results("perspective")
+
+    elif cmd == "score-codex-planner":
+        score_codex_results("planner")
 
     elif cmd == "summary":
         show_summary()
