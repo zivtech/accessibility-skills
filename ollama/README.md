@@ -191,6 +191,11 @@ Tiers: `5.2` → `5.2-low` → `5.5` → `5.5-low`
 
 `5.3` is intentionally omitted: the Codex CLI does not expose a GPT-5.3 tier.
 
+Availability note (2026-06-12): ChatGPT-account codex CLI auth now rejects
+`gpt-5.2` ("model is not supported when using Codex with a ChatGPT account");
+`gpt-5.5` works. The `5.2` tiers remain listed for the historical critic-lane
+results — new runs should use `5.5` / `5.5-low`.
+
 ```bash
 # From Codex: run the escalation benchmark
 bash ollama/codex-benchmark.sh
@@ -204,6 +209,11 @@ bash ollama/codex-benchmark.sh perspective
 # Or via Python directly:
 python3 ollama/run_cloud_benchmark.py codex-escalate
 python3 ollama/run_cloud_benchmark.py codex 5.2 tabs-missing-arrow-nav
+
+# Planner lane (plan 010): single fixture, full 25-fixture run, scoring
+python3 ollama/run_cloud_benchmark.py codex-planner 5.5-low keyboard-breadcrumb
+python3 ollama/run_cloud_benchmark.py codex-planner-all 5.5-low
+python3 ollama/run_cloud_benchmark.py score-codex-planner
 ```
 
 ### Gemini (requires gemini CLI auth)
