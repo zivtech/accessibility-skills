@@ -3,6 +3,7 @@
 > Purpose: Keep evaluation work from drifting. Update this file before and after each evaluation session.
 > Last updated: 2026-06-01 (`2026-06-01T13:42Z` DRUPAL-A11Y-007 upstream PR #22)
 > Canonical parallel model: `docs/plans/2026-05-28-drupal-all-items-evaluation-plan.md#parallel-subagent-operating-model`
+> Skill: the evaluation protocol is packaged as /drupal-a11y-patch-eval (.claude/skills/drupal-a11y-patch-eval/).
 
 ## Drift Rules
 
