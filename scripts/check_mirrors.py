@@ -169,7 +169,7 @@ def main():
     else:
         print("No drift detected — mirrors are in sync")
 
-    print("MODE: report-only (strict mode enabled by plan 004)")
+    print(f"MODE: {'strict' if strict_mode else 'report-only'}")
 
     if strict_mode and any_drift:
         sys.exit(1)
