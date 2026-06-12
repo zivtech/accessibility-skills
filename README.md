@@ -127,6 +127,7 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 
 ## Commands
 
+- `/a11y-workflow` — orchestrate the full lifecycle (scout → plan → critique → test → critique), Claude Code only
 - `/a11y-planner` — design accessibility before coding
 - `/a11y-critic` — review plans or implementations
 - `/a11y-test` — run keyboard, axe-core, and visual regression tests
@@ -140,7 +141,7 @@ Current committed result summaries cover:
 
 - **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
 - **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
-- **Ollama local models** — qwen3:32b, qwen3.5:27b, llama3.3:70b, qwen3.5:latest, and deepseek-r1 probes
+- **Ollama local models** — qwen3:32b, llama3.3:70b, qwen3.5:latest, plus qwen3.5:27b (partial run: stopped 17/33 on /think stalls) and deepseek-r1 probes
 
 Gemini and other hosted model baselines should be tracked as peer model-family rows when their raw result artifacts are present. See [ollama/BENCHMARK.md](ollama/BENCHMARK.md) and [ollama/README.md](ollama/README.md) for the detailed tables, commands, and caveats.
 
@@ -179,6 +180,7 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
       references/
         perspectives.md                # 7 JTBD checklists (CivicActions personas)
         arrm-perspective-mapping.md    # W3C WAI ARRM role routing
+  teams/                               # a11y-workflow team definition
 .agents/
   skills/                              # Codex-compatible skill mirrors
 .codex/
@@ -186,11 +188,15 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
 docs/
   EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
   PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
+  drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
   a11y-planner/
   a11y-critic/
 templates/
 evals/
   suites/
+    a11y-critic/                         # 33 critic fixtures + rubrics
+    a11y-planner/                        # 25 planner fixtures + rubrics
+    perspectives/                        # 25 + 5 calibration perspective fixtures
     webwright-benchmark/                 # Webwright vs agent-browser speed + correctness data
   harness/
 ollama/                                  # Local + hosted benchmark runners and score scripts

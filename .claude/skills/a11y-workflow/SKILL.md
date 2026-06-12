@@ -1,6 +1,11 @@
 ---
 name: a11y-workflow
 description: "Orchestrate the a11y accessibility lifecycle: scout → plan → critique → [perspective audit] → test → critique. Dual-mode: full lifecycle automation or step-by-step dispatch. Spawns specialist agents at depth-1 from the main session."
+license: Apache-2.0
+compatibility: Claude Code only — orchestrates Claude Code subagent spawning
+metadata:
+  author: zivtech
+  version: "1.0.0"
 ---
 
 # A11y Workflow Orchestrator

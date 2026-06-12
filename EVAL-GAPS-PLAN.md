@@ -4,6 +4,11 @@
 **Purpose**: Historical gap-fill plan for the 3 eval suites plus the cross-model benchmark suite. The benchmark scope now includes local Ollama models, Claude API, Codex/OpenAI, and peer hosted families such as Gemini when result artifacts are added.
 **Note**: This plan supersedes the dashboard at `~/.agent/diagrams/a11y-testing-architecture.html` — fixture counts there are stale (says 20 critic / 1 real planner; actual is 25 critic / 10 real planner).
 
+> **STATUS: COMPLETE (2026-05-19).** All phases below are done; this document
+> is retained as a historical record. Open follow-ons (Gemini baselines,
+> planner benchmark expansion) are tracked as direction items in
+> `plans/README.md`, not here.
+
 ---
 
 ## Current State
