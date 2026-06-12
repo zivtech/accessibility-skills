@@ -9,8 +9,9 @@ Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then co
   scorers; `anthropic` only needed for Claude API runs)
 - [Ollama](https://ollama.com) installed and serving (`ollama serve`), with at
   least one supported model pulled (see Quick Start)
-- For hosted runs only: `ANTHROPIC_API_KEY` exported (Claude) or Codex CLI
-  authenticated (OpenAI) — see "Cross-platform baselines" below
+- For hosted runs only: `ANTHROPIC_API_KEY` exported (Claude), Codex CLI
+  authenticated (OpenAI), or gemini CLI authenticated (Gemini) — see
+  "Cross-platform baselines" below
 
 ## Quick Start
 
@@ -195,6 +196,36 @@ bash ollama/codex-benchmark.sh perspective
 # Or via Python directly:
 python3 ollama/run_cloud_benchmark.py codex-escalate
 python3 ollama/run_cloud_benchmark.py codex 5.2 tabs-missing-arrow-nav
+```
+
+### Gemini (requires gemini CLI auth)
+
+Tiers: `flash` → `pro`. Critic suite only (plan 007 scope). Transport is the
+authenticated `gemini` CLI (plan 007 amendment), not an API key. The runner
+isolates every call: neutral temp cwd + `--skip-trust` so the CLI cannot load
+this repo's own `.agents` skills or workspace context into the model prompt,
+`--approval-mode default`, and a headless preamble that forbids file writes
+(the CLI agent otherwise tries to "save" the review instead of returning it).
+The CLI harness adds ~18.7K input tokens per call; exact per-call token counts
+are recorded in each result's `_benchmark` block. Quota note: a pro-tier
+capacity exhaustion lands fixtures in the resumable `errored` lane — re-run
+`gemini-escalate` after quota reset.
+
+```bash
+# FREE: per-fixture prompt sizes + total token estimate, no network
+python3 ollama/run_cloud_benchmark.py gemini-dry-run
+
+# Escalation: starts at flash, promotes failures to pro
+python3 ollama/run_cloud_benchmark.py gemini-escalate
+
+# Single fixture, specific tier
+python3 ollama/run_cloud_benchmark.py gemini flash tabs-missing-arrow-nav
+
+# All fixtures, one tier
+python3 ollama/run_cloud_benchmark.py gemini-all flash
+
+# Score all Gemini results
+python3 ollama/run_cloud_benchmark.py score-gemini
 ```
 
 ### Cross-Platform Summary

@@ -1,5 +1,20 @@
 # Plan 007: Add the promised Gemini baseline — provider adapter, cost-gated run, committed artifacts
 
+> **AMENDMENT (2026-06-12, operator decision)**: The transport is the `gemini`
+> CLI (v0.46.0, already authenticated on this machine), NOT the google-genai
+> SDK + GEMINI_API_KEY this plan was written around. The operator directed
+> this ("you have gemini as a cli tool... I'm using it so it's already
+> working") and it matches the codex lane precedent (`run_codex` shells out to
+> `codex exec`). Consequences: step 1 (SDK dep) is dropped from
+> requirements.txt; step 2 model enumeration is replaced by CLI `-m` probes;
+> the GEMINI_API_KEY startup guard becomes a `gemini`-binary presence guard;
+> "paid run" gates become quota/wall-clock gates (CLI auth, no per-token
+> billing). Isolation requirements discovered by probe: run from a neutral
+> temp cwd with `--skip-trust` (otherwise the CLI loads this repo's own
+> `.agents/skills/a11y-*` skill files into context — lane contamination) and
+> use `--approval-mode plan` + `-o json`. CLI harness overhead ~18.7K input
+> tokens per call, recorded per-fixture via the JSON `stats` block.
+
 > **Executor instructions**: Follow this plan step by step. Run every
 > verification command and confirm the expected result before moving to the
 > next step. If anything in the "STOP conditions" section occurs, stop and

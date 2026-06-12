@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a11y skill benchmarks on cloud models (Claude API + Codex/OpenAI).
+"""Run a11y skill benchmarks on cloud models (Claude API + Codex/OpenAI + Gemini CLI).
 
 Supports bottom-up escalation: starts with the cheapest tier per platform,
 runs all fixtures, scores, and only escalates failed fixtures to the next tier.
@@ -15,9 +15,16 @@ Usage:
     python3 ollama/run_cloud_benchmark.py codex-all <tier>
     python3 ollama/run_cloud_benchmark.py codex-escalate [--skill critic|perspective]
 
+    # Gemini (requires gemini CLI auth; critic suite only — plan 007)
+    python3 ollama/run_cloud_benchmark.py gemini <tier> <fixture-id>
+    python3 ollama/run_cloud_benchmark.py gemini-all <tier>
+    python3 ollama/run_cloud_benchmark.py gemini-escalate
+    python3 ollama/run_cloud_benchmark.py gemini-dry-run   # free: prompt sizes + token estimate
+
     # Score all cloud results
     python3 ollama/run_cloud_benchmark.py score-cloud
     python3 ollama/run_cloud_benchmark.py score-cloud-perspective
+    python3 ollama/run_cloud_benchmark.py score-gemini
 
     # Show escalation summary
     python3 ollama/run_cloud_benchmark.py summary
@@ -33,13 +40,19 @@ Codex/OpenAI tiers (cheapest first):
     5.2-low         GPT-5.2, reasoning_effort=low
     5.5             GPT-5.5
     5.5-low         GPT-5.5, reasoning_effort=low
+
+Gemini tiers (cheapest first):
+    flash           Gemini 2.5 Flash
+    pro             Gemini 2.5 Pro
 """
 
 import glob
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -97,6 +110,11 @@ CODEX_TIERS = [
     {"name": "5.2-low", "model": "gpt-5.2", "effort": "low", "label": "GPT-5.2 (low)"},
     {"name": "5.5", "model": "gpt-5.5", "effort": None, "label": "GPT-5.5"},
     {"name": "5.5-low", "model": "gpt-5.5", "effort": "low", "label": "GPT-5.5 (low)"},
+]
+
+GEMINI_TIERS = [
+    {"name": "flash", "model": "gemini-2.5-flash", "label": "Gemini 2.5 Flash"},
+    {"name": "pro", "model": "gemini-2.5-pro", "label": "Gemini 2.5 Pro"},
 ]
 
 ALL_CRITIC_FIXTURES = [
@@ -206,8 +224,12 @@ def build_escalation_prompt(fixture_id):
     )
 
 
+def platform_tiers(platform):
+    return {"claude": CLAUDE_TIERS, "codex": CODEX_TIERS, "gemini": GEMINI_TIERS}[platform]
+
+
 def get_tier(platform, tier_name):
-    tiers = CLAUDE_TIERS if platform == "claude" else CODEX_TIERS
+    tiers = platform_tiers(platform)
     for t in tiers:
         if t["name"] == tier_name:
             return t
@@ -217,7 +239,7 @@ def get_tier(platform, tier_name):
 
 
 def output_path(platform, tier_name, fixture_id, skill="critic"):
-    prefix = "cloud" if platform == "claude" else "codex"
+    prefix = {"claude": "cloud", "codex": "codex", "gemini": "gemini"}[platform]
     tag = tier_name.replace(".", "").replace("-", "")
     skill_tag = f"-{skill}" if skill != "critic" else ""
     return os.path.join(RESULTS_DIR, f"{prefix}-bench{skill_tag}-{fixture_id}-{tag}-response.json")
@@ -457,6 +479,159 @@ def run_codex_perspective(tier, fixture_id):
     return run_codex(tier, fixture_id, system_prompt, user_prompt, "perspective")
 
 
+# ── Gemini CLI ──────────────────────────────────────────────────────────
+# Transport per plan 007 amendment (2026-06-12): the authenticated `gemini`
+# CLI, mirroring the codex lane — not the google-genai SDK. Calls run from a
+# neutral temp cwd with --skip-trust so the CLI does NOT load this repo's
+# .agents skills or workspace context into the model prompt (lane isolation;
+# measured CLI harness overhead ~18.7K input tokens/call, recorded per call
+# from the JSON stats block).
+
+
+GEMINI_NEUTRAL_CWD = os.path.join(tempfile.gettempdir(), "gemini-bench-neutral")
+
+
+def require_gemini_cli():
+    if not shutil.which("gemini"):
+        sys.exit("gemini CLI not found on PATH — install and authenticate it first.")
+
+
+def run_gemini(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
+    out = output_path("gemini", tier["name"], fixture_id, skill)
+
+    print(f"\n{'=' * 60}")
+    print(f"GEMINI | {tier['label']} | {fixture_id} ({skill})")
+    print(f"Output: {out}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    # Preamble adapted for the gemini CLI agent harness: probe runs showed the
+    # agent attempting to SAVE the review to a file (blocked, then hallucinated
+    # success) instead of answering. The headless contract must be explicit.
+    full_prompt = (
+        "You are an accessibility design reviewer running HEADLESS with no "
+        "filesystem and no tools. Do NOT read files, run commands, create "
+        "files, or save anything — file writes are blocked, and a review "
+        "saved to a file is a FAILED review. Analyze ONLY the component "
+        "provided below. Your final chat response must BE the complete "
+        "review document itself, in full — not a summary of it, and not a "
+        "statement about where it was saved.\n\n"
+        f"## Investigation Protocol\n\n{system_prompt}\n\n"
+        f"## Task\n\n{user_prompt}"
+    )
+
+    os.makedirs(GEMINI_NEUTRAL_CWD, exist_ok=True)
+    cmd = [
+        "gemini",
+        "-m", tier["model"],
+        "-o", "json",
+        "--approval-mode", "default",
+        "--skip-trust",
+        "-p", full_prompt,
+    ]
+
+    def error_placeholder(err_msg, elapsed):
+        print(f"ERROR (infra, not model): {err_msg}")
+        write_json_atomic(out, {
+            "response": "",
+            "done": False,
+            "error": err_msg,
+            "_benchmark": {
+                "platform": "gemini",
+                "model": tier["model"],
+                "tier": tier["name"],
+                "fixture_id": fixture_id,
+                "skill": skill,
+                "elapsed_seconds": round(elapsed, 1),
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            },
+        })
+
+    start = time.time()
+    try:
+        proc = subprocess.run(
+            cmd,
+            cwd=GEMINI_NEUTRAL_CWD,
+            capture_output=True,
+            text=True,
+            timeout=900,
+        )
+    except Exception as e:
+        error_placeholder(f"{type(e).__name__}: {e}", time.time() - start)
+        return out
+    elapsed = time.time() - start
+
+    response_text = ""
+    usage = {}
+    if proc.stdout.strip():
+        try:
+            payload = json.loads(proc.stdout)
+            response_text = (payload.get("response") or "").strip()
+            models = (payload.get("stats") or {}).get("models") or {}
+            if models:
+                served_model, mstats = next(iter(models.items()))
+                tokens = mstats.get("tokens", {})
+                usage = {
+                    "served_model": served_model,
+                    "input_tokens": tokens.get("input"),
+                    "output_tokens": tokens.get("candidates"),
+                    "thought_tokens": tokens.get("thoughts"),
+                }
+        except json.JSONDecodeError:
+            pass
+
+    if proc.returncode != 0 and not response_text:
+        if proc.stderr:
+            print(f"STDERR: {proc.stderr[:500]}")
+        error_placeholder(f"gemini CLI failed (rc={proc.returncode})", elapsed)
+        return out
+
+    data = {
+        "response": response_text,
+        "done": True,
+        "_benchmark": {
+            "platform": "gemini",
+            "model": tier["model"],
+            "tier": tier["name"],
+            "fixture_id": fixture_id,
+            "skill": skill,
+            "elapsed_seconds": round(elapsed, 1),
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            **usage,
+        },
+    }
+
+    write_json_atomic(out, data)
+
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.1f}s, {len(response_text)} chars)")
+    return out
+
+
+def run_gemini_critic(tier, fixture_id):
+    system_prompt = load_critic_system_prompt()
+    fixture_content = load_fixture(fixture_id)
+    user_prompt = CRITIC_PROMPT_PREFIX + fixture_content
+    return run_gemini(tier, fixture_id, system_prompt, user_prompt, "critic")
+
+
+GEMINI_CLI_OVERHEAD_TOKENS = 18700  # measured: CLI harness prompt, neutral cwd
+
+
+def gemini_dry_run():
+    """FREE: print per-fixture prompt sizes + token estimate. No network."""
+    system_prompt = load_critic_system_prompt()
+    sys_chars = len(system_prompt)
+    total_est = 0
+    print(f"{'fixture':50s} {'prompt chars':>13s} {'est input tok':>14s}")
+    for fid in ALL_CRITIC_FIXTURES:
+        user_prompt = CRITIC_PROMPT_PREFIX + load_fixture(fid)
+        chars = sys_chars + len(user_prompt)
+        est = chars // 4 + GEMINI_CLI_OVERHEAD_TOKENS
+        total_est += est
+        print(f"{fid:50s} {chars:>13,d} {est:>14,d}")
+    print(f"\n{len(ALL_CRITIC_FIXTURES)} fixtures, flash-tier input estimate: ~{total_est:,d} tokens")
+    print("(output typically 2-6K tokens/fixture; gemini CLI auth = quota, not per-token billing)")
+
+
 # ── Scoring ─────────────────────────────────────────────────────────────
 
 
@@ -550,6 +725,48 @@ def score_codex_results(skill="critic"):
     return results
 
 
+def score_gemini_results(skill="critic"):
+    if skill != "critic":
+        sys.exit("gemini lane supports the critic suite only (plan 007 scope)")
+    score_script = os.path.join(BASE_DIR, "score_output.py")
+    pattern = os.path.join(RESULTS_DIR, "gemini-bench-*-response.json")
+    fixtures_dir = FIXTURES_DIR
+
+    responses = sorted(glob.glob(pattern))
+    if not responses:
+        print(f"No {skill} response files found matching {pattern}")
+        return {}
+
+    results = {}
+    for resp in responses:
+        with open(resp) as f:
+            bench = json.load(f).get("_benchmark", {})
+        fixture_id = bench.get("fixture_id", "")
+        tier = bench.get("tier", "unknown")
+        if not fixture_id:
+            continue
+        metadata = os.path.join(fixtures_dir, f"{fixture_id}.metadata.yaml")
+        if not os.path.exists(metadata):
+            continue
+
+        print(f"\n{'=' * 60}")
+        print(f"Scoring: {fixture_id} ({tier})")
+        print(f"{'=' * 60}")
+        proc = subprocess.run(
+            [sys.executable, score_script, resp, metadata],
+            capture_output=True, text=True,
+        )
+        print(proc.stdout)
+        if "Status: PASS" in proc.stdout:
+            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["pass"] += 1
+        elif "Status: FAIL" in proc.stdout:
+            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["fail"] += 1
+        elif "Status: WARN" in proc.stdout:
+            results.setdefault(tier, {"pass": 0, "fail": 0, "warn": 0})["warn"] += 1
+
+    return results
+
+
 # ── Escalation ──────────────────────────────────────────────────────────
 
 
@@ -603,11 +820,15 @@ def get_failed_fixtures(platform, tier_name, skill="critic"):
 
 
 def run_escalation(platform, skill="critic"):
-    tiers = CLAUDE_TIERS if platform == "claude" else CODEX_TIERS
+    tiers = platform_tiers(platform)
     all_fixtures = ALL_CRITIC_FIXTURES if skill == "critic" else ALL_PERSPECTIVE_FIXTURES
 
     if platform == "claude":
         run_fn = run_claude_critic if skill == "critic" else run_claude_perspective
+    elif platform == "gemini":
+        if skill != "critic":
+            sys.exit("gemini lane supports the critic suite only (plan 007 scope)")
+        run_fn = run_gemini_critic
     else:
         run_fn = run_codex_critic if skill == "critic" else run_codex_perspective
 
@@ -683,6 +904,7 @@ def show_summary():
     platforms = {
         "claude": {"prefix": "cloud", "tiers": CLAUDE_TIERS},
         "codex": {"prefix": "codex", "tiers": CODEX_TIERS},
+        "gemini": {"prefix": "gemini", "tiers": GEMINI_TIERS},
     }
 
     for platform, info in platforms.items():
@@ -804,6 +1026,38 @@ def main():
         if "--skill" in sys.argv:
             skill = sys.argv[sys.argv.index("--skill") + 1]
         run_escalation("codex", skill)
+
+    elif cmd == "gemini":
+        require_gemini_cli()
+        if len(sys.argv) != 4:
+            print("Usage: run_cloud_benchmark.py gemini <tier> <fixture-id>")
+            sys.exit(1)
+        tier = get_tier("gemini", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
+        run_gemini_critic(tier, sys.argv[3])
+
+    elif cmd == "gemini-all":
+        require_gemini_cli()
+        if len(sys.argv) < 3:
+            print("Usage: run_cloud_benchmark.py gemini-all <tier>")
+            sys.exit(1)
+        tier = get_tier("gemini", sys.argv[2])
+        for i, fid in enumerate(ALL_CRITIC_FIXTURES, 1):
+            if result_exists("gemini", tier["name"], fid, "critic"):
+                print(f"[{i}/{len(ALL_CRITIC_FIXTURES)}] {fid} — already done, skipping")
+                continue
+            print(f"\n[{i}/{len(ALL_CRITIC_FIXTURES)}]")
+            run_gemini_critic(tier, fid)
+
+    elif cmd == "gemini-escalate":
+        require_gemini_cli()
+        run_escalation("gemini", "critic")
+
+    elif cmd == "gemini-dry-run":
+        gemini_dry_run()
+
+    elif cmd == "score-gemini":
+        score_gemini_results("critic")
 
     elif cmd == "score-cloud":
         score_cloud_results("critic")
