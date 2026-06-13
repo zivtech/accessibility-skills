@@ -1,5 +1,5 @@
 # Gemini critic baseline — raw artifacts (plan 007)
 
 - Run date: 2026-06-12; transport: authenticated `gemini` CLI v0.46.0 (plan 007 amendment) via `python3 ollama/run_cloud_benchmark.py gemini-escalate`, isolated per-call (neutral cwd, `--skip-trust`, `--approval-mode default`, headless no-file-writes preamble).
-- Contents: 33 `*-flash-response.json` (Gemini 2.5 Flash, full critic suite) + 2 `*-pro-response.json` error placeholders (pro escalation attempts capacity-blocked at run time; resumable via `gemini-escalate` after quota reset).
+- Contents: 33 `*-flash-response.json` (Gemini 2.5 Flash, full critic suite) + 2 `*-pro-response.json` error placeholders. The pro escalation is **persistently blocked**: a 2026-06-13 re-attempt (24h after the first) failed again — `gemini` CLI reported "You have exhausted your capacity on this model" across 6 backoff retries per call, not a transient timeout. Needs account quota/billing action; the flash baseline (31/33) stands. Do not blindly re-run `gemini-escalate` (burns ~10 min retrying the exhausted tier).
 - Score with `python3 ollama/score_output.py <json> evals/suites/a11y-critic/fixtures/<id>.metadata.yaml`; published section: `ollama/BENCHMARK.md` → "Gemini baseline"; per-call token counts in each `_benchmark` block.
