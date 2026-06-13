@@ -30,7 +30,7 @@ when done.
 | 007  | Gemini baseline — adapter, cost-gated run, committed artifacts | P3 | M | 001, 002, 003 (hard) | DONE 2026-06-12 (amended to gemini CLI transport at operator direction; flash 31/33 PASS, 98% criteria must-find, artifacts in `evals/results/gemini/`; pro escalation of 2 fixtures pending account quota — resumable via `gemini-escalate`) |
 | 008  | Productize the Drupal patch-eval loop as a skill | P2 | M | — (soft: 004 for the mirror absent-list) | DONE (approved; branch `advisor/008-drupal-patch-eval-skill`; step 6 fresh-session smoke is operator-pending; 004's mirror README already lists it as intentionally absent) |
 | 009  | Design the /a11y-workflow chain eval (+ 3-fixture pilot, gated) | P3 | M | — (soft: 001) | DONE-DESIGN (approved after S4 ground-truth revision; branch `advisor/009-workflow-chain-eval`; step 5 pilot is operator-gated Opus spend) |
-| 010  | Codex planner lane — add planner path to cloud benchmark runner | P3 | S–M | 002, 003, 006 (all merged) | TODO (authored 2026-06-12 at operator request; step 5 full run is operator-gated ChatGPT/Codex quota + 30–75 min wall-clock) |
+| 010  | Codex planner lane — add planner path to cloud benchmark runner | P3 | S–M | 002, 003, 006 (all merged) | DONE 2026-06-12 (code at `03405c3`/`aafa3be`; full 25-fixture run operator-approved, ran gpt-5.5-low — `5.2-low`/`gpt-5.3-codex` rejected account-wide on ChatGPT-auth Codex; 25/25 PASS, 234/235 must-have 99.6%, matches Claude Opus lane incl. same single miss; artifacts in `evals/results/codex-planner/`, published BENCHMARK.md "Codex planner lane") |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 

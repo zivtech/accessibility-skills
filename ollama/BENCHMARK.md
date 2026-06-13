@@ -962,8 +962,8 @@ Partial-hit fixtures (5): sr-product-listing (8/10), test-form (10/11), test-mod
 **Caveats**:
 - Single local model lane (qwen3:32b). Hosted lanes (Claude subagents, Codex) have
   not run for the planner suite — plan 006 Phase D is operator-cost-gated and was not exercised.
-  *(Superseded 2026-06-12: the Claude subagent lane has run — see "Claude subagent lane"
-  below. The Codex planner lane is plan 010, still gated.)*
+  *(Superseded 2026-06-12: both hosted lanes have run — see "Claude subagent lane"
+  and "Codex planner lane" below.)*
 - Section-presence keyword scoring is a structural proxy: it verifies a plan contains
   the load-bearing tokens of each must-have criterion, not that the plan is good.
   It cannot distinguish a brilliant plan from a checklist-shaped one (see plan 006
@@ -1020,15 +1020,76 @@ navigation") is a keyword-phrasing miss, not a content gap: the response states
 list. It stays in the input" — phrasing outside the criterion's keyword set.
 Reported as scored; this is the documented section-presence-proxy limitation.
 
+### Codex planner lane (2026-06-12, post-002 scoring)
+
+**Run**: plan 010 Codex planner lane, operator-approved 2026-06-12 (in-session).
+**Mechanism**: OpenAI Codex CLI (`codex-cli 0.125.0`), model **gpt-5.5 effort=low**
+(tier `5.5-low`), one `codex exec` call per fixture (25 total, sequential — the CLI
+is not parallelized), via `python3 ollama/run_cloud_benchmark.py codex-planner-all 5.5-low`.
+Per-fixture wall-clock 47.7s–170.9s (no 300s timeouts).
+**Scorer**: same instrument as the lanes above (rubric `scoring_keywords`, zero
+fallback warnings). Raw artifacts committed: `evals/results/codex-planner/`
+(25 response JSONs + README).
+
+| Fixture | Must-have hits | Status |
+|---------|---------------|--------|
+| aria-combobox-autocomplete | 10/11 | PASS |
+| aria-data-table-sorting | 10/10 | PASS |
+| aria-disclosure-widget | 9/9 | PASS |
+| aria-modal-form-validation | 11/11 | PASS |
+| aria-tab-dynamic-content | 10/10 | PASS |
+| keyboard-breadcrumb | 5/5 | PASS |
+| keyboard-button-bar | 6/6 | PASS |
+| keyboard-menu-dropdown | 9/9 | PASS |
+| keyboard-modal-focus-trap | 10/10 | PASS |
+| keyboard-roving-tabindex | 9/9 | PASS |
+| sr-article-page | 8/8 | PASS |
+| sr-form-field-help | 13/13 | PASS |
+| sr-notification-system | 12/12 | PASS |
+| sr-product-listing | 10/10 | PASS |
+| sr-search-results-live | 11/11 | PASS |
+| test-data-table | 13/13 | PASS |
+| test-form | 11/11 | PASS |
+| test-modal | 11/11 | PASS |
+| test-multi-page-audit | 11/11 | PASS |
+| test-simple-button | 9/9 | PASS |
+| visual-animated-transition | 7/7 | PASS |
+| visual-dark-mode | 7/7 | PASS |
+| visual-data-viz | 6/6 | PASS |
+| visual-form-validation | 10/10 | PASS |
+| visual-status-colors | 6/6 | PASS |
+| **Aggregate** | **234/235 (99.6%)** | **25/25 PASS** |
+
+This lane matches the Claude Opus subagent lane exactly — same 234/235, same
+25/25 PASS, and the same single miss (aria-combobox-autocomplete, "focus remains
+in input during navigation"), a keyword-phrasing miss rather than a content gap
+(the plan states focus stays in the input). Two different hosted families landing
+on an identical section-hit profile is consistent with the section-presence proxy:
+the bar measures whether the load-bearing tokens of each criterion are present, and
+both families clear it — it does not discriminate plan quality between them.
+
+**Caveats**:
+- **Tier deviation**: plan 010's default tier is `5.2-low`, but OpenAI no longer
+  accepts `gpt-5.2` (or the CLI-default `gpt-5.3-codex`) on ChatGPT-account Codex
+  ("model not supported"). This lane ran **gpt-5.5 (low)** — same family, low
+  effort, mirroring the critic lane's full-pass-tier philosophy. Numbers are not
+  tier-comparable to the historical GPT-5.2 critic rows.
+- Single hosted tier; section-presence keyword scoring is the same structural proxy
+  documented for the lanes above (it verifies load-bearing tokens, not plan quality).
+
 **Cross-lane planner summary (same instrument, same 25 fixtures)**:
 
 | Lane | Aggregate | PASS | Partial-hit fixtures |
 |------|-----------|------|----------------------|
 | qwen3:32b (local, 2026-06-11) | 227/235 (96.6%) | 25/25 | 5 |
 | Claude Opus subagents (2026-06-12) | 234/235 (99.6%) | 25/25 | 1 |
+| Codex GPT-5.5 low (2026-06-12) | 234/235 (99.6%) | 25/25 | 1 |
 
-Codex planner lane: not run — requires a planner path in `run_cloud_benchmark.py`
-(plan 010, authored 2026-06-12, operator-gated).
+All three lanes share the same 25 fixtures and the same `score_planner.py`
+instrument. The Codex lane ran at **gpt-5.5 (low)**, not plan 010's default
+`5.2-low` — OpenAI no longer accepts `gpt-5.2` or the CLI-default `gpt-5.3-codex`
+on ChatGPT-account Codex; see the Codex planner lane subsection above for the
+tier-deviation caveat.
 
 ## Gemini baseline — critic suite (2026-06-12, post-002 scoring)
 

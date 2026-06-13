@@ -247,14 +247,14 @@ summary-row addition); every number traces to the committed JSONs via
 
 ALL must hold:
 
-- [ ] `codex-planner` and `codex-planner-all` commands exist; compile passes
-- [ ] Critic/perspective preambles byte-identical to pre-change
-- [ ] Smoke fixture run + scored; operator read it
-- [ ] Full run completed with recorded operator approval; 25 raw JSONs
+- [x] `codex-planner` and `codex-planner-all` commands exist; compile passes
+- [x] Critic/perspective preambles byte-identical to pre-change
+- [x] Smoke fixture run + scored; operator read it
+- [x] Full run completed with recorded operator approval; 25 raw JSONs
       committed under `evals/results/codex-planner/` with README
-- [ ] BENCHMARK.md codex planner section appended; numbers trace to artifacts
-- [ ] `bash scripts/smoke_scorers.sh` and `python3 scripts/validate_fixtures.py` exit 0
-- [ ] `plans/README.md` status row updated
+- [x] BENCHMARK.md codex planner section appended; numbers trace to artifacts
+- [x] `bash scripts/smoke_scorers.sh` and `python3 scripts/validate_fixtures.py` exit 0
+- [x] `plans/README.md` status row updated
 
 ## STOP conditions
 
