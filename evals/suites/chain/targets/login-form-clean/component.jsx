@@ -16,6 +16,14 @@ const LoginForm = ({ onSubmit }) => {
     return errs;
   };
 
+  const clearFieldError = (field) =>
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
@@ -48,7 +56,7 @@ const LoginForm = ({ onSubmit }) => {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
             aria-describedby={errors.email ? 'email-error' : undefined}
             aria-invalid={submitted && !!errors.email}
             aria-required="true"
@@ -65,7 +73,7 @@ const LoginForm = ({ onSubmit }) => {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); clearFieldError('password'); }}
             aria-describedby={errors.password ? 'password-error' : undefined}
             aria-invalid={submitted && !!errors.password}
             aria-required="true"

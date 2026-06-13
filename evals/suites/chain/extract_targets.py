@@ -37,6 +37,9 @@ FIXTURES = [
     ("app-focus-order-illogical",    os.path.join(REPO_ROOT, "evals/suites/a11y-critic/fixtures")),
     ("toast-notification-no-role",   os.path.join(REPO_ROOT, "evals/suites/a11y-critic/fixtures")),
 ]
+# NOTE: site-breadcrumb-nav (all-LOW never-escalate probe, plan 011) is CHAIN-NATIVE — it has
+# no source fixture in another suite, so it is intentionally absent from FIXTURES above.
+# Re-running this script regenerates only the 8 listed targets and leaves it untouched.
 
 # Map fence language tag → output filename
 LANG_TO_FILENAME = {

@@ -58,7 +58,7 @@ stage_notes: |
 ### S1 — Scout Output
 
 **Scoring dimensions (0–2):**
-- **S1a** (1 pt): Output ≤ 1500 chars (hard; over budget = 0, under budget = 1).
+- **S1a** (1 pt): Output ≤ 2000 chars (hard; over budget = 0, under budget = 1). Raised from 1500 (plan 011, I7): all three pilot scouts ran 1779–2072 chars on multi-file directory targets, so 1500 was unrealistically tight.
 - **S1b** (1 pt): Component type matches the `component_type` field in the rubric. Award 1 if the scout names the correct type or a close synonym (e.g., "modal dialog" matches "modal"). Award 0 if the type is absent or clearly wrong.
 
 **Total S1**: 0, 1, or 2.  
@@ -82,6 +82,8 @@ Score each of the 7 perspectives against `expected_alarm_levels` using the alarm
 
 **S3 score** = mean across all 7 perspectives (0.0 – 1.0).
 
+> **Plan 011 (I2)**: `score_chain.py` maps the critic's heterogeneous lens vocabulary onto the canonical 7 via a documented crosswalk (e.g. "low vision" → magnification_reflow; voice control / switch access / speech → keyboard_motor), taking the **highest** alarm when several lenses collapse onto one axis. A perspective the critic never raises is scored **LOW** (no alarm = not an alarm), **not** zero — penalising correct silence was the dominant S3 distortion (fixed: modal 0.214 → 0.71, login 0.43 → 0.86 against manual ~0.6 / ~0.86).
+
 **For a11y-critic-suite fixtures (6–8)**:  
 These fixtures do not have `expected_alarm_levels`. Score S3 on must-find detection instead:
 - For each item in the fixture's `must_find` list: award 1 if the critic's output contains the finding (by concept, not necessarily verbatim), 0 if absent.
@@ -93,7 +95,7 @@ Rubrics for fixtures 6–8 contain a `s3_scoring_mode: must_find` field to flag 
 
 **Graded only where the source suite provides `expected_alarm_levels`** — fixtures 1–5. Fixtures 6–8 (a11y-critic suite) carry `s4_graded: false`: their source suite has no alarm ground truth, so there is nothing to grade the escalation decision against. For those fixtures, record whether escalation occurred as observational data; it does not enter the headline number or the PASS rule.
 
-**The headline number is escalation accuracy n/5.**
+**The headline number is escalation accuracy n/6** (graded fixtures 1–5 plus the all-LOW probe 9).
 
 **Binary 0 or 1 per graded fixture**:
 - For HAS-BUGS fixtures (1–3): award **1** if the audit was invoked, **0** otherwise.
@@ -105,7 +107,7 @@ The CLEAN fixtures escalate by design: their source ground truth keeps `cognitiv
 
 **Scoring basis**: Check the session record for whether `perspective-audit` was spawned as a subagent, and (for fixtures 4–5) which perspectives the critic flagged MEDIUM/HIGH. If the session record is ambiguous, score 0.
 
-**Known limitation — never-escalate branch unprobed**: No fixture in the existing suites carries all-LOW expected alarm levels — even clean fixtures keep `cognitive_neurodivergent` at MEDIUM, and `calibration-static-blog` has `screen_reader_semantic` MEDIUM. The never-escalate branch of S4 is therefore unprobed by this suite. Authoring a genuinely all-LOW fixture is a known gap for a future revision.
+**Never-escalate branch (plan 011 — now probed)**: fixture 9 `site-breadcrumb-nav` is a chain-native, genuinely all-LOW fixture (a correct WAI-ARIA breadcrumb). Its correct outcome is *no escalation at all* — any escalation is an over-escalation (S4=0), the false-positive failure mode the rest of the suite cannot catch. It is chain-native precisely because no perspectives/a11y-critic fixture carries all-LOW levels (each "clean" one keeps `cognitive_neurodivergent` at MEDIUM, so it must still escalate).
 
 ### S5 — Audit Scope Adherence (only when audit runs)
 
@@ -142,7 +144,7 @@ A fixture FAILS if any applicable condition is violated. PASS/FAIL is the summar
 
 ---
 
-## The 8 Chain Fixtures
+## The Chain Fixtures (8 source-derived + 1 chain-native all-LOW probe)
 
 | # | Fixture ID | Source Suite | Difficulty | Why Selected |
 |---|-----------|-------------|-----------|-------------|
@@ -154,6 +156,7 @@ A fixture FAILS if any applicable condition is violated. PASS/FAIL is the summar
 | 6 | `tabbed-nav-vs-tab-pattern` | a11y-critic | ADVERSARIAL | verdict calibration through the chain; correct verdict is ACCEPT (or ACCEPT-WITH-RESERVATIONS) articulating the tradeoff — not flagging the ARIA as broken; S4 ungraded (no alarm ground truth) |
 | 7 | `app-focus-order-illogical` | a11y-critic | FLAWED | plan-level reasoning required; compound interaction bugs invisible to ARIA checkers; tracer is the CSS order/DOM mismatch; S4 ungraded (no alarm ground truth) |
 | 8 | `toast-notification-no-role` | a11y-critic | HAS-BUGS | known `role="alert"` discriminator item; tracer must survive to the critic stage; S4 ungraded (no alarm ground truth) |
+| 9 | `site-breadcrumb-nav` | chain-native | ALL-LOW | never-escalate probe (plan 011); correct WAI-ARIA breadcrumb whose correct outcome is NO escalation; the only fixture where any escalation is an over-escalation (S4=0); S4 graded |
 
 **Fixture table rationale**: Fixtures 1–3 cover the three most common audit-trigger perspectives (keyboard, vestibular, auditory). Fixtures 4–5 probe escalation precision with CLEAN components whose ground truth keeps exactly one perspective at MEDIUM (cognitive_neurodivergent): the chain must escalate narrowly — on that perspective only — and the audit must come back clean (PASS). Scope inflation at escalation, LOW leakage in the audit, or MAJOR/CRITICAL audit findings against these fixtures are the failure modes probed. Fixtures 6–8 add critic-suite coverage to validate that the chain's critic stage handles ADVERSARIAL, FLAWED, and discriminator-item cases correctly; their source suite carries no alarm ground truth, so their escalation decisions are recorded observationally, not graded.
 
@@ -165,7 +168,7 @@ After all 8 fixtures are scored:
 
 | Aggregate Metric | Formula | Watch Threshold |
 |-----------------|---------|----------------|
-| S4 Escalation accuracy | n correct / 5 (graded fixtures 1–5 only) | < 4/5 is a chain defect; any miss warrants investigation |
+| S4 Escalation accuracy | n correct / 6 (graded fixtures 1–5 + all-LOW probe 9) | < 5/6 is a chain defect; any miss warrants investigation |
 | Audit verdict (CLEAN fixtures) | n PASS / 2 (fixtures 4–5) | any non-PASS is a false-positive failure |
 | S1 mean | sum S1 / 8 | < 1.5 suggests scout output budget issues |
 | S2 mean | sum S2 / 8 | < 1.5 suggests planner handoff issues |
@@ -211,6 +214,13 @@ exists to surface before the full run is funded.
 
 ---
 
+## Run Hygiene (plan 011 — I1 contamination, I9 capture)
+
+- **Isolation (I1, prevention)**: stage each target with `python3 stage_target.py <id>` and pass the judgment agents ONLY the printed path — a neutral `…/chain-stage/component/` dir outside the eval tree, so `..` reaches no answer key. The orchestrator must also instruct every stage not to read `rubrics/`, `*.chain.yaml`, `*.metadata.yaml`, or `evals/suites/perspectives/`.
+- **Detection (I1, backstop)**: `score_chain.py`'s `detect_peek()` scans each stage's text for answer-key fingerprints; a hit marks the fixture CONTAMINATED and voids S3/S4/tracer (auto-fail). In the 2026-06-13 pilot the video critic peeked and produced a "perfect" 7/7 — exactly what this catches.
+- **Pristine capture (I9)**: save raw agent output verbatim to `<stage>.md`; put operator integrity flags / orchestrator notes in a SEPARATE `<stage>.notes.md`. If they are mixed into the scored file, `detect_peek()` and the S3/verdict/tracer parsers read operator text as the agent's. (The pilot's `.txt` captures mixed them, which is why those files cannot be re-scored directly and the scorer fixes were validated by unit test on extracted snippets instead.)
+- Fixture IDs must not encode their expected verdict; staging neutralises the path regardless.
+
 ## Scoring Is Manual for S1–S2
 
 S1 (scout char count and component type) and S2 (plan file existence and phase coverage) require the operator to examine the session record. `score_chain.py` automates S3–S5 from the rubric YAML and text output files — including the `s4_graded: false` skip, the CLEAN fixtures' escalated-scope check (derived from the critic's parsed alarm levels), and a PROVISIONAL audit-verdict token match. S1–S2 and audit-verdict confirmation are recorded manually in the results template.
@@ -222,8 +232,8 @@ This is the correct division: S1–S2 measure file system and prompt injection m
 ## Maintenance Notes
 
 - The `expected_alarm_levels` in rubrics duplicates source metadata for self-containment. On any metadata edit, re-sync the rubric (including the mechanically derived `expected_escalation` and `expected_escalated_perspectives`).
-- S4 (escalation accuracy, n/5) is the number to watch over time — it is the chain's headline metric. Fixtures 6–8 are excluded (`s4_graded: false` — no alarm ground truth in their source suite).
-- The never-escalate branch of S4 is unprobed (see the S4 known-limitation note). Authoring a genuinely all-LOW fixture is the highest-value addition to this suite.
+- S4 (escalation accuracy, n/6) is the number to watch over time — it is the chain's headline metric. Fixtures 6–8 are excluded (`s4_graded: false` — no alarm ground truth); fixture 9 `site-breadcrumb-nav` is the all-LOW never-escalate probe and IS graded.
+- Capture hygiene (plan 011, I9): scored stage outputs (`<stage>.md`) must be PRISTINE agent text; operator notes go in a separate `<stage>.notes.md`. Stage targets via `stage_target.py` (neutral path, no answer key copied); never let a judgment stage read `rubrics/` or `*.metadata.yaml` — `score_chain.py`'s `detect_peek()` auto-fails contaminated fixtures.
 - Tracer-finding choices must be the genuinely load-bearing item (the one most likely to drop in context compression), not an easy keyword. Reviewer should scrutinize these on each new fixture set.
 - CLEAN probes (fixtures 4–5) must NOT contain any hint of their cleanliness in extracted targets (no "CLEAN" or "ACCEPT" in the target files). Check this after running `extract_targets.py`.
 - The `s3_scoring_mode` field in rubrics 6–8 signals the must-find substitution to human scorers.

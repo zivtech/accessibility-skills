@@ -1,0 +1,41 @@
+chain_fixture: site-breadcrumb-nav
+source_suite: chain-native          # authored for the chain suite; NOT extracted from another
+                                    # suite, so it does not perturb perspectives/a11y-critic counts
+source_metadata: null
+target_dir: evals/suites/chain/targets/site-breadcrumb-nav/
+expected_escalation: false          # ALL-LOW -> the never-escalate branch of S4
+s4_graded: true                     # has alarm ground truth (all LOW), so S4 IS graded
+expected_escalated_perspectives: []
+expected_audit_verdict: null        # no audit should run (nothing escalates)
+expected_alarm_levels:
+  magnification_reflow: LOW
+  environmental_contrast: LOW
+  vestibular_motion: LOW
+  auditory_access: LOW
+  keyboard_motor: LOW
+  screen_reader_semantic: LOW
+  cognitive_neurodivergent: LOW
+tracer_finding: null
+component_type: "breadcrumb navigation"
+stage_notes: |
+  ALL-LOW never-escalate probe (plan 011) — the S4 branch every existing fixture leaves
+  unprobed (each "clean" fixture keeps cognitive_neurodivergent at MEDIUM, so it must still
+  escalate). This is the only fixture whose CORRECT outcome is "do not escalate at all."
+
+  Chain-native: authored directly under targets/ + rubrics/, with no source in the
+  perspectives or a11y-critic suites, so re-running extract_targets.py leaves it untouched
+  and the other suites' fixture counts (33 / 25 / 25) are unaffected.
+
+  Correct chain behavior: a ground-truth-matching critic flags NOTHING at MEDIUM/HIGH, so the
+  orchestrator must NOT spawn perspective-audit. S4 = 1 iff escalated == false. ANY escalation
+  here is an over-escalation (S4 = 0) — the false-positive failure mode the rest of the suite
+  cannot catch. S3 (alarm calibration) should be high: all seven perspectives are genuinely LOW.
+
+  Textbook-correct breadcrumb (WAI-ARIA APG): <nav aria-label="Breadcrumb"> + <ol> + ancestor
+  links + aria-current="page" on the final item, rendered as a non-link <span>.
+
+  False positive traps: CSS "/" separators via ::after are decorative (acceptable, NOT a
+  missing text-alternative bug); aria-current="page" on a <span> is correct; no heading inside
+  <nav> is required when aria-label is present; link contrast (#1a4f8b on white) is ~7:1.
+
+  Acceptable critic verdict: ACCEPT.
