@@ -179,7 +179,7 @@ Fixture-level PASS rate (n PASS / 8) is the top-line summary. All 8 should PASS 
 
 ---
 
-## Pilot Plan (Steps 1–4 complete; Step 5 operator-gated)
+## Pilot Plan & Outcome (Steps 1–4 complete; Step 5 RAN 2026-06-13)
 
 The pilot uses 3 of the 8 fixtures:
 - Fixture 1: `modal-broken-focus-trap` (HAS-BUGS with audit trigger)
@@ -189,6 +189,25 @@ The pilot uses 3 of the 8 fixtures:
 This selection covers: one broad audit-trigger path, one historically under-scored dimension, and one narrow-escalation probe with a clean-audit outcome expectation. It validates all scoring dimensions (S1–S5 plus audit verdict). Note: the never-escalate branch of S4 is not covered — no fixture in the suite probes it (see the S4 known-limitation note).
 
 **Cost estimate**: ~8–10 Opus-tier subagent calls for the 3-fixture pilot. Operator approval required before execution.
+
+### Pilot Outcome (2026-06-13, operator-approved)
+
+Ran the protocol set (modal, video, login) through the real chain — 12 subagent calls
+(3 Haiku scouts + 9 Opus planner/critic/audit; all 3 fixtures escalated). Manual
+(authoritative) results: **modal PASS, video PASS (S3 contaminated), login FAIL
+(mislabeled fixture)**. Full record: `pilot/RESULTS.md`; findings: `pilot/PILOT-REPORT.md`.
+
+**The full 8-fixture run is BLOCKED on instrument fixes — not merely pending.** The pilot
+surfaced a CRITICAL contamination hole (a critic read the rubric; judgment stages are not
+sandboxed and `targets/` sits beside the answer key in `rubrics/`), scorer-parsing defects
+(perspective-taxonomy mismatch under-counts S3; literal tracer substring match false-negatives;
+audit-verdict token match false-positives on checklist "PASS"), and one mislabeled fixture
+(`login-form-clean` carries a real MAJOR stale-error-state bug). Until PILOT-REPORT findings
+I1–I4 and I8 are fixed in a follow-up plan, the full run's automated scores would be
+untrustworthy. The chain *under test* performed well (S2 handoff 2/2; audits caught a critic
+false-positive and re-grounded an artifact mismatch; escalation mechanically correct on both
+HAS-BUGS fixtures) — the blocker is the measurement apparatus, which is exactly what a pilot
+exists to surface before the full run is funded.
 
 ---
 

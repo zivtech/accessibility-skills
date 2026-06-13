@@ -142,7 +142,7 @@ Populate from the source metadata files — every copied value must match its so
 
 ### Step 5: PILOT — 3 fixtures through the real chain (OPERATOR GATE)
 
-STOP and get operator approval first (Opus spend, ~3 chains). Pilot set: fixture 1 (`modal-broken-focus-trap`, must-escalate), fixture 4 (`login-form-clean`, must-NOT-escalate), fixture 6 (`tabbed-nav-vs-tab-pattern`, ADVERSARIAL verdict).
+STOP and get operator approval first (Opus spend, ~3 chains). Pilot set (authoritative selection lives in `CHAIN-EVAL-PROTOCOL.md`): fixture 1 (`modal-broken-focus-trap`, must-escalate), fixture 3 (`video-tutorial-no-captions`, auditory HIGH, must-escalate), fixture 4 (`login-form-clean`, NARROW-escalate on `cognitive_neurodivergent` only + clean-audit probe). [Synced 2026-06-13: an earlier draft of this line listed `tabbed-nav-vs-tab-pattern` as the 3rd fixture and mislabeled `login-form-clean` as "must-NOT-escalate" — both predated the S4 ground-truth revision. The protocol set above is authoritative and is what actually ran; see `evals/suites/chain/pilot/PILOT-REPORT.md`.]
 
 Per fixture, in a live Claude Code session (the production mechanism — no API-side simulation):
 1. `/a11y-workflow full evals/suites/chain/targets/<fixture-id>/` (the extracted target dir).
@@ -169,14 +169,14 @@ Update `CHAIN-EVAL-PROTOCOL.md` with any instrument revisions from the pilot, th
 
 ALL must hold:
 
-- [ ] `CHAIN-EVAL-PROTOCOL.md` defines S1–S5 + tracer + per-fixture PASS rule and the 8-fixture table
-- [ ] `extract_targets.py` runs deterministically; targets contain zero `BUG:` strings
-- [ ] 8 chain rubrics parse; spot-checked values match source metadata
-- [ ] Results template exists; scoring helper built (≤150 lines) or explicitly waived in the protocol
-- [ ] Pilot ran with operator approval; 3 scored rows + pilot report committed; escalation probes recorded as-is
-- [ ] No file under `.claude/` was modified; existing suites untouched (`git status` check)
-- [ ] `python3 scripts/validate_fixtures.py` (if present) exits 0
-- [ ] `plans/README.md` status row updated
+- [x] `CHAIN-EVAL-PROTOCOL.md` defines S1–S5 + tracer + per-fixture PASS rule and the 8-fixture table
+- [x] `extract_targets.py` runs deterministically; targets contain zero `BUG:` strings
+- [x] 8 chain rubrics parse; spot-checked values match source metadata
+- [x] Results template exists; scoring helper built (≤150 lines) or explicitly waived in the protocol
+- [x] Pilot ran with operator approval; 3 scored rows + pilot report committed; escalation probes recorded as-is (modal PASS, video PASS, login FAIL — see pilot/RESULTS.md)
+- [x] No file under `.claude/` was modified; existing suites untouched (`git status` check)
+- [x] `python3 scripts/validate_fixtures.py` (if present) exits 0
+- [x] `plans/README.md` status row updated
 
 ## STOP conditions
 
