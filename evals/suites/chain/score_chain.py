@@ -4,18 +4,25 @@
 Usage: python3 evals/suites/chain/score_chain.py <fixture-id> <session-dir>
 
 session-dir must contain (plan 011: reads <stage>.md, falls back to <stage>.txt):
-  critic.md / critic.txt     -- critic stage output text (PRISTINE agent output only;
-                                operator notes belong in <stage>.notes.md -- see I9)
-  audit.md  / audit.txt      -- audit output (empty/absent if not run)
+  critic.md / critic.txt     -- critic stage output. Agent output verbatim, with any
+                                operator commentary fenced in a <!--OPERATOR ... OPERATOR-->
+                                zone the scorer strips before parsing (I9).
+  audit.md  / audit.txt      -- audit output (empty/absent if not run), same I9 rule.
   escalated.txt              -- "true" or "false" (whether audit was spawned)
 
 Plan 011 fixes baked in:
-  I1  detect_peek() flags answer-key contamination -> S3/S4/tracer marked INVALID.
+  I1  detect_peek() flags VERBATIM answer-key leaks in pristine output -> INVALID.
   I2  lens->canonical CROSSWALK + max-collapse + absent-perspective-is-LOW (not MISSING=0).
   I3  concept/word-overlap tracer match (not an 18-char leading substring).
   I4  audit verdict = recommendation line + MAJOR/CRITICAL counts (not a bare "PASS" token).
   I5  S5a LOW-leak check scoped to per-perspective sections.
   I6  read .md with .txt fallback.
+  I9  split_operator() strips the OPERATOR zone before parsing and reads its `peek:`
+      flag; contaminated = operator flag OR detect_peek(pristine).
+  M1  s4_observational rubrics: over-escalation on an all-LOW fixture is reported for
+      human review, not auto-failed.
+  M2  parse_alarms reads only structured table rows (a bare-level cell + a perspective
+      cell), never prose -- kills "the SR experience is HIGH quality" mis-binding.
 """
 import os, re, sys, math, yaml
 
@@ -89,20 +96,49 @@ def lens_to_key(text):
     return None
 
 
+def _row_cells(line):
+    """Cells of a markdown table row, or None if the line is not a table row.
+    A row must contain a pipe and yield >= 2 cells after trimming edge pipes."""
+    s = line.strip()
+    if "|" not in s:
+        return None
+    cells = [c.strip() for c in s.strip("|").split("|")]
+    return cells if len(cells) >= 2 else None
+
+
 def parse_alarms(text):
-    """Map each alarm-bearing line to a canonical key; keep the HIGHEST level per key
-    when multiple lenses collapse onto one axis (I2: max-collapse)."""
+    """M2: read alarm levels ONLY from structured table rows, never prose.
+
+    The pre-M2 parser scanned every line for a HIGH/MEDIUM/LOW substring, so prose
+    ("the screen reader experience is HIGH quality") and multi-perspective operator
+    lines ("auditory_access: HIGH, screen_reader_semantic: MEDIUM, all others LOW")
+    bound the wrong levels to the wrong axes. A scored row now needs (a) a cell that
+    is EXACTLY a level token and (b) a leading perspective cell that maps via the
+    crosswalk. The orchestrator prompt requires the critic to emit such a table
+    (CHAIN-EVAL-PROTOCOL.md S3); a critic that emits only prose scores no alarms
+    (-> all LOW), which is a protocol-compliance failure, not a silent mis-parse.
+
+    The perspective is read from the FIRST cell only (not the rationale cell, which
+    may mention other lenses). When several lenses collapse onto one canonical key,
+    keep the HIGHEST level (I2: max-collapse)."""
     found = {}
     for line in text.split("\n"):
-        up = line.upper()
-        lv = next((l for l in ("HIGH", "MEDIUM", "LOW") if l in up), None)
+        cells = _row_cells(line)
+        if not cells:
+            continue
+        if all(set(c) <= set("-: ") for c in cells):   # |---|:--| separator row
+            continue
+        # the alarm is the first cell that is EXACTLY a level (the Alarm column
+        # precedes any operator-added "expected" column).
+        lv = next((c.upper() for c in cells if c.strip().upper() in LEVELS), None)
         if not lv:
             continue
-        lo = line.lower()
-        for phrase, key in CROSSWALK:
-            if phrase in lo:
-                if key not in found or LEVELS[lv] > LEVELS[found[key]]:
-                    found[key] = lv
+        perspective = cells[0].lower()
+        key = next((k for phrase, k in CROSSWALK if phrase in perspective), None)
+        if key is None:
+            continue
+        if key not in found or LEVELS[lv] > LEVELS[found[key]]:
+            found[key] = lv
     return found
 
 
@@ -154,7 +190,18 @@ def s4(rubric, escalated, critic):
     if rubric.get("s4_graded", True) is False:
         return None, "ungraded -- no alarm ground truth in source suite (observational only)"
     exp = rubric.get("expected_escalation", False)
+    observational = rubric.get("s4_observational", False)
     if exp != escalated:
+        # M1: on an all-LOW fixture, an over-escalation is OBSERVATIONAL, not auto-fail.
+        # The critic reviews the planner's PLAN, not just the component, so it may raise a
+        # defensible concern the component-only ground truth omits (cf. login, where
+        # reviewing the plan surfaced a real stale-error bug). A mechanical scorer cannot
+        # tell a genuine false-positive from a defensible plan-level concern, so it reports
+        # the mismatch for human judgment instead of silently failing the headline metric.
+        if observational:
+            return None, (f"OBSERVATIONAL: expected={exp} actual={escalated} -- escalation "
+                          f"mismatch on an all-LOW fixture is investigated, not auto-failed; "
+                          f"human judges false-positive vs defensible plan-level concern")
         return 0, f"expected={exp} actual={escalated}"
     scope = rubric.get("expected_escalated_perspectives")
     if scope and escalated:  # CLEAN fixtures: escalated set must match exactly
@@ -248,9 +295,39 @@ def tracer(rubric, final):
 
 
 def detect_peek(text):
-    """I1: answer-key fingerprints in pristine stage output -> contamination."""
+    """I1: answer-key fingerprints in PRISTINE stage output -> contamination.
+
+    Backstop only: catches VERBATIM leaks. A stage that read the rubric but
+    paraphrased it evades this (the video pilot critic did exactly that) -- that
+    case is caught by the operator `peek` flag in the OPERATOR zone (see
+    split_operator / I9). detect_peek + operator flag together are the gate."""
     lo = text.lower()
     return [tok for tok in PEEK_TOKENS if tok in lo]
+
+
+OP_ZONE = re.compile(r"<!--\s*OPERATOR\b(.*?)OPERATOR\s*-->", re.S | re.I)
+
+
+def split_operator(text):
+    """I9: separate pristine agent output from operator zone(s).
+
+    Returns (pristine_text, peek_flag). Captures interleave raw agent output with
+    operator commentary that legitimately quotes the answer key (INTEGRITY notes,
+    rubric-expected columns, orchestrator notes). That commentary is fenced in a
+    `<!--OPERATOR ... OPERATOR-->` zone and STRIPPED before any parse/detect, so it
+    never reaches the scorer (pre-I9, login false-flagged because the scorer read
+    the operator's `expected_escalated_perspectives` annotation as agent output).
+
+    The zone may carry a structured `peek: true|false` line -- the operator's
+    integrity judgment that the stage read the answer key. It is read BEFORE
+    stripping. This is the only way to flag a PARAPHRASING peeker, and it is a human
+    judgment (same standing as human-scored S1/S2), not the answer key itself."""
+    peek = False
+    for m in OP_ZONE.finditer(text):
+        pm = re.search(r"^\s*peek\s*:\s*(true|false|yes|no)\b", m.group(1), re.I | re.M)
+        if pm and pm.group(1).lower() in ("true", "yes"):
+            peek = True
+    return OP_ZONE.sub("", text), peek
 
 
 def read_stage(sdir, stem, default=""):
@@ -272,15 +349,17 @@ def main():
         print(f"Rubric not found: {rpath}")
         sys.exit(1)
     rb = yaml.safe_load(open(rpath))
-    critic_t = read_stage(sdir, "critic")
-    audit_t = read_stage(sdir, "audit")
+    # I9: strip operator zone (and read its peek flag) BEFORE any parse/detect.
+    critic_t, peek_c_flag = split_operator(read_stage(sdir, "critic"))
+    audit_t, peek_a_flag = split_operator(read_stage(sdir, "audit"))
     esc_raw = read_stage(sdir, "escalated", "false").strip().lower()
     escalated = esc_raw == "true" if esc_raw in ("true", "false") else bool(audit_t.strip())
 
-    # I1: contamination gate. A peeking judgment stage voids S3/S4/tracer.
+    # I1+I9 contamination gate: operator integrity flag (catches paraphrased peeks)
+    # OR verbatim answer-key fingerprints in pristine output. Either voids S3/S4/tracer.
     peek_c = detect_peek(critic_t)
     peek_a = detect_peek(audit_t)
-    contaminated = bool(peek_c or peek_a)
+    contaminated = bool(peek_c or peek_a or peek_c_flag or peek_a_flag)
 
     mode = rb.get("s3_scoring_mode", "alarm")
     s3v, s3d = (s3_must_find if mode == "must_find" else s3_alarm)(rb, critic_t)
@@ -292,11 +371,15 @@ def main():
 
     print(f"\n=== {fid} ===")
     if contaminated:
-        print("INVALID -- CONTAMINATED: judgment stage read the answer key (I1).")
+        print("INVALID -- CONTAMINATED: judgment stage read the answer key (I1/I9).")
+        if peek_c_flag:
+            print("  critic: operator integrity flag (peek: true) -- read rubric, possibly paraphrased.")
+        if peek_a_flag:
+            print("  audit:  operator integrity flag (peek: true) -- read rubric, possibly paraphrased.")
         if peek_c:
-            print(f"  critic peek tokens: {peek_c}")
+            print(f"  critic verbatim peek tokens (pristine): {peek_c}")
         if peek_a:
-            print(f"  audit  peek tokens: {peek_a}")
+            print(f"  audit  verbatim peek tokens (pristine): {peek_a}")
         print("  S3/S4/tracer are NOT independent measurements for this fixture.")
     print(f"S3 [{mode}]: {s3v}\n{s3d}")
     print(f"S4 [escalation]: {s4v}  {s4d}")

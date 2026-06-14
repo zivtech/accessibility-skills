@@ -84,6 +84,8 @@ Score each of the 7 perspectives against `expected_alarm_levels` using the alarm
 
 > **Plan 011 (I2)**: `score_chain.py` maps the critic's heterogeneous lens vocabulary onto the canonical 7 via a documented crosswalk (e.g. "low vision" → magnification_reflow; voice control / switch access / speech → keyboard_motor), taking the **highest** alarm when several lenses collapse onto one axis. A perspective the critic never raises is scored **LOW** (no alarm = not an alarm), **not** zero — penalising correct silence was the dominant S3 distortion (fixed: modal 0.214 → 0.71, login 0.43 → 0.86 against manual ~0.6 / ~0.86).
 
+> **Plan 011 (M2) — the critic MUST emit a structured alarm table.** `parse_alarms` reads levels ONLY from markdown table rows (a leading perspective cell + a cell that is exactly `HIGH`/`MEDIUM`/`LOW`); the perspective is mapped from the first cell, so a rationale column may name other lenses without mis-binding. Prose is never parsed — pre-M2 the scorer scanned every line for a level substring, so "the screen reader experience is HIGH quality" and a one-line operator summary ("auditory: HIGH, screen_reader: MEDIUM, all others LOW") corrupted the alarm map. **The orchestrator prompt must therefore require the critic to emit its alarm levels as a table** (`| Perspective | Alarm |`, one row per lens). A critic that emits only prose scores no alarms (→ all LOW) — that is a protocol-compliance failure to fix in the prompt, not a scorer bug to paper over.
+
 **For a11y-critic-suite fixtures (6–8)**:  
 These fixtures do not have `expected_alarm_levels`. Score S3 on must-find detection instead:
 - For each item in the fixture's `must_find` list: award 1 if the critic's output contains the finding (by concept, not necessarily verbatim), 0 if absent.
@@ -107,7 +109,9 @@ The CLEAN fixtures escalate by design: their source ground truth keeps `cognitiv
 
 **Scoring basis**: Check the session record for whether `perspective-audit` was spawned as a subagent, and (for fixtures 4–5) which perspectives the critic flagged MEDIUM/HIGH. If the session record is ambiguous, score 0.
 
-**Never-escalate branch (plan 011 — now probed)**: fixture 9 `site-breadcrumb-nav` is a chain-native, genuinely all-LOW fixture (a correct WAI-ARIA breadcrumb). Its correct outcome is *no escalation at all* — any escalation is an over-escalation (S4=0), the false-positive failure mode the rest of the suite cannot catch. It is chain-native precisely because no perspectives/a11y-critic fixture carries all-LOW levels (each "clean" one keeps `cognitive_neurodivergent` at MEDIUM, so it must still escalate).
+**Never-escalate branch (plan 011 — now probed)**: fixture 9 `site-breadcrumb-nav` is a chain-native, genuinely all-LOW fixture (a correct WAI-ARIA breadcrumb). Its correct outcome is *no escalation at all*; a ground-truth-matching critic flags nothing MEDIUM/HIGH → S4=1, and that happy path IS the probe. It is chain-native precisely because no perspectives/a11y-critic fixture carries all-LOW levels (each "clean" one keeps `cognitive_neurodivergent` at MEDIUM, so it must still escalate).
+
+> **Plan 011 (M1) — over-escalation here is OBSERVATIONAL, not auto-fail** (`s4_observational: true`). The chain critic reviews the planner's *plan*, not just the component, so it can raise a defensible plan-level concern the component-only ground truth omits (exactly what happened on `login-form-clean`, where reviewing the plan surfaced a real stale-error bug). A mechanical scorer cannot distinguish a genuine false-positive from a defensible concern, so an escalation mismatch on this fixture is **reported for human review** (`score_chain.py` prints `OBSERVATIONAL` and returns S4=None, which does not fail the PASS gate) rather than scored 0. Only a human can make that call. The trade-off is named honestly: this fixture can no longer *mechanically* catch a false-positive over-escalation — it surfaces the candidate; the operator adjudicates.
 
 ### S5 — Audit Scope Adherence (only when audit runs)
 
@@ -217,15 +221,34 @@ exists to surface before the full run is funded.
 ## Run Hygiene (plan 011 — I1 contamination, I9 capture)
 
 - **Isolation (I1, prevention)**: stage each target with `python3 stage_target.py <id>` and pass the judgment agents ONLY the printed path — a neutral `…/chain-stage/component/` dir outside the eval tree, so `..` reaches no answer key. The orchestrator must also instruct every stage not to read `rubrics/`, `*.chain.yaml`, `*.metadata.yaml`, or `evals/suites/perspectives/`.
-- **Detection (I1, backstop)**: `score_chain.py`'s `detect_peek()` scans each stage's text for answer-key fingerprints; a hit marks the fixture CONTAMINATED and voids S3/S4/tracer (auto-fail). In the 2026-06-13 pilot the video critic peeked and produced a "perfect" 7/7 — exactly what this catches.
-- **Pristine capture (I9)**: save raw agent output verbatim to `<stage>.md`; put operator integrity flags / orchestrator notes in a SEPARATE `<stage>.notes.md`. If they are mixed into the scored file, `detect_peek()` and the S3/verdict/tracer parsers read operator text as the agent's. (The pilot's `.txt` captures mixed them, which is why those files cannot be re-scored directly and the scorer fixes were validated by unit test on extracted snippets instead.)
+- **Detection (I1, backstop — verbatim only)**: `score_chain.py`'s `detect_peek()` scans each stage's PRISTINE text for answer-key fingerprints; a hit marks the fixture CONTAMINATED and voids S3/S4/tracer (auto-fail). **It catches verbatim leaks only** (finding M4): a stage that read the rubric but paraphrased it evades the token scan — which is precisely what the 2026-06-13 video critic did (its "perfect" 7/7 came from the rubric, but it never echoed the answer-key strings into its own output). The operator flag below is what actually flagged it.
+- **Pristine capture + operator zone (I9)**: each `<stage>.md` is the agent's output verbatim, followed by a single fenced operator zone the scorer strips before parsing:
+  ```
+  <!--OPERATOR
+  peek: true            # operator integrity judgment: did this stage read the answer key?
+  reason: |             # free prose; never scored
+    critic navigated to rubrics/ and read expected_alarm_levels …
+  OPERATOR-->
+  ```
+  `split_operator()` reads `peek:` from the zone FIRST, then removes the zone so `detect_peek` / the alarm-table / verdict / tracer parsers see agent text only. **The contamination gate is `peek flag OR detect_peek(pristine)`** — the human flag covers paraphrased peeks the token scan can't (the video case), and the flag is a deliberate integrity judgment with the same standing as the human-scored S1/S2, not the answer key. Without the zone, operator commentary that quotes the rubric (the pilot's first captures did) false-flags a blind stage — that was the login false-positive. Operator notes carry NO weight in the score beyond the structured `peek:` line.
 - Fixture IDs must not encode their expected verdict; staging neutralises the path regardless.
+
+## Known Limitations (plan 011 proposal-critic review, 2026-06-13)
+
+Named honestly so no one reads more rigor into the instrument than it has:
+
+- **detect_peek is verbatim-only (M4).** The automated contamination scan matches fixed answer-key tokens; a stage that reads the rubric and paraphrases evades it. The operator `peek:` flag is the only catch for paraphrased peeks, and it depends on a human noticing during the run — so contamination detection is *not* fully mechanical.
+- **Staging is defense-in-depth, not a jail (M5).** `stage_target.py` puts the target outside the eval tree so `..` reaches no answer key, and the prompt forbids reading `rubrics/`. Neither is a filesystem sandbox — an agent that constructs an absolute path to `rubrics/` can still read it. The video pilot peek happened *with* the prompt instruction in place. Staging lowers the odds; the `peek:` flag + `detect_peek` are the backstops.
+- **Crosswalk low-vision mapping is a one-way facet loss (M3).** "low vision" → `magnification_reflow` collapses a lens that spans BOTH magnification and contrast onto the zoom/reflow axis; a low-vision contrast concern is invisible on `environmental_contrast`. Documented and accepted (the canonical 7 has no combined low-vision axis); the alternative is standardizing the critic's output taxonomy upstream, out of scope here.
+- **S5b is a presence check, not a coverage check (m1).** S5b awards 1 if each escalated perspective's name-stem appears in the audit text — it does not verify the audit substantively covered that perspective. A passing S5b means "mentioned," not "audited well"; the operator confirms substance by reading the audit.
+- **The all-LOW fixture's over-escalation branch is observational (M1).** See S4 above — it surfaces candidate false-positives for human adjudication; it does not mechanically fail them.
+- **No capture harness — discipline is hand-enforced.** The chain run is hand-orchestrated; nothing *enforces* the I9 pristine-zone format at capture time. `scripts/smoke_chain.sh` is the after-the-fact check that captures are well-formed and score as expected.
 
 ## Scoring Is Manual for S1–S2
 
-S1 (scout char count and component type) and S2 (plan file existence and phase coverage) require the operator to examine the session record. `score_chain.py` automates S3–S5 from the rubric YAML and text output files — including the `s4_graded: false` skip, the CLEAN fixtures' escalated-scope check (derived from the critic's parsed alarm levels), and a PROVISIONAL audit-verdict token match. S1–S2 and audit-verdict confirmation are recorded manually in the results template.
+S1 (scout char count and component type) and S2 (plan file existence and phase coverage) require the operator to examine the session record. `score_chain.py` automates S3–S5 from the rubric YAML and text output files — including the `s4_graded: false` skip, the CLEAN fixtures' escalated-scope check (derived from the critic's parsed alarm-table levels), and the I4 audit-verdict check (the explicit `Overall recommendation:` line + MAJOR/CRITICAL counts, not a bare "PASS" token). S1–S2 and audit-verdict confirmation are recorded manually in the results template.
 
-This is the correct division: S1–S2 measure file system and prompt injection mechanics that only exist in a live session, while S3–S5 measure the text content of outputs against known ground truth. The scorer's audit-verdict check is a token match only — the operator confirms the absence of MAJOR/CRITICAL findings by reading the audit output.
+This is the correct division: S1–S2 measure file system and prompt injection mechanics that only exist in a live session, while S3–S5 measure the text content of outputs against known ground truth. The scorer's audit-verdict check (I4) parses the recommendation line and counts MAJOR/CRITICAL markers — a heuristic, so the operator still confirms by reading the audit output.
 
 ---
 
@@ -233,7 +256,7 @@ This is the correct division: S1–S2 measure file system and prompt injection m
 
 - The `expected_alarm_levels` in rubrics duplicates source metadata for self-containment. On any metadata edit, re-sync the rubric (including the mechanically derived `expected_escalation` and `expected_escalated_perspectives`).
 - S4 (escalation accuracy, n/6) is the number to watch over time — it is the chain's headline metric. Fixtures 6–8 are excluded (`s4_graded: false` — no alarm ground truth); fixture 9 `site-breadcrumb-nav` is the all-LOW never-escalate probe and IS graded.
-- Capture hygiene (plan 011, I9): scored stage outputs (`<stage>.md`) must be PRISTINE agent text; operator notes go in a separate `<stage>.notes.md`. Stage targets via `stage_target.py` (neutral path, no answer key copied); never let a judgment stage read `rubrics/` or `*.metadata.yaml` — `score_chain.py`'s `detect_peek()` auto-fails contaminated fixtures.
+- Capture hygiene (plan 011, I9): scored stage outputs (`<stage>.md`) are PRISTINE agent text followed by one fenced `<!--OPERATOR … OPERATOR-->` zone (with a structured `peek:` flag) that the scorer strips before parsing — see Run Hygiene above. Stage targets via `stage_target.py` (neutral path, no answer key copied); never let a judgment stage read `rubrics/` or `*.metadata.yaml`. Validate captures for free any time with `bash scripts/smoke_chain.sh` (unit tests + 3-capture integration re-score).
 - Tracer-finding choices must be the genuinely load-bearing item (the one most likely to drop in context compression), not an easy keyword. Reviewer should scrutinize these on each new fixture set.
 - CLEAN probes (fixtures 4–5) must NOT contain any hint of their cleanliness in extracted targets (no "CLEAN" or "ACCEPT" in the target files). Check this after running `extract_targets.py`.
 - The `s3_scoring_mode` field in rubrics 6–8 signals the must-find substitution to human scorers.

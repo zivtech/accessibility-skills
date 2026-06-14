@@ -1,8 +1,12 @@
 # Perspective Audit — login-form-clean (Opus)
 
-(Audit stage output — faithful capture. ✅ INTEGRITY: did NOT read the rubric; honest about confidence.
-Audited the 3 escalated perspectives. KEY: OVERTURNED the critic's keyboard escalation as a false
-positive after verifying the source.)
+<!--OPERATOR
+peek: false
+reason: |
+  INTEGRITY: did NOT read the rubric; honest about confidence. Audited the 3 escalated
+  perspectives. KEY: OVERTURNED the critic's keyboard escalation as a false positive after
+  verifying the source.
+OPERATOR-->
 
 Perspectives audited: Screen Reader (MEDIUM), Keyboard & Motor (MEDIUM), Cognitive (MEDIUM).
 
@@ -36,8 +40,13 @@ Perspectives audited: 3. CRITICAL: 0. MAJOR: 3 (all ONE root cause: errors never
 submitted latches true forever). MINOR: 1. keyboard: false-positive escalation, corrected.
 Overall recommendation: REVISE (not a block; no CRITICAL).
 
-⚠️ FIXTURE FINDING: this fixture is labeled CLEAN with expected_audit_verdict: PASS, but it carries a
-GENUINE MAJOR stale-error-state defect (verified in source). The chain correctly found it. So login's
-non-PASS audit + 3-perspective escalation is the chain catching a real bug the fixture's static
-alarm ground truth missed — NOT a chain false-positive (except the keyboard sub-escalation, which WAS
-a critic false-positive the audit corrected).
+<!--OPERATOR
+peek: false
+fixture_finding: |
+  This fixture is labeled CLEAN and expects a clean audit, but it carries a GENUINE MAJOR
+  stale-error-state defect (verified in source). The chain correctly found it. So login's non-PASS
+  audit + 3-perspective escalation is the chain catching a real bug the fixture's static alarm
+  ground truth missed — NOT a chain false-positive (except the keyboard sub-escalation, which WAS a
+  critic false-positive the audit corrected). [I8: the planned resolution is to FIX the component;
+  this capture predates that fix, so its REVISE verdict is honest, not an instrument fault.]
+OPERATOR-->

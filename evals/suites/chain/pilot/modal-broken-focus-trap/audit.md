@@ -1,9 +1,13 @@
 # Perspective Audit — modal-broken-focus-trap (Opus)
 
-(Audit stage output. Captured for chain eval. KEY META-OBSERVATION the audit made on its own:
-the escalation injected the critic's PLAN-level findings — about proposed fixes — but the skill
-Step 4 points the audit at SOURCE files, which contain none of those proposed elements. The audit
-re-grounded every finding in the actual source. Recorded as a chain finding in PILOT-REPORT.)
+<!--OPERATOR
+peek: false
+meta_observation: |
+  KEY META-OBSERVATION the audit made on its own: the escalation injected the critic's PLAN-level
+  findings — about proposed fixes — but the skill Step 4 points the audit at SOURCE files, which
+  contain none of those proposed elements. The audit re-grounded every finding in the actual
+  source. Recorded as a chain finding in PILOT-REPORT.
+OPERATOR-->
 
 Perspectives audited: 3 (Keyboard & Motor, Screen Reader & Semantic, Magnification/Low Vision) —
 exactly the escalated set, no LOW leakage.

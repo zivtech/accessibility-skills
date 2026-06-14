@@ -5,6 +5,13 @@ source_metadata: null
 target_dir: evals/suites/chain/targets/site-breadcrumb-nav/
 expected_escalation: false          # ALL-LOW -> the never-escalate branch of S4
 s4_graded: true                     # has alarm ground truth (all LOW), so S4 IS graded
+s4_observational: true              # M1 (plan 011): the critic reviews the planner's PLAN, not
+                                    # just this (clean) component, so it may raise a defensible
+                                    # plan-level concern the component-only ground truth omits.
+                                    # An over-escalation here is REPORTED for human review, not
+                                    # auto-failed -- a mechanical scorer cannot tell a genuine
+                                    # false-positive from a defensible concern. Correct
+                                    # no-escalation still scores S4=1 (the happy path is probed).
 expected_escalated_perspectives: []
 expected_audit_verdict: null        # no audit should run (nothing escalates)
 expected_alarm_levels:
@@ -27,9 +34,12 @@ stage_notes: |
   and the other suites' fixture counts (33 / 25 / 25) are unaffected.
 
   Correct chain behavior: a ground-truth-matching critic flags NOTHING at MEDIUM/HIGH, so the
-  orchestrator must NOT spawn perspective-audit. S4 = 1 iff escalated == false. ANY escalation
-  here is an over-escalation (S4 = 0) — the false-positive failure mode the rest of the suite
-  cannot catch. S3 (alarm calibration) should be high: all seven perspectives are genuinely LOW.
+  orchestrator must NOT spawn perspective-audit. S4 = 1 iff escalated == false. An escalation
+  here is a candidate over-escalation — but because the critic reviews the planner's PLAN (not
+  just this clean component), it may be a defensible plan-level concern rather than a true
+  false-positive. Per s4_observational (M1, plan 011) the scorer REPORTS the mismatch for human
+  review instead of auto-failing it; only a human can tell false-positive from defensible
+  concern. S3 (alarm calibration) should be high: all seven perspectives are genuinely LOW.
 
   Textbook-correct breadcrumb (WAI-ARIA APG): <nav aria-label="Breadcrumb"> + <ol> + ancestor
   links + aria-current="page" on the final item, rendered as a non-link <span>.

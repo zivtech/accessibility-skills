@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""Unit tests for score_chain.py (plan 011 fixes I1-I6).
+"""Unit tests for score_chain.py (plan 011 fixes I1-I9 + M1/M2).
 
-Validates the scorer functions against PRISTINE snippets extracted from the 2026-06-13
-pilot outputs -- NOT by re-scoring the captured .txt files, which interleave operator
-annotations that quote the answer key (finding I9). Run free, before any paid re-run:
+Validates scorer functions against PRISTINE snippets (the agents' own output). These are
+the FUNCTION-level guards; the INTEGRATION guard is re-scoring the 3 pristine pilot captures
+(operator zones split out per I9) -- both are wired into scripts/smoke_chain.sh. Run free,
+before any paid re-run:
 
-    python3 evals/suites/chain/test_score_chain.py
+    python3 evals/suites/chain/test_score_chain.py     # this file (function unit tests)
+    bash scripts/smoke_chain.sh                         # units + the 3-capture integration
+
+M2/I9/M1 cases below are the proposal-critic must-fixes (2026-06-13): prose never binds an
+alarm, the operator zone is stripped before parsing while its peek flag still gates, and an
+all-LOW over-escalation is observational rather than auto-failed.
 """
 import os, sys
 
@@ -123,6 +129,52 @@ check("S4 narrow (login post-fix): critic escalates cognitive ONLY -> 1",
       sc.s4(NARROW_RUBRIC, True, "| cognitive | MEDIUM |")[0], 1)
 check("S4 narrow: scope-inflated (cognitive + keyboard) -> 0",
       sc.s4(NARROW_RUBRIC, True, "| cognitive | MEDIUM |\n| keyboard | MEDIUM |")[0], 0)
+
+# --- M2: parse_alarms reads structured table rows ONLY, never prose -------------------
+check("M2 prose with a bare level is NOT bound ('SR experience is HIGH quality')",
+      "screen_reader_semantic" in sc.parse_alarms("The screen reader experience is HIGH quality."),
+      False)
+check("M2 multi-perspective prose line does not bind first level to every lens",
+      sc.parse_alarms("auditory_access: HIGH, screen_reader_semantic: MEDIUM, all others LOW"), {})
+check("M2 a real table row IS parsed",
+      sc.parse_alarms("| screen reader | HIGH |").get("screen_reader_semantic"), "HIGH")
+check("M2 perspective read from cell[0]: keyboard row maps to keyboard_motor",
+      sc.parse_alarms("| Keyboard-only | MEDIUM | screen reader users also affected |")
+      .get("keyboard_motor"), "MEDIUM")
+check("M2 rationale cross-talk does not leak screen_reader from a keyboard row",
+      "screen_reader_semantic" in sc.parse_alarms(
+          "| Keyboard-only | MEDIUM | screen reader users also affected |"), False)
+
+# --- I9: operator zone stripped before parsing; peek flag read from the zone ----------
+# The video case: agent PARAPHRASED the rubric, so the verbatim answer-key strings live only
+# in the operator note. After stripping, detect_peek finds nothing -- the peek flag is the gate.
+PEEK_CAPTURE = ("# Verdict: REVISE\n| auditory_access | HIGH |\n"
+                "<!--OPERATOR\npeek: true\n"
+                "reason: critic read expected_alarm_levels from the .chain.yaml rubric\n"
+                "OPERATOR-->\n")
+pristine_peek, flag_peek = sc.split_operator(PEEK_CAPTURE)
+check("I9 operator zone (answer-key quote) stripped from pristine",
+      "expected_alarm_levels" in pristine_peek, False)
+check("I9 agent table survives stripping", "auditory_access" in pristine_peek, True)
+check("I9 peek: true read from the zone", flag_peek, True)
+check("I9 detect_peek on pristine finds nothing (paraphrased peek evades it)",
+      sc.detect_peek(pristine_peek), [])
+pristine_clean, flag_clean = sc.split_operator(
+    "# Verdict: ACCEPT\n| cognitive | LOW |\n<!--OPERATOR\npeek: false\nreason: stayed blind\nOPERATOR-->\n")
+check("I9 peek: false read from the zone", flag_clean, False)
+check("I9 no-zone text passes through unchanged",
+      sc.split_operator("just agent output, no zone")[0], "just agent output, no zone")
+
+# --- M1: all-LOW S4 over-escalation is OBSERVATIONAL, not auto-fail -------------------
+OBS_RUBRIC = {"expected_escalation": False, "s4_graded": True, "s4_observational": True,
+              "expected_escalated_perspectives": [],
+              "expected_alarm_levels": {k: "LOW" for k in LOGIN_RUBRIC["expected_alarm_levels"]}}
+check("M1 observational: correct no-escalation still scores S4=1 (happy path probed)",
+      sc.s4(OBS_RUBRIC, False, "every perspective LOW")[0], 1)
+check("M1 observational: over-escalation -> None (human review), NOT auto-0",
+      sc.s4(OBS_RUBRIC, True, "| cognitive | MEDIUM |")[0], None)
+check("M1 non-observational all-LOW still auto-fails over-escalation (contrast)",
+      sc.s4(ALLLOW_RUBRIC, True, "| cognitive | MEDIUM |")[0], 0)
 
 # --- report ---------------------------------------------------------------------------
 print("\n=== score_chain unit tests (plan 011) ===")

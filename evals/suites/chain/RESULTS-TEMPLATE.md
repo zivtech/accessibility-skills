@@ -3,7 +3,15 @@
 > **Template**: Copy and fill in for each run. Store completed records in `evals/suites/chain/pilot/` (pilot) or a dated `results/` subdirectory.  
 > **S1–S2**: Human-scored from session record.  
 > **S3–S5**: Run `python3 evals/suites/chain/score_chain.py <fixture-id> <session-dir>` after saving stage outputs.  
-> **Stage output files**: Save each stage's full text as `critic.txt`, `audit.txt`, `escalated.txt` (see score_chain.py header).
+> **Stage output files (I9)**: Save each judgment stage's output verbatim as `critic.md` / `audit.md` (agent text only), plus `escalated.txt` ("true"/"false"). Put ALL operator commentary — and the integrity judgment — in one fenced zone at the end of the `.md` that the scorer strips before parsing:
+> ```
+> <!--OPERATOR
+> peek: false        # true iff the stage read the rubric/answer key (incl. paraphrased)
+> reason: |          # free prose; never scored
+>   …
+> OPERATOR-->
+> ```
+> The critic MUST emit its alarm levels as a markdown table (`| Perspective | Alarm |`) — prose levels are not parsed (M2). Validate captures with `bash scripts/smoke_chain.sh`. See score_chain.py header + CHAIN-EVAL-PROTOCOL.md "Run Hygiene".
 
 ---
 

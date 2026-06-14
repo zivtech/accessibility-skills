@@ -1,8 +1,11 @@
 # Perspective Audit — video-tutorial-no-captions (Opus)
 
-(Audit stage output — faithful capture. ✅ INTEGRITY: did NOT read the rubric; reasoned the 1.2.3
-question independently. Audited ONLY the 2 escalated perspectives; LOW perspectives explicitly not
-reviewed → S5a no-leakage.)
+<!--OPERATOR
+peek: false
+reason: |
+  INTEGRITY: did NOT read the rubric; reasoned the 1.2.3 question independently. Audited ONLY the
+  2 escalated perspectives; LOW perspectives explicitly not reviewed → S5a no-leakage.
+OPERATOR-->
 
 Perspectives audited: Auditory Access (HIGH), Screen Reader & Semantic (MEDIUM).
 

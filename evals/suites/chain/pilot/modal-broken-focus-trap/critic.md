@@ -1,8 +1,11 @@
 # VERDICT: ACCEPT-WITH-RESERVATIONS
 
-(Critic stage output — a11y-critic, Opus. Captured verbatim for chain eval. The critic
-emitted its own 6-perspective taxonomy, NOT the 7-perspective rubric taxonomy — see
-PILOT-REPORT instrument findings.)
+<!--OPERATOR
+peek: false
+reason: |
+  a11y-critic, Opus. Captured verbatim for chain eval. The critic emitted its own 6-perspective
+  taxonomy, NOT the 7-perspective rubric taxonomy — see PILOT-REPORT instrument findings.
+OPERATOR-->
 
 **Overall Assessment**: Strong, genuinely-engaged plan. Correctly identifies all eight real
 defects in the source, maps each to the right APG pattern and WCAG criterion, enumerates
@@ -59,10 +62,14 @@ require a separate perspective-audit escalation — the MEDIUM alarms collapse t
 above. Re-running perspective-audit would re-derive the same three. Fix the Majors and all three
 drop to LOW."
 
-[ORCHESTRATOR NOTE — chain finding: this prose recommendation CONTRADICTS the structured MEDIUM
-alarms. Per SKILL.md Step 4 and the team escalation table, any MEDIUM/HIGH alarm mechanically
-triggers the audit. Escalation fired on the mechanical rule. The prose-vs-structured conflict is
-recorded as a chain finding in PILOT-REPORT.]
+<!--OPERATOR
+peek: false
+orchestrator_note: |
+  Chain finding: this prose recommendation CONTRADICTS the structured MEDIUM alarms. Per SKILL.md
+  Step 4 and the team escalation table, any MEDIUM/HIGH alarm mechanically triggers the audit.
+  Escalation fired on the mechanical rule. The prose-vs-structured conflict is recorded as a chain
+  finding in PILOT-REPORT.
+OPERATOR-->
 
 ## Verdict Justification
 ACCEPT-WITH-RESERVATIONS not REVISE: architecture correct and complete; the three Majors are

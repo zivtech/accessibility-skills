@@ -2,7 +2,7 @@
 
 > **Created**: 2026-06-13 (follow-up to plan 009's pilot)
 > **Priority**: P3 · **Effort**: M · **Depends on**: 009 (pilot evidence)
-> **Status**: IN PROGRESS — free scorer/fixture work landed (commits `0761855` + `e6c56aa`); proposal-critic (Opus) returned **REVISE / NOT-READY** for the paid re-run. See "Proposal-critic review" at the end.
+> **Status**: READY for paid-run cost approval — the proposal-critic's free must-fixes (C1/C2, M2, M1) are landed and validated by the free integration re-score. Scorer/fixture work in `0761855` + `e6c56aa`; instrument-fix follow-up in this session (M2 table-only parsing, I9 operator-zone capture + dual contamination gate, M1 observational S4, honest limitations). The 3-capture integration re-score is now the standing gate: `bash scripts/smoke_chain.sh` → login un-flagged · video flagged · modal PASS (33 unit + 3 integration assertions, all green). See "Proposal-critic review" and "Resolution" at the end. **The paid 3-fixture re-run still requires explicit operator cost approval** (~12 Opus/Haiku subagent calls).
 > **Source of findings**: `evals/suites/chain/pilot/PILOT-REPORT.md` (I1–I8) plus two
 > findings this plan adds from re-reading the captured pilot outputs (I2-semantic, I9).
 
@@ -217,3 +217,48 @@ funding the ~12-subagent re-run; **all free**:
   broke in the very pilot that motivated this plan. Define the capture discipline before the re-run.
 
 Full review: proposal-critic agent `a3a8268b82500561c`.
+
+## Resolution (2026-06-13) — must-fixes landed, gate now passes
+
+All free must-fixes from the proposal-critic review are implemented and validated by the free
+integration re-score (which IS the gate the critic asked for — real captures, not authored snippets):
+
+- **C1/C2 — validate on real captures.** I9 capture format implemented as a marked `<!--OPERATOR …
+  OPERATOR-->` zone the scorer strips before parsing (`split_operator` in `score_chain.py`), with a
+  structured `peek:` flag read from the zone first. The 3 pilot captures were pristine-ified (operator
+  commentary moved into zones; the stale annotated `.txt` duplicates removed). Re-scoring them is the
+  integration test, wired into `scripts/smoke_chain.sh`:
+  - `login-form-clean` → **un-flagged** (operator zone stripped; the `expected_escalated_perspectives`
+    / `expected_audit_verdict` tokens were operator annotations, not agent peeks). Scores honestly
+    S4=0 / audit REVISE — a real measurement against the still-buggy component, not contamination.
+  - `video-tutorial-no-captions` → **flagged** via the operator `peek: true` flag. This is the
+    paraphrased-peek case: `detect_peek` finds nothing in the pristine output, the flag catches it.
+  - `modal-broken-focus-trap` → **PASS**.
+- **M2 — `parse_alarms` table-rows only.** Reads a level only from a cell that is exactly
+  HIGH/MEDIUM/LOW with a perspective in cell[0]; prose and one-line multi-perspective summaries no
+  longer bind. (Already visible pre-pristine: video S3 0.929 → 1.0.) Orchestrator prompt must mandate
+  the alarm table — documented in CHAIN-EVAL-PROTOCOL.md S3.
+- **M1 — all-LOW over-escalation is observational.** `s4_observational: true` on
+  `site-breadcrumb-nav`; an escalation mismatch returns S4=None + prints `OBSERVATIONAL` for human
+  adjudication rather than auto-0. Rationale: the critic reviews the plan, so a defensible plan-level
+  concern can't be mechanically distinguished from a false-positive. Validated by unit test (the
+  empty-dir re-score of the fixture is vacuous — no captured session exists yet).
+- **Documented honestly (no code):** M4 (detect_peek verbatim-only), M5 (staging ≠ jail), M3
+  (crosswalk low-vision one-way loss), m1 (S5b presence-not-coverage), and "no capture harness" are
+  now a **Known Limitations** section in the protocol. m2 (named smoke script) → `scripts/smoke_chain.sh`.
+
+**Tests:** `python3 evals/suites/chain/test_score_chain.py` → 33/33 (was 19; +14 for M2/I9/M1).
+`bash scripts/smoke_chain.sh` → 4/4 (units + 3-capture integration). All free.
+
+**Still open / for the operator:**
+- The paid 3-fixture re-run (~12 Opus/Haiku subagent calls) needs explicit cost approval. It is the
+  *live* confirmation that I1 staging blocks the peek and I9 capture is pristine at capture time
+  (the smoke script only checks the existing captures, hand-pristine-ified after the fact).
+- `login-form-clean` I8 component fix is DONE — `targets/login-form-clean/component.jsx` now clears
+  each field's error on change (`clearFieldError` at :19, called from the email/password `onChange`
+  at :59/:76). The pilot CAPTURE predates that fix, so its REVISE/MAJOR=3 audit is historical; the
+  capture re-score still validates the INSTRUMENT (login un-flagged), and a fresh paid re-run should
+  now produce escalate-cognitive-only → clean audit → PASS (the plan's stated post-I8 expectation).
+- Open (operator): confirm whether the perspectives-suite copy of this fixture was likewise corrected;
+  the committed 25-fixture perspectives false-positive benchmark row for `login-form-clean` may still
+  reflect the mislabeled version and need a refresh.
