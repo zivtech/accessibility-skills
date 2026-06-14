@@ -25,7 +25,14 @@ import sys
 import time
 import urllib.request
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+# Honor the standard OLLAMA_HOST env var so a run can target a specific server,
+# e.g. a native Metal server on :11435 vs the CPU-only OrbStack container that
+# may hold :11434. Default preserves prior behavior. Accepts "host:port" or URL.
+_OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "127.0.0.1:11434").rstrip("/")
+if not _OLLAMA_HOST.startswith(("http://", "https://")):
+    _OLLAMA_HOST = "http://" + _OLLAMA_HOST
+OLLAMA_URL = _OLLAMA_HOST + "/api/generate"
+OLLAMA_TAGS_URL = _OLLAMA_HOST + "/api/tags"
 DEFAULT_MODEL = "llama3.3:70b"
 
 SKILLS_DIR = os.path.join(os.path.dirname(__file__), "..", ".claude", "skills")
@@ -76,7 +83,7 @@ def load_input(path: str) -> str:
 
 def check_ollama():
     try:
-        req = urllib.request.Request("http://localhost:11434/api/tags")
+        req = urllib.request.Request(OLLAMA_TAGS_URL)
         with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read())
         return [m["name"] for m in data.get("models", [])]
