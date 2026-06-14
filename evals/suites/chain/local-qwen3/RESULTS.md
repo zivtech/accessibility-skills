@@ -38,6 +38,14 @@ system prompt. qwen3:32b emitted a **prose** `**Multi-Perspective Notes**:` list
 No table → no alarm rows → no MEDIUM/HIGH → **escalation never fires** (S4=0 everywhere), even
 though qwen3 *did* identify the real defects (Tracer=1 on both non-clean fixtures).
 
+**Control — plan-vs-component confound ruled out (2026-06-14):** re-running the critic on each
+fixture's component source directly (no plan framing; same model / SKILL / content) again produced
+prose `**Multi-Perspective Notes**:` — `parse_alarms` `{}`, no table, **3/3**. Framing is
+irrelevant: **6/6 prose across both runs**. (Reconciles with the committed "qwen3 96% must-find"
+critic-fixture score — that measures *detection* of planted issues, which qwen3 does well, not
+*emission of the escalation table*, a separate axis the chain is the first to require.) Captures:
+`local-qwen3-control/`.
+
 Implication: the chain's escalation gate depends on the critic model reliably emitting the
 structured table. This does **not** argue for loosening M2 (that re-admits the prose garbage
 above) — it argues for enforcing the table at the critic.
@@ -49,7 +57,8 @@ above) — it argues for enforcing the table at the critic.
   score 0. login-form-clean scores 0.93 *because* a clean fixture rewards all-LOW.
 - **The runner reviews the plan, not the component** (critic input is "PLAN UNDER REVIEW…"), while
   the SKILL is component-oriented. This framing mismatch is a plausible co-contributor to the prose
-  drift; no component-input control was run.
+  drift — but the component-input control (`local-qwen3-control/`) ruled this out: prose 3/3 there too,
+  so it is stable qwen3 behavior, not a plan-framing artifact (see Finding -> Control).
 - **Not a measure of Claude chain quality.** Per project preference, the production skill benchmark
   uses Claude Code subagents; this lane only exercises the fixed instrument on fresh local output.
 - **Does NOT validate I1 staging** (peek-blocking) — moot locally: qwen3 has no filesystem access,
