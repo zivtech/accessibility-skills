@@ -358,18 +358,35 @@ All 16 HAS-BUGS fixtures passed with 100% must-find detection and 100% perspecti
 
 ### CLEAN Fixtures (5)
 
+> **⚠ ERRATUM (2026-06-14) — `login-form-clean` row refreshed.** This batch ran 2026-05-14/16, when the `login-form-clean` fixture still carried a real MAJOR **stale-error** bug (`aria-invalid` + error text persisted after a field was corrected, until re-submit). That bug was the I8 finding fixed only on 2026-06-13 (`0761855`, plan 011). So the *original* "PASS / matches nice_to_find" was qwen3:32b **missing a real bug under a mislabeled-CLEAN ground truth**, not validated false-positive avoidance. A free local re-run against the now-fixed fixture was completed 2026-06-14 (Metal :11435) and replaces the row below. The other 4 CLEAN rows are unaffected (their components were genuinely clean). Full re-run: "login-form-clean refresh" below.
+
 | Fixture | Verdict | Findings | Status | Note |
 |---------|---------|----------|--------|------|
 | article-page-clean | PASS ✓ | 2 ENHANCEMENT | WARN | Correct — matches nice_to_find |
 | dashboard-text-labels | PASS ✓ | 2 ENHANCEMENT | WARN | Correct — matches nice_to_find |
-| login-form-clean | PASS ✓ | 2 ENHANCEMENT | WARN | Correct — matches nice_to_find |
+| login-form-clean | PASS ✓ | 2 ENHANCEMENT | WARN | **Refreshed 2026-06-14 on the fixed fixture — now a VALID clean-recognition** (the original 2026-05 PASS was a missed bug; see refresh) |
 | nav-menu-landmarks | REVISE | 2 MAJOR | WARN* | Flagged missing `<title>` and `<html lang>` |
 | media-player-captions | BLOCK | 2 findings | FAIL | Flagged page-shell concerns on sub-component |
 
 **CLEAN false-positive analysis**:
-- 3 fixtures (article, dashboard, login): Correct PASS verdicts with ENHANCEMENT-level notes matching rubric nice_to_find items.
+- 3 fixtures (article, dashboard, login): Correct PASS verdicts with ENHANCEMENT-level notes matching rubric nice_to_find items. (login-form-clean's 2026-06-14 refresh on the fixed fixture confirms this; its original 2026-05 run scored the buggy component — see erratum.)
 - nav-menu-landmarks: Gave REVISE for missing `<title>` (2.4.2) and `<html lang>` (3.1.1). These are real WCAG requirements the fixture's React component doesn't satisfy (React components don't render `<html>` or `<head>` — the app shell does). Rubric updated to accept REVISE as valid for this fixture since the component presents itself as a full page. *Scored as WARN after rubric update.
 - media-player-captions: Gave BLOCK after flagging missing `<main>` landmark, missing `lang`, and transcript association issues. This is a clear sub-component (`MediaPlayer`, returns `<section>`) — page-level concerns are out of scope. Fixture updated with scope note for future runs.
+
+#### login-form-clean refresh (2026-06-14 · fixed fixture · qwen3:32b · Metal :11435)
+
+Re-ran after the I8 component fix (`0761855`) against the now-genuinely-clean fixture — same protocol (escalation-injection from metadata + `score_perspective.py`), qwen3:32b on the native Metal server (`OLLAMA_URL=http://localhost:11435/api/generate`, since `run_benchmark.py` reads `OLLAMA_URL`, not `OLLAMA_HOST`).
+
+| Metric | qwen3:32b (post-fix — VALID) |
+|--------|------------------------------|
+| Verdict | PASS (expected PASS) ✓ |
+| CRITICAL / MAJOR | 0 / 0 |
+| Findings raised | 2 ENHANCEMENT — password-visibility toggle (3.3.7) + optional `aria-live` on error summary; both match the rubric's `nice_to_find` |
+| Page-shell over-flag | none (did **not** flag `<html lang>`/`<title>`) |
+| Status | WARN — correct verdict, enhancements noted |
+| Generation | 336s · 1,959 tokens · 5,254 chars |
+
+**Interpretation:** The verdict is identical to the original (PASS / 2 ENHANCEMENT / WARN) — which *confirms* the 2026-05 run genuinely **missed** the stale-error bug (it produced the same clean verdict whether the bug was present or not). The refresh does not change the headline CLEAN false-positive rate; it converts an **invalid** data point (clean verdict on a buggy, mislabeled-CLEAN component, scored as a virtue) into a **valid** one (clean verdict on a genuinely clean component). login-form-clean is now a legitimate false-positive-avoidance pass.
 
 ### Known Model Characteristic: Page-Shell WCAG Over-Flagging
 
@@ -447,10 +464,12 @@ Must-find: (1) Status indicators rely on color alone (1.4.1), (2) Hover-only too
 
 #### login-form-clean (CLEAN — Cognitive MEDIUM)
 
-| Metric | qwen3:32b |
+> **⚠ ERRATUM (2026-06-14):** This result scored the pre-I8-fix component, which carried a real MAJOR stale-error bug (fixed 2026-06-13, `0761855`). The "PASS" reflects a missed bug under a mislabeled-CLEAN ground truth. See the "login-form-clean refresh" subsection for the valid post-fix re-run.
+
+| Metric | qwen3:32b (pre-fix — INVALID) |
 |--------|-----------|
 | Verdict | PASS ✓ |
-| **Status** | **PASS (WARN — enhancements noted)** |
+| **Status** | **PASS (WARN — enhancements noted)** — superseded, see refresh |
 
 #### article-page-clean (CLEAN — Cognitive MEDIUM)
 

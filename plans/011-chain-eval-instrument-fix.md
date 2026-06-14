@@ -259,6 +259,18 @@ integration re-score (which IS the gate the critic asked for — real captures, 
   at :59/:76). The pilot CAPTURE predates that fix, so its REVISE/MAJOR=3 audit is historical; the
   capture re-score still validates the INSTRUMENT (login un-flagged), and a fresh paid re-run should
   now produce escalate-cognitive-only → clean audit → PASS (the plan's stated post-I8 expectation).
-- Open (operator): confirm whether the perspectives-suite copy of this fixture was likewise corrected;
+- ~~Open (operator): confirm whether the perspectives-suite copy of this fixture was likewise corrected;
   the committed 25-fixture perspectives false-positive benchmark row for `login-form-clean` may still
-  reflect the mislabeled version and need a refresh.
+  reflect the mislabeled version and need a refresh.~~ **RESOLVED 2026-06-14** (verified against artifacts,
+  not status claims):
+  1. The tracked perspectives fixture `evals/suites/perspectives/fixtures/login-form-clean.md` (+ metadata + rubric)
+     was already corrected in `0761855` — `clearFieldError` on both `onChange`, so its CLEAN / 0-must-find ground
+     truth is now true. Both `run_benchmark.py:27` and the cloud runner read this `fixtures/` dir.
+  2. The `fixtures-eval/` copy was stale (pre-fix, still buggy) but is **gitignored with no runner reading it** —
+     a dead artifact, not a scored surface. Regenerated via `strip_bug_comments.py` for working-tree hygiene.
+  3. The committed qwen3:32b perspective row in `ollama/BENCHMARK.md` **was** scored against the pre-fix buggy
+     component (2026-05-14/16, ~19h before the fix) — a genuine overclaim ("PASS = clean-recognition" was actually a
+     missed bug). Added an ERRATUM on both surfaces and **refreshed it locally 2026-06-14** (native Metal :11435 — the
+     CPU-only OrbStack `:11434` can't run a 32B model; `run_benchmark.py` honors `OLLAMA_URL`): PASS / 0 CRITICAL-MAJOR /
+     2 ENHANCEMENT (WARN), now a valid clean-recognition. Identical verdict to the original confirms that run genuinely
+     missed the bug. See "login-form-clean refresh" in BENCHMARK.md.
