@@ -2,7 +2,7 @@
 
 > **Created**: 2026-06-13 (follow-up to plan 009's pilot)
 > **Priority**: P3 · **Effort**: M · **Depends on**: 009 (pilot evidence)
-> **Status**: IN PROGRESS
+> **Status**: IN PROGRESS — free scorer/fixture work landed (commits `0761855` + `e6c56aa`); proposal-critic (Opus) returned **REVISE / NOT-READY** for the paid re-run. See "Proposal-critic review" at the end.
 > **Source of findings**: `evals/suites/chain/pilot/PILOT-REPORT.md` (I1–I8) plus two
 > findings this plan adds from re-reading the captured pilot outputs (I2-semantic, I9).
 
@@ -184,3 +184,36 @@ explicit operator cost approval at the gate.
 - `evals/suites/chain/CHAIN-EVAL-PROTOCOL.md` (I1 instruction, I6, I7, I9 capture rule, S3 semantic)
 - `scripts/smoke_*.sh` (validation cases)
 - `evals/suites/chain/RESULTS-TEMPLATE.md` (I9 pristine-vs-notes split, if needed)
+
+## Proposal-critic review (2026-06-13) — REVISE / NOT-READY for the paid re-run
+
+An Opus proposal-critic ran the real scorer against the real captured pilot sessions — the
+integration this plan deferred — and found the free validation was **circular** (it tests the
+scorer against hand-authored pristine snippets, not real session output). Must-fix BEFORE
+funding the ~12-subagent re-run; **all free**:
+
+- **C1/C2 — validate on real captures, not authored snippets.** The 19 unit tests use hand-built
+  tables; the real `.md` captures are still annotated (`.md` == `.txt`; no `.notes.md` exists).
+  Running the real scorer today, `login-form-clean` → CONTAMINATED because `detect_peek` matched
+  the OPERATOR's annotation token `expected_escalated_perspectives` (the login critic actually
+  stayed blind). Fix: implement/enforce I9 pristine capture (agent output verbatim to `<stage>.md`;
+  operator notes in a marked zone the scorer strips), then re-score the 3 existing sessions with
+  explicit pass criteria (login un-flagged, video flagged, modal PASS). That free re-score IS the
+  missing integration test and the real gate.
+- **M2 — `parse_alarms` binds prose, not just alarms.** "The screen reader experience is HIGH
+  quality" → `screen_reader_semantic: HIGH`. Real critic prose ("high confidence", "major
+  strength") corrupts S3/S4/S5. Fix: parse only structured alarm rows (table `|` or explicit
+  marker) or require level-near-lens proximity excluding quality words; require the critic to emit
+  a parseable alarm table in the orchestrator prompt.
+- **M1 — the all-LOW breadcrumb penalizes defensible judgment.** A competent critic may rate
+  `cognitive_neurodivergent: MEDIUM` on a deep breadcrumb (truncation/disclosure) → spurious S4=0
+  on the headline metric. Fix: reclassify fixture-9 S4-on-escalation as observational (investigate,
+  not auto-fail), or accept the all-LOW branch may be unprobeable with a realistic component.
+- **Document honestly (no code):** `detect_peek` catches verbatim leaks only (paraphrase evades it,
+  M4); I1 staging is defense-in-depth, not a filesystem jail (an agent can read an absolute path,
+  M5); the crosswalk's low-vision→magnification is a one-way contrast-facet loss (M3); S5b is a
+  substring presence check, not coverage (m1); wire chain tests into a named smoke script (m2).
+- **No capture harness exists** — the run is hand-orchestrated, so the I9 rule is unenforced and
+  broke in the very pilot that motivated this plan. Define the capture discipline before the re-run.
+
+Full review: proposal-critic agent `a3a8268b82500561c`.
