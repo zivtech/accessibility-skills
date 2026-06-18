@@ -8,12 +8,16 @@ npx skills add zivtech/a11y-meta-skills
 
 **[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
 
-This bundle packages four companion skills that cover the full accessibility development lifecycle:
+This bundle packages four core skills that cover the full accessibility development lifecycle:
 
 - `a11y-planner`: designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
 - `a11y-critic`: reviews plans before implementation AND implementations after testing
 - `a11y-test`: runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
 - `perspective-audit`: deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
+
+Additional companion skill:
+
+- `bug-reporting`: converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency)
 
 ## Why this bundle exists
 
@@ -132,6 +136,7 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/a11y-critic` — review plans or implementations
 - `/a11y-test` — run keyboard, axe-core, and visual regression tests
 - `/perspective-audit` — deep review from escalated disability/situational access perspectives
+- `/bug-reporting` — produce reproducible accessibility bug reports from test or review findings
 
 ## Model Baselines
 
