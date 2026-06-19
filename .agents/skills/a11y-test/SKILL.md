@@ -2,7 +2,7 @@
 name: a11y-test
 description: "Use when you need to run real accessibility tests — Playwright keyboard interactions, axe-core scanning, visual regression, and WCAG 2.2 compliance checks. The measurement layer that feeds evidence into a11y-critic reviews."
 license: Apache-2.0
-compatibility: Codex-compatible; protocol is model-agnostic
+compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
   version: "1.1.0"
@@ -18,14 +18,14 @@ This skill has three execution modes. Pick the right one before running anything
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
-| Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (generated in Claude Code; run the produced .py from Codex) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
+| Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
 **Decision flowchart:**
 ```
 Do you have a prose description of what to test, but no test script yet?
-  YES → /webwright:run in a Claude Code session (one-shot) or /webwright:craft (reusable); execute the generated .py from Codex via python3 <script>.py
+  YES → /webwright:run (one-shot) or /webwright:craft (reusable parameterized tool)
   NO, you need to run an existing test → npx playwright test
   NO, you need to explore interactively → agent-browser
 ```
@@ -78,7 +78,7 @@ Press Escape and verify the modal closes and focus returns to the trigger.
 - No built-in axe-core — the LLM must write injection code (it does this correctly; see benchmark task 3c)
 - May miss a11y-specific patterns unless the prompt is specific about what to check
 - Python scripts don't run in JS CI without a Python runner
-- Script GENERATION requires the Claude Code plugin (not available in Codex CLI); generated .py scripts run anywhere Python + Playwright are installed, including from Codex sessions.
+- Requires Claude Code plugin install — not available in Codex CLI
 - Do not run simultaneously with agent-browser — both launch Chrome instances that may conflict on ports
 
 **Benchmark results (2026-05-26):** 25/25 across 5 WAI-ARIA APG tasks (dialog focus trap, tabs ARIA state, axe-core injection, menu keyboard navigation, ARIA tree inspection). All scripts used real `page.keyboard.press()` calls. Full results in `evals/suites/webwright-benchmark/`.
@@ -93,7 +93,7 @@ Press Escape and verify the modal closes and focus returns to the trigger.
 
 **If marketplace fails:** `git clone https://github.com/microsoft/Webwright && /plugin install ./Webwright`
 
-**Platform note:** Script GENERATION requires the Claude Code plugin (not available in Codex CLI). Generated `.py` scripts can be executed from Codex via `python3 script.py`.
+**Platform note:** Claude Code plugin only. Not available in Codex CLI. `agent-browser` remains the only browser automation usable from Codex. Generated `.py` scripts can be executed from Codex via `python3 script.py`.
 
 ## 1. Keyboard Accessibility Tests
 
@@ -635,6 +635,32 @@ Critical: [n] | Serious: [n] | Moderate: [n] | Minor: [n]
 
 This output feeds directly into the a11y-critic's Phase 0 (Consume Test Evidence) — measured violations become hard evidence in the design review.
 
+### Optional A11y Evidence Finding Contract
+When a test produces a failing keyboard, axe-core, visual, static-analysis, or manual finding, include an `A11y Evidence Finding` block for each issue that should be handed to `a11y-critic` or `perspective-audit`. Do not emit placeholder contracts for passing checks or clean fixtures.
+
+Use these fields when evidence exists:
+```
+### A11y Evidence Finding
+finding_id: stable lowercase id, e.g. a11y_form_error_describedby
+fingerprint: stable 8-64 char hex hash derived from component/target/rule, not the crawl URL alone
+source: test command, test file, axe rule id, agent-browser ref, or observed artifact
+wcag_or_apg: WCAG 2.2 criterion or WAI-ARIA APG pattern citation
+section_508_fpc_context: Section 508 context only when applicable; Revised Section 508 maps web conformance to WCAG 2.0 Level A/AA
+severity: CRITICAL | MAJOR | MINOR | ENHANCEMENT
+perspective_alarms: screen_reader_semantic=LOW|MEDIUM|HIGH; keyboard_motor=LOW|MEDIUM|HIGH; etc.
+evidence: file:line, DOM excerpt, axe node, screenshot, keyboard trace, or measured value
+reproduction_steps: commands or user steps needed to reproduce
+expected_behavior: what the user or assistive technology should experience
+actual_behavior: what the test observed
+trend: new | persistent | worsening | improving | resolved
+```
+
+Guidelines:
+- Treat WCAG 2.2 AA as the current planning and testing target. Treat Section 508 as regulatory context only when the project scope explicitly requires it.
+- Use stable fingerprints to support trend language across reruns. Prefer component name + selector/accessibility target + rule/pattern + criterion over route-only fingerprints.
+- Mark perspective alarms only when the evidence suggests a perspective-specific access risk. Any MEDIUM or HIGH alarm can feed `perspective-audit`.
+- Do not copy scanner/runtime code or generated dashboard state from external projects into this skill. This contract is a reporting discipline, not a crawler product boundary.
+
 ## 5. Static Analysis (eslint-plugin-jsx-a11y) — React/Vue/JSX only
 
 Use when the project uses React, Next.js, Vue, or other JSX/TSX framework. Catches missing alt text, invalid ARIA, and inaccessible element nesting at build time — no running server needed.
@@ -680,4 +706,6 @@ Custom component `role` props, ARIA passed via spread, dynamic content loaded po
 8. Report consolidated results with pass/fail counts per section
 
 **Lifecycle integration:** These test results feed into a11y-critic reviews. The full a11y lifecycle is:
-plan → critique plan → revise → implement → **test (this skill)** → critique implementation → fix → re-test
+plan → [generate test scripts] → critique plan → revise → implement → **test (this skill)** → critique implementation → fix → re-test
+
+Webwright script generation fits between "plan" and "critique plan" — use it to generate test scripts from the planner's output before running them. Generated scripts are inputs to the test phase, not a replacement for it.

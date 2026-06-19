@@ -60,6 +60,8 @@ Committed result tables currently cover four platform families on 33 critic fixt
 
 New hosted providers join as peer rows when their runner output is committed; do not collapse the benchmark narrative back to single-provider wording.
 
+Benchmark artifacts are evidence records for the skills. They are not a launch surface for a generated dashboard, crawler runtime, or Vital-Core-derived reporting app.
+
 All platforms achieve 100% on HAS-BUGS and FLAWED fixtures. Failures are CLEAN (false positives) and ADVERSARIAL (verdict calibration). GPT-5.2 outperforms Haiku on ADVERSARIAL (3/3 vs 0/3).
 
 See [BENCHMARK.md](BENCHMARK.md) for full results.
@@ -134,6 +136,7 @@ Ollama qwen3:32b, llama3.3:70b, and qwen3.5:latest missed `role="alert"` on the 
 | `run_cloud_benchmark.py` | Hosted benchmark runner — Claude API + Codex/OpenAI with escalation; extend with Gemini/other adapters as result sets are added |
 | `codex-benchmark.sh` | Shell entry point for running OpenAI benchmarks from Codex |
 | `score_output.py` | Scorer — checks critic output against fixture rubrics |
+| `test_score_output_contracts.py` | Focused checks for evidence-contract parsing and false-positive bait |
 | `score_planner.py` | Scorer — checks planner output against fixture rubrics |
 | `score_perspective.py` | Scorer — checks perspective-audit output (coverage, escalation, ARRM routing) |
 | `BENCHMARK.md` | Full benchmark results with per-fixture breakdowns |

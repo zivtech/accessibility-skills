@@ -188,6 +188,7 @@ Copy this protocol into the subagent prompt:
     - If Playwright keyboard test results exist (from `npx playwright test` .spec.js runs): note which interactions passed/failed. Don't re-evaluate what was already measured. Cite the spec file path and test name.
     - If `agent-browser` interactive reconnaissance evidence exists (snapshot refs + focus/press/get-attr traces from a conversational session): treat as the same tier of hard evidence as codified Playwright runs. Cite the snapshot ref (e.g., `@e84`), the keyboard action, and the observed attribute mutation (e.g., `aria-expanded: false → true`). Distinguish from informal reasoning.
     - If contrast ratios were calculated (via AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
+    - If `A11y Evidence Finding` blocks are available from a11y-test, preserve their finding_id, fingerprint, source, WCAG/APG citation, Section 508 context, perspective alarms, reproduction steps, expected/actual behavior, and trend status. Use them as traceable evidence inputs, not as a substitute for independent review.
     - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
     Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
 
@@ -544,6 +545,10 @@ Copy this protocol into the subagent prompt:
     - "CRITICAL: Modal dialog missing focus trap. See `src/components/Modal.tsx:42` where the dialog has no role='dialog' and focus can escape to background. Per WCAG 2.1.2 (No Keyboard Trap) and WAI-ARIA Modal Dialog pattern, focus must be trapped. Fix: add role='dialog', aria-modal='true', and implement focus trap logic."
     - "MAJOR: Form validation errors not associated with inputs. See `src/forms/LoginForm.tsx:89` where validation message renders but the input has no aria-describedby pointing to it. Per WCAG 1.3.1 (Info and Relationships), error messages must be associated. Fix: add aria-describedby to input, id to error message, sync on validation."
 
+    Optional structured contract: For CRITICAL or MAJOR findings backed by measured evidence, include an `A11y Evidence Finding` block before or within the finding. If you use the block, include all required fields: finding_id, fingerprint, source, wcag_or_apg, section_508_fpc_context, severity, perspective_alarms, evidence, reproduction_steps, expected_behavior, actual_behavior, and optional trend. Omit the block for clean reviews and do not invent fields to make weak evidence look complete.
+
+    Section 508 wording: Treat WCAG 2.2 AA as the current project planning and review target. Treat Revised Section 508 as regulatory context only when scope requires it; web conformance maps to WCAG 2.0 Level A/AA, so do not label WCAG 2.1/2.2-only issues as Section 508 failures unless the project policy explicitly adopts them.
+
     Findings without evidence are opinions, not findings.
   </Evidence_Requirements>
 
@@ -571,6 +576,23 @@ Copy this protocol into the subagent prompt:
        - Confidence: [HIGH/MEDIUM]
        - Why this matters: [User impact]
        - Fix: [Specific suggestion]
+
+    Optional measured-evidence block for each CRITICAL/MAJOR finding:
+    ```
+    ### A11y Evidence Finding
+    finding_id: [stable lowercase id]
+    fingerprint: [stable 8-64 char hex hash]
+    source: [test command, spec name, axe id, snapshot ref, or source file]
+    wcag_or_apg: [WCAG 2.2 criterion or WAI-ARIA APG pattern]
+    section_508_fpc_context: [Revised Section 508/WCAG 2.0 A-AA context if applicable, or "not in scope"]
+    severity: [CRITICAL | MAJOR | MINOR | ENHANCEMENT]
+    perspective_alarms: [perspective=LOW|MEDIUM|HIGH list]
+    evidence: [file:line, DOM excerpt, test result, axe node, screenshot, or trace]
+    reproduction_steps: [steps or commands]
+    expected_behavior: [expected user/AT behavior]
+    actual_behavior: [observed behavior]
+    trend: [new | persistent | worsening | improving | resolved]
+    ```
 
     **Minor Findings** (friction but workaround exists):
     - [Finding]

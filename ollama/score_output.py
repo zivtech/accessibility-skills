@@ -20,6 +20,33 @@ import yaml
 sys.path.insert(0, os.path.dirname(__file__))
 from score_common import strip_thinking, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
 
+REQUIRED_EVIDENCE_FIELDS = {
+    "finding_id",
+    "fingerprint",
+    "source",
+    "wcag_or_apg",
+    "section_508_fpc_context",
+    "severity",
+    "perspective_alarms",
+    "evidence",
+    "reproduction_steps",
+    "expected_behavior",
+    "actual_behavior",
+}
+TREND_VALUES = {"new", "persistent", "worsening", "improving", "resolved"}
+
+FIELD_ALIASES = {
+    "wcag_apg": "wcag_or_apg",
+    "wcag_apg_citation": "wcag_or_apg",
+    "section_508_fpc": "section_508_fpc_context",
+    "section_508_context": "section_508_fpc_context",
+    "reproduction": "reproduction_steps",
+    "steps_to_reproduce": "reproduction_steps",
+    "expected": "expected_behavior",
+    "actual": "actual_behavior",
+    "perspective_alarm": "perspective_alarms",
+}
+
 
 def load_response(path: str) -> tuple[str, bool]:
     with open(path) as f:
@@ -120,6 +147,110 @@ def count_false_positives(text: str, declared_verdict: str) -> dict:
     }
 
 
+def normalize_contract_key(raw_key: str) -> str:
+    key = re.sub(r"[^a-z0-9]+", "_", raw_key.strip().lower()).strip("_")
+    return FIELD_ALIASES.get(key, key)
+
+
+def extract_evidence_contracts(text: str) -> list[dict]:
+    """Extract optional A11y Evidence Finding Contract blocks.
+
+    Contract blocks are markdown sections headed "A11y Evidence Finding" with
+    key/value lines. The parser is intentionally simple and format-tolerant:
+    it validates the data contract without becoming a second markdown engine.
+    """
+    contracts = []
+    current = None
+    for line in text.splitlines():
+        if re.match(r"^\s{0,3}#{1,6}\s+A11y Evidence Finding\b", line, re.IGNORECASE):
+            if current:
+                contracts.append(current)
+            current = {}
+            continue
+        if current is None:
+            continue
+        if re.match(r"^\s{0,3}#{1,6}\s+", line):
+            contracts.append(current)
+            current = None
+            continue
+        match = re.match(r"^\s*(?:[-*]\s*)?(?:\*\*)?([A-Za-z0-9 _/-]+)(?:\*\*)?\s*:\s*(.+?)\s*$", line)
+        if match:
+            key = normalize_contract_key(match.group(1))
+            current[key] = match.group(2).strip()
+    if current:
+        contracts.append(current)
+    return contracts
+
+
+def check_evidence_contract(text: str) -> dict:
+    contracts = extract_evidence_contracts(text)
+    if not contracts:
+        return {
+            "total": 0,
+            "complete": 0,
+            "required_ok": True,
+            "ids_ok": True,
+            "trend_ok": True,
+            "missing": [],
+        }
+
+    missing = []
+    ids_ok = True
+    trend_ok = True
+    complete = 0
+    for idx, contract in enumerate(contracts, start=1):
+        missing_fields = sorted(REQUIRED_EVIDENCE_FIELDS - set(contract))
+        if missing_fields:
+            missing.append((idx, missing_fields))
+        else:
+            complete += 1
+
+        finding_id = contract.get("finding_id", "")
+        fingerprint = contract.get("fingerprint", "")
+        if not re.match(r"^[a-z0-9][a-z0-9:_-]{7,}$", finding_id, re.IGNORECASE):
+            ids_ok = False
+        if not re.match(r"^[a-f0-9]{8,64}$", fingerprint, re.IGNORECASE):
+            ids_ok = False
+
+        trend = contract.get("trend")
+        if trend and trend.lower() not in TREND_VALUES:
+            trend_ok = False
+
+    return {
+        "total": len(contracts),
+        "complete": complete,
+        "required_ok": not missing,
+        "ids_ok": ids_ok,
+        "trend_ok": trend_ok,
+        "missing": missing,
+    }
+
+
+def print_evidence_contract_summary(contract: dict) -> None:
+    if contract["total"] == 0:
+        print("Evidence contract: no findings declared")
+        return
+
+    print(f"Evidence contract: {contract['complete']} complete / {contract['total']} total")
+    print(f"Required fields: {'PASS' if contract['required_ok'] else 'FAIL'}")
+    print(f"Stable finding ids: {'PASS' if contract['ids_ok'] else 'FAIL'}")
+    print(f"Trend values: {'PASS' if contract['trend_ok'] else 'FAIL'}")
+    for idx, fields in contract["missing"]:
+        print(f"  Missing fields in contract {idx}: {', '.join(fields)}")
+
+
+def evidence_contract_gate_ok(contract: dict, required: bool) -> bool:
+    if not required:
+        return True
+    return (
+        contract["total"] > 0
+        and contract["complete"] == contract["total"]
+        and contract["required_ok"]
+        and contract["ids_ok"]
+        and contract["trend_ok"]
+    )
+
+
 def score(response_path: str, rubric_path: str):
     text, truncated = load_response(response_path)
     if truncated:
@@ -128,6 +259,8 @@ def score(response_path: str, rubric_path: str):
         return
     rubric = load_rubric(rubric_path)
     difficulty = rubric.get("difficulty", "unknown")
+    contract = check_evidence_contract(text)
+    contract_required = bool(rubric.get("require_evidence_contract"))
 
     print(f"Response length: {len(text)} chars")
     print(f"Fixture: {rubric.get('fixture_id', 'unknown')}")
@@ -143,6 +276,11 @@ def score(response_path: str, rubric_path: str):
     print()
 
     verdict = check_verdict(text)
+    print_evidence_contract_summary(contract)
+    if contract_required:
+        print(f"Evidence contract required: YES")
+        print(f"Evidence contract gate: {'PASS' if evidence_contract_gate_ok(contract, True) else 'FAIL'}")
+    print()
 
     if difficulty == "CLEAN":
         expected_verdict = "ACCEPT"
@@ -158,6 +296,7 @@ def score(response_path: str, rubric_path: str):
         print()
 
         passed = correct_verdict and not fp["wrong_verdict"]
+        passed = passed and evidence_contract_gate_ok(contract, contract_required)
         status = "PASS" if passed else "FAIL"
         if fp["structured_findings"] > 0 and passed:
             status = "WARN — correct verdict but raised findings (review manually)"
@@ -199,6 +338,7 @@ def score(response_path: str, rubric_path: str):
 
         articulate_score = sum(1 for r in must_articulate if r["found"]) / max(len(must_articulate), 1)
         passed = verdict_ok and articulate_score >= 0.5
+        passed = passed and evidence_contract_gate_ok(contract, contract_required)
         print(f"Must-articulate rate: {articulate_score:.0%}")
         print(f"Status: {'PASS' if passed else 'FAIL'}")
     else:
@@ -238,7 +378,9 @@ def score(response_path: str, rubric_path: str):
         must_score = sum(1 for r in must_find if r["found"]) / max(len(must_find), 1)
         print(f"Must-find detection rate: {must_score:.0%}")
         print(f"Abort threshold: {MUST_FIND_ABORT_THRESHOLD:.0%} (escalation gate — see score_common.py)")
-        print(f"Status: {'PASS' if must_score >= MUST_FIND_ABORT_THRESHOLD else 'FAIL'}")
+        passed = must_score >= MUST_FIND_ABORT_THRESHOLD
+        passed = passed and evidence_contract_gate_ok(contract, contract_required)
+        print(f"Status: {'PASS' if passed else 'FAIL'}")
 
 
 if __name__ == "__main__":

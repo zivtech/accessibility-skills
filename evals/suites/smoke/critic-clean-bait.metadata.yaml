@@ -1,0 +1,4 @@
+fixture_id: critic-clean-bait-smoke
+difficulty: CLEAN
+notes: "Expected verdict: ACCEPT"
+expected_findings: []

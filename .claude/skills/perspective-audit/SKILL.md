@@ -95,11 +95,40 @@ Use this format for every finding:
 **Fix:** [specific recommended action]
 ```
 
+If the audit was invoked from an `A11y Evidence Finding` block, preserve these traceability fields in the finding when available:
+
+```
+**Finding ID:** [finding_id]
+**Fingerprint:** [fingerprint]
+**Source:** [source test, snapshot, axe rule, or critic finding]
+**Trend:** new | persistent | worsening | improving | resolved
+**Perspective alarms:** [incoming alarms and any updated alarm levels]
+```
+
+Perspective-audit may also emit a contract-compatible block for new CRITICAL or MAJOR findings discovered during the deep review:
+
+```
+### A11y Evidence Finding
+finding_id: [stable lowercase id]
+fingerprint: [stable 8-64 char hex hash]
+source: perspective-audit [perspective name] checklist
+wcag_or_apg: [WCAG 2.2 criterion or WAI-ARIA APG pattern]
+section_508_fpc_context: [Revised Section 508/WCAG 2.0 A-AA context if applicable, or "not in scope"]
+severity: [CRITICAL | MAJOR | MINOR | ENHANCEMENT]
+perspective_alarms: [perspective=LOW|MEDIUM|HIGH list]
+evidence: [file:line, observed markup/CSS, or human-verification boundary]
+reproduction_steps: [steps, command, or "source review only"]
+expected_behavior: [expected user/AT behavior]
+actual_behavior: [observed behavior]
+trend: [new | persistent | worsening | improving | resolved]
+```
+
 Rules:
 - Every finding must cite a WCAG criterion. No finding without a citation.
 - AAA criteria are always ENHANCEMENT — never escalate them to MAJOR or CRITICAL.
 - Content-level findings append: `[Human verification required — cannot be confirmed from source]`
 - Code-level findings must include file:line evidence.
+- Preserve ARRM routing even when using the contract block; the contract adds traceability, not ownership by itself.
 
 ### Step 6 — Compile the summary
 

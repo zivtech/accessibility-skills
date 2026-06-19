@@ -195,6 +195,12 @@ For each skill: what it does, how it differs from our approach, what techniques 
 | axe-core scanning pipeline | snapsynapse, airowe | **Reference** in testing strategy, don't bundle |
 | GitHub Actions CI workflow | snapsynapse | **Reference** as integration pattern |
 
+### Vital-Core adoption boundary (2026-06-19)
+
+Vital-Core is an adjacent site-quality scanner, not an external skill to install. Its useful contribution here is the reporting discipline: issue-first findings, stable fingerprints, trend language, generated-output boundaries, and reproducible gates. The adopted v1 surface is documented in [Vital-Core Adoption Assessment](vital-core-adoption-assessment.md) and [A11y Evidence Finding Contract](a11y-evidence-finding-contract.md).
+
+Do not copy Vital-Core runtime code into this repo in v1. Continuous crawling, ISO-week dashboards, generated GitHub Pages reports, mutable crawl state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and scanner configuration remain out of scope for `a11y-meta-skills`.
+
 ### Do NOT adopt
 
 | Technique | Reason |

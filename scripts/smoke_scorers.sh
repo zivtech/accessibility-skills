@@ -56,10 +56,35 @@ run_case \
     "ollama/score_output.py" \
     "critic-clean-response.json" \
     "critic-clean.metadata.yaml" \
+    "Evidence contract: no findings declared" \
     "Verdict correct: YES" \
     "Status: PASS"
 
-# Case 3: perspective HAS-BUGS
+# Case 3: critic evidence contract
+run_case \
+    "critic evidence contract (complete contract, PASS)" \
+    "ollama/score_output.py" \
+    "critic-evidence-contract-response.json" \
+    "critic-evidence-contract.metadata.yaml" \
+    "Evidence contract: 1 complete / 1 total" \
+    "Required fields: PASS" \
+    "Stable finding ids: PASS" \
+    "Trend values: PASS" \
+    "Evidence contract required: YES" \
+    "Evidence contract gate: PASS" \
+    "Status: PASS"
+
+# Case 4: critic CLEAN prose bait
+run_case \
+    "critic CLEAN prose bait (explicit ACCEPT wins, PASS)" \
+    "ollama/score_output.py" \
+    "critic-clean-bait-response.json" \
+    "critic-clean-bait.metadata.yaml" \
+    "Evidence contract: no findings declared" \
+    "Verdict correct: YES" \
+    "Status: PASS"
+
+# Case 5: perspective HAS-BUGS
 run_case \
     "perspective HAS-BUGS (must-find 1/1, PASS)" \
     "ollama/score_perspective.py" \
@@ -68,7 +93,7 @@ run_case \
     "Must-find issues: 1/1" \
     "Status: PASS"
 
-# Case 4: perspective CLEAN
+# Case 6: perspective CLEAN
 run_case \
     "perspective CLEAN (verdict PASS, status PASS)" \
     "ollama/score_perspective.py" \
@@ -77,7 +102,7 @@ run_case \
     "Verdict: PASS" \
     "Status: PASS"
 
-# Case 5: planner (SECTION_KEYWORDS path — existing criteria)
+# Case 7: planner (SECTION_KEYWORDS path — existing criteria)
 run_case \
     "planner (score 3/3, PASS)" \
     "ollama/score_planner.py" \
@@ -86,7 +111,7 @@ run_case \
     "Score: 3/3" \
     "Status: PASS"
 
-# Case 9: planner scoring_keywords path — third criterion resolves via scoring_keywords only
+# Case 8: planner scoring_keywords path — third criterion resolves via scoring_keywords only
 run_case \
     "planner scoring_keywords criterion (aria-current detected)" \
     "ollama/score_planner.py" \
@@ -94,7 +119,7 @@ run_case \
     "planner.metadata.yaml" \
     '+ aria-current="page" on breadcrumb current item'
 
-# Case 6: critic truncated response (must NOT pass)
+# Case 9: critic truncated response (must NOT pass)
 run_case \
     "critic truncated <think> (INCOMPLETE, not PASS)" \
     "ollama/score_output.py" \
@@ -102,7 +127,7 @@ run_case \
     "critic-hasbugs.metadata.yaml" \
     "Status: INCOMPLETE"
 
-# Case 7: perspective truncated response (must NOT pass)
+# Case 10: perspective truncated response (must NOT pass)
 run_case \
     "perspective truncated <think> (INCOMPLETE, not PASS)" \
     "ollama/score_perspective.py" \
@@ -110,7 +135,7 @@ run_case \
     "perspective-hasbugs.metadata.yaml" \
     "Status: INCOMPLETE"
 
-# Case 8: perspective hedged-clean response (PASS despite mentioning revise)
+# Case 11: perspective hedged-clean response (PASS despite mentioning revise)
 run_case \
     "perspective hedged-clean (Verdict: PASS despite hedged language)" \
     "ollama/score_perspective.py" \

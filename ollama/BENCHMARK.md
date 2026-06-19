@@ -18,6 +18,10 @@ This file began as an Ollama benchmark log and now serves as the cross-model ben
 
 The first fixture tables below are historical Phase 4 local-model rows. Hosted results were added later in Phases 5-7.
 
+## Evidence Contract Smoke Gate
+
+`ollama/score_output.py` now recognizes optional `A11y Evidence Finding` blocks when a rubric sets `require_evidence_contract: true`. The smoke gate validates required evidence fields, stable `finding_id`/`fingerprint` values, allowed trend metadata, and clean-fixture false-positive resistance. This is a scoring discipline for critic output, not a generated dashboard or scanner runtime. Existing benchmark rows are not retroactively rescored unless their raw artifacts are rerun through the updated scorer.
+
 ## Fixture 1: form-validation-missing-aria-describedby
 
 **Difficulty**: HAS-BUGS | **Must-find**: 2 | **Should-find**: 1 | **Expected verdict**: REVISE

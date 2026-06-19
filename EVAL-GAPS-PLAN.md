@@ -9,6 +9,12 @@
 > planner benchmark expansion) are tracked as direction items in
 > `plans/README.md`, not here.
 
+> **FOLLOW-ON (2026-06-19):** Vital-Core reporting discipline has been adopted
+> as an optional A11y Evidence Finding Contract. Smoke and focused scorer tests
+> now cover required fields, stable finding IDs, trend metadata, and clean
+> false-positive resistance. See `docs/a11y-evidence-finding-contract.md` and
+> `docs/vital-core-adoption-assessment.md`.
+
 ---
 
 ## Current State

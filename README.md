@@ -133,6 +133,12 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/a11y-test` — run keyboard, axe-core, and visual regression tests
 - `/perspective-audit` — deep review from escalated disability/situational access perspectives
 
+## Evidence Contract and Vital-Core Boundary
+
+This repo adopts Vital-Core's reporting discipline, not its scanner runtime. The optional [A11y Evidence Finding Contract](docs/a11y-evidence-finding-contract.md) gives `a11y-test`, `a11y-critic`, and `perspective-audit` stable finding IDs, fingerprints, source evidence, WCAG/APG citations, Section 508/FPC context, perspective alarms, reproduction steps, expected/actual behavior, and trend language. Clean reviews should not emit empty finding contracts.
+
+The v1 boundary keeps continuous crawling, ISO-week dashboards, generated report state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and mutable crawl state out of this bundle. See [Vital-Core Adoption Assessment](docs/vital-core-adoption-assessment.md). Use [Section508.gov conformance guidance](https://www.section508.gov/develop/applicability-conformance/) as regulatory context for WCAG 2.0 Level A/AA, and use [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) as the current planning and review target.
+
 ## Model Baselines
 
 The evaluation story is cross-provider. The benchmark suite compares the same fixtures and rubrics across hosted and local model families.
@@ -190,6 +196,8 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
 docs/
   EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
   PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
+  a11y-evidence-finding-contract.md     # Shared optional finding contract
+  vital-core-adoption-assessment.md     # Adopt/adapt/defer/reject boundary
   drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
   a11y-planner/
   a11y-critic/

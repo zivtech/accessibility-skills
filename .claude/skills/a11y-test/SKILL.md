@@ -635,6 +635,32 @@ Critical: [n] | Serious: [n] | Moderate: [n] | Minor: [n]
 
 This output feeds directly into the a11y-critic's Phase 0 (Consume Test Evidence) — measured violations become hard evidence in the design review.
 
+### Optional A11y Evidence Finding Contract
+When a test produces a failing keyboard, axe-core, visual, static-analysis, or manual finding, include an `A11y Evidence Finding` block for each issue that should be handed to `a11y-critic` or `perspective-audit`. Do not emit placeholder contracts for passing checks or clean fixtures.
+
+Use these fields when evidence exists:
+```
+### A11y Evidence Finding
+finding_id: stable lowercase id, e.g. a11y_form_error_describedby
+fingerprint: stable 8-64 char hex hash derived from component/target/rule, not the crawl URL alone
+source: test command, test file, axe rule id, agent-browser ref, or observed artifact
+wcag_or_apg: WCAG 2.2 criterion or WAI-ARIA APG pattern citation
+section_508_fpc_context: Section 508 context only when applicable; Revised Section 508 maps web conformance to WCAG 2.0 Level A/AA
+severity: CRITICAL | MAJOR | MINOR | ENHANCEMENT
+perspective_alarms: screen_reader_semantic=LOW|MEDIUM|HIGH; keyboard_motor=LOW|MEDIUM|HIGH; etc.
+evidence: file:line, DOM excerpt, axe node, screenshot, keyboard trace, or measured value
+reproduction_steps: commands or user steps needed to reproduce
+expected_behavior: what the user or assistive technology should experience
+actual_behavior: what the test observed
+trend: new | persistent | worsening | improving | resolved
+```
+
+Guidelines:
+- Treat WCAG 2.2 AA as the current planning and testing target. Treat Section 508 as regulatory context only when the project scope explicitly requires it.
+- Use stable fingerprints to support trend language across reruns. Prefer component name + selector/accessibility target + rule/pattern + criterion over route-only fingerprints.
+- Mark perspective alarms only when the evidence suggests a perspective-specific access risk. Any MEDIUM or HIGH alarm can feed `perspective-audit`.
+- Do not copy scanner/runtime code or generated dashboard state from external projects into this skill. This contract is a reporting discipline, not a crawler product boundary.
+
 ## 5. Static Analysis (eslint-plugin-jsx-a11y) — React/Vue/JSX only
 
 Use when the project uses React, Next.js, Vue, or other JSX/TSX framework. Catches missing alt text, invalid ARIA, and inaccessible element nesting at build time — no running server needed.

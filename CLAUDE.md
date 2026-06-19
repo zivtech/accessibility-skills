@@ -89,6 +89,7 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 - Preserve the companion relationship between planner, critic, and perspective-audit.
 - Prefer targeted edits over large rewrites.
 - The critic serves at two lifecycle points — keep both documented in companion tables.
+- Vital-Core adoption is limited to reporting discipline: stable evidence findings, fingerprints, trend language, and benchmark gates. Do not import scanner runtime, generated dashboard state, crawl state, Wappalyzer/ParaCharts vendors, or Lighthouse/security/sustainability engines. See `docs/vital-core-adoption-assessment.md` and `docs/a11y-evidence-finding-contract.md`.
 
 ## Browser Automation Tooling
 
