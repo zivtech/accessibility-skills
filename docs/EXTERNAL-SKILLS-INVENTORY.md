@@ -84,7 +84,7 @@ For each skill: what it does, how it differs from our approach, what techniques 
 - **Validation:** cross-validated against all 33 critic fixtures 2026-07-10 — 2/3 deterministic-scope must-finds caught (the miss root-caused to Chromium's UA-intrinsic "Choose File" name), zero false positives outside the pre-disclaimed passive-crawl 4.1.3 class, 6/6 driven sessions produced decisive trace evidence, and it surfaced 2 real defects our fixture rubrics missed. Record: `evals/results/keyboard-a11y-tester/`.
 - **MCP/API:** none — plain Node CLI (playwright, guidepup, pixelmatch, pngjs, yaml). Node ≥ 20. Works from Claude Code and Codex.
 - **Cost:** Free
-- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing; 2-day-old single-maintainer repo at adoption time — routed, pinned, never vendored.
+- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing. Young repo (created 2026-07-08) by a veteran Drupal accessibility contributor known to us — routed, pinned (no upstream tags yet), never vendored.
 
 ---
 
