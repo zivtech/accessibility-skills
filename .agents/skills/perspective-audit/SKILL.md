@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.0.0"
+  version: "1.0.1"
 disallowedTools:
   - Write
   - Edit
@@ -104,6 +104,8 @@ If the audit was invoked from an `A11y Evidence Finding` block, preserve these t
 **Trend:** new | persistent | worsening | improving | resolved
 **Perspective alarms:** [incoming alarms and any updated alarm levels]
 ```
+
+When the incoming contract's evidence is `keyboard-a11y-tester` journey-audit output (trace steps, deterministic findings, reading-order census): map its personas to alarms — `keyboard` findings feed `keyboard_motor`, `screen-reader` findings feed `screen_reader_semantic` — and keep trace-step and census-selector citations intact through the audit. Batch-crawl 4.1.3 findings arrive as verification prompts, not failures; require driven-session `live_announcements` evidence before treating a live-region defect as confirmed (calibration: `evals/results/keyboard-a11y-tester/`).
 
 Perspective-audit may also emit a contract-compatible block for new CRITICAL or MAJOR findings discovered during the deep review:
 

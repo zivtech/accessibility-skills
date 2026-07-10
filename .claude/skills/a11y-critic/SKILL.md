@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Accessibility Design Critic
@@ -187,6 +187,7 @@ Copy this protocol into the subagent prompt:
     - If axe-core scan results exist: note violation IDs, impact levels, and affected elements. Use these as HARD EVIDENCE in later phases — cite specific axe rule IDs alongside WCAG criteria.
     - If Playwright keyboard test results exist (from `npx playwright test` .spec.js runs): note which interactions passed/failed. Don't re-evaluate what was already measured. Cite the spec file path and test name.
     - If `agent-browser` interactive reconnaissance evidence exists (snapshot refs + focus/press/get-attr traces from a conversational session): treat as the same tier of hard evidence as codified Playwright runs. Cite the snapshot ref (e.g., `@e84`), the keyboard action, and the observed attribute mutation (e.g., `aria-expanded: false → true`). Distinguish from informal reasoning.
+    - If `keyboard-a11y-tester` journey-audit artifacts exist (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`): treat deterministic findings and per-step trace facts as the same tier of hard evidence as codified Playwright runs. Cite step id + selector + measured value (e.g., `trace.json step_0003: outline 3px solid; AAA contrast 2.34`) or a census selector. Three calibration rules (measured against this repo's fixtures 2026-07-10, see `evals/results/keyboard-a11y-tester/`): (1) batch-crawl 4.1.3 "silent live region" findings are prompts to run a driven session, never failure evidence; (2) name-presence checks don't cover UA-intrinsic names — a "Choose File" file input can still be missing its label; (3) journey-level verdicts (task completion, logical order) are judgment-layer claims — accept them only with their supporting trace steps, never as bare measured facts.
     - If contrast ratios were calculated (via AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
     - If `A11y Evidence Finding` blocks are available from a11y-test, preserve their finding_id, fingerprint, source, WCAG/APG citation, Section 508 context, perspective alarms, reproduction steps, expected/actual behavior, and trend status. Use them as traceable evidence inputs, not as a substitute for independent review.
     - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.

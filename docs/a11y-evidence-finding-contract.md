@@ -50,6 +50,21 @@ Build fingerprints from stable properties:
 
 Avoid route-only fingerprints. A page URL can change while the same underlying component bug persists, and one route can contain many distinct findings.
 
+## keyboard-a11y-tester Source Mapping
+
+When wrapping a `keyboard-a11y-tester` journey-audit finding (adopted 2026-07-10, see the [adoption assessment](keyboard-a11y-tester-adoption-assessment.md)) in this contract:
+
+| Contract field | Mapping from the tool's finding shape |
+|---|---|
+| `source` | `keyboard-a11y-tester <batch or driven> @ <pinned SHA>, <finding id or step id(s)>` |
+| `severity` | `serious` → MAJOR (CRITICAL if it blocks the journey goal); `moderate` → MINOR or MAJOR by user impact; `minor` and all AAA-informative → ENHANCEMENT |
+| `fingerprint` | derive from selector + WCAG SC + check kind. Do not reuse the tool's `id` — it embeds the viewport and is run-scoped. |
+| `perspective_alarms` | `persona: keyboard` → `keyboard_motor`; `persona: screen-reader` → `screen_reader_semantic` |
+| `evidence` | trace step ids + measured values (e.g., `step_0003: outline 3px solid; AAA contrast 2.34`), or census selector for structural findings |
+| `reproduction_steps` | the serve/step keystroke sequence from the trace, or the batch command + URL |
+
+Calibration: never wrap a batch-crawl 4.1.3 "silent live region" finding as a failure — it is a verification prompt; re-test with a driven session and cite `live_announcements` presence/absence instead.
+
 ## Trend Language
 
 Use trend only when comparing against prior evidence:
