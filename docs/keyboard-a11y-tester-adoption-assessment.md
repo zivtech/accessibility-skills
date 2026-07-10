@@ -76,7 +76,7 @@ Ranked by impact on our lifecycle (`plan → critique → implement → test →
 
 Phases are ordered by risk tier: cheap-and-reversible documentation first, trust-elevation only behind gates. **Phases 3 and 4 are blocked on Phase 2.** Each phase lands as a single conventional commit so any of it reverts cleanly. Every claim written into a skill file must come from a run we performed, not upstream's README (the two facts below that failed this test in draft — default port and Node floor — are the cautionary examples).
 
-### Phase 1 — Routing & inventory (docs only, ship now, ~1 session)
+### Phase 1 — Routing & inventory (docs only) — EXECUTED 2026-07-10
 
 1. **Pin the version**: all references adopt commit `97eb13e` (upstream has no tags or releases to pin; re-verify and re-pin on upgrade, noting its additive-fields compatibility policy).
 2. **`docs/EXTERNAL-SKILLS-INVENTORY.md`**: add Tier 1 entry. Note it postdates the 2026-03-28 scan and is the first true runtime-tester peer found (the scan found only auditors/guardrails/analyzers).

@@ -10,6 +10,8 @@ For each skill: what it does, how it differs from our approach, what techniques 
 
 **13 external a11y skills found** across skills.sh, tessl.io, and GitHub. No external skill implements a planner-critic pair. All are either auditors (scan + report), guideline guardrails (coding standards), or single-criterion analyzers. Our planner-critic architecture is unique in the ecosystem.
 
+**Update 2026-07-10:** [ezufelt/keyboard-a11y-tester](#ezufeltkeyboard-a11y-tester--added-2026-07-10) added below — created 2026-07-08 (postdates this scan), and the first true runtime *tester* peer found; everything in the original scan was an auditor, guardrail, or analyzer. Adopted as the a11y-test skill's fourth execution mode. Full gap analysis and tiered plan: [keyboard-a11y-tester Adoption Assessment](keyboard-a11y-tester-adoption-assessment.md).
+
 **Key gap confirmed:** No external skill separates planning (what to build accessibly) from critique (did we build it accessibly). The closest analogue is AccessLint's `reviewer` agent, which performs multi-step WCAG audits but has no planning counterpart.
 
 **Sources searched:**
@@ -70,6 +72,19 @@ For each skill: what it does, how it differs from our approach, what techniques 
   3. **Contrast-first color composition** — `apcach` approach where contrast compliance is the starting constraint, not an afterthought. Relevant for our planner's visual accessibility planning.
 - **MCP/API:** None (reference files only)
 - **Cost:** Free
+
+### ezufelt/keyboard-a11y-tester — added 2026-07-10
+- **Source:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) (MIT, Everett Zufelt; adopted at commit `97eb13e` — no upstream tags or releases yet)
+- **What it does:** Keyboard-only + emulated-screen-reader journey tester against any URL. Deterministic Playwright/CDP runner (real keyboard events only; machine-decidable WCAG checks including dual-signal focus-indicator measurement) plus an agent-driven `serve`/`step` session protocol. Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi" via `@guidepup/virtual-screen-reader`) in one pass; emits evidence-linked findings, per-step trace, reading-order census, and screenshots.
+- **Use for:** a11y-test fourth execution mode (goal-driven journey audits). The only external tool found that produces machine evidence for live-region announcement behavior and focus-indicator sufficiency — two lanes our stack otherwise lacks entirely.
+- **Key techniques adopted:**
+  1. **Observe→decide→act step discipline** — "Tab until the focused control matches by name/role, never a pre-counted sequence." Now stated in a11y-test for all interactive keyboard driving, agent-browser included.
+  2. **AA pass/fail vs AAA informative severity split** for focus indicators (2.4.7 presence vs 2.4.13 strength) — prevents faint-but-real indicators being reported as missing.
+  3. **Persona-impact framing** grounded in the W3C WAI user stories.
+- **Validation:** cross-validated against all 33 critic fixtures 2026-07-10 — 2/3 deterministic-scope must-finds caught (the miss root-caused to Chromium's UA-intrinsic "Choose File" name), zero false positives outside the pre-disclaimed passive-crawl 4.1.3 class, 6/6 driven sessions produced decisive trace evidence, and it surfaced 2 real defects our fixture rubrics missed. Record: `evals/results/keyboard-a11y-tester/`.
+- **MCP/API:** none — plain Node CLI (playwright, guidepup, pixelmatch, pngjs, yaml). Node ≥ 20. Works from Claude Code and Codex.
+- **Cost:** Free
+- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing; 2-day-old single-maintainer repo at adoption time — routed, pinned, never vendored.
 
 ---
 
@@ -194,6 +209,7 @@ For each skill: what it does, how it differs from our approach, what techniques 
 | AccessLint MCP server (contrast calculation) | AccessLint | **Recommend** as optional MCP dependency for a11y-critic |
 | axe-core scanning pipeline | snapsynapse, airowe | **Reference** in testing strategy, don't bundle |
 | GitHub Actions CI workflow | snapsynapse | **Reference** as integration pattern |
+| keyboard-a11y-tester journey audits | ezufelt | **Adopted 2026-07-10** as routed 4th a11y-test execution mode, pinned `97eb13e` — see [adoption assessment](keyboard-a11y-tester-adoption-assessment.md) |
 
 ### Vital-Core adoption boundary (2026-06-19)
 

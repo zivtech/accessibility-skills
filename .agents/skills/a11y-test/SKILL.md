@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Accessibility Testing Skill
@@ -19,6 +19,7 @@ This skill has three execution modes. Pick the right one before running anything
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
+| Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned `97eb13e`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
@@ -27,6 +28,7 @@ This skill has three execution modes. Pick the right one before running anything
 Do you have a prose description of what to test, but no test script yet?
   YES → /webwright:run (one-shot) or /webwright:craft (reusable parameterized tool)
   NO, you need to run an existing test → npx playwright test
+  NO, you need to audit a live URL against a user goal (journey, announcements, focus indicators) → keyboard-a11y-tester
   NO, you need to explore interactively → agent-browser
 ```
 
@@ -47,6 +49,8 @@ agent-browser close
 ```
 
 Key flags: `--profile Default` (reuse the user's Chrome login state for authenticated sites), `--session <name>` (isolated browser per parallel agent), `--json` (parseable output for programmatic checks), `--allowed-domains` (safety).
+
+**Keyboard-driving discipline (applies to all interactive modes, this one included):** never send a pre-counted sequence of Tabs. Snapshot/observe, then act on what is actually focused — "Tab until the focused control is named X" is right; "Tab 6 times" is wrong. Confirm success by state change (attribute flip, URL change, announcement), not assumption.
 
 **When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
 
@@ -93,7 +97,71 @@ Press Escape and verify the modal closes and focus returns to the trigger.
 
 **If marketplace fails:** `git clone https://github.com/microsoft/Webwright && /plugin install ./Webwright`
 
-**Platform note:** Claude Code plugin only. Not available in Codex CLI. `agent-browser` remains the only browser automation usable from Codex. Generated `.py` scripts can be executed from Codex via `python3 script.py`.
+**Platform note:** Claude Code plugin only. Not available in Codex CLI. From Codex, the usable browser automation options are `agent-browser` and `keyboard-a11y-tester` (both plain CLIs). Generated `.py` scripts can be executed from Codex via `python3 script.py`.
+
+## Goal-driven journey audits with keyboard-a11y-tester
+
+**When to use:** you have a live URL and a task in plain words ("can a keyboard-only or screen-reader user complete X?") and need evidence-linked WCAG findings without writing a test file — discovery audits, before/after patch evidence, whole-journey reviews. **When NOT to use:** widget CI regression (→ `.spec.js` + the APG templates), quick probing or authenticated Chrome-profile flows (→ `agent-browser`), rule scans (→ axe-core, §4).
+
+**What it is:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) — an external tool, adopted at commit `97eb13e` (MIT; no upstream tags yet — re-verify before upgrading). Two layers: a deterministic Playwright/CDP runner (real keyboard events only, never `.click()`; machine-decidable WCAG checks; dual-signal focus-indicator measurement) and an emulated screen-reader persona (`@guidepup/virtual-screen-reader`: announcement capture, live-region monitoring, reading-order census). Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi") in one pass. Cross-validated against this repo's 33 critic fixtures on 2026-07-10 — agreement record: `evals/results/keyboard-a11y-tester/README.md`.
+
+### Install (clone path — verified; Node ≥ 20 per its engines field, upstream README's "≥ 18" is stale)
+
+```bash
+git clone https://github.com/ezufelt/keyboard-a11y-tester && cd keyboard-a11y-tester
+git checkout 97eb13e                  # adopted pin
+npm install && node scripts/setup-check.mjs   # npx playwright install chromium only if browser_available=false
+```
+
+The upstream Claude Code plugin flow (`/plugin marketplace add ezufelt/keyboard-a11y-tester`) exists but is unverified here; the clone path works from both Claude Code and Codex.
+
+### Run
+
+```bash
+# Batch blind Tab-crawl (unattended; never presses Enter/Space) — per viewport:
+node scripts/runner.mjs --url https://site --viewport desktop --max-steps 40 --out <dir>
+
+# Driven session (the value center — the agent decides every keystroke):
+node scripts/runner.mjs serve --url https://site --goal "find and submit the contact form" \
+     --viewport desktop --port 9333          # default port is 9333 (9400 in upstream examples is just an example)
+# prints: READY <session-dir>
+node scripts/runner.mjs observe <session-dir>
+node scripts/runner.mjs step <session-dir> --press Tab      # one key → AX name/role/state, focus style, sr_announcement
+node scripts/runner.mjs step <session-dir> --type "hello@example.com"
+node scripts/runner.mjs finish <session-dir> && node scripts/runner.mjs stop <session-dir>
+```
+
+**Core discipline: observe → decide → act** (see the keyboard-driving rule in the agent-browser section — it originated here). Read `sr_announcement.live_announcements` after any action that visibly changes the page: an entry proves the update reaches a screen reader; its absence after a visible change is 4.1.3 failure evidence.
+
+### Artifacts (temp dir, or `--out`)
+
+- `trace.json` — per step: keystroke, selector, CDP AX name/role/state, computed focus style, `focus_moved`, screenshot ref, `sr_announcement`
+- `deterministic-findings.json` — `{wcag, persona, conformance_level, confidence, severity, url, locations, persona_impact, evidence[]}`
+- `screen-reader-census.json` — whole-page reading order (spoken phrase, role, selector) + declared live regions
+- `screenshots/step_NNNN.png` — focused-region crops
+
+These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wiring lands with assessment Phase 3).
+
+### Calibration rules (measured on our 33 fixtures, 2026-07-10)
+
+1. **Batch-mode 4.1.3 "silent live region" findings are never failure evidence.** A blind crawl never operates anything, so correctly-wired regions look silent (confidence 0.35–0.4 vs 0.7+ elsewhere). They are prompts to run a driven session and judge from `live_announcements`.
+2. **UA-intrinsic names mask missing labels.** An unlabeled `<input type=file>` reports AX name "Choose File", so the unnamed-control check stays quiet. Label association still needs axe/static/judgment review.
+3. **Component-scale pages ≠ full pages.** Skip-link (2.4.1) and landmark findings assume a whole page; on component targets treat them as granularity artifacts.
+4. **AA vs AAA honesty.** 2.4.13 focus-appearance findings are AAA-informative by design — never report them as 2.4.7 failures.
+5. **Emulated SR ≠ real AT.** Findings are spec-compliant-announcement evidence; the §6 manual NVDA/VoiceOver protocol still applies before shipping.
+
+### Mapping findings → A11y Evidence Finding Contract
+
+- severity: `serious` → MAJOR (CRITICAL if it blocks the goal); `moderate` → MINOR or MAJOR by user impact; `minor`/AAA-informative → ENHANCEMENT
+- fingerprint: derive from selector + wcag + check kind (the tool's `id` embeds the viewport and is run-scoped — don't use it)
+- persona → perspective_alarms: `keyboard` → `keyboard_motor`; `screen-reader` → `screen_reader_semantic`
+- evidence: cite step ids + measured values (e.g. `trace.json step_0003: outline 3px solid; AAA contrast 2.34`)
+
+### Cautions
+
+- **Client production sites:** on pages with a CAPTCHA the runner suppresses `navigator.webdriver` (page-scoped) so the CAPTCHA can initialize — automation-signal spoofing that can trip a WAF or security review. Get explicit client sign-off before pointing it at client production infrastructure; prefer staging.
+- Don't run concurrently with agent-browser or Webwright sessions (Chrome instance/port contention). Chromium-only — cross-browser coverage stays with `npx playwright test`.
+- Run desktop and mobile viewports separately; navigation often collapses behind a disclosure on mobile.
 
 ## 1. Keyboard Accessibility Tests
 
