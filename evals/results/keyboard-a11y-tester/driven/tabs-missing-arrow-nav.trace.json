@@ -1,0 +1,254 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "navigate between tabs using arrow keys"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#tab-overview",
+      "tag": "button",
+      "tabindex": 0,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Overview",
+        "role": "tab",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "selected": true,
+          "controls": "panel-overview"
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 20,
+        "width": 111.15625,
+        "height": 45
+      },
+      "url": "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+      "text": "Overview",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "tab, Overview, selected, 1 control, position 1, set size 3"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "tab, Overview, selected, 1 control, position 1, set size 3"
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 625,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "ArrowRight",
+      "active_element_selector": "#tab-overview",
+      "tag": "button",
+      "tabindex": 0,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Overview",
+        "role": "tab",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "selected": true,
+          "controls": "panel-overview"
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 16,
+        "y": 20,
+        "width": 111.15625,
+        "height": 45
+      },
+      "url": "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+      "text": "Overview",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 625,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "ArrowLeft",
+      "active_element_selector": "#tab-overview",
+      "tag": "button",
+      "tabindex": 0,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Overview",
+        "role": "tab",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "selected": true,
+          "controls": "panel-overview"
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 16,
+        "y": 20,
+        "width": 111.15625,
+        "height": 45
+      },
+      "url": "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+      "text": "Overview",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0.6048,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 719,
+        "ref_area_2px_perimeter": 625,
+        "area_pass": true,
+        "contrast": 5.56,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "body",
+      "tag": "body",
+      "tabindex": null,
+      "dom_order_index": -1,
+      "ax_name_role_state": {
+        "name": null,
+        "role": "none",
+        "states": {}
+      },
+      "focus_moved": true,
+      "bounding_box": null,
+      "url": "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+      "text": "",
+      "is_body": true,
+      "computed_focus_style": null,
+      "region": null,
+      "focused_region_screenshot": null,
+      "focus_visible": null,
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      }
+    }
+  ]
+}

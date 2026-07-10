@@ -1,0 +1,47 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:54.768Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+      "locations": [],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #tab-1 (contrast 1.8), #panel-1 (contrast 2.95), #tab-1 (contrast 2.43)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0006"
+      ]
+    },
+    {
+      "id": "missing-accessible-name-desktop",
+      "wcag": "4.1.2",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AA",
+      "confidence": 0.7,
+      "severity": "serious",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+      "locations": [],
+      "summary": "1 focusable control(s) have no accessible name: tabpanel at #panel-1",
+      "persona_impact": "A keyboard user who relies on speech recognition cannot target these controls by voice, and their purpose is not conveyed programmatically.",
+      "evidence": [
+        "step_0002"
+      ]
+    }
+  ]
+}
