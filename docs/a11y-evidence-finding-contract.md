@@ -65,6 +65,21 @@ When wrapping a `keyboard-a11y-tester` journey-audit finding (adopted 2026-07-10
 
 Calibration: never wrap a batch-crawl 4.1.3 "silent live region" finding as a failure — it is a verification prompt; re-test with a driven session and cite `live_announcements` presence/absence instead.
 
+## virtual-screen-reader Source Mapping
+
+When wrapping a `virtual-screen-reader` component-assertion result (adopted 2026-07-11, see the [adoption assessment](virtual-screen-reader-adoption-assessment.md)) in this contract — note VSR emits no findings or severities; the asserting test plus the author's judgment produce the finding, and this mapping structures it:
+
+| Contract field | Mapping from the assertion result |
+|---|---|
+| `source` | `virtual-screen-reader @ <exact version>, <test file>::<test name>` |
+| `severity` | by user impact, judged by the author: announcement never reaches the user on a task-critical flow → CRITICAL or MAJOR; degraded context or vague announcement text → MINOR or MAJOR; robustness/redundancy improvements → ENHANCEMENT |
+| `fingerprint` | component + region selector + event kind (e.g., `toast-region + show-event + no-announcement`). Never the phrase text alone — wording changes must not change identity. |
+| `perspective_alarms` | `screen_reader_semantic` only. Never `keyboard_motor` — VSR interactions are synthetic (user-event), not keyboard evidence. |
+| `evidence` | the exact spoken-phrase log slice **plus** the structural fact (e.g., `phrases after mount = []; div.toast has no role/aria-live`) |
+| `reproduction_steps` | install pin (`npm i -D @guidepup/virtual-screen-reader@<version>`) + committed test file path + runner command |
+
+Calibration: never wrap a silent mount-with-content `role="alert"` as a failed fix — it is inconclusive; restate the assertion in the persistent-container shape first. An empty `"polite: "` entry is an `aria-atomic` region-clear marker. Components containing open shadow roots are outside VSR evidence entirely (record: `evals/results/virtual-screen-reader/`).
+
 ## Trend Language
 
 Use trend only when comparing against prior evidence:

@@ -94,7 +94,7 @@ Phase gating: **Phase 3 is blocked on Phase 2; Phase 4 items 8–9 are blocked o
 6. **Fixture reconciliation (side-product of this assessment):** the `toast-notification-no-role` rubric endorses `Fix: Add role="alert" to notification div` — which, applied to a mount-with-content toast, VSR measures as still-silent (in both jsdom and Chromium). The rubric's endorsed fix and the evidence layer disagree. Amend the fixture's expected-fix language to the persistent-container pattern (or annotate that role-alone is not reliable-announcement sufficient) before VSR evidence is layered onto fixture-based evals, and skim the other announcement fixtures for the same endorsement.
 7. Skim upstream's 81 failing WPT tests for intersections with our assertion patterns; record any that matter as calibration-rule candidates.
 
-### Phase 3 — Evidence wiring (blocked on Phase 2)
+### Phase 3 — Evidence wiring (blocked on Phase 2) — EXECUTED 2026-07-11
 
 8. `a11y-critic` Phase 0: spoken-phrase logs + asserting test file as hard evidence, at the same tier as codified Playwright runs, carrying calibration rules 1–4 as consumption rules.
 9. Evidence contract: add the `source` format and mapping; `perspective-audit` feeds `screen_reader_semantic`.

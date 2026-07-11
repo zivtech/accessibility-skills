@@ -107,6 +107,8 @@ If the audit was invoked from an `A11y Evidence Finding` block, preserve these t
 
 When the incoming contract's evidence is `keyboard-a11y-tester` journey-audit output (trace steps, deterministic findings, reading-order census): map its personas to alarms — `keyboard` findings feed `keyboard_motor`, `screen-reader` findings feed `screen_reader_semantic` — and keep trace-step and census-selector citations intact through the audit. Batch-crawl 4.1.3 findings arrive as verification prompts, not failures; require driven-session `live_announcements` evidence before treating a live-region defect as confirmed (calibration: `evals/results/keyboard-a11y-tester/`).
 
+When the incoming contract's evidence is `virtual-screen-reader` component-assertion output (spoken-phrase logs from the a11y-test component lane): findings feed `screen_reader_semantic` only — never `keyboard_motor`, because VSR interactions are synthetic. Keep the tool version + test file + exact-phrase citations intact through the audit. Silence is confirmable evidence only when the structural absence (no role/aria-live) is attached; a silent mount-with-content `role="alert"` is inconclusive, and an empty `"polite: "` entry marks an `aria-atomic` region clear (calibration: `evals/results/virtual-screen-reader/`).
+
 Perspective-audit may also emit a contract-compatible block for new CRITICAL or MAJOR findings discovered during the deep review:
 
 ```

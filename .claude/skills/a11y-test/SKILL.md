@@ -225,7 +225,7 @@ test("reads the expected sequence", async () => {
 
 ### Evidence
 
-The artifacts are spoken-phrase logs plus the asserting test file. Formal a11y-critic Phase 0 evidence-tier intake lands with assessment Phases 2–3 (fixture cross-validation gate first) — until then, cite logs as test output, not as critic-trusted hard evidence. Platform note: plain npm library — works from Claude Code and Codex.
+The artifacts are spoken-phrase logs plus the asserting test file — a11y-critic Phase 0 hard evidence (gate passed 2026-07-11: `evals/results/virtual-screen-reader/`; contract mapping in `docs/a11y-evidence-finding-contract.md`). Cite tool version + test file + the exact phrase or its absence, and pair silence with the structural fact (no role/aria-live present). Platform note: plain npm library — works from Claude Code and Codex.
 
 ## 1. Keyboard Accessibility Tests
 
