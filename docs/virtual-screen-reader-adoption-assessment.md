@@ -79,7 +79,7 @@ Rules 1–4 are measured behavior from the probes above (environments noted); ru
 
 Phase gating: **Phase 3 is blocked on Phase 2; Phase 4 items 8–9 are blocked on Phase 3** (lifecycle wiring must not point at an evidence tier that doesn't exist yet). Each phase lands as one conventional commit.
 
-### Phase 1 — Routing & inventory (docs only)
+### Phase 1 — Routing & inventory (docs only) — EXECUTED 2026-07-11
 
 1. `.claude/skills/a11y-test/SKILL.md` + `.agents/skills/a11y-test/SKILL.md` mirror: add routing-table row — *"Component/unit-level screen-reader assertions (reading order, accessible names, live-region announcements) in Vitest/Jest+jsdom or a browser page, no URL or journey needed"* → VSR — plus a section with: install (`npm i -D @guidepup/virtual-screen-reader@0.32.1`, Node ≥ 20), the walk/assert pattern with max-step guard, the persistent-live-container template, the teardown template, the no-fake-timers rule, and calibration rules 1–5. While editing, fix the stale "This skill has three execution modes" sentence in both mirrors (pre-existing KAT Phase 1 miss — it still says three with four documented) and prefer phrasing that doesn't hard-code the count, so the sixth adoption doesn't repeat this.
 2. `docs/EXTERNAL-SKILLS-INVENTORY.md`: Tier 1 entry, cross-referencing the KAT entry (shared engine, different layer, shared failure correlation).

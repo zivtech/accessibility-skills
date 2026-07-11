@@ -12,6 +12,8 @@ For each skill: what it does, how it differs from our approach, what techniques 
 
 **Update 2026-07-10:** [ezufelt/keyboard-a11y-tester](#ezufeltkeyboard-a11y-tester--added-2026-07-10) added below — created 2026-07-08 (postdates this scan), and the first true runtime *tester* peer found; everything in the original scan was an auditor, guardrail, or analyzer. Adopted as the a11y-test skill's fourth execution mode. Full gap analysis and tiered plan: [keyboard-a11y-tester Adoption Assessment](keyboard-a11y-tester-adoption-assessment.md).
 
+**Update 2026-07-11:** [guidepup/virtual-screen-reader](#guidepupvirtual-screen-reader--added-2026-07-11) added below — already this stack's transitive screen-reader engine inside keyboard-a11y-tester, now adopted directly as the a11y-test skill's component/unit-level execution mode (screen-reader assertions in the project's own test suite, pre-deploy). Full gap analysis and phase plan: [virtual-screen-reader Adoption Assessment](virtual-screen-reader-adoption-assessment.md).
+
 **Key gap confirmed:** No external skill separates planning (what to build accessibly) from critique (did we build it accessibly). The closest analogue is AccessLint's `reviewer` agent, which performs multi-step WCAG audits but has no planning counterpart.
 
 **Sources searched:**
@@ -85,6 +87,19 @@ For each skill: what it does, how it differs from our approach, what techniques 
 - **MCP/API:** none — plain Node CLI (playwright, guidepup, pixelmatch, pngjs, yaml). Node ≥ 20. Works from Claude Code and Codex.
 - **Cost:** Free
 - **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing. Young repo (created 2026-07-08) by a veteran Drupal accessibility contributor known to us — routed, pinned to tagged releases, never vendored.
+
+### guidepup/virtual-screen-reader — added 2026-07-11
+- **Source:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) (MIT, Craig Morten / guidepup org; adopted at npm `0.32.1`, exact-pinned as a devDependency in consuming projects)
+- **What it does:** Screen-reader simulator as a library. Walks the accessibility tree of any DOM (jsdom in unit tests, or a browser via its ESM build), emits spoken phrases, captures live-region announcements with politeness prefixes, and exposes SR quick-key emulation (heading/landmark/link navigation, aria-errormessage and aria-flowto jumps) as an assertable API. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2), tested upstream against W3C Web Platform Tests with published pass/fail counts.
+- **Use for:** a11y-test fifth execution mode — component/unit-level screen-reader assertions in the consuming project's own Vitest/Jest suite, pre-deploy, per PR. The layer keyboard-a11y-tester cannot reach (it needs a deployed URL); the shared engine, one level down.
+- **Key techniques adopted:**
+  1. **Persistent-live-container assertion pattern** — the only reliable shape for announcement tests (measured: pre-populated `role="alert"` insertion reads silent in jsdom *and* Chromium).
+  2. **Bounded-walk discipline** — max-step guard on every tree walk; `aria-modal` traps the virtual cursor by design and a naive walk never terminates.
+  3. **No-fake-timers rule** — fake timers wedge the stateful singleton and cascade hangs across the whole test file (measured in Vitest 4).
+- **Validation:** hands-on probes 2026-07-11 at 0.32.1 across three environments (plain Node+jsdom, Vitest 4 jsdom env, real Chromium ESM) covering accname (missing and wrong names), live-region capture (microtask-flush measured), aria-hidden/CSS-hidden exclusion, modal trapping, shadow-DOM invisibility, fake-timer wedge, teardown isolation, plus a spot-validation evidencing both CRITICAL must-finds of the `toast-notification-no-role` critic fixture. Proposal-critic reviewed. Full record: [virtual-screen-reader Adoption Assessment](virtual-screen-reader-adoption-assessment.md).
+- **MCP/API:** none — plain npm library (deps: dom-accessibility-api, @testing-library/dom, @testing-library/user-event, html-aria). Node ≥ 20. Works from Claude Code and Codex.
+- **Cost:** Free
+- **Boundaries:** assertion primitive, not a findings emitter (test author supplies judgment); **never keyboard-operability evidence** (interactions are synthetic user-event); no open shadow DOM (upstream #182) or aria-busy (#36); emulated SR augments but never replaces real AT testing; single maintainer with a 14-month release gap (org active; MIT + exact-pin bounds drift). Shared-engine concentration: it also powers keyboard-a11y-tester's SR persona, so an upstream failure degrades two execution modes at once — the capability floor is the manual §6 AT protocol. Routed npm dependency, never vendored.
 
 ---
 

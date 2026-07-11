@@ -12,14 +12,15 @@ metadata:
 
 ## Browser Tooling Routing (read first)
 
-This skill has three execution modes. Pick the right one before running anything:
+Pick the right execution mode from the routing table before running anything (the table is the source of truth — don't trust remembered mode counts):
 
 | Task | Tool | Why |
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
-| Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned `97eb13e`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
+| Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
+| Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
@@ -29,6 +30,7 @@ Do you have a prose description of what to test, but no test script yet?
   YES → /webwright:run (one-shot) or /webwright:craft (reusable parameterized tool)
   NO, you need to run an existing test → npx playwright test
   NO, you need to audit a live URL against a user goal (journey, announcements, focus indicators) → keyboard-a11y-tester
+  NO, you need to assert component announcements, names, or reading order in unit tests (no URL yet) → virtual-screen-reader
   NO, you need to explore interactively → agent-browser
 ```
 
@@ -162,6 +164,68 @@ These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wi
 - **Client production sites:** on pages with a CAPTCHA the runner suppresses `navigator.webdriver` (page-scoped) so the CAPTCHA can initialize — automation-signal spoofing that can trip a WAF or security review. Get explicit client sign-off before pointing it at client production infrastructure; prefer staging.
 - Don't run concurrently with agent-browser or Webwright sessions (Chrome instance/port contention). Chromium-only — cross-browser coverage stays with `npx playwright test`.
 - Run desktop and mobile viewports separately; navigation often collapses behind a disclosure on mobile.
+
+## Component screen-reader assertions with virtual-screen-reader
+
+**When to use:** you're implementing or fixing a component and need to assert what a screen reader computes and announces — accessible names, reading order, live-region announcements — in the project's own test suite, per PR, with no URL, journey, or deployed page. This is the `implement → test` layer: the cheapest point to catch the toast/async-status defect class. **When NOT to use:** keyboard operability (its interactions are synthetic `user-event` events — real-key evidence stays with `.spec.js`, agent-browser, or keyboard-a11y-tester), anything visual (jsdom has no layout), page/journey audits (→ keyboard-a11y-tester), rule scans (→ axe-core, §4), open-shadow-DOM components (invisible to it — upstream #182), `aria-busy` states (unsupported — upstream #36).
+
+**What it is:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) — a screen-reader simulator as a library (MIT; adopted at npm `0.32.1`, exact-pinned). Walks the accessibility tree of any DOM, emits spoken phrases (`"button, Save document"`), captures live-region announcements with politeness prefixes (`"polite: Draft saved"`), and exposes SR quick-key emulation via `virtual.perform(virtual.commands.*)` — `moveToNextHeading`, `moveToNextLandmark`, per-level heading jumps, `jumpToErrorMessageElement` (aria-errormessage), aria-flowto reading-order commands. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2) and WPT-tested upstream. It is already this stack's transitive SR engine inside keyboard-a11y-tester; this lane uses it directly. Validated in-repo 2026-07-11 in three environments — plain Node+jsdom, Vitest 4 jsdom environment, real Chromium via its ESM build: `docs/virtual-screen-reader-adoption-assessment.md`. Jest+jsdom is expected to match Vitest but was not run; Storybook is expected but unverified — treat neither as a validated path until someone runs it.
+
+### Install (Node ≥ 20)
+
+```bash
+npm install --save-dev @guidepup/virtual-screen-reader@0.32.1   # exact pin; re-verify calibration rules on any bump
+```
+
+### Core patterns (Vitest, jsdom environment — the verified harness)
+
+```js
+import { afterEach, expect, test } from "vitest";
+import { virtual } from "@guidepup/virtual-screen-reader";
+
+afterEach(async () => {
+  await virtual.stop().catch(() => {});   // stateful singleton — mandatory, or phrase logs leak across tests
+  document.body.innerHTML = "";
+});
+
+// 1. Announcement assertion — persistent-container pattern (the only reliable shape; see rule 3)
+test("saving announces to screen reader users", async () => {
+  document.body.innerHTML = `
+    <main><button>Save</button></main>
+    <div role="status" id="app-status"></div>  <!-- persistent, empty at mount -->
+  `;
+  await virtual.start({ container: document.body });
+  document.getElementById("app-status").textContent = "Item saved";
+  await Promise.resolve();   // microtask flush suffices (measured) — no arbitrary sleep needed
+  expect(await virtual.spokenPhraseLog()).toContain("polite: Item saved");
+});
+
+// 2. Reading-order / name assertions — bounded walk (never while-true; see rule 1)
+test("reads the expected sequence", async () => {
+  document.body.innerHTML = `<h2>Cart</h2><p>$29.00</p><button>Buy now</button>`;
+  await virtual.start({ container: document.body });
+  const phrases = [];
+  for (let i = 0; i < 40; i++) {           // max-step guard: aria-modal traps the cursor by design
+    await virtual.next();
+    const p = await virtual.lastSpokenPhrase();
+    phrases.push(p);
+    if (p === "end of document") break;
+  }
+  expect(phrases.indexOf("$29.00")).toBeLessThan(phrases.indexOf("button, Buy now"));
+});
+```
+
+### Calibration rules (measured 2026-07-11 at 0.32.1; environments noted)
+
+1. **Never walk-to-end-of-document when `aria-modal="true"` is present** *(jsdom)*. The cursor traps inside the modal by design (upstream #54) — the walk never terminates. Scope `container` to the component and bound every walk with a max-step guard.
+2. **A silent or short walk is not a clean pass — check for shadow roots first** *(jsdom)*. Open shadow DOM is invisible (upstream #182). If `element.shadowRoot` exists anywhere under the container, VSR evidence is partial: route to keyboard-a11y-tester or browser testing instead.
+3. **Mount-with-content live regions read as silent — including correctly-fixed ones** *(jsdom AND Chromium — engine behavior, not a jsdom artifact)*. VSR announces mutations *inside* existing live regions (text changes, child insertions, mount-empty-then-fill) but not insertion of a pre-populated `role="alert"` element. Interpretive context (domain knowledge, not probed here): real screen readers are also inconsistent on pre-populated alert insertion, which is why robust toast guidance uses a persistent container. Consequences: assert via the persistent-container pattern; a silent log after mount-with-content of an alert is **inconclusive**, not proof the fix failed; buggy-component silence is defect evidence only alongside the structural fact (no role/aria-live present).
+4. **Fake timers wedge the singleton — hard incompatibility** *(Vitest; Jest unmeasured, mechanism harness-independent)*. Under fake timers, `start()` resolves but log reads hang forever, and the wedged state cascades hangs into every later test in the file, teardown included. Never enable fake timers in a file that runs VSR. Components needing fake timers (auto-dismiss toasts) get announcement assertions in a separate real-timer file — natural with the persistent-container pattern (assert the announcement on show; the timed dismiss is a separate concern).
+5. **Cite the VSR version in every piece of evidence** (`vsr@0.32.1 <test file>`). Both consumption routes are frozen (this exact pin; keyboard-a11y-tester's committed lockfile), so skew arises only on deliberate upgrade — the citation makes it detectable. Re-verify rules 1–4 on any version bump.
+
+### Evidence
+
+The artifacts are spoken-phrase logs plus the asserting test file. Formal a11y-critic Phase 0 evidence-tier intake lands with assessment Phases 2–3 (fixture cross-validation gate first) — until then, cite logs as test output, not as critic-trusted hard evidence. Platform note: plain npm library — works from Claude Code and Codex.
 
 ## 1. Keyboard Accessibility Tests
 
