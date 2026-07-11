@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code only — orchestrates Claude Code subagent spawning
 metadata:
   author: zivtech
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # A11y Workflow Orchestrator
@@ -25,7 +25,7 @@ This skill sequences the accessibility lifecycle by spawning specialist agents f
 | Scout | `a11y-scout` | haiku | File discovery, ARIA inventory, component type ID |
 | Planner | `a11y-planner` | opus | Design accessibility before coding (9-phase) |
 | Critic | `a11y-critic` | opus | Review ARIA patterns, focus management, state communication (8-phase) |
-| Tester | `a11y-test` skill | n/a | Playwright keyboard tests, axe-core scans |
+| Tester | `a11y-test` skill | n/a | Playwright keyboard tests, axe-core scans, keyboard-a11y-tester journey audits |
 | Auditor | `perspective-audit` | opus | Deep 7-perspective review on escalated perspectives |
 
 ## Context Passing Between Agents
@@ -35,7 +35,7 @@ Each agent starts with a fresh context window. The main session bridges context 
 - **Scout → Planner/Critic**: Scout returns a structured recon summary (~500-1500 chars). Inject verbatim into the next agent's prompt.
 - **Planner → Critic**: Planner writes plan to `docs/a11y-plans/YYYY-MM-DD-<feature>-a11y-plan.md`. Critic is spawned with file paths to the plan and source code — it reads both using its Read tool.
 - **Critic → Perspective Audit**: Extract only the alarm levels and findings for escalated perspectives (~500-1500 chars). Inject into the perspective-audit prompt.
-- **Test → Critic**: Inject structured test results summary (~500-1000 chars) into the critic prompt alongside source file paths.
+- **Test → Critic**: Inject structured test results summary (~500-1000 chars) into the critic prompt alongside source file paths. keyboard-a11y-tester artifacts (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) exceed the inject budget — pass their file paths instead; the critic's Phase 0 knows the format and its calibration rules.
 - **Size budget rule**: Output > 2K chars → write to file, next agent reads. Output ≤ 2K chars → inject into prompt.
 
 ## Mode 1 — Full Lifecycle
@@ -87,7 +87,12 @@ Agent(subagent_type="perspective-audit", model="opus", prompt="
 Present the plan + critique + perspective audit findings. User revises and implements.
 
 ### Step 6: Test (after implementation)
-Invoke the `/a11y-test` skill to run Playwright keyboard tests and axe-core scans.
+Invoke the `/a11y-test` skill, routing by target kind:
+
+- **Component/widget with (or needing) codified tests** → `npx playwright test` `.spec.js` + axe-core scans (the skill's primary path).
+- **Live URL + user journey** ("can a keyboard-only or screen-reader user complete X on this page?") → keyboard-a11y-tester: batch crawl for recon, then a driven `serve`/`step` session for interaction evidence. The main session drives the serve/step loop directly — it is a CLI, not an agent, so depth-1 is preserved. Calibration: batch-mode 4.1.3 findings are prompts to drive, never failures.
+
+Both modes produce evidence for Step 7.
 
 ### Step 7: Critique the Implementation
 ```
@@ -95,6 +100,7 @@ Agent(subagent_type="a11y-critic", model="opus", prompt="
   Review this implementation for accessibility design issues.
   Source files: <file paths>
   Test results summary: <inject test output summary>
+  keyboard-a11y-tester artifacts (if produced): <paths to trace.json / deterministic-findings.json / screen-reader-census.json>
 ")
 ```
 
@@ -115,7 +121,7 @@ User drives each step manually. The skill spawns the appropriate agent for the r
 | `scout` | a11y-scout | haiku | Discover files, inventory ARIA state |
 | `plan` | a11y-planner | opus | Design accessibility (pass prior recon if available) |
 | `critique` | a11y-critic | opus | Review plan or implementation |
-| `test` | a11y-test skill | n/a | Run Playwright + axe-core |
+| `test` | a11y-test skill | n/a | Run Playwright + axe-core; keyboard-a11y-tester journey audit for live-URL targets |
 | `audit` | perspective-audit | opus | Deep perspective review (specify `--perspectives` to limit) |
 
 ### Examples

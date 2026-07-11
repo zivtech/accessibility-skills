@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code only — orchestrates subagents, DDEV, and local worktrees
 metadata:
   author: zivtech
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Drupal Accessibility Patch Evaluator
@@ -43,6 +43,7 @@ Run these checks before touching any item status. If global preflight fails, sub
 | Evaluator JS helper complete | `canonical-patch-map.js` helper exists or its import is guarded |
 | Evaluator rule IDs compatible | Aliases, `runOnly`, and selector hints are present for the rules under test |
 | Source permalink/SHA pinning ready | Record source commit SHA, patch file SHA, target file SHA, and tool versions before upstream filing |
+| keyboard-a11y-tester available (optional — keyboard/SR-behavior patches only) | Clone pinned to the adopted SHA (`97eb13e`); `node scripts/setup-check.mjs` reports deps + browser available. See the a11y-test skill's journey-audit section. |
 
 ## 3. Worktree Discipline
 
@@ -99,6 +100,17 @@ Required evidence:
 - New violations listed and classified.
 - Remaining adjacent issues separated from the fixed issue.
 - Packet does not claim that adjacent issues are fixed by this patch.
+
+### Behavioral Verification with keyboard-a11y-tester (keyboard/SR-behavior patches)
+
+For patches whose target is interaction behavior rather than static markup — focus management, keyboard operability, live-region announcements — axe before/after scans cannot carry the verification alone. Run keyboard-a11y-tester before AND after the patch under identical conditions: same URL, same viewport, same `--goal`, same pinned tool SHA.
+
+Required evidence when this lane applies:
+- **Baseline**: a driven `serve`/`step` session reproducing the failure as trace facts (e.g. focus dropped to `body` after activation; a visible update with no `live_announcements` entry after the triggering keystroke).
+- **After-patch**: the same keystroke sequence; the baseline finding's fingerprint (selector + WCAG SC + check kind) absent → supports `resolved` trend language; unchanged → `persistent`.
+- Both artifact sets (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) stored under the packet directory; packet evidence cites step ids and measured values.
+- Calibration: batch-crawl 4.1.3 findings are never baseline evidence by themselves — they are prompts to run the driven session.
+- Emulated screen-reader evidence reduces but does not eliminate manual AT debt: real NVDA/VoiceOver checks stay in the manual table, and `debt_explicit` discipline still applies.
 
 ### Manual and Perspective Verification
 

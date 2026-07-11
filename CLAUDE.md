@@ -30,7 +30,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | 2b. Perspective audit | perspective-audit | Deep review of MEDIUM/HIGH alarm perspectives (if escalated) |
 | 3. Revise | manual | Address critic findings |
 | 4. Implement | executor | Build according to reviewed plan |
-| 5. Test | a11y-test | Automated scans + keyboard tests (Playwright) |
+| 5. Test | a11y-test | Automated scans + keyboard tests (Playwright); journey audits (keyboard-a11y-tester) |
 | 6. Critique implementation | a11y-critic | Review design decisions after tests pass |
 | 6b. Perspective audit | perspective-audit | Deep review of escalated perspectives (if escalated) |
 | 7. Fix | executor | Address findings |

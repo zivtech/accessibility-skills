@@ -99,7 +99,7 @@ Phases are ordered by risk tier: cheap-and-reversible documentation first, trust
 10. **`docs/a11y-evidence-finding-contract.md`**: add KAT as a `source`, plus the severity/fingerprint/persona mapping table from the adoption matrix above.
 11. **`perspective-audit`**: accept KAT-sourced contracts; census/live-region evidence feeds `screen_reader_semantic`, trace/focus evidence feeds `keyboard_motor`.
 
-### Phase 4 — Lifecycle integration (blocked on Phase 3, ~1 session)
+### Phase 4 — Lifecycle integration — EXECUTED 2026-07-10
 
 12. **Pre-flight for client-facing use (recalibrated 2026-07-10):** the original checkpoint (tagged release / second contributor / 60 days of stability) was calibrated for an unknown author and is withdrawn — the author is known and trusted. What remains is mechanical: re-verify the then-current pin before wiring client deliverables, adopt a tagged release if one exists by then, and keep committed artifacts + the pinned SHA with every delivered finding so evidence stays reproducible regardless of upstream motion.
 13. **`.claude/teams/a11y-workflow.md` + orchestrator**: in the test step, route live-URL/journey targets to KAT mode and component/widget targets to `.spec.js` mode; keep both feeding critic Phase 0.
