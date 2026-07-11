@@ -103,13 +103,13 @@ Press Escape and verify the modal closes and focus returns to the trigger.
 
 **When to use:** you have a live URL and a task in plain words ("can a keyboard-only or screen-reader user complete X?") and need evidence-linked WCAG findings without writing a test file — discovery audits, before/after patch evidence, whole-journey reviews. **When NOT to use:** widget CI regression (→ `.spec.js` + the APG templates), quick probing or authenticated Chrome-profile flows (→ `agent-browser`), rule scans (→ axe-core, §4).
 
-**What it is:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) — an external tool, adopted at commit `97eb13e` (MIT; no upstream tags yet — re-verify before upgrading). Two layers: a deterministic Playwright/CDP runner (real keyboard events only, never `.click()`; machine-decidable WCAG checks; dual-signal focus-indicator measurement) and an emulated screen-reader persona (`@guidepup/virtual-screen-reader`: announcement capture, live-region monitoring, reading-order census). Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi") in one pass. Cross-validated against this repo's 33 critic fixtures on 2026-07-10 — agreement record: `evals/results/keyboard-a11y-tester/README.md`.
+**What it is:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) — an external tool, adopted at release `0.5.0` (commit `7e852a7`, MIT; originally adopted at `97eb13e`, bumped 2026-07-11 after upstream merged our PR #7 and began tagging releases — re-verify on every upgrade). Two layers: a deterministic Playwright/CDP runner (real keyboard events only, never `.click()`; machine-decidable WCAG checks; dual-signal focus-indicator measurement) and an emulated screen-reader persona (`@guidepup/virtual-screen-reader`: announcement capture, live-region monitoring, reading-order census). Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi") in one pass. As of 0.5.0 it also detects broken ARIA ID references and keyboard-focusable controls missing from the accessibility tree, includes our 3.3.2 UA-default-name check, and supports authenticated runs via `--storage-state <playwright-storageState.json>` (agent-browser remains the route when you want to reuse the user's real Chrome profile instead of exporting state). Cross-validated against this repo's 33 critic fixtures on 2026-07-10 — agreement record: `evals/results/keyboard-a11y-tester/README.md`.
 
-### Install (clone path — verified; Node ≥ 20 per its engines field, upstream README's "≥ 18" is stale)
+### Install (clone path — verified; Node ≥ 20)
 
 ```bash
 git clone https://github.com/ezufelt/keyboard-a11y-tester && cd keyboard-a11y-tester
-git checkout 97eb13e                  # adopted pin
+git checkout 0.5.0                    # adopted pin (tagged release)
 npm install && node scripts/setup-check.mjs   # npx playwright install chromium only if browser_available=false
 ```
 
@@ -147,7 +147,7 @@ These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wi
 1. **Batch-mode 4.1.3 "silent live region" findings are never failure evidence.** A blind crawl never operates anything, so correctly-wired regions look silent (confidence 0.35–0.4 vs 0.7+ elsewhere). They are prompts to run a driven session and judge from `live_announcements`.
 2. **UA-intrinsic names mask missing labels.** An unlabeled `<input type=file>` reports AX name "Choose File", so the unnamed-control check stays quiet. Label association still needs axe/static/judgment review.
 3. **Component-scale pages ≠ full pages.** Skip-link (2.4.1) and landmark findings assume a whole page; on component targets treat them as granularity artifacts.
-4. **AA vs AAA honesty.** 2.4.13 focus-appearance findings are AAA-informative by design — never report them as 2.4.7 failures.
+4. **AA vs AAA honesty.** 2.4.13 focus-appearance findings are AAA-informative by design — never report them as 2.4.7 failures. The AAA pixel measurement is also rendering-environment-sensitive (macOS locally can emit AAA-informative findings that Linux CI does not, observed at both `97eb13e` and `0.5.0`) — one more reason never to gate on it.
 5. **Emulated SR ≠ real AT.** Findings are spec-compliant-announcement evidence; the §6 manual NVDA/VoiceOver protocol still applies before shipping.
 
 ### Mapping findings → A11y Evidence Finding Contract

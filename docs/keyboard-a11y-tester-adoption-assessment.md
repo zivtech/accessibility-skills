@@ -4,6 +4,8 @@
 
 Assessed 2026-07-10 at upstream commit `97eb13e`. MIT license, author Everett Zufelt. Hands-on validation of both execution modes performed (commands and results below). Reviewed by proposal-critic 2026-07-10; this revision incorporates its findings.
 
+**Upstream update (2026-07-11):** [PR #7](https://github.com/ezufelt/keyboard-a11y-tester/pull/7) — our 3.3.2 UA-default-name check — was merged the same day it was filed ("Thanks for the contribution - merged"), and upstream immediately began cutting tagged releases (`0.3.0`–`0.5.0`, answering the release-tagging ask), added an OpenSSF Best Practices badge, `--storage-state` authenticated runs, broken-ARIA-reference and focusable-but-AT-invisible checks, and cross-viewport census diffing. **Pin bumped `97eb13e` → release `0.5.0` (`7e852a7`) after re-verify:** suite 28/29 locally vs green on upstream CI — the one local failure is the AAA-informative 2.4.13 pixel measurement (macOS rendering variance, present at both pins, never affects AA pass/fail). The upstream-maturity residuals in Risks are now substantially resolved: tagged releases exist and external contributions are merged responsively.
+
 ## What It Is
 
 A keyboard-only + emulated-screen-reader web tester with a two-layer architecture:
@@ -80,7 +82,7 @@ Phases are ordered by risk tier: cheap-and-reversible documentation first, trust
 
 ### Phase 1 — Routing & inventory (docs only) — EXECUTED 2026-07-10
 
-1. **Pin the version**: all references adopt commit `97eb13e` (upstream has no tags or releases to pin; re-verify and re-pin on upgrade, noting its additive-fields compatibility policy).
+1. **Pin the version**: all references adopt commit `97eb13e` (upstream had no tags or releases at adoption; re-verify and re-pin on upgrade, noting its additive-fields compatibility policy). *(2026-07-11: bumped to tagged release `0.5.0` after re-verify — see Upstream update above.)*
 2. **`docs/EXTERNAL-SKILLS-INVENTORY.md`**: add Tier 1 entry. Note it postdates the 2026-03-28 scan and is the first true runtime-tester peer found (the scan found only auditors/guardrails/analyzers).
 3. **`.claude/skills/a11y-test/SKILL.md`**: add a routing-table row — *"Goal-driven journey audit of a live URL for keyboard + screen-reader personas, with evidence artifacts"* → keyboard-a11y-tester — and a dedicated section mirroring the Webwright section's structure: install (clone + `npm install` as the verified path; plugin-marketplace flow documented only if exercised first), Node ≥ 20 requirement (its `package.json` engines field; upstream README's "≥ 18" is inconsistent — flag it), the serve/step agentic loop with the never-counted-Tabs rule, output artifacts, when NOT to use it (widget CI regression → `.spec.js`; quick probing/authenticated Chrome-profile flows → agent-browser; rule scans → axe), session default port **9333** (`runner.mjs` fallback; README's 9400 is an example flag value), and the Chrome-instance contention caveat (don't run concurrently with agent-browser or Webwright sessions).
 4. **`.agents/skills/a11y-test/SKILL.md` mirror**: same content; the clone + CLI path works from Codex (plain Node CLI); plugin install is Claude Code-only.

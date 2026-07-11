@@ -43,7 +43,7 @@ Run these checks before touching any item status. If global preflight fails, sub
 | Evaluator JS helper complete | `canonical-patch-map.js` helper exists or its import is guarded |
 | Evaluator rule IDs compatible | Aliases, `runOnly`, and selector hints are present for the rules under test |
 | Source permalink/SHA pinning ready | Record source commit SHA, patch file SHA, target file SHA, and tool versions before upstream filing |
-| keyboard-a11y-tester available (optional — keyboard/SR-behavior patches only) | Clone pinned to the adopted SHA (`97eb13e`); `node scripts/setup-check.mjs` reports deps + browser available. See the a11y-test skill's journey-audit section. |
+| keyboard-a11y-tester available (optional — keyboard/SR-behavior patches only) | Clone pinned to the adopted release (`0.5.0`); `node scripts/setup-check.mjs` reports deps + browser available. See the a11y-test skill's journey-audit section. |
 
 ## 3. Worktree Discipline
 

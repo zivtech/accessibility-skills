@@ -74,17 +74,17 @@ For each skill: what it does, how it differs from our approach, what techniques 
 - **Cost:** Free
 
 ### ezufelt/keyboard-a11y-tester — added 2026-07-10
-- **Source:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) (MIT, Everett Zufelt; adopted at commit `97eb13e` — no upstream tags or releases yet)
+- **Source:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) (MIT, Everett Zufelt; adopted at `97eb13e`, bumped to tagged release `0.5.0` on 2026-07-11 after upstream merged our [PR #7](https://github.com/ezufelt/keyboard-a11y-tester/pull/7) same-day and began cutting releases)
 - **What it does:** Keyboard-only + emulated-screen-reader journey tester against any URL. Deterministic Playwright/CDP runner (real keyboard events only; machine-decidable WCAG checks including dual-signal focus-indicator measurement) plus an agent-driven `serve`/`step` session protocol. Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi" via `@guidepup/virtual-screen-reader`) in one pass; emits evidence-linked findings, per-step trace, reading-order census, and screenshots.
 - **Use for:** a11y-test fourth execution mode (goal-driven journey audits). The only external tool found that produces machine evidence for live-region announcement behavior and focus-indicator sufficiency — two lanes our stack otherwise lacks entirely.
 - **Key techniques adopted:**
   1. **Observe→decide→act step discipline** — "Tab until the focused control matches by name/role, never a pre-counted sequence." Now stated in a11y-test for all interactive keyboard driving, agent-browser included.
   2. **AA pass/fail vs AAA informative severity split** for focus indicators (2.4.7 presence vs 2.4.13 strength) — prevents faint-but-real indicators being reported as missing.
   3. **Persona-impact framing** grounded in the W3C WAI user stories.
-- **Validation:** cross-validated against all 33 critic fixtures 2026-07-10 — 2/3 deterministic-scope must-finds caught (the miss root-caused to Chromium's UA-intrinsic "Choose File" name), zero false positives outside the pre-disclaimed passive-crawl 4.1.3 class, 6/6 driven sessions produced decisive trace evidence, and it surfaced 2 real defects our fixture rubrics missed. Record: `evals/results/keyboard-a11y-tester/`.
+- **Validation:** cross-validated against all 33 critic fixtures 2026-07-10 — 2/3 deterministic-scope must-finds caught (the miss root-caused to Chromium's UA-intrinsic "Choose File" name), zero false positives outside the pre-disclaimed passive-crawl 4.1.3 class, 6/6 driven sessions produced decisive trace evidence, and it surfaced 2 real defects our fixture rubrics missed. Record: `evals/results/keyboard-a11y-tester/`. The root-caused miss became our upstream PR #7 (3.3.2 UA-default-name check), merged the same day and shipped in 0.5.0; re-verified at 0.5.0 (upstream CI green; one known local-macOS variance in the AAA-informative 2.4.13 pixel measurement, no AA impact).
 - **MCP/API:** none — plain Node CLI (playwright, guidepup, pixelmatch, pngjs, yaml). Node ≥ 20. Works from Claude Code and Codex.
 - **Cost:** Free
-- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing. Young repo (created 2026-07-08) by a veteran Drupal accessibility contributor known to us — routed, pinned (no upstream tags yet), never vendored.
+- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing. Young repo (created 2026-07-08) by a veteran Drupal accessibility contributor known to us — routed, pinned to tagged releases, never vendored.
 
 ---
 
@@ -209,7 +209,7 @@ For each skill: what it does, how it differs from our approach, what techniques 
 | AccessLint MCP server (contrast calculation) | AccessLint | **Recommend** as optional MCP dependency for a11y-critic |
 | axe-core scanning pipeline | snapsynapse, airowe | **Reference** in testing strategy, don't bundle |
 | GitHub Actions CI workflow | snapsynapse | **Reference** as integration pattern |
-| keyboard-a11y-tester journey audits | ezufelt | **Adopted 2026-07-10** as routed 4th a11y-test execution mode, pinned `97eb13e` — see [adoption assessment](keyboard-a11y-tester-adoption-assessment.md) |
+| keyboard-a11y-tester journey audits | ezufelt | **Adopted 2026-07-10** as routed 4th a11y-test execution mode, pinned to release `0.5.0` — see [adoption assessment](keyboard-a11y-tester-adoption-assessment.md) |
 
 ### Vital-Core adoption boundary (2026-06-19)
 
