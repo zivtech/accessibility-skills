@@ -111,6 +111,7 @@ Required evidence when this lane applies:
 - Both artifact sets (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) stored under the packet directory; packet evidence cites step ids and measured values.
 - Calibration: batch-crawl 4.1.3 findings are never baseline evidence by themselves — they are prompts to run the driven session.
 - Emulated screen-reader evidence reduces but does not eliminate manual AT debt: real NVDA/VoiceOver checks stay in the manual table, and `debt_explicit` discipline still applies.
+- Boundary: virtual-screen-reader (the a11y-test component lane) is for pre-deploy component development, not patch verification — before/after patch evidence stays page-level with keyboard-a11y-tester under identical conditions. For Drupal SDC component work it applies to light-DOM components only.
 
 ### Manual and Perspective Verification
 

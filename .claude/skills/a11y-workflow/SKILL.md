@@ -25,7 +25,7 @@ This skill sequences the accessibility lifecycle by spawning specialist agents f
 | Scout | `a11y-scout` | haiku | File discovery, ARIA inventory, component type ID |
 | Planner | `a11y-planner` | opus | Design accessibility before coding (9-phase) |
 | Critic | `a11y-critic` | opus | Review ARIA patterns, focus management, state communication (8-phase) |
-| Tester | `a11y-test` skill | n/a | Playwright keyboard tests, axe-core scans, keyboard-a11y-tester journey audits |
+| Tester | `a11y-test` skill | n/a | Playwright keyboard tests, axe-core scans, keyboard-a11y-tester journey audits, virtual-screen-reader component SR assertions |
 | Auditor | `perspective-audit` | opus | Deep 7-perspective review on escalated perspectives |
 
 ## Context Passing Between Agents
@@ -90,9 +90,10 @@ Present the plan + critique + perspective audit findings. User revises and imple
 Invoke the `/a11y-test` skill, routing by target kind:
 
 - **Component/widget with (or needing) codified tests** → `npx playwright test` `.spec.js` + axe-core scans (the skill's primary path).
+- **Component announcement/name/reading-order behavior (pre-deploy, no URL)** → virtual-screen-reader assertions in the project's own unit suite, alongside the `.spec.js` lane — light-DOM components only (shadow roots are invisible to it), persistent-container pattern for live regions, never fake timers, never as keyboard evidence. See the a11y-test skill's component section.
 - **Live URL + user journey** ("can a keyboard-only or screen-reader user complete X on this page?") → keyboard-a11y-tester: batch crawl for recon, then a driven `serve`/`step` session for interaction evidence. The main session drives the serve/step loop directly — it is a CLI, not an agent, so depth-1 is preserved. Calibration: batch-mode 4.1.3 findings are prompts to drive, never failures.
 
-Both modes produce evidence for Step 7.
+All lanes produce evidence for Step 7.
 
 ### Step 7: Critique the Implementation
 ```
@@ -101,6 +102,7 @@ Agent(subagent_type="a11y-critic", model="opus", prompt="
   Source files: <file paths>
   Test results summary: <inject test output summary>
   keyboard-a11y-tester artifacts (if produced): <paths to trace.json / deterministic-findings.json / screen-reader-census.json>
+  virtual-screen-reader results (if produced): <inject spoken-phrase log slices + tool version + test file paths — logs are small enough to inject directly>
 ")
 ```
 
@@ -121,7 +123,7 @@ User drives each step manually. The skill spawns the appropriate agent for the r
 | `scout` | a11y-scout | haiku | Discover files, inventory ARIA state |
 | `plan` | a11y-planner | opus | Design accessibility (pass prior recon if available) |
 | `critique` | a11y-critic | opus | Review plan or implementation |
-| `test` | a11y-test skill | n/a | Run Playwright + axe-core; keyboard-a11y-tester journey audit for live-URL targets |
+| `test` | a11y-test skill | n/a | Run Playwright + axe-core; virtual-screen-reader assertions for component announcement targets; keyboard-a11y-tester journey audit for live-URL targets |
 | `audit` | perspective-audit | opus | Deep perspective review (specify `--perspectives` to limit) |
 
 ### Examples

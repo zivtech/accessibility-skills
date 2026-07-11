@@ -1,6 +1,6 @@
 # virtual-screen-reader Gap Analysis & Adoption Assessment
 
-**Decision (proposed):** adopt [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) (VSR) directly as the **fifth execution mode of `a11y-test` — component/unit-level screen-reader assertions** in the consuming project's own test suite (Vitest/Jest with jsdom, or a real browser via its ESM build — both exercised below; Storybook expected but unverified). Adoption shape is the `eslint-plugin-jsx-a11y` pattern, not the keyboard-a11y-tester pattern: an npm devDependency installed in the project under test, exact-pinned at `0.32.1`, with snippet templates and calibration rules living in the skill. Do not vendor. Critic-trusted evidence tier is gated behind Phase 2, mirroring the KAT precedent.
+**Decision:** adopt [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) (VSR) directly as the **fifth execution mode of `a11y-test` — component/unit-level screen-reader assertions** in the consuming project's own test suite (Vitest/Jest with jsdom, or a real browser via its ESM build — both exercised below; Storybook expected but unverified). Adoption shape is the `eslint-plugin-jsx-a11y` pattern, not the keyboard-a11y-tester pattern: an npm devDependency installed in the project under test, exact-pinned at `0.32.1`, with snippet templates and calibration rules living in the skill. Do not vendor. **Done (2026-07-11): all four phases executed** — Phase 1 routing, Phase 2 fixture cross-validation (gate passed; record at `evals/results/virtual-screen-reader/`), Phase 3 critic/contract evidence wiring, Phase 4 lifecycle integration.
 
 Assessed 2026-07-11 at v0.32.1 (npm). MIT license, author Craig Morten (guidepup org). Hands-on validation performed in plain Node 24.13 + jsdom 29.1.1, in a real Vitest 4.x jsdom harness, and in real Chromium via the ESM browser build (probes and results below), plus a spot-validation against one critic fixture's planted defects. Reviewed by proposal-critic 2026-07-11 (verdict REVISE); this revision executes its two run-before-you-write preconditions (real-harness and browser-mode runs) and incorporates all findings.
 
@@ -99,7 +99,7 @@ Phase gating: **Phase 3 is blocked on Phase 2; Phase 4 items 8–9 are blocked o
 8. `a11y-critic` Phase 0: spoken-phrase logs + asserting test file as hard evidence, at the same tier as codified Playwright runs, carrying calibration rules 1–4 as consumption rules.
 9. Evidence contract: add the `source` format and mapping; `perspective-audit` feeds `screen_reader_semantic`.
 
-### Phase 4 — Lifecycle integration (blocked on Phase 3)
+### Phase 4 — Lifecycle integration (blocked on Phase 3) — EXECUTED 2026-07-11
 
 10. `a11y-workflow` test step: component targets get the VSR lane alongside `.spec.js`; page/journey targets stay with KAT. Both feed critic Phase 0.
 11. Note for Drupal work: SDC/component development can use the VSR lane pre-deploy **only for light-DOM components** (rule 2); `drupal-a11y-patch-eval` stays KAT-based (page-level, before/after on URLs).
