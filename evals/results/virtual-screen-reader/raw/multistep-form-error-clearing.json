@@ -1,0 +1,14 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "multistep-form-error-clearing",
+  "errors_appear_announced": [
+    "polite: Enter a valid email address."
+  ],
+  "buggy_error_clearance_silent": [],
+  "fixed_clearance_confirmation": [
+    "polite: Enter a valid email address.",
+    "polite: Email error resolved."
+  ]
+}

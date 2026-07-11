@@ -1,0 +1,13 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "search-results-dynamic-clean",
+  "clean_searching_announced": [
+    "polite: Searching..."
+  ],
+  "clean_results_count_announced": [
+    "polite: Searching...",
+    "polite: Found 3 results"
+  ]
+}

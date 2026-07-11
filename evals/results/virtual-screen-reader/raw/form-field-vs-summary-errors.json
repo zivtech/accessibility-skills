@@ -1,0 +1,13 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "form-field-vs-summary-errors",
+  "adversarial_submit_measurement": [
+    "polite: Email address is required.",
+    "polite: Password is required.",
+    "polite: Please confirm your password.",
+    "polite: Display name is required."
+  ],
+  "note": "ADVERSARIAL fixture — no verdict; phrase log is evidence input to the tradeoff judgment."
+}
