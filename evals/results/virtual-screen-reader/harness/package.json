@@ -5,6 +5,8 @@
   "description": "Phase 2 cross-validation harness: virtual-screen-reader vs announcement-class a11y-critic fixtures",
   "dependencies": {
     "@guidepup/virtual-screen-reader": "0.32.1",
-    "jsdom": "29.1.1"
+    "jsdom": "29.1.1",
+    "playwright": "1.61.1",
+    "vitest": "4.0.18"
   }
 }

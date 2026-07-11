@@ -16,6 +16,10 @@ assessment, probes A–H). Announcement capture uses `spokenPhraseLog()` slices 
 50ms settles (microtask flush is sufficient per probe B; the margin is belt-and-suspenders). Raw output:
 `raw/<fixture>.json`.
 
+The assessment's probe scripts (probes A–H, the fixture spot-validation, the Vitest fake-timer
+characterization, and the Chromium ESM run) are archived verbatim with expected outputs in
+[`harness/probes/`](harness/probes/README.md).
+
 **Harness caveats.** DOM-layer replication is ours, kept minimal and faithful to each fixture's rendered
 output (same roles, attributes, and mutation order as the React state transitions produce). It does not
 exercise React itself — VSR sees only DOM mutations either way. Fixed-direction scenarios are written in
