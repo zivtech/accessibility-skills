@@ -150,7 +150,7 @@ The evaluation story is cross-provider. The benchmark suite compares the same fi
 Current committed result summaries cover:
 
 - **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
-- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`
+- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`; Opus perspective-audit agents across all 25 perspective fixtures (2026-07-13, **first blind lane** — answer key withheld: 25/25 content-adjudicated, 40/40 must-find, 0 CRITICAL/MAJOR on all 5 CLEAN fixtures; raw scorer 20P/1W/4F with all deductions receipted as scorer artifacts), raw artifacts in `evals/results/claude-perspective/`
 - **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
 - **Gemini** — Gemini 2.5 Flash across all 33 critic fixtures via the gemini CLI (31/33 PASS, 98% criteria-level must-find; pro escalation pending quota), raw artifacts in `evals/results/gemini/`
 - **Ollama local models** — qwen3:32b (33/33 critic, 25/25 planner), llama3.3:70b, qwen3.5:latest, plus qwen3.5:27b (partial run: stopped 17/33 on /think stalls) and deepseek-r1 probes

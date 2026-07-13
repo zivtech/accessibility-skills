@@ -1147,3 +1147,33 @@ CLI harness overhead ~18.7K input tokens/call.
   to complete the ladder; the flash rows above are final either way.
 - Zero scorer fallback-keyword warnings; every number re-derives from
   `evals/results/gemini/` via `score_output.py`.
+
+## Claude subagent lane — perspective suite (2026-07-13, BLIND)
+
+**Run**: closes the "Claude perspective-audit escalation" backlog item via the subagent mechanism
+(the API-escalation variant remains open — blocked on a valid `ANTHROPIC_API_KEY`; it measures the
+Haiku-first cost ladder, which subagents cannot).
+**Mechanism**: Claude Code subagents — `Agent(subagent_type="general-purpose", model="opus")`, one
+background subagent per fixture, 25 in parallel, prompts composed identically to
+`run_cloud_benchmark.py` (system prompt + metadata escalation block).
+**Protocol difference — first BLIND lane**: fixtures truncated at `## Accessibility Issues` before
+prompting; composed prompts assert-verified answer-free. Rationale: both runners were found feeding
+the full fixture answer key to models (`load_fixture()` reads raw fixtures; truncation logic never
+existed per `git log -S`) — every earlier critic/perspective row in this document is therefore
+non-blind, and this lane's numbers must not be compared 1:1 against them. Remediation (runner
+truncation, caveats on published rows, blind re-runs) is tracked as follow-up work.
+**Scorer**: `score_perspective.py`, unmodified for comparability. Raw artifacts committed:
+`evals/results/claude-perspective/` (25 response JSONs + scorer outputs + README with adjudication
+receipts); per-fixture table: `evals/suites/perspectives/RESULTS-claude-opus-subagent.md`.
+
+| Measure | Raw scorer | Content-adjudicated |
+|---|---|---|
+| Fixture statuses | 20 PASS / 1 WARN / 4 FAIL | **25/25** |
+| Must-find | 38/40 | **40/40** (2 quote-style keyword misses; content present verbatim) |
+| CLEAN false positives (MAJOR/CRITICAL) | n/a (4 verdict-extraction FAILs) | **0 across all 5 CLEAN fixtures** — every CLEAN audit concludes `**PASS** — no CRITICAL or MAJOR findings` |
+
+All six raw-scorer deductions are receipted scorer artifacts (verdict fallback ladder matching
+boilerplate `BLOCK` when the audit's verdict line is formatted `**PASS** — …`; single-vs-double-quote
+keyword mismatches). Scorer robustness fixes are deferred to the leakage-remediation stream rather
+than patched mid-lane. Run integrity: 24/25 agents clean on first pass; one agent returned injected
+non-task instructions with zero tool calls and was retried successfully (documented in the lane README).
