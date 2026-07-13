@@ -25,7 +25,12 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > sections — verified). Runners now strip the answer key (post-003; regression guard:
 > `ollama/test_blind_prompts.py`), so pre- and post-2026-07-13 rows are not comparable; treat the
 > historical critic/perspective numbers as non-blind upper bounds pending blind re-runs. The first
-> blind lane is the Claude subagent perspective run (2026-07-13, section below).
+> blind lane is the Claude subagent perspective run (2026-07-13, section below). **Blind local
+> re-runs landed the same day** (qwen3:32b, full critic + perspective suites; see "Ollama blind
+> re-run lane" below): the critic-suite numbers are blind-confirmed, but the perspective-suite
+> CLEAN false-positive resistance was answer-key-dependent — the historical CLEAN rows for local
+> models overstate it. Structural note: critic CLEAN fixtures carry no answer sections (their
+> prompts were identical all along); all 5 perspective CLEAN fixtures do.
 
 ## Evidence Contract Smoke Gate
 
@@ -97,7 +102,7 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 3. No way for keyboard user to dismiss toast — **Both found**
 4. Message not labeled or described — **Both found**
 
-**Historical note**: The initial local-only interpretation suspected rubric overlap because both models caught `aria-live="assertive"` but missed `role="alert"`. Later hosted and qwen3.5:27b results found both items, so this is now treated as a real model-specific detection gap rather than a rubric issue.
+**Historical note**: The initial local-only interpretation suspected rubric overlap because both models caught `aria-live="assertive"` but missed `role="alert"`. Later hosted and qwen3.5:27b results found both items, so this was treated as a real model-specific detection gap rather than a rubric issue. **Blind update (2026-07-13)**: the blind qwen3:32b re-run found all 4/4 including `role="alert"` — the "gap" is run-to-run variance at temperature 0.3, not a stable characteristic.
 
 ## Abort Threshold
 
@@ -1201,3 +1206,69 @@ The pre-003 deductions were receipted scorer artifacts (verdict fallback ladder 
 they motivated the post-003 scorer fixes recorded in the Scoring changelog, and the re-score confirms
 the adjudication. Run integrity: 24/25 agents clean on first pass; one agent returned injected
 non-task instructions with zero tool calls and was retried successfully (documented in the lane README).
+
+## Ollama blind re-run lane — qwen3:32b (2026-07-13, BLIND)
+
+**Run**: first blind **local** lane; gives the historical non-blind qwen3:32b critic and perspective
+rows their blind counterparts (the remediation item from the blind-protocol disclosure).
+**Machine protocol**: dedicated `127.0.0.1:11435` ollama server (0.31.1), Ollama.app quit,
+full Metal offload verified (`size == size_vram`, 24.7 GB); `OLLAMA_URL` override +
+`BENCHMARK_RESULTS_DIR` → `evals/results/ollama-blind/` (raw JSONs + per-fixture scorer outputs
+committed — unlike the historical /tmp runs, these artifacts are re-scorable).
+**Protocol**: identical prompts/settings to the historical lanes except post-003 answer-key
+stripping (guard-verified). **Scorer**: post-003 `score_output.py` / `score_perspective.py`.
+**Wall-clock**: critic 33 fixtures in 1.45 h; perspective 25 in 1.36 h.
+
+### a11y-critic (33 fixtures) — historical numbers CONFIRMED blind
+
+| Measure | Blind (post-003) | Historical non-blind (2026-05-15) |
+|---|---|---|
+| Fixture statuses | **33/33 PASS** | 33/33 PASS |
+| Must-find aggregate | **66/68 (97.1%)** scorer / **67/68 (98.5%)** content-adjudicated | ~97% (pre-002 scorer basis) |
+| CLEAN false positives | **0** structured findings, 4/4 correct verdicts | 0 |
+| ADVERSARIAL | 3/3 ACCEPT-WITH-RESERVATIONS, 3/3 must-articulate | 3/3 |
+| toast `role="alert"` | **found** (4/4) | missed (3/4) |
+
+The two scorer-level misses: one keyword artifact (`<div>` literal vs prose "div"), one genuine
+partial miss (scroll-to-load discoverability raised as impact, not finding) — receipts in
+`evals/results/ollama-blind/README.md`. Critic CLEAN fixtures carry no answer sections, so this
+suite's CLEAN prompts were never affected by the leak; the blind confirmation covers the
+detection tiers.
+
+**Timing**: FLAWED median 224 s and ADVERSARIAL median 222 s vs historical 3,508 s / 3,007 s —
+same model/quant/settings on an uncontended GPU. The Phase 4A "extended reasoning on subtle
+bugs" slowdown was substantially GPU contention (claude-smart's :11434 traffic), not intrinsic
+think-time; treat Phase 4A wall-clock numbers as contended-machine artifacts.
+
+### perspective-audit (25 fixtures) — detection confirmed; CLEAN resistance was answer-key-dependent
+
+| Measure | Blind (post-003) | Historical non-blind (Phase 4C) |
+|---|---|---|
+| Fixture statuses | **20 PASS / 1 WARN / 4 FAIL** | 20 PASS / 4 WARN / 1 FAIL |
+| HAS-BUGS + ADVERSARIAL | **20/20 PASS**, no LOW-perspective leakage | 20/20 PASS |
+| Must-find (37 items) | **36/37** scorer / **37/37** content-adjudicated (residual = the same compound-keyword rubric artifact as the Claude lane) | 37/37 |
+| CLEAN verdicts | **1/5 correct** (4 FAIL: REVISE/REVISE/REVISE/BLOCK) | 4/5 correct (4 WARN + 1 FAIL) |
+
+All four CLEAN FAILs are genuine model output, not scorer artifacts — the audits literally
+conclude REVISE/BLOCK (receipts in the lane README): two fixtures get manufactured
+CRITICAL/MAJOR findings (`nav-menu-landmarks`: page-shell over-flagging — missing `<title>`/
+`lang` CRITICALs against a component fixture; `dashboard-text-labels`: a contrast claim
+contradicted by the fixture's documented ratios), and two get verdict inflation over
+MINOR-level content (`login-form-clean` declares "MAJOR finding present" contradicting its own
+findings table; `media-player-captions` REVISEs over two human-verification open questions).
+
+**Interpretation**: every perspective CLEAN fixture embeds an answer section stating
+"**NONE.** …correctly implemented", which the non-blind run showed the model. With it, qwen3:32b
+echoed PASS; without it, the model's documented page-shell over-flagging and severity inflation
+surface as false positives on 4/5 clean components. **The historical "0% false positives"
+claim survives blind for the critic suite only.** Detection quality (must-find, coverage,
+escalation discipline) is unaffected by blinding. Comparison caveat: the historical Phase 4C row
+was scored pre-002/pre-003, so its WARN/FAIL split is not scorer-identical either — but the
+verdict flip on the four receipted fixtures is model behavior, not scoring drift.
+
+### Blind lanes for the other historical local models
+
+qwen3.5:latest and llama3.3:70b blind critic lanes (33 fixtures each, same protocol) run under
+the same results directory; rows added below as they complete. Perspective is intentionally
+skipped for both: qwen3.5:latest is documented NOT-VIABLE (context exhaustion), and
+llama3.3:70b has no historical perspective row to counterpart.

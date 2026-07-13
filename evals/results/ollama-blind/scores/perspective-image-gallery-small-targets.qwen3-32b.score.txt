@@ -1,0 +1,31 @@
+Response length: 7280 chars
+Fixture: image-gallery-small-targets
+Difficulty: HAS-BUGS
+
+Escalated perspectives: magnification_reflow, keyboard_motor
+LOW perspectives: environmental_contrast, vestibular_motion, auditory_access, screen_reader_semantic, cognitive_neurodivergent
+
+Perspective coverage: 2/2
+  + Magnification
+  + Keyboard
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 2/2
+  + [W] Thumbnails 32x32px with 2px gap — below WCAG 2.5.8 minimum
+  + [W] Lightbox close button 16x16px — tiny target
+
+Should-find issues: 1/1
+  + [W] Zoom in/out buttons 20x20px with no padding
+
+Nice-to-find issues: 2/2
+  + At 200% zoom, thumbnail grid overflows horizontally
+  + Lightbox nav arrows clipped at zoom levels
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

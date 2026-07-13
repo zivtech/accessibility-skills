@@ -1,0 +1,15 @@
+Response length: 5277 chars
+Fixture: login-form-clean
+Difficulty: CLEAN
+
+Escalated perspectives: cognitive_neurodivergent
+LOW perspectives: magnification_reflow, environmental_contrast, vestibular_motion, auditory_access, keyboard_motor, screen_reader_semantic
+
+Verdict: BLOCK (expected: PASS)
+Verdict correct: NO — should be PASS
+
+False positive signals:
+  Structured findings: 2
+  Wrong verdict: True
+
+Status: FAIL

@@ -1,0 +1,30 @@
+Response length: 3881 chars
+Fixture: form-field-vs-summary-errors
+Difficulty: ADVERSARIAL
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: ACCEPT-WITH-RESERVATIONS (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE)
+Verdict acceptable: YES
+
+Must-articulate tradeoffs: 1/1
+  + Tension between dual error announcement patterns — role='alert' summary and aria
+
+Should-find issues: 1/1
+  + The aria-live='polite' regions are primarily valuable for real-time correction f
+
+Must-articulate rate: 100%
+Status: PASS

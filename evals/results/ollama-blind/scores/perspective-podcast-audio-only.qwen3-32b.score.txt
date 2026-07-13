@@ -1,0 +1,30 @@
+Response length: 8730 chars
+Fixture: podcast-audio-only
+Difficulty: HAS-BUGS
+
+Escalated perspectives: auditory_access, screen_reader_semantic
+LOW perspectives: cognitive_neurodivergent, magnification_reflow, vestibular_motion, environmental_contrast, keyboard_motor
+
+Perspective coverage: 2/2
+  + Auditory
+  + Screen Reader
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 1/1
+  + [W] No transcript for audio-only content anywhere in the component
+
+Should-find issues: 2/2
+  + [W] Episode descriptions spoken in audio intro but never rendered as text
+  + [-] New episode notification is audio chime only — no visual DOM change or aria-live
+
+Nice-to-find issues: 1/1
+  + Speed control does not announce active speed to screen readers on change
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

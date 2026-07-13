@@ -722,7 +722,15 @@ body {
       </tr>
       <tr style="border-top: 2px solid var(--border-bright);">
         <td>Ollama</td>
-        <td><strong>qwen3:32b</strong></td>
+        <td><strong>qwen3:32b (BLIND 2026-07-13)</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>33</strong>/33</td>
+        <td class="num">97%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td>qwen3:32b (non-blind)</td>
         <td class="num">33</td>
         <td class="num"><strong>33</strong>/33</td>
         <td class="num">96%</td>
@@ -797,7 +805,7 @@ body {
 </div>
 
 <div class="ve-card" style="margin-top: 16px; overflow-x: auto;">
-  <h3 style="margin-bottom: 16px;">Perspective-Audit: qwen3:32b (25 fixtures)</h3>
+  <h3 style="margin-bottom: 16px;">Perspective-Audit: qwen3:32b (25 fixtures, blind re-run 2026-07-13)</h3>
   <table class="bench-table">
     <thead>
       <tr>
@@ -816,7 +824,7 @@ body {
         <td class="num"><strong>16</strong></td>
         <td class="num">0</td>
         <td class="num">0</td>
-        <td class="num">100%</td>
+        <td class="num">36/37</td>
       </tr>
       <tr>
         <td>ADVERSARIAL</td>
@@ -827,15 +835,16 @@ body {
         <td class="num">100%</td>
       </tr>
       <tr>
-        <td>CLEAN</td>
+        <td>CLEAN (blind)</td>
         <td class="num">5</td>
         <td class="num">0</td>
-        <td class="num">4</td>
         <td class="num">1</td>
+        <td class="num"><strong>4</strong></td>
         <td class="num">n/a</td>
       </tr>
     </tbody>
   </table>
+  <p style="margin-top: 12px; font-size: 0.9em;">Blind CLEAN collapse: 4/5 clean fixtures draw false REVISE/BLOCK verdicts without the answer key (historical non-blind CLEAN was 4 WARN / 1 FAIL — answer-key-assisted). Detection tiers are blind-confirmed; receipts in <code>evals/results/ollama-blind/README.md</code>.</p>
 </div>
 
 <!-- ESCALATION -->
@@ -875,7 +884,7 @@ body {
   <div class="ve-card ve-card--elevated" style="text-align: center;">
     <h3 style="color: var(--blue);">Ollama (Local)</h3>
     <p style="margin: 8px 0;"><strong>qwen3:32b</strong> recommended</p>
-    <p>33/33 PASS, 96% must-find, 0% false positives. 18.8 GB, ~4 min/fixture.</p>
+    <p>Blind-confirmed: critic 33/33 PASS, 97% must-find, 0 FP. Caveat: perspective CLEAN verdicts inflate blind (4/5 false REVISE/BLOCK). 18.8 GB, ~2.6 min/fixture uncontended.</p>
     <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
   </div>
   <div class="ve-card ve-card--elevated" style="text-align: center;">
@@ -955,7 +964,7 @@ body {
     </li>
     <li>
       <div class="next-check done">&#10003;</div>
-      <div><strong>Ollama benchmarks</strong> &mdash; qwen3:32b 33/33 PASS, perspective 20P/4W/1F</div>
+      <div><strong>Ollama benchmarks</strong> &mdash; qwen3:32b 33/33 PASS, perspective 20P/4W/1F (non-blind); blind re-run 2026-07-13: critic confirmed 33/33 + 97% must-find, perspective 20P/1W/4F &mdash; CLEAN false positives surface blind</div>
     </li>
     <li>
       <div class="next-check done">&#10003;</div>
@@ -971,7 +980,7 @@ body {
     </li>
     <li>
       <div class="next-check done">&#10003;</div>
-      <div><strong>Claude perspective lane</strong> (2026-07-13) &mdash; 25 fixtures via blind Opus subagents: post-003 scorer 20P/5W/0F, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on CLEAN fixtures. First blind lane &mdash; found the runners fed fixture answer keys to every prior lane; runners now strip them (guard test committed), scorer verdict/keyword bugs fixed (post-003), historical rows caveated as non-blind. Residuals: local blind re-runs queued; API <code>claude-escalate</code> cost-ladder variant blocked on a valid key.</div>
+      <div><strong>Claude perspective lane</strong> (2026-07-13) &mdash; 25 fixtures via blind Opus subagents: post-003 scorer 20P/5W/0F, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on CLEAN fixtures. First blind lane &mdash; found the runners fed fixture answer keys to every prior lane; runners now strip them (guard test committed), scorer verdict/keyword bugs fixed (post-003), historical rows caveated as non-blind. Residuals: API <code>claude-escalate</code> cost-ladder variant blocked on a valid key. (Local blind re-runs: done 2026-07-13, see the Ollama benchmarks row above.)</div>
     </li>
     <li>
       <div class="next-check done">&#10003;</div>
