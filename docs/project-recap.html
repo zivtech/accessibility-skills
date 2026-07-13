@@ -567,7 +567,7 @@ body {
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-date">2026-05-19 &middot; updated 2026-06-12 &mdash; a11y-meta-skills</div>
+  <div class="hero-date">2026-05-19 &middot; updated 2026-07-13 &mdash; a11y-meta-skills</div>
   <h1>Accessibility Skill Bundle</h1>
   <p class="hero-sub">Planner, critic, tester, and perspective auditor &mdash; with 83 graded fixtures, 11 benchmarked models, and a team of 6 agents.</p>
 
@@ -608,7 +608,7 @@ body {
   <div class="ve-card skill-card tester">
     <div class="skill-type tester">Tester</div>
     <h3>a11y-test</h3>
-    <p>Playwright keyboard tests, axe-core scans, WCAG 2.2 compliance. Real browser events, not synthetic.</p>
+    <p>Five modes: Playwright keyboard tests, axe-core scans, agent-browser recon, keyboard-a11y-tester journey audits, virtual-screen-reader component SR assertions. Real browser events, not synthetic.</p>
   </div>
   <div class="ve-card skill-card auditor">
     <div class="skill-type auditor">Auditor</div>
@@ -980,6 +980,14 @@ body {
     <li>
       <div class="next-check done">&#10003;</div>
       <div><strong>Planner benchmarks</strong> &mdash; 25/25 on two lanes: qwen3:32b 227/235 (96.6%), Claude Opus subagents 234/235 (99.6%); Codex lane gated (plan 010)</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>keyboard-a11y-tester adopted</strong> (2026-07-10) &mdash; 4th a11y-test mode: live-URL journey audits with emulated SR persona; cross-validated vs all 33 critic fixtures, zero false positives outside one pre-disclaimed class; our PR #7 merged upstream, pin bumped to release 0.5.0</div>
+    </li>
+    <li>
+      <div class="next-check done">&#10003;</div>
+      <div><strong>virtual-screen-reader adopted</strong> (2026-07-11/13) &mdash; 5th a11y-test mode: component-level SR assertions (names, reading order, live-region announcements) in Vitest/Jest/Storybook; fixture sweep 4/4 defects + 5/5 fixes + clean-fixture zero false-silent; Storybook 10 lane verified 12/12</div>
     </li>
   </ul>
 </div>
