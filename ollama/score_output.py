@@ -106,7 +106,9 @@ def check_finding(text: str, finding: dict) -> dict:
         from score_common import fallback_keywords
         keywords = [kw.lower() for kw in fallback_keywords(description)]
 
-    found = any(kw.lower() in text.lower() for kw in keywords)
+    from score_common import normalize_quotes
+    norm_text = normalize_quotes(text.lower())
+    found = any(normalize_quotes(kw.lower()) in norm_text for kw in keywords)
 
     wcag_cited = False
     if wcag:

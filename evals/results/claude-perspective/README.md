@@ -9,16 +9,21 @@
 
 | Layer | Result |
 |---|---|
-| Raw scorer | 20 PASS / 1 WARN / 4 FAIL |
-| Content-adjudicated (receipts below) | **25/25** — every verdict correct, 40/40 must-find content coverage, 0 CRITICAL/MAJOR findings across all 5 CLEAN fixtures |
+| Pre-003 scorer (as first run) | 20 PASS / 1 WARN / 4 FAIL; must-find 35/37 |
+| Post-003 scorer (re-scored after the 2026-07-13 scorer fixes this lane motivated) | **20 PASS / 5 WARN / 0 FAIL; must-find 36/37** |
+| Content-adjudicated (receipts below) | **25/25** — every verdict correct, 37/37 must-find coverage (37 items across 20 must-find-bearing fixtures), 0 CRITICAL/MAJOR findings across all 5 CLEAN fixtures |
 
-All six raw-scorer deductions are scorer artifacts, not model errors; each adjudication is verifiable against the committed audit text inside the response JSONs:
+The committed `scores/` outputs are post-003. The 5 WARNs are all CLEAN fixtures: correct PASS
+verdict, 0 CRITICAL/MAJOR — the scorer's WARN flag counts *any* structured findings on a CLEAN
+fixture regardless of severity, and these audits raise only ENHANCEMENT/open-question items.
+
+All pre-003 deductions were scorer artifacts, not model errors; each adjudication is verifiable against the committed audit text inside the response JSONs, and the post-003 re-score confirms them:
 
 1. **4 CLEAN "FAIL (verdict BLOCK)" → actual PASS.** `dashboard-text-labels`, `login-form-clean`, `media-player-captions`, `nav-menu-landmarks` each conclude literally `**PASS** — no CRITICAL or MAJOR findings` with a findings-by-severity table showing CRITICAL 0 / MAJOR 0. The audits' verdict lines are formatted `**PASS** — …` (not `Verdict: PASS`), so `detect_verdict()`'s tier-1 regex misses and the tier-2 fallback — a whole-word ladder scan ordered `["BLOCK", "REVISE", "PASS"]` — matches a protocol-boilerplate `BLOCK` token earlier in the document and wins.
 2. **1 CLEAN "WARN" → clean at the bar that matters.** `article-page-clean` gives a correct PASS verdict; its 3 structured findings are ENHANCEMENT-level or explicitly "not scored as a violation" open questions (2.4.5 unverifiable from a single component). The repo's CLEAN false-positive bar (0 MAJOR/CRITICAL) is met.
-3. **2 must-find keyword misses → content present verbatim.** `custom-select-combobox` (1/2) and `tab-panel-arrow-keys` (1/2): the rubric keywords use single quotes (`role='tablist'`) while the audits write `role="tablist"`; both audits discuss the missing roles exhaustively (26 and 16 mentions respectively, including explicit findings lines).
+3. **2 must-find keyword misses → content present verbatim.** `custom-select-combobox` (1/2) and `tab-panel-arrow-keys` (1/2): the rubric keywords use single quotes (`role='tablist'`) while the audits write `role="tablist"`; both audits discuss the missing roles exhaustively (26 and 16 mentions respectively, including explicit findings lines). Post-003 quote normalization fixes `custom-select-combobox`; `tab-panel-arrow-keys` remains a rubric artifact — its scoring keyword is the compound string `role='tablist'/role='tab'/role='tabpanel'`, which no prose audit emits verbatim.
 
-Scorer-robustness follow-ups (verdict fallback ordering; quote-insensitive keyword matching) are tracked with the leakage remediation, not patched here — changing the scorer mid-lane would break comparability with previously scored rows.
+The scorer fixes this lane motivated (verdict conclusion-line tier; quote-normalized keyword matching; runner answer-key stripping with the `test_blind_prompts.py` guard) landed 2026-07-13 as post-003 scoring — see `ollama/BENCHMARK.md` → Scoring changelog, including the re-score deltas (gemini lane: unchanged).
 
 ## Per-fixture
 

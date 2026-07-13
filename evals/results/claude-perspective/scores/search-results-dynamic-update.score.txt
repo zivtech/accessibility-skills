@@ -23,7 +23,7 @@ Nice-to-find issues: 2/2
   + Clear search button '×' has no aria-label
 
 ARRM role routing: YES
-Verdict: BLOCK (expected: REVISE, BLOCK also valid)
+Verdict: REVISE (expected: REVISE)
 Verdict acceptable: YES
 
 Must-find detection rate: 100%

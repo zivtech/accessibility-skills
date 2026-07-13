@@ -21,7 +21,7 @@ import sys
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import strip_thinking, detect_verdict, fallback_keywords, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
+from score_common import strip_thinking, detect_verdict, fallback_keywords, normalize_quotes, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
 
 
 PERSPECTIVE_NAMES = {
@@ -149,7 +149,8 @@ def check_finding(text: str, finding: dict) -> dict:
     wcag = finding.get("wcag", finding.get("criterion", ""))
 
     keywords = extract_keywords(description, wcag)
-    found = any(kw.lower() in text.lower() for kw in keywords)
+    norm_text = normalize_quotes(text.lower())
+    found = any(normalize_quotes(kw.lower()) in norm_text for kw in keywords)
 
     wcag_cited = False
     if wcag:

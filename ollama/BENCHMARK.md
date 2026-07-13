@@ -18,6 +18,15 @@ This file began as an Ollama benchmark log and now serves as the cross-model ben
 
 The first fixture tables below are historical Phase 4 local-model rows. Hosted results were added later in Phases 5-7.
 
+> **Blind-protocol disclosure (2026-07-13).** Every critic- and perspective-suite row recorded before
+> 2026-07-13 ran **non-blind**: both runners' `load_fixture()` embedded the fixture's full
+> `## Accessibility Issues (Planted Bugs)` answer section in the prompt (truncation logic never
+> existed — verified via `git log -S`). The planner suite is exempt (its fixtures carry no answer
+> sections — verified). Runners now strip the answer key (post-003; regression guard:
+> `ollama/test_blind_prompts.py`), so pre- and post-2026-07-13 rows are not comparable; treat the
+> historical critic/perspective numbers as non-blind upper bounds pending blind re-runs. The first
+> blind lane is the Claude subagent perspective run (2026-07-13, section below).
+
 ## Evidence Contract Smoke Gate
 
 `ollama/score_output.py` now recognizes optional `A11y Evidence Finding` blocks when a rubric sets `require_evidence_contract: true`. The smoke gate validates required evidence fields, stable `finding_id`/`fingerprint` values, allowed trend metadata, and clean-fixture false-positive resistance. This is a scoring discipline for critic output, not a generated dashboard or scanner runtime. Existing benchmark rows are not retroactively rescored unless their raw artifacts are rerun through the updated scorer.
@@ -925,6 +934,21 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
+  (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which
+  had been matching boilerplate `BLOCK` tokens in audits whose actual conclusion was
+  `**PASS** — no CRITICAL or MAJOR findings`; (b) keyword matching in `score_perspective.py` and
+  `score_output.py` is quote-normalized (`role='tab'` ≡ `role="tab"`); (c) both runners now strip
+  fixture answer keys before prompting (blind protocol; guard: `test_blind_prompts.py`). Re-scores
+  of committed artifacts: **gemini critic lane unchanged** (31/33 PASS, same 2 fixtures fail at
+  flash and pro); **claude-perspective lane** raw tally moved 20 PASS / 1 WARN / 4 FAIL →
+  **20 PASS / 5 WARN / 0 FAIL** (the 4 verdict-artifact FAILs now score their literal PASS
+  conclusions; the 5 CLEAN WARNs are the severity-blind finding-count flag, all with 0
+  CRITICAL/MAJOR) and keyword-level must-find moved 35/37 → **36/37** (custom-select-combobox
+  fixed by quote normalization; the tab-panel-arrow-keys residual is a rubric artifact — its
+  scoring keyword is the compound string `role='tablist'/role='tab'/role='tabpanel'`, which no
+  prose audit emits verbatim; content coverage is 37/37). Planner scorer untouched.
+
 - 2026-06-11 (plan 002): scorer fixes — two-tier verdict detection in
   score_perspective.py (was: bare substring, BLOCK-first), CLEAN false-positive
   check now uses the declared verdict (was: body-wide BLOCK|REVISE regex),
@@ -1166,14 +1190,14 @@ truncation, caveats on published rows, blind re-runs) is tracked as follow-up wo
 `evals/results/claude-perspective/` (25 response JSONs + scorer outputs + README with adjudication
 receipts); per-fixture table: `evals/suites/perspectives/RESULTS-claude-opus-subagent.md`.
 
-| Measure | Raw scorer | Content-adjudicated |
-|---|---|---|
-| Fixture statuses | 20 PASS / 1 WARN / 4 FAIL | **25/25** |
-| Must-find | 38/40 | **40/40** (2 quote-style keyword misses; content present verbatim) |
-| CLEAN false positives (MAJOR/CRITICAL) | n/a (4 verdict-extraction FAILs) | **0 across all 5 CLEAN fixtures** — every CLEAN audit concludes `**PASS** — no CRITICAL or MAJOR findings` |
+| Measure | Pre-003 scorer | Post-003 scorer | Content-adjudicated |
+|---|---|---|---|
+| Fixture statuses | 20 PASS / 1 WARN / 4 FAIL | **20 PASS / 5 WARN / 0 FAIL** | **25/25** correct verdicts |
+| Must-find (37 items across 20 fixtures) | 35/37 | **36/37** | **37/37** (residual is a compound rubric keyword no prose emits verbatim) |
+| CLEAN false positives (MAJOR/CRITICAL) | n/a (4 verdict-extraction FAILs) | 0 (5 WARNs are the severity-blind finding-count flag) | **0 across all 5 CLEAN fixtures** — every CLEAN audit concludes `**PASS** — no CRITICAL or MAJOR findings` |
 
-All six raw-scorer deductions are receipted scorer artifacts (verdict fallback ladder matching
-boilerplate `BLOCK` when the audit's verdict line is formatted `**PASS** — …`; single-vs-double-quote
-keyword mismatches). Scorer robustness fixes are deferred to the leakage-remediation stream rather
-than patched mid-lane. Run integrity: 24/25 agents clean on first pass; one agent returned injected
+The pre-003 deductions were receipted scorer artifacts (verdict fallback ladder matching boilerplate
+`BLOCK` when the audit's verdict line is formatted `**PASS** — …`; quote-sensitive keyword matching);
+they motivated the post-003 scorer fixes recorded in the Scoring changelog, and the re-score confirms
+the adjudication. Run integrity: 24/25 agents clean on first pass; one agent returned injected
 non-task instructions with zero tool calls and was retried successfully (documented in the lane README).

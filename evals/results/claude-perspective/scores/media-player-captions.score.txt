@@ -5,11 +5,11 @@ Difficulty: CLEAN
 Escalated perspectives: auditory_access, screen_reader_semantic
 LOW perspectives: magnification_reflow, environmental_contrast, vestibular_motion, keyboard_motor, cognitive_neurodivergent
 
-Verdict: BLOCK (expected: PASS)
-Verdict correct: NO — should be PASS
+Verdict: PASS (expected: PASS)
+Verdict correct: YES
 
 False positive signals:
   Structured findings: 2
-  Wrong verdict: True
+  Wrong verdict: False
 
-Status: FAIL
+Status: WARN — correct verdict but raised findings

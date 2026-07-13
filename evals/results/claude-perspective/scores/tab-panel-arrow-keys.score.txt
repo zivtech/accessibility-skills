@@ -23,7 +23,7 @@ Nice-to-find issues: 2/2
   + Tab panel has no aria-labelledby pointing to its tab
 
 ARRM role routing: YES
-Verdict: BLOCK (expected: REVISE, BLOCK also valid)
+Verdict: REVISE (expected: REVISE)
 Verdict acceptable: YES
 
 Must-find detection rate: 50%
