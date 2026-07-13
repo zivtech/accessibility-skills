@@ -18,7 +18,9 @@ assessment, probes A–H). Announcement capture uses `spokenPhraseLog()` slices 
 
 The assessment's probe scripts (probes A–H, the fixture spot-validation, the Vitest fake-timer
 characterization, and the Chromium ESM run) are archived verbatim with expected outputs in
-[`harness/probes/`](harness/probes/README.md).
+[`harness/probes/`](harness/probes/README.md). The Storybook-lane validation (2026-07-13 — play
+functions via `@storybook/addon-vitest` browser mode, 12/12, missing-stop log-leak characterization)
+is archived in [`harness/storybook/`](harness/storybook/README.md).
 
 **Harness caveats.** DOM-layer replication is ours, kept minimal and faithful to each fixture's rendered
 output (same roles, attributes, and mutation order as the React state transitions produce). It does not

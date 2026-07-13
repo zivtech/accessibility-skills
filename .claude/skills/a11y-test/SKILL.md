@@ -20,7 +20,7 @@ Pick the right execution mode from the routing table before running anything (th
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
-| Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
+| Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom, Storybook play functions, or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
@@ -169,7 +169,7 @@ These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wi
 
 **When to use:** you're implementing or fixing a component and need to assert what a screen reader computes and announces — accessible names, reading order, live-region announcements — in the project's own test suite, per PR, with no URL, journey, or deployed page. This is the `implement → test` layer: the cheapest point to catch the toast/async-status defect class. **When NOT to use:** keyboard operability (its interactions are synthetic `user-event` events — real-key evidence stays with `.spec.js`, agent-browser, or keyboard-a11y-tester), anything visual (jsdom has no layout), page/journey audits (→ keyboard-a11y-tester), rule scans (→ axe-core, §4), open-shadow-DOM components (invisible to it — upstream #182), `aria-busy` states (unsupported — upstream #36).
 
-**What it is:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) — a screen-reader simulator as a library (MIT; adopted at npm `0.32.1`, exact-pinned). Walks the accessibility tree of any DOM, emits spoken phrases (`"button, Save document"`), captures live-region announcements with politeness prefixes (`"polite: Draft saved"`), and exposes SR quick-key emulation via `virtual.perform(virtual.commands.*)` — `moveToNextHeading`, `moveToNextLandmark`, per-level heading jumps, `jumpToErrorMessageElement` (aria-errormessage), aria-flowto reading-order commands. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2) and WPT-tested upstream. It is already this stack's transitive SR engine inside keyboard-a11y-tester; this lane uses it directly. Validated in-repo 2026-07-11 in three environments — plain Node+jsdom, Vitest 4 jsdom environment, real Chromium via its ESM build: `docs/virtual-screen-reader-adoption-assessment.md`. Jest+jsdom is expected to match Vitest but was not run; Storybook is expected but unverified — treat neither as a validated path until someone runs it.
+**What it is:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) — a screen-reader simulator as a library (MIT; adopted at npm `0.32.1`, exact-pinned). Walks the accessibility tree of any DOM, emits spoken phrases (`"button, Save document"`), captures live-region announcements with politeness prefixes (`"polite: Draft saved"`), and exposes SR quick-key emulation via `virtual.perform(virtual.commands.*)` — `moveToNextHeading`, `moveToNextLandmark`, per-level heading jumps, `jumpToErrorMessageElement` (aria-errormessage), aria-flowto reading-order commands. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2) and WPT-tested upstream. It is already this stack's transitive SR engine inside keyboard-a11y-tester; this lane uses it directly. Validated in-repo 2026-07-11 in three environments — plain Node+jsdom, Vitest 4 jsdom environment, real Chromium via its ESM build — plus the Storybook lane 2026-07-13 (10.4.6 play functions via `@storybook/addon-vitest` browser mode, 12/12): `docs/virtual-screen-reader-adoption-assessment.md`. Jest+jsdom is expected to match Vitest but was not run — treat it as unvalidated until someone runs it.
 
 ### Install (Node ≥ 20)
 
@@ -214,6 +214,30 @@ test("reads the expected sequence", async () => {
   expect(phrases.indexOf("$29.00")).toBeLessThan(phrases.indexOf("button, Buy now"));
 });
 ```
+
+### Storybook stories as SR tests (verified 2026-07-13: Storybook 10.4.6 + `@storybook/addon-vitest` browser mode, Chromium)
+
+Component libraries that live in Storybook can make announcement assertions part of the stories themselves — CI-shaped via `npx vitest run --project=storybook`, and visible in the dev-mode Interactions panel:
+
+```js
+import { expect, userEvent, waitFor } from "storybook/test";
+import { virtual } from "@guidepup/virtual-screen-reader";
+
+export const AnnouncesOnSave = {
+  play: async ({ canvasElement, canvas }) => {
+    await virtual.start({ container: canvasElement });   // scope to the story canvas
+    try {
+      await userEvent.click(await canvas.findByRole("button", { name: "Save order" }));
+      await waitFor(async () =>
+        expect(await virtual.spokenPhraseLog()).toContain("polite: Item saved"));
+    } finally {
+      await virtual.stop();   // mandatory — measured: the phrase log SURVIVES a missing stop and bleeds into the next story (start() itself recovers; the leak is the hazard)
+    }
+  },
+};
+```
+
+Calibration rules 1–5 below apply unchanged in this lane (rule 3 re-verified in it). Upstream's own Storybook example omits the `finally` — don't copy that shape. Storybook 8 `@storybook/test-runner` setups are expected to work but were not run here. Validation record: `evals/results/virtual-screen-reader/harness/storybook/`.
 
 ### Calibration rules (measured 2026-07-11 at 0.32.1; environments noted)
 
