@@ -108,7 +108,7 @@ See `.claude/skills/a11y-test/SKILL.md` for the full routing table, decision flo
 
 The analysis-only skills (critic, planner, perspective-audit) run locally via Ollama with no cloud API. The `ollama/` directory contains the wrapper, benchmark tooling, and full results.
 
-**Recommended model**: `qwen3:32b` (18.8 GB) — 96% must-find detection across 33 critic fixtures, 0% false positives, 100% perspective-audit must-find across 25 fixtures, perfect planner scores.
+**Recommended model**: `qwen3:32b` (18.8 GB) — blind-verified on the critic suite (33/33 PASS, 67/68 adjudicated must-find, zero CLEAN false positives) and on perspective *detection* (37/37 adjudicated must-find); blind-measured weakness: 4 of 5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts — the historical "0% false positives, 100% perspective" row was answer-key-assisted (see `ollama/BENCHMARK.md` blind rows + disclosure, 2026-07-13). Perfect planner scores. Don't route CLEAN-confirmation perspective audits to local models without a second opinion.
 
 ```bash
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b

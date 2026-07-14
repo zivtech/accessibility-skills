@@ -44,7 +44,7 @@ The escalation strategy costs $0.65 total for 33 components. Start at Haiku, pro
 
 ## You don't even need a cloud API
 
-The local model story is just as good. qwen3:32b (an 18.8 GB model running on Ollama, on my laptop) passed 100% of all 33 fixtures with 96% must-find detection. No API key, no cloud dependency, no per-token cost.
+The local model story is just as good. qwen3:32b (an 18.8 GB model running on Ollama, on my laptop) passed all 33 critic fixtures **blind** — answer keys withheld from every prompt — with 98.5% adjudicated must-find detection and zero false positives on clean code. No API key, no cloud dependency, no per-token cost. (One honest caveat from the blind runs: on the separate perspective-audit suite it over-flags clean components — detection is superb, restraint is not.)
 
 The one thing several local models consistently miss? `role="alert"` on toast notifications — qwen3:32b, llama3.3:70b, and qwen3.5:latest score 3/4 on that fixture instead of 4/4. Claude, GPT-5.2, and qwen3.5:27b get it. It's a real detection gap, not a rubric issue. But it's one item out of 83 fixtures.
 
