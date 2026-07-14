@@ -1,0 +1,31 @@
+Response length: 5254 chars
+Fixture: dashboard-heading-inconsistency
+Difficulty: FLAWED
+
+Phases found: 7/11
+  - phase_0
+  + phase_1
+  + phase_2
+  + phase_3
+  + phase_4
+  + phase_5
+  + phase_6
+  + phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 1/1
+  + [-] Heading hierarchy inconsistent — h1 → h3 in some cards (skipping h2), h2 in othe
+
+Should-find issues: 2/2
+  + [-] Data table headers missing scope attributes in both tables
+  + [-] Metric cards use plain divs for key-value pairs instead of semantic structure
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

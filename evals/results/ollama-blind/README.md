@@ -54,9 +54,31 @@ Same model, quant, num_ctx, temperature. The dedicated-server protocol (no secon
 - qwen3:32b's **perspective-audit CLEAN false-positive resistance was answer-key-dependent** and must be caveated wherever the historical 25-fixture perspective row is cited. Detection (must-find, coverage, escalation discipline) survives blinding fully.
 - Published rows live in `ollama/BENCHMARK.md` → "Ollama blind re-run lane"; historical rows stand with the non-blind caveat per the disclosure block.
 
-## Also in this directory
+## Also in this directory — qwen3.5:latest and llama3.3:70b blind critic lanes
 
-Blind critic lanes for the other historical local models (qwen3.5:latest, llama3.3:70b), run under the same protocol — see the lane section in `ollama/BENCHMARK.md` as they land. Score any response here with:
+Same day, same protocol, same server. First **full-suite** runs for both (historical rows were
+n=7 and never touched FLAWED/ADVERSARIAL).
+
+- **llama3.3:70b**: 33/33 PASS, must-find 63/68 scorer / 66/68 content-adjudicated (three
+  keyword artifacts — file-input restrictions raised as help-text association, tooltip
+  announcement described in prose, video-player "caption toggle button" vs keyword
+  'controllable' — and two genuine misses: megamenu arrow-key navigation, infinite-scroll
+  discoverability). 1.66 h, median 171 s, zero truncations.
+- **qwen3.5:latest**: 33/33 PASS, must-find 67/68 (98.5%), CLEAN 4/4 with zero findings,
+  ADVERSARIAL 3/3. Median 34 s/fixture — the fastest lane. **Context-ceiling receipts**: at the
+  lane-standard 16K ctx, 4 fixtures truncated mechanically — 3 empty (`done_reason=length`
+  inside the thinking phase; prompts tokenize to 15,773–16,102 tokens, leaving exactly the
+  335/282/611 tokens of generation room the empty runs recorded; reproduced twice each) and 1
+  cut mid-audit (`multistep-form-error-clearing`, prompt 16,899 tokens — bigger than the whole
+  16K window). Re-run at `num_ctx=32768` with `num_ctx_override` provenance in the artifacts:
+  all four complete (`done_reason=stop`), and multistep finds the planted bug it appeared to
+  miss. The three empty-at-16K originals were replaced (they contained no audit content — the
+  retry precedent set by the qwen3.5:27b stall handling and the claude-perspective lane);
+  the multistep original was replaced under the same mechanical-truncation rationale, receipt
+  above. The single remaining scorer miss is the same `infinite-scroll` discoverability item
+  all three local models miss blind.
+
+Score any response here with:
 
 ```bash
 python3 ollama/score_output.py <response.json> evals/suites/a11y-critic/fixtures/<id>.metadata.yaml

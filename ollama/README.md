@@ -46,8 +46,8 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 |-------|------|-------------|-------|
 | **qwen3:32b** | 18.8 GB | **Yes — production** | Blind re-run 2026-07-13: critic 33/33 PASS, 97% must-find, 0 false positives (blind-confirmed); perspective detection 20/20 + 36/37 must-find, **but 4/5 CLEAN fixtures draw false REVISE/BLOCK verdicts blind** (historical "100% perspective, 0% FP" was answer-key-assisted on CLEAN). Perfect planner. |
 | qwen3.5:27b | 17.4 GB | Detection-critical | 100% must-find (13 HAS-BUGS), found `role="alert"` (only local model to do so). Prone to `/think` stalls on some fixtures — use with retry. NOT tested on perspective-audit. |
-| llama3.3:70b | 39.6 GB | Phase-compliant output | 86% must-find (7 fixtures), follows all 11 protocol phases in output. |
-| qwen3.5:latest | 6.6 GB | Fast critic-only | 86% must-find (7 fixtures), 3-6x faster. **NOT viable for perspective-audit** (context exhaustion — 50% empty responses). |
+| llama3.3:70b | 39.6 GB | Phase-compliant output | Blind full-suite 2026-07-13: 33/33 PASS, 92.6% must-find scorer / 97.1% adjudicated, zero truncations. Follows all 11 protocol phases in output. |
+| qwen3.5:latest | 6.6 GB | Fast critic-only | Blind full-suite 2026-07-13: 33/33 PASS, 98.5% must-find, ~34 s/fixture (fastest lane). **Needs ≥32K num_ctx on long critic fixtures** (4/33 prompts exceed 16K tokens on its tokenizer — empty/truncated otherwise). **NOT viable for perspective-audit** (same context-exhaustion mechanism, 50% empty responses). |
 | deepseek-r1:70b | 42.5 GB | Preliminary | n=1 fixture only, not fully benchmarked. |
 
 ### Cross-Platform Baselines
@@ -94,9 +94,16 @@ kept this way.
 | GPT-5.5 (low) | 1 (escalated) | n/a | 0% | 1/1 PASS |
 | qwen3.5:27b | 17* | **100%** | 0%† | 16/17 PASS |
 | **qwen3:32b BLIND (2026-07-13)** | **33** | **97%** | **0%** | **33/33 PASS** |
+| **qwen3.5:latest BLIND (2026-07-13)** | **33** | **98.5%** | **0%** | **33/33 PASS*** |
+| **llama3.3:70b BLIND (2026-07-13)** | **33** | **92.6%** (97.1% adjudicated) | **0%** | **33/33 PASS** |
 | qwen3:32b (non-blind) | 33 | 96% | 0% | 33/33 PASS |
 | llama3.3:70b (non-blind) | 7 | 86% | 0% | 7/7 PASS |
 | qwen3.5:latest (non-blind) | 7 | 86% | 0% | 7/7 PASS |
+
+*qwen3.5:latest requires ≥32K `num_ctx` on 4 long fixtures whose prompts tokenize to 15.8K–16.9K
+tokens on this model — at the lane-standard 16K they truncate mechanically (`done_reason=length`).
+Override re-runs carry explicit provenance; receipts in BENCHMARK.md → "Blind lanes for the
+other historical local models".
 
 *Run stopped at 17/33 due to `/think` stalls. †1 CLEAN FAIL from context exhaustion (no verdict emitted), not a false positive.*
 

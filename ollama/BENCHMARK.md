@@ -1266,9 +1266,43 @@ escalation discipline) is unaffected by blinding. Comparison caveat: the histori
 was scored pre-002/pre-003, so its WARN/FAIL split is not scorer-identical either — but the
 verdict flip on the four receipted fixtures is model behavior, not scoring drift.
 
-### Blind lanes for the other historical local models
+### Blind lanes for the other historical local models (same day)
 
-qwen3.5:latest and llama3.3:70b blind critic lanes (33 fixtures each, same protocol) run under
-the same results directory; rows added below as they complete. Perspective is intentionally
-skipped for both: qwen3.5:latest is documented NOT-VIABLE (context exhaustion), and
-llama3.3:70b has no historical perspective row to counterpart.
+First full-suite runs for both models — the historical rows were n=7 (4 CLEAN + 3 HAS-BUGS
+only, never the FLAWED/ADVERSARIAL tiers), so these lanes widen coverage as well as blind it.
+Perspective is intentionally skipped for both: qwen3.5:latest is documented NOT-VIABLE
+(context exhaustion), and llama3.3:70b has no historical perspective row to counterpart.
+
+| Measure | qwen3.5:latest (6.6 GB) | llama3.3:70b (42 GB) |
+|---|---|---|
+| Fixture statuses | **33/33 PASS** | **33/33 PASS** |
+| Must-find aggregate | **67/68 (98.5%)** scorer | 63/68 (92.6%) scorer / **66/68 (97.1%)** content-adjudicated |
+| CLEAN | 4/4 correct verdicts, 0 structured findings | 4/4 PASS |
+| ADVERSARIAL | 3/3 valid verdicts, 3/3 articulated | 3/3 PASS |
+| Wall-clock | 0.33 h base lane (median **34 s**/fixture) + 4 override re-runs | 1.66 h (median 171 s), zero truncations |
+| Historical (non-blind, n=7) | 7/7 PASS, 86% must-find | 7/7 PASS, 86% must-find |
+
+**qwen3.5:latest context-ceiling receipts (mechanism, not model failure).** At the lane-standard
+`num_ctx=16384`, 4 of 33 fixtures were mechanically truncated: 3 produced *empty* responses
+(`done_reason=length` while still in the thinking phase — the prompts alone tokenize to
+15,773–16,102 tokens on this model, leaving exactly 335/282/611 tokens of room, matching the
+observed eval_counts token-for-token; reproducible across 2 attempts each), and 1
+(`multistep-form-error-clearing`, prompt 16,899 tokens — larger than the whole 16K window) cut
+mid-audit ≈ the 8192 `num_predict` default. All 4 were re-run at `num_ctx=32768` (the
+accommodation pattern `PERSPECTIVE_CTX` already establishes per-model), completed with
+`done_reason=stop`, and their artifacts carry explicit `num_ctx_override` provenance. With the
+ceiling removed the model scores 33/33 — including finding the multistep planted bug it had
+appeared to miss. Practical routing note: **qwen3.5:latest needs ≥32K num_ctx on long critic
+fixtures**; its historical "/think stall" reputation (and plausibly qwen3.5:27b's) is context
+exhaustion, not reasoning failure.
+
+**llama3.3:70b adjudication.** 3 of the 5 scorer-level misses are keyword artifacts with the
+content present verbatim (file-input type restrictions raised as help-text association; tooltip
+"no announcement for screen reader users" + hover-not-focus; video-player "No visible or
+accessible caption toggle button" vs keyword 'controllable'); 2 are genuine (megamenu arrow-key
+navigation; infinite-scroll discoverability).
+
+**Cross-model observation**: the `infinite-scroll-no-announcement` item "Scroll-to-load
+mechanism not discoverable" is missed blind by all three local models (each surfaces the
+impact, none raises it as a standalone finding) — the hardest item in the suite for local
+models, worth remembering when reading per-model must-find deltas.

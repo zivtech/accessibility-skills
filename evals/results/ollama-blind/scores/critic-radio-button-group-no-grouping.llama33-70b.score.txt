@@ -1,0 +1,31 @@
+Response length: 4515 chars
+Fixture: radio-button-group-no-grouping
+Difficulty: HAS-BUGS
+
+Phases found: 11/11
+  + phase_0
+  + phase_1
+  + phase_2
+  + phase_3
+  + phase_4
+  + phase_5
+  + phase_6
+  + phase_7
+  + phase_8
+  + phase_9
+  + phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 2/2
+  + [W] Missing <fieldset> to group related radio buttons
+  + [W] Missing <legend> to label the radio group
+
+Should-find issues: 1/1
+  + [-] name attribute alone is insufficient for AT
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

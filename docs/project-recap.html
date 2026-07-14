@@ -746,7 +746,23 @@ body {
       </tr>
       <tr>
         <td>Ollama</td>
-        <td>llama3.3:70b</td>
+        <td><strong>llama3.3:70b (BLIND 2026-07-13)</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>33</strong>/33</td>
+        <td class="num">92.6%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td><strong>qwen3.5:latest (BLIND 2026-07-13)</strong></td>
+        <td class="num">33</td>
+        <td class="num"><strong>33</strong>/33</td>
+        <td class="num">98.5%</td>
+        <td><span class="badge badge--pass">100% PASS</span></td>
+      </tr>
+      <tr>
+        <td>Ollama</td>
+        <td>llama3.3:70b (non-blind)</td>
         <td class="num">7</td>
         <td class="num">7/7</td>
         <td class="num">86%</td>
@@ -754,7 +770,7 @@ body {
       </tr>
       <tr>
         <td>Ollama</td>
-        <td>qwen3.5:latest</td>
+        <td>qwen3.5:latest (non-blind)</td>
         <td class="num">7</td>
         <td class="num">7/7</td>
         <td class="num">86%</td>
@@ -964,7 +980,7 @@ body {
     </li>
     <li>
       <div class="next-check done">&#10003;</div>
-      <div><strong>Ollama benchmarks</strong> &mdash; qwen3:32b 33/33 PASS, perspective 20P/4W/1F (non-blind); blind re-run 2026-07-13: critic confirmed 33/33 + 97% must-find, perspective 20P/1W/4F &mdash; CLEAN false positives surface blind</div>
+      <div><strong>Ollama benchmarks</strong> &mdash; qwen3:32b 33/33 PASS, perspective 20P/4W/1F (non-blind); blind re-run 2026-07-13: critic confirmed 33/33 + 97% must-find, perspective 20P/1W/4F &mdash; CLEAN false positives surface blind. Blind full-suite critic lanes same day: qwen3.5:latest 33/33 + 98.5% (needs 32K ctx on 4 long fixtures), llama3.3:70b 33/33 + 92.6%</div>
     </li>
     <li>
       <div class="next-check done">&#10003;</div>

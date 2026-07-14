@@ -1,0 +1,12 @@
+{
+  "response": "# Verdict: ACCEPT-WITH-RESERVATIONS (with critical design tension acknowledged)\n\n## Overall Assessment\n\nThis is an **ADVERSARIAL fixture** where the WAI-ARIA Tabs pattern implementation is",
+  "done": true,
+  "total_duration": 13437307833,
+  "eval_count": 643,
+  "_benchmark": {
+    "model": "qwen3.5:latest",
+    "fixture_id": "tabbed-nav-vs-tab-pattern",
+    "elapsed_seconds": 13.5,
+    "timestamp": "2026-07-13T18:38:39"
+  }
+}

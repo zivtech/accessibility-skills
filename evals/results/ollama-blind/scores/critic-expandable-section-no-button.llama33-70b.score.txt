@@ -1,0 +1,32 @@
+Response length: 5296 chars
+Fixture: expandable-section-no-button
+Difficulty: HAS-BUGS
+
+Phases found: 11/11
+  + phase_0
+  + phase_1
+  + phase_2
+  + phase_3
+  + phase_4
+  + phase_5
+  + phase_6
+  + phase_7
+  + phase_8
+  + phase_9
+  + phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REJECT (expected: unknown)
+
+Must-find issues: 4/4
+  + [-] Using <div> instead of <button> for interactive trigger
+  + [-] Missing aria-expanded state announcement
+  + [-] No keyboard support for activation
+  + [-] Missing role='button'
+
+Should-find issues: 0/0
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS
