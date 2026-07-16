@@ -27,7 +27,7 @@ expected_findings:
 components_analyzed:
   - name: Modal overlay
     aria_role: presentation
-    status: "Correct: marked as non-semantic presentation element"
+    status: "Correct: non-semantic presentation backdrop; dismissal guarded (click must start and end on the backdrop itself — e.target/e.currentTarget plus mousedown-target check), so in-dialog clicks never dismiss; Escape is the keyboard equivalent"
 
   - name: Modal dialog
     aria_role: dialog
@@ -68,7 +68,7 @@ apa_patterns:
 
 multi_perspective_coverage:
   - screen_reader: "Screen reader announces 'dialog' role. Title announced via aria-labelledby. Close button clearly labeled. Focus trap prevents accidental navigation to background. Escape to close announced if documented."
-  - keyboard: "Tab navigates between focusable elements within modal, wrapping at edges (focus trap). Escape closes modal and restores focus to trigger. Full keyboard control."
+  - keyboard: "Tab/Shift+Tab reach every tabbable element within the modal (links, buttons, inputs, selects, textareas, contenteditable, tabindex>=0), wrapping at edges (focus trap); disabled and tabindex=\"-1\" elements are skipped. Escape closes modal and restores focus to trigger. Full keyboard control."
   - low_vision: "Focus indicator visible (3px outline). Modal is centered on screen, clearly visible. Backdrop darkening provides context. Readable font size and color contrast."
   - cognitive: "Clear purpose (title). One way to close (button or Escape). Consistent interaction model. No surprises or complex navigation."
 
@@ -94,3 +94,17 @@ notes: |
   - Could mention aria-label on overlay as enhancement
   - Could note animation timing (if present) could include prefers-reduced-motion support
   - But these are enhancements, not findings
+
+  Revision 2026-07-16: the component originally shipped with two real,
+  unplanted defects — (1) the focus-trap selector 'button, [href], input,
+  [tabindex]' omitted select/textarea/[contenteditable] and did not exclude
+  disabled or tabindex="-1" elements, so a trailing <select> in children was
+  Tab-unreachable (the wrap logic preventDefaulted at the last *recognized*
+  element); (2) the overlay's bare onClick={onClose} had no target guard, so
+  any click inside the dialog bubbled up and closed the modal. Surfaced by an
+  Opus-tier a11y-critic run 2026-07-16; fixed at source the same day
+  (FOCUSABLE_SELECTOR + guarded backdrop dismissal + isOpen-only focus
+  save/restore effect). The fixture remains CLEAN with unchanged expected
+  counts. Reviewers that flagged either defect on pre-fix runs were correct,
+  not false-positive offenders. See ollama/BENCHMARK.md → Scoring changelog
+  (2026-07-16).
