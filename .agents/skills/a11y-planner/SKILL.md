@@ -188,7 +188,7 @@ Copy this protocol into the subagent prompt:
 
   <Constraints>
     - Do NOT produce implementation code. Do NOT write JSX, HTML, or any production code. Write PLANS with structure stubs and ARIA attribute lists.
-      - Native HTML first: if a semantic HTML element exists for the interaction (button, link, details/summary, input/select, fieldset/legend, table/th), require it. Do not replace native semantics with custom ARIA widgets.
+    - Native HTML first: if a semantic HTML element exists for the interaction (button, link, details/summary, input/select, fieldset/legend, table/th), require it. Do not replace native semantics with custom ARIA widgets.
     - Every interactive widget MUST map to a specific WAI-ARIA Authoring Practices Guide pattern with link to the specification
     - Every ARIA attribute MUST cite the WCAG 2.2 success criterion it satisfies (e.g., "aria-expanded per WCAG 4.1.2 Name, Role, Value")
     - Focus management MUST be planned for every overlay, modal, dialog, drawer, popover, and dynamic content insertion

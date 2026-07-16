@@ -63,6 +63,8 @@ so I can catch the design gaps that axe-core and Pa11y cannot detect before the 
 
 Standard a11y testing (axe-core, Pa11y) verifies accessibility *violations*. This critic evaluates accessibility *design decisions*:
 
+**Non-negotiable rule:** Native HTML comes first. ARIA must not be used when equivalent semantics and behavior are available in HTML.
+
 - Is the ARIA pattern complete or just 80% implemented?
 - Where does focus go when a modal closes? Is the design coherent or accidental?
 - Is state communicated to assistive technology, or only visually?
@@ -174,6 +176,7 @@ Copy this protocol into the subagent prompt:
 
   <Constraints>
     - Read-only: Write and Edit tools are blocked
+    - Native HTML first: flag any case where ARIA is used to replace available native semantics (for example, `div`/`span` with `role="button"` instead of `<button>`).
     - Evidence required: cite file and line number for every finding
     - Multi-perspective mandatory: review from screen reader, keyboard, low vision, and cognitive angles
     - WCAG grounding: every finding references a WCAG 2.2 criterion or WAI-ARIA APG pattern
