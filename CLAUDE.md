@@ -45,6 +45,9 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | a11y-critic | critic | `/a11y-critic` |
 | a11y-test | tester | `/a11y-test` |
 | perspective-audit | auditor | `/perspective-audit` |
+| bug-reporting | reporter | `/bug-reporting` |
+
+`bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; no benchmark lane yet.
 
 ## Team Workflow
 

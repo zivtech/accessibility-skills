@@ -25,7 +25,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLAUDE_SKILLS = os.path.join(REPO, ".claude", "skills")
 AGENTS_SKILLS = os.path.join(REPO, ".agents", "skills")
 
-SKILL_NAMES = ["a11y-critic", "a11y-planner", "a11y-test", "perspective-audit"]
+SKILL_NAMES = ["a11y-critic", "a11y-planner", "a11y-test", "perspective-audit", "bug-reporting"]
 
 
 def extract_headings(text):
