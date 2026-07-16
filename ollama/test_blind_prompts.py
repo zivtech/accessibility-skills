@@ -57,9 +57,12 @@ REASSURANCE_PATTERNS = (
     ("not-a-bug reassurance", re.compile(r"(?i)\bnot a bug\b")),
     ("flag-steering", re.compile(r"(?i)(?:should not|must not|won'?t|do(?:es)? not|don'?t|not\s+to)\s+(?:be\s+)?flag")),
     ("works/good annotation", re.compile(r"(?i)(?://|/\*|\{/\*|<!--)\s*(?:works|good)\b")),
-    ("comment self-verdict", re.compile(r"(?i)(?://|/\*|\{/\*|<!--)[^\n]*\bcorrect(?:ly)?\b")),
+    # Verdict-shaped phrasings only — mid-sentence mechanism rationale like
+    # "recompute … so children … are handled correctly" is realistic and allowed.
+    ("comment self-verdict", re.compile(r"(?i)(?://|/\*|\{/\*|<!--)[^\n]*(?:—\s*correct(?:ly)?\b|\bcorrectly implemented\b|\bworks correctly\b|\bis correct\b)")),
     ("comment color-only denial", re.compile(r"(?i)(?://|/\*|\{/\*|<!--)[^\n]*\bnot\s+color-?only\b")),
     ("difficulty verdict token", re.compile(r"\*\*(?:CLEAN|ADVERSARIAL|HAS-BUGS|FLAWED)\*\*")),
+    ("tier suffix in title", re.compile(r"\((?:CLEAN|ADVERSARIAL|HAS-BUGS|FLAWED)\)")),
     ("fixture-class reveal", re.compile(r"(?i)\b(?:adversarial|clean)\s+fixture\b")),
     ("grading-notes voice", re.compile(r"(?i)a11y-critic should\b")),
 )

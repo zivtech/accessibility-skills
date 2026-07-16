@@ -1,4 +1,4 @@
-# Fixture: Interactive Dropdown Component (CLEAN)
+# Fixture: Interactive Dropdown Component
 
 ## Component Code
 

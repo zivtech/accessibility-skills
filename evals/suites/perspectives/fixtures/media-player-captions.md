@@ -1,4 +1,4 @@
-# Fixture: Media Player With Full Caption Support (CLEAN)
+# Fixture: Media Player With Caption Support
 
 ## Context
 

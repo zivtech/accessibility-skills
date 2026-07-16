@@ -1,4 +1,4 @@
-# Fixture: Search Results with Live Region (CLEAN)
+# Fixture: Search Results with Live Region
 
 ## Component Code
 

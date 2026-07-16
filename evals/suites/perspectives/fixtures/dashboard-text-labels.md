@@ -1,4 +1,4 @@
-# Fixture: Analytics Dashboard With Text Status Labels (CLEAN)
+# Fixture: Analytics Dashboard With Text Status Labels
 
 ## Component Code
 

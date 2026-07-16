@@ -1,4 +1,4 @@
-# Fixture: Navigation with Skip Link (CLEAN)
+# Fixture: Navigation with Skip Link
 
 ## Component Code
 

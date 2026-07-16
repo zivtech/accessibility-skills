@@ -115,10 +115,14 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > pre-fix leaking fixtures; the one shape with no machine-checkable invariant
 > (autocomplete-fast-timeout's `fails AA for text but it's a status message` excuse, trimmed to
 > the bare ratio — "fails AA" in a comment is legitimate developer vocabulary) is documented here
-> instead. Known residual, deliberately unchanged: fixture H1 titles and ids still name their
-> planted defect ("Custom Dropdown with Focus Restoration Bug", "Tabs Component Missing Arrow Key
-> Navigation") and sit above the cut line — ids double as filenames and result keys, so renaming
-> is a separate decision. Scorers untouched. **Comparability:** rows recorded before this change
+> instead. CLEAN-side titles were de-hinted with this pass: "(CLEAN)" suffixes and verdict-bearing
+> tails ("With Proper/Complete Accessibility", "Full") dropped from the 3 critic and 5 perspective
+> CLEAN h1 titles, matching the modal-complete-clean erratum's title treatment (guard: `tier
+> suffix in title`). Known residual, deliberately unchanged: HAS-BUGS/FLAWED H1 titles and all
+> fixture ids still name their planted defect ("Custom Dropdown with Focus Restoration Bug",
+> "Tabs Component Missing Arrow Key Navigation") and titles sit above the cut line — ids double as
+> filenames and result keys, so renaming is a separate decision (the fixture erratum's open
+> axis (b)). Scorers untouched. **Comparability:** rows recorded before this change
 > are not comparable with post-change runs on (a) critic CLEAN false-positive resistance,
 > (b) critic ADVERSARIAL analysis quality, (c) perspective FP-trap avoidance — in addition to the
 > hint-comment caveat on detection rates; within-lane cross-model rankings hold (identical
@@ -1051,7 +1055,9 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   in 16 perspective + 2 critic fixtures (realistic developer documentation kept); cut-line headings
   inserted in the 7 cut-less critic fixtures — 6 in this pass, modal-complete-clean's via the
   same-day fixture erratum below (CLEAN prompts now end at the features section like
-  buggy fixtures; ADVERSARIAL prompts end at Design Rationale); two residual defect-stating hints
+  buggy fixtures; ADVERSARIAL prompts end at Design Rationale); "(CLEAN)" suffixes and
+  verdict-bearing tails dropped from the 3 critic + 5 perspective CLEAN h1 titles (closes the
+  fixture erratum's open axis (a); axis (b), defect-naming HAS-BUGS titles, remains open); two residual defect-stating hints
   removed (color-only-status-indicators, modal-broken-focus-trap ×2) and five stale below-cut
   answer-key citations of removed `// BUG:` comments rewritten; line references re-anchored where
   affected (video-tutorial-no-captions answer key, `.metadata.yaml`, `.rubric.yaml` — several were
@@ -1112,12 +1118,17 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   the concurrent de-hinting workstream (branch `claude/interesting-thompson-78979c`), which strips
   inline `{/* BUG: … */}` code comments that survive above the `## Accessibility Issues` strip
   boundary: that pass does not touch this fixture (it has no BUG comments) and does not rename h1
-  titles, so two hinting axes remain open and additive to it — (a) the other 3 critic CLEAN
+  titles, so two hinting axes remained open and additive to it — (a) the other 3 critic CLEAN
   fixtures (button-skip-link-clean, interactive-dropdown-clean, search-results-dynamic-clean) still
-  carry "should receive clean verdict" prose above the strip boundary plus "(CLEAN)" title
+  carried "should receive clean verdict" prose above the strip boundary plus "(CLEAN)" title
   suffixes; (b) every HAS-BUGS/FLAWED fixture's h1 title names its planted bug outright (e.g.
   "Toast Notification Without Alert Role"), title-level leakage that reaches prompts in all lanes
   and qualifies historical must-find rates the same way the prose hint qualifies CLEAN rows.
+  *Axis (a) was closed later the same day by the reassurance follow-up entry above: cut-line
+  headings now hold the verdict prose below the strip boundary in all critic CLEAN/ADVERSARIAL
+  fixtures, and the "(CLEAN)" suffixes and verdict-bearing title tails ("With Proper/Complete
+  Accessibility", "Full") were dropped from the 3 critic and 5 perspective CLEAN h1 titles
+  (guarded: `tier suffix in title` pattern in `test_blind_prompts.py`). Axis (b) remains open.*
 
 - 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
   (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which
