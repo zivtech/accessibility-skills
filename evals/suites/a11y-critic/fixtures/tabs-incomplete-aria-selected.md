@@ -16,13 +16,11 @@ const ProductTabs = ({ products }) => {
         e.preventDefault();
         newIndex = (index + 1) % products.length;
         setActiveTab(newIndex);
-        // BUG: Focus not moved to newly active tab
         break;
       case 'ArrowLeft':
         e.preventDefault();
         newIndex = (index - 1 + products.length) % products.length;
         setActiveTab(newIndex);
-        // BUG: Focus not moved to newly active tab
         break;
       case 'Home':
         e.preventDefault();
@@ -204,28 +202,28 @@ export default ProductTabs;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Focus does not follow aria-selected on arrow key navigation** — When a user presses Arrow Right/Left, aria-selected updates and the visual state changes, but DOM focus stays on the previously active tab. The user's screen reader announces the old tab while the panel content has changed. Per WAI-ARIA Tabs pattern, focus MUST move to the newly selected tab.
-   - Evidence: `tabs-incomplete-aria-selected.md:16-19` and `tabs-incomplete-aria-selected.md:22-25` — setActiveTab called but tabRefs.current[newIndex].focus() never called
+   - Evidence: `tabs-incomplete-aria-selected.md:16-18` and `tabs-incomplete-aria-selected.md:21-23` — setActiveTab called but tabRefs.current[newIndex].focus() never called
    - WCAG: 2.1.1 Keyboard, 4.1.2 Name/Role/Value
    - APG: WAI-ARIA Tabs — "When a tab is activated, focus moves to the active tab element"
    - Impact: Screen reader user hears wrong tab name; keyboard user sees focus indicator on wrong tab
    - Fix: Add `tabRefs.current[newIndex].focus()` after setActiveTab in arrow key handlers
 
 2. **MAJOR: Tab panels missing aria-labelledby** — Each tabpanel has an id but no aria-labelledby linking back to its tab. Screen reader users landing on the panel (via Tab from the tablist) won't hear which tab the panel belongs to.
-   - Evidence: `tabs-incomplete-aria-selected.md:60-68` — tabpanel divs have id and role but no aria-labelledby
+   - Evidence: `tabs-incomplete-aria-selected.md:58-66` — tabpanel divs have id and role but no aria-labelledby
    - WCAG: 1.3.1 Info and Relationships, 4.1.2 Name/Role/Value
    - APG: WAI-ARIA Tabs — "Each element with role tabpanel has the property aria-labelledby referring to its associated tab element"
    - Impact: Screen reader user can't identify which tab owns the panel content
    - Fix: Add `aria-labelledby={`tab-${product.id}`}` to each tabpanel
 
 3. **MINOR: Tabs missing aria-controls linking to panels** — Tab buttons don't reference their associated panels. While aria-controls has mixed screen reader support, it's part of the complete APG Tabs pattern and aids programmatic association.
-   - Evidence: `tabs-incomplete-aria-selected.md:40-52` — tab buttons have id but no aria-controls
+   - Evidence: `tabs-incomplete-aria-selected.md:38-50` — tab buttons have id but no aria-controls
    - WCAG: 4.1.2 Name/Role/Value (recommended, not required)
    - APG: WAI-ARIA Tabs — "Each element with role tab has the property aria-controls referring to its associated tabpanel element"
    - Impact: Low — most screen readers don't use aria-controls for navigation. But omitting it breaks the bidirectional tab↔panel relationship.
    - Fix: Add `aria-controls={`panel-${product.id}`}` to each tab button
 
 4. **MINOR: Badge count not announced in accessible context** — The badge `<span>` has a visible count but no accessible name explaining what the number means. A screen reader user hears "Electronics 42" — is 42 the count of items, reviews, or something else?
-   - Evidence: `tabs-incomplete-aria-selected.md:48-50` — bare `<span className="badge">{product.count}</span>` with no aria-label or visually-hidden label
+   - Evidence: `tabs-incomplete-aria-selected.md:46-48` — bare `<span className="badge">{product.count}</span>` with no aria-label or visually-hidden label
    - WCAG: 1.3.1 Info and Relationships
    - Impact: Low — context usually makes it clear, but explicit labeling is better
    - Fix: Add `aria-label={`${product.count} items`}` or use visually-hidden text

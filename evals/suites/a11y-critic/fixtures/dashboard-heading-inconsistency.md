@@ -8,7 +8,6 @@ import React from 'react';
 const AnalyticsDashboard = () => {
   return (
     <div className="dashboard">
-      {/* Sidebar — has aria-label but no <nav> landmark */}
       <div className="sidebar">
         <ul aria-label="Main navigation">
           <li><a href="/dashboard" className="nav-link active">Overview</a></li>
@@ -18,11 +17,9 @@ const AnalyticsDashboard = () => {
         </ul>
       </div>
 
-      {/* Main content — no <main> landmark */}
       <div className="content">
         <h1>Analytics Overview</h1>
 
-        {/* Metric cards — divs for key-value pairs, not <dl>/<dt>/<dd> */}
         <div className="metrics-grid">
           <div className="metric-card">
             <h3>Total Users</h3>
@@ -49,7 +46,6 @@ const AnalyticsDashboard = () => {
           </div>
         </div>
 
-        {/* Data tables — captions present but scope attributes missing */}
         <div className="tables-section">
           <div className="table-card">
             <h3>Traffic by Source</h3>
@@ -172,7 +168,6 @@ export default AnalyticsDashboard;
   margin: 0 0 24px;
 }
 
-/* Headings styled identically — visual consistency hides broken hierarchy */
 .metric-card h2,
 .metric-card h3,
 .table-card h2,
@@ -274,35 +269,35 @@ export default AnalyticsDashboard;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Heading hierarchy inconsistent — h1 → h3 (skipping h2) in some cards, h2 in others** — The page has an `<h1>` for the dashboard title. Two metric cards use `<h3>` (Total Users, Bounce Rate), skipping h2. Two other metric cards use `<h2>` (Active Sessions, Avg. Session Duration). One table card uses `<h3>` (Traffic by Source), the other uses `<h2>` (Top Pages). The CSS styles h2 and h3 identically (same font-size, weight, color, text-transform), so visually they look consistent — but the heading tree is broken.
-   - Evidence: `dashboard-heading-inconsistency.md:28` (h3 "Total Users"), `dashboard-heading-inconsistency.md:34` (h2 "Active Sessions"), `dashboard-heading-inconsistency.md:40` (h3 "Bounce Rate"), `dashboard-heading-inconsistency.md:46` (h2 "Avg. Session Duration"), `dashboard-heading-inconsistency.md:55` (h3 "Traffic by Source"), `dashboard-heading-inconsistency.md:90` (h2 "Top Pages")
+   - Evidence: `dashboard-heading-inconsistency.md:25` (h3 "Total Users"), `dashboard-heading-inconsistency.md:31` (h2 "Active Sessions"), `dashboard-heading-inconsistency.md:37` (h3 "Bounce Rate"), `dashboard-heading-inconsistency.md:43` (h2 "Avg. Session Duration"), `dashboard-heading-inconsistency.md:51` (h3 "Traffic by Source"), `dashboard-heading-inconsistency.md:86` (h2 "Top Pages")
    - WCAG: 1.3.1 Info and Relationships — heading hierarchy must be logical and consistent
    - User group: Screen reader users navigating by heading level (pressing `2` for h2, `3` for h3)
    - Impact: Screen reader user pressing `2` finds only half the cards. Pressing `3` finds the other half. The heading tree shows a jumbled structure with no logic to which cards are h2 vs h3. Users can't build a mental model of the page from headings alone.
    - Fix: All card headings should be `<h2>` (direct children of the h1 page title)
 
 2. **MAJOR: Data table headers missing scope attributes** — Both tables use `<th>` for column headers (in `<thead>`) and row headers (first cell in each `<tbody>` row), but none have `scope="col"` or `scope="row"`. Tables have captions, so a surface check sees "table has caption and th elements — looks good." But without scope, a screen reader navigating by cell cannot associate data cells with their headers.
-   - Evidence: `dashboard-heading-inconsistency.md:60-63` (Traffic table: column `<th>` without scope), `dashboard-heading-inconsistency.md:68,74,80` (Traffic table: row `<th>` without scope), `dashboard-heading-inconsistency.md:95-97` (Top Pages table: column `<th>` without scope), `dashboard-heading-inconsistency.md:102,107,112` (Top Pages table: row `<th>` without scope)
+   - Evidence: `dashboard-heading-inconsistency.md:56-59` (Traffic table: column `<th>` without scope), `dashboard-heading-inconsistency.md:64,70,76` (Traffic table: row `<th>` without scope), `dashboard-heading-inconsistency.md:91-93` (Top Pages table: column `<th>` without scope), `dashboard-heading-inconsistency.md:98,103,108` (Top Pages table: row `<th>` without scope)
    - WCAG: 1.3.1 Info and Relationships — table headers must identify their scope
    - User group: Screen reader users navigating tables with Ctrl+Alt+arrow keys
    - Impact: When a screen reader user moves to a data cell, they hear the value but not which column or row it belongs to. In the Traffic table, hearing "31.2%" without knowing it's the Bounce Rate for Organic Search is meaningless.
    - Fix: Add `scope="col"` to all `<th>` in `<thead>`, add `scope="row"` to all `<th>` in `<tbody>`
 
 3. **MINOR: Metric cards use divs for key-value pairs instead of semantic structure** — Each metric card presents a label-value relationship ("Total Users" → "24,521" → "+12.3% from last month") using plain divs with class names. Screen reader users hear a flat sequence of text with no semantic relationship between the heading, value, and change description. A `<dl>/<dt>/<dd>` or table structure would convey the label-value pairing programmatically.
-   - Evidence: `dashboard-heading-inconsistency.md:29-30` (div.metric-value + div.metric-label, no semantic pairing)
+   - Evidence: `dashboard-heading-inconsistency.md:26-27` (div.metric-value + div.metric-label, no semantic pairing)
    - WCAG: 1.3.1 Info and Relationships — information conveyed through presentation must be programmatically determinable
    - User group: Screen reader users
    - Impact: Low-to-moderate. Users can infer meaning from reading order, but the relationship between "24,521" and "Total Users" is visual, not semantic. With 4 cards in sequence, a screen reader user hears a stream of headings, numbers, and percentages with no structure separating one metric from another.
    - Fix: Use `<dl>` with `<dt>` for the metric name and `<dd>` for the value, or use a compact table structure
 
 4. **MINOR: No landmark regions — missing `<main>`, `<nav>`, `<section>` labels** — The dashboard has no landmark regions at all. The sidebar is a `<div>` (not `<nav>`), the content area is a `<div>` (not `<main>`), and neither the metric grid nor the table sections use `<section>` with accessible names. Screen reader users pressing `D` (NVDA) or using the Rotor (VoiceOver) to navigate by landmark find nothing.
-   - Evidence: `dashboard-heading-inconsistency.md:12` (sidebar: `<div>` not `<nav>`), `dashboard-heading-inconsistency.md:22` (content: `<div>` not `<main>`)
+   - Evidence: `dashboard-heading-inconsistency.md:11` (sidebar: `<div>` not `<nav>`), `dashboard-heading-inconsistency.md:20` (content: `<div>` not `<main>`)
    - WCAG: 1.3.1 Info and Relationships, 2.4.1 Bypass Blocks
    - User group: Screen reader users, keyboard-only users
    - Impact: On a page with a sidebar and multiple content sections, landmarks are the primary way screen reader users orient themselves. Without them, the user must read linearly to understand page layout.
    - Fix: Wrap sidebar in `<nav aria-label="Main navigation">`, wrap content in `<main>`, optionally add `<section aria-label="...">` around the metrics grid and tables section
 
 5. **ENHANCEMENT: No skip link to bypass sidebar navigation** — The dashboard has a sidebar with navigation links before the main content. Keyboard users must tab through all navigation links before reaching dashboard content. There is no skip link to jump directly to the main content area.
-   - Evidence: `dashboard-heading-inconsistency.md:12-18` (sidebar comes first in DOM with 4 links, no skip mechanism)
+   - Evidence: `dashboard-heading-inconsistency.md:11-17` (sidebar comes first in DOM with 4 links, no skip mechanism)
    - WCAG: 2.4.1 Bypass Blocks
    - User group: Keyboard-only users, screen reader users
    - Impact: With only 4 links, the impact is moderate. On a real dashboard with more nav items, sub-menus, or filters, the impact compounds.

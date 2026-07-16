@@ -22,10 +22,6 @@ const BuggyToast = ({ message, duration = 3000 }) => {
 
   return (
     <div className="toast-notification">
-      {/* BUG: No role="alert" or role="status" */}
-      {/* BUG: No aria-live region to announce message */}
-      {/* BUG: No aria-label or aria-describedby */}
-      {/* Screen reader user may miss toast message entirely */}
       {message}
     </div>
   );
@@ -50,13 +46,13 @@ export default BuggyToast;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: Missing role="alert"** — Toast notification is just a div without alert semantics. Screen reader user may not be immediately notified of message. Per ARIA, toast notifications should have role="alert" to mark as important status message.
-   - Evidence: `toast-notification-no-role.md:19-25` (div has no role)
+   - Evidence: `toast-notification-no-role.md:19-24` (div has no role)
    - User group: Screen reader users (critical)
    - Expected: Toast should have role="alert" or role="status"
    - Fix: Render a persistent live-region container (e.g., an always-mounted `<div role="alert">` or `role="status"`) and inject the message text into it when the toast fires. Adding `role="alert"` to a toast element that mounts *with* its content is not reliably announced — measured silent by virtual-screen-reader (jsdom and Chromium, 2026-07-11; `evals/results/virtual-screen-reader/`), and real screen readers are inconsistent on pre-populated alert insertion.
 
 2. **CRITICAL: Missing aria-live region** — Even with role="alert", aria-live="assertive" ensures announcement. Without aria-live, message may not be announced to screen reader user, especially if toast appears after page load.
-   - Evidence: `toast-notification-no-role.md:19-25` (no aria-live attribute)
+   - Evidence: `toast-notification-no-role.md:19-24` (no aria-live attribute)
    - User group: Screen reader users (critical)
    - Expected: Toast should have aria-live="assertive"
    - Fix: Put `aria-live="assertive"` on the persistent container described in fix 1 (live-region attributes must exist in the DOM *before* the message text arrives to announce reliably)
@@ -68,7 +64,7 @@ export default BuggyToast;
    - Fix: Add accessible close button that keyboard user can activate
 
 4. **MAJOR: Message not labeled or described** — Toast message has no associated label or description. Screen reader user hears the text but may not understand the message type (success, error, warning).
-   - Evidence: `toast-notification-no-role.md:24-25` (no aria-label or context)
+   - Evidence: `toast-notification-no-role.md:24` (no aria-label or context)
    - User group: Screen reader users
    - Expected: Should have aria-label describing message type, or context should be clear
    - Fix: Add aria-label="Success: [message]" or similar

@@ -44,7 +44,7 @@ expected_findings:
       - description: "Heading hierarchy inconsistent — h1 then mixed h2/h3 for peer-level cards, CSS hides the difference"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships"
-        evidence_requirement: "Reference to specific heading elements showing h3 (lines 28, 40, 55) vs h2 (lines 34, 46, 90) for same-level content. Must note CSS styles them identically."
+        evidence_requirement: "Reference to specific heading elements showing h3 (lines 25, 37, 51) vs h2 (lines 31, 43, 86) for same-level content. Must note CSS styles them identically."
         expected_to_find: "65%"
 
   - category: should_find
@@ -53,13 +53,13 @@ expected_findings:
       - description: "Data table headers missing scope='col' and scope='row' in both tables"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships"
-        evidence_requirement: "Reference to <th> elements in thead and tbody of both tables (lines 60-63, 68/74/80, 95-97, 102/107/112) showing missing scope. Must distinguish from caption presence (which is correct)."
+        evidence_requirement: "Reference to <th> elements in thead and tbody of both tables (lines 56-59, 64/74/80, 95-97, 102/107/112) showing missing scope. Must distinguish from caption presence (which is correct)."
         expected_to_find: "45%"
 
       - description: "Metric cards use div-based key-value pairs instead of semantic structure"
         severity: MINOR
         wcag: "1.3.1 Info and Relationships"
-        evidence_requirement: "Reference to div.metric-value and div.metric-label (lines 29-30) showing flat div structure. Must recommend <dl>/<dt>/<dd> or table as alternative."
+        evidence_requirement: "Reference to div.metric-value and div.metric-label (lines 26-27) showing flat div structure. Must recommend <dl>/<dt>/<dd> or table as alternative."
         expected_to_find: "25%"
 
   - category: nice_to_find
@@ -68,7 +68,7 @@ expected_findings:
       - description: "No landmark regions — sidebar div not nav, content div not main"
         severity: MINOR
         wcag: "1.3.1, 2.4.1"
-        evidence_requirement: "Reference to sidebar <div> (line 12) and content <div> (line 22) as non-landmark elements"
+        evidence_requirement: "Reference to sidebar <div> (line 11) and content <div> (line 20) as non-landmark elements"
         expected_to_find: "30%"
 
       - description: "No skip link to bypass sidebar navigation"

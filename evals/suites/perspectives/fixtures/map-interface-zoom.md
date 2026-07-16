@@ -19,7 +19,6 @@ const MapInterface = () => {
   const dragStart = useRef(null);
   const mapRef = useRef(null);
 
-  // BUG: Panning relies entirely on mouse drag — no keyboard alternative — WCAG 2.1.1
   const handleMouseDown = (e) => {
     setDragging(true);
     dragStart.current = { x: e.clientX - offset.x, y: e.clientY - offset.y };
@@ -35,7 +34,6 @@ const MapInterface = () => {
 
   const handleMouseUp = () => setDragging(false);
 
-  // BUG: Scroll wheel zoom hijacks page scroll — no escape mechanism
   const handleWheel = (e) => {
     e.preventDefault();
     setZoomLevel(z => Math.max(0.5, Math.min(3, z + (e.deltaY > 0 ? -0.1 : 0.1))));
@@ -74,7 +72,6 @@ const MapInterface = () => {
               key={m.id}
               className="map-marker"
               style={{ left: `${(m.lng + 75.2) * 500}px`, top: `${(40.1 - m.lat) * 500}px` }}
-              // BUG: Info popup on hover only — no focus/click alternative — WCAG 1.4.13
               onMouseEnter={() => setActivePopup(m.id)}
               onMouseLeave={() => setActivePopup(null)}
             >
@@ -90,8 +87,6 @@ const MapInterface = () => {
           ))}
         </div>
 
-        {/* BUG: Zoom buttons 18x18px — WCAG 2.5.8 */}
-        {/* BUG: At 200% browser zoom, these overlap the map edge — WCAG 1.4.10 */}
         <div className="map-controls">
           <button className="zoom-control" onClick={() => setZoomLevel(z => Math.min(3, z + 0.25))} aria-label="Zoom in">+</button>
           <button className="zoom-control" onClick={() => setZoomLevel(z => Math.max(0.5, z - 0.25))} aria-label="Zoom out">−</button>
@@ -146,8 +141,6 @@ export default MapInterface;
 .marker-popup strong { display: block; margin-bottom: 4px; }
 .marker-popup p { font-size: 13px; color: #333; margin: 0; }
 
-/* BUG: Zoom controls 18x18px — below 24x24 minimum */
-/* BUG: position: absolute with fixed offsets — overlaps at 200% zoom */
 .map-controls {
   position: absolute; top: 8px; right: 8px;
   display: flex; flex-direction: column; gap: 2px;
@@ -185,7 +178,7 @@ export default MapInterface;
 
 1. **CRITICAL: Map panning relies on mouse drag only — WCAG 2.1.1 (Keyboard)**
    No arrow key handlers for panning. Keyboard users cannot navigate the map.
-   - Evidence: Lines 21-30 — onMouseDown/Move/Up with no onKeyDown for arrows
+   - Evidence: Lines 21-29 — onMouseDown/Move/Up with no onKeyDown for arrows
    - User group: Keyboard users, switch access users
    - Fix: Add onKeyDown handler for Arrow keys to adjust offset
 
@@ -203,13 +196,13 @@ export default MapInterface;
 
 4. **MAJOR: Info popup on marker hover only — WCAG 1.4.13 / 2.1.1**
    Marker popups appear on `onMouseEnter` with no focus or click equivalent.
-   - Evidence: Lines 67-68 — onMouseEnter/Leave with no focus/click handler; marker div has no tabIndex
+   - Evidence: Lines 65-66 — onMouseEnter/Leave with no focus/click handler; marker div has no tabIndex
    - User group: Keyboard users, touch users
    - Fix: Add tabIndex={0}, onFocus, and onClick handlers to markers
 
 5. **MINOR: Scroll wheel zoom hijacks page scroll**
    `e.preventDefault()` on wheel event prevents scrolling past the map.
-   - Evidence: Line 37 — `e.preventDefault()` in handleWheel
+   - Evidence: Line 36 — `e.preventDefault()` in handleWheel
    - User group: All users trying to scroll past the map
    - Fix: Only zoom when Ctrl+wheel or when map is focused
 

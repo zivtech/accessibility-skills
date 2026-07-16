@@ -17,7 +17,6 @@ const DataLoader = () => {
 
   return (
     <div className="data-container">
-      {/* BUG: No aria-busy, no role="status", no aria-live */}
       {isLoading && (
         <div className="loading-spinner">
           <div className="spinner"></div>

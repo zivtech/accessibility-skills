@@ -155,10 +155,10 @@ The evaluation story is cross-provider. The benchmark suite compares the same fi
 Current committed result summaries cover:
 
 - **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
-- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`; Opus perspective-audit agents across all 25 perspective fixtures (2026-07-13, **first blind lane** — answer key withheld: post-003 scorer 20 PASS / 5 WARN / 0 FAIL, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on all 5 CLEAN fixtures), raw artifacts in `evals/results/claude-perspective/`. **Note:** all critic/perspective rows dated before 2026-07-13 ran non-blind (runners embedded fixture answer keys — since fixed, see BENCHMARK.md's blind-protocol disclosure); planner rows are exempt
+- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`; Opus perspective-audit agents across all 25 perspective fixtures (2026-07-13, **first blind lane** — answer key withheld: post-003 scorer 20 PASS / 5 WARN / 0 FAIL, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on all 5 CLEAN fixtures), raw artifacts in `evals/results/claude-perspective/`. **Note:** all critic/perspective rows dated before 2026-07-13 ran non-blind (runners embedded fixture answer keys — since fixed, see BENCHMARK.md's blind-protocol disclosure); planner rows are exempt. Additionally, all critic/perspective rows dated before 2026-07-16 — blind lanes included — saw inline `// BUG:` hint comments in fixture code (de-hinted 2026-07-16); detection numbers are hint-assisted upper bounds, per BENCHMARK.md's hint-comment disclosure
 - **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
 - **Gemini** — Gemini 2.5 Flash across all 33 critic fixtures via the gemini CLI (31/33 PASS, 98% criteria-level must-find; pro escalation pending quota), raw artifacts in `evals/results/gemini/`
-- **Ollama local models** — qwen3:32b **blind re-run 2026-07-13** (critic 33/33 PASS, 97% must-find, 0 false positives — blind-confirmed; perspective detection 20/20 + 36/37 must-find blind-confirmed, but 4/5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts blind, so the historical "100% perspective / 0% FP" row was answer-key-assisted on CLEAN), 25/25 planner; raw blind artifacts in `evals/results/ollama-blind/`. Same-day blind full-suite critic lanes: qwen3.5:latest 33/33 PASS + 98.5% must-find (needs ≥32K num_ctx on 4 long fixtures — receipts in BENCHMARK.md) and llama3.3:70b 33/33 PASS + 92.6%/97.1% adjudicated must-find. Historical non-blind rows: qwen3.5:27b (partial run: stopped 17/33 on /think stalls), deepseek-r1 probes
+- **Ollama local models** — qwen3:32b **blind re-run 2026-07-13** (critic 33/33 PASS, 97% must-find, 0 false positives — blind-confirmed; perspective detection 20/20 + 36/37 must-find blind-confirmed, but 4/5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts blind, so the historical "100% perspective / 0% FP" row was answer-key-assisted on CLEAN), 25/25 planner; raw blind artifacts in `evals/results/ollama-blind/`. Same-day blind full-suite critic lanes: qwen3.5:latest 33/33 PASS + 98.5% must-find (needs ≥32K num_ctx on 4 long fixtures — receipts in BENCHMARK.md) and llama3.3:70b 33/33 PASS + 92.6%/97.1% adjudicated must-find. Historical non-blind rows: qwen3.5:27b (partial run: stopped 17/33 on /think stalls), deepseek-r1 probes. All of these rows predate the 2026-07-16 fixture de-hint (inline `// BUG:` comments were still in the prompts), so detection numbers are hint-assisted upper bounds — CLEAN false-positive results unaffected
 
 Every hosted family is a peer row backed by committed raw artifacts. See [ollama/BENCHMARK.md](ollama/BENCHMARK.md) and [ollama/README.md](ollama/README.md) for the detailed tables, commands, and caveats.
 
@@ -247,13 +247,12 @@ Each fixture has 3 files:
 
 ### Running evaluations
 
-Generate stripped fixtures (removes `// BUG:` hint comments for blind review):
-
-```bash
-cd evals/suites/perspectives
-python3 strip_bug_comments.py
-# Creates fixtures-eval/ with clean versions
-```
+Fixture code blocks ship hint-free (since 2026-07-16): planted-bug documentation lives only in
+each fixture's `## Accessibility Issues` answer-key section, which both runners strip from
+prompts (blind protocol). The CI guard `ollama/test_blind_prompts.py` fails if either leak —
+answer keys or inline `BUG` hint comments — reappears in any composed prompt. (The former
+`strip_bug_comments.py` workflow, which wrote stripped copies to a `fixtures-eval/` directory
+no runner read, is deleted; see the hint-comment disclosure in `ollama/BENCHMARK.md`.)
 
 The perspective eval harness runs fixtures under 3 prompt conditions. These are prompt-condition baselines, separate from model-family baselines such as Claude, Codex/OpenAI, Gemini, and local Ollama runs:
 - **A** — Standard a11y-critic (Sonnet, no perspectives)
@@ -277,7 +276,7 @@ Scoring for alarm levels: exact match = 1.0, within +/-1 level = 0.5, off by 2 l
 1. Create 3 files using the naming convention `{kebab-case-id}.md`, `.metadata.yaml`, `.rubric.yaml`
 2. Or add the spec to `generate_fixtures.py` and run it to generate metadata + rubric
 3. Use snake_case for perspective keys in metadata: `magnification_reflow`, `environmental_contrast`, `vestibular_motion`, `auditory_access`, `keyboard_motor`, `screen_reader_semantic`, `cognitive_neurodivergent`
-4. Include `// BUG:` comments in the fixture `.md` code for documentation, but always test with stripped versions (`strip_bug_comments.py`)
+4. Document planted bugs only in the fixture's `## Accessibility Issues` answer-key section below the blind cut line — never as inline comments in the code blocks (the CI guard `ollama/test_blind_prompts.py` fails any composed prompt that leaks `BUG` hints)
 5. CLEAN fixtures must have zero real bugs and 3+ false positive traps
 6. Regression fixtures must include `regression_fixture: true` and `non_inferiority_test` in metadata/rubric
 

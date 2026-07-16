@@ -21,14 +21,12 @@ const BuggyDropdown = ({ label, options, onSelect }) => {
     setSelectedIndex(index);
     onSelect(options[index]);
     setIsOpen(false);
-    // BUG: Focus is NOT restored to trigger button
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
       setIsOpen(false);
-      // BUG: Focus not restored here either
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextIndex = selectedIndex < options.length - 1 ? selectedIndex + 1 : 0;
@@ -90,8 +88,8 @@ export default BuggyDropdown;
 - Opens on button click, list receives focus
 - Arrow Down/Up navigate options
 - Enter or click selects option
-- Escape should close dropdown AND restore focus to button (BUG: doesn't)
-- Selection should restore focus to button (BUG: doesn't)
+- Escape should close dropdown AND restore focus to button
+- Selection should restore focus to button
 
 ## Accessibility Features Present
 
@@ -106,7 +104,7 @@ export default BuggyDropdown;
 ## Accessibility Issues (Planted Bugs)
 
 1. **MAJOR: Focus not restored after selection** — When user selects an option by clicking or pressing Enter, focus is lost (goes to document body). Keyboard user has no clear reference point to continue navigation. Per WAI-ARIA Listbox Pattern, focus should return to trigger button.
-   - Evidence: `interactive-dropdown-focus-bug.md:41-45` (handleSelect function has no focus restoration)
+   - Evidence: `interactive-dropdown-focus-bug.md:39-43` (handleSelect function has no focus restoration)
    - User group: Keyboard-only (critical)
    - Expected: After selection, focus returns to trigger button
    - Fix: Add `buttonRef.current?.focus()` after `setIsOpen(false)` in handleSelect

@@ -14,7 +14,7 @@ expected_findings:
       - description: "Heading hierarchy inconsistent — h1 → h3 in some cards (skipping h2), h2 in others. CSS styles h2 and h3 identically, hiding the broken heading tree."
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships (heading hierarchy must be logical)"
-        evidence: "Lines 28, 40 (h3 for Total Users, Bounce Rate), lines 34, 46 (h2 for Active Sessions, Avg. Session Duration), line 55 (h3 for Traffic table), line 90 (h2 for Top Pages table). Mixed levels for peer-level content."
+        evidence: "Lines 25, 37 (h3 for Total Users, Bounce Rate), lines 31, 43 (h2 for Active Sessions, Avg. Session Duration), line 51 (h3 for Traffic table), line 86 (h2 for Top Pages table). Mixed levels for peer-level content."
         user_group: "Screen reader users navigating by heading level — pressing '2' finds only half the cards, pressing '3' finds the other half"
         expected_behavior: "All card headings should be the same level (h2, as direct children of the h1 page title)"
         fix: "Change all card and table section headings to h2 for consistent hierarchy under h1"
@@ -25,14 +25,14 @@ expected_findings:
       - description: "Data table headers missing scope attributes in both tables"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships (table header scope must be identified)"
-        evidence: "Lines 60-63: Traffic table column headers (<th> without scope='col'). Lines 68, 74, 80: Traffic table row headers (<th> without scope='row'). Lines 95-97, 102, 107, 112: same pattern in Top Pages table. Both tables have captions, so surface check passes."
+        evidence: "Lines 56-59: Traffic table column headers (<th> without scope='col'). Lines 64, 70, 76: Traffic table row headers (<th> without scope='row'). Lines 91-93, 98, 103, 108: same pattern in Top Pages table. Both tables have captions, so surface check passes."
         user_group: "Screen reader users navigating tables with Ctrl+Alt+arrow keys — hear data values without associated header context"
         fix: "Add scope='col' to all <th> in <thead>, scope='row' to all <th> in <tbody>, in both tables"
 
       - description: "Metric cards use plain divs for key-value pairs instead of semantic structure"
         severity: MINOR
         wcag: "1.3.1 Info and Relationships (information relationships must be programmatically determinable)"
-        evidence: "Lines 29-30: div.metric-value and div.metric-label present data without semantic label-value pairing. Pattern repeats in all 4 metric cards."
+        evidence: "Lines 26-27: div.metric-value and div.metric-label present data without semantic label-value pairing. Pattern repeats in all 4 metric cards."
         user_group: "Screen reader users — hear flat sequence of text with no semantic separation between metrics"
         fix: "Use <dl>/<dt>/<dd> for metric name-value pairs, or a compact data table"
 
@@ -42,14 +42,14 @@ expected_findings:
       - description: "No landmark regions — sidebar is div (not nav), content area is div (not main)"
         severity: MINOR
         wcag: "1.3.1 Info and Relationships, 2.4.1 Bypass Blocks"
-        evidence: "Line 12: sidebar is <div> not <nav>. Line 22: content area is <div> not <main>. No <section> with accessible names."
+        evidence: "Line 11: sidebar is <div> not <nav>. Line 20: content area is <div> not <main>. No <section> with accessible names."
         user_group: "Screen reader users navigating by landmark (D key in NVDA, Rotor in VoiceOver)"
         expected_to_find: "30%"
 
       - description: "No skip link to bypass sidebar navigation"
         severity: ENHANCEMENT
         wcag: "2.4.1 Bypass Blocks"
-        evidence: "Lines 12-18: sidebar with 4 navigation links precedes main content. No skip link mechanism."
+        evidence: "Lines 11-17: sidebar with 4 navigation links precedes main content. No skip link mechanism."
         user_group: "Keyboard-only users, screen reader users"
         expected_to_find: "15%"
 

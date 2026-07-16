@@ -57,7 +57,6 @@ const CheckoutForm = () => {
   return (
     <div className="checkout-wrapper">
 
-      {/* BUG: Step indicator uses color only — no text or icon supplement */}
       <ol className="step-indicator" aria-label="Checkout steps">
         {STEPS.map((step, idx) => (
           <li
@@ -69,18 +68,15 @@ const CheckoutForm = () => {
         ))}
       </ol>
 
-      {/* BUG: Error summary exists but list items have no href — cannot navigate to fields */}
       {Object.keys(errors).length > 0 && (
         <div className="error-summary">
           <h2 id="error-summary-heading">Please fix the following errors:</h2>
           <ul aria-labelledby="error-summary-heading">
             {Object.entries(errors).map(([field, message]) => (
-              // BUG: plain <li> instead of <li><a href="#field-id">...</a></li>
               <li key={field}>{message}</li>
             ))}
           </ul>
         </div>
-        // BUG: no aria-live on this region — won't announce to screen reader
       )}
 
       <form onSubmit={handleSubmit} noValidate>
@@ -90,7 +86,6 @@ const CheckoutForm = () => {
             <legend>Shipping Information</legend>
 
             <div className="form-group">
-              {/* BUG: htmlFor="first-name" but input id="firstName" — mismatch */}
               <label htmlFor="first-name">First Name</label>
               <input
                 id="firstName"
@@ -100,11 +95,9 @@ const CheckoutForm = () => {
                 onChange={handleChange}
                 aria-invalid={!!errors.firstName}
                 aria-required="true"
-                // BUG: no aria-describedby pointing to error message
               />
               {errors.firstName && (
                 <span className="error-text">{errors.firstName}</span>
-                // BUG: no id on this span — cannot be referenced by aria-describedby
               )}
             </div>
 
@@ -118,7 +111,6 @@ const CheckoutForm = () => {
                 onChange={handleChange}
                 aria-invalid={!!errors.lastName}
                 aria-required="true"
-                // BUG: no aria-describedby pointing to error message
               />
               {errors.lastName && (
                 <span className="error-text">{errors.lastName}</span>
@@ -126,7 +118,6 @@ const CheckoutForm = () => {
             </div>
 
             <div className="form-group">
-              {/* BUG: htmlFor="street-address" but input id="address" — mismatch */}
               <label htmlFor="street-address">Street Address</label>
               <input
                 id="address"
@@ -236,7 +227,6 @@ export default CheckoutForm;
   font-family: system-ui, sans-serif;
 }
 
-/* BUG: complete/upcoming states communicated by color alone */
 .step-indicator {
   display: flex;
   gap: 8px;
@@ -375,25 +365,25 @@ legend {
 ## Accessibility Issues (Planted)
 
 1. **CRITICAL: `htmlFor` mismatch on First Name field** — `<label htmlFor="first-name">` but `<input id="firstName">`. Screen reader announces "First Name" for an unrelated element (or announces nothing). The input itself is unlabeled from the browser's perspective.
-   - Evidence: Lines 72–73 (`htmlFor="first-name"` vs `id="firstName"`)
+   - Evidence: Lines 71–71 (`htmlFor="first-name"` vs `id="firstName"`)
    - WCAG: 1.3.1 Info and Relationships, 4.1.2 Name, Role, Value
    - User group: Screen reader users
    - Fix: Align `htmlFor` and `id` — use `htmlFor="firstName"` or `id="first-name"` consistently
 
 2. **CRITICAL: `htmlFor` mismatch on Street Address field** — `<label htmlFor="street-address">` but `<input id="address">`. Same failure mode as First Name.
-   - Evidence: Lines 95–96 (`htmlFor="street-address"` vs `id="address"`)
+   - Evidence: Lines 90–91 (`htmlFor="street-address"` vs `id="address"`)
    - WCAG: 1.3.1 Info and Relationships, 4.1.2 Name, Role, Value
    - User group: Screen reader users
    - Fix: Align `htmlFor` and `id` — use `htmlFor="address"` or `id="street-address"` consistently
 
 3. **MAJOR: Error messages not associated with fields via `aria-describedby`** — Error `<span>` elements have no `id`, and no input has `aria-describedby` pointing to its error. Screen reader announces `aria-invalid="true"` but never reads the error text.
-   - Evidence: All form groups (e.g., lines 80–84, 103–107) — `aria-invalid` set but `aria-describedby` absent; error spans have no `id`
+   - Evidence: All form groups (e.g., lines 77–80, 98–100) — `aria-invalid` set but `aria-describedby` absent; error spans have no `id`
    - WCAG: 3.3.1 Error Identification, 3.3.2 Labels or Instructions
    - User group: Screen reader users
    - Fix: Add `id="error-firstName"` to error span; add `aria-describedby="error-firstName"` to corresponding input
 
 4. **MAJOR: Error summary links do not navigate to fields** — Error summary `<li>` elements are plain text, not anchor links. A user cannot activate a link to jump focus to the offending field.
-   - Evidence: Lines 67–70 — `<li key={field}>{message}</li>` with no `<a href="#fieldId">`
+   - Evidence: Lines 66–69 — `<li key={field}>{message}</li>` with no `<a href="#fieldId">`
    - WCAG: 3.3.1 Error Identification (users should be able to locate and correct errors)
    - User group: Keyboard users, screen reader users, cognitive users
    - Fix: Replace `<li>{message}</li>` with `<li><a href="#fieldId">{message}</a></li>` where `fieldId` matches the input's `id`
@@ -405,7 +395,7 @@ legend {
    - Fix: Add visually-hidden text or `aria-label` suffix per step (e.g., "Shipping — complete"); or add an icon (checkmark) with `aria-hidden="false"` alt text
 
 6. **MINOR: Error summary region has no `aria-live`** — When validation fails and the error summary mounts, screen reader users who are focused elsewhere will not be alerted. No `aria-live`, `role="alert"`, or `role="status"` on the summary container.
-   - Evidence: Lines 64–71 — error summary `<div>` has no live region attribute
+   - Evidence: Lines 63–70 — error summary `<div>` has no live region attribute
    - WCAG: 4.1.3 Status Messages
    - User group: Screen reader users
    - Fix: Add `role="alert"` (or `aria-live="polite"` + `aria-atomic="true"`) to the error summary `<div>`

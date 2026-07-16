@@ -25,7 +25,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
     const handleEnded = () => {
       setIsPlaying(false);
       setHasCompleted(true);
-      // BUG: Audio-only success beep — no visual DOM change to signal completion
       const ctx = new AudioContext();
       const osc = ctx.createOscillator();
       osc.connect(ctx.destination);
@@ -35,7 +34,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
     };
     const handleError = () => {
       setHasError(true);
-      // BUG: Audio-only error beep — no visual DOM change to signal the error
       const ctx = new AudioContext();
       const osc = ctx.createOscillator();
       osc.connect(ctx.destination);
@@ -99,9 +97,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
       <h1>{title}</h1>
 
       <div className="video-wrapper">
-        {/* BUG: aria-label is generic "video player" — does not describe content */}
-        {/* BUG: No <track kind="captions"> element — WCAG 1.2.2 violation */}
-        {/* BUG: No <track kind="descriptions"> for audio descriptions */}
         <video
           ref={videoRef}
           src={videoSrc}
@@ -157,12 +152,8 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
             className="volume-slider"
           />
 
-          {/* BUG: No caption toggle button — WCAG 1.2.2 requires user control for captions */}
         </div>
       </div>
-
-      {/* BUG: No transcript section or link to transcript — WCAG 1.2.1 for audio-only,
-              also best practice for 1.2.2 synchronized media */}
 
       <section className="tutorial-meta">
         <h2>About this tutorial</h2>
@@ -196,27 +187,27 @@ export default VideoTutorialPage;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: Missing `<track kind="captions">` element** — The `<video>` element has no `<track>` child for captions. Users who are deaf or hard of hearing have no way to access the speech content. WCAG 1.2.2 (Captions, Prerecorded) requires synchronized captions for all prerecorded video with audio.
-   - Evidence: `video-tutorial-no-captions.md:89-96` — `<video>` element with no `<track>` children
+   - Evidence: `video-tutorial-no-captions.md:87-94` — `<video>` element with no `<track>` children
    - User group: Deaf and hard of hearing users
    - Expected fix: Add `<track kind="captions" src="/captions/tutorial.vtt" srclang="en" label="English" />`
 
 2. **CRITICAL: No transcript available** — No transcript section exists on the page, and no link to an external transcript is provided. For synchronized media, WCAG 1.2.1 (Audio-only and Video-only, Prerecorded) and WCAG 1.2.3 (Audio Description or Media Alternative) require a text alternative. Transcripts also serve users in noise-sensitive environments and those with cognitive disabilities.
-   - Evidence: `video-tutorial-no-captions.md:141-145` — `<section class="tutorial-meta">` contains only duration; no transcript
+   - Evidence: `video-tutorial-no-captions.md:136-140` — `<section class="tutorial-meta">` contains only duration; no transcript
    - User group: Deaf and hard of hearing users; cognitive/attention users
    - Expected fix: Add a `<section>` with the full transcript text, or a visible link to a transcript page
 
 3. **MAJOR: No caption toggle button in player UI** — The controls group has no button to enable or disable captions. Even if a `<track>` element were present, users need a UI control to turn captions on or off. WCAG 1.2.2 requires user-controllable captions.
-   - Evidence: `video-tutorial-no-captions.md:135-137` — comment marks where caption toggle should be; no button rendered
+   - Evidence: `video-tutorial-no-captions.md:130-132` — comment marks where caption toggle should be; no button rendered
    - User group: Deaf and hard of hearing users; users in quiet/noisy environments
    - Expected fix: Add a button that toggles `videoRef.current.textTracks[0].mode` between `'showing'` and `'hidden'`
 
 4. **MAJOR: Audio-only error and completion signals with no visual DOM equivalent** — The `handleError` callback fires an audio beep (sawtooth wave at 220 Hz) with no visual DOM change to indicate the error state. The `handleEnded` callback fires a success beep (880 Hz) with no visible on-screen change. `hasError` and `hasCompleted` are set in state but never rendered. Deaf users, users with hearing loss, and users in muted environments receive no feedback.
-   - Evidence: `video-tutorial-no-captions.md:31-43` — `handleEnded` sets `hasCompleted` but renders nothing; `handleError` sets `hasError` but renders nothing; both fire `AudioContext` beeps
+   - Evidence: `video-tutorial-no-captions.md:30-41` — `handleEnded` sets `hasCompleted` but renders nothing; `handleError` sets `hasError` but renders nothing; both fire `AudioContext` beeps
    - User group: Deaf and hard of hearing users; users with audio disabled
    - Expected fix: Render visible status text (e.g., "Video complete" or "Error loading video") when `hasCompleted` or `hasError` is true
 
 5. **MINOR: `aria-label` on video element is generic** — `aria-label="video player"` does not describe the content of the video. Screen reader users navigating by landmark or element will not know what the tutorial is about before interacting.
-   - Evidence: `video-tutorial-no-captions.md:91` — `aria-label="video player"` is hardcoded and does not reference `title` or `videoId`
+   - Evidence: `video-tutorial-no-captions.md:89` — `aria-label="video player"` is hardcoded and does not reference `title` or `videoId`
    - User group: Screen reader users
    - Expected fix: Set `aria-label={title}` or `aria-label={`Tutorial video: ${title}`}`
 

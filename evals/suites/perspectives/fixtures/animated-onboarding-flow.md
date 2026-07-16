@@ -21,7 +21,6 @@ const OnboardingWizard = () => {
     if (step < STEPS.length - 1) {
       setStep(s => s + 1);
     } else {
-      // BUG: Confetti animation — 200+ particles for 3 seconds, no reduced-motion check
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
     }
@@ -29,7 +28,6 @@ const OnboardingWizard = () => {
 
   const goBack = () => step > 0 && setStep(s => s - 1);
 
-  // BUG: Confetti particle animation — WCAG 2.3.1
   useEffect(() => {
     if (!showConfetti || !canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -62,7 +60,6 @@ const OnboardingWizard = () => {
     <div className="onboarding">
       {showConfetti && <canvas ref={canvasRef} className="confetti-canvas" />}
 
-      {/* BUG: Step icons bounce on activation — no prefers-reduced-motion */}
       <div className="step-icons">
         {STEPS.map((s, i) => (
           <div
@@ -74,12 +71,10 @@ const OnboardingWizard = () => {
         ))}
       </div>
 
-      {/* BUG: Progress bar smooth-fill animation — no reduced-motion */}
       <div className="progress-track">
         <div className="progress-fill" style={{ width: `${(step / (STEPS.length - 1)) * 100}%` }} />
       </div>
 
-      {/* BUG: Full-viewport slide transition — translateX(100%), no reduced-motion — WCAG 2.3.1 */}
       <div className="step-container">
         <div className="step-slider" style={{ transform: `translateX(-${step * 100}%)`, transition: 'transform 0.5s ease' }}>
           {STEPS.map((s, i) => (
@@ -119,7 +114,6 @@ export default OnboardingWizard;
   margin: 0 auto;
   padding: 32px;
   position: relative;
-  /* BUG: Background gradient shift animation — subtle but continuous */
   background: linear-gradient(135deg, #f0f4ff, #e8f5e9);
   transition: background 0.8s ease;
 }
@@ -138,7 +132,6 @@ export default OnboardingWizard;
   margin-bottom: 16px;
 }
 
-/* BUG: Bounce animation on active step icon — no reduced-motion guard */
 .step-icon {
   width: 36px; height: 36px;
   border-radius: 50%;
@@ -160,8 +153,6 @@ export default OnboardingWizard;
   100% { transform: scale(1); }
 }
 
-/* BUG: Progress bar smooth-fill — no reduced-motion override */
-/* No @media (prefers-reduced-motion: reduce) anywhere in this stylesheet */
 .progress-track {
   height: 6px; background: #e0e0e0; border-radius: 3px; margin-bottom: 24px;
 }
@@ -177,7 +168,6 @@ export default OnboardingWizard;
 
 .step-slider {
   display: flex;
-  /* transition defined inline — also no reduced-motion */
 }
 
 .step-panel {
@@ -228,13 +218,13 @@ input:focus { outline: 3px solid #1565c0; outline-offset: 2px; }
 
 1. **CRITICAL: Full-viewport slide transitions without prefers-reduced-motion — WCAG 2.3.1**
    `translateX(-${step * 100}%)` with `transition: transform 0.5s ease` applied inline. No `@media (prefers-reduced-motion)` block exists anywhere. Full-viewport translations are high-risk for vestibular symptoms.
-   - Evidence: Line 82 — inline style with transition; no media query guard in CSS
+   - Evidence: Line 78 — inline style with transition; no media query guard in CSS
    - User group: Vestibular disorder users (BPPV, migraine, motion sickness)
    - Fix: Wrap in `useReducedMotion()` hook; use instant swap or opacity crossfade for reduced-motion users
 
 2. **CRITICAL: Confetti particle animation — 200+ moving elements for 3 seconds — WCAG 2.3.1**
    Canvas-based confetti spawns 200 particles with continuous movement via requestAnimationFrame. No prefers-reduced-motion check before starting animation.
-   - Evidence: Lines 29-50 — confetti effect with no media query or JS matchMedia check
+   - Evidence: Lines 28-48 — confetti effect with no media query or JS matchMedia check
    - User group: Vestibular users, photosensitive users
    - Fix: Check `window.matchMedia('(prefers-reduced-motion: reduce)')` before starting; show static "Congratulations" instead
 

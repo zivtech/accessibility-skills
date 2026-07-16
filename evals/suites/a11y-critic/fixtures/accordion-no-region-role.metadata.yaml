@@ -14,13 +14,13 @@ expected_findings:
       - description: "Missing role='region' on accordion panel"
         severity: MAJOR
         wcag: "WAI-ARIA Accordion Pattern"
-        evidence: "Line 29-35: accordion-panel div has no role attribute"
+        evidence: "Line 29-32: accordion-panel div has no role attribute"
         user_group: "Screen reader users"
 
       - description: "Missing aria-labelledby on accordion panel"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value (region label)"
-        evidence: "Line 29-35: accordion-panel has no aria-labelledby attribute"
+        evidence: "Line 29-32: accordion-panel has no aria-labelledby attribute"
         user_group: "Screen reader users"
 
   - category: should_find

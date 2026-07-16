@@ -21,8 +21,6 @@ const InfiniteScrollFeed = () => {
   const sentinelRef = useRef(null);
   const containerRef = useRef(null);
 
-  // BUG: Auto-loads on scroll — no "Load more" button alternative
-  // Keyboard users get trapped in infinite Tab sequence
   const loadMore = useCallback(() => {
     if (loading) return;
     setLoading(true);
@@ -41,7 +39,6 @@ const InfiniteScrollFeed = () => {
     return () => observer.disconnect();
   }, [loadMore]);
 
-  // BUG: Relative timestamps update every 60s — content shifts while reading
   const [, setTick] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => setTick(t => t + 1), 60000);
@@ -59,9 +56,6 @@ const InfiniteScrollFeed = () => {
   return (
     <main className="feed-page">
       <h1>Your Feed</h1>
-
-      {/* BUG: No position indicator, no "back to top", no page numbers —
-          user cannot tell where they are in the feed — WCAG 2.4.8 */}
 
       <div className="feed-container" ref={containerRef}>
         {cards.map(card => (
@@ -87,7 +81,6 @@ const InfiniteScrollFeed = () => {
           )}
         </div>
 
-        {/* BUG: No "end of feed" indicator — feed appears infinite */}
       </div>
     </main>
   );
@@ -110,7 +103,6 @@ export default InfiniteScrollFeed;
   color: #111;
 }
 
-/* BUG: No position indicator UI — no page numbers, no "back to top" */
 .feed-container {
   display: flex;
   flex-direction: column;
@@ -223,7 +215,7 @@ export default InfiniteScrollFeed;
 
 2. **MAJOR: Auto-loads on scroll — no "Load more" button alternative — WCAG 2.2.2 / 2.1.1**
    IntersectionObserver triggers auto-load with no explicit "Load more" button. Keyboard users tabbing through cards trigger loading when Tab reaches the sentinel, creating an infinite Tab sequence.
-   - Evidence: Lines 25-35 — IntersectionObserver auto-loads; no button alternative
+   - Evidence: Lines 24-33 — IntersectionObserver auto-loads; no button alternative
    - User group: Keyboard users, cognitive users
    - Fix: Add "Load more" button before sentinel; make auto-load an opt-in preference
 
@@ -235,7 +227,7 @@ export default InfiniteScrollFeed;
 
 4. **MINOR: Relative timestamps change while reading — Cognitive best practice**
    Timestamps like "3m ago" update every 60 seconds via setInterval, shifting content the user is reading.
-   - Evidence: Lines 40-43 — setInterval re-renders timestamps every 60s
+   - Evidence: Lines 38-41 — setInterval re-renders timestamps every 60s
    - User group: Cognitive/attention users
    - Fix: Use static timestamps (e.g., "2:15 PM") or only update when off-screen
 

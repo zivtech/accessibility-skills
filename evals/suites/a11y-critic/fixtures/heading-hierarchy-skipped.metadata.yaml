@@ -14,15 +14,15 @@ expected_findings:
       - description: "Heading hierarchy skips from h1 directly to h3"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships (logical document structure)"
-        evidence: "Lines 8-11: h1 'Introduction...' followed immediately by h3 'Why Accessibility...', skipping h2"
+        evidence: "Lines 8-10: h1 'Introduction...' followed immediately by h3 'Why Accessibility...', skipping h2"
         user_group: "Screen reader users navigating by heading level (h key in NVDA/JAWS)"
         expected_behavior: "h1 should be followed by h2, then optionally h3. Skipped levels break navigation structure."
-        fix: "Change the first group of h3 to h2 (lines 8, 12, 16) to create consistent h1 > h2 hierarchy"
+        fix: "Change the first group of h3 to h2 (lines 8, 11, 15) to create consistent h1 > h2 hierarchy"
 
       - description: "Inconsistent heading hierarchy (h3 then h2)"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships"
-        evidence: "Line 20 (h3) followed by line 22 (h2). After using h3 for subsections, jumping back to h2 breaks hierarchy."
+        evidence: "Line 19 (h3) followed by line 21 (h2). After using h3 for subsections, jumping back to h2 breaks hierarchy."
         user_group: "Screen reader users"
         expected_behavior: "Once h3 is used for subsections under h1, h2 should not appear later. Hierarchy must be consistent."
         fix: "Either make all subsections h2 (and promote h3 if needed), or maintain h1 > h3 if h2 is not used"

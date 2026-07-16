@@ -51,8 +51,6 @@ import React, { useState, useRef, useEffect } from 'react';
 .message-timestamp {
   font-size: 11px;
   color: #999;
-  /* BUG: Relative timestamps ("2 minutes ago") update every 60s while the user is
-     reading — content changes without user interaction, disorienting for cognitive users */
   transition: none;
 }
 
@@ -72,7 +70,6 @@ import React, { useState, useRef, useEffect } from 'react';
   height: 8px;
   border-radius: 50%;
   background: #999;
-  /* BUG: Infinite bounce animation with no prefers-reduced-motion override */
   animation: bounce 0.6s infinite alternate;
 }
 
@@ -81,11 +78,7 @@ import React, { useState, useRef, useEffect } from 'react';
   to   { transform: translateY(-6px); }
 }
 
-/* BUG: No @media (prefers-reduced-motion: reduce) rule to suppress typing animation */
-
 .new-message-flash {
-  /* BUG: New message notification relies on a background-color flash animation only —
-     no text "New message" label, no sound option, no aria-live for the notification bar */
   animation: flashBg 0.4s ease-out;
   background: #ebf8ff;
 }
@@ -149,8 +142,6 @@ import React, { useState, useRef, useEffect } from 'react';
   border-radius: 8px;
   position: absolute;
   bottom: 70px;
-  /* BUG: Emoji buttons have no keyboard grid navigation — Tab moves through all 64 buttons
-     linearly; no arrow-key grid navigation, no focus trap, no Escape to close */
 }
 
 .emoji-btn {
@@ -166,7 +157,6 @@ import React, { useState, useRef, useEffect } from 'react';
   background: #f0f0f0;
 }
 
-/* BUG: .emoji-btn has no :focus-visible styles — keyboard focus not visible in grid */
 */
 
 const INITIAL_MESSAGES = [
@@ -197,14 +187,10 @@ const ChatInterface = () => {
   const [, setTick] = useState(0);
   const messagesEndRef = useRef(null);
 
-  // BUG: Auto-scroll fires on every message update with no pause mechanism.
-  // WCAG 2.2.2 (Pause, Stop, Hide) — user has no way to pause auto-scroll while reading.
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // BUG: Relative timestamps update every 60s via setInterval.
-  // Content changes while user reads — no way to freeze timestamps.
   useEffect(() => {
     const id = setInterval(() => setTick((n) => n + 1), 60000);
     return () => clearInterval(id);
@@ -228,8 +214,6 @@ const ChatInterface = () => {
       const assistantMsg = {
         id: Date.now() + 1,
         role: 'assistant',
-        // BUG: New message added to messages triggers auto-scroll AND a color flash
-        // New message notification is color-flash only — no text announcement beyond aria-live
         text: 'Thanks for your message. Let me look into that for you.',
         time: new Date(),
         isNew: true,
@@ -264,14 +248,9 @@ const ChatInterface = () => {
             <div
               className={`message-bubble ${msg.role} ${msg.isNew ? 'new-message-flash' : ''}`}
             >
-              {/* BUG: new-message-flash class applies color animation only —
-                  the visual-flash notification has no text label or aria-live for the
-                  "new message" notification specifically (role=log handles content,
-                  but the flash as a distinct "new" signal is color-only) */}
               {msg.text}
             </div>
             <div className="message-timestamp">
-              {/* BUG: Relative timestamp updates every 60s without user action */}
               {formatRelativeTime(msg.time)}
             </div>
           </div>
@@ -279,7 +258,6 @@ const ChatInterface = () => {
 
         {isTyping && (
           <div className="typing-indicator" aria-label="Assistant is typing">
-            {/* BUG: Infinite bounce animation with no prefers-reduced-motion override */}
             <span className="typing-dot" />
             <span className="typing-dot" style={{ animationDelay: '0.2s' }} />
             <span className="typing-dot" style={{ animationDelay: '0.4s' }} />
@@ -302,16 +280,12 @@ const ChatInterface = () => {
 
         {showEmojiPicker && (
           <div className="emoji-grid" role="grid" aria-label="Emoji picker">
-            {/* BUG: No arrow-key grid navigation — tabbing through 64 emoji one by one */}
-            {/* BUG: No Escape key handler to close the picker */}
-            {/* BUG: Emoji buttons have no :focus-visible styles */}
             {EMOJI_LIST.map((emoji) => (
               <button
                 key={emoji}
                 className="emoji-btn"
                 onClick={() => insertEmoji(emoji)}
                 aria-label={emoji}
-                // BUG: No onKeyDown handler for arrow navigation within grid
               >
                 {emoji}
               </button>

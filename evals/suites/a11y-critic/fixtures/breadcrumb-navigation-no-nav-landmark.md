@@ -8,9 +8,6 @@ import React from 'react';
 const BuggyBreadcrumb = ({ items = [] }) => {
   return (
     <div className="breadcrumb-container">
-      {/* BUG: No <nav> landmark to identify this as navigation */}
-      {/* BUG: No aria-label to describe the breadcrumb purpose */}
-      {/* Screen reader just sees a list without knowing it's breadcrumb navigation */}
       <ol className="breadcrumb-list">
         {items.map((item, idx) => (
           <li key={idx} className="breadcrumb-item">
@@ -19,7 +16,6 @@ const BuggyBreadcrumb = ({ items = [] }) => {
             ) : (
               <a href={item.href}>{item.label}</a>
             )}
-            {/* BUG: Using "/" as visual separator, not screen reader accessible */}
             {idx < items.length - 1 && (
               <span className="breadcrumb-separator" aria-hidden="true">/</span>
             )}
@@ -62,7 +58,7 @@ export default BuggyBreadcrumb;
    - Fix: Add aria-label="Breadcrumb" to nav element
 
 3. **MINOR: Potential confusion with visual separators** — While separators use aria-hidden, the ordered list structure with separators may be confusing. Could be clarified with aria-label on nav or breadcrumb structure documentation.
-   - Evidence: `breadcrumb-navigation-no-nav-landmark.md:20-22` (separators are visual only)
+   - Evidence: `breadcrumb-navigation-no-nav-landmark.md:17-18` (separators are visual only)
    - User group: Screen reader users
    - Expected: List structure clear, but context helpful
    - Fix: Ensure list context clearly communicates breadcrumb purpose

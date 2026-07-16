@@ -14,13 +14,13 @@ expected_findings:
       - description: "Missing <fieldset> to group related checkboxes"
         severity: CRITICAL
         wcag: "1.3.1 Info and Relationships"
-        evidence: "Line 18-22: div wrapper instead of fieldset"
+        evidence: "Line 18-20: div wrapper instead of fieldset"
         user_group: "Screen reader users"
 
       - description: "Missing <legend> to label the group"
         severity: CRITICAL
         wcag: "1.3.1 Info and Relationships + 3.3.2 Labels or Instructions"
-        evidence: "Line 18-22: group-label is div, should be legend"
+        evidence: "Line 18-20: group-label is div, should be legend"
         user_group: "Screen reader users"
 
   - category: should_find
@@ -28,7 +28,7 @@ expected_findings:
     items:
       - description: "Group context lost to screen reader"
         severity: MAJOR
-        evidence: "Line 27-36: individual labels only, no group relationship"
+        evidence: "Line 24-32: individual labels only, no group relationship"
         user_group: "Screen reader users"
 
   - category: nice_to_find

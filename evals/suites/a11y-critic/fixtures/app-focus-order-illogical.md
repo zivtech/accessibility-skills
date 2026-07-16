@@ -27,13 +27,8 @@ const AppLayout = () => {
       </header>
 
       <div className="app-body">
-        {/* BUG: Main content appears BEFORE sidebar in DOM order.
-            CSS order: -1 on sidebar visually moves it left,
-            but keyboard tab order follows DOM: main → sidebar */}
         <main className="main-content">
           <div id="content">
-            {/* BUG: Skip link targets this div, but div is not
-                focusable — no tabindex="-1". Skip link does nothing. */}
             <h1>Dashboard</h1>
           </div>
 
@@ -85,8 +80,6 @@ const AppLayout = () => {
         </aside>
       </div>
 
-      {/* BUG: tabIndex={1} forces this to receive focus BEFORE
-          skip link and all other content */}
       <button
         className="fab"
         tabIndex={1}
@@ -168,9 +161,6 @@ export default AppLayout;
 
 /* ---- App Body (Flex Layout) ---- */
 
-/* BUG: DOM order is main → sidebar, but CSS order: -1 on sidebar
-   visually places sidebar on the left. Keyboard tab order follows
-   DOM, so users tab through all main content before reaching sidebar. */
 .app-body {
   display: flex;
   min-height: calc(100vh - 56px);
@@ -224,10 +214,6 @@ export default AppLayout;
   color: #0f172a;
 }
 
-/* BUG: Focus indicator on sidebar links has ~1.5:1 contrast ratio.
-   #a8d0f0 (light blue) on #f8fafc (near-white sidebar background)
-   fails the 3:1 minimum required by WCAG 2.4.7 / 2.4.13.
-   Main content links below have a proper high-contrast indicator. */
 .sidebar-nav a:focus {
   outline: 2px solid #a8d0f0;
   outline-offset: 2px;
@@ -340,14 +326,14 @@ export default AppLayout;
 ## Accessibility Issues (Planted)
 
 1. **MUST-FIND / MAJOR: Tab order does not match visual layout — CSS `order` creates DOM/visual mismatch.** The sidebar renders AFTER `<main>` in DOM order but visually appears on the LEFT via `order: -1` on `.sidebar` inside the flexbox `.app-body`. A keyboard user tabs through the skip link, then the header, then ALL main content links (5 links across 2 sections), and only THEN reaches sidebar navigation. The visual left-to-right reading order (sidebar → main) does not match the DOM tab order (main → sidebar).
-   - Evidence: `app-focus-order-illogical.md:30-73` — `<main>` rendered before `<aside>` in JSX; CSS `.sidebar { order: -1 }` (line ~88 of CSS) visually reorders it left
+   - Evidence: `app-focus-order-illogical.md:30-68` — `<main>` rendered before `<aside>` in JSX; CSS `.sidebar { order: -1 }` (line ~88 of CSS) visually reorders it left
    - WCAG: 2.4.3 Focus Order ("focusable components receive focus in an order that preserves meaning and operability"), 1.3.2 Meaningful Sequence
    - Impact: Keyboard user expecting to tab into sidebar first (matching visual layout) must instead tab through 5+ main content links. Disorienting — the focus appears to jump to the center of the page, skipping the left column entirely
    - User group: Keyboard users (all), screen reader users (tab order confusion)
    - Fix: Move `<aside>` before `<main>` in the DOM (matching visual order), remove `order: -1` from CSS
 
 2. **SHOULD-FIND / MAJOR: Skip link targets a non-focusable element — clicking it does nothing for keyboard users.** The skip link's `href="#content"` points to `<div id="content">`, but a plain `<div>` is not focusable without `tabindex="-1"`. When a keyboard user activates the skip link, the browser may scroll to the element but focus does not move — the next Tab press goes to whatever follows the skip link in DOM order (the header logo), not to the main content area.
-   - Evidence: `app-focus-order-illogical.md:33-36` — `<div id="content">` has no tabindex attribute
+   - Evidence: `app-focus-order-illogical.md:30-31` — `<div id="content">` has no tabindex attribute
    - WCAG: 2.4.1 Bypass Blocks (skip link exists but doesn't function), 2.4.3 Focus Order
    - Impact: Skip link is cosmetically present but functionally broken. Keyboard users cannot bypass the header navigation. The feature exists in name only.
    - User group: Keyboard users, screen reader users
@@ -361,7 +347,7 @@ export default AppLayout;
    - Fix: Change sidebar focus outline to a higher-contrast color, e.g., `#2563eb` (matching main content) or `#1e40af` (~8.6:1 on white)
 
 4. **NICE-TO-FIND / MINOR: Positive `tabIndex={1}` on FAB forces it to receive focus before all other content.** The floating action button has `tabIndex={1}`, which places it in the tab order BEFORE every element with `tabIndex={0}` or no explicit tabindex. This means the FAB receives focus before the skip link, header navigation, sidebar, and main content. The "Create new report" button becomes the very first focusable element on the page — a nonsensical focus entry point that also defeats the skip link even if the skip link target were fixed.
-   - Evidence: `app-focus-order-illogical.md:89-96` — `tabIndex={1}` on the `<button className="fab">`
+   - Evidence: `app-focus-order-illogical.md:83-89` — `tabIndex={1}` on the `<button className="fab">`
    - WCAG: 2.4.3 Focus Order (positive tabindex creates unpredictable order)
    - WAI-ARIA Authoring Practices: "Do not use tabindex values greater than 0" — positive tabindex is an anti-pattern that creates maintenance nightmares and unpredictable focus order
    - Impact: First Tab press on the page goes to a button in the bottom-right corner. User must tab past it to reach the skip link. Compounds with Issue #2: even if the skip link worked, the FAB preempts it.

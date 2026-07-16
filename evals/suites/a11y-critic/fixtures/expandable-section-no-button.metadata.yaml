@@ -14,25 +14,25 @@ expected_findings:
       - description: "Using <div> instead of <button> for interactive trigger"
         severity: CRITICAL
         wcag: "1.3.1 Info and Relationships (semantic meaning)"
-        evidence: "Line 14-23: div with onClick handler"
+        evidence: "Line 14-19: div with onClick handler"
         user_group: "All users (keyboard, AT)"
 
       - description: "Missing aria-expanded state announcement"
         severity: CRITICAL
         wcag: "4.1.2 Name, Role, Value (state communication)"
-        evidence: "Line 14-23: no aria-expanded attribute"
+        evidence: "Line 14-19: no aria-expanded attribute"
         user_group: "Screen reader users"
 
       - description: "No keyboard support for activation"
         severity: CRITICAL
         wcag: "2.1.1 Keyboard (all interactive elements must be keyboard accessible)"
-        evidence: "Line 14-23: div only responds to onClick, not keyboard"
+        evidence: "Line 14-19: div only responds to onClick, not keyboard"
         user_group: "Keyboard-only users"
 
       - description: "Missing role='button'"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value"
-        evidence: "Line 14-23: no role attribute"
+        evidence: "Line 14-19: no role attribute"
         user_group: "Screen reader users"
 
   - category: should_find

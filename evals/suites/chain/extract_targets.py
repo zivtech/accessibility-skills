@@ -2,9 +2,11 @@
 """Extract component files from fixture .md files for chain eval runs.
 
 For each of the 8 chain fixtures, reads the source fixture .md, extracts fenced
-code blocks, strips // BUG: and /* BUG: */ comments (exact patterns from
-evals/suites/perspectives/strip_bug_comments.py), and writes real component files
-to evals/suites/chain/targets/<fixture-id>/.
+code blocks, strips // BUG: and /* BUG: */ comments, and writes real component
+files to evals/suites/chain/targets/<fixture-id>/. (Source fixtures ship
+hint-free since the 2026-07-16 de-hint pass, so the stripping here is a
+belt-and-suspenders no-op guard; patterns originally mirrored the since-deleted
+evals/suites/perspectives/strip_bug_comments.py.)
 
 Also writes a README.md per target dir with the fixture's expected-behavior prose
 (so the scout has context a real repo would have).
@@ -54,14 +56,14 @@ LANG_TO_FILENAME = {
 
 
 # ---------------------------------------------------------------------------
-# Bug comment stripping (mirrors strip_bug_comments.py:18-65 exactly)
+# Bug comment stripping (kept as a guard; fixtures ship hint-free since 2026-07-16)
 # ---------------------------------------------------------------------------
 
 def strip_bug_comments(content: str):
     """Remove // BUG: and /* BUG: comments from code blocks in markdown.
 
     Returns (cleaned_content, stripped_count).
-    Extends strip_bug_comments.py:18-65 with multi-line /* ... */ block support.
+    Handles single-line forms plus multi-line /* ... */ block support.
     Handles both bare /* */ and JSX {/* */} forms, including blocks where the
     opening /* is on its own line and BUG: appears in the body (modal pattern).
     """

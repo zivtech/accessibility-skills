@@ -15,7 +15,7 @@ expected_findings:
         severity: MAJOR
         wcag: "2.1.1 Keyboard (all functionality must be keyboard accessible)"
         apa_pattern: "WAI-ARIA Tabs Pattern (requires arrow keys for navigation)"
-        evidence: "Line 10-16: handleTabKeyDown only handles Enter/Space; no Left/Right arrow handling"
+        evidence: "Line 10-15: handleTabKeyDown only handles Enter/Space; no Left/Right arrow handling"
         user_group: "Keyboard-only users"
         expected_behavior: "Left arrow cycles to previous tab (wrapping at start), Right arrow cycles to next tab (wrapping at end). Per WAI-ARIA APG Tabs example."
         fix: "Add arrow key handler in handleTabKeyDown. Left arrow: setActiveTab(prev => prev > 0 ? prev - 1 : tabs.length - 1). Right arrow: setActiveTab(next => next < tabs.length - 1 ? next + 1 : 0). After state update, focus the newly active tab button."
@@ -26,7 +26,7 @@ expected_findings:
       - description: "Active tab not focused after keyboard selection"
         severity: MINOR
         wcag: "2.1.1 Keyboard + 4.1.2 Name, Role, Value (focus management)"
-        evidence: "Line 34: setActiveTab changes state but doesn't move focus to newly active tab"
+        evidence: "Line 32: setActiveTab changes state but doesn't move focus to newly active tab"
         user_group: "Keyboard-only users (reduces discoverability)"
         expected_behavior: "After arrow key selects a new tab, focus should move to that tab button"
         fix: "Store tab button refs and after handleTabClick, focus the newly active tab button"

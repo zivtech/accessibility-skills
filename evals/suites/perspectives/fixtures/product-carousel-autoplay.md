@@ -15,7 +15,6 @@ const products = [
 const ProductCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // BUG: Auto-advances every 3 seconds with no pause/stop control — WCAG 2.2.2
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % products.length);
@@ -34,12 +33,10 @@ const ProductCarousel = () => {
   const product = products[currentIndex];
 
   return (
-    // BUG: Parallax background with no reduced-motion alternative — WCAG 2.3.1
     <div className="carousel-wrapper" data-parallax="true">
       <div
         className="carousel-track"
         style={{
-          // BUG: CSS transform transition ignores prefers-reduced-motion — WCAG 2.3.1
           transform: `translateX(-${currentIndex * 100}%)`,
           transition: 'transform 0.6s ease',
         }}
@@ -47,7 +44,6 @@ const ProductCarousel = () => {
         {products.map((p) => (
           <div key={p.id} className="carousel-slide">
             <img src={p.image} alt={p.name} />
-            {/* BUG: Rapid fade-in/fade-out animation — distracting for cognitive/attention users */}
             <span className="product-badge">{p.badge}</span>
             <h2>{p.name}</h2>
             <p className="price">{p.price}</p>
@@ -71,7 +67,6 @@ const ProductCarousel = () => {
         ›
       </button>
 
-      {/* BUG: No aria-live region — screen reader users don't hear slide changes */}
       <div className="carousel-dots">
         {products.map((_, i) => (
           <span
@@ -89,19 +84,16 @@ export default ProductCarousel;
 ```
 
 ```css
-/* BUG: No @media (prefers-reduced-motion: reduce) override anywhere in this stylesheet */
 
 .carousel-wrapper {
   position: relative;
   overflow: hidden;
-  /* BUG: Parallax background shift — scrolling triggers continuous motion */
   background-attachment: fixed;
   background-image: url('/img/pattern.svg');
 }
 
 .carousel-track {
   display: flex;
-  /* transition defined inline via React style prop — also no reduced-motion check */
 }
 
 .carousel-slide {
@@ -110,7 +102,6 @@ export default ProductCarousel;
   position: relative;
 }
 
-/* BUG: Rapid alternating opacity animation on badges — no reduced-motion guard */
 .product-badge {
   position: absolute;
   top: 12px;
@@ -189,13 +180,13 @@ export default ProductCarousel;
 
 1. **CRITICAL: No pause/stop control for auto-advancing content — WCAG 2.2.2 (Pause, Stop, Hide)**
    Auto-advance fires every 3 seconds with no mechanism to pause, stop, or hide the motion. WCAG 2.2.2 requires that moving content lasting more than 5 seconds can be paused. Users with vestibular disorders, cognitive disabilities, and attention difficulties are directly harmed by content they cannot stop.
-   - Evidence: `product-carousel-autoplay.md:16-20` (`setInterval` with no pause mechanism)
+   - Evidence: `product-carousel-autoplay.md:16-19` (`setInterval` with no pause mechanism)
    - User group: Vestibular disorder users, cognitive/attention users, photosensitive users
    - Fix: Add a pause/play button that clears/restarts the interval
 
 2. **MAJOR: CSS transition animation ignores `prefers-reduced-motion` — WCAG 2.3.1 (Three Flashes or Below Threshold)**
    The slide transition (`transform 0.6s ease`) is applied unconditionally via inline style. No `@media (prefers-reduced-motion: reduce)` block exists anywhere in the stylesheet to disable or reduce this motion. Users who have enabled reduced-motion at the OS level receive no accommodation. Large viewport-width slide translations are among the most likely CSS animations to trigger vestibular symptoms.
-   - Evidence: `product-carousel-autoplay.md:34-37` (inline transition with no media query guard)
+   - Evidence: `product-carousel-autoplay.md:33-35` (inline transition with no media query guard)
    - User group: Vestibular disorder users (motion sickness, BPPV, migraine)
    - Fix: Wrap the transition in a `useReducedMotion` check; use instant swap or crossfade instead
 
@@ -213,7 +204,7 @@ export default ProductCarousel;
 
 5. **MINOR: No `aria-live` region announcing slide changes — screen reader experience**
    When the carousel auto-advances or the user navigates manually, the slide change produces no announcement. Screen reader users who are focused elsewhere on the page have no way to know the content has changed. An `aria-live="polite"` region with the current product name would provide non-intrusive announcements.
-   - Evidence: `product-carousel-autoplay.md:57-67` (dot indicators are `aria-hidden`, no live region present)
+   - Evidence: `product-carousel-autoplay.md:53-63` (dot indicators are `aria-hidden`, no live region present)
    - User group: Screen reader users
    - Fix: Add `<div aria-live="polite" aria-atomic="true" className="sr-only">{product.name}</div>`
 

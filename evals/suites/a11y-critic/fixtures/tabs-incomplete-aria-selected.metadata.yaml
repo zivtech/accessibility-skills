@@ -15,7 +15,7 @@ expected_findings:
         severity: MAJOR
         wcag: "2.1.1 Keyboard, 4.1.2 Name/Role/Value"
         apa_pattern: "WAI-ARIA Tabs Pattern — focus MUST move to active tab on arrow key"
-        evidence: "Lines 16-19, 22-25: setActiveTab called but tabRefs.current[newIndex].focus() never called"
+        evidence: "Lines 16-18, 21-23: setActiveTab called but tabRefs.current[newIndex].focus() never called"
         user_group: "Screen reader users (wrong tab announced), keyboard users (focus indicator on wrong tab)"
         fix: "Add tabRefs.current[newIndex].focus() after setActiveTab in each arrow key handler"
 
@@ -26,7 +26,7 @@ expected_findings:
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships, 4.1.2 Name/Role/Value"
         apa_pattern: "WAI-ARIA Tabs Pattern — each tabpanel must have aria-labelledby"
-        evidence: "Lines 60-68: tabpanel divs have id and role but no aria-labelledby"
+        evidence: "Lines 58-66: tabpanel divs have id and role but no aria-labelledby"
         user_group: "Screen reader users (can't identify which tab owns the panel)"
         fix: "Add aria-labelledby={`tab-${product.id}`} to each tabpanel"
 
@@ -36,14 +36,14 @@ expected_findings:
       - description: "Tabs missing aria-controls linking to panels"
         severity: MINOR
         wcag: "4.1.2 Name/Role/Value (recommended)"
-        evidence: "Lines 40-52: tab buttons have id but no aria-controls"
+        evidence: "Lines 38-50: tab buttons have id but no aria-controls"
         user_group: "Screen reader users (breaks bidirectional tab↔panel association)"
         expected_to_find: "40%"
 
       - description: "Badge count not announced with accessible context"
         severity: MINOR
         wcag: "1.3.1 Info and Relationships"
-        evidence: "Lines 48-50: bare span with count, no aria-label explaining what the number means"
+        evidence: "Lines 46-48: bare span with count, no aria-label explaining what the number means"
         user_group: "Screen reader users (hear '42' with no context)"
         expected_to_find: "20%"
 

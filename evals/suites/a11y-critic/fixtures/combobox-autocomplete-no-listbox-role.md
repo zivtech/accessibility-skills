@@ -67,23 +67,18 @@ const BuggyCombobox = ({ label, options = [] }) => {
           aria-autocomplete="list"
           aria-expanded={isOpen}
           role="combobox"
-          // BUG: No aria-owns or aria-controls pointing to suggestions list
         />
       </div>
       {isOpen && filtered.length > 0 && (
         <div
-          // BUG: Missing role="listbox" — just a div with no semantic meaning
-          // Screen reader user has no idea this is a list of suggestions
           className="suggestions-list"
           id="suggestions-popup"
         >
           {filtered.map((option, idx) => (
             <div
               key={idx}
-              // BUG: No role="option" on items
               onClick={() => handleSelect(option)}
               className={selectedIndex === idx ? 'suggestion-item selected' : 'suggestion-item'}
-              // BUG: No aria-selected to announce selection state
             >
               {option}
             </div>
@@ -117,13 +112,13 @@ export default BuggyCombobox;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: Missing role="listbox" on suggestions container** — Screen reader user has no indication that the popup is a selectable list. The div is announced as a generic container, not a listbox. Per WAI-ARIA Combobox (with Listbox Popup) Pattern, aria-owns or aria-controls must establish the relationship.
-   - Evidence: `combobox-autocomplete-no-listbox-role.md:64-72` (suggestions div has no role attribute)
+   - Evidence: `combobox-autocomplete-no-listbox-role.md:64-71` (suggestions div has no role attribute)
    - User group: Screen reader users (critical; cannot identify popup as list)
    - Expected: Popup container should have role="listbox"
    - Fix: Add role="listbox" to suggestions-list div
 
 2. **CRITICAL: Suggestion items missing role="option"** — Screen reader user cannot navigate items as options. Items announced as plain divs, not list items. Per combobox pattern, each item must have role="option" and aria-selected.
-   - Evidence: `combobox-autocomplete-no-listbox-role.md:73-82` (items are divs with no role)
+   - Evidence: `combobox-autocomplete-no-listbox-role.md:72-79` (items are divs with no role)
    - User group: Screen reader users (critical; cannot navigate as list items)
    - Expected: Items should have role="option"
    - Fix: Add role="option" and aria-selected={selectedIndex === idx} to item divs
@@ -135,7 +130,7 @@ export default BuggyCombobox;
    - Fix: Add aria-controls="suggestions-popup" to input element
 
 4. **MAJOR: Missing aria-selected on items** — No state announcement for item selection. Screen reader user cannot determine which item is highlighted during keyboard navigation.
-   - Evidence: `combobox-autocomplete-no-listbox-role.md:73-82` (no aria-selected)
+   - Evidence: `combobox-autocomplete-no-listbox-role.md:72-79` (no aria-selected)
    - User group: Screen reader users
    - Expected: Selected item should announce aria-selected="true"
    - Fix: Add aria-selected={selectedIndex === idx} to each item

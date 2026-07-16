@@ -10,9 +10,6 @@ const BuggyRadioGroup = ({ label, options = [] }) => {
 
   return (
     <div className="radio-group">
-      {/* BUG: No <fieldset> to group related radios */}
-      {/* BUG: No <legend> to label the radio group */}
-      {/* Visual label is just a div, not semantic */}
       <div className="group-label">{label}</div>
       {options.map((option) => (
         <label key={option} className="radio-label">
@@ -22,8 +19,6 @@ const BuggyRadioGroup = ({ label, options = [] }) => {
             value={option}
             checked={selected === option}
             onChange={(e) => setSelected(e.target.value)}
-            // BUG: name="options" groups them in form submission but not semantically
-            // Screen reader doesn't announce group name
           />
           {option}
         </label>
@@ -51,7 +46,7 @@ export default BuggyRadioGroup;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: Missing <fieldset> to group related radio buttons** — Screen reader announces each radio as individual element. The name attribute groups them for form submission but not semantically. Per HTML semantics, radio groups should use <fieldset> for programmatic grouping.
-   - Evidence: `radio-button-group-no-grouping.md:9-13` (div wrapper, not fieldset)
+   - Evidence: `radio-button-group-no-grouping.md:9-12` (div wrapper, not fieldset)
    - User group: Screen reader users (critical)
    - Expected: Radio buttons should be wrapped in <fieldset>
    - Fix: Replace div with <fieldset> element
@@ -63,7 +58,7 @@ export default BuggyRadioGroup;
    - Fix: Replace group-label div with <legend> inside <fieldset>
 
 3. **MAJOR: name attribute alone is insufficient for AT** — While name="options" groups radios for form submission, it does not communicate group relationship to screen reader. Screen reader user navigating by Tab hears radios as isolated elements.
-   - Evidence: `radio-button-group-no-grouping.md:14-24` (name attribute present but no fieldset/legend)
+   - Evidence: `radio-button-group-no-grouping.md:13-21` (name attribute present but no fieldset/legend)
    - User group: Screen reader users
    - Expected: Radio group should announce as group with legend label
    - Fix: Use <fieldset> and <legend> alongside name attribute

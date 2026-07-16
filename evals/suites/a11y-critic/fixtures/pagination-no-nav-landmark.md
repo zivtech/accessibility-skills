@@ -8,8 +8,6 @@ import React from 'react';
 const BuggyPagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <div className="pagination-container">
-      {/* BUG: No <nav> element — pagination is navigation but uses div */}
-      {/* BUG: No aria-label describing pagination purpose */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -18,14 +16,11 @@ const BuggyPagination = ({ currentPage, totalPages, onPageChange }) => {
         Previous
       </button>
 
-      {/* BUG: Page numbers are displayed without context */}
       <div className="page-numbers">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            // BUG: No aria-current="page" to identify current page
-            // BUG: No indication that these are page numbers
             className={page === currentPage ? 'active' : ''}
             aria-label={`Page ${page}`}
           >
@@ -77,7 +72,7 @@ export default BuggyPagination;
    - Fix: Add aria-label="Pagination" to nav element
 
 3. **MAJOR: Missing aria-current="page" on current page** — Current page button should announce as current using aria-current="page". Without it, screen reader user cannot quickly identify which page is active beyond visual styling.
-   - Evidence: `pagination-no-nav-landmark.md:20-26` (no aria-current attribute)
+   - Evidence: `pagination-no-nav-landmark.md:18-23` (no aria-current attribute)
    - User group: Screen reader users
    - Expected: Active page button should have aria-current="page"
    - Fix: Add aria-current={page === currentPage ? "page" : undefined}

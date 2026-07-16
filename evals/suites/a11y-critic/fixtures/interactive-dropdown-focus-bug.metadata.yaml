@@ -14,7 +14,7 @@ expected_findings:
       - description: "Focus not restored to trigger button after selection"
         severity: MAJOR
         wcag: "2.1.2 No Keyboard Trap + WAI-ARIA Listbox Pattern"
-        evidence: "Line 41-45: handleSelect function closes dropdown but doesn't restore focus"
+        evidence: "Line 39-43: handleSelect function closes dropdown but doesn't restore focus"
         user_group: "Keyboard-only users"
 
       - description: "Focus not restored to trigger button after Escape key"

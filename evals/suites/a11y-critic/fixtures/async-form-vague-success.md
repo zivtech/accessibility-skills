@@ -34,8 +34,6 @@ const FeedbackForm = () => {
 
       if (!response.ok) throw new Error('Server error');
 
-      // BUG: aria-busy removed 200ms BEFORE success text is inserted.
-      // Screen readers may skip the announcement in the gap.
       setStatus('clearing');
       setTimeout(() => {
         setStatus('success');
@@ -50,7 +48,6 @@ const FeedbackForm = () => {
     <div className="feedback-form-container">
       <h2>Send Us Feedback</h2>
 
-      {/* Live region: has aria-live, role="status", aria-busy — surface looks correct */}
       <div
         ref={statusRef}
         role="status"
@@ -65,9 +62,6 @@ const FeedbackForm = () => {
             Submitting your feedback...
           </p>
         )}
-        {/* BUG: Message is generic — doesn't say WHAT was submitted.
-            A newsletter signup, feedback form, and support ticket
-            all produce "Your submission was successful!" */}
         {status === 'success' && (
           <p className="status-message success">
             Your submission was successful!
@@ -80,9 +74,6 @@ const FeedbackForm = () => {
         )}
       </div>
 
-      {/* BUG: Form fields remain editable after success — no disabled state,
-          no aria-disabled, no visual indication that submission already happened.
-          User could re-submit accidentally. */}
       <form onSubmit={handleSubmit} className="feedback-form">
         <div className="form-group">
           <label htmlFor="feedback-name">Full Name</label>
@@ -291,28 +282,28 @@ export default FeedbackForm;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Success message is generic — doesn't identify what was submitted** — The live region announces "Your submission was successful!" regardless of form context. A screen reader user who just submitted feedback, a newsletter signup, or a support ticket all hear the same message. Per WCAG 4.1.3 Status Messages, the status message should provide equivalent information to what a sighted user perceives — and a sighted user sees the form title "Send Us Feedback" along with the success message, establishing context. A screen reader user who submitted the form and navigated elsewhere before the announcement arrives hears only the generic "Your submission was successful!" with no way to know WHICH submission succeeded.
-   - Evidence: `async-form-vague-success.md:70-73` — hardcoded "Your submission was successful!" with no reference to form purpose or submitted data
+   - Evidence: `async-form-vague-success.md:65-67` — hardcoded "Your submission was successful!" with no reference to form purpose or submitted data
    - WCAG citation: 4.1.3 Status Messages (status message must provide equivalent information)
    - User group: Screen reader users — especially those with multiple forms open or who have navigated away from the form
    - Expected: "Your feedback has been sent successfully" or "Feedback from [name] submitted" — message should identify the action that completed
    - Fix: Change success message to include form context: `Your feedback has been sent. We'll respond to ${formData.email} within 2 business days.`
 
 2. **MAJOR: aria-busy cleared 200ms before success content arrives** — The `aria-busy` attribute transitions from `true` to `false` when status changes to `'clearing'`, but the success message text isn't inserted until 200ms later when status becomes `'success'`. During this gap, the live region is: not busy (aria-busy="false"), empty (no status message rendered), and polite (aria-live="polite"). Some screen readers (NVDA, JAWS) check the live region content when aria-busy transitions to false — if the region is empty at that moment, the announcement is skipped entirely. The success message that arrives 200ms later may or may not trigger a second announcement depending on the SR's debounce behavior.
-   - Evidence: `async-form-vague-success.md:37-41` — `setStatus('clearing')` removes aria-busy immediately, `setTimeout(() => setStatus('success'), 200)` inserts content later
+   - Evidence: `async-form-vague-success.md:37-39` — `setStatus('clearing')` removes aria-busy immediately, `setTimeout(() => setStatus('success'), 200)` inserts content later
    - WCAG citation: 4.1.3 Status Messages (announcement timing must ensure AT receives the message)
    - User group: Screen reader users — NVDA and JAWS most affected; VoiceOver somewhat more tolerant of timing gaps
    - Expected: aria-busy should remain true until the success message is ready, then both should update in the same render cycle
    - Fix: Remove the `clearing` intermediate state. Set status directly to `'success'` so aria-busy transitions to false in the same React render that inserts the success text.
 
 3. **MINOR: Form fields remain editable after successful submission** — After the success message appears, all form fields (name, email, message) remain interactive. No `disabled` or `aria-disabled` attribute is set, no visual dimming or "already submitted" state. A screen reader user tabbing through the form after submission encounters fully editable fields with no indication the form was already submitted. They could fill it in again and re-submit.
-   - Evidence: `async-form-vague-success.md:82-115` — no conditional disabled/aria-disabled based on success state; form fields always editable
+   - Evidence: `async-form-vague-success.md:76-106` — no conditional disabled/aria-disabled based on success state; form fields always editable
    - WCAG citation: 3.3.4 Error Prevention (for forms that submit data, provide ability to review/correct/confirm — but equally, prevent unintentional duplicate submissions)
    - User group: Screen reader users (no programmatic "done" state), cognitive disability users (may not remember they already submitted), motor impairment users (accidental re-activation)
    - Expected: After success, disable form fields and submit button, or replace form with confirmation content
    - Fix: When `status === 'success'`, set `disabled` on all inputs/textarea and the submit button, or conditionally render a confirmation view instead of the form
 
 4. **ENHANCEMENT: Success confirmation cannot be re-read after navigation** — The success message appears once in the live region. If the user navigates away (e.g., to another part of the page) and returns, the message is still visible but a screen reader won't re-announce it — the content didn't change. There's no mechanism to re-read the confirmation: no focus management to the success message, no heading in the confirmation, and the message isn't a landmark.
-   - Evidence: `async-form-vague-success.md:60-76` — status div has no tabindex, no heading, and is not a landmark. Once the live region announcement fires, the content is only discoverable by sequential navigation.
+   - Evidence: `async-form-vague-success.md:57-70` — status div has no tabindex, no heading, and is not a landmark. Once the live region announcement fires, the content is only discoverable by sequential navigation.
    - WCAG citation: Best practice — persistent status should be discoverable, not just announced once
    - User group: Screen reader users (can't re-find confirmation), cognitive disability users (may need to re-read to confirm)
    - Expected: Either move focus to the success message (with tabindex="-1"), or provide a heading/landmark that screen reader users can navigate to

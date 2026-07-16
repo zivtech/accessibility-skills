@@ -44,7 +44,7 @@ expected_findings:
       - description: "Success message is generic — doesn't identify what was submitted"
         severity: MAJOR
         wcag: "4.1.3 Status Messages"
-        evidence_requirement: "Reference to success message text (lines 70-73) showing hardcoded generic string without form context"
+        evidence_requirement: "Reference to success message text (lines 65-67) showing hardcoded generic string without form context"
         expected_to_find: "60%"
         discriminator: |
           This is the key separator between surface-level and substantive review.
@@ -59,7 +59,7 @@ expected_findings:
       - description: "aria-busy cleared 200ms before success content arrives in live region"
         severity: MAJOR
         wcag: "4.1.3 Status Messages"
-        evidence_requirement: "Reference to the clearing/success state transition (lines 37-41) showing the 200ms gap between aria-busy=false and content insertion"
+        evidence_requirement: "Reference to the clearing/success state transition (lines 37-39) showing the 200ms gap between aria-busy=false and content insertion"
         expected_to_find: "35%"
         discriminator: |
           Requires tracing the state machine: submitting → clearing → success.
@@ -74,13 +74,13 @@ expected_findings:
       - description: "Form fields remain editable after successful submission"
         severity: MINOR
         wcag: "3.3.4 Error Prevention"
-        evidence_requirement: "Reference to form fields (lines 82-115) showing no conditional disabled state after success"
+        evidence_requirement: "Reference to form fields (lines 76-106) showing no conditional disabled state after success"
         expected_to_find: "35%"
 
       - description: "Success confirmation not re-readable after navigation"
         severity: ENHANCEMENT
         wcag: "Best practice"
-        evidence_requirement: "Reference to status container (lines 60-76) lacking tabindex or focus management for re-discovery"
+        evidence_requirement: "Reference to status container (lines 57-70) lacking tabindex or focus management for re-discovery"
         expected_to_find: "15%"
 
   - category: false_positive_trap

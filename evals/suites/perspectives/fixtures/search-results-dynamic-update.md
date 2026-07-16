@@ -38,7 +38,6 @@ const SearchPage = () => {
       <h1>Documentation Search</h1>
 
       <div className="search-bar">
-        {/* BUG: input type="text" not type="search" — semantic issue */}
         <label htmlFor="search-input">Search documentation</label>
         <div className="input-wrapper">
           <input
@@ -49,20 +48,16 @@ const SearchPage = () => {
             placeholder="Search..."
           />
           {query && (
-            // BUG: Clear button has no aria-label — just "×" text
             <button className="clear-btn" onClick={() => setQuery('')}>×</button>
           )}
         </div>
       </div>
 
-      {/* BUG: No aria-live on results container — SR users unaware results changed */}
       <section className="results-section" aria-label="Search results">
-        {/* BUG: Count updates visually but no live region announces it */}
         <p className="results-count">
           {query ? `${results.length} results for "${query}"` : 'Enter a search term'}
         </p>
 
-        {/* BUG: Loading spinner is CSS-only — no aria-busy, no SR text */}
         {loading && <div className="spinner" />}
 
         {!loading && results.map(r => (
@@ -115,7 +110,6 @@ export default SearchPage;
   outline-offset: 2px;
 }
 
-/* BUG: Clear button — no aria-label, just × */
 .clear-btn {
   position: absolute;
   right: 8px;
@@ -137,7 +131,6 @@ export default SearchPage;
   margin: 16px 0 12px;
 }
 
-/* BUG: CSS-only spinner — no accessible text */
 .spinner {
   width: 24px;
   height: 24px;
@@ -207,19 +200,19 @@ export default SearchPage;
 
 1. **CRITICAL: No aria-live on results container — WCAG 4.1.3 (Status Messages)**
    Results update dynamically as the user types, but the results section has no `aria-live` attribute. Screen reader users focused on the input are unaware that results changed below.
-   - Evidence: Line 56 — `<section>` with `aria-label` but no `aria-live`
+   - Evidence: Line 54 — `<section>` with `aria-label` but no `aria-live`
    - User group: Screen reader users
    - Fix: Add `aria-live="polite" aria-atomic="true"` to the results section or a dedicated status div
 
 2. **MAJOR: "N results found" count updates visually but no live announcement**
    The count text at `<p className="results-count">` updates on each render but has no `aria-live` wrapper.
-   - Evidence: Lines 58-60 — text updates dynamically with no live region
+   - Evidence: Line 56 — text updates dynamically with no live region
    - User group: Screen reader users
    - Fix: Wrap in `<div aria-live="polite">` or add a separate `sr-only` live region
 
 3. **MAJOR: Loading spinner CSS-only — no aria-busy, no accessible text**
    `.spinner` is a CSS animation with no text content, no `aria-label`, and no `aria-busy` on the container.
-   - Evidence: Lines 63-64 — `<div className="spinner" />` with no ARIA
+   - Evidence: Lines 59-60 — `<div className="spinner" />` with no ARIA
    - User group: Screen reader users
    - Fix: Add `aria-busy="true"` to results section during load; add visually-hidden "Loading results" text
 
@@ -231,7 +224,7 @@ export default SearchPage;
 
 5. **MINOR: Clear search button "×" has no aria-label**
    Button contains only "×" character with no `aria-label`. Screen readers announce "times" or the character name.
-   - Evidence: Line 49 — `<button className="clear-btn">×</button>`
+   - Evidence: Line 48 — `<button className="clear-btn">×</button>`
    - User group: Screen reader users
    - Fix: Add `aria-label="Clear search"`
 

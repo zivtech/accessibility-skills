@@ -14,13 +14,13 @@ expected_findings:
       - description: "Missing role='alert'"
         severity: CRITICAL
         wcag: "4.1.2 Name, Role, Value (alert role for status messages)"
-        evidence: "Line 19-25: div has no role attribute"
+        evidence: "Line 19-24: div has no role attribute"
         user_group: "Screen reader users"
 
       - description: "Missing aria-live='assertive'"
         severity: CRITICAL
         wcag: "4.1.3 Status Messages (live regions announce changes)"
-        evidence: "Line 19-25: no aria-live attribute"
+        evidence: "Line 19-24: no aria-live attribute"
         user_group: "Screen reader users"
 
       - description: "No way for keyboard user to dismiss toast"
@@ -32,7 +32,7 @@ expected_findings:
       - description: "Message not labeled or described"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value"
-        evidence: "Line 24-25: no aria-label or context"
+        evidence: "Line 24: no aria-label or context"
         user_group: "Screen reader users"
 
   - category: should_find

@@ -16,9 +16,6 @@ const tasks = [
   { id: 8, name: 'Load testing', owner: 'RP', due: 'Apr 28', effort: 'M', priority: 'P2', status: 'on-track',  progress: 10, desc: 'k6 load test suite for API endpoints. Early stages, on track.' },
 ];
 
-// BUG: Status is communicated solely by dot color — no text, icon, or pattern supplement
-// Each dot color passes contrast against white (4.5:1+), so automated tools will not flag this.
-// But color is the ONLY differentiator between four distinct states — WCAG 1.4.1 violation.
 const STATUS_COLORS = {
   'blocked':     '#d32f2f',  // red   — 5.1:1 contrast against white — passes automated check
   'at-risk':     '#f57c00',  // amber — 4.6:1 contrast against white — passes automated check
@@ -31,7 +28,6 @@ const SORT_COLS = ['name', 'owner', 'due', 'effort', 'priority', 'status', 'prog
 const ProjectDashboard = () => {
   const [sortCol, setSortCol] = useState('priority');
   const [sortDir, setSortDir] = useState('asc');
-  // BUG: selectedRow uses only a background color shift to indicate selection — no other indicator
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleSort = (col) => {
@@ -57,24 +53,17 @@ const ProjectDashboard = () => {
 
       {/* Good: landmark region */}
       <section aria-label="Task overview">
-        {/* BUG: Dense layout — 8 columns, small text (11px in cells), abbreviations (L/M/S, P1/P2/P3)
-            with no expansion. WCAG 3.1.4 (Abbreviations, AAA) — flagged as ENHANCEMENT by
-            Cognitive perspective even though it is technically AAA. */}
         <table className="task-table">
           <thead>
             <tr>
               {SORT_COLS.map(col => (
                 <th key={col} scope="col">
-                  {/* BUG: Sort button uses a tiny 10x10px arrow icon with no accessible label
-                      describing sort direction or target column — WCAG 2.5.8 (target size 24x24px min)
-                      The arrow icon provides no context to keyboard or screen reader users either. */}
                   <button
                     className="sort-btn"
                     onClick={() => handleSort(col)}
                     tabIndex={0}
                   >
                     {col.charAt(0).toUpperCase() + col.slice(1)}
-                    {/* BUG: 10x10px icon only, no accessible label for sort state */}
                     <span className="sort-icon" aria-hidden="true">
                       {sortCol === col ? (sortDir === 'asc' ? '▲' : '▼') : '⇅'}
                     </span>
@@ -86,8 +75,6 @@ const ProjectDashboard = () => {
           </thead>
           <tbody>
             {sorted.map(task => (
-              // BUG: selected state communicated only by background-color change (light blue tint)
-              // No aria-selected, no border, no checkmark, no text change — WCAG 1.4.1
               <tr
                 key={task.id}
                 className={`task-row ${selectedRow === task.id ? 'selected' : ''}`}
@@ -98,15 +85,9 @@ const ProjectDashboard = () => {
                 <td className="cell-name">{task.name}</td>
                 <td className="cell-owner">{task.owner}</td>
                 <td className="cell-due">{task.due}</td>
-                {/* BUG: Abbreviation "L/M/S" with no expansion — WCAG 3.1.4 */}
                 <td className="cell-effort">{task.effort}</td>
-                {/* BUG: Abbreviation "P1/P2/P3" with no expansion — WCAG 3.1.4 */}
                 <td className="cell-priority">{task.priority}</td>
                 <td className="cell-status">
-                  {/* BUG: Colored dot only — no text label, no aria-label, no pattern/icon supplement
-                      Screen reader will announce nothing meaningful here.
-                      Color-blind users (8% of males) cannot distinguish red/green dots.
-                      WCAG 1.4.1: information conveyed by color alone. */}
                   <span
                     className="status-dot"
                     style={{ backgroundColor: STATUS_COLORS[task.status] }}
@@ -122,9 +103,6 @@ const ProjectDashboard = () => {
                   <span className="progress-label">{task.progress}%</span>
                 </td>
                 <td className="cell-desc">
-                  {/* BUG: Full description only visible on hover via CSS tooltip — no focus equivalent
-                      Keyboard-only users and touch users cannot access this content.
-                      WCAG 1.4.13 (Content on Hover or Focus), 2.1.1 (Keyboard) */}
                   <span className="desc-trigger" data-tooltip={task.desc}>
                     {task.desc.slice(0, 30)}…
                   </span>
@@ -139,7 +117,6 @@ const ProjectDashboard = () => {
       <section className="summary-bar" aria-label="Status summary">
         <div className="summary-item">
           <span className="summary-count">{tasks.filter(t => t.status === 'blocked').length}</span>
-          {/* BUG: Summary also uses color-only dots — no text label on the indicator itself */}
           <span className="status-dot" style={{ backgroundColor: STATUS_COLORS['blocked'] }} />
         </div>
         <div className="summary-item">
@@ -178,7 +155,6 @@ export default ProjectDashboard;
 .task-table {
   width: 100%;
   border-collapse: collapse;
-  /* BUG: font-size on data cells is 11px — below comfortable reading threshold for low-vision users */
   font-size: 11px;
 }
 
@@ -195,7 +171,6 @@ export default ProjectDashboard;
   vertical-align: middle;
 }
 
-/* BUG: sort-btn has a 10x10px icon — total interactive area is under 24x24px — WCAG 2.5.8 */
 .sort-btn {
   background: none;
   border: none;
@@ -213,7 +188,6 @@ export default ProjectDashboard;
   outline-offset: 2px;
 }
 
-/* BUG: sort icon is 10x10px — no padding to expand the touch/click target */
 .sort-icon {
   font-size: 10px;
   display: inline-block;
@@ -228,12 +202,10 @@ export default ProjectDashboard;
   outline-offset: -2px;
 }
 
-/* BUG: selected state uses only a background tint — no border, checkmark, or other non-color indicator */
 .task-row.selected {
   background-color: #e3f2fd;  /* light blue — color is the ONLY selection indicator */
 }
 
-/* BUG: status-dot carries meaning through color alone — no shape/pattern/text supplement */
 .status-dot {
   display: inline-block;
   width: 10px;
@@ -268,7 +240,6 @@ export default ProjectDashboard;
   text-overflow: ellipsis;
 }
 
-/* BUG: Tooltip appears only on CSS :hover — no :focus equivalent — WCAG 1.4.13, 2.1.1 */
 .desc-trigger {
   position: relative;
   cursor: default;
@@ -290,7 +261,6 @@ export default ProjectDashboard;
   display: none;
 }
 
-/* BUG: only :hover triggers tooltip — keyboard focus does not */
 .desc-trigger:hover::after {
   display: block;
 }
@@ -335,7 +305,7 @@ export default ProjectDashboard;
 
 1. **CRITICAL: Status communicated by color alone — WCAG 1.4.1 (Use of Color)**
    Four distinct task states (blocked, at-risk, on-track, not-started) are represented solely by dot color. No text label, icon shape, pattern, or other non-color indicator distinguishes the states. The `<span>` has no `aria-label` and renders nothing a screen reader can read. Users with color vision deficiency (affects ~8% of males) cannot distinguish red from green dots. Users on monochrome displays, printed output, or high-contrast mode lose all status information. Note: each dot color passes automated contrast checks (4.5:1+), so axe-core and similar tools will not flag this — the violation is color-as-sole-differentiator, not contrast ratio.
-   - Evidence: `color-only-status-indicators.md:77-82` — `<span class="status-dot">` with background color and no text or aria-label
+   - Evidence: `color-only-status-indicators.md:67-71` — `<span class="status-dot">` with background color and no text or aria-label
    - User group: Color-blind users, monochrome display users, screen reader users
    - Expected fix: Add visible text label (e.g., "Blocked") or `aria-label` on each dot, plus a non-color shape/icon supplement (e.g., filled circle = on-track, X = blocked, triangle = at-risk)
 
@@ -353,7 +323,7 @@ export default ProjectDashboard;
 
 4. **MAJOR: Dense layout with unexpanded abbreviations — Cognitive accessibility, WCAG 3.1.4 (Abbreviations, AAA)**
    The table uses abbreviations throughout: effort is shown as `L`, `M`, `S` (no expansion for Large, Medium, Small); priority is shown as `P1`, `P2`, `P3` (no expansion). These are never defined anywhere on the page. For users new to the system, users with cognitive disabilities, or users relying on screen readers, these abbreviations carry no inherent meaning. While WCAG 3.1.4 is Level AAA, the Cognitive & Neurodivergent perspective flags unexpanded abbreviations as ENHANCEMENT for any data-dense interface.
-   - Evidence: `color-only-status-indicators.md:68-72` — raw `{task.effort}` and `{task.priority}` rendered without `<abbr>` or tooltip expansion
+   - Evidence: `color-only-status-indicators.md:61-62` — raw `{task.effort}` and `{task.priority}` rendered without `<abbr>` or tooltip expansion
    - User group: Cognitive disability users, users unfamiliar with the system, screen reader users
    - Expected fix: Use `<abbr title="Large">L</abbr>` / `<abbr title="Small">S</abbr>`, or add a legend below the table defining all abbreviations
 
@@ -365,7 +335,7 @@ export default ProjectDashboard;
 
 6. **MINOR: No option to reduce information density**
    The dashboard presents 8 columns at 11px font size with no mechanism to hide columns, increase text size, or switch to a simplified view. For users with cognitive disabilities, attention disorders, or low vision who use zoom but need layout adaptation, the fixed-density layout offers no accommodation.
-   - Evidence: `color-only-status-indicators.md:35-38` — table hardcodes all 8 columns; no column visibility toggle or density control
+   - Evidence: `color-only-status-indicators.md:31-34` — table hardcodes all 8 columns; no column visibility toggle or density control
    - User group: Cognitive disability users, ADHD users, low-vision users
    - Expected fix: Add a column visibility toggle or a "simplified view" option that shows only name, status (as text), and due date
 

@@ -14,7 +14,7 @@ expected_findings:
       - description: "Column headers missing scope='col' attribute"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships (table header scope must be identified)"
-        evidence: "Lines 12-17: Column headers (Product, Q1, Q2, Q3, Q4) are <th> but lack scope='col'"
+        evidence: "Lines 12-16: Column headers (Product, Q1, Q2, Q3, Q4) are <th> but lack scope='col'"
         user_group: "Screen reader users"
         expected_behavior: "All column headers in <thead> should have scope='col' to indicate they apply to columns below"
         fix: "Add scope='col' to each <th> in <thead> row"
@@ -22,7 +22,7 @@ expected_findings:
       - description: "Row headers missing scope='row' attribute"
         severity: MAJOR
         wcag: "1.3.1 Info and Relationships"
-        evidence: "Line 24: Product names are <th> but lack scope='row'. Screen reader can't determine which column is the row header."
+        evidence: "Line 22: Product names are <th> but lack scope='row'. Screen reader can't determine which column is the row header."
         user_group: "Screen reader users"
         expected_behavior: "The first <th> in each data row (product names) should have scope='row' to indicate it's the row header"
         fix: "Add scope='row' to product name <th> elements in table body"

@@ -63,7 +63,6 @@ import React, { useState, useRef, useEffect } from 'react';
   background: #e53e3e;
   margin-right: 8px;
   flex-shrink: 0;
-  /* BUG: "new episode" indicator is visual-only dot — no text equivalent, no aria-label */
 }
 
 .player-bar {
@@ -121,17 +120,12 @@ import React, { useState, useRef, useEffect } from 'react';
 }
 
 .speed-select {
-  /* BUG: select shows current value visually but aria-label is static "Playback speed"
-     — does not announce what speed is currently active to screen readers on change */
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 2px 4px;
   font-size: 13px;
 }
 
-.no-transcript-notice {
-  /* BUG: This section does NOT exist — transcript is completely absent */
-}
 */
 
 const EPISODES = [
@@ -155,8 +149,6 @@ const PodcastPlayer = () => {
     const handleLoaded = () => setDuration(audio.duration);
     const handleTime = () => setCurrentTime(audio.currentTime);
     const handleNewEpisode = () => {
-      // BUG: "New episode available" notification is an audio chime only.
-      // No visual indicator, no aria-live announcement, no text update in DOM.
       const ctx = new AudioContext();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -209,8 +201,6 @@ const PodcastPlayer = () => {
     const val = parseFloat(e.target.value);
     if (audioRef.current) audioRef.current.playbackRate = val;
     setSpeed(val);
-    // BUG: speed state updates visually in the select, but screen readers are not
-    // informed of the new speed value — no aria-live update, no aria-valuenow on control
   };
 
   const skipSeconds = (secs) => {
@@ -233,15 +223,10 @@ const PodcastPlayer = () => {
         The Growing Edge Podcast
       </h1>
 
-      {/* BUG: Each episode intro ("In this episode...") is described in the audio only.
-          Episode descriptions are spoken in the first 30 seconds of audio but never
-          rendered as visible text anywhere in the component. */}
       <ul className="episode-list" aria-label="Episodes">
         {EPISODES.map((ep) => (
           <li key={ep.id} className="episode-item">
             {ep.isNew && (
-              /* BUG: Red dot has no text equivalent or aria-label — deaf/blind user
-                 cannot determine which episodes are new without tooltip or visually-hidden text */
               <span className="new-badge" role="img" />
             )}
             {/* Keyboard-accessible episode button — NOT a bug */}
@@ -310,7 +295,6 @@ const PodcastPlayer = () => {
 
             <div className="speed-control">
               <label htmlFor="speed-select">Speed</label>
-              {/* BUG: aria-label is static — does not announce current speed on change */}
               <select
                 id="speed-select"
                 className="speed-select"
@@ -329,9 +313,6 @@ const PodcastPlayer = () => {
         </div>
       )}
 
-      {/* BUG: No transcript section anywhere in the component.
-          WCAG 1.2.1 requires a text alternative for audio-only content.
-          The entire spoken content of every episode is inaccessible to deaf users. */}
     </div>
   );
 };

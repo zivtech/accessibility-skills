@@ -44,7 +44,7 @@ expected_findings:
         severity: MAJOR
         wcag: "2.1.1 Keyboard"
         apa_pattern: "WAI-ARIA Tabs Pattern"
-        evidence_requirement: "file:line reference to handleTabKeyDown (lines 10-16) showing only Enter/Space handling"
+        evidence_requirement: "file:line reference to handleTabKeyDown (lines 10-15) showing only Enter/Space handling"
         expected_to_find: "90%"
 
   - category: should_find
@@ -53,7 +53,7 @@ expected_findings:
       - description: "Active tab not focused after keyboard selection"
         severity: MINOR
         wcag: "2.1.1 Keyboard + 4.1.2 Name, Role, Value"
-        evidence_requirement: "file:line reference to setActiveTab (line 34) showing no focus management"
+        evidence_requirement: "file:line reference to setActiveTab (line 32) showing no focus management"
         expected_to_find: "55%"
 
   - category: nice_to_find

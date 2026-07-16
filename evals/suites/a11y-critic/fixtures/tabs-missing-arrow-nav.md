@@ -12,9 +12,7 @@ const TabsWidget = ({ tabs }) => {
     setActiveTab(index);
   };
 
-  // BUG: No keyboard handler for arrow keys
   const handleTabKeyDown = (e) => {
-    // Only handles Enter/Space, not arrow keys
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleTabClick(tabs.findIndex(t => t.id === e.currentTarget.id));
@@ -144,7 +142,7 @@ export default TabsWidget;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Arrow key navigation not implemented** — Per WAI-ARIA Tabs pattern, Left/Right arrow keys should cycle through tabs. Currently, arrow keys do nothing. Keyboard-only users must use Tab to navigate, which is inefficient for widgets with many tabs.
-   - Evidence: `tabs-missing-arrow-nav.md:10-16` (handleTabKeyDown only handles Enter/Space, not arrow keys)
+   - Evidence: `tabs-missing-arrow-nav.md:10-15` (handleTabKeyDown only handles Enter/Space, not arrow keys)
    - WCAG citation: 2.1.1 Keyboard (keyboard access for all functionality)
    - WAI-ARIA pattern: Tabs pattern requires arrow key navigation
    - User group: Keyboard-only users
@@ -152,7 +150,7 @@ export default TabsWidget;
    - Fix: Add arrow key handling to handleTabKeyDown, update focus after setting active tab
 
 2. **MINOR: Active tab not automatically focused after arrow key navigation** — Even if arrow keys were implemented, the code doesn't move focus to the newly active tab. The pattern shows roving tabindex but focus doesn't follow tabindex change.
-   - Evidence: `tabs-missing-arrow-nav.md:10-16` (no focus management on tab switch)
+   - Evidence: `tabs-missing-arrow-nav.md:10-15` (no focus management on tab switch)
    - WAI-ARIA pattern: Active tab should receive focus after keyboard selection
    - User group: Keyboard users (reduces discoverability)
    - Expected: After arrow key, focus moves to newly active tab

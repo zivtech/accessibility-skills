@@ -13,11 +13,9 @@ const SalesDataTable = () => {
   return (
     <div className="table-container">
       <h2>Q1-Q4 Sales Data by Product</h2>
-      {/* BUG: No caption or aria-label describing table */}
       <table className="data-table">
         <thead>
           <tr>
-            {/* BUG: Column headers lack scope="col" */}
             <th>Product</th>
             <th>Q1</th>
             <th>Q2</th>
@@ -28,7 +26,6 @@ const SalesDataTable = () => {
         <tbody>
           {data.map((row, index) => (
             <tr key={index}>
-              {/* BUG: Row headers (Product column) lack scope="row" */}
               <th>{row.product}</th>
               <td>{row.q1.toLocaleString()}</td>
               <td>{row.q2.toLocaleString()}</td>
@@ -110,14 +107,14 @@ export default SalesDataTable;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Column headers lack scope="col" attribute** — Per WCAG 2.2 criterion 1.3.1, table headers must identify whether they apply to columns or rows. Without scope, screen reader doesn't know if "Q1" is a column header or row header.
-   - Evidence: `data-table-missing-scope.md:12-17` (th elements without scope="col")
+   - Evidence: `data-table-missing-scope.md:12-16` (th elements without scope="col")
    - WCAG citation: 1.3.1 Info and Relationships (table header scope must be identified)
    - User group: Screen reader users
    - Expected: Column headers should have scope="col"
    - Fix: Add scope="col" to all column headers in <thead>
 
 2. **MAJOR: Row headers lack scope="row" attribute** — The Product column serves as row headers but lacks scope="row", making the relationship unclear to screen readers.
-   - Evidence: `data-table-missing-scope.md:24` (row <th> elements without scope="row")
+   - Evidence: `data-table-missing-scope.md:22` (row <th> elements without scope="row")
    - WCAG citation: 1.3.1 Info and Relationships
    - User group: Screen reader users
    - Expected: Product headers in rows should have scope="row"
