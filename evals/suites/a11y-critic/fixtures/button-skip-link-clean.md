@@ -119,6 +119,10 @@ footer {
 ✓ Focus indicators visible on nav links
 ✓ List semantics for navigation
 
+## Accessibility Issues
+
+**NONE.** This is a CLEAN fixture — the component above is a correct implementation with no planted bugs. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
+
 ## Difficulty Level
 
 **CLEAN** — Proper implementation of skip links and landmark navigation. Should receive clean verdict.

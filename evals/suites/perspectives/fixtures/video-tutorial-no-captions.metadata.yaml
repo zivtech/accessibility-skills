@@ -19,13 +19,13 @@ expected_findings:
       - description: "Missing <track kind=\"captions\"> element on <video>"
         severity: CRITICAL
         wcag: "1.2.2 Captions (Prerecorded)"
-        evidence: "Lines 87-94: <video> element has no <track> children"
+        evidence: "Lines 100-105: <video> element has no <track> children"
         user_group: "Deaf and hard of hearing users"
 
       - description: "No transcript available on the page or linked from it"
         severity: CRITICAL
         wcag: "1.2.3 Audio Description or Media Alternative (Prerecorded)"
-        evidence: "Lines 136-140: tutorial-meta section contains only duration, no transcript"
+        evidence: "Lines 155-158: tutorial-meta section contains only duration, no transcript"
         user_group: "Deaf and hard of hearing users; cognitive/attention users"
 
   should_find:
@@ -34,13 +34,13 @@ expected_findings:
       - description: "No caption toggle button in player controls"
         severity: MAJOR
         wcag: "1.2.2 Captions (Prerecorded)"
-        evidence: "Lines 130-132: comment marks where toggle belongs; no button rendered"
+        evidence: "Lines 104-152: player-controls group contains no caption toggle button"
         user_group: "Deaf and hard of hearing users"
 
       - description: "Audio-only error and completion signals with no visual DOM equivalent"
         severity: MAJOR
         wcag: "1.4.1 Use of Color; general non-text equivalent principle"
-        evidence: "Lines 30-41: handleError and handleEnded fire AudioContext beeps; hasError and hasCompleted state is never rendered"
+        evidence: "Lines 25-44: handleError and handleEnded fire AudioContext beeps; hasError and hasCompleted state is never rendered"
         user_group: "Deaf and hard of hearing users; users with audio disabled"
 
   nice_to_find:
@@ -49,7 +49,7 @@ expected_findings:
       - description: "aria-label on <video> is generic 'video player' rather than describing content"
         severity: MINOR
         wcag: "1.1.1 Non-text Content"
-        evidence: "Line 89: aria-label=\"video player\" does not reference title prop"
+        evidence: "Line 103: aria-label=\"video player\" does not reference title prop"
         user_group: "Screen reader users"
 
 perspectives_tested:
@@ -138,11 +138,11 @@ false_positive_traps:
   items:
     - description: "Keyboard controls (play, pause, seek, volume, mute) are all correctly implemented and should NOT be flagged"
       trap_type: "correct_implementation_flagged_as_broken"
-      relevant_lines: "Lines 99-129"
+      relevant_lines: "Lines 107-152"
 
     - description: "Focus management on player controls is correct and should NOT be flagged"
       trap_type: "correct_implementation_flagged_as_broken"
-      relevant_lines: "Lines 97-133"
+      relevant_lines: "Lines 107-152"
 
 notes: |
   Pilot fixture 1 of 5. Category: HAS-BUGS (new dimension — auditory).

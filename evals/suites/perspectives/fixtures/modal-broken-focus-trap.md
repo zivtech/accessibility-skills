@@ -42,7 +42,6 @@ const SubscribeModal = ({ onClose }) => {
 
         <form onSubmit={handleSubmit} className="modal-form" noValidate>
 
-          {/* Works: label correctly associated with input via htmlFor/id */}
           <div className="form-group">
             <label htmlFor="modal-name">Your name</label>
             <input
@@ -55,7 +54,6 @@ const SubscribeModal = ({ onClose }) => {
             />
           </div>
 
-          {/* Works: label correctly associated with input via htmlFor/id */}
           <div className="form-group">
             <label htmlFor="modal-email">Email address</label>
             <input
@@ -68,7 +66,6 @@ const SubscribeModal = ({ onClose }) => {
             />
           </div>
 
-          {/* Works: real <button> elements, keyboard-activatable */}
           <div className="modal-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel
@@ -106,7 +103,6 @@ const SubscribePage = () => {
         Subscribe Now
       </button>
 
-      {/* Background content remains fully interactive while modal is open */}
       <nav className="background-nav">
         <a href="/home">Home</a>
         <a href="/about">About</a>
@@ -147,7 +143,6 @@ export default SubscribePage;
   outline-offset: 2px;
 }
 
-/* Works: backdrop visually dims background — conveyed non-accessibly */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -303,7 +298,7 @@ export default SubscribePage;
 - All interactive controls are real `<button>` or `<input>` elements
 - Visible focus indicators on all interactive elements
 - Visual backdrop overlay dims background content
-- `triggerRef` is attached to the trigger button (though never used for focus restoration)
+- `triggerRef` is attached to the trigger button
 - Submit and Cancel buttons are real `<button>` elements with correct `type` attributes
 
 ## Accessibility Issues (Planted)

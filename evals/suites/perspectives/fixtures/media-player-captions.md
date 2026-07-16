@@ -49,7 +49,7 @@ const MediaPlayer = () => {
       <h2>Tutorial: Getting Started</h2>
 
       <div className="video-wrapper">
-        {/* tabIndex={-1} is correct — controls receive focus, not the video element */}
+        {/* controls receive focus, not the video element */}
         <video
           ref={videoRef}
           tabIndex={-1}

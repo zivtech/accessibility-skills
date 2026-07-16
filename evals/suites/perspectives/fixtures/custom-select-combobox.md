@@ -127,7 +127,7 @@ export default CustomSelect;
   background: #e3f2fd;
 }
 
-/* Visual focus indicator on options — correct */
+/* Visual focus indicator on options */
 .select-option:focus-visible {
   outline: 2px solid #005fcc;
   outline-offset: -2px;

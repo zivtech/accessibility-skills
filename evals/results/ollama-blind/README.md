@@ -10,8 +10,19 @@
 > comments in their code blocks (removed repo-wide 2026-07-16 — see the hint-comment disclosure in
 > `ollama/BENCHMARK.md`). "Blind-confirmed" below means confirmed with answer keys withheld, not
 > hint-free: must-find/detection numbers are hint-assisted upper bounds pending a de-hinted re-run.
-> The CLEAN rows are unaffected (no CLEAN fixture in either suite carried hints), so the
-> perspective CLEAN false-positive finding stands.
+> The CLEAN rows carried no hints, and the perspective CLEAN false-positive finding stands.
+
+> **Reassurance/verdict caveat (2026-07-16 follow-up).** The critic CLEAN and ADVERSARIAL rows in
+> this lane are additionally **verdict-assisted**: at run time the 4 critic CLEAN and 3 critic
+> ADVERSARIAL fixtures had **no** `## Accessibility Issues` cut line, so `load_fixture()` passed
+> their Difficulty Level / Notes sections — "**CLEAN** — … Should receive a clean verdict", the
+> ADVERSARIAL grading criteria, and (for adversarial) the full "The Ambiguity" tension analysis —
+> into the prompts. The paragraph below the headline table reads "critic CLEAN prompts are
+> identical blind or not" as evidence the result is not inflated; identical, yes — but identically
+> *including the expected verdict*. Treat critic CLEAN 4/4 (0 FP) and ADVERSARIAL 3/3 as
+> verdict-assisted upper bounds pending a re-run against the fixed fixtures (cut lines inserted
+> 2026-07-16; reassurance comments also removed suite-wide the same day, raising FP-trap
+> difficulty). See the reassurance & verdict-steering disclosure in `ollama/BENCHMARK.md`.
 
 ## Headline — qwen3:32b
 

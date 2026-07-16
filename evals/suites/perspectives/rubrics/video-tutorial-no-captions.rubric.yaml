@@ -50,7 +50,7 @@ expected_findings:
         severity: CRITICAL
         wcag: "1.2.2 Captions (Prerecorded)"
         perspective: auditory
-        evidence_requirement: "Reference to <video> element lacking <track> child (lines 87-94)"
+        evidence_requirement: "Reference to <video> element lacking <track> child (lines 100-105)"
         expected_to_find: "95%"
         scoring_notes: >
           Full credit if reviewer cites 1.2.2 and identifies the absent <track> element.
@@ -62,7 +62,7 @@ expected_findings:
         severity: CRITICAL
         wcag: "1.2.3 Audio Description or Media Alternative (Prerecorded)"
         perspective: auditory
-        evidence_requirement: "Reference to tutorial-meta section or absence of transcript (lines 136-140)"
+        evidence_requirement: "Reference to tutorial-meta section or absence of transcript (lines 155-158)"
         expected_to_find: "80%"
         scoring_notes: >
           Full credit if reviewer cites 1.2.1 or 1.2.3 and notes absent transcript.
@@ -77,7 +77,7 @@ expected_findings:
         severity: MAJOR
         wcag: "1.2.2 Captions (Prerecorded)"
         perspective: auditory
-        evidence_requirement: "Reference to controls group missing caption button (lines 130-132)"
+        evidence_requirement: "Reference to controls group missing caption button (lines 107-152)"
         expected_to_find: "75%"
         scoring_notes: >
           Full credit if reviewer distinguishes between the missing <track> (mf-1) and the
@@ -89,7 +89,7 @@ expected_findings:
         severity: MAJOR
         wcag: "1.4.1 Use of Color; non-text equivalent principle"
         perspective: auditory
-        evidence_requirement: "Reference to handleError or handleEnded Web Audio beep with no rendered state (lines 30-41)"
+        evidence_requirement: "Reference to handleError or handleEnded Web Audio beep with no rendered state (lines 25-44)"
         expected_to_find: "60%"
         scoring_notes: >
           Full credit requires identifying the Web Audio API beep pattern AND the absence of
@@ -106,10 +106,10 @@ expected_findings:
         severity: MINOR
         wcag: "1.1.1 Non-text Content"
         perspective: screen_reader
-        evidence_requirement: "Reference to aria-label=\"video player\" on line 89"
+        evidence_requirement: "Reference to aria-label=\"video player\" on line 103"
         expected_to_find: "50%"
         scoring_notes: >
-          Credit if reviewer cites line 89 and identifies that title prop is unused in aria-label.
+          Credit if reviewer cites line 103 and identifies that title prop is unused in aria-label.
           This tests screen reader perspective depth beyond the primary auditory findings.
 
   false_positive_traps:

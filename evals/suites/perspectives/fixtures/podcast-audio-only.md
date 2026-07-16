@@ -112,7 +112,6 @@ import React, { useState, useRef, useEffect } from 'react';
 }
 
 .speed-control {
-  /* NOT a bug — speed control has select element with label */
   display: flex;
   align-items: center;
   gap: 6px;
@@ -229,7 +228,6 @@ const PodcastPlayer = () => {
             {ep.isNew && (
               <span className="new-badge" role="img" />
             )}
-            {/* Keyboard-accessible episode button — NOT a bug */}
             <button
               onClick={() => selectEpisode(ep)}
               aria-pressed={currentEpisode?.id === ep.id}
@@ -249,7 +247,6 @@ const PodcastPlayer = () => {
           <p className="player-title">{currentEpisode.title}</p>
 
           <div className="player-controls" role="group" aria-label="Player controls">
-            {/* Keyboard-accessible skip back — NOT a bug */}
             <button
               className="btn-control"
               onClick={() => skipSeconds(-15)}
@@ -258,7 +255,6 @@ const PodcastPlayer = () => {
               ↺
             </button>
 
-            {/* Keyboard-accessible play/pause — NOT a bug */}
             <button
               className="btn-control"
               onClick={togglePlay}
@@ -267,7 +263,6 @@ const PodcastPlayer = () => {
               {isPlaying ? '⏸' : '▶'}
             </button>
 
-            {/* Keyboard-accessible skip forward — NOT a bug */}
             <button
               className="btn-control"
               onClick={() => skipSeconds(30)}
@@ -276,7 +271,6 @@ const PodcastPlayer = () => {
               ↻
             </button>
 
-            {/* Keyboard-accessible seek bar — NOT a bug */}
             <input
               type="range"
               className="seek-bar"
@@ -342,12 +336,12 @@ export default PodcastPlayer;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: No transcript for audio-only content** — The component renders no transcript section and provides no link to an external transcript. Every episode consists of spoken audio with no text alternative anywhere in the DOM. WCAG 1.2.1 (Audio-only and Video-only, Prerecorded) requires a text alternative for all prerecorded audio-only content.
-   - Evidence: `podcast-audio-only.md` — no transcript `<section>`, no transcript link, `/* BUG: This section does NOT exist */` comment at line marking `no-transcript-notice`
+   - Evidence: `podcast-audio-only.md` — no transcript `<section>` and no transcript link anywhere on the page
    - User group: Deaf and hard of hearing users; users in noise-sensitive environments
    - Expected fix: Add a `<section aria-label="Transcript">` below the player for each episode, or a visible "Read transcript" link to a transcript page
 
 2. **MAJOR: Episode descriptions are audio-only** — Each episode's spoken intro ("In this episode we cover...") conveys description content that is never rendered as text in the component. Users who cannot hear the audio have no way to understand episode contents before choosing to play.
-   - Evidence: `podcast-audio-only.md` — `/* BUG: episode intro descriptions are spoken in audio but never rendered as visible text */` comment above episode list; no description field in episode list items
+   - Evidence: `podcast-audio-only.md` — episode intro descriptions are spoken in audio but never rendered as visible text; no description field in episode list items
    - User group: Deaf and hard of hearing users
    - Expected fix: Add a `description` field to each episode object and render it as visible `<p>` text in the episode list item
 

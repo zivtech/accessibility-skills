@@ -5,7 +5,6 @@ const SubscribeModal = ({ onClose }) => {
   const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -27,7 +26,6 @@ const SubscribeModal = ({ onClose }) => {
       <div className="modal-container">
 
         <div className="modal-header">
-          {/* id present for potential aria-labelledby — but dialog never references it */}
           <h2 id="modal-title" className="modal-title">Subscribe to Updates</h2>
           <button
             className="modal-close"
@@ -39,7 +37,6 @@ const SubscribeModal = ({ onClose }) => {
 
         <form onSubmit={handleSubmit} className="modal-form" noValidate>
 
-          {/* Works: label correctly associated with input via htmlFor/id */}
           <div className="form-group">
             <label htmlFor="modal-name">Your name</label>
             <input
@@ -52,7 +49,6 @@ const SubscribeModal = ({ onClose }) => {
             />
           </div>
 
-          {/* Works: label correctly associated with input via htmlFor/id */}
           <div className="form-group">
             <label htmlFor="modal-email">Email address</label>
             <input
@@ -65,7 +61,6 @@ const SubscribeModal = ({ onClose }) => {
             />
           </div>
 
-          {/* Works: real <button> elements, keyboard-activatable */}
           <div className="modal-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>
               Cancel
@@ -85,10 +80,8 @@ const SubscribePage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef(null);
 
-  // triggerRef exists but is never used to restore focus on close.
   const handleClose = () => {
     setIsOpen(false);
-    // Missing: triggerRef.current?.focus();
   };
 
   return (
@@ -105,7 +98,6 @@ const SubscribePage = () => {
         Subscribe Now
       </button>
 
-      {/* Background content remains fully interactive while modal is open */}
       <nav className="background-nav">
         <a href="/home">Home</a>
         <a href="/about">About</a>

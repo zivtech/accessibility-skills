@@ -91,9 +91,6 @@ const SortableTable = () => {
 
       </div>
 
-      {/*
-        Works: "Showing X-Y of Z" text is visible.
-      */}
       <div className="table-meta">
         Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, sorted.length)} of {sorted.length} employees
       </div>
@@ -159,7 +156,6 @@ export default SortableTable;
   padding: 0;
 }
 
-/* Works: sort buttons are keyboard-activatable, have visible focus */
 .sort-btn {
   width: 100%;
   padding: 12px 16px;
@@ -245,8 +241,8 @@ export default SortableTable;
 
 - Sort buttons are real `<button>` elements — keyboard-activatable with Enter/Space
 - Sort buttons have visible focus indicators (`:focus` outline)
-- Sort icon uses `aria-hidden="true"` — correct (decorative)
-- Pagination wrapped in `<nav>` with `aria-label="Table pagination"` — correct landmark
+- Sort icon uses `aria-hidden="true"` (decorative)
+- Pagination wrapped in `<nav>` with `aria-label="Table pagination"`
 - `role="region"` with `aria-label` on the table wrapper — provides landmark
 - Visual sort direction indicators (▲ ▼ ⇅) are present
 - "Showing X–Y of Z" count is visible

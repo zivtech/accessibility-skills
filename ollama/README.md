@@ -113,8 +113,13 @@ disclosure in BENCHMARK.md). The blind qwen3:32b row is the corrected basis; raw
 included: until 2026-07-16 the fixture code blocks carried inline `// BUG:` hint comments that
 survived answer-key stripping (24/33 critic, 20/25 perspective fixtures), so must-find/detection
 numbers are hint-assisted upper bounds pending de-hinted re-runs — see the hint-comment
-disclosure in BENCHMARK.md. CLEAN false-positive rows are unaffected (CLEAN fixtures carried no
-hints); cross-model comparisons within a lane are unaffected (identical prompts).
+disclosure in BENCHMARK.md. A third caveat (2026-07-16 follow-up): the 4 critic CLEAN and 3
+critic ADVERSARIAL fixtures had no blind cut line at run time, so their prompts included the
+expected verdict / grading notes — critic "CLEAN FP 0%" columns above are verdict-assisted upper
+bounds; and reassurance comments (`NOT a bug`, `Works:`/`Good:`) were removed suite-wide the same
+day, so FP-trap difficulty is higher for post-change runs — see the reassurance & verdict-steering
+disclosure in BENCHMARK.md. Cross-model comparisons within a lane are unaffected by all three
+caveats (identical prompts per lane).
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
 

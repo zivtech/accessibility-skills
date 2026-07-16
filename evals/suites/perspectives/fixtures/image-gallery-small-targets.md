@@ -34,7 +34,7 @@ const ImageGallery = () => {
     lastFocused.current?.focus();
   };
 
-  // Focus trap and Escape handling — correctly implemented
+  // Focus trap and Escape handling
   useEffect(() => {
     if (!lightbox) return;
     closeBtnRef.current?.focus();

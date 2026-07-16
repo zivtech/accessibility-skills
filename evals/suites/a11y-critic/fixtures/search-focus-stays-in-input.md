@@ -274,6 +274,10 @@ The developer chose to keep focus in the search input because:
 4. **Down Arrow is the explicit gesture** — when the user is ready to browse results, they press Down Arrow. This separates "still typing" from "ready to browse"
 5. **Escape provides a clear exit** — the user can dismiss results and stay in the input at any time
 
+## Accessibility Issues (None Planted — Design Tension)
+
+**No planted bugs.** This is an ADVERSARIAL fixture: the accessibility question is the design tension analyzed below. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
+
 ## The Ambiguity
 
 Focus stays in the search input while results update dynamically below. The `aria-live="polite"` region announces how many results were found. The user must press Down Arrow (or Tab) to move into the results. This is a deliberate design decision, not an oversight — but it creates a real tension.

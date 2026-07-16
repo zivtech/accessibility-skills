@@ -202,6 +202,10 @@ export default Modal;
 ✓ Heading hierarchy correct (h2 for modal title)
 ✓ Semantic structure: header > title + close button, body
 
+## Accessibility Issues
+
+**NONE.** This is a CLEAN fixture — the component above is a correct implementation with no planted bugs. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
+
 ## Difficulty Level
 
 **CLEAN** — This is a properly implemented WAI-ARIA Modal Dialog pattern. Should receive a clean verdict or ACCEPT. Used as a baseline to verify skill accuracy and false-positive rate.
