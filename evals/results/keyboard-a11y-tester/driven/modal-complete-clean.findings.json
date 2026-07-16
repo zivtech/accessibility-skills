@@ -1,0 +1,29 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "locations": [
+        "under heading “Settings”"
+      ],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. body > div:nth-of-type(2) > div > div:nth-of-type(2) > button (contrast 3.14), #root > div > button (contrast 3.14)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0003",
+        "step_0006"
+      ]
+    }
+  ]
+}

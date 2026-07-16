@@ -1,0 +1,21 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "infinite-scroll-no-announcement",
+  "buggy_items_load_silently": [],
+  "fixed_persistent_status_region": [
+    "polite: 3 more items loaded"
+  ],
+  "buggy_walk_no_landmark_phrases": [
+    "list",
+    "listitem, level 1, position 1, set size 2",
+    "Item 1",
+    "end of listitem, level 1, position 1, set size 2",
+    "listitem, level 1, position 2, set size 2",
+    "Item 2",
+    "end of listitem, level 1, position 2, set size 2",
+    "end of list",
+    "end of document"
+  ]
+}

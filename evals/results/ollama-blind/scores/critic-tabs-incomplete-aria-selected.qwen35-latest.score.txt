@@ -1,0 +1,30 @@
+Response length: 2387 chars
+Fixture: tabs-incomplete-aria-selected
+Difficulty: FLAWED
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 1/1
+  + [W] Focus does not follow aria-selected on arrow key navigation
+
+Should-find issues: 1/1
+  + [-] Tab panels missing aria-labelledby linking back to tab
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

@@ -1,0 +1,30 @@
+Response length: 6051 chars
+Fixture: interactive-dropdown-clean
+Difficulty: CLEAN
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: 1 complete / 1 total
+Required fields: PASS
+Stable finding ids: FAIL
+Trend values: FAIL
+
+Verdict: ACCEPT-WITH-RESERVATIONS (expected: ACCEPT or ACCEPT-WITH-RESERVATIONS)
+Verdict correct: YES
+
+False positive signals:
+  Structured findings (numbered/tagged): 0
+  Wrong verdict (REJECT/REVISE): False
+
+Status: PASS

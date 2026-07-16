@@ -30,7 +30,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | 2b. Perspective audit | perspective-audit | Deep review of MEDIUM/HIGH alarm perspectives (if escalated) |
 | 3. Revise | manual | Address critic findings |
 | 4. Implement | executor | Build according to reviewed plan |
-| 5. Test | a11y-test | Automated scans + keyboard tests (Playwright) |
+| 5. Test | a11y-test | Automated scans + keyboard tests (Playwright); journey audits (keyboard-a11y-tester); component SR assertions (virtual-screen-reader) |
 | 6. Critique implementation | a11y-critic | Review design decisions after tests pass |
 | 6b. Perspective audit | perspective-audit | Deep review of escalated perspectives (if escalated) |
 | 7. Fix | executor | Address findings |
@@ -89,13 +89,16 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 - Preserve the companion relationship between planner, critic, and perspective-audit.
 - Prefer targeted edits over large rewrites.
 - The critic serves at two lifecycle points — keep both documented in companion tables.
+- Vital-Core adoption is limited to reporting discipline: stable evidence findings, fingerprints, trend language, and benchmark gates. Do not import scanner runtime, generated dashboard state, crawl state, Wappalyzer/ParaCharts vendors, or Lighthouse/security/sustainability engines. See `docs/vital-core-adoption-assessment.md` and `docs/a11y-evidence-finding-contract.md`.
 
 ## Browser Automation Tooling
 
-The a11y-test skill has two distinct execution modes; other a11y skills in this bundle route testing work to the same split:
+The a11y-test skill has five execution modes; other a11y skills in this bundle route testing work to the same split:
 
 - **Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance** → `npx playwright test` with `.spec.js` files. Primary path. All mandatory "real keyboard events, no synthetic events" rules apply.
 - **Interactive agent-driven reconnaissance** (snapshot ARIA structure, navigate a SPA to reach a page under test, verify a single fix, capture annotated screenshots) → `agent-browser` CLI. Uses the snapshot+ref pattern (`@e1`, `@e2`) and calls CDP `Input.dispatchKeyEvent` directly, so real keyboard events are delivered. Verified on both vanilla JS (WAI-ARIA APG disclosure) and React state (react.dev DocSearch Meta+K).
+- **Goal-driven journey audits** (live URL + task in plain words → evidence-linked WCAG findings for the keyboard + emulated screen-reader personas) → `keyboard-a11y-tester` (external clone, pinned to release `0.5.0`, MIT). Deterministic Playwright/CDP runner plus an agent-driven `serve`/`step` loop; emits trace/findings/reading-order-census artifacts, is the only mode producing machine evidence for focus-indicator sufficiency, and is the page/journey-level source of live-region announcement evidence (component-level goes to virtual-screen-reader below). Cross-validated against the 33 critic fixtures 2026-07-10 (`evals/results/keyboard-a11y-tester/`). Calibration: batch-crawl 4.1.3 findings are prompts to run a driven session, never failures. Adoption boundary: routed external tool — do not vendor its runner into this repo. See `docs/keyboard-a11y-tester-adoption-assessment.md`.
+- **Component/unit screen-reader assertions** (what does a screen reader compute and announce for this component — accessible names, reading order, live-region announcements — asserted in the project's own Vitest/Jest suite or Storybook play functions, pre-deploy, no URL) → `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`, MIT). Already the transitive SR engine inside keyboard-a11y-tester; this is the direct component-level lane. Validated in-repo 2026-07-11 (plain jsdom, Vitest 4, real Chromium ESM) and 2026-07-13 (Storybook 10.4.6 addon-vitest lane). Never keyboard-operability evidence — its interactions are synthetic (user-event). Blind spots: open shadow DOM, `aria-busy`. Calibration: mount-with-content alerts read silent (assert via the persistent-container pattern); never combine with fake timers (wedges the singleton). Adoption boundary: routed npm dependency in consuming projects — never vendored. See `docs/virtual-screen-reader-adoption-assessment.md`.
 - **Playwright MCP for keyboard events** → do not use. `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead.
 - **Test script generation from prose specs** → `/webwright:run` or `/webwright:craft` (Claude Code plugin). LLM generates complete Python Playwright scripts from natural language descriptions. Benchmarked 25/25 on WAI-ARIA APG examples (dialog focus trap, tabs, axe-core injection, menu navigation, ARIA tree inspection). Uses real `page.keyboard.press()` calls (CDP-backed). Claude Code only — not available in Codex CLI; generated `.py` files can be executed from Codex via `python3 script.py`. Do not run simultaneously with agent-browser (port conflicts).
 
@@ -105,7 +108,7 @@ See `.claude/skills/a11y-test/SKILL.md` for the full routing table, decision flo
 
 The analysis-only skills (critic, planner, perspective-audit) run locally via Ollama with no cloud API. The `ollama/` directory contains the wrapper, benchmark tooling, and full results.
 
-**Recommended model**: `qwen3:32b` (18.8 GB) — 96% must-find detection across 33 critic fixtures, 0% false positives, 100% perspective-audit must-find across 25 fixtures, perfect planner scores.
+**Recommended model**: `qwen3:32b` (18.8 GB) — blind-verified on the critic suite (33/33 PASS, 67/68 adjudicated must-find, zero CLEAN false positives) and on perspective *detection* (37/37 adjudicated must-find); blind-measured weakness: 4 of 5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts — the historical "0% false positives, 100% perspective" row was answer-key-assisted (see `ollama/BENCHMARK.md` blind rows + disclosure, 2026-07-13). Perfect planner scores. Don't route CLEAN-confirmation perspective audits to local models without a second opinion.
 
 ```bash
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b

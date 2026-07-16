@@ -1,0 +1,9 @@
+fixture_id: critic-evidence-contract-smoke
+difficulty: HAS-BUGS
+notes: "Expected verdict: REVISE"
+require_evidence_contract: true
+expected_findings:
+  - category: must_find
+    items:
+      - description: "Error message not associated via aria-describedby"
+        wcag: "WCAG 1.3.1"

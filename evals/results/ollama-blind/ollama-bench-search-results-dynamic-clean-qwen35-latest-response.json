@@ -1,0 +1,12 @@
+{
+  "response": "# Verdict: ACCEPT-WITH-RESERVATIONS\n\n## Overall Assessment\n\nThe SearchResults component demonstrates solid accessibility fundamentals with proper live region implementation for dynamic content announcements. However, focus management design after search completion is undefined (keyboard users don't know where navigation should go), and the results list lacks ARIA attributes to properly communicate its role as dynamically updated feed content per WAI-ARIA patterns.\n\n## Pre-commitment Predictions\n\n| Prediction | Actual Finding |\n|------------|-----------------|\n| Live region implementation might have gaps in state communication | \u2713 Found: aria-live, aria-atomic correct; missing aria-busy during loading |\n| Focus management after search submission not addressed | \u2713 Confirmed: No focus restoration strategy documented or implemented |\n| Results list may need proper ARIA attributes for screen readers | \u2713 Found: Missing role=\"feed\" or similar for dynamic content updates |\n\n## Critical Findings\n\nNo critical findings \u2014 core accessibility patterns are",
+  "done": true,
+  "total_duration": 16896753458,
+  "eval_count": 987,
+  "_benchmark": {
+    "model": "qwen3.5:latest",
+    "fixture_id": "search-results-dynamic-clean",
+    "elapsed_seconds": 16.9,
+    "timestamp": "2026-07-13T18:22:00"
+  }
+}

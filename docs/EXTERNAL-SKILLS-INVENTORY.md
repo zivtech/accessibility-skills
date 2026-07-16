@@ -10,6 +10,10 @@ For each skill: what it does, how it differs from our approach, what techniques 
 
 **13 external a11y skills found** across skills.sh, tessl.io, and GitHub. No external skill implements a planner-critic pair. All are either auditors (scan + report), guideline guardrails (coding standards), or single-criterion analyzers. Our planner-critic architecture is unique in the ecosystem.
 
+**Update 2026-07-10:** [ezufelt/keyboard-a11y-tester](#ezufeltkeyboard-a11y-tester--added-2026-07-10) added below — created 2026-07-08 (postdates this scan), and the first true runtime *tester* peer found; everything in the original scan was an auditor, guardrail, or analyzer. Adopted as the a11y-test skill's fourth execution mode. Full gap analysis and tiered plan: [keyboard-a11y-tester Adoption Assessment](keyboard-a11y-tester-adoption-assessment.md).
+
+**Update 2026-07-11:** [guidepup/virtual-screen-reader](#guidepupvirtual-screen-reader--added-2026-07-11) added below — already this stack's transitive screen-reader engine inside keyboard-a11y-tester, now adopted directly as the a11y-test skill's component/unit-level execution mode (screen-reader assertions in the project's own test suite, pre-deploy). Full gap analysis and phase plan: [virtual-screen-reader Adoption Assessment](virtual-screen-reader-adoption-assessment.md).
+
 **Key gap confirmed:** No external skill separates planning (what to build accessibly) from critique (did we build it accessibly). The closest analogue is AccessLint's `reviewer` agent, which performs multi-step WCAG audits but has no planning counterpart.
 
 **Sources searched:**
@@ -70,6 +74,32 @@ For each skill: what it does, how it differs from our approach, what techniques 
   3. **Contrast-first color composition** — `apcach` approach where contrast compliance is the starting constraint, not an afterthought. Relevant for our planner's visual accessibility planning.
 - **MCP/API:** None (reference files only)
 - **Cost:** Free
+
+### ezufelt/keyboard-a11y-tester — added 2026-07-10
+- **Source:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) (MIT, Everett Zufelt; adopted at `97eb13e`, bumped to tagged release `0.5.0` on 2026-07-11 after upstream merged our [PR #7](https://github.com/ezufelt/keyboard-a11y-tester/pull/7) same-day and began cutting releases)
+- **What it does:** Keyboard-only + emulated-screen-reader journey tester against any URL. Deterministic Playwright/CDP runner (real keyboard events only; machine-decidable WCAG checks including dual-signal focus-indicator measurement) plus an agent-driven `serve`/`step` session protocol. Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi" via `@guidepup/virtual-screen-reader`) in one pass; emits evidence-linked findings, per-step trace, reading-order census, and screenshots.
+- **Use for:** a11y-test fourth execution mode (goal-driven journey audits). The only external tool found that produces machine evidence for live-region announcement behavior and focus-indicator sufficiency — two lanes our stack otherwise lacks entirely.
+- **Key techniques adopted:**
+  1. **Observe→decide→act step discipline** — "Tab until the focused control matches by name/role, never a pre-counted sequence." Now stated in a11y-test for all interactive keyboard driving, agent-browser included.
+  2. **AA pass/fail vs AAA informative severity split** for focus indicators (2.4.7 presence vs 2.4.13 strength) — prevents faint-but-real indicators being reported as missing.
+  3. **Persona-impact framing** grounded in the W3C WAI user stories.
+- **Validation:** cross-validated against all 33 critic fixtures 2026-07-10 — 2/3 deterministic-scope must-finds caught (the miss root-caused to Chromium's UA-intrinsic "Choose File" name), zero false positives outside the pre-disclaimed passive-crawl 4.1.3 class, 6/6 driven sessions produced decisive trace evidence, and it surfaced 2 real defects our fixture rubrics missed. Record: `evals/results/keyboard-a11y-tester/`. The root-caused miss became our upstream PR #7 (3.3.2 UA-default-name check), merged the same day and shipped in 0.5.0; re-verified at 0.5.0 (upstream CI green; one known local-macOS variance in the AAA-informative 2.4.13 pixel measurement, no AA impact).
+- **MCP/API:** none — plain Node CLI (playwright, guidepup, pixelmatch, pngjs, yaml). Node ≥ 20. Works from Claude Code and Codex.
+- **Cost:** Free
+- **Boundaries:** testing-only (no planner/critic analogue); runtime DOM only; Chromium-only; explicitly no axe/Lighthouse scans; emulated SR augments but never replaces real AT testing. Young repo (created 2026-07-08) by a veteran Drupal accessibility contributor known to us — routed, pinned to tagged releases, never vendored.
+
+### guidepup/virtual-screen-reader — added 2026-07-11
+- **Source:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) (MIT, Craig Morten / guidepup org; adopted at npm `0.32.1`, exact-pinned as a devDependency in consuming projects)
+- **What it does:** Screen-reader simulator as a library. Walks the accessibility tree of any DOM (jsdom in unit tests, or a browser via its ESM build), emits spoken phrases, captures live-region announcements with politeness prefixes, and exposes SR quick-key emulation (heading/landmark/link navigation, aria-errormessage and aria-flowto jumps) as an assertable API. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2), tested upstream against W3C Web Platform Tests with published pass/fail counts.
+- **Use for:** a11y-test fifth execution mode — component/unit-level screen-reader assertions in the consuming project's own Vitest/Jest suite or Storybook play functions, pre-deploy, per PR. The layer keyboard-a11y-tester cannot reach (it needs a deployed URL); the shared engine, one level down.
+- **Key techniques adopted:**
+  1. **Persistent-live-container assertion pattern** — the only reliable shape for announcement tests (measured: pre-populated `role="alert"` insertion reads silent in jsdom *and* Chromium).
+  2. **Bounded-walk discipline** — max-step guard on every tree walk; `aria-modal` traps the virtual cursor by design and a naive walk never terminates.
+  3. **No-fake-timers rule** — fake timers wedge the stateful singleton and cascade hangs across the whole test file (measured in Vitest 4).
+- **Validation:** hands-on probes 2026-07-11 at 0.32.1 across three environments (plain Node+jsdom, Vitest 4 jsdom env, real Chromium ESM) covering accname (missing and wrong names), live-region capture (microtask-flush measured), aria-hidden/CSS-hidden exclusion, modal trapping, shadow-DOM invisibility, fake-timer wedge, teardown isolation, plus a spot-validation evidencing both CRITICAL must-finds of the `toast-notification-no-role` critic fixture. Proposal-critic reviewed. Phase 2 fixture cross-validation executed 2026-07-11 and passed — 4/4 planted announcement defects evidenced, 5/5 rubric fixes confirmed announcing, clean fixture zero false-silent; record: `evals/results/virtual-screen-reader/`. Storybook lane verified 2026-07-13 (10.4.6 + addon-vitest browser mode, 12/12; missing-stop log-leak measured → `finally`-stop rule): `evals/results/virtual-screen-reader/harness/storybook/`. Full assessment: [virtual-screen-reader Adoption Assessment](virtual-screen-reader-adoption-assessment.md).
+- **MCP/API:** none — plain npm library (deps: dom-accessibility-api, @testing-library/dom, @testing-library/user-event, html-aria). Node ≥ 20. Works from Claude Code and Codex.
+- **Cost:** Free
+- **Boundaries:** assertion primitive, not a findings emitter (test author supplies judgment); **never keyboard-operability evidence** (interactions are synthetic user-event); no open shadow DOM (upstream #182) or aria-busy (#36); emulated SR augments but never replaces real AT testing; single maintainer with a 14-month release gap (org active; MIT + exact-pin bounds drift). Shared-engine concentration: it also powers keyboard-a11y-tester's SR persona, so an upstream failure degrades two execution modes at once — the capability floor is the manual §6 AT protocol. Routed npm dependency, never vendored.
 
 ---
 
@@ -194,6 +224,13 @@ For each skill: what it does, how it differs from our approach, what techniques 
 | AccessLint MCP server (contrast calculation) | AccessLint | **Recommend** as optional MCP dependency for a11y-critic |
 | axe-core scanning pipeline | snapsynapse, airowe | **Reference** in testing strategy, don't bundle |
 | GitHub Actions CI workflow | snapsynapse | **Reference** as integration pattern |
+| keyboard-a11y-tester journey audits | ezufelt | **Adopted 2026-07-10** as routed 4th a11y-test execution mode, pinned to release `0.5.0` — see [adoption assessment](keyboard-a11y-tester-adoption-assessment.md) |
+
+### Vital-Core adoption boundary (2026-06-19)
+
+Vital-Core is an adjacent site-quality scanner, not an external skill to install. Its useful contribution here is the reporting discipline: issue-first findings, stable fingerprints, trend language, generated-output boundaries, and reproducible gates. The adopted v1 surface is documented in [Vital-Core Adoption Assessment](vital-core-adoption-assessment.md) and [A11y Evidence Finding Contract](a11y-evidence-finding-contract.md).
+
+Do not copy Vital-Core runtime code into this repo in v1. Continuous crawling, ISO-week dashboards, generated GitHub Pages reports, mutable crawl state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and scanner configuration remain out of scope for `a11y-meta-skills`.
 
 ### Do NOT adopt
 

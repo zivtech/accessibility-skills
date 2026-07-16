@@ -1,0 +1,40 @@
+<!DOCTYPE html><html><head><title>VSR browser probe</title></head><body>
+<main><h1>Orders</h1><button>Save order</button></main>
+<script type="module">
+  const { virtual } = await import("/node_modules/@guidepup/virtual-screen-reader/lib/esm/index.browser.js");
+  window.probe = async () => {
+    const out = {};
+    // (a) text change in existing live region
+    let region = document.createElement("div");
+    region.setAttribute("role", "status");
+    document.body.appendChild(region);
+    await virtual.start({ container: document.body });
+    region.textContent = "Draft saved";
+    await new Promise((r) => setTimeout(r, 150));
+    out.textChange = (await virtual.spokenPhraseLog()).filter((p) => p.includes("Draft saved"));
+    await virtual.stop();
+    region.remove();
+    // (b) rule-3 transfer: mount role=alert WITH content
+    await virtual.start({ container: document.body });
+    const t = document.createElement("div");
+    t.setAttribute("role", "alert");
+    t.textContent = "Mounted with content";
+    document.body.appendChild(t);
+    await new Promise((r) => setTimeout(r, 150));
+    out.mountWithContent = (await virtual.spokenPhraseLog()).filter((p) => p.includes("Mounted with content"));
+    await virtual.stop();
+    t.remove();
+    // (c) empty-then-fill
+    await virtual.start({ container: document.body });
+    const e = document.createElement("div");
+    e.setAttribute("role", "alert");
+    document.body.appendChild(e);
+    await new Promise((r) => setTimeout(r, 60));
+    e.textContent = "Filled after mount";
+    await new Promise((r) => setTimeout(r, 150));
+    out.emptyThenFill = (await virtual.spokenPhraseLog()).filter((p) => p.includes("Filled after mount"));
+    await virtual.stop();
+    return out;
+  };
+  window.probeReady = true;
+</script></body></html>

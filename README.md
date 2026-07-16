@@ -76,11 +76,13 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 
 ### `a11y-test`
 
-`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with three browser automation modes:
+`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with five execution modes:
 
 - **`npx playwright test`** — Codified CI keyboard tests, visual regression, axe-core scans. Primary path.
 - **`agent-browser`** — Interactive reconnaissance: snapshot ARIA structure, verify fixes, probe widgets. Fastest for exploratory work (~1.5-2.6s per task).
 - **`/webwright:run`** — Generate complete Python Playwright test scripts from prose descriptions. LLM-generated, ~30-130s first run, then ~4s re-runs with no LLM cost. Produces reusable `.py` artifacts.
+- **`keyboard-a11y-tester`** — Goal-driven journey audits of live URLs: keyboard + emulated screen-reader personas, evidence-linked WCAG findings, live-region capture, focus-indicator measurement. External clone pinned to release `0.5.0`; cross-validated against this repo's 33 critic fixtures. See [adoption assessment](docs/keyboard-a11y-tester-adoption-assessment.md).
+- **`@guidepup/virtual-screen-reader`** — Component/unit-level screen-reader assertions (accessible names, reading order, live-region announcements) in the project's own Vitest/Jest suite or Storybook play functions, pre-deploy, no URL needed. npm devDependency exact-pinned `0.32.1`; validated in jsdom, Vitest, Chromium, and Storybook 10. See [adoption assessment](docs/virtual-screen-reader-adoption-assessment.md).
 
 Test capabilities:
 
@@ -91,6 +93,8 @@ Test capabilities:
 - WCAG 2.2 compliance checks including new criteria (2.4.11, 2.4.13, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
 - Dynamic test prioritization based on automated scan findings
 - ARIA tree inspection via `aria_snapshot()` (Webwright) or `snapshot -i` (agent-browser)
+- Goal-driven journey audits with per-step trace, reading-order census, and screenshot evidence (keyboard-a11y-tester)
+- Screen-reader announcement and reading-order assertions at the component level, including live-region capture with politeness prefixes (virtual-screen-reader)
 
 ### `perspective-audit`
 
@@ -120,7 +124,7 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 4. If the critic escalates perspectives at MEDIUM/HIGH, run `/perspective-audit` for deep review.
 5. Revise the plan based on critic and audit findings.
 6. Build the feature.
-7. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression).
+7. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression; virtual-screen-reader assertions for component announcement behavior; a keyboard-a11y-tester journey audit for live-URL targets).
 8. Run `/a11y-critic` on the implementation after tests pass.
 9. If the critic escalates perspectives, run `/perspective-audit` again.
 10. Fix findings, re-test.
@@ -130,8 +134,14 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/a11y-workflow` — orchestrate the full lifecycle (scout → plan → critique → test → critique), Claude Code only
 - `/a11y-planner` — design accessibility before coding
 - `/a11y-critic` — review plans or implementations
-- `/a11y-test` — run keyboard, axe-core, and visual regression tests
+- `/a11y-test` — run keyboard, axe-core, and visual regression tests; journey audits (keyboard-a11y-tester); component screen-reader assertions (virtual-screen-reader)
 - `/perspective-audit` — deep review from escalated disability/situational access perspectives
+
+## Evidence Contract and Vital-Core Boundary
+
+This repo adopts Vital-Core's reporting discipline, not its scanner runtime. The optional [A11y Evidence Finding Contract](docs/a11y-evidence-finding-contract.md) gives `a11y-test`, `a11y-critic`, and `perspective-audit` stable finding IDs, fingerprints, source evidence, WCAG/APG citations, Section 508/FPC context, perspective alarms, reproduction steps, expected/actual behavior, and trend language. Clean reviews should not emit empty finding contracts.
+
+The v1 boundary keeps continuous crawling, ISO-week dashboards, generated report state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and mutable crawl state out of this bundle. See [Vital-Core Adoption Assessment](docs/vital-core-adoption-assessment.md). Use [Section508.gov conformance guidance](https://www.section508.gov/develop/applicability-conformance/) as regulatory context for WCAG 2.0 Level A/AA, and use [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) as the current planning and review target.
 
 ## Model Baselines
 
@@ -140,10 +150,10 @@ The evaluation story is cross-provider. The benchmark suite compares the same fi
 Current committed result summaries cover:
 
 - **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
-- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`
+- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`; Opus perspective-audit agents across all 25 perspective fixtures (2026-07-13, **first blind lane** — answer key withheld: post-003 scorer 20 PASS / 5 WARN / 0 FAIL, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on all 5 CLEAN fixtures), raw artifacts in `evals/results/claude-perspective/`. **Note:** all critic/perspective rows dated before 2026-07-13 ran non-blind (runners embedded fixture answer keys — since fixed, see BENCHMARK.md's blind-protocol disclosure); planner rows are exempt
 - **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
 - **Gemini** — Gemini 2.5 Flash across all 33 critic fixtures via the gemini CLI (31/33 PASS, 98% criteria-level must-find; pro escalation pending quota), raw artifacts in `evals/results/gemini/`
-- **Ollama local models** — qwen3:32b (33/33 critic, 25/25 planner), llama3.3:70b, qwen3.5:latest, plus qwen3.5:27b (partial run: stopped 17/33 on /think stalls) and deepseek-r1 probes
+- **Ollama local models** — qwen3:32b **blind re-run 2026-07-13** (critic 33/33 PASS, 97% must-find, 0 false positives — blind-confirmed; perspective detection 20/20 + 36/37 must-find blind-confirmed, but 4/5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts blind, so the historical "100% perspective / 0% FP" row was answer-key-assisted on CLEAN), 25/25 planner; raw blind artifacts in `evals/results/ollama-blind/`. Same-day blind full-suite critic lanes: qwen3.5:latest 33/33 PASS + 98.5% must-find (needs ≥32K num_ctx on 4 long fixtures — receipts in BENCHMARK.md) and llama3.3:70b 33/33 PASS + 92.6%/97.1% adjudicated must-find. Historical non-blind rows: qwen3.5:27b (partial run: stopped 17/33 on /think stalls), deepseek-r1 probes
 
 Every hosted family is a peer row backed by committed raw artifacts. See [ollama/BENCHMARK.md](ollama/BENCHMARK.md) and [ollama/README.md](ollama/README.md) for the detailed tables, commands, and caveats.
 
@@ -188,8 +198,12 @@ cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
 .codex/
   agents/                              # Codex agent definitions for planner/critic
 docs/
-  EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of 13 external a11y skills
+  EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of external a11y skills + adopted tools
   PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
+  a11y-evidence-finding-contract.md     # Shared optional finding contract
+  vital-core-adoption-assessment.md     # Adopt/adapt/defer/reject boundary
+  keyboard-a11y-tester-adoption-assessment.md   # Journey-audit mode adoption + cross-validation
+  virtual-screen-reader-adoption-assessment.md  # Component SR-assertion mode adoption + cross-validation
   drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
   a11y-planner/
   a11y-critic/
@@ -200,6 +214,9 @@ evals/
     a11y-planner/                        # 25 planner fixtures + rubrics
     perspectives/                        # 25 + 5 calibration perspective fixtures
     webwright-benchmark/                 # Webwright vs agent-browser speed + correctness data
+  results/                               # Committed raw benchmark + cross-validation artifacts
+    keyboard-a11y-tester/                #   KAT vs 33 critic fixtures agreement record
+    virtual-screen-reader/               #   VSR fixture sweep, probes, Storybook lane record
   harness/
 ollama/                                  # Local + hosted benchmark runners and score scripts
 ```

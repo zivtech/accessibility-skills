@@ -1,0 +1,26 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:31.250Z",
+  "findings": [
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/search-focus-stays-in-input.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/search-focus-stays-in-input.html (aria-live/status/alert/log) never produced an announcement during this session: #root > div > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > div > div"
+      ]
+    }
+  ]
+}

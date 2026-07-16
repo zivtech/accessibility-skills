@@ -1,0 +1,28 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "locations": [],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button (contrast 4.31), #root > div > button (contrast 2.07), #root > div > div > button (contrast n/a)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003"
+      ]
+    }
+  ]
+}

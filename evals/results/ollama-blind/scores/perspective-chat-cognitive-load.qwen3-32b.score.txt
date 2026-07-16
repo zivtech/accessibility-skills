@@ -1,0 +1,32 @@
+Response length: 5613 chars
+Fixture: chat-cognitive-load
+Difficulty: HAS-BUGS
+
+Escalated perspectives: cognitive_neurodivergent, vestibular_motion, keyboard_motor
+LOW perspectives: screen_reader_semantic, auditory_access, magnification_reflow, environmental_contrast
+
+Perspective coverage: 3/3
+  + Cognitive
+  + Vestibular
+  + Keyboard
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 1/1
+  + [W] Auto-scroll fires on every message update with no pause mechanism
+
+Should-find issues: 1/2
+  + [W] Typing indicator uses infinite bounce animation with no prefers-reduced-motion o
+  X [-] New message notification is color-flash only — no persistent text badge or non-a  (keywords: ['color alone', 'color only', '1.4.1', 'use of color', 'sole differentiator', 'non-color'])
+
+Nice-to-find issues: 2/2
+  + Relative timestamps update every 60 seconds without user action
+  + Emoji picker has no arrow-key grid navigation, no Escape handler, no focus-visib
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

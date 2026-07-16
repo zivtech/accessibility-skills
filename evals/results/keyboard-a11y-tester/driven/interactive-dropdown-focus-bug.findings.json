@@ -1,0 +1,49 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "locations": [],
+      "summary": "4 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #dropdown-btn (contrast n/a), #dropdown-btn (contrast 2.98), #dropdown-list (contrast n/a), #dropdown-btn (contrast 2.53)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0006"
+      ]
+    },
+    {
+      "id": "missing-accessible-name-desktop",
+      "wcag": "4.1.2",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AA",
+      "confidence": 0.7,
+      "severity": "serious",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "locations": [],
+      "summary": "2 focusable control(s) have no accessible name: listbox at #dropdown-list, listbox at #dropdown-list",
+      "persona_impact": "A keyboard user who relies on speech recognition cannot target these controls by voice, and their purpose is not conveyed programmatically.",
+      "evidence": [
+        "step_0003",
+        "step_0004"
+      ]
+    }
+  ]
+}

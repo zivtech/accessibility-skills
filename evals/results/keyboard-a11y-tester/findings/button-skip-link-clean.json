@@ -1,0 +1,33 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:33.456Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+      "locations": [
+        "nav \"Main navigation\""
+      ],
+      "summary": "6 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > a (contrast 2.04), #root > div > nav > ul > li:nth-of-type(1) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(2) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(3) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(4) > a (contrast 2.27)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0005",
+        "step_0007"
+      ]
+    }
+  ]
+}

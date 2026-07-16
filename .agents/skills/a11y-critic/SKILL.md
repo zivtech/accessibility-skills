@@ -2,10 +2,10 @@
 name: a11y-critic
 description: "Use when you have an existing component, flow, or interface and need an evidence-backed accessibility design review after basic checks pass. Best for WCAG 2.2 compliance, focus management, ARIA pattern quality, semantics, and state communication gaps automated tools miss."
 license: Apache-2.0
-compatibility: Codex-compatible; protocol is model-agnostic
+compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Accessibility Design Critic
@@ -124,8 +124,8 @@ This skill surfaces design decisions, not violations.
 3. **Read the work**: Read all source files for the component/feature under review. Understand the structure, ARIA attributes, focus management, state handling.
 
 4. **Invoke the a11y-critic subagent**: Delegate to a subagent with the full 8-phase protocol below using the routing strategy:
-   - **With oh-my-Codex (preferred)**: Use the `a11y-critic` agent type if available, fallback to `critic`, then `general-purpose`
-   - **Without oh-my-Codex**: Route to `general-purpose` subagent with the full protocol
+   - **With oh-my-claudecode (preferred)**: Use the `a11y-critic` agent type if available, fallback to `critic`, then `general-purpose`
+   - **Without oh-my-claudecode**: Route to `general-purpose` subagent with the full protocol
 
 The review prompt to send to the subagent is embedded in the section below: **Full_A11y_Review_Protocol**
 
@@ -190,7 +190,10 @@ Copy this protocol into the subagent prompt:
     - If axe-core scan results exist: note violation IDs, impact levels, and affected elements. Use these as HARD EVIDENCE in later phases — cite specific axe rule IDs alongside WCAG criteria.
     - If Playwright keyboard test results exist (from `npx playwright test` .spec.js runs): note which interactions passed/failed. Don't re-evaluate what was already measured. Cite the spec file path and test name.
     - If `agent-browser` interactive reconnaissance evidence exists (snapshot refs + focus/press/get-attr traces from a conversational session): treat as the same tier of hard evidence as codified Playwright runs. Cite the snapshot ref (e.g., `@e84`), the keyboard action, and the observed attribute mutation (e.g., `aria-expanded: false → true`). Distinguish from informal reasoning.
+    - If `keyboard-a11y-tester` journey-audit artifacts exist (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`): treat deterministic findings and per-step trace facts as the same tier of hard evidence as codified Playwright runs. Cite step id + selector + measured value (e.g., `trace.json step_0003: outline 3px solid; AAA contrast 2.34`) or a census selector. Three calibration rules (measured against this repo's fixtures 2026-07-10, see `evals/results/keyboard-a11y-tester/`): (1) batch-crawl 4.1.3 "silent live region" findings are prompts to run a driven session, never failure evidence; (2) name-presence checks don't cover UA-intrinsic names — a "Choose File" file input can still be missing its label; (3) journey-level verdicts (task completion, logical order) are judgment-layer claims — accept them only with their supporting trace steps, never as bare measured facts.
+    - If `virtual-screen-reader` component-assertion evidence exists (spoken-phrase logs + the asserting Vitest/Jest test, from the a11y-test component lane): treat spoken-phrase and live-region-capture facts as the same tier of hard evidence as codified Playwright runs. Cite tool version + test file + the exact phrase or its absence (e.g., `vsr@0.32.1 toast.test.mjs: phrases after mount = []; div.toast has no role/aria-live`). Four calibration rules (measured against this repo's fixtures 2026-07-11, see `evals/results/virtual-screen-reader/`): (1) silence is defect evidence only alongside the structural absence (no role/aria-live in the DOM), and never for components containing open shadow roots — VSR cannot see into them; (2) a silent log after mounting a pre-populated `role="alert"` element is inconclusive, not proof a fix failed — require the persistent-container assertion shape; (3) an empty `"polite: "` entry marks an `aria-atomic` region being cleared, not noise; (4) VSR results are never keyboard-operability evidence — its interactions are synthetic (user-event); keyboard claims still need Playwright, agent-browser, or keyboard-a11y-tester.
     - If contrast ratios were calculated (via AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
+    - If `A11y Evidence Finding` blocks are available from a11y-test, preserve their finding_id, fingerprint, source, WCAG/APG citation, Section 508 context, perspective alarms, reproduction steps, expected/actual behavior, and trend status. Use them as traceable evidence inputs, not as a substitute for independent review.
     - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
     Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
 
@@ -547,6 +550,10 @@ Copy this protocol into the subagent prompt:
     - "CRITICAL: Modal dialog missing focus trap. See `src/components/Modal.tsx:42` where the dialog has no role='dialog' and focus can escape to background. Per WCAG 2.1.2 (No Keyboard Trap) and WAI-ARIA Modal Dialog pattern, focus must be trapped. Fix: add role='dialog', aria-modal='true', and implement focus trap logic."
     - "MAJOR: Form validation errors not associated with inputs. See `src/forms/LoginForm.tsx:89` where validation message renders but the input has no aria-describedby pointing to it. Per WCAG 1.3.1 (Info and Relationships), error messages must be associated. Fix: add aria-describedby to input, id to error message, sync on validation."
 
+    Optional structured contract: For CRITICAL or MAJOR findings backed by measured evidence, include an `A11y Evidence Finding` block before or within the finding. If you use the block, include all required fields: finding_id, fingerprint, source, wcag_or_apg, section_508_fpc_context, severity, perspective_alarms, evidence, reproduction_steps, expected_behavior, actual_behavior, and optional trend. Omit the block for clean reviews and do not invent fields to make weak evidence look complete.
+
+    Section 508 wording: Treat WCAG 2.2 AA as the current project planning and review target. Treat Revised Section 508 as regulatory context only when scope requires it; web conformance maps to WCAG 2.0 Level A/AA, so do not label WCAG 2.1/2.2-only issues as Section 508 failures unless the project policy explicitly adopts them.
+
     Findings without evidence are opinions, not findings.
   </Evidence_Requirements>
 
@@ -574,6 +581,23 @@ Copy this protocol into the subagent prompt:
        - Confidence: [HIGH/MEDIUM]
        - Why this matters: [User impact]
        - Fix: [Specific suggestion]
+
+    Optional measured-evidence block for each CRITICAL/MAJOR finding:
+    ```
+    ### A11y Evidence Finding
+    finding_id: [stable lowercase id]
+    fingerprint: [stable 8-64 char hex hash]
+    source: [test command, spec name, axe id, snapshot ref, or source file]
+    wcag_or_apg: [WCAG 2.2 criterion or WAI-ARIA APG pattern]
+    section_508_fpc_context: [Revised Section 508/WCAG 2.0 A-AA context if applicable, or "not in scope"]
+    severity: [CRITICAL | MAJOR | MINOR | ENHANCEMENT]
+    perspective_alarms: [perspective=LOW|MEDIUM|HIGH list]
+    evidence: [file:line, DOM excerpt, test result, axe node, screenshot, or trace]
+    reproduction_steps: [steps or commands]
+    expected_behavior: [expected user/AT behavior]
+    actual_behavior: [observed behavior]
+    trend: [new | persistent | worsening | improving | resolved]
+    ```
 
     **Minor Findings** (friction but workaround exists):
     - [Finding]
@@ -701,7 +725,7 @@ Do NOT: invoke a11y-critic on untested code.
 
 ## Related Skills in Zivtech Tooling
 
-- **accessibility-testing** (from zivtech-Codex-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
-- **a11y-test** (from zivtech-Codex-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
-- **accessibility-standards** (from zivtech-Codex-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
+- **accessibility-testing** (from zivtech-claude-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
+- **a11y-test** (from zivtech-claude-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
+- **accessibility-standards** (from zivtech-claude-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
 - **ui-design-critic** (from zivtech-design-skill): Comprehensive design review — accessibility is one of many perspectives.

@@ -1,0 +1,625 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/async-form-vague-success.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "fill out and submit the feedback form, verify the success announcement is specific"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#feedback-name",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 16,
+      "ax_name_role_state": {
+        "name": "Full Name",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 22,
+                "text": "Full Name"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 380,
+        "y": 166,
+        "width": 520,
+        "height": 41
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.0124,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "textbox, Full Name, required"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "textbox, Full Name, required"
+      },
+      "focus_appearance": {
+        "changed_area": 483,
+        "ref_area_2px_perimeter": 2244,
+        "area_pass": false,
+        "contrast": 4.59,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "type:\"Ada Lovelace\"",
+      "active_element_selector": "#feedback-name",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 16,
+      "ax_name_role_state": {
+        "name": "Full Name",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 22,
+                "text": "Full Name"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 380,
+        "y": 166,
+        "width": 520,
+        "height": 41
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "Ada Lovelace",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.1031,
+        "edge": 0.1581,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 2224,
+        "ref_area_2px_perimeter": 2244,
+        "area_pass": false,
+        "contrast": 2.45,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#feedback-email",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 19,
+      "ax_name_role_state": {
+        "name": "Email Address",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 25,
+                "text": "Email Address"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 380,
+        "y": 246,
+        "width": 520,
+        "height": 41
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.0196,
+        "edge": 0.0006,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "textbox, Email Address, required"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "textbox, Email Address, required"
+      },
+      "focus_appearance": {
+        "changed_area": 740,
+        "ref_area_2px_perimeter": 2244,
+        "area_pass": false,
+        "contrast": 4.77,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "type:\"ada@example.com\"",
+      "active_element_selector": "#feedback-email",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 19,
+      "ax_name_role_state": {
+        "name": "Email Address",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 25,
+                "text": "Email Address"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 380,
+        "y": 246,
+        "width": 520,
+        "height": 41
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "ada@example.com",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0004.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.1031,
+        "edge": 0.1581,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 2224,
+        "ref_area_2px_perimeter": 2244,
+        "area_pass": false,
+        "contrast": 2.45,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0005",
+      "index": 5,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#feedback-message",
+      "tag": "textarea",
+      "tabindex": null,
+      "dom_order_index": 22,
+      "ax_name_role_state": {
+        "name": "Your Feedback",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": true,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 28,
+                "text": "Your Feedback"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 380,
+        "y": 326,
+        "width": 520,
+        "height": 109
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0005.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.0102,
+        "edge": 0.0337,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "textbox, Your Feedback, required"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "textbox, Your Feedback, required"
+      },
+      "focus_appearance": {
+        "changed_area": 1162,
+        "ref_area_2px_perimeter": 2516,
+        "area_pass": false,
+        "contrast": 4.36,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0006",
+      "index": 6,
+      "keystroke_sent": "type:\"The export feature saves me hours.\"",
+      "active_element_selector": "#feedback-message",
+      "tag": "textarea",
+      "tabindex": null,
+      "dom_order_index": 22,
+      "ax_name_role_state": {
+        "name": "Your Feedback",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": true,
+          "readonly": false,
+          "required": true,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 28,
+                "text": "Your Feedback"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 380,
+        "y": 326,
+        "width": 520,
+        "height": 109
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "The export feature saves me hours.",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(59, 130, 246, 0.15) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0006.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.0436,
+        "edge": 0.067,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 2496,
+        "ref_area_2px_perimeter": 2516,
+        "area_pass": false,
+        "contrast": 2.45,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0007",
+      "index": 7,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#root > div > form > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 23,
+      "ax_name_role_state": {
+        "name": "Send Feedback",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 380,
+        "y": 454,
+        "width": 520,
+        "height": 41
+      },
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "Send Feedback",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(59, 130, 246)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Send Us Feedback"
+      },
+      "focused_region_screenshot": "screenshots/step_0007.png",
+      "focus_visible": {
+        "border_band": 0.8807,
+        "interior": 0.4797,
+        "edge": 0.9962,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Send Feedback"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Send Feedback"
+      },
+      "focus_appearance": {
+        "changed_area": 14172,
+        "ref_area_2px_perimeter": 2244,
+        "area_pass": true,
+        "contrast": 2.59,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0008",
+      "index": 8,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "body",
+      "tag": "body",
+      "tabindex": null,
+      "dom_order_index": -1,
+      "ax_name_role_state": {
+        "name": null,
+        "role": "none",
+        "states": {}
+      },
+      "focus_moved": true,
+      "bounding_box": null,
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "text": "",
+      "is_body": true,
+      "computed_focus_style": null,
+      "region": null,
+      "focused_region_screenshot": null,
+      "focus_visible": null,
+      "sr_announcement": {
+        "new_phrases": [
+          "polite: Submitting your feedback...",
+          "polite: Submitting your feedback...",
+          "polite: Something went wrong. Please try again.",
+          "polite: Something went wrong. Please try again.",
+          "polite: Something went wrong. Please try again."
+        ],
+        "live_announcements": [
+          {
+            "priority": "polite",
+            "text": "Submitting your feedback..."
+          },
+          {
+            "priority": "polite",
+            "text": "Submitting your feedback..."
+          },
+          {
+            "priority": "polite",
+            "text": "Something went wrong. Please try again."
+          },
+          {
+            "priority": "polite",
+            "text": "Something went wrong. Please try again."
+          },
+          {
+            "priority": "polite",
+            "text": "Something went wrong. Please try again."
+          }
+        ],
+        "focus_announcement": null
+      }
+    }
+  ]
+}

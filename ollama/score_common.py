@@ -23,10 +23,14 @@ def strip_thinking(text: str) -> tuple[str, bool]:
 
 
 def detect_verdict(text: str, ladder: list[str]) -> str:
-    """Two-tier verdict detection.
+    """Three-tier verdict detection (post-003 scoring).
 
     1. Explicit declaration:  'Verdict: REVISE' (with optional markdown).
-    2. Fallback: whole-word scan, ladder order (most specific/severe first).
+    2. Bolded conclusion line: '**PASS** — ...' (last occurrence wins —
+       conclusions close the document; added 2026-07-13 after audits whose
+       literal conclusion was '**PASS** — no CRITICAL or MAJOR findings'
+       fell through to the fallback and matched boilerplate 'BLOCK').
+    3. Fallback: whole-word scan, ladder order (most specific/severe first).
     """
     alternatives = "|".join(re.escape(v) for v in ladder)
     m = re.search(
@@ -35,11 +39,24 @@ def detect_verdict(text: str, ladder: list[str]) -> str:
     )
     if m:
         return m.group(1).upper()
+    conclusion_hits = re.findall(
+        rf"^\s*(?:#+\s*)?\*\*({alternatives})\*\*\s*[—–-]",
+        text, re.IGNORECASE | re.MULTILINE,
+    )
+    if conclusion_hits:
+        return conclusion_hits[-1].upper()
     upper = text.upper()
     for v in ladder:
         if re.search(rf"\b{re.escape(v)}\b", upper):
             return v
     return "NONE"
+
+
+def normalize_quotes(s: str) -> str:
+    """Fold straight/curly single and double quotes to one form so keyword
+    matching is quote-insensitive (rubrics write role='tab', audits write
+    role="tab"). Post-003 scoring, 2026-07-13."""
+    return re.sub(r"[\"'‘’“”]", "'", s)
 
 
 def fallback_keywords(description: str, max_words: int = 4) -> list[str]:

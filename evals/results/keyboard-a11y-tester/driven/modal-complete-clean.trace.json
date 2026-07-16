@@ -1,0 +1,426 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/modal-complete-clean.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "open the settings modal, then close it, verifying focus management"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#root > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 11,
+      "ax_name_role_state": {
+        "name": "Open settings",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 16,
+        "width": 98.265625,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "Open settings",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 1,
+        "interior": 0.798,
+        "edge": 0.9596,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "button, Open settings"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Open settings"
+      },
+      "focus_appearance": {
+        "changed_area": 2902,
+        "ref_area_2px_perimeter": 477,
+        "area_pass": true,
+        "contrast": 3.58,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "body > div:nth-of-type(2) > div > div:nth-of-type(1) > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 20,
+      "ax_name_role_state": {
+        "name": "Close dialog",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 835.703125,
+        "y": 319.90625,
+        "width": 34.296875,
+        "height": 36
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "✕",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "2px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": "Settings"
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0.3853,
+        "interior": 0.0016,
+        "edge": 0.0052,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "dialog, Settings, modal",
+          "button, Close dialog"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Close dialog"
+      },
+      "focus_appearance": {
+        "changed_area": 300,
+        "ref_area_2px_perimeter": 281,
+        "area_pass": true,
+        "contrast": 4.31,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "body > div:nth-of-type(2) > div > div:nth-of-type(2) > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 23,
+      "ax_name_role_state": {
+        "name": "Save changes",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 410,
+        "y": 457.5,
+        "width": 100.484375,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "Save changes",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": "Settings"
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0.1211,
+        "interior": 0.1674,
+        "edge": 0.2984,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Save changes"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Save changes"
+      },
+      "focus_appearance": {
+        "changed_area": 468,
+        "ref_area_2px_perimeter": 486,
+        "area_pass": false,
+        "contrast": 3.14,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "body > div:nth-of-type(2) > div > div:nth-of-type(1) > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 20,
+      "ax_name_role_state": {
+        "name": "Close dialog",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 835.703125,
+        "y": 319.90625,
+        "width": 34.296875,
+        "height": 36
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "✕",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "2px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": "Settings"
+      },
+      "focused_region_screenshot": "screenshots/step_0004.png",
+      "focus_visible": {
+        "border_band": 0.3853,
+        "interior": 0.0016,
+        "edge": 0.0052,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Close dialog"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Close dialog"
+      },
+      "focus_appearance": {
+        "changed_area": 300,
+        "ref_area_2px_perimeter": 281,
+        "area_pass": true,
+        "contrast": 4.31,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0005",
+      "index": 5,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "body > div:nth-of-type(2) > div > div:nth-of-type(2) > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 23,
+      "ax_name_role_state": {
+        "name": "Save changes",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 410,
+        "y": 457.5,
+        "width": 100.484375,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "Save changes",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": "Settings"
+      },
+      "focused_region_screenshot": "screenshots/step_0005.png",
+      "focus_visible": {
+        "border_band": 0.1185,
+        "interior": 0.2956,
+        "edge": 0.3494,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Save changes"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Save changes"
+      },
+      "focus_appearance": {
+        "changed_area": 928,
+        "ref_area_2px_perimeter": 486,
+        "area_pass": true,
+        "contrast": 4.74,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0006",
+      "index": 6,
+      "keystroke_sent": "Escape",
+      "active_element_selector": "#root > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 11,
+      "ax_name_role_state": {
+        "name": "Open settings",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 16,
+        "width": 98.265625,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "text": "Open settings",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0006.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.2136,
+        "edge": 0.3016,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Open settings"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Open settings"
+      },
+      "focus_appearance": {
+        "changed_area": 460,
+        "ref_area_2px_perimeter": 477,
+        "area_pass": false,
+        "contrast": 3.14,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    }
+  ]
+}

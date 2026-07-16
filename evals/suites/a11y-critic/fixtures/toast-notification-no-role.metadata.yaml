@@ -67,6 +67,13 @@ false_positive_traps: 0
 notes: |
   This HAS-BUGS fixture tests transient message and alert pattern understanding.
 
+  Fix-shape reconciliation (2026-07-11): the reliable fix is a PERSISTENT live-region
+  container (mounted empty, message text injected on show) — not adding role="alert"
+  to a toast that mounts with its content, which is not reliably announced
+  (virtual-screen-reader measured it silent in jsdom and Chromium; real SRs are
+  inconsistent on pre-populated alert insertion). The must-find items are unchanged:
+  the planted defects are still the missing role and missing aria-live.
+
   Expected verdict: REVISE
 
   Key gap: Many developers implement toast notifications focusing on visual presentation and JavaScript mechanics, without considering that screen reader users need role="alert" and aria-live to be notified of transient messages. This is a common pattern that developers get wrong.

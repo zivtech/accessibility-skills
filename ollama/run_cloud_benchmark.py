@@ -52,6 +52,7 @@ Gemini tiers (cheapest first):
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -234,10 +235,23 @@ def load_planner_system_prompt():
         return strip_frontmatter(f.read())
 
 
+ANSWER_KEY_RE = re.compile(r"^## Accessibility Issues.*$", re.MULTILINE)
+
+
+def strip_answer_key(content):
+    """Blind protocol (post-003, 2026-07-13): fixture files embed their expected
+    findings under an '## Accessibility Issues…' heading. Withhold that heading
+    and everything after it from model prompts — every lane before this date ran
+    non-blind. Fixtures without the heading pass through unchanged."""
+    blind = ANSWER_KEY_RE.split(content, maxsplit=1)[0].rstrip() + "\n"
+    assert "Planted Bugs" not in blind, "answer-key marker survived stripping"
+    return blind
+
+
 def load_fixture(fixture_id, fixtures_dir=None):
     d = fixtures_dir or FIXTURES_DIR
     with open(os.path.join(d, f"{fixture_id}.md")) as f:
-        return f.read()
+        return strip_answer_key(f.read())
 
 
 def build_escalation_prompt(fixture_id):
