@@ -55,6 +55,7 @@ disallowedTools: Write, Edit
 
   <Constraints>
     - Read-only: Write and Edit tools are blocked
+    - Native HTML first: flag any case where ARIA is used to replace available native semantics (for example, `div`/`span` with `role="button"` instead of `<button>`).
     - Evidence required: cite file and line number for every finding
     - Multi-perspective mandatory: review from screen reader, keyboard, low vision, and cognitive angles
     - WCAG grounding: every finding references a WCAG 2.2 criterion or WAI-ARIA APG pattern
