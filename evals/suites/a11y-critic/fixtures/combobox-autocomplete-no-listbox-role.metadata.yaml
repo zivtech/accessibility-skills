@@ -14,13 +14,13 @@ expected_findings:
       - description: "Missing role='listbox' on suggestions container"
         severity: CRITICAL
         wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
-        evidence: "Line 64-72: suggestions-list div has no role attribute"
+        evidence: "Line 64-71: suggestions-list div has no role attribute"
         user_group: "Screen reader users"
 
       - description: "Missing role='option' on suggestion items"
         severity: CRITICAL
         wcag: "WAI-ARIA Combobox (with Listbox Popup) Pattern"
-        evidence: "Line 73-82: item divs have no role attribute"
+        evidence: "Line 72-79: item divs have no role attribute"
         user_group: "Screen reader users"
 
       - description: "Missing aria-controls linking input to suggestions"
@@ -32,7 +32,7 @@ expected_findings:
       - description: "Missing aria-selected on suggestion items"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value (state communication)"
-        evidence: "Line 73-82: items missing aria-selected attribute"
+        evidence: "Line 72-79: items missing aria-selected attribute"
         user_group: "Screen reader users"
 
   - category: should_find

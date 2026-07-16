@@ -10,10 +10,6 @@ const SubscribeModal = ({ onClose }) => {
   const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // BUG: No ref on the modal container for focus management
-  // BUG: No useEffect to move focus into the modal on open
-  // BUG: No focus trap logic — Tab exits into background page freely
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -21,18 +17,9 @@ const SubscribeModal = ({ onClose }) => {
 
   if (submitted) {
     return (
-      /*
-        BUG: <div> with no role="dialog" or aria-modal — SR treats this as
-        normal page content, not a dialog overlay.
-        BUG: No aria-labelledby pointing to the heading.
-      */
       <div className="modal-backdrop">
         <div className="modal-container">
           <p className="modal-success">Thanks, {name}! You're subscribed.</p>
-          {/*
-            BUG: Close button uses "×" character with no aria-label.
-            SR may announce "times" or "multiplication sign" depending on SR.
-          */}
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
       </div>
@@ -40,22 +27,11 @@ const SubscribeModal = ({ onClose }) => {
   }
 
   return (
-    /*
-      BUG: No role="dialog" — not identified as a dialog to AT.
-      BUG: No aria-modal="true" — background content not hidden to virtual cursor.
-      BUG: No aria-labelledby — dialog has no accessible name.
-      The backdrop dims visually, which is correct.
-    */
     <div className="modal-backdrop">
       <div className="modal-container">
 
         <div className="modal-header">
-          {/* id present for potential aria-labelledby — but dialog never references it */}
           <h2 id="modal-title" className="modal-title">Subscribe to Updates</h2>
-          {/*
-            BUG: Close button icon "×" has no aria-label.
-            Announced as "times button" or similar — not descriptive.
-          */}
           <button
             className="modal-close"
             onClick={onClose}
@@ -112,11 +88,8 @@ const SubscribePage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef(null);
 
-  // BUG: When modal closes, focus is not returned to the trigger button.
-  // triggerRef exists but is never used to restore focus on close.
   const handleClose = () => {
     setIsOpen(false);
-    // Missing: triggerRef.current?.focus();
   };
 
   return (
@@ -207,7 +180,6 @@ export default SubscribePage;
   color: #1a1a1a;
 }
 
-/* BUG: Close button visually clear but no accessible name for SR */
 .modal-close {
   background: none;
   border: none;

@@ -63,9 +63,6 @@ import React, { useState } from 'react';
 }
 
 .tier-price {
-  /* BUG: 12px gray text #767676 on white — contrast ratio 4.54:1, barely passes AA
-     for normal text (4.5:1 minimum) but fails AA for text this visually small and
-     light at actual rendered weight */
   font-size: 12px;
   color: #767676;
   font-weight: 400;
@@ -80,9 +77,6 @@ import React, { useState } from 'react';
 }
 
 .recommended-header {
-  /* BUG: "Recommended" tier column is highlighted with background color only —
-     no text label "Recommended", no aria-sort or aria-describedby pointing to
-     a recommendation explanation */
   background: #ebf8ff;
   border-top: 3px solid #2b6cb0;
 }
@@ -95,7 +89,6 @@ import React, { useState } from 'react';
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 99px;
-  /* BUG: Shimmer animation on badge with no prefers-reduced-motion override */
   animation: shimmer 2s linear infinite;
   background-size: 200% 100%;
 }
@@ -105,13 +98,7 @@ import React, { useState } from 'react';
   100% { background-position: -200% center; }
 }
 
-/* BUG: No @media (prefers-reduced-motion: reduce) to suppress shimmer */
-
 .feature-check {
-  /* BUG: Feature availability is indicated by green checkmark vs red X — color only.
-     Both pass contrast individually, but the check vs X distinction relies entirely
-     on color (green = available, red = unavailable) with no pattern or shape difference
-     that would be distinguishable in monochrome. */
   font-size: 18px;
 }
 
@@ -130,7 +117,6 @@ import React, { useState } from 'react';
 }
 
 .feature-tooltip-trigger {
-  /* BUG: Feature comparison tooltip is hover-only — no focus event triggers tooltip */
   cursor: help;
   text-decoration: underline dotted #999;
   position: relative;
@@ -152,7 +138,6 @@ import React, { useState } from 'react';
 
 .feature-tooltip-trigger:hover .feature-tooltip {
   display: block;
-  /* BUG: :focus-within not added — tooltip does not appear on keyboard focus */
 }
 
 .cta-button {
@@ -228,24 +213,17 @@ const FeatureCell = ({ value, tierName }) => {
   }
   return (
     <td className="feature-check">
-      {/* BUG: check vs X distinction is color only — both ✓ and ✕ use the same Unicode
-          characters but green/red color is the only differentiating signal.
-          In grayscale or for color-blind users, ✓ and ✕ render as similar-weight marks.
-          No aria-label on the cell to communicate "available" or "not available" */}
       <span
         className={`feature-check ${value ? 'available' : 'unavailable'}`}
         aria-hidden="true"
       >
         {value ? '✓' : '✕'}
       </span>
-      {/* BUG: No visually-hidden text equivalent for screen readers; aria-hidden hides the icon */}
     </td>
   );
 };
 
 const TooltipFeatureLabel = ({ label, tooltip }) => (
-  /* BUG: Tooltip is CSS hover-only — :focus-within not added; keyboard users cannot
-     access tooltip content for feature descriptions */
   <span className="feature-tooltip-trigger">
     {label}
     <span className="feature-tooltip" role="tooltip">{tooltip}</span>
@@ -274,7 +252,6 @@ const PricingTable = () => {
                 >
                   <div className="tier-name">{tier.name}</div>
                   {tier.recommended && (
-                    /* BUG: "Most popular" badge has shimmer animation with no reduced-motion */
                     <span className="most-popular-badge" aria-label="Most popular">
                       Most popular
                     </span>
@@ -284,7 +261,6 @@ const PricingTable = () => {
                       <>
                         {/* Large price amount has correct contrast — NOT a bug */}
                         <span className="amount">${tier.price}</span>
-                        {/* BUG: 12px #767676 price period text — borderline contrast at 4.54:1 */}
                         {tier.period}
                       </>
                     ) : (

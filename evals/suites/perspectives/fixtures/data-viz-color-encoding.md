@@ -25,13 +25,11 @@ const RevenueChart = () => {
     <section className="chart-section">
       <h2>Q1 2026 Revenue by Region</h2>
 
-      {/* BUG: SVG has no role="img" or aria-label — inaccessible to screen readers */}
       <svg
         width={CHART_W}
         height={CHART_H + 60}
         className="revenue-chart"
       >
-        {/* BUG: Y-axis labels at 10px — below comfortable reading size */}
         {[0, 100, 200, 300, 400, 500].map(tick => (
           <text
             key={tick}
@@ -52,10 +50,6 @@ const RevenueChart = () => {
 
           return (
             <g key={region.name}>
-              {/* BUG: Bars use fill color as sole series differentiator —
-                  no pattern fills, no direct value labels on bars — WCAG 1.4.1 */}
-              {/* BUG: onMouseEnter shows tooltip but no onFocus — keyboard users
-                  cannot access values — WCAG 2.1.1, 1.4.13 */}
               <rect
                 x={x}
                 y={y}
@@ -88,7 +82,6 @@ const RevenueChart = () => {
         )}
       </svg>
 
-      {/* BUG: Legend uses small colored squares only — no shape/pattern mapping */}
       <div className="legend">
         {REGIONS.map(r => (
           <div key={r.name} className="legend-item">
@@ -133,7 +126,6 @@ export default RevenueChart;
   font-size: 13px;
 }
 
-/* BUG: Swatch is color-only — no shape, no pattern fill, no icon */
 .legend-swatch {
   display: inline-block;
   width: 12px;
@@ -160,13 +152,13 @@ export default RevenueChart;
 
 1. **CRITICAL: 5 data series distinguished only by fill color — WCAG 1.4.1 (Use of Color)**
    Bars use fill color as the sole differentiator between regions. No pattern fills, no direct value labels on bars, no shape variation. Color-blind users (protanopia, deuteranopia) cannot distinguish blue from purple, or red from green/orange. All colors pass contrast ratio checks — automated tools will not flag this.
-   - Evidence: Lines 50-58 — `<rect fill={region.fill}>` with no pattern or label overlay
+   - Evidence: Lines 48-52 — `<rect fill={region.fill}>` with no pattern or label overlay
    - User group: Color-blind users, monochrome display users
    - Fix: Add direct value labels on each bar, or use pattern fills (hatching, dots) alongside color
 
 2. **MAJOR: Hover tooltips on SVG bars with no keyboard/focus equivalent — WCAG 2.1.1 (Keyboard), 1.4.13 (Content on Hover)**
    Bar values are only accessible via mouse hover (`onMouseEnter`). SVG rect elements have no tabIndex, no onFocus handler. Keyboard users cannot access individual bar values.
-   - Evidence: Lines 53-55 — `onMouseEnter` handler with no focus equivalent; rect has no tabIndex
+   - Evidence: Lines 51-52 — `onMouseEnter` handler with no focus equivalent; rect has no tabIndex
    - User group: Keyboard users, screen reader users
    - Fix: Add `tabIndex={0}` and `onFocus` handler to each rect; add `role="img"` and `aria-label` per bar
 
@@ -184,7 +176,7 @@ export default RevenueChart;
 
 5. **MINOR: Y-axis labels at 10px font size — WCAG 1.4.4 (Resize Text)**
    Y-axis tick labels are rendered at `fontSize="10"` in SVG. At this size they are difficult to read for low-vision users and don't scale with browser zoom (SVG text doesn't respond to `rem`/`em`).
-   - Evidence: Line 37 — `fontSize="10"` on Y-axis text elements
+   - Evidence: Line 35 — `fontSize="10"` on Y-axis text elements
    - User group: Low-vision users, magnification users
    - Fix: Increase to at least 12px; consider rendering Y-axis labels as HTML overlays
 

@@ -13,8 +13,6 @@ const BuggyTooltip = ({ trigger, content }) => {
       <button
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        // BUG: No aria-describedby to associate tooltip with trigger
-        // BUG: No aria-label if button text is unclear
       >
         {trigger}
       </button>
@@ -22,9 +20,6 @@ const BuggyTooltip = ({ trigger, content }) => {
         <div
           className="tooltip-content"
           role="tooltip"
-          // BUG: Role is present but no proper timing or focus management
-          // Tooltip appears on hover only, not on focus
-          // Keyboard user cannot access tooltip
         >
           {content}
         </div>
@@ -63,7 +58,7 @@ export default BuggyTooltip;
    - Fix: Add aria-describedby pointing to tooltip div id
 
 3. **MAJOR: Tooltip not announced on focus** — Even with role="tooltip", screen reader does not announce content when button is focused. Tooltip content should be automatically announced to screen reader user when trigger receives focus.
-   - Evidence: `tooltip-no-role-no-association.md:15-22` (tooltip only renders on hover, not available to AT on focus)
+   - Evidence: `tooltip-no-role-no-association.md:15-20` (tooltip only renders on hover, not available to AT on focus)
    - User group: Screen reader users
    - Expected: Tooltip should be announced when button is focused
    - Fix: Ensure tooltip renders when trigger has focus, and aria-describedby is present

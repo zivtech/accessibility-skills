@@ -14,7 +14,7 @@ expected_findings:
       - description: "Success message is generic — doesn't identify what was submitted"
         severity: MAJOR
         wcag: "4.1.3 Status Messages (status must provide equivalent information)"
-        evidence: "Lines 70-73: hardcoded 'Your submission was successful!' with no reference to form purpose or submitted data"
+        evidence: "Lines 65-67: hardcoded 'Your submission was successful!' with no reference to form purpose or submitted data"
         user_group: "Screen reader users — especially those with multiple forms or who navigate away before announcement"
         expected_behavior: "Message should identify the completed action: 'Your feedback has been sent' rather than generic 'submission successful'"
         fix: "Include form context in success message: 'Your feedback has been sent. We'll respond to ${formData.email} within 2 business days.'"
@@ -25,7 +25,7 @@ expected_findings:
       - description: "aria-busy cleared 200ms before success content arrives in live region"
         severity: MAJOR
         wcag: "4.1.3 Status Messages (announcement timing must ensure AT receives the message)"
-        evidence: "Lines 37-41: setStatus('clearing') removes aria-busy, setTimeout inserts content 200ms later"
+        evidence: "Lines 37-39: setStatus('clearing') removes aria-busy, setTimeout inserts content 200ms later"
         user_group: "Screen reader users — NVDA and JAWS check live region content when aria-busy transitions to false; empty region means skipped announcement"
         expected_behavior: "aria-busy should remain true until success message is ready; both should update in the same render cycle"
         fix: "Remove intermediate 'clearing' state. Set status directly to 'success' so aria-busy and content update atomically."
@@ -36,14 +36,14 @@ expected_findings:
       - description: "Form fields remain editable after successful submission"
         severity: MINOR
         wcag: "3.3.4 Error Prevention"
-        evidence: "Lines 82-115: no conditional disabled/aria-disabled based on success state"
+        evidence: "Lines 76-106: no conditional disabled/aria-disabled based on success state"
         user_group: "Screen reader users (no programmatic 'done' state), cognitive users (may re-submit), motor impairment users (accidental re-activation)"
         expected_to_find: "35%"
 
       - description: "Success confirmation cannot be re-read after navigation"
         severity: ENHANCEMENT
         wcag: "Best practice — persistent status should be discoverable, not just announced once"
-        evidence: "Lines 60-76: status div has no tabindex, no heading, not a landmark"
+        evidence: "Lines 57-70: status div has no tabindex, no heading, not a landmark"
         user_group: "Screen reader users (can't re-find confirmation), cognitive users (need to re-read to confirm)"
         expected_to_find: "15%"
 

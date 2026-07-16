@@ -28,11 +28,9 @@ import React, { useState } from 'react';
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 24px;
-  /* BUG: 3-column layout at small viewport — no reflow below 320px CSS pixels */
 }
 
 .settings-column h2 {
-  /* BUG: 9px font size — below readable threshold, fails WCAG 1.4.4 and cognitive legibility */
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
@@ -45,7 +43,6 @@ import React, { useState } from 'react';
   display: flex;
   flex-direction: column;
   gap: 12px;
-  /* BUG: 12 toggles with no visual grouping into sub-categories — cognitive overload */
 }
 
 .toggle-row {
@@ -59,7 +56,6 @@ import React, { useState } from 'react';
   font-size: 13px;
   color: #111;
   flex: 1;
-  /* BUG: Technical jargon like "Enable HSTS preloading" appears with no tooltip or glossary link */
 }
 
 .toggle-switch input[type="checkbox"] {
@@ -70,14 +66,12 @@ import React, { useState } from 'react';
 }
 
 .required-asterisk {
-  /* BUG: Required fields marked with tiny red asterisk only — no text, no aria-required */
   color: #e53e3e;
   font-size: 9px;
   margin-left: 2px;
 }
 
 .error-inline {
-  /* BUG: Error messages use codes like "ERR_CSP_001" not human descriptions */
   font-size: 11px;
   color: #e53e3e;
   margin-top: 4px;
@@ -87,8 +81,6 @@ import React, { useState } from 'react';
   margin-top: 32px;
   display: flex;
   justify-content: flex-end;
-  /* BUG: Save button is at the bottom right — no unsaved-changes indicator anywhere
-     in the UI; users may navigate away without realizing changes are pending */
 }
 
 .btn-save {
@@ -140,7 +132,6 @@ const AdminSettings = () => {
     Object.fromEntries(LOGGING_TOGGLES.map((t) => [t.id, false]))
   );
 
-  // BUG: No unsaved-changes state tracked — user could navigate away silently
   const [saved, setSaved] = useState(true);
 
   const handleToggle = (group, id) => {
@@ -152,8 +143,6 @@ const AdminSettings = () => {
     } else {
       setLoggingValues((prev) => ({ ...prev, [id]: !prev[id] }));
     }
-    // BUG: setSaved(false) is called but no visual indicator of "unsaved changes"
-    // is rendered anywhere; the save button appearance does not change
   };
 
   const handleSave = () => {
@@ -162,17 +151,12 @@ const AdminSettings = () => {
   };
 
   const renderToggleGroup = (toggles, values, group) => (
-    /* BUG: 12 toggles across 3 columns with no sub-grouping headers or visual separators
-       within columns — cognitive overload for users managing complex config */
     <div className="toggle-group">
       {toggles.map((t) => (
         <div key={t.id} className="toggle-row">
           <label className="toggle-label" htmlFor={t.id}>
-            {/* BUG: Technical jargon label with no tooltip, glossary link, or plain-English description */}
             {t.label}
             {t.required && (
-              /* BUG: Required indicated only by red asterisk — no aria-required on input,
-                 no visually-hidden "required" text, no legend or form instruction */
               <span className="required-asterisk" aria-hidden="true">*</span>
             )}
           </label>
@@ -185,8 +169,6 @@ const AdminSettings = () => {
             onChange={() => handleToggle(group, t.id)}
           />
           {t.error && (
-            /* BUG: Error message is a code string "ERR_CSP_001" — no human-readable description,
-               no link to documentation, no ARIA association to the field */
             <span className="error-inline" role="alert">
               {t.error}
             </span>
@@ -205,10 +187,8 @@ const AdminSettings = () => {
         </p>
       </div>
 
-      {/* BUG: 3-column layout with 9px section headers — fails magnification/reflow and cognitive legibility */}
       <div className="settings-grid">
         <div className="settings-column">
-          {/* BUG: 9px font on column headers */}
           <h2>Security</h2>
           {renderToggleGroup(SECURITY_TOGGLES, securityValues, 'security')}
         </div>
@@ -222,7 +202,6 @@ const AdminSettings = () => {
         </div>
       </div>
 
-      {/* BUG: No unsaved-changes indicator near the save button or at top of form */}
       <div className="settings-actions">
         {/* Save button is keyboard-accessible native <button> — NOT a bug */}
         <button className="btn-save" onClick={handleSave}>

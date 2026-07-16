@@ -20,25 +20,25 @@ expected_findings:
       - description: "Focus not restored to trigger after close"
         severity: CRITICAL
         wcag: "2.4.3 Focus Order + WAI-ARIA Modal Dialog Pattern"
-        evidence: "Line 12-15: closePopover has no focus restoration"
+        evidence: "Line 12-14: closePopover has no focus restoration"
         user_group: "Keyboard users"
 
       - description: "Missing role='dialog'"
         severity: CRITICAL
         wcag: "4.1.2 Name, Role, Value"
-        evidence: "Line 25-31: no role attribute"
+        evidence: "Line 23-28: no role attribute"
         user_group: "Screen reader users"
 
       - description: "Missing aria-modal"
         severity: MAJOR
         wcag: "WAI-ARIA Modal Dialog Pattern"
-        evidence: "Line 25-31: no aria-modal attribute"
+        evidence: "Line 23-28: no aria-modal attribute"
         user_group: "Screen reader users"
 
       - description: "Missing aria-labelledby"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value (dialog label)"
-        evidence: "Line 25-31: no aria-labelledby"
+        evidence: "Line 23-28: no aria-labelledby"
         user_group: "Screen reader users"
 
   - category: should_find

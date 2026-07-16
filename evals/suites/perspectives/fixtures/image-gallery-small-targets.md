@@ -53,8 +53,6 @@ const ImageGallery = () => {
     <section className="gallery" aria-label="Photo gallery">
       <h2>Nature Photography</h2>
 
-      {/* BUG: Thumbnails are 32x32px with 2px gap — WCAG 2.5.8 minimum is 24x24 but
-          with only 2px spacing, adjacent targets overlap effective hit area */}
       <div className="thumb-grid">
         {images.map(img => (
           <button
@@ -73,7 +71,6 @@ const ImageGallery = () => {
           <div className="lightbox-content">
             <img src={lightbox.src} alt={lightbox.alt} style={{ transform: `scale(${zoom})` }} />
 
-            {/* BUG: Close button is 16x16px — WCAG 2.5.8 */}
             <button
               ref={closeBtnRef}
               className="lightbox-close"
@@ -86,7 +83,6 @@ const ImageGallery = () => {
             <button className="lightbox-prev" onClick={goPrev} aria-label="Previous image" disabled={currentIdx === 0}>‹</button>
             <button className="lightbox-next" onClick={goNext} aria-label="Next image" disabled={currentIdx === images.length - 1}>›</button>
 
-            {/* BUG: Zoom buttons are 20x20px — WCAG 2.5.8 */}
             <div className="zoom-controls">
               <button className="zoom-btn" onClick={() => setZoom(z => Math.min(z + 0.25, 3))} aria-label="Zoom in">+</button>
               <button className="zoom-btn" onClick={() => setZoom(z => Math.max(z - 0.25, 0.5))} aria-label="Zoom out">−</button>
@@ -105,7 +101,6 @@ export default ImageGallery;
 .gallery { padding: 24px; font-family: system-ui, sans-serif; }
 .gallery h2 { font-size: 1.5rem; margin-bottom: 16px; }
 
-/* BUG: 32x32px thumbnails with 2px gap — too small, too close */
 .thumb-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 32px);
@@ -121,9 +116,6 @@ export default ImageGallery;
 .thumb-btn:focus-visible { outline: 3px solid #005fcc; outline-offset: 2px; }
 .thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* BUG: At 200% zoom, grid overflows horizontally — WCAG 1.4.10 */
-/* No flex-wrap or responsive breakpoint */
-
 .lightbox-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center;
@@ -133,7 +125,6 @@ export default ImageGallery;
 .lightbox-content { position: relative; max-width: 90vw; max-height: 90vh; }
 .lightbox-content img { max-width: 100%; max-height: 80vh; transition: transform 0.2s; }
 
-/* BUG: Close button 16x16px — far below 24x24 minimum */
 .lightbox-close {
   position: absolute; top: 4px; right: 4px;
   width: 16px; height: 16px;
@@ -154,7 +145,6 @@ export default ImageGallery;
 .lightbox-next { right: -48px; }
 .lightbox-prev:focus-visible, .lightbox-next:focus-visible { outline: 2px solid #fff; }
 
-/* BUG: Zoom buttons 20x20px — below minimum */
 .zoom-controls {
   position: absolute; bottom: 8px; right: 8px;
   display: flex; gap: 4px;
@@ -168,7 +158,6 @@ export default ImageGallery;
 
 .zoom-btn:focus-visible { outline: 2px solid #fff; }
 
-/* BUG: lightbox-prev/next positioned at viewport edge — clipped at zoom */
 ```
 
 ## Expected Behavior

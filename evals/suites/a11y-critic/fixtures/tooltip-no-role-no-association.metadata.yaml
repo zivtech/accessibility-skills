@@ -26,7 +26,7 @@ expected_findings:
       - description: "Tooltip not announced when button is focused"
         severity: MAJOR
         wcag: "4.1.3 Status Messages"
-        evidence: "Line 15-22: tooltip only renders on hover, unavailable to AT"
+        evidence: "Line 15-20: tooltip only renders on hover, unavailable to AT"
         user_group: "Screen reader users"
 
   - category: should_find

@@ -14,25 +14,25 @@ expected_findings:
       - description: "Missing <label> element"
         severity: CRITICAL
         wcag: "1.3.1 Info and Relationships + 3.3.2 Labels or Instructions"
-        evidence: "Line 25-27: div instead of label"
+        evidence: "Line 23: div instead of label"
         user_group: "Screen reader users"
 
       - description: "No aria-describedby linking to error message"
         severity: CRITICAL
         wcag: "3.3.1 Error Identification + 4.1.2 Name, Role, Value"
-        evidence: "Line 28-35: error div not associated with input"
+        evidence: "Line 24-28: error div not associated with input"
         user_group: "Screen reader users"
 
       - description: "No aria-invalid when error present"
         severity: MAJOR
         wcag: "4.1.2 Name, Role, Value (state communication)"
-        evidence: "Line 28-35: no aria-invalid attribute"
+        evidence: "Line 24-28: no aria-invalid attribute"
         user_group: "Screen reader users"
 
       - description: "File type restrictions not announced"
         severity: MAJOR
         wcag: "3.3.2 Labels or Instructions"
-        evidence: "Line 31: accept attribute not announced"
+        evidence: "Line 26: accept attribute not announced"
         user_group: "Screen reader users"
 
   - category: should_find

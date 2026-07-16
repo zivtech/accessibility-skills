@@ -44,7 +44,6 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit} className="login-form">
       <h1>Login</h1>
 
-      {/* BUG: Error messages exist but aren't announced as live region */}
       {Object.keys(errors).length > 0 && (
         <div className="error-summary">
           <h2>Please fix the following errors:</h2>
@@ -66,9 +65,7 @@ const LoginForm = () => {
           onChange={handleChange}
           className={errors.email ? 'error' : ''}
           aria-invalid={errors.email ? true : false}
-          // BUG: No aria-describedby pointing to error message
         />
-        {/* Error message exists but not associated to input */}
         {errors.email && <span className="error-text">{errors.email}</span>}
       </div>
 
@@ -82,9 +79,7 @@ const LoginForm = () => {
           onChange={handleChange}
           className={errors.password ? 'error' : ''}
           aria-invalid={errors.password ? true : false}
-          // BUG: No aria-describedby pointing to error message
         />
-        {/* Error message exists but not associated to input */}
         {errors.password && <span className="error-text">{errors.password}</span>}
       </div>
 
@@ -213,7 +208,7 @@ export default LoginForm;
 ## Accessibility Issues (Planted)
 
 1. **CRITICAL: Error messages not associated with form inputs via aria-describedby** — Although errors are displayed and aria-invalid is set, the input has no aria-describedby attribute pointing to the error message. Screen reader user hears "Email Address, invalid" but doesn't hear what's wrong.
-   - Evidence: `form-validation-missing-aria-describedby.md:72-82` (aria-invalid without aria-describedby; error message ID not linked)
+   - Evidence: `form-validation-missing-aria-describedby.md:69-79` (aria-invalid without aria-describedby; error message ID not linked)
    - WCAG citation: 1.3.1 Info and Relationships (error must be associated with field), 4.1.2 Name, Role, Value
    - User group: Screen reader users
    - Expected: Inputs should have aria-describedby="error-email" (or similar) pointing to error message element with matching id

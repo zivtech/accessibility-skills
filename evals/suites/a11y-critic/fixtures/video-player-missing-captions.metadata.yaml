@@ -14,19 +14,19 @@ expected_findings:
       - description: "Missing <track> element for captions"
         severity: CRITICAL
         wcag: "1.2.2 Captions (Prerecorded)"
-        evidence: "Line 26-28: video element missing track child"
+        evidence: "Line 25: video element missing track child"
         user_group: "Deaf and hard of hearing users"
 
       - description: "Missing caption toggle button"
         severity: CRITICAL
         wcag: "1.2.2 Captions (Prerecorded)"
-        evidence: "Line 33-36: no caption control provided"
+        evidence: "Line 29-32: no caption control provided"
         user_group: "Deaf and hard of hearing users"
 
       - description: "Captions not controllable by user"
         severity: MAJOR
         wcag: "1.2.2 Captions (Prerecorded)"
-        evidence: "Line 24-28: captions prop exists but unused"
+        evidence: "Line 24-25: captions prop exists but unused"
         user_group: "Deaf and hard of hearing users"
 
   - category: should_find

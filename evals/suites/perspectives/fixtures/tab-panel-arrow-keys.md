@@ -15,8 +15,6 @@ const tabs = [
 const TabPanel = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
-  // BUG: No Arrow key handling — only Tab/click switches panels
-  // APG tabs pattern requires ArrowLeft/Right between tabs
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
@@ -25,10 +23,8 @@ const TabPanel = () => {
     <section className="tabs-component">
       <h2>Product Details</h2>
 
-      {/* BUG: No role="tablist" — this is a plain div */}
       <div className="tab-bar">
         {tabs.map(tab => (
-          // BUG: No role="tab", no aria-selected, no aria-controls
           <button
             key={tab.id}
             className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
@@ -40,7 +36,6 @@ const TabPanel = () => {
       </div>
 
       {tabs.map(tab => (
-        // BUG: No role="tabpanel", no aria-labelledby
         <div
           key={tab.id}
           className="tab-panel"
@@ -87,7 +82,6 @@ export default TabPanel;
   margin-bottom: -2px;
 }
 
-/* Visual active indicator — correct appearance but no ARIA */
 .tab-btn.active {
   color: #1565c0;
   border-bottom-color: #1565c0;
@@ -119,7 +113,7 @@ export default TabPanel;
 - Four tabs: Overview, Specifications, Reviews, Support
 - Clicking a tab shows its panel content
 - Active tab has visual underline indicator
-- Arrow Left/Right should navigate between tabs (but don't)
+- Arrow Left/Right should navigate between tabs
 - Only one panel visible at a time
 
 ## Accessibility Features Present
@@ -134,19 +128,19 @@ export default TabPanel;
 
 1. **CRITICAL: No Arrow Left/Right navigation — WCAG 2.1.1 (Keyboard) + APG Tabs Pattern**
    Only Tab key and click switch panels. The APG tabs pattern requires ArrowLeft/ArrowRight to move focus between tabs within the tablist, with Tab moving into the panel content.
-   - Evidence: Lines 18-20 — `handleTabClick` with no keyboard handler; no `onKeyDown` on buttons
+   - Evidence: Line 18 — `handleTabClick` with no keyboard handler; no `onKeyDown` on buttons
    - User group: Keyboard users, screen reader users
    - Fix: Add onKeyDown handler for ArrowLeft/Right/Home/End on the tab bar
 
 2. **MAJOR: No role="tablist", role="tab", role="tabpanel" — WCAG 4.1.2 (Name, Role, Value)**
    Tab bar is a plain `<div>`, tabs are plain `<button>`, panels are plain `<div>`. Screen readers cannot identify the widget as a tab interface.
-   - Evidence: Line 28 — `<div className="tab-bar">` with no role; Lines 30-36 — buttons with no `role="tab"`; Lines 40-46 — panels with no `role="tabpanel"`
+   - Evidence: Line 26 — `<div className="tab-bar">` with no role; Lines 27-32 — buttons with no `role="tab"`; Lines 36-41 — panels with no `role="tabpanel"`
    - User group: Screen reader users
    - Fix: Add `role="tablist"` on bar, `role="tab"` on buttons, `role="tabpanel"` on panels
 
 3. **MAJOR: No aria-selected on active tab, no aria-controls linking tab to panel**
    Active tab is distinguished only by CSS class `.active`. No `aria-selected="true"` communicates the state. No `aria-controls` links tabs to their panels.
-   - Evidence: Line 33 — CSS class only, no aria-selected; no aria-controls attribute
+   - Evidence: Line 29 — CSS class only, no aria-selected; no aria-controls attribute
    - User group: Screen reader users
    - Fix: Add `aria-selected={activeTab === tab.id}` on each button; add `aria-controls={`panel-${tab.id}`}` and matching `id` on panels
 
@@ -158,7 +152,7 @@ export default TabPanel;
 
 5. **MINOR: Tab panels have no aria-labelledby pointing to their tab**
    Panel divs have no `aria-labelledby` attribute referencing the associated tab button.
-   - Evidence: Lines 40-46 — `<div className="tab-panel">` with no aria-labelledby
+   - Evidence: Lines 36-41 — `<div className="tab-panel">` with no aria-labelledby
    - User group: Screen reader users
    - Fix: Add `id={`tab-${tab.id}`}` on button and `aria-labelledby={`tab-${tab.id}`}` on panel
 

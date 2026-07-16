@@ -8,7 +8,6 @@ const BlogPost = () => {
     <article className="blog-post">
       <h1>Introduction to Web Accessibility</h1>
 
-      {/* BUG: Skips from h1 directly to h3 */}
       <h3>Why Accessibility Matters</h3>
       <p>
         Web accessibility ensures that everyone, including people with disabilities,
@@ -25,10 +24,8 @@ const BlogPost = () => {
         <li>Inaccessible forms</li>
       </ul>
 
-      {/* BUG: Still h3, should be h2 for new section */}
       <h3>Getting Started</h3>
 
-      {/* BUG: Then jumps to h2, inconsistent */}
       <h2>Tools and Resources</h2>
       <p>There are many tools available to help with accessibility testing...</p>
 
@@ -100,14 +97,14 @@ export default BlogPost;
 ## Accessibility Issues (Planted)
 
 1. **MAJOR: Heading hierarchy skips levels (h1 → h3)** — Screen reader users relying on heading navigation (heading arrow keys) encounter unexpected jumps. Per WCAG 1.3.1, heading hierarchy should be logical and hierarchical.
-   - Evidence: `heading-hierarchy-skipped.md:8-11` (h1 followed directly by h3, skipping h2)
+   - Evidence: `heading-hierarchy-skipped.md:8-10` (h1 followed directly by h3, skipping h2)
    - WCAG citation: 1.3.1 Info and Relationships (document structure must be logical)
    - User group: Screen reader users navigating by headings
    - Expected: h1 should be followed by h2, not h3
    - Fix: Change first h3s to h2 (or add h2 as parent section)
 
 2. **MAJOR: Inconsistent heading hierarchy (h3 then h2)** — After using h3 for subsections, suddenly switching to h2 breaks the logical structure. Screen reader users get confused about information hierarchy.
-   - Evidence: `heading-hierarchy-skipped.md:20-21` (h3 followed later by h2, inconsistent)
+   - Evidence: `heading-hierarchy-skipped.md:19-20` (h3 followed later by h2, inconsistent)
    - WCAG citation: 1.3.1 Info and Relationships
    - User group: Screen reader users
    - Expected: Either all subsections are h2, or subsections under h2 are h3

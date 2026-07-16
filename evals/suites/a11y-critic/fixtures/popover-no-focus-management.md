@@ -11,12 +11,10 @@ const BuggyPopover = ({ trigger, content }) => {
 
   const openPopover = () => {
     setIsOpen(true);
-    // BUG: Focus not moved to popover or trap within it
   };
 
   const closePopover = () => {
     setIsOpen(false);
-    // BUG: Focus not restored to trigger button
   };
 
   return (
@@ -28,9 +26,6 @@ const BuggyPopover = ({ trigger, content }) => {
       {isOpen && (
         <div
           className="popover-content"
-          // BUG: No role="dialog" to identify as popover
-          // BUG: No aria-modal to indicate modal behavior
-          // BUG: No aria-labelledby to label popover
         >
           <button onClick={closePopover}>Close</button>
           {content}
@@ -65,25 +60,25 @@ export default BuggyPopover;
    - Fix: Add autoFocus on close button or use useEffect to move focus
 
 2. **CRITICAL: Focus not restored to trigger** — When popover closes, focus is not restored to trigger button. Keyboard user loses position and must tab to regain focus. Per modal pattern, focus should return to trigger.
-   - Evidence: `popover-no-focus-management.md:12-15` (closePopover has no focus restoration)
+   - Evidence: `popover-no-focus-management.md:12-14` (closePopover has no focus restoration)
    - User group: Keyboard users (critical)
    - Expected: Focus should return to trigger button after close
    - Fix: Add triggerRef.current.focus() in closePopover
 
 3. **CRITICAL: Missing role="dialog"** — Popover is a div without dialog semantics. Screen reader user doesn't identify it as a modal dialog. Per ARIA, popovers should have role="dialog" to mark as modal.
-   - Evidence: `popover-no-focus-management.md:25-31` (no role attribute)
+   - Evidence: `popover-no-focus-management.md:23-28` (no role attribute)
    - User group: Screen reader users (critical)
    - Expected: Popover should have role="dialog"
    - Fix: Add role="dialog" to popover div
 
 4. **MAJOR: Missing aria-modal** — Without aria-modal="true", screen reader doesn't announce that interaction is modal (affects focus scope for assistive tech). Per ARIA modal dialog pattern, aria-modal should indicate modal behavior.
-   - Evidence: `popover-no-focus-management.md:25-31` (no aria-modal)
+   - Evidence: `popover-no-focus-management.md:23-28` (no aria-modal)
    - User group: Screen reader users
    - Expected: Popover should have aria-modal="true"
    - Fix: Add aria-modal="true" to popover div
 
 5. **MAJOR: Missing aria-labelledby** — Popover has no label. Screen reader user doesn't know what dialog is about. Should have aria-labelledby pointing to title or trigger text.
-   - Evidence: `popover-no-focus-management.md:25-31` (no aria-labelledby)
+   - Evidence: `popover-no-focus-management.md:23-28` (no aria-labelledby)
    - User group: Screen reader users
    - Expected: Popover should have aria-labelledby pointing to header
    - Fix: Add title and aria-labelledby reference

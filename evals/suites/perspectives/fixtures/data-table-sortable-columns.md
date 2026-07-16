@@ -60,24 +60,11 @@ const SortableTable = () => {
   return (
     <div className="table-wrapper">
 
-      {/*
-        BUG: Entire table built with CSS grid divs — no semantic <table>, <thead>,
-        <tbody>, <th>, <tr>, or <td> elements.
-        WCAG 1.3.1: tabular structure not programmatically determinable.
-        No scope on headers because there are no real <th> elements.
-      */}
       <div className="data-table" role="region" aria-label="Employee directory">
 
         {/* Header row */}
         <div className="table-row table-header-row">
           {COLUMNS.map(col => (
-            /*
-              BUG: No aria-sort on sort buttons — SR users cannot tell which
-              column is sorted or in which direction.
-              The button is keyboard-activatable (correct), but sort state is
-              communicated visually only via the arrow icon CSS class.
-              WCAG 4.1.2: sort state not programmatically exposed.
-            */
             <div key={col.key} className="table-cell table-header-cell">
               <button
                 className={`sort-btn ${sortKey === col.key ? `sort-${sortDir}` : ''}`}
@@ -106,8 +93,6 @@ const SortableTable = () => {
 
       {/*
         Works: "Showing X-Y of Z" text is visible.
-        BUG: No aria-live on this region — when sort or page changes, SR
-        users don't know the count has updated.
       */}
       <div className="table-meta">
         Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, sorted.length)} of {sorted.length} employees
@@ -115,12 +100,6 @@ const SortableTable = () => {
 
       {/* Pagination */}
       <nav className="pagination" aria-label="Table pagination">
-        {/*
-          BUG: Pagination uses href="#" plain anchor links.
-          No page context announced — SR users don't know "Page 2 of 3".
-          Current page link has no aria-current="page".
-          href="#" causes scroll-to-top behavior and announces no destination.
-        */}
         {Array.from({ length: totalPages }, (_, i) => (
           <a
             key={i}
@@ -149,7 +128,6 @@ export default SortableTable;
   font-family: system-ui, sans-serif;
 }
 
-/* BUG: Grid layout mimics table visually but carries no semantic table structure */
 .data-table {
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -206,7 +184,6 @@ export default SortableTable;
   background: #eeeeee;
 }
 
-/* BUG: Sort direction communicated via color + icon — not by aria-sort */
 .sort-btn.sort-asc  { color: #1565c0; }
 .sort-btn.sort-desc { color: #6a1b9a; }
 
@@ -228,7 +205,6 @@ export default SortableTable;
   align-items: center;
 }
 
-/* BUG: Current page communicated by color only — no aria-current */
 .page-link {
   display: inline-block;
   padding: 8px 12px;

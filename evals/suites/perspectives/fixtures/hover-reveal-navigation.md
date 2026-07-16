@@ -41,9 +41,7 @@ const MegaMenu = () => {
               <li
                 key={item.id}
                 className="nav-item"
-                // BUG: mouseenter only — no keyboard trigger — WCAG 2.1.1
                 onMouseEnter={() => setOpenMenu(item.id)}
-                // BUG: mouseleave immediately hides — no grace period — WCAG 1.4.13
                 onMouseLeave={() => setOpenMenu(null)}
               >
                 <a href={item.href} className="nav-link">
@@ -51,7 +49,6 @@ const MegaMenu = () => {
                 </a>
 
                 {item.children.length > 0 && openMenu === item.id && (
-                  // BUG: No role="menu" — just nested links in a div
                   <div className="submenu">
                     {item.children.map(child => (
                       <a key={child.href} href={child.href} className="submenu-link">
@@ -114,7 +111,6 @@ export default MegaMenu;
   outline: 3px solid #005fcc; outline-offset: 2px;
 }
 
-/* BUG: Submenu appears with slide-down, no prefers-reduced-motion */
 .submenu {
   position: absolute; top: 100%; left: 0;
   min-width: 200px; background: #fff;
@@ -129,8 +125,6 @@ export default MegaMenu;
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* BUG: No @media (prefers-reduced-motion: reduce) to disable animation */
 
 .submenu-link {
   display: block; padding: 10px 16px;
@@ -168,13 +162,13 @@ main p { font-size: 1.1rem; color: #333; line-height: 1.6; }
 
 1. **CRITICAL: Submenus appear on mouseenter only — no keyboard trigger — WCAG 2.1.1 (Keyboard)**
    Submenus are controlled via `onMouseEnter`/`onMouseLeave`. No `onFocus`, `onKeyDown`, or `aria-expanded` handling. Keyboard users Tab to "Products" but the submenu never opens — they can only reach the top-level href.
-   - Evidence: Lines 43-45 — onMouseEnter/Leave only; no focus handlers
+   - Evidence: Lines 43-44 — onMouseEnter/Leave only; no focus handlers
    - User group: Keyboard users, switch users
    - Fix: Add onFocus/onBlur handlers, aria-expanded on parent, keyboard Enter/Space/ArrowDown to open
 
 2. **MAJOR: Submenu disappears immediately on mouseleave — WCAG 1.4.13 (Content on Hover or Focus)**
    No hover grace period or delay. Moving the mouse diagonally from the parent to a submenu item causes the submenu to close because the mouse briefly leaves the nav-item bounds.
-   - Evidence: Line 45 — `onMouseLeave={() => setOpenMenu(null)}` fires immediately
+   - Evidence: Line 44 — `onMouseLeave={() => setOpenMenu(null)}` fires immediately
    - User group: Motor impairment users, magnification users
    - Fix: Add 300ms delay on mouseleave; use a "hover intent" triangle pattern
 
@@ -192,7 +186,7 @@ main p { font-size: 1.1rem; color: #333; line-height: 1.6; }
 
 5. **MINOR: Submenu items not wrapped in role="menu" — WCAG 4.1.2**
    Submenu is a plain `<div>` with child `<a>` elements. No `role="menu"` or `role="menuitem"`. Screen readers don't announce it as a menu.
-   - Evidence: Line 55 — `<div className="submenu">` with no ARIA role
+   - Evidence: Line 52 — `<div className="submenu">` with no ARIA role
    - User group: Screen reader users
    - Fix: Add `role="menu"` on container, `role="menuitem"` on links
 

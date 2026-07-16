@@ -33,8 +33,6 @@ const CustomSelect = ({ label, onChange }) => {
     onChange?.(option.value);
   };
 
-  // BUG: No ArrowUp/ArrowDown handling — only Tab navigates options
-  // BUG: No Escape to close dropdown
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && filtered.length === 1) {
       handleSelect(filtered[0]);
@@ -44,7 +42,6 @@ const CustomSelect = ({ label, onChange }) => {
   return (
     <div className="custom-select">
       <label htmlFor="country-input">{label}</label>
-      {/* BUG: No role="combobox" on input — WCAG 4.1.2 */}
       <input
         id="country-input"
         ref={inputRef}
@@ -55,14 +52,11 @@ const CustomSelect = ({ label, onChange }) => {
         onKeyDown={handleKeyDown}
         placeholder="Type to search..."
         autoComplete="off"
-        // BUG: Missing aria-expanded, aria-controls, aria-activedescendant
       />
 
       {isOpen && filtered.length > 0 && (
-        // BUG: No role="listbox" — this is a plain div
         <div className="select-dropdown">
           {filtered.map((option, i) => (
-            // BUG: No role="option", no aria-selected
             <div
               key={option.value}
               className={`select-option ${selected?.value === option.value ? 'selected' : ''}`}
@@ -75,7 +69,6 @@ const CustomSelect = ({ label, onChange }) => {
         </div>
       )}
 
-      {/* BUG: No live region announcing filtered count */}
     </div>
   );
 };
@@ -152,8 +145,8 @@ export default CustomSelect;
 - Text input filters options as user types
 - Dropdown appears on focus with matching options
 - Clicking an option selects it and closes the dropdown
-- Arrow keys should navigate options (but don't)
-- Escape should close dropdown (but doesn't)
+- Arrow keys should navigate options
+- Escape should close dropdown
 
 ## Accessibility Features Present
 
@@ -167,25 +160,25 @@ export default CustomSelect;
 
 1. **CRITICAL: Arrow keys don't navigate options — WCAG 2.1.1 (Keyboard) + APG Combobox**
    Only Tab moves between options. ArrowUp/ArrowDown are not handled in `onKeyDown`. This violates both the WCAG keyboard requirement and the APG combobox interaction pattern.
-   - Evidence: Lines 34-38 — `handleKeyDown` only checks Enter, not Arrow keys
+   - Evidence: Lines 34-36 — `handleKeyDown` only checks Enter, not Arrow keys
    - User group: Keyboard users, switch access users
    - Fix: Add ArrowUp/ArrowDown handlers to move visual focus through options using an `activeIndex` state
 
 2. **CRITICAL: No role="combobox" or role="listbox" — WCAG 4.1.2 (Name, Role, Value)**
    The input has no `role="combobox"` and the dropdown div has no `role="listbox"`. Screen readers cannot identify this as a combobox widget.
-   - Evidence: Lines 48-49 — plain `<input>` with no ARIA role; Line 62 — dropdown is plain `<div>`
+   - Evidence: Lines 45-46 — plain `<input>` with no ARIA role; Line 58 — dropdown is plain `<div>`
    - User group: Screen reader users
    - Fix: Add `role="combobox"` on input, `role="listbox"` on dropdown, `role="option"` on each item
 
 3. **MAJOR: Selected option not announced — no aria-selected or aria-activedescendant**
    Options have no `aria-selected` attribute. Input has no `aria-activedescendant`. Screen readers cannot communicate which option is current or selected.
-   - Evidence: Lines 65-70 — options use CSS class `.selected` but no `aria-selected`; input has no `aria-activedescendant`
+   - Evidence: Lines 60-64 — options use CSS class `.selected` but no `aria-selected`; input has no `aria-activedescendant`
    - User group: Screen reader users
    - Fix: Add `aria-selected={selected?.value === option.value}` on options; add `aria-activedescendant` on input pointing to focused option ID
 
 4. **MINOR: Escape doesn't close dropdown — APG Combobox pattern**
    No Escape key handling in `onKeyDown`. Users cannot dismiss the dropdown via keyboard.
-   - Evidence: Lines 34-38 — no `e.key === 'Escape'` check
+   - Evidence: Lines 34-36 — no `e.key === 'Escape'` check
    - User group: Keyboard users
    - Fix: Add `if (e.key === 'Escape') { setIsOpen(false); }`
 
