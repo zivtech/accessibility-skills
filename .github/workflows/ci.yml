@@ -23,6 +23,8 @@ jobs:
         run: python3 -m py_compile ollama/*.py evals/suites/perspectives/*.py
       - name: Validate fixtures and registries
         run: python3 scripts/validate_fixtures.py
+      - name: Skill lint (frontmatter + fence balance)
+        run: python3 scripts/lint_skills.py
       - name: Scorer smoke tests
         run: bash scripts/smoke_scorers.sh
       - name: Mirror drift check (strict)
