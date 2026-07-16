@@ -10,7 +10,7 @@ Orchestrated accessibility lifecycle using Claude Code subagents at depth-1.
 | **Scout** | `a11y-scout` | haiku | read-only | File discovery, ARIA inventory, component type ID |
 | **Planner** | `a11y-planner` | opus | no Bash | Design accessibility before coding (9-phase) |
 | **Critic** | `a11y-critic` | opus | read-only | Review ARIA patterns, focus management, state communication (8-phase) |
-| **Tester** | `a11y-test` skill | n/a | Playwright | Keyboard tests, axe-core scans |
+| **Tester** | `a11y-test` skill | n/a | Playwright / keyboard-a11y-tester / virtual-screen-reader | Keyboard tests, axe-core scans, live-URL journey audits, component SR assertions |
 | **Auditor** | `perspective-audit` | opus | read-only | Deep 7-perspective review on escalated perspectives |
 
 ## Architecture
@@ -23,6 +23,8 @@ The orchestrator is a **skill** (not an agent) that runs in the main session. Th
 - Planner output (8-11K chars): written to `docs/a11y-plans/` file, critic reads via Read tool
 - Critic alarm levels (< 2K chars): injected into perspective-audit prompt
 - Test results (< 2K chars): injected into critic prompt
+- keyboard-a11y-tester artifacts (trace/findings/census, > 2K): passed as file paths; critic Phase 0 reads them with its calibration rules. The main session drives the serve/step loop itself (CLI, not an agent) — depth-1 holds.
+- virtual-screen-reader results (spoken-phrase log slices, < 2K): injected directly into the critic prompt with tool version + test file path; critic Phase 0 carries the consumption rules.
 
 ### Escalation Signals (Benchmark-Derived)
 
@@ -48,10 +50,10 @@ These signals trigger promotion to a higher tier (in `--triage` mode) or perspec
 4. Critic reviews the plan (reads plan + source files)
 5. [If MEDIUM/HIGH alarm] Perspective audit on escalated perspectives
 6. User revises and implements
-7. Test runs automated scans
-7. Critic reviews implementation
-8. [If MEDIUM/HIGH alarm] Perspective audit
-9. User fixes
+7. Test runs automated scans — `.spec.js` + axe for components (+ virtual-screen-reader announcement/reading-order assertions when live regions or SR output are in play); a keyboard-a11y-tester journey audit (batch recon, then a driven session) for live-URL targets
+8. Critic reviews implementation
+9. [If MEDIUM/HIGH alarm] Perspective audit
+10. User fixes
 
 ### Step-by-Step (User-Driven)
 ```

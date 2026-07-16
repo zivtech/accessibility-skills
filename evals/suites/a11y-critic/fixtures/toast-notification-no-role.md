@@ -53,13 +53,13 @@ export default BuggyToast;
    - Evidence: `toast-notification-no-role.md:19-25` (div has no role)
    - User group: Screen reader users (critical)
    - Expected: Toast should have role="alert" or role="status"
-   - Fix: Add role="alert" to notification div
+   - Fix: Render a persistent live-region container (e.g., an always-mounted `<div role="alert">` or `role="status"`) and inject the message text into it when the toast fires. Adding `role="alert"` to a toast element that mounts *with* its content is not reliably announced — measured silent by virtual-screen-reader (jsdom and Chromium, 2026-07-11; `evals/results/virtual-screen-reader/`), and real screen readers are inconsistent on pre-populated alert insertion.
 
 2. **CRITICAL: Missing aria-live region** — Even with role="alert", aria-live="assertive" ensures announcement. Without aria-live, message may not be announced to screen reader user, especially if toast appears after page load.
    - Evidence: `toast-notification-no-role.md:19-25` (no aria-live attribute)
    - User group: Screen reader users (critical)
    - Expected: Toast should have aria-live="assertive"
-   - Fix: Add aria-live="assertive" to ensure immediate announcement
+   - Fix: Put `aria-live="assertive"` on the persistent container described in fix 1 (live-region attributes must exist in the DOM *before* the message text arrives to announce reliably)
 
 3. **MAJOR: No way to dismiss for keyboard user** — Toast auto-dismisses but keyboard user cannot manually dismiss if needed. Should provide close button for user control. Per WCAG 2.1.1, user should have control over timed interactions.
    - Evidence: `toast-notification-no-role.md:10-17` (no dismiss mechanism)

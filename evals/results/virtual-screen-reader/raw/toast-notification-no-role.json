@@ -1,0 +1,11 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "toast-notification-no-role",
+  "buggy_mount_with_content_no_role": [],
+  "naive_fix_mount_with_content_role_alert": [],
+  "robust_fix_persistent_container": [
+    "polite: Item saved"
+  ]
+}

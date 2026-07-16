@@ -1,0 +1,15 @@
+Response length: 12541 chars
+Fixture: dashboard-text-labels
+Difficulty: CLEAN
+
+Escalated perspectives: environmental_contrast, cognitive_neurodivergent
+LOW perspectives: magnification_reflow, vestibular_motion, auditory_access, keyboard_motor, screen_reader_semantic
+
+Verdict: PASS (expected: PASS)
+Verdict correct: YES
+
+False positive signals:
+  Structured findings: 2
+  Wrong verdict: False
+
+Status: WARN — correct verdict but raised findings

@@ -1,0 +1,479 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "submit the login form empty and verify errors are announced and associated"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#email",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 14,
+      "ax_name_role_state": {
+        "name": "Email Address",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 19,
+                "text": "Email Address"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 440,
+        "y": 124.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(0, 102, 204, 0.1) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Login"
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.1031,
+        "edge": 0.1608,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "textbox, Email Address, not invalid"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "textbox, Email Address, not invalid"
+      },
+      "focus_appearance": {
+        "changed_area": 1759,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": false,
+        "contrast": 3.39,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#password",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 17,
+      "ax_name_role_state": {
+        "name": "Password",
+        "role": "textbox",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 22,
+                "text": "Password"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 440,
+        "y": 206.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(0, 102, 204, 0.1) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Login"
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.1031,
+        "edge": 0.1608,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "Password"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "Password"
+      },
+      "focus_appearance": {
+        "changed_area": 1759,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": false,
+        "contrast": 3.39,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#root > form > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 18,
+      "ax_name_role_state": {
+        "name": "Log In",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 440,
+        "y": 264.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "Log In",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Login"
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0.6261,
+        "interior": 0.9619,
+        "edge": 0.9977,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Log In"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Log In"
+      },
+      "focus_appearance": {
+        "changed_area": 18471,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": true,
+        "contrast": 5.12,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "#root > form > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 25,
+      "ax_name_role_state": {
+        "name": "Log In",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 440,
+        "y": 427.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "Log In",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "solid",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 102, 204)",
+        "outline_offset": "2px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Please fix the following errors:"
+      },
+      "focused_region_screenshot": "screenshots/step_0004.png",
+      "focus_visible": {
+        "border_band": 0.6246,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 1844,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": true,
+        "contrast": 5.34,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0005",
+      "index": 5,
+      "keystroke_sent": "Shift+Tab",
+      "active_element_selector": "#password",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 23,
+      "ax_name_role_state": {
+        "name": "Password",
+        "role": "textbox",
+        "states": {
+          "invalid": "true",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 22,
+                "text": "Password"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 440,
+        "y": 348.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(0, 102, 204, 0.1) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Please fix the following errors:"
+      },
+      "focused_region_screenshot": "screenshots/step_0005.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "Password"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "Password"
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0006",
+      "index": 6,
+      "keystroke_sent": "Shift+Tab",
+      "active_element_selector": "#email",
+      "tag": "input",
+      "tabindex": null,
+      "dom_order_index": 19,
+      "ax_name_role_state": {
+        "name": "Email Address",
+        "role": "textbox",
+        "states": {
+          "invalid": "true",
+          "focusable": true,
+          "focused": true,
+          "editable": "plaintext",
+          "settable": true,
+          "multiline": false,
+          "readonly": false,
+          "required": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 19,
+                "text": "Email Address"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 440,
+        "y": 245.4375,
+        "width": 400,
+        "height": 42
+      },
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "text": "",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "none",
+        "outline_width": "3px",
+        "outline_color": "rgb(0, 0, 0)",
+        "outline_offset": "0px",
+        "box_shadow": "rgba(0, 102, 204, 0.1) 0px 0px 0px 3px",
+        "has_outline": false,
+        "has_shadow": true
+      },
+      "region": {
+        "landmark": "form",
+        "heading": "Please fix the following errors:"
+      },
+      "focused_region_screenshot": "screenshots/step_0006.png",
+      "focus_visible": {
+        "border_band": 0.429,
+        "interior": 0.6101,
+        "edge": 0.9637,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "shadow"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "textbox, Email Address, invalid"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "textbox, Email Address, invalid"
+      },
+      "focus_appearance": {
+        "changed_area": 11912,
+        "ref_area_2px_perimeter": 1768,
+        "area_pass": true,
+        "contrast": 3.51,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    }
+  ]
+}

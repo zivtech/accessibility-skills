@@ -1,0 +1,287 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "open the info popover and verify focus moves into it"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#root > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 11,
+      "ax_name_role_state": {
+        "name": "More info",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 16,
+        "width": 71.578125,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "text": "More info",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 0.0678,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "button, More info"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, More info"
+      },
+      "focus_appearance": {
+        "changed_area": 63,
+        "ref_area_2px_perimeter": 370,
+        "area_pass": false,
+        "contrast": 4.31,
+        "contrast_pass": true,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "#root > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 11,
+      "ax_name_role_state": {
+        "name": "More info",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 16,
+        "y": 16,
+        "width": 71.578125,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "text": "More info",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0.0808,
+        "interior": 0.2249,
+        "edge": 0.3115,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 464,
+        "ref_area_2px_perimeter": 370,
+        "area_pass": true,
+        "contrast": 2.07,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#root > div > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 13,
+      "ax_name_role_state": {
+        "name": "Close",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 37,
+        "width": 50.09375,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "text": "Close",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Close"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Close"
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 284,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "Escape",
+      "active_element_selector": "#root > div > div > button",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 13,
+      "ax_name_role_state": {
+        "name": "Close",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 16,
+        "y": 37,
+        "width": 50.09375,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "text": "Close",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0004.png",
+      "focus_visible": {
+        "border_band": 0.1432,
+        "interior": 0.3259,
+        "edge": 0.3389,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 546,
+        "ref_area_2px_perimeter": 284,
+        "area_pass": true,
+        "contrast": 3.32,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    }
+  ]
+}

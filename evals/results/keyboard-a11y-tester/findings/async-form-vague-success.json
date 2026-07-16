@@ -1,0 +1,50 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:09.507Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "locations": [
+        "form, under heading “Send Us Feedback”"
+      ],
+      "summary": "4 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #feedback-name (contrast 2.45), #feedback-email (contrast 2.45), #feedback-message (contrast 2.45), #feedback-name (contrast 2.45)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0006"
+      ]
+    },
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/async-form-vague-success.html (aria-live/status/alert/log) never produced an announcement during this session: #root > div > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > div > div"
+      ]
+    }
+  ]
+}

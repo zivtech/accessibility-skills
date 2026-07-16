@@ -1,0 +1,31 @@
+Response length: 6028 chars
+Fixture: app-focus-order-illogical
+Difficulty: FLAWED
+
+Phases found: 9/11
+  + phase_0
+  + phase_1
+  + phase_2
+  + phase_3
+  + phase_4
+  + phase_5
+  + phase_6
+  + phase_7
+  + phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 1/1
+  + [-] Tab order does not match visual layout — CSS order: -1 on sidebar creates DOM/vi
+
+Should-find issues: 2/2
+  + [-] Skip link targets a non-focusable element — href='#content' points to a plain di
+  + [-] Sidebar navigation focus indicators have ~1.5:1 contrast ratio — #a8d0f0 on #f8f
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

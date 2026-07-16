@@ -18,6 +18,24 @@ This file began as an Ollama benchmark log and now serves as the cross-model ben
 
 The first fixture tables below are historical Phase 4 local-model rows. Hosted results were added later in Phases 5-7.
 
+> **Blind-protocol disclosure (2026-07-13).** Every critic- and perspective-suite row recorded before
+> 2026-07-13 ran **non-blind**: both runners' `load_fixture()` embedded the fixture's full
+> `## Accessibility Issues (Planted Bugs)` answer section in the prompt (truncation logic never
+> existed — verified via `git log -S`). The planner suite is exempt (its fixtures carry no answer
+> sections — verified). Runners now strip the answer key (post-003; regression guard:
+> `ollama/test_blind_prompts.py`), so pre- and post-2026-07-13 rows are not comparable; treat the
+> historical critic/perspective numbers as non-blind upper bounds pending blind re-runs. The first
+> blind lane is the Claude subagent perspective run (2026-07-13, section below). **Blind local
+> re-runs landed the same day** (qwen3:32b, full critic + perspective suites; see "Ollama blind
+> re-run lane" below): the critic-suite numbers are blind-confirmed, but the perspective-suite
+> CLEAN false-positive resistance was answer-key-dependent — the historical CLEAN rows for local
+> models overstate it. Structural note: critic CLEAN fixtures carry no answer sections (their
+> prompts were identical all along); all 5 perspective CLEAN fixtures do.
+
+## Evidence Contract Smoke Gate
+
+`ollama/score_output.py` now recognizes optional `A11y Evidence Finding` blocks when a rubric sets `require_evidence_contract: true`. The smoke gate validates required evidence fields, stable `finding_id`/`fingerprint` values, allowed trend metadata, and clean-fixture false-positive resistance. This is a scoring discipline for critic output, not a generated dashboard or scanner runtime. Existing benchmark rows are not retroactively rescored unless their raw artifacts are rerun through the updated scorer.
+
 ## Fixture 1: form-validation-missing-aria-describedby
 
 **Difficulty**: HAS-BUGS | **Must-find**: 2 | **Should-find**: 1 | **Expected verdict**: REVISE
@@ -84,7 +102,7 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 3. No way for keyboard user to dismiss toast — **Both found**
 4. Message not labeled or described — **Both found**
 
-**Historical note**: The initial local-only interpretation suspected rubric overlap because both models caught `aria-live="assertive"` but missed `role="alert"`. Later hosted and qwen3.5:27b results found both items, so this is now treated as a real model-specific detection gap rather than a rubric issue.
+**Historical note**: The initial local-only interpretation suspected rubric overlap because both models caught `aria-live="assertive"` but missed `role="alert"`. Later hosted and qwen3.5:27b results found both items, so this was treated as a real model-specific detection gap rather than a rubric issue. **Blind update (2026-07-13)**: the blind qwen3:32b re-run found all 4/4 including `role="alert"` — the "gap" is run-to-run variance at temperature 0.3, not a stable characteristic.
 
 ## Abort Threshold
 
@@ -921,6 +939,21 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
+  (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which
+  had been matching boilerplate `BLOCK` tokens in audits whose actual conclusion was
+  `**PASS** — no CRITICAL or MAJOR findings`; (b) keyword matching in `score_perspective.py` and
+  `score_output.py` is quote-normalized (`role='tab'` ≡ `role="tab"`); (c) both runners now strip
+  fixture answer keys before prompting (blind protocol; guard: `test_blind_prompts.py`). Re-scores
+  of committed artifacts: **gemini critic lane unchanged** (31/33 PASS, same 2 fixtures fail at
+  flash and pro); **claude-perspective lane** raw tally moved 20 PASS / 1 WARN / 4 FAIL →
+  **20 PASS / 5 WARN / 0 FAIL** (the 4 verdict-artifact FAILs now score their literal PASS
+  conclusions; the 5 CLEAN WARNs are the severity-blind finding-count flag, all with 0
+  CRITICAL/MAJOR) and keyword-level must-find moved 35/37 → **36/37** (custom-select-combobox
+  fixed by quote normalization; the tab-panel-arrow-keys residual is a rubric artifact — its
+  scoring keyword is the compound string `role='tablist'/role='tab'/role='tabpanel'`, which no
+  prose audit emits verbatim; content coverage is 37/37). Planner scorer untouched.
+
 - 2026-06-11 (plan 002): scorer fixes — two-tier verdict detection in
   score_perspective.py (was: bare substring, BLOCK-first), CLEAN false-positive
   check now uses the declared verdict (was: body-wide BLOCK|REVISE regex),
@@ -1143,3 +1176,133 @@ CLI harness overhead ~18.7K input tokens/call.
   to complete the ladder; the flash rows above are final either way.
 - Zero scorer fallback-keyword warnings; every number re-derives from
   `evals/results/gemini/` via `score_output.py`.
+
+## Claude subagent lane — perspective suite (2026-07-13, BLIND)
+
+**Run**: closes the "Claude perspective-audit escalation" backlog item via the subagent mechanism
+(the API-escalation variant remains open — blocked on a valid `ANTHROPIC_API_KEY`; it measures the
+Haiku-first cost ladder, which subagents cannot).
+**Mechanism**: Claude Code subagents — `Agent(subagent_type="general-purpose", model="opus")`, one
+background subagent per fixture, 25 in parallel, prompts composed identically to
+`run_cloud_benchmark.py` (system prompt + metadata escalation block).
+**Protocol difference — first BLIND lane**: fixtures truncated at `## Accessibility Issues` before
+prompting; composed prompts assert-verified answer-free. Rationale: both runners were found feeding
+the full fixture answer key to models (`load_fixture()` reads raw fixtures; truncation logic never
+existed per `git log -S`) — every earlier critic/perspective row in this document is therefore
+non-blind, and this lane's numbers must not be compared 1:1 against them. Remediation (runner
+truncation, caveats on published rows, blind re-runs) is tracked as follow-up work.
+**Scorer**: `score_perspective.py`, unmodified for comparability. Raw artifacts committed:
+`evals/results/claude-perspective/` (25 response JSONs + scorer outputs + README with adjudication
+receipts); per-fixture table: `evals/suites/perspectives/RESULTS-claude-opus-subagent.md`.
+
+| Measure | Pre-003 scorer | Post-003 scorer | Content-adjudicated |
+|---|---|---|---|
+| Fixture statuses | 20 PASS / 1 WARN / 4 FAIL | **20 PASS / 5 WARN / 0 FAIL** | **25/25** correct verdicts |
+| Must-find (37 items across 20 fixtures) | 35/37 | **36/37** | **37/37** (residual is a compound rubric keyword no prose emits verbatim) |
+| CLEAN false positives (MAJOR/CRITICAL) | n/a (4 verdict-extraction FAILs) | 0 (5 WARNs are the severity-blind finding-count flag) | **0 across all 5 CLEAN fixtures** — every CLEAN audit concludes `**PASS** — no CRITICAL or MAJOR findings` |
+
+The pre-003 deductions were receipted scorer artifacts (verdict fallback ladder matching boilerplate
+`BLOCK` when the audit's verdict line is formatted `**PASS** — …`; quote-sensitive keyword matching);
+they motivated the post-003 scorer fixes recorded in the Scoring changelog, and the re-score confirms
+the adjudication. Run integrity: 24/25 agents clean on first pass; one agent returned injected
+non-task instructions with zero tool calls and was retried successfully (documented in the lane README).
+
+## Ollama blind re-run lane — qwen3:32b (2026-07-13, BLIND)
+
+**Run**: first blind **local** lane; gives the historical non-blind qwen3:32b critic and perspective
+rows their blind counterparts (the remediation item from the blind-protocol disclosure).
+**Machine protocol**: dedicated `127.0.0.1:11435` ollama server (0.31.1), Ollama.app quit,
+full Metal offload verified (`size == size_vram`, 24.7 GB); `OLLAMA_URL` override +
+`BENCHMARK_RESULTS_DIR` → `evals/results/ollama-blind/` (raw JSONs + per-fixture scorer outputs
+committed — unlike the historical /tmp runs, these artifacts are re-scorable).
+**Protocol**: identical prompts/settings to the historical lanes except post-003 answer-key
+stripping (guard-verified). **Scorer**: post-003 `score_output.py` / `score_perspective.py`.
+**Wall-clock**: critic 33 fixtures in 1.45 h; perspective 25 in 1.36 h.
+
+### a11y-critic (33 fixtures) — historical numbers CONFIRMED blind
+
+| Measure | Blind (post-003) | Historical non-blind (2026-05-15) |
+|---|---|---|
+| Fixture statuses | **33/33 PASS** | 33/33 PASS |
+| Must-find aggregate | **66/68 (97.1%)** scorer / **67/68 (98.5%)** content-adjudicated | ~97% (pre-002 scorer basis) |
+| CLEAN false positives | **0** structured findings, 4/4 correct verdicts | 0 |
+| ADVERSARIAL | 3/3 ACCEPT-WITH-RESERVATIONS, 3/3 must-articulate | 3/3 |
+| toast `role="alert"` | **found** (4/4) | missed (3/4) |
+
+The two scorer-level misses: one keyword artifact (`<div>` literal vs prose "div"), one genuine
+partial miss (scroll-to-load discoverability raised as impact, not finding) — receipts in
+`evals/results/ollama-blind/README.md`. Critic CLEAN fixtures carry no answer sections, so this
+suite's CLEAN prompts were never affected by the leak; the blind confirmation covers the
+detection tiers.
+
+**Timing**: FLAWED median 224 s and ADVERSARIAL median 222 s vs historical 3,508 s / 3,007 s —
+same model/quant/settings on an uncontended GPU. The Phase 4A "extended reasoning on subtle
+bugs" slowdown was substantially GPU contention (claude-smart's :11434 traffic), not intrinsic
+think-time; treat Phase 4A wall-clock numbers as contended-machine artifacts.
+
+### perspective-audit (25 fixtures) — detection confirmed; CLEAN resistance was answer-key-dependent
+
+| Measure | Blind (post-003) | Historical non-blind (Phase 4C) |
+|---|---|---|
+| Fixture statuses | **20 PASS / 1 WARN / 4 FAIL** | 20 PASS / 4 WARN / 1 FAIL |
+| HAS-BUGS + ADVERSARIAL | **20/20 PASS**, no LOW-perspective leakage | 20/20 PASS |
+| Must-find (37 items) | **36/37** scorer / **37/37** content-adjudicated (residual = the same compound-keyword rubric artifact as the Claude lane) | 37/37 |
+| CLEAN verdicts | **1/5 correct** (4 FAIL: REVISE/REVISE/REVISE/BLOCK) | 4/5 correct (4 WARN + 1 FAIL) |
+
+All four CLEAN FAILs are genuine model output, not scorer artifacts — the audits literally
+conclude REVISE/BLOCK (receipts in the lane README): two fixtures get manufactured
+CRITICAL/MAJOR findings (`nav-menu-landmarks`: page-shell over-flagging — missing `<title>`/
+`lang` CRITICALs against a component fixture; `dashboard-text-labels`: a contrast claim
+contradicted by the fixture's documented ratios), and two get verdict inflation over
+MINOR-level content (`login-form-clean` declares "MAJOR finding present" contradicting its own
+findings table; `media-player-captions` REVISEs over two human-verification open questions).
+
+**Interpretation**: every perspective CLEAN fixture embeds an answer section stating
+"**NONE.** …correctly implemented", which the non-blind run showed the model. With it, qwen3:32b
+echoed PASS; without it, the model's documented page-shell over-flagging and severity inflation
+surface as false positives on 4/5 clean components. **The historical "0% false positives"
+claim survives blind for the critic suite only.** Detection quality (must-find, coverage,
+escalation discipline) is unaffected by blinding. Comparison caveat: the historical Phase 4C row
+was scored pre-002/pre-003, so its WARN/FAIL split is not scorer-identical either — but the
+verdict flip on the four receipted fixtures is model behavior, not scoring drift.
+
+### Blind lanes for the other historical local models (same day)
+
+First full-suite runs for both models — the historical rows were n=7 (4 CLEAN + 3 HAS-BUGS
+only, never the FLAWED/ADVERSARIAL tiers), so these lanes widen coverage as well as blind it.
+Perspective is intentionally skipped for both: qwen3.5:latest is documented NOT-VIABLE
+(context exhaustion), and llama3.3:70b has no historical perspective row to counterpart.
+
+| Measure | qwen3.5:latest (6.6 GB) | llama3.3:70b (42 GB) |
+|---|---|---|
+| Fixture statuses | **33/33 PASS** | **33/33 PASS** |
+| Must-find aggregate | **67/68 (98.5%)** scorer | 63/68 (92.6%) scorer / **66/68 (97.1%)** content-adjudicated |
+| CLEAN | 4/4 correct verdicts, 0 structured findings | 4/4 PASS |
+| ADVERSARIAL | 3/3 valid verdicts, 3/3 articulated | 3/3 PASS |
+| Wall-clock | 0.33 h base lane (median **34 s**/fixture) + 4 override re-runs | 1.66 h (median 171 s), zero truncations |
+| Historical (non-blind, n=7) | 7/7 PASS, 86% must-find | 7/7 PASS, 86% must-find |
+
+**qwen3.5:latest context-ceiling receipts (mechanism, not model failure).** At the lane-standard
+`num_ctx=16384`, 4 of 33 fixtures were mechanically truncated: 3 produced *empty* responses
+(`done_reason=length` while still in the thinking phase — the prompts alone tokenize to
+15,773–16,102 tokens on this model, leaving exactly 335/282/611 tokens of room, matching the
+observed eval_counts token-for-token; reproducible across 2 attempts each), and 1
+(`multistep-form-error-clearing`, prompt 16,899 tokens — larger than the whole 16K window) cut
+mid-audit ≈ the 8192 `num_predict` default. All 4 were re-run at `num_ctx=32768` (the
+accommodation pattern `PERSPECTIVE_CTX` already establishes per-model), completed with
+`done_reason=stop`, and their artifacts carry explicit `num_ctx_override` provenance. With the
+ceiling removed the model scores 33/33 — including finding the multistep planted bug it had
+appeared to miss. Practical routing note: **qwen3.5:latest needs ≥32K num_ctx on long critic
+fixtures**; its historical "/think stall" reputation (and plausibly qwen3.5:27b's) is context
+exhaustion, not reasoning failure.
+
+**llama3.3:70b adjudication.** 3 of the 5 scorer-level misses are keyword artifacts with the
+content present verbatim (file-input type restrictions raised as help-text association; tooltip
+"no announcement for screen reader users" + hover-not-focus; video-player "No visible or
+accessible caption toggle button" vs keyword 'controllable'); 2 are genuine (megamenu arrow-key
+navigation; infinite-scroll discoverability).
+
+**Cross-model observation**: the `infinite-scroll-no-announcement` item "Scroll-to-load
+mechanism not discoverable" is missed blind by all three local models (each surfaces the
+impact, none raises it as a standalone finding) — the hardest item in the suite for local
+models, worth remembering when reading per-model must-find deltas.

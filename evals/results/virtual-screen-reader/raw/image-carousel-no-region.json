@@ -1,0 +1,26 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "image-carousel-no-region",
+  "buggy_image_change_silent": [],
+  "fixed_persistent_polite_region": [
+    "polite: Image 2 of 2"
+  ],
+  "buggy_walk_structure": [
+    "image, Carousel image 1",
+    "button, Previous image",
+    "Previous",
+    "end of button, Previous image",
+    "button, Next image",
+    "Next",
+    "end of button, Next image",
+    "button, Go to image 1",
+    "1",
+    "end of button, Go to image 1",
+    "button, Go to image 2",
+    "2",
+    "end of button, Go to image 2",
+    "end of document"
+  ]
+}

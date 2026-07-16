@@ -1,0 +1,32 @@
+Response length: 6958 chars
+Fixture: multi-column-pricing
+Difficulty: HAS-BUGS
+
+Escalated perspectives: environmental_contrast, cognitive_neurodivergent, magnification_reflow
+LOW perspectives: vestibular_motion, screen_reader_semantic, auditory_access, keyboard_motor
+
+Perspective coverage: 3/3
+  + Contrast
+  + Cognitive
+  + Magnification
+
+LOW perspective leakage: vestibular_motion, keyboard_motor (should not audit these)
+
+Must-find issues: 1/1
+  + [W] Feature availability indicated by color only — check vs X has no non-color disti
+
+Should-find issues: 2/2
+  + [W] Recommended tier highlighted with background color and border only — no text lab
+  + [W] Pricing sub-text is 12px #767676 on white — 4.54:1 contrast, borderline AA
+
+Nice-to-find issues: 2/2
+  + Feature comparison tooltips are hover-only — no focus trigger, :focus-within abs
+  + Most popular badge has shimmer animation with no prefers-reduced-motion override
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

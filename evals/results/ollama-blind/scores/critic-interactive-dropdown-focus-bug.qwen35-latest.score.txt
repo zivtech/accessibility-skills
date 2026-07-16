@@ -1,0 +1,34 @@
+Response length: 5136 chars
+Fixture: interactive-dropdown-focus-bug
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: 1 complete / 2 total
+Required fields: FAIL
+Stable finding ids: FAIL
+Trend values: PASS
+  Missing fields in contract 2: actual_behavior, evidence, expected_behavior, perspective_alarms, reproduction_steps, section_508_fpc_context, severity, source, wcag_or_apg
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 2/2
+  + [W] Focus not restored to trigger button after selection
+  + [W] Focus not restored to trigger button after Escape key
+
+Should-find issues: 0/0
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

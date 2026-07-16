@@ -1,0 +1,32 @@
+Response length: 3329 chars
+Fixture: combobox-autocomplete-no-listbox-role
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 4/4
+  + [-] Missing role='listbox' on suggestions container
+  + [-] Missing role='option' on suggestion items
+  + [-] Missing aria-controls linking input to suggestions
+  + [-] Missing aria-selected on suggestion items
+
+Should-find issues: 0/0
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

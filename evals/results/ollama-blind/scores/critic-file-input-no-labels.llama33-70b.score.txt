@@ -1,0 +1,32 @@
+Response length: 4198 chars
+Fixture: file-input-no-labels
+Difficulty: HAS-BUGS
+
+Phases found: 11/11
+  + phase_0
+  + phase_1
+  + phase_2
+  + phase_3
+  + phase_4
+  + phase_5
+  + phase_6
+  + phase_7
+  + phase_8
+  + phase_9
+  + phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 3/4
+  + [-] Missing <label> element
+  + [-] No aria-describedby linking to error message
+  + [-] No aria-invalid when error present
+  X [-] File type restrictions not announced  (keywords: ['aria-live', 'role="alert"', "role='alert'", 'live region', 'status message', '4.1.3'])
+
+Should-find issues: 0/0
+
+Must-find detection rate: 75%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

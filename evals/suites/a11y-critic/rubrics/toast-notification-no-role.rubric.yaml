@@ -110,6 +110,12 @@ notes: |
 
   Key test: Does reviewer understand toast notifications need role="alert" and aria-live to be announced?
 
+  Fix-shape note (2026-07-11): a reviewer recommending a persistent live-region container
+  (mounted empty, text injected on show) gives the stronger fix; recommending role="alert"
+  directly on the mounted-with-content toast is acceptable for detection scoring but is not
+  reliably announced (measured: evals/results/virtual-screen-reader/). Do not penalize
+  reviewers who flag that nuance as an additional finding.
+
   Expected findings:
   - Missing role="alert" identified as CRITICAL
   - Missing aria-live identified as CRITICAL

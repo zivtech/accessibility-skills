@@ -1,0 +1,32 @@
+Response length: 28777 chars
+Fixture: map-interface-zoom
+Difficulty: HAS-BUGS
+
+Escalated perspectives: magnification_reflow, keyboard_motor, screen_reader_semantic
+LOW perspectives: environmental_contrast, vestibular_motion, auditory_access, cognitive_neurodivergent
+
+Perspective coverage: 3/3
+  + Magnification
+  + Keyboard
+  + Screen Reader
+
+LOW perspective leakage: environmental_contrast, vestibular_motion, auditory_access, cognitive_neurodivergent (should not audit these)
+
+Must-find issues: 2/2
+  + [W] Map panning relies on mouse drag only — no keyboard alternative
+  + [W] Zoom +/- buttons 18x18px — below minimum target size
+
+Should-find issues: 2/2
+  + [W] At 200% zoom, map controls overlap and become unusable
+  + [W] Info popup on marker hover only — no focus/click alternative
+
+Nice-to-find issues: 1/1
+  + Scroll wheel zoom hijacks page scroll without escape
+
+ARRM role routing: YES
+Verdict: BLOCK (expected: REVISE, BLOCK also valid)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

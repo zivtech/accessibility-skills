@@ -1,0 +1,26 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:20.606Z",
+  "findings": [
+    {
+      "id": "sr-heading-skip-desktop",
+      "wcag": "1.3.1",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.75,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+      "locations": [],
+      "summary": "1 heading level skip(s) on http://127.0.0.1:8777/heading-hierarchy-skipped.html (jumping past one or more levels): heading, Why Accessibility Matters, level 3",
+      "persona_impact": "A screen-reader user navigating by heading level loses the document outline and may miss sections.",
+      "evidence": [
+        "#root > article > h3:nth-of-type(1)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "tool": "@guidepup/virtual-screen-reader@0.32.1",
+  "env": "node+jsdom",
+  "date": "2026-07-11",
+  "fixture": "async-form-vague-success",
+  "as_written_submit_lifecycle": [
+    "polite: Submitting your feedback...",
+    "polite: ",
+    "polite: Your submission was successful!"
+  ],
+  "fixed_contextual_message": [
+    "polite: Your feedback has been sent. We'll respond to you@example.com within 2 business days."
+  ],
+  "aria_busy_timing": "OUT_OF_SCOPE_upstream_issue_36"
+}
