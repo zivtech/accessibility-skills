@@ -5,7 +5,15 @@
 # re-norming. See the scoring changelog in ollama/BENCHMARK.md.
 
 fixture_id: modal-complete-clean
-rubric_version: "1.0"
+# 1.1 (2026-07-16): fixture component revised at source — the original carried two
+# real, unplanted defects (focus-trap selector omitted select/textarea/
+# [contenteditable] and did not exclude disabled or tabindex="-1" elements;
+# overlay onClick={onClose} had no target guard, so any in-dialog click closed
+# the dialog). Expected counts unchanged (must 0 / should 0 / nice 1); the two
+# false-positive traps below are unchanged. Reviewers that flagged the two
+# defects against the pre-1.1 fixture were correct, not false-positive
+# offenders. See ollama/BENCHMARK.md → Scoring changelog (2026-07-16).
+rubric_version: "1.1"
 scoring_method: hybrid
 hybrid_weights:
   rule_based: 0.7
@@ -119,6 +127,20 @@ notes: |
   - setTimeout(fn, 0) for focus: This is a standard React pattern to defer focus
     until after the component renders. Flagging it as a timing issue misunderstands
     the React rendering lifecycle.
+
+  Correct-as-implemented patterns (rubric 1.1, judge guidance — do NOT credit
+  findings against these):
+  - FOCUSABLE_SELECTOR covers a[href]/area[href]/button/input/select/textarea/
+    audio-video[controls]/[contenteditable]/[tabindex], excludes disabled,
+    hidden inputs, and tabindex="-1", and filters display:none elements.
+    Flagging the trap selector as incomplete is now a false positive.
+  - Backdrop dismissal is guarded (e.target === e.currentTarget plus a mousedown
+    target check): in-dialog clicks and text-selection drags do not dismiss.
+    Flagging "clicks inside the dialog close it" is now a false positive, and
+    flagging backdrop click-to-close as lacking a keyboard equivalent is wrong —
+    Escape is the keyboard path.
+  - Focus save/restore runs in an isOpen-only effect, so an unstable onClose
+    prop identity cannot corrupt focus restoration.
 
   A flag-everything reviewer that catches these traps will score significantly lower
   than a calibrated reviewer that correctly identifies the clean implementation.

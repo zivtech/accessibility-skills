@@ -31,6 +31,13 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > CLEAN false-positive resistance was answer-key-dependent — the historical CLEAN rows for local
 > models overstate it. Structural note: critic CLEAN fixtures carry no answer sections (their
 > prompts were identical all along); all 5 perspective CLEAN fixtures do.
+>
+> **2026-07-16 amendment:** "identical all along" must not be read as *unhinted* — all 4 critic
+> CLEAN fixtures carried "should receive a clean verdict / ACCEPT" prose in their model-visible
+> body, so critic CLEAN rows measured hint-following as much as calibrated false-positive
+> avoidance. Additionally, `modal-complete-clean` carried two real unplanted defects until
+> 2026-07-16 (fixed at source; hint prose moved below the strip boundary for that fixture).
+> See Scoring changelog → 2026-07-16 fixture erratum.
 
 > **Hint-comment disclosure (2026-07-16).** Independent of the answer-key leak above, fixture
 > *code blocks* carried inline planted-bug hint comments (`// BUG: …`, `{/* BUG: … */}`, bare
@@ -88,7 +95,8 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > those sections were invisible, so the fixtures leaked against their rubrics' premises. Fix:
 > cut-line headings inserted (CLEAN: directly after the features section, mirroring buggy-fixture
 > shape — which also removes a structural tell; ADVERSARIAL: after Design Rationale, which stays
-> visible as realistic PR-description content). Direction of bias: critic CLEAN
+> visible as realistic PR-description content); modal-complete-clean's heading landed via the
+> same-day fixture erratum (see Scoring changelog), this pass added the remaining 6. Direction of bias: critic CLEAN
 > false-positive-resistance rows and critic ADVERSARIAL analysis-quality rows are
 > **verdict-assisted upper bounds** in every lane recorded before this change. Perspective-suite
 > CLEAN rows are structurally unaffected (all 25 perspective fixtures already had cut lines; the
@@ -225,6 +233,10 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 
 ### Fixture 6: modal-complete-clean
 
+> ⚠ **2026-07-16 erratum**: when this row was recorded the fixture carried two real unplanted
+> defects (focus-trap selector gaps; unguarded overlay onClick) and its prompt included "should
+> receive ACCEPT" prose. The ACCEPT rows below are missed-defect data points — see Scoring changelog.
+
 **Difficulty**: CLEAN | **Must-find**: 0 | **Expected verdict**: ACCEPT
 
 | Metric | llama3.3:70b | qwen3:32b |
@@ -283,7 +295,7 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 
 2. **Both models hit the same ceiling on the hardest fixture.** 3/4 must-find on toast (both missed `role="alert"` while finding `aria-live`). This appears to be rubric overlap rather than a true blind spot.
 
-3. **Zero false positives on CLEAN fixtures.** Both models correctly identify well-implemented components and produce ACCEPT/ACCEPT-WITH-RESERVATIONS verdicts without manufacturing findings.
+3. **Zero false positives on CLEAN fixtures.** Both models correctly identify well-implemented components and produce ACCEPT/ACCEPT-WITH-RESERVATIONS verdicts without manufacturing findings. *(2026-07-16 caveat: modal-complete-clean carried two real unplanted defects at the time, and every critic CLEAN prompt included "should receive a clean verdict" prose — see Scoring changelog erratum.)*
 
 4. **qwen3:32b is the better value proposition for Tier 2.** Half the model size, same detection rate, better WCAG citations, more concise output. The only trade-off is no phase structure in output.
 
@@ -614,7 +626,7 @@ Must-find: (1) Status indicators rely on color alone (1.4.1), (2) Hover-only too
 | Average generation time (CLEAN) | 134s |
 | Model size | 6.6 GB |
 
-**Finding**: qwen3.5:latest matches qwen3:32b and llama3.3:70b on all measured dimensions — same 86% must-find rate, same 0% false positive rate, same 100% verdict accuracy — while being 3-6x faster and using 1/3 the memory. The same `role="alert"` rubric overlap miss hits all 4 models tested, suggesting a rubric issue rather than a model-specific blind spot.
+**Finding**: qwen3.5:latest matches qwen3:32b and llama3.3:70b on all measured dimensions — same 86% must-find rate, same 0% false positive rate, same 100% verdict accuracy — while being 3-6x faster and using 1/3 the memory. The same `role="alert"` rubric overlap miss hits all 4 models tested, suggesting a rubric issue rather than a model-specific blind spot. *(2026-07-16: the modal-complete-clean ACCEPT is a missed-defect data point — see Scoring changelog erratum.)*
 
 **Scorer note**: The search-results-dynamic-clean fixture initially scored as FAIL due to a verdict-detection bug — the scorer matched "REVISE" in a hypothetical section ("What would need to change for REVISE") rather than the declared verdict (ACCEPT-WITH-RESERVATIONS). Fixed in `score_output.py` by prioritizing explicit `# Verdict:` declarations.
 
@@ -801,8 +813,10 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 | toast-notification-no-role | HAS-BUGS | REJECT (4/4) | REVISE ✓ (4/4) | REJECT (4/4) |
 | button-skip-link-clean | CLEAN | ACCEPT ✓ | ACCEPT ✓ | ACCEPT ✓ |
 | interactive-dropdown-clean | CLEAN | ACCEPT ✓ | ACCEPT-W-R ✓ | ACCEPT ✓ |
-| modal-complete-clean | CLEAN | ACCEPT ✓ | ACCEPT ✓ | ACCEPT ✓ |
+| modal-complete-clean† | CLEAN | ACCEPT ✓ | ACCEPT ✓ | ACCEPT ✓ |
 | search-results-dynamic-clean | CLEAN | ACCEPT ✓ | ACCEPT-W-R ✓ | ACCEPT ✓ |
+
+*† Recorded against the pre-2026-07-16 fixture, which carried two real unplanted defects — see Scoring changelog erratum.*
 
 ### Key Observations
 
@@ -841,10 +855,12 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 | Fixture | Difficulty | Haiku Verdict | Why Failed | Resolved At |
 |---------|-----------|--------------|------------|-------------|
 | button-skip-link-clean | CLEAN | REVISE | False positive on clean code | Sonnet |
-| modal-complete-clean | CLEAN | ACCEPT (WARN) | Correct verdict but raised structured findings | Sonnet-think |
+| modal-complete-clean† | CLEAN | ACCEPT (WARN) | Correct verdict but raised structured findings | Sonnet-think |
 | tabbed-nav-vs-tab-pattern | ADVERSARIAL | NONE | Found tradeoffs (1/1) but no verdict emitted | Sonnet |
 | form-field-vs-summary-errors | ADVERSARIAL | ACCEPT | Found tradeoffs (1/1) but wrong verdict | Sonnet |
 | search-focus-stays-in-input | ADVERSARIAL | ACCEPT | Found tradeoffs (1/1) but wrong verdict | Sonnet |
+
+*† 2026-07-16 erratum: the fixture carried two real unplanted defects at the time — Haiku's "structured findings on clean code" may have been correct observations (raw artifacts not retained). See Scoring changelog.*
 
 **Pattern**: Haiku handles all HAS-BUGS (21/21) and FLAWED (5/5) fixtures perfectly. Failures concentrate in CLEAN (false positives) and ADVERSARIAL (verdict calibration). Bug detection is not the issue — judgment is.
 
@@ -892,7 +908,7 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 
 2. **Failures are judgment, not detection.** Haiku found the tradeoffs in all 3 ADVERSARIAL fixtures (1/1 must-articulate) but couldn't calibrate verdicts for ambiguous cases. It also generated one false positive on a CLEAN fixture. These are higher-order reasoning failures, not pattern-matching gaps.
 
-3. **Sonnet resolves almost everything.** 4 of 5 Haiku failures pass at Sonnet with no thinking. Only the most nuanced CLEAN fixture (modal-complete-clean) needed thinking enabled.
+3. **Sonnet resolves almost everything.** 4 of 5 Haiku failures pass at Sonnet with no thinking. Only the most nuanced CLEAN fixture (modal-complete-clean) needed thinking enabled. *(2026-07-16: "most nuanced" now has a simpler explanation — the fixture carried two real defects that stronger reviewers kept almost-flagging; see Scoring changelog erratum.)*
 
 4. **Cost-optimal strategy**: Use Haiku for triage (catches all real bugs), escalate CLEAN and ADVERSARIAL fixtures to Sonnet for verdict quality. Total cost for the full 33-fixture run: ~$0.65 (Haiku $0.45 + Sonnet $0.18 + Sonnet-think $0.02).
 
@@ -925,8 +941,10 @@ This is a **fundamental model capacity issue**, not a timeout or configuration p
 | Fixture | Difficulty | GPT-5.2 | 5.2-low | 5.5 | 5.5-low |
 |---------|-----------|---------|---------|-----|---------|
 | button-skip-link-clean | CLEAN | WARN | **PASS** | — | — |
-| modal-complete-clean | CLEAN | WARN | WARN | **PASS** | — |
+| modal-complete-clean† | CLEAN | WARN | WARN | **PASS** | — |
 | search-results-dynamic-clean | CLEAN | FAIL | WARN | FAIL | **PASS** |
+
+*† 2026-07-16 erratum: fixture carried two real unplanted defects at the time — the GPT-5.2/5.2-low WARNs ("raised findings on clean code") may have been correct observations. See Scoring changelog.*
 
 **Pattern**: Identical to Claude — all HAS-BUGS (21/21), FLAWED (5/5), and ADVERSARIAL (3/3) pass at the cheapest tier. Only CLEAN fixtures cause failures (false positives or raised findings on clean code). Bug detection is solved across both platforms; false positive suppression requires larger models or lower effort settings.
 
@@ -1031,7 +1049,8 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   guidance) and — for ADVERSARIAL — "The Ambiguity" tension analysis reached every prompt in every
   recorded lane, blind lanes included. Changes: eval-authored reassurance removed above the cut line
   in 16 perspective + 2 critic fixtures (realistic developer documentation kept); cut-line headings
-  inserted in the 7 cut-less critic fixtures (CLEAN prompts now end at the features section like
+  inserted in the 7 cut-less critic fixtures — 6 in this pass, modal-complete-clean's via the
+  same-day fixture erratum below (CLEAN prompts now end at the features section like
   buggy fixtures; ADVERSARIAL prompts end at Design Rationale); two residual defect-stating hints
   removed (color-only-status-indicators, modal-broken-focus-trap ×2) and five stale below-cut
   answer-key citations of removed `// BUG:` comments rewritten; line references re-anchored where
@@ -1060,6 +1079,45 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   hint-comment disclosure at the top of this file): treat their must-find/detection numbers as
   hint-assisted upper bounds, and do not compare them 1:1 with post-de-hint runs. Within-lane
   cross-model comparisons are unaffected (identical prompts per lane).
+
+- 2026-07-16 (fixture erratum — `modal-complete-clean`, critic suite): the CLEAN fixture carried
+  two real, **unplanted** defects since creation, surfaced by an Opus-tier a11y-critic run
+  2026-07-16: (1) the focus-trap selector `'button, [href], input, [tabindex]'` omitted
+  `select`/`textarea`/`[contenteditable]` and did not exclude disabled or `tabindex="-1"`
+  elements — a trailing `<select>` in `children` was Tab-unreachable because the wrap logic
+  preventDefaults at the last *recognized* element; (2) the overlay's bare `onClick={onClose}`
+  had no target guard, so any click inside the dialog bubbled up and closed the modal.
+  **Resolution** (same as the login-form-clean erratum, 2026-06-14): fixed at source — complete
+  `FOCUSABLE_SELECTOR` with a visibility filter, guarded backdrop dismissal (click must start and
+  end on the backdrop), focus save/restore isolated from `onClose` identity. The fixture stays
+  CLEAN, rubric counts unchanged (must 0 / should 0 / nice 1), both false-positive traps
+  preserved, rubric_version 1.0 → 1.1. The same revision moved the fixture's "Difficulty Level /
+  should receive ACCEPT" prose below a new `## Accessibility Issues (None Planted — CLEAN
+  Baseline)` strip boundary and de-hinted the h1 title (was "Modal Dialog Component (Complete,
+  CLEAN)"): before this, **every lane — including the blind ones — saw that verdict hint in its
+  prompt** (the 2026-07-13 disclosure's "critic CLEAN prompts were identical all along" holds,
+  but identical-with-hint, not unhinted). **Comparability:** committed
+  ACCEPT/PASS rows for this fixture are missed-defect data points, not validated false-positive
+  avoidance — headline "zero CLEAN false positives" tallies stand as measured but this fixture's
+  contribution to them measured hint-following plus defect blindness. Reviewers that raised these
+  findings were penalized for being right: gemini-flash's committed artifact flags the overlay
+  `onClick` (minor); Claude Haiku's Phase 5B ACCEPT (WARN) "raised structured findings" and
+  GPT-5.2/5.2-low WARNs are plausibly the same defects (raw artifacts not retained — cannot be
+  adjudicated). The scoring gate itself (`ACCEPT`/`ACCEPT-W-R` = pass, `REVISE` = false alarm)
+  meant a reviewer that correctly demanded fixes FAILed. keyboard-a11y-tester cross-validation
+  (2026-07-10) is unaffected: its HTML port's content never exercised the latent trap gap and
+  pointer dismissal is outside the keyboard persona; the committed port predates the fix and
+  stands as a historical artifact. **These rows convert to valid FP-avoidance evidence only via a
+  blind re-run against the 1.1 fixture** (now genuinely blind for this fixture). Coordination with
+  the concurrent de-hinting workstream (branch `claude/interesting-thompson-78979c`), which strips
+  inline `{/* BUG: … */}` code comments that survive above the `## Accessibility Issues` strip
+  boundary: that pass does not touch this fixture (it has no BUG comments) and does not rename h1
+  titles, so two hinting axes remain open and additive to it — (a) the other 3 critic CLEAN
+  fixtures (button-skip-link-clean, interactive-dropdown-clean, search-results-dynamic-clean) still
+  carry "should receive clean verdict" prose above the strip boundary plus "(CLEAN)" title
+  suffixes; (b) every HAS-BUGS/FLAWED fixture's h1 title names its planted bug outright (e.g.
+  "Toast Notification Without Alert Role"), title-level leakage that reaches prompts in all lanes
+  and qualifies historical must-find rates the same way the prose hint qualifies CLEAN rows.
 
 - 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
   (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which

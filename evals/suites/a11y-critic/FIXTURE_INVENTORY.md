@@ -25,10 +25,10 @@
 3. **modal-complete-clean** [CLEAN]
    - Files: `modal-complete-clean.md`, `.metadata.yaml`
    - Type: Modal dialog component
-   - Issues: None (focus trap, focus restoration complete, Escape works)
+   - Issues: None since the 2026-07-16 revision (two real unplanted defects fixed at source: incomplete focus-trap selector; unguarded overlay onClick — see `ollama/BENCHMARK.md` → Scoring changelog)
    - WCAG: 2.1.1, 2.1.2, 2.4.3, 4.1.2
    - APG Pattern: Modal Dialog
-   - Code: 200 lines (React + CSS)
+   - Code: ~240 lines (React + CSS), rubric 1.1
    - Status: ✅ Complete
 
 ### Form & Validation Domain (2 fixtures)
@@ -161,7 +161,7 @@ fixtures/
   ✅ interactive-dropdown-clean.metadata.yaml
   ✅ interactive-dropdown-focus-bug.md (120 lines)
   ✅ interactive-dropdown-focus-bug.metadata.yaml
-  ✅ modal-complete-clean.md (200 lines)
+  ✅ modal-complete-clean.md (302 lines, rev. 2026-07-16)
   ✅ modal-complete-clean.metadata.yaml
   ✅ form-validation-missing-aria-describedby.md (180 lines)
   ✅ form-validation-missing-aria-describedby.metadata.yaml
