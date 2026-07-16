@@ -5,6 +5,14 @@
 - **Blind protocol (post-003):** `load_fixture()` strips everything from the `## Accessibility Issues…` heading onward before prompting (guard: `ollama/test_blind_prompts.py`, 116 prompts verified answer-free). This is the first **local** blind lane; every pre-2026-07-13 local row ran non-blind — see the blind-protocol disclosure at the top of `ollama/BENCHMARK.md`.
 - Scoring: post-003 `ollama/score_output.py` / `ollama/score_perspective.py`, one output per fixture under `scores/`. Raw response JSONs (`response` + `_benchmark` provenance) are committed here so every number below can be re-derived.
 
+> **Hint-comment caveat (2026-07-16).** These prompts were answer-key-blind but **not hint-blind**:
+> at run time, 24/33 critic and 20/25 perspective fixtures still carried inline `// BUG: …` hint
+> comments in their code blocks (removed repo-wide 2026-07-16 — see the hint-comment disclosure in
+> `ollama/BENCHMARK.md`). "Blind-confirmed" below means confirmed with answer keys withheld, not
+> hint-free: must-find/detection numbers are hint-assisted upper bounds pending a de-hinted re-run.
+> The CLEAN rows are unaffected (no CLEAN fixture in either suite carried hints), so the
+> perspective CLEAN false-positive finding stands.
+
 ## Headline — qwen3:32b
 
 | Suite | Result (post-003 scorer) | Historical non-blind row | Verdict on the historical number |

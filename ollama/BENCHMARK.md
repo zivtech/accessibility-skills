@@ -32,6 +32,35 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > models overstate it. Structural note: critic CLEAN fixtures carry no answer sections (their
 > prompts were identical all along); all 5 perspective CLEAN fixtures do.
 
+> **Hint-comment disclosure (2026-07-16).** Independent of the answer-key leak above, fixture
+> *code blocks* carried inline planted-bug hint comments (`// BUG: …`, `{/* BUG: … */}`, bare
+> `BUG:` lines inside block comments, and a handful of unmarked defect-stating comments) that
+> answer-key stripping never touched: **24 of 33 critic fixtures** carried `BUG`-marked hints
+> (25 counting `dashboard-heading-inconsistency`, whose comments state each planted flaw without
+> the token) and **20 of 25 perspective fixtures** did. Every prompt-based lane in this file —
+> **including the 2026-07-13 blind lanes** — saw those hints. Direction of bias: the hints name
+> the planted defects (often with the exact attribute or WCAG SC the rubric keys on), so
+> must-find/detection rates and PASS verdicts on hinted fixtures are **hint-assisted upper
+> bounds** pending de-hinted re-runs. Not affected: CLEAN-fixture false-positive rows (no CLEAN
+> fixture in either suite carried hints — the blind perspective CLEAN-FP weakness stands), the
+> 3 critic ADVERSARIAL fixtures (unhinted), planner rows (suite verified hint-free), and
+> within-lane cross-model comparisons (every model saw identical prompts, so relative rankings
+> hold). Measured effect size, in-repo: the perspective pilot's hinted-vs-stripped A/B
+> (`evals/suites/perspectives/PILOT-REPORT.md`, Rounds 1–2) found **no finding-count difference**
+> for Claude Opus/Sonnet on 5 fixtures; the effect is unmeasured for local models and for the
+> critic suite, so absolute rows should not be quoted as hint-free performance. Remediation
+> (2026-07-16): fixtures de-hinted in place (hints removed above the blind cut line; answer-key
+> sections kept; line references in answer keys, `.metadata.yaml`, and `.rubric.yaml`
+> renumbered; scorers untouched); `test_blind_prompts.py` extended to fail on hint patterns
+> across critic + perspective + planner prompts from both runners (166 prompts) and added to CI;
+> the never-wired `evals/suites/perspectives/strip_bug_comments.py` (wrote stripped copies to a
+> `fixtures-eval/` directory no runner read) deleted as superseded; the chain suite's extracted
+> targets were already stripped at extraction and are unaffected. Deliberately kept, disclosed:
+> reassurance comments (`NOT a bug — …`, `Works: …`, contrast-ratio annotations) that defuse
+> false-positive traps — removing them changes the FP-trap difficulty the rubrics were normed on
+> and is a separate calibration decision. Rows recorded before 2026-07-16 are not comparable on
+> absolute detection metrics with post-de-hint runs.
+
 ## Evidence Contract Smoke Gate
 
 `ollama/score_output.py` now recognizes optional `A11y Evidence Finding` blocks when a rubric sets `require_evidence_contract: true`. The smoke gate validates required evidence fields, stable `finding_id`/`fingerprint` values, allowed trend metadata, and clean-fixture false-positive resistance. This is a scoring discipline for critic output, not a generated dashboard or scanner runtime. Existing benchmark rows are not retroactively rescored unless their raw artifacts are rerun through the updated scorer.
@@ -939,6 +968,18 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-07-16 (de-hint): fixture content change, not a scorer change — inline planted-bug hint
+  comments stripped from critic (25 fixtures) and perspective (20 fixtures) code above the blind
+  cut line; answer-key sections kept; line references in fixture answer keys, `.metadata.yaml`,
+  and `.rubric.yaml` renumbered to the new line numbers; scorer logic and rubric keywords
+  untouched. `test_blind_prompts.py` now also fails on hint patterns (`\bBUG\b` anywhere,
+  any-case `bug` after a comment opener) across critic + perspective + planner prompts composed
+  by both runners (166 prompts) and runs in CI. Every critic/perspective row above this line —
+  including the 2026-07-13 blind lanes — was produced against hinted prompts (see the
+  hint-comment disclosure at the top of this file): treat their must-find/detection numbers as
+  hint-assisted upper bounds, and do not compare them 1:1 with post-de-hint runs. Within-lane
+  cross-model comparisons are unaffected (identical prompts per lane).
+
 - 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
   (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which
   had been matching boilerplate `BLOCK` tokens in audits whose actual conclusion was
@@ -1191,6 +1232,10 @@ the full fixture answer key to models (`load_fixture()` reads raw fixtures; trun
 existed per `git log -S`) — every earlier critic/perspective row in this document is therefore
 non-blind, and this lane's numbers must not be compared 1:1 against them. Remediation (runner
 truncation, caveats on published rows, blind re-runs) is tracked as follow-up work.
+**Hint-comment caveat (2026-07-16)**: answer-key-blind but not hint-blind — 20/25 perspective
+fixtures still carried inline `// BUG:` hint comments at run time (de-hinted 2026-07-16; see the
+hint-comment disclosure). Detection numbers below are hint-assisted upper bounds; the CLEAN
+false-positive result is unaffected (CLEAN fixtures carried no hints).
 **Scorer**: `score_perspective.py`, unmodified for comparability. Raw artifacts committed:
 `evals/results/claude-perspective/` (25 response JSONs + scorer outputs + README with adjudication
 receipts); per-fixture table: `evals/suites/perspectives/RESULTS-claude-opus-subagent.md`.
@@ -1218,6 +1263,12 @@ committed — unlike the historical /tmp runs, these artifacts are re-scorable).
 **Protocol**: identical prompts/settings to the historical lanes except post-003 answer-key
 stripping (guard-verified). **Scorer**: post-003 `score_output.py` / `score_perspective.py`.
 **Wall-clock**: critic 33 fixtures in 1.45 h; perspective 25 in 1.36 h.
+**Hint-comment caveat (2026-07-16)**: answer-key-blind but not hint-blind — 24/33 critic and
+20/25 perspective fixtures still carried inline `// BUG:` hint comments at run time (de-hinted
+2026-07-16; see the hint-comment disclosure). "Confirmed blind" below means confirmed with
+answer keys withheld: must-find/detection numbers are hint-assisted upper bounds, while the
+CLEAN rows (critic 4/4, perspective CLEAN-FP finding) are unaffected — no CLEAN fixture carried
+hints.
 
 ### a11y-critic (33 fixtures) — historical numbers CONFIRMED blind
 

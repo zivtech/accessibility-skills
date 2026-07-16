@@ -860,7 +860,7 @@ body {
       </tr>
     </tbody>
   </table>
-  <p style="margin-top: 12px; font-size: 0.9em;">Blind CLEAN collapse: 4/5 clean fixtures draw false REVISE/BLOCK verdicts without the answer key (historical non-blind CLEAN was 4 WARN / 1 FAIL — answer-key-assisted). Detection tiers are blind-confirmed; receipts in <code>evals/results/ollama-blind/README.md</code>.</p>
+  <p style="margin-top: 12px; font-size: 0.9em;">Blind CLEAN collapse: 4/5 clean fixtures draw false REVISE/BLOCK verdicts without the answer key (historical non-blind CLEAN was 4 WARN / 1 FAIL — answer-key-assisted). Detection tiers are blind-confirmed; receipts in <code>evals/results/ollama-blind/README.md</code>. Hint caveat (2026-07-16): blind lanes still saw inline <code>// BUG:</code> fixture hint comments — detection numbers are hint-assisted upper bounds (BENCHMARK.md hint-comment disclosure).</p>
 </div>
 
 <!-- ESCALATION -->
@@ -900,7 +900,7 @@ body {
   <div class="ve-card ve-card--elevated" style="text-align: center;">
     <h3 style="color: var(--blue);">Ollama (Local)</h3>
     <p style="margin: 8px 0;"><strong>qwen3:32b</strong> recommended</p>
-    <p>Blind-confirmed: critic 33/33 PASS, 97% must-find, 0 FP. Caveat: perspective CLEAN verdicts inflate blind (4/5 false REVISE/BLOCK). 18.8 GB, ~2.6 min/fixture uncontended.</p>
+    <p>Blind-confirmed: critic 33/33 PASS, 97% must-find, 0 FP. Caveat: perspective CLEAN verdicts inflate blind (4/5 false REVISE/BLOCK); detection numbers are hint-assisted upper bounds until a de-hinted re-run (fixtures carried inline BUG hint comments before 2026-07-16). 18.8 GB, ~2.6 min/fixture uncontended.</p>
     <div style="margin-top: 8px;"><span class="badge badge--pass">PRODUCTION</span></div>
   </div>
   <div class="ve-card ve-card--elevated" style="text-align: center;">
