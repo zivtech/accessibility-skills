@@ -9,12 +9,17 @@ description: >
   fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency) in
   every report. Under no circumstances file a vague report that omits the
   failing element, the WCAG criterion, or the steps to reproduce.
+license: MIT
+compatibility: Claude Code-compatible; protocol is model-agnostic
+metadata:
+  author: mgifford
+  version: "1.0.0"
 ---
 
 # Accessibility Bug Reporting Skill
 
 > **Canonical source**: `examples/ACCESSIBILITY_BUG_REPORTING_BEST_PRACTICES.md` in `mgifford/ACCESSIBILITY.md`
-> This skill is derived from that file. When in doubt, the example is authoritative.
+> This skill is derived from that file. If the upstream guide changes, sync intentionally rather than drifting silently.
 
 Apply these rules when filing, reviewing, or generating accessibility bug reports
 from any source — automated tool output, manual testing, or AI agent scans.
@@ -122,7 +127,7 @@ Rule ID:  image-alt
 Rule:     Images must have alternate text
 Tool:     axe-core 4.x
 
-ACT Rule: 23a2a8 — Image button has accessible name
+ACT Rule: 23a2a8 — Image has non-empty accessible name
 URL:      https://act-rules.github.io/rules/23a2a8
 ```
 
@@ -321,11 +326,11 @@ Login state:   Authenticated (standard user role) / Guest / Admin
 
 ---
 
-## Moderate: Structured Report Templates
+## Structured Report Templates
 
 ### Markdown Template (for GitHub Issues)
 
-```markdown
+````markdown
 ## Accessibility Issue: [Brief Description]
 
 **Bug ID:** `[PREFIX-xxxxxxxx]` (instance) / `[PREFIX-xxxxxxxx]` (pattern)
@@ -378,7 +383,7 @@ Login state:   Authenticated (standard user role) / Guest / Admin
 ### Suggested Fix (optional)
 
 [Code or prose describing the fix]
-```
+````
 
 ### JSON Schema for Automated Tool Output
 
