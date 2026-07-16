@@ -14,6 +14,17 @@
 
 The asymmetry has a structural explanation: **critic CLEAN fixtures never carried answer sections** (verified — no `## Accessibility Issues` heading in any of the 4), so critic CLEAN prompts are identical blind or not, and the result reproduced exactly. **All 5 perspective CLEAN fixtures carry an answer section that literally says "NONE. This … is correctly implemented"** — the historical run showed that reassurance to the model. Withhold it and qwen3:32b manufactures findings or inflates verdicts on 4 of 5 clean components.
 
+> **2026-07-16 amendment (modal-complete-clean erratum).** Two qualifiers to the critic CLEAN row
+> above. (1) "Identical blind or not" is not the same as *unhinted*: all 4 critic CLEAN fixtures
+> carried "should receive a clean verdict / ACCEPT" prose in the model-visible body, so the
+> critic CLEAN 4/4 measured hint-following as much as calibrated false-positive avoidance.
+> (2) `modal-complete-clean` carried two real **unplanted** defects at run time (incomplete
+> focus-trap selector; unguarded overlay `onClick` closing the dialog on any in-dialog click) —
+> this lane's committed response mentions neither, so that ACCEPT is a missed-defect data point,
+> not validated FP avoidance. Fixture fixed at source and de-hinted 2026-07-16; the row converts
+> to valid evidence only via a re-run against the 1.1 fixture. See `ollama/BENCHMARK.md` →
+> Scoring changelog (2026-07-16).
+
 ## a11y-critic detail (33 fixtures, 1.45 h total, avg 158 s/fixture)
 
 - Tier statuses: HAS-BUGS 21/21 PASS, FLAWED 5/5 PASS, CLEAN 4/4 PASS, ADVERSARIAL 3/3 PASS.
@@ -21,7 +32,7 @@ The asymmetry has a structural explanation: **critic CLEAN fixtures never carrie
   1. `expandable-section-no-button` — "Using `<div>` instead of `<button>`": **keyword artifact, content present.** The audit writes "uses a non-interactive div as a toggle trigger" and "Fix: Replace div with `<button>` element"; the rubric keyword is the literal angle-bracketed `<div>`, which prose doesn't emit. Content-adjudicated coverage 4/4.
   2. `infinite-scroll-no-announcement` — "Scroll-to-load mechanism not discoverable": **genuine partial miss.** The audit notes the impact ("won't know new content is available until they scroll") but never raises discoverability/manual-load-more as a finding.
   - Content-adjudicated must-find: **67/68 (98.5%)**.
-- CLEAN: all four fixtures scored PASS with **zero** structured findings and correct verdicts (one plain ACCEPT, three ACCEPT-WITH-RESERVATIONS).
+- CLEAN: all four fixtures scored PASS with **zero** structured findings and correct verdicts (one plain ACCEPT, three ACCEPT-WITH-RESERVATIONS). *(2026-07-16: the modal-complete-clean pass is a missed-defect data point — see amendment above.)*
 - ADVERSARIAL: 3/3 ACCEPT-WITH-RESERVATIONS with the central tradeoff articulated — same behavior as non-blind.
 - **The historical toast `role="alert"` detection gap did not reproduce**: blind run found 4/4 on `toast-notification-no-role`, including `role="alert"`. The "real model-specific detection gap" language in the historical notes overstated stability — treat it as run-to-run variance at temperature 0.3.
 - Verdict severity inflation persists blind (7 REJECT where rubric expects REVISE); as before, the gate scores detection, not verdict match, on HAS-BUGS/FLAWED.
@@ -57,7 +68,8 @@ Same model, quant, num_ctx, temperature. The dedicated-server protocol (no secon
 ## Also in this directory — qwen3.5:latest and llama3.3:70b blind critic lanes
 
 Same day, same protocol, same server. First **full-suite** runs for both (historical rows were
-n=7 and never touched FLAWED/ADVERSARIAL).
+n=7 and never touched FLAWED/ADVERSARIAL). Both lanes' CLEAN tallies carry the 2026-07-16
+modal-complete-clean amendment above (their committed responses mention neither defect).
 
 - **llama3.3:70b**: 33/33 PASS, must-find 63/68 scorer / 66/68 content-adjudicated (three
   keyword artifacts — file-input restrictions raised as help-text association, tooltip
