@@ -27,5 +27,7 @@ jobs:
         run: python3 scripts/lint_skills.py
       - name: Scorer smoke tests
         run: bash scripts/smoke_scorers.sh
+      - name: Blind-prompt guard (answer keys + hint comments)
+        run: python3 ollama/test_blind_prompts.py
       - name: Mirror drift check (strict)
         run: python3 scripts/check_mirrors.py --strict
