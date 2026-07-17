@@ -323,8 +323,6 @@ export default MultiStepForm;
 
 ## Accessibility Features Present
 
-These features are correctly implemented and should NOT be flagged:
-
 - Labels associated via htmlFor on every input
 - aria-invalid toggles with error state on each field
 - aria-describedby links each input to its inline error span when the error exists

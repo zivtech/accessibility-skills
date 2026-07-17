@@ -1,4 +1,4 @@
-# Fixture: Article Page With Proper Accessibility (CLEAN)
+# Fixture: Article Page
 
 ## Component Code
 

@@ -114,13 +114,20 @@ included: until 2026-07-16 the fixture code blocks carried inline `// BUG:` hint
 survived answer-key stripping (24/33 critic, 20/25 perspective fixtures), so must-find/detection
 numbers are hint-assisted upper bounds — see the hint-comment disclosure in BENCHMARK.md. The
 first de-hinted re-run (qwen3:32b, 2026-07-16, `evals/results/ollama-dehinted/`) measures that
-bound for this model: **nil on critic** (67/68 content-adjudicated in both lanes, CLEAN 4/4
-with zero findings) and **−1 must-find item on perspective** (the hint-carried
-`map-interface-zoom` target-size defect; 36/37 vs 37/37). It also re-characterizes the blind
-lane's perspective CLEAN weakness (4/5 wrong verdicts) as run-unstable: the re-run drew 1/5
-wrong on byte-identical CLEAN prompts. CLEAN false-positive rows are unaffected by hints (CLEAN
-fixtures carried none); cross-model comparisons within a lane are unaffected (identical
-prompts).
+bound for this model: **nil on critic** (67/68 content-adjudicated in both lanes) and **−1
+must-find item on perspective** (the hint-carried `map-interface-zoom` target-size defect;
+36/37 vs 37/37). It also re-characterizes the blind lane's perspective CLEAN weakness (4/5
+wrong verdicts) as run-unstable: the re-run drew 1/5 wrong on byte-identical CLEAN prompts.
+A third caveat (2026-07-16 follow-up): the 4 critic CLEAN and 3 critic ADVERSARIAL fixtures
+had no blind cut line until after the de-hinted re-run, so their prompts included the expected
+verdict / grading notes in every lane above **and in the de-hinted lane** — critic "CLEAN FP
+0%" columns are verdict-assisted upper bounds (exception: the de-hinted lane's
+`modal-complete-clean` row, whose cut line landed with the same-day fixture erratum); and
+reassurance comments (`NOT a bug`, `Works:`/`Good:`) were removed suite-wide the same day, so
+FP-trap difficulty is higher for post-change runs — see the reassurance & verdict-steering
+disclosure in BENCHMARK.md. Perspective CLEAN rows are structurally unaffected (all 25
+perspective fixtures had cut lines). Cross-model comparisons within a lane are unaffected by
+all three caveats (identical prompts per lane).
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
 

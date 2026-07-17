@@ -106,7 +106,7 @@ export default MegaMenu;
   font-weight: 500; font-size: 0.95rem;
 }
 
-/* Visual focus on top-level items — correct */
+/* Visual focus on top-level items */
 .nav-link:focus-visible {
   outline: 3px solid #005fcc; outline-offset: 2px;
 }

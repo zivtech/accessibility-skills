@@ -17,10 +17,10 @@ const tasks = [
 ];
 
 const STATUS_COLORS = {
-  'blocked':     '#d32f2f',  // red   — 5.1:1 contrast against white — passes automated check
-  'at-risk':     '#f57c00',  // amber — 4.6:1 contrast against white — passes automated check
-  'on-track':    '#2e7d32',  // green — 5.9:1 contrast against white — passes automated check
-  'not-started': '#1565c0',  // blue  — 5.4:1 contrast against white — passes automated check
+  'blocked':     '#d32f2f',  // red   — 5.1:1 contrast against white
+  'at-risk':     '#f57c00',  // amber — 4.6:1 contrast against white
+  'on-track':    '#2e7d32',  // green — 5.9:1 contrast against white
+  'not-started': '#1565c0',  // blue  — 5.4:1 contrast against white
 };
 
 const SORT_COLS = ['name', 'owner', 'due', 'effort', 'priority', 'status', 'progress'];
@@ -48,10 +48,8 @@ const ProjectDashboard = () => {
 
   return (
     <div className="dashboard">
-      {/* Good: heading structure — h1 present, correct hierarchy */}
       <h1 className="dashboard-title">Project Dashboard</h1>
 
-      {/* Good: landmark region */}
       <section aria-label="Task overview">
         <table className="task-table">
           <thead>
@@ -113,7 +111,6 @@ const ProjectDashboard = () => {
         </table>
       </section>
 
-      {/* Good: summary stats with visible text labels */}
       <section className="summary-bar" aria-label="Status summary">
         <div className="summary-item">
           <span className="summary-count">{tasks.filter(t => t.status === 'blocked').length}</span>
@@ -183,7 +180,6 @@ export default ProjectDashboard;
 }
 
 .sort-btn:focus-visible {
-  /* Good: focus indicator is present on sort buttons */
   outline: 2px solid #005fcc;
   outline-offset: 2px;
 }
@@ -196,14 +192,13 @@ export default ProjectDashboard;
   line-height: 10px;
 }
 
-/* Good: table rows are keyboard focusable */
 .task-row:focus-visible {
   outline: 2px solid #005fcc;
   outline-offset: -2px;
 }
 
 .task-row.selected {
-  background-color: #e3f2fd;  /* light blue — color is the ONLY selection indicator */
+  background-color: #e3f2fd;  /* light blue */
 }
 
 .status-dot {

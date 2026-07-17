@@ -100,7 +100,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
         />
 
         <div className="player-controls" role="group" aria-label="Video controls">
-          {/* Keyboard-accessible play/pause — NOT a bug */}
           <button
             onClick={togglePlay}
             aria-label={isPlaying ? 'Pause video' : 'Play video'}
@@ -109,7 +108,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
             {isPlaying ? '⏸' : '▶'}
           </button>
 
-          {/* Keyboard-accessible seek bar — NOT a bug */}
           <input
             type="range"
             ref={progressRef}
@@ -127,7 +125,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
 
-          {/* Keyboard-accessible volume controls — NOT a bug */}
           <button
             onClick={toggleMute}
             aria-label={isMuted ? 'Unmute' : 'Mute'}
@@ -149,7 +146,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
 
         </div>
       </div>
-
 
       <section className="tutorial-meta">
         <h2>About this tutorial</h2>

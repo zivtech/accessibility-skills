@@ -109,7 +109,7 @@ export default RevenueChart;
   margin-bottom: 12px;
 }
 
-/* All fill colors pass contrast against white — automated tools won't flag */
+/* All fill colors pass contrast against white */
 /* #1565c0 = 5.4:1, #2e7d32 = 5.9:1, #e65100 = 4.6:1, #6a1b9a = 7.2:1, #c62828 = 5.6:1 */
 
 .legend {

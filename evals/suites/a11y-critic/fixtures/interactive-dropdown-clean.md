@@ -1,4 +1,4 @@
-# Fixture: Interactive Dropdown Component (CLEAN)
+# Fixture: Interactive Dropdown Component
 
 ## Component Code
 
@@ -224,6 +224,10 @@ export default DropdownSelect;
 ✓ Focus indicators visible (outline on button and list)
 ✓ Click handler for mouse users
 ✓ Roving tabindex: listbox gets tabindex="0", items not individually focusable
+
+## Accessibility Issues
+
+**NONE.** This is a CLEAN fixture — the component above is a correct implementation with no planted bugs. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
 
 ## Frameworks & Environment
 

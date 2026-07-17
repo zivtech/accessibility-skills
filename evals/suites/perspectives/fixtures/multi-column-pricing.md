@@ -32,7 +32,6 @@ import React, { useState } from 'react';
   overflow-x: auto;
 }
 
-/* Correct semantic table — NOT a bug */
 .pricing-table {
   width: 100%;
   border-collapse: collapse;
@@ -73,7 +72,6 @@ import React, { useState } from 'react';
   font-size: 28px;
   font-weight: 700;
   color: #111;
-  /* NOT a bug — large price amount has sufficient contrast */
 }
 
 .recommended-header {
@@ -103,11 +101,11 @@ import React, { useState } from 'react';
 }
 
 .feature-check.available {
-  color: #38a169; /* green — passes contrast against white */
+  color: #38a169; /* green */
 }
 
 .feature-check.unavailable {
-  color: #e53e3e; /* red — passes contrast against white */
+  color: #e53e3e; /* red */
 }
 
 .feature-row td:first-child {
@@ -141,7 +139,6 @@ import React, { useState } from 'react';
 }
 
 .cta-button {
-  /* Keyboard-accessible CTA button — NOT a bug */
   display: block;
   width: 100%;
   padding: 10px;
@@ -239,7 +236,6 @@ const PricingTable = () => {
       <p>Start free, scale as you grow. No credit card required.</p>
 
       <div className="pricing-table-wrapper">
-        {/* Correct semantic table structure — NOT a bug */}
         <table className="pricing-table">
           <thead>
             <tr>
@@ -259,7 +255,6 @@ const PricingTable = () => {
                   <div className="tier-price">
                     {tier.price !== null ? (
                       <>
-                        {/* Large price amount has correct contrast — NOT a bug */}
                         <span className="amount">${tier.price}</span>
                         {tier.period}
                       </>
@@ -267,7 +262,6 @@ const PricingTable = () => {
                       tier.period
                     )}
                   </div>
-                  {/* Keyboard-accessible CTA — NOT a bug */}
                   <button
                     className="cta-button"
                     onClick={() => setSelectedTier(tier.id)}
@@ -312,14 +306,14 @@ export default PricingTable;
 - Pricing sub-text has sufficient contrast at its rendered size and weight
 - Feature comparison tooltips are accessible on both hover and keyboard focus
 - "Most popular" badge animation respects `prefers-reduced-motion`
-- Table uses correct `<thead>`, `<tbody>`, `<th scope>` structure (all correct — not a bug)
-- CTA buttons have descriptive labels (all correct — not a bug)
+- Table uses correct `<thead>`, `<tbody>`, `<th scope>` structure
+- CTA buttons have descriptive labels
 
 ## Accessibility Features Present
 
 - Table uses semantic `<table>` with `<thead>`, `<tbody>`, and `<th scope="col">` on all headers
 - CTA buttons have `aria-label` values identifying both action and plan name
-- Large price amount (28px bold) has sufficient contrast (#111 on white) — not a bug
+- Large price amount (28px bold) has sufficient contrast (#111 on white)
 - "Most popular" badge has `aria-label="Most popular"` — text content is not hidden
 - `pricing-table-wrapper` has `overflow-x: auto` for horizontal scroll on small viewports
 
@@ -341,12 +335,12 @@ export default PricingTable;
    - Expected fix: Darken to `#595959` (7:1) or `#767676` at 14px bold (large text threshold at 18.67px bold — this does not qualify); increase font-size to 14px and add font-weight 600 to reach large-text threshold
 
 4. **MINOR: Feature comparison tooltips are hover-only, not accessible on focus** — `TooltipFeatureLabel` uses CSS `:hover` to show the tooltip. No `:focus-within` rule is present, so keyboard users tabbing through feature labels receive no tooltip content. The `role="tooltip"` is present but the tooltip never appears for keyboard users.
-   - Evidence: `.feature-tooltip-trigger:hover .feature-tooltip { display: block }` with no `:focus-within` equivalent; `/* BUG: :focus-within not added */` comment in CSS
+   - Evidence: `.feature-tooltip-trigger:hover .feature-tooltip { display: block }` with no `:focus-within` equivalent
    - User group: Keyboard-only users; motor-impaired users
    - Expected fix: Add `.feature-tooltip-trigger:focus-within .feature-tooltip { display: block }` to CSS, or switch to a JS-controlled tooltip visible on both hover and focus
 
 5. **MINOR: "Most popular" badge has shimmer animation with no `prefers-reduced-motion` override** — The `.most-popular-badge` element uses a 2-second infinite shimmer gradient animation with no `@media (prefers-reduced-motion: reduce)` rule to suppress it.
-   - Evidence: `.most-popular-badge { animation: shimmer 2s linear infinite }` with no reduced-motion media query; `/* BUG: No @media (prefers-reduced-motion: reduce) */` comment
+   - Evidence: `.most-popular-badge { animation: shimmer 2s linear infinite }` with no reduced-motion media query
    - User group: Users with vestibular disorders; users who have enabled reduced-motion
    - Expected fix: Add `@media (prefers-reduced-motion: reduce) { .most-popular-badge { animation: none; } }`
 

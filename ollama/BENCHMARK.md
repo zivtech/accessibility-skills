@@ -49,8 +49,9 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > the planted defects (often with the exact attribute or WCAG SC the rubric keys on), so
 > must-find/detection rates and PASS verdicts on hinted fixtures are **hint-assisted upper
 > bounds** pending de-hinted re-runs (first such re-run: qwen3:32b, 2026-07-16 — see the
-> de-hinted lane section at the end of this file). Not affected: CLEAN-fixture false-positive
-> rows (no CLEAN
+> de-hinted lane section at the end of this file). Not affected by *hints* (but see the follow-up
+> disclosure below — critic CLEAN and ADVERSARIAL prompts carried their expected verdicts through
+> a different channel, the de-hinted lane included): CLEAN-fixture false-positive rows (no CLEAN
 > fixture in either suite carried hints — the blind perspective CLEAN-FP weakness stands as a
 > hint-analysis statement, but the de-hinted re-run re-characterizes it as run-unstable), the
 > 3 critic ADVERSARIAL fixtures (unhinted), planner rows (suite verified hint-free), and
@@ -71,8 +72,72 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > targets were already stripped at extraction and are unaffected. Deliberately kept, disclosed:
 > reassurance comments (`NOT a bug — …`, `Works: …`, contrast-ratio annotations) that defuse
 > false-positive traps — removing them changes the FP-trap difficulty the rubrics were normed on
-> and is a separate calibration decision. Rows recorded before 2026-07-16 are not comparable on
-> absolute detection metrics with post-de-hint runs.
+> and is a separate calibration decision. *(That decision was executed later the same day — see the
+> reassurance & verdict-steering disclosure below.)* Rows recorded before 2026-07-16 are not
+> comparable on absolute detection metrics with post-de-hint runs.
+
+> **Reassurance & verdict-steering disclosure (2026-07-16, follow-up to the hint-comment
+> disclosure).** The mirror-image leak class the de-hint pass deliberately kept was removed the
+> same day, and the removal surfaced a worse structural leak. **(1) Reassurance comments** —
+> eval-authored text steering reviewers away from false-positive traps: `NOT a bug — …` comments
+> (chat-cognitive-load ×8, dense-admin-jargon, multi-column-pricing, podcast-audio-only,
+> video-tutorial-no-captions), `Works:`/`Good:` annotations (data-table-sortable-columns,
+> color-only-status-indicators, modal-broken-focus-trap), comment self-verdicts (`— correct`,
+> `works correctly`, `passes automated check`, `automated tools won't flag`) and prose denials
+> (`(all correct — not a bug)`, `should NOT be flagged`, `— not a keyboard trap`) — removed above
+> the blind cut line from 16 perspective and 2 critic fixtures. Kept: realistic developer
+> documentation (contrast-ratio annotations, `passes AA` conformance notes, rationale comments
+> such as "controls receive focus, not the video element") — the per-comment test was "would a
+> competent developer plausibly write this in production code?". **(2) Verdict-steering sections
+> (more serious)** — 7 critic fixtures, the 4 CLEAN (button-skip-link, interactive-dropdown,
+> modal-complete, search-results-dynamic) and all 3 ADVERSARIAL (form-field-vs-summary-errors,
+> search-focus-stays-in-input, tabbed-nav-vs-tab-pattern), had **no `## Accessibility Issues` cut
+> line at all**, so `strip_answer_key()` passed their full text to every prompt in every lane,
+> 2026-07-13 blind lanes included: CLEAN prompts contained "**CLEAN** — … Should receive a clean
+> verdict or ACCEPT" plus "A11y-critic should verify…" grading notes; ADVERSARIAL prompts
+> contained the full two-sided tension analysis ("The Ambiguity") plus "The 'correct' review is
+> NOT to flag…" grading criteria. The rubrics' own baseline expectations were written assuming
+> those sections were invisible, so the fixtures leaked against their rubrics' premises. Fix:
+> cut-line headings inserted (CLEAN: directly after the features section, mirroring buggy-fixture
+> shape — which also removes a structural tell; ADVERSARIAL: after Design Rationale, which stays
+> visible as realistic PR-description content); modal-complete-clean's heading landed via the
+> same-day fixture erratum (see Scoring changelog), this pass added the remaining 6. Direction of bias: critic CLEAN
+> false-positive-resistance rows and critic ADVERSARIAL analysis-quality rows are
+> **verdict-assisted upper bounds** in every lane recorded before this change. Perspective-suite
+> CLEAN rows are structurally unaffected (all 25 perspective fixtures already had cut lines; the
+> blind CLEAN-FP weakness stands), but perspective FP-trap difficulty rises corpus-wide with the
+> reassurance comments gone. Also fixed in this pass: two residual defect-stating hints the
+> de-hint pass missed (color-only-status-indicators "color is the ONLY selection indicator";
+> modal-broken-focus-trap "Background content remains fully interactive…" plus the claims-list
+> parenthetical "(though never used for focus restoration)") — must-find rates for those two
+> fixtures were hint-assisted; five stale answer-key citations of already-removed `// BUG:`
+> comments (below-cut, no prompt impact); and the committed chain-suite targets were regenerated
+> (never re-extracted post-de-hint, they still carried both comment classes, and
+> tabbed-nav-vs-tab-pattern's target README shipped the full Ambiguity + grading notes to the
+> chain lane). Guard: `test_blind_prompts.py` gains REASSURANCE_PATTERNS (not-a-bug,
+> flag-steering, Works:/Good: openers, comment self-verdicts, color-only denials, difficulty
+> verdict tokens, fixture-class reveals, "A11y-critic should"), verified to catch 21 of the 22
+> pre-fix leaking fixtures; the one shape with no machine-checkable invariant
+> (autocomplete-fast-timeout's `fails AA for text but it's a status message` excuse, trimmed to
+> the bare ratio — "fails AA" in a comment is legitimate developer vocabulary) is documented here
+> instead. CLEAN-side titles were de-hinted with this pass: "(CLEAN)" suffixes and verdict-bearing
+> tails ("With Proper/Complete Accessibility", "Full") dropped from the 3 critic and 5 perspective
+> CLEAN h1 titles, matching the modal-complete-clean erratum's title treatment (guard: `tier
+> suffix in title`). Known residual, deliberately unchanged: HAS-BUGS/FLAWED H1 titles and all
+> fixture ids still name their planted defect ("Custom Dropdown with Focus Restoration Bug",
+> "Tabs Component Missing Arrow Key Navigation") and titles sit above the cut line — ids double as
+> filenames and result keys, so renaming is a separate decision (the fixture erratum's open
+> axis (b)). A second known residual, surfaced in the merge review of this pass: the
+> `## Accessibility Features Present` checklists (suite-wide, above the cut line by design)
+> occasionally carry self-verdict phrasing ("— correct pattern for chat", "works correctly
+> (Tab/Shift+Tab)") — factual feature context by suite convention, but eval-authored assurance
+> at the margin; not machine-guarded because the checklist form is intentional, logged here so
+> the axis is named. Scorers untouched. **Comparability:** rows recorded before this change
+> are not comparable with post-change runs on (a) critic CLEAN false-positive resistance,
+> (b) critic ADVERSARIAL analysis quality, (c) perspective FP-trap avoidance — in addition to the
+> hint-comment caveat on detection rates; within-lane cross-model rankings hold (identical
+> prompts per lane). The perspective pilot's FP calibration (`evals/suites/perspectives/`
+> `PILOT-REPORT.md`, "0% FP validated") predates this change.
 
 ## Evidence Contract Smoke Gate
 
@@ -991,6 +1056,34 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-07-16 (reassurance follow-up, after de-hint): fixture content change, not a scorer change —
+  the reassurance-comment class the de-hint entry below deliberately kept was removed, and the pass
+  surfaced a structural leak: 7 critic fixtures (4 CLEAN + 3 ADVERSARIAL) had no
+  `## Accessibility Issues` cut line, so their Difficulty Level / Notes (expected verdict, grading
+  guidance) and — for ADVERSARIAL — "The Ambiguity" tension analysis reached every prompt in every
+  recorded lane, blind lanes included. Changes: eval-authored reassurance removed above the cut line
+  in 16 perspective + 2 critic fixtures (realistic developer documentation kept); cut-line headings
+  inserted in the 7 cut-less critic fixtures — 6 in this pass, modal-complete-clean's via the
+  same-day fixture erratum below (CLEAN prompts now end at the features section like
+  buggy fixtures; ADVERSARIAL prompts end at Design Rationale); "(CLEAN)" suffixes and
+  verdict-bearing tails dropped from the 3 critic + 5 perspective CLEAN h1 titles (closes the
+  fixture erratum's open axis (a); axis (b), defect-naming HAS-BUGS titles, remains open); two residual defect-stating hints
+  removed (color-only-status-indicators, modal-broken-focus-trap ×2) and five stale below-cut
+  answer-key citations of removed `// BUG:` comments rewritten; line references re-anchored where
+  affected (video-tutorial-no-captions answer key, `.metadata.yaml`, `.rubric.yaml` — several were
+  already stale from the de-hint renumbering and were corrected to verified current anchors);
+  committed chain-suite targets regenerated (stale since de-hint); YAML calibration comments added
+  to the 7 affected critic rubrics (comments only — `yaml.safe_load` never sees them; the scorer
+  reads rubric `notes:`, which was not touched). `test_blind_prompts.py` gains REASSURANCE_PATTERNS
+  and now fails on reassurance/verdict text across the same 166 prompts (verified against the
+  pre-fix corpus: catches 21/22 previously-leaking fixtures; the autocomplete-fast-timeout excuse
+  comment has no machine-checkable invariant and is handled by removal + disclosure). Scorer logic,
+  rubric weights, and rubric keywords untouched. Comparability: pre-change rows are verdict-assisted
+  upper bounds on critic CLEAN FP-resistance and critic ADVERSARIAL analysis quality, and
+  reassurance-assisted on perspective FP-trap avoidance; do not compare 1:1 with post-change runs
+  (see the reassurance & verdict-steering disclosure at the top of this file). The perspective
+  pilot's "0% FP" calibration (PILOT-REPORT.md) predates this change.
+
 - 2026-07-16 (de-hint): fixture content change, not a scorer change — inline planted-bug hint
   comments stripped from critic (25 fixtures) and perspective (20 fixtures) code above the blind
   cut line; answer-key sections kept; line references in fixture answer keys, `.metadata.yaml`,
@@ -1035,12 +1128,17 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   the concurrent de-hinting workstream (branch `claude/interesting-thompson-78979c`), which strips
   inline `{/* BUG: … */}` code comments that survive above the `## Accessibility Issues` strip
   boundary: that pass does not touch this fixture (it has no BUG comments) and does not rename h1
-  titles, so two hinting axes remain open and additive to it — (a) the other 3 critic CLEAN
+  titles, so two hinting axes remained open and additive to it — (a) the other 3 critic CLEAN
   fixtures (button-skip-link-clean, interactive-dropdown-clean, search-results-dynamic-clean) still
-  carry "should receive clean verdict" prose above the strip boundary plus "(CLEAN)" title
+  carried "should receive clean verdict" prose above the strip boundary plus "(CLEAN)" title
   suffixes; (b) every HAS-BUGS/FLAWED fixture's h1 title names its planted bug outright (e.g.
   "Toast Notification Without Alert Role"), title-level leakage that reaches prompts in all lanes
   and qualifies historical must-find rates the same way the prose hint qualifies CLEAN rows.
+  *Axis (a) was closed later the same day by the reassurance follow-up entry above: cut-line
+  headings now hold the verdict prose below the strip boundary in all critic CLEAN/ADVERSARIAL
+  fixtures, and the "(CLEAN)" suffixes and verdict-bearing title tails ("With Proper/Complete
+  Accessibility", "Full") were dropped from the 3 critic and 5 perspective CLEAN h1 titles
+  (guarded: `tier suffix in title` pattern in `test_blind_prompts.py`). Axis (b) remains open.*
 
 - 2026-07-13 (post-003): (a) `detect_verdict` gains a middle tier — a bolded conclusion line
   (`**PASS** — …`, last occurrence wins) is recognized before the whole-word fallback ladder, which
@@ -1297,7 +1395,10 @@ truncation, caveats on published rows, blind re-runs) is tracked as follow-up wo
 **Hint-comment caveat (2026-07-16)**: answer-key-blind but not hint-blind — 20/25 perspective
 fixtures still carried inline `// BUG:` hint comments at run time (de-hinted 2026-07-16; see the
 hint-comment disclosure). Detection numbers below are hint-assisted upper bounds; the CLEAN
-false-positive result is unaffected (CLEAN fixtures carried no hints).
+false-positive result is unaffected by hints (CLEAN fixtures carried none), though two perspective
+CLEAN fixtures carried reassurance comments until the same-day follow-up (see the reassurance &
+verdict-steering disclosure) — treat the CLEAN-FP result as measured against slightly softer traps
+than the current fixtures.
 **Scorer**: `score_perspective.py`, unmodified for comparability. Raw artifacts committed:
 `evals/results/claude-perspective/` (25 response JSONs + scorer outputs + README with adjudication
 receipts); per-fixture table: `evals/suites/perspectives/RESULTS-claude-opus-subagent.md`.
@@ -1329,13 +1430,20 @@ stripping (guard-verified). **Scorer**: post-003 `score_output.py` / `score_pers
 20/25 perspective fixtures still carried inline `// BUG:` hint comments at run time (de-hinted
 2026-07-16; see the hint-comment disclosure). "Confirmed blind" below means confirmed with
 answer keys withheld: must-find/detection numbers are hint-assisted upper bounds, while the
-CLEAN rows (critic 4/4, perspective CLEAN-FP finding) are unaffected — no CLEAN fixture carried
-hints.
+CLEAN rows (critic 4/4, perspective CLEAN-FP finding) are unaffected by hints — no CLEAN
+fixture carried hints. **Reassurance/verdict caveat (2026-07-16 follow-up)**: the critic
+CLEAN 4/4 row is nonetheless a verdict-assisted upper bound — at run time the 4 critic CLEAN
+fixtures had no cut line, so their prompts included "**CLEAN** — should receive a clean verdict"
+grading text (the 3 critic ADVERSARIAL fixtures likewise included their grading notes); the
+perspective CLEAN-FP finding stands structurally, measured against slightly softer traps
+(reassurance comments since removed). See the reassurance & verdict-steering disclosure.
 **Outcome (de-hinted re-run, same day)**: the upper bound is now measured for qwen3:32b —
 nil on critic (67/68 content-adjudicated in both lanes), −1 must-find item on perspective
 (`map-interface-zoom`); and this lane's perspective CLEAN characterization (4/5 wrong verdicts)
-proved run-unstable — the de-hinted re-run drew 1/5 wrong on byte-identical CLEAN prompts. See
-the de-hinted lane section below.
+proved run-unstable — the de-hinted re-run drew 1/5 wrong on byte-identical CLEAN prompts. The
+de-hinted lane also ran before the verdict-steering fix, so its critic CLEAN rows (except
+`modal-complete-clean`, whose cut line landed with the fixture erratum) and ADVERSARIAL rows
+carry the same verdict-assisted caveat. See the de-hinted lane section below.
 
 ### a11y-critic (33 fixtures) — historical numbers CONFIRMED blind
 

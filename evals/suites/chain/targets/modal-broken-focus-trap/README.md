@@ -22,7 +22,7 @@ React modal dialog with form content. Focus not moved on open, no focus trap, no
 - All interactive controls are real `<button>` or `<input>` elements
 - Visible focus indicators on all interactive elements
 - Visual backdrop overlay dims background content
-- `triggerRef` is attached to the trigger button (though never used for focus restoration)
+- `triggerRef` is attached to the trigger button
 - Submit and Cancel buttons are real `<button>` elements with correct `type` attributes
 
 ---

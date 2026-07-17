@@ -4,6 +4,15 @@
 **Fixtures:** 5 pilot (video-tutorial, product-carousel, article-clean, checkout-form, color-only)
 **Total evaluations:** 39 blind reviews across 3 experimental rounds
 
+> **Calibration addendum (2026-07-16):** all three pilot rounds — including Round 2's "stripped"
+> condition — ran against fixtures that still carried eval-authored *reassurance* comments
+> (`NOT a bug — …`, `Works:`/`Good:` annotations) above the blind cut line; only `// BUG:` hint
+> comments were varied. Those reassurance comments were removed on 2026-07-16, which raises
+> false-positive-trap difficulty across the suite. The pilot's FP results (0% FP, "does NOT
+> over-flag") therefore describe softer traps than the current fixtures, and the difficulty
+> calibration below predates the change. See the reassurance & verdict-steering disclosure and
+> the scoring changelog in `ollama/BENCHMARK.md`.
+
 ---
 
 ## Executive Summary

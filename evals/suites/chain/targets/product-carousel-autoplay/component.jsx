@@ -46,7 +46,6 @@ const ProductCarousel = () => {
         ))}
       </div>
 
-      {/* Keyboard navigation works correctly — prev/next buttons are focusable and labeled */}
       <button
         className="carousel-btn carousel-prev"
         onClick={goToPrev}

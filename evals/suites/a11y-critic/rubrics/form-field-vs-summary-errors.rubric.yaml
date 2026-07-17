@@ -1,3 +1,9 @@
+# Calibration note (2026-07-16): until this date the fixture had no blind cut line, so
+# every model prompt included its The Ambiguity / Notes sections — i.e. the two-sided
+# tension analysis and the grading criteria were visible to the model. expected_to_find
+# rates and expected_reviewer_performance bands predate the cut-line fix and await blind
+# re-norming. See the scoring changelog in ollama/BENCHMARK.md.
+
 fixture_id: form-field-vs-summary-errors
 rubric_version: "1.0"
 scoring_method: hybrid

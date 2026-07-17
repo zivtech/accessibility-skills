@@ -202,7 +202,7 @@ export default AddressAutocomplete;
 
 .no-results {
   font-style: italic;
-  color: #888;           /* 3.5:1 — fails AA for text but it's a status message */
+  color: #888;           /* 3.5:1 */
   font-size: 0.9rem;
   padding: 8px 12px;
   margin: 0;

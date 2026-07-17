@@ -17,7 +17,6 @@ const BuggyToast = ({ message, duration = 3000 }) => {
 
   return (
     <div className="toast-notification">
-      {/* Screen reader user may miss toast message entirely */}
       {message}
     </div>
   );

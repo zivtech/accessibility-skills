@@ -8,7 +8,6 @@
 
 .carousel-track {
   display: flex;
-  /* transition defined inline via React style prop — also no reduced-motion check */
 }
 
 .carousel-slide {

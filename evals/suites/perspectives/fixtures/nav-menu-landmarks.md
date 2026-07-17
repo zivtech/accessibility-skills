@@ -1,4 +1,4 @@
-# Fixture: Navigation Menu With Complete Landmarks (CLEAN)
+# Fixture: Navigation Menu With Landmarks
 
 ## Component Code
 

@@ -1,3 +1,9 @@
+# Calibration note (2026-07-16): until this date the fixture had no blind cut line, so
+# every model prompt included its Difficulty Level / Notes sections — i.e. the expected
+# CLEAN verdict and grading guidance were visible to the model. expected_to_find rates
+# and expected_reviewer_performance bands predate the cut-line fix and await blind
+# re-norming. See the scoring changelog in ollama/BENCHMARK.md.
+
 fixture_id: interactive-dropdown-clean
 rubric_version: "1.0"
 scoring_method: hybrid
