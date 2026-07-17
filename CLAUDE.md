@@ -47,7 +47,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | perspective-audit | auditor | `/perspective-audit` |
 | bug-reporting | reporter | `/bug-reporting` |
 
-`bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; no benchmark lane yet.
+`bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; eval lane added 2026-07-17 (`evals/suites/bug-reporting/`: 6 fixtures across axe-core/pa11y/keyboard-a11y-tester/manual-prose inputs, rule-based scorer `ollama/score_bugreport.py` with recomputed stable-ID and fabrication checks; instrument validated, no model rows yet).
 
 ## Team Workflow
 

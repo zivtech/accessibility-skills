@@ -30,6 +30,9 @@ python3 ollama/ollama_a11y.py planner path/to/requirements.md
 # Run perspective audit on escalated perspectives
 python3 ollama/ollama_a11y.py perspective path/to/component.jsx
 
+# Convert a raw finding (axe/pa11y JSON, tool output, manual note) into a filable bug report
+python3 ollama/ollama_a11y.py bugreport path/to/finding.json
+
 # Use a specific model
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
 

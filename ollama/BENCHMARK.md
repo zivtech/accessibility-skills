@@ -1051,6 +1051,18 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
+  existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
+  single/dedup/two-rule, keyboard-a11y-tester finding, manual-prose note, sparse pa11y
+  adversarial) with metadata-driven rule-based scoring (`ollama/score_bugreport.py`): report
+  count (dedup/split), required-field labels, key-value extraction, recomputed sha256 stable
+  IDs (should-tier), and a hard honest-N/A fabrication trap. Runner lane
+  (`run_benchmark.py bugreport` / `bugreport-remaining`), `ollama_a11y.py bugreport` skill,
+  validator triplets + registry check, and 4 scorer smoke cases wired into CI. Fixtures are
+  input artifacts with no answer keys in the `.md` (expectations live in metadata/rubrics that
+  never enter prompts), so the blind protocol is a pass-through for this suite — see the suite
+  README. Instrument validated end-to-end against live model outputs before commit.
+
 - 2026-07-16 (reassurance follow-up, after de-hint): fixture content change, not a scorer change —
   the reassurance-comment class the de-hint entry below deliberately kept was removed, and the pass
   surfaced a structural leak: 7 critic fixtures (4 CLEAN + 3 ADVERSARIAL) had no
