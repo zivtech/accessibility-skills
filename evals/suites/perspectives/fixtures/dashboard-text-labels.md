@@ -1,4 +1,4 @@
-# Fixture: Analytics Dashboard With Text Status Labels (CLEAN)
+# Fixture: Analytics Dashboard With Text Status Labels
 
 ## Component Code
 
@@ -38,7 +38,6 @@ const Dashboard = () => (
         <div key={s.label} className="stat-card" aria-label={`${s.label}: ${s.value}, ${s.change}`}>
           <span className="stat-label">{s.label}</span>
           <span className="stat-value">{s.value}</span>
-          {/* Status uses BOTH text AND icon — not color-only */}
           <span className={`stat-change ${s.status}`}>
             <span aria-hidden="true">{s.status === 'up' ? '↑' : '↓'}</span>
             {' '}
@@ -52,7 +51,6 @@ const Dashboard = () => (
 
     <section aria-labelledby="chart-heading">
       <h2 id="chart-heading">Weekly Traffic</h2>
-      {/* Bar chart with text labels on each bar — not color-only */}
       <div className="bar-chart" role="img" aria-label="Bar chart: Weekly traffic. Monday 420, Tuesday 380, Wednesday 510, Thursday 470, Friday 390.">
         {chartData.map(d => (
           <div key={d.label} className="bar-col">
@@ -142,7 +140,6 @@ export default Dashboard;
   color: #111;
 }
 
-/* Status change uses text + icon — NOT color-only */
 .stat-change {
   font-size: 0.9rem;
   font-weight: 600;
@@ -175,7 +172,7 @@ export default Dashboard;
 
 .bar {
   width: 48px;
-  background: #1565c0;     /* #1565c0 = decorative, labeled with text */
+  background: #1565c0;
   border-radius: 4px 4px 0 0;
 }
 

@@ -25,7 +25,6 @@ import React, { useState, useRef, useEffect } from 'react';
   display: flex;
   flex-direction: column;
   gap: 12px;
-  /* NOT a bug — aria-live=polite is correct for chat messages */
 }
 
 .message-bubble {
@@ -102,7 +101,6 @@ import React, { useState, useRef, useEffect } from 'react';
   padding: 8px 12px;
   font-size: 14px;
   resize: none;
-  /* NOT a bug — textarea has aria-label */
 }
 
 .btn-send {
@@ -114,7 +112,6 @@ import React, { useState, useRef, useEffect } from 'react';
   font-size: 14px;
   cursor: pointer;
   font-weight: 600;
-  /* NOT a bug — send button is keyboard accessible with correct aria-label */
 }
 
 .btn-send:focus-visible {
@@ -129,7 +126,6 @@ import React, { useState, useRef, useEffect } from 'react';
   padding: 8px;
   cursor: pointer;
   font-size: 18px;
-  /* NOT a bug — emoji picker toggle button has aria-label */
 }
 
 .emoji-grid {
@@ -236,7 +232,6 @@ const ChatInterface = () => {
 
   return (
     <div className="chat-container">
-      {/* aria-live=polite is correct here — NOT a bug */}
       <div
         className="chat-messages"
         aria-live="polite"
@@ -268,7 +263,6 @@ const ChatInterface = () => {
       </div>
 
       <div className="chat-input-row">
-        {/* NOT a bug — emoji picker toggle has aria-label and aria-expanded */}
         <button
           className="emoji-picker-btn"
           aria-label="Open emoji picker"
@@ -293,7 +287,6 @@ const ChatInterface = () => {
           </div>
         )}
 
-        {/* NOT a bug — textarea is labeled and keyboard operable */}
         <textarea
           className="chat-input"
           value={inputValue}
@@ -304,7 +297,6 @@ const ChatInterface = () => {
           placeholder="Type a message..."
         />
 
-        {/* NOT a bug — send button is keyboard accessible */}
         <button
           className="btn-send"
           onClick={sendMessage}
@@ -336,7 +328,7 @@ export default ChatInterface;
 - Message textarea has `aria-label="Type a message"`
 - Send button has `aria-label="Send message"`
 - Typing indicator has `aria-label="Assistant is typing"`
-- Send on Enter (without Shift) is a standard chat convention — not a keyboard trap
+- Send on Enter (without Shift) is a standard chat convention
 
 ## Accessibility Issues (Planted Bugs)
 
@@ -346,7 +338,7 @@ export default ChatInterface;
    - Expected fix: Track whether the user has manually scrolled up; suppress auto-scroll when scroll position is not at the bottom
 
 2. **MAJOR: Typing indicator animation has no `prefers-reduced-motion` override** — The `.typing-dot` elements use an infinite `bounce` CSS animation with no `@media (prefers-reduced-motion: reduce)` rule. Users with vestibular disorders who have set the OS-level reduced-motion preference will still see the continuous bouncing animation.
-   - Evidence: `.typing-dot { animation: bounce 0.6s infinite alternate }` with no corresponding reduced-motion media query in the CSS block; `/* BUG: No @media (prefers-reduced-motion: reduce) */` comment
+   - Evidence: `.typing-dot { animation: bounce 0.6s infinite alternate }` with no corresponding reduced-motion media query in the CSS block
    - User group: Users with vestibular disorders; users with photosensitive epilepsy; users who have enabled reduced-motion
    - Expected fix: Add `@media (prefers-reduced-motion: reduce) { .typing-dot { animation: none; } }` and substitute a non-animated indicator (e.g., "..." text)
 
@@ -361,7 +353,7 @@ export default ChatInterface;
    - Expected fix: Freeze timestamps until the user sends a new message or refocuses the window; or use absolute timestamps (e.g., "2:34 PM") that do not change
 
 5. **MINOR: Emoji picker has no keyboard grid navigation and no visible focus styles** — The emoji grid renders 64 `<button>` elements with no arrow-key navigation, no Escape handler to close the picker, and no `:focus-visible` CSS on the individual emoji buttons. Keyboard users must Tab through all 64 items sequentially.
-   - Evidence: `.emoji-btn` has no `:focus-visible` styles in CSS block; `/* BUG: No arrow-key grid navigation */` comment in emoji grid render; no `onKeyDown` handler on emoji buttons
+   - Evidence: `.emoji-btn` has no `:focus-visible` styles in CSS block; no `onKeyDown` handler on emoji buttons
    - User group: Keyboard-only users; motor-impaired users using switch access
    - Expected fix: Implement `role="gridcell"` on each emoji button with arrow-key navigation (`useRef` + focus management); add `onKeyDown` Escape handler on the grid container; add `:focus-visible` outline to `.emoji-btn`
 

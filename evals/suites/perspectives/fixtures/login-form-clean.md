@@ -1,4 +1,4 @@
-# Fixture: Login Form With Complete Accessibility (CLEAN)
+# Fixture: Login Form
 
 ## Component Code
 

@@ -1,4 +1,4 @@
-# Fixture: Search Results with Live Region (CLEAN)
+# Fixture: Search Results with Live Region
 
 ## Component Code
 
@@ -197,6 +197,10 @@ export default SearchResults;
 ✓ Results in semantic list structure
 ✓ Loading message both visual and announced
 ✓ No results message announced
+
+## Accessibility Issues
+
+**NONE.** This is a CLEAN fixture — the component above is a correct implementation with no planted bugs. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
 
 ## Difficulty Level
 

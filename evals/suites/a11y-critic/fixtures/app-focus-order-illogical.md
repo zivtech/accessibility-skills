@@ -262,8 +262,8 @@ export default AppLayout;
   text-decoration: underline;
 }
 
-/* Good focus indicator on main content links — 
-   #2563eb on #ffffff is ~5.2:1, well above 3:1 */
+/* Focus indicator on main content links:
+   #2563eb on #ffffff ≈ 5.2:1 */
 .activity-list a:focus,
 .task-list a:focus {
   outline: 2px solid #2563eb;

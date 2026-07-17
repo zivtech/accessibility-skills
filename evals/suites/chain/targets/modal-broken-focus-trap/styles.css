@@ -21,7 +21,6 @@
   outline-offset: 2px;
 }
 
-/* Works: backdrop visually dims background — conveyed non-accessibly */
 .modal-backdrop {
   position: fixed;
   inset: 0;

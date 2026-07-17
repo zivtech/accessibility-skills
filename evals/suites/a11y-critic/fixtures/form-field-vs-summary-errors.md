@@ -278,6 +278,10 @@ Both patterns are correctly implemented per their respective APG guidance:
 - The error summary follows the "Error Message" pattern with `role="alert"`
 - The inline errors follow the "Form Validation" pattern with `aria-describedby` and live region announcements
 
+## Accessibility Issues (None Planted — Design Tension)
+
+**No planted bugs.** This is an ADVERSARIAL fixture: the accessibility question is the design tension analyzed below. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
+
 ## The Ambiguity
 
 This form uses **both** a form-level error summary with `role="alert"` **and** field-level inline errors inside `aria-live="polite"` regions. Each pattern is correctly implemented. The question is whether using both together creates a better or worse experience for assistive technology users.

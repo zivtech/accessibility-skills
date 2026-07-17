@@ -59,7 +59,6 @@ import React, { useState } from 'react';
 }
 
 .toggle-switch input[type="checkbox"] {
-  /* All checkboxes are native <input type="checkbox"> — keyboard operable, NOT a bug */
   width: 36px;
   height: 20px;
   cursor: pointer;
@@ -160,7 +159,6 @@ const AdminSettings = () => {
               <span className="required-asterisk" aria-hidden="true">*</span>
             )}
           </label>
-          {/* All checkboxes use native <input type="checkbox"> — keyboard accessible, NOT a bug */}
           <input
             type="checkbox"
             id={t.id}
@@ -203,7 +201,6 @@ const AdminSettings = () => {
       </div>
 
       <div className="settings-actions">
-        {/* Save button is keyboard-accessible native <button> — NOT a bug */}
         <button className="btn-save" onClick={handleSave}>
           Save Changes
         </button>
@@ -242,17 +239,17 @@ export default AdminSettings;
    - Expected fix: Add `@media (max-width: 640px)` breakpoint switching grid to single column; increase h2 font-size to minimum 12px
 
 2. **MAJOR: Technical jargon with no tooltips or glossary** — All 12 toggle labels use technical terms (HSTS preloading, SRI validation, Brotli, stale-while-revalidate, WAL) with no tooltip, popover, glossary link, or plain-English description. A non-expert administrator cannot determine what enabling each toggle will do.
-   - Evidence: `SECURITY_TOGGLES`, `PERFORMANCE_TOGGLES`, `LOGGING_TOGGLES` arrays contain jargon labels; `/* BUG: Technical jargon label with no tooltip */` comment in render function
+   - Evidence: `SECURITY_TOGGLES`, `PERFORMANCE_TOGGLES`, `LOGGING_TOGGLES` arrays contain jargon labels; no tooltip, `<abbr>`, or plain-language description in the render function
    - User group: Users with cognitive disabilities; non-specialist administrators
    - Expected fix: Add `title` attribute or accessible tooltip component with plain-English description for each jargon term
 
 3. **MAJOR: 12 ungrouped toggles cause cognitive overload** — All 12 toggles are rendered in a flat list within each column with no sub-grouping, visual separators, or progressive disclosure. There are no sub-headings, no collapsible sections, and no visual hierarchy within the three flat lists.
-   - Evidence: `renderToggleGroup` renders a flat `<div class="toggle-group">` with no internal structure; `/* BUG: 12 toggles with no sub-grouping */` comment in render
+   - Evidence: `renderToggleGroup` renders a flat `<div class="toggle-group">` with no internal structure — 12 toggles with no sub-grouping
    - User group: Users with cognitive and attention disabilities; all users under high cognitive load
    - Expected fix: Add sub-section `<fieldset>`/`<legend>` groupings within each column or collapsible accordion sections
 
 4. **MAJOR: No unsaved-changes indicator** — `setSaved(false)` is called on every toggle change but no visual indicator is rendered anywhere. The save button does not change appearance, no banner appears, and no `aria-live` region announces pending changes. Users can navigate away without knowing changes are unsaved.
-   - Evidence: `saved` state is set to `false` on change but never used in any rendered JSX; `/* BUG: setSaved(false) is called but no visual indicator */` comment in handleToggle
+   - Evidence: `saved` state is set to `false` on change but never used in any rendered JSX — no visual unsaved-changes indicator
    - User group: Users with cognitive and memory disabilities; all users
    - Expected fix: Render a visible "You have unsaved changes" notice when `saved === false`; add `aria-live="polite"` announcement
 

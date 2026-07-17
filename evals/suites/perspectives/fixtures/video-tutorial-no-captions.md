@@ -105,7 +105,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
         />
 
         <div className="player-controls" role="group" aria-label="Video controls">
-          {/* Keyboard-accessible play/pause — NOT a bug */}
           <button
             onClick={togglePlay}
             aria-label={isPlaying ? 'Pause video' : 'Play video'}
@@ -114,7 +113,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
             {isPlaying ? '⏸' : '▶'}
           </button>
 
-          {/* Keyboard-accessible seek bar — NOT a bug */}
           <input
             type="range"
             ref={progressRef}
@@ -132,7 +130,6 @@ const VideoTutorialPage = ({ title, videoSrc, videoId }) => {
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
 
-          {/* Keyboard-accessible volume controls — NOT a bug */}
           <button
             onClick={toggleMute}
             aria-label={isMuted ? 'Unmute' : 'Mute'}
@@ -187,22 +184,22 @@ export default VideoTutorialPage;
 ## Accessibility Issues (Planted Bugs)
 
 1. **CRITICAL: Missing `<track kind="captions">` element** — The `<video>` element has no `<track>` child for captions. Users who are deaf or hard of hearing have no way to access the speech content. WCAG 1.2.2 (Captions, Prerecorded) requires synchronized captions for all prerecorded video with audio.
-   - Evidence: `video-tutorial-no-captions.md:87-94` — `<video>` element with no `<track>` children
+   - Evidence: `video-tutorial-no-captions.md:100-105` — `<video>` element with no `<track>` children
    - User group: Deaf and hard of hearing users
    - Expected fix: Add `<track kind="captions" src="/captions/tutorial.vtt" srclang="en" label="English" />`
 
 2. **CRITICAL: No transcript available** — No transcript section exists on the page, and no link to an external transcript is provided. For synchronized media, WCAG 1.2.1 (Audio-only and Video-only, Prerecorded) and WCAG 1.2.3 (Audio Description or Media Alternative) require a text alternative. Transcripts also serve users in noise-sensitive environments and those with cognitive disabilities.
-   - Evidence: `video-tutorial-no-captions.md:136-140` — `<section class="tutorial-meta">` contains only duration; no transcript
+   - Evidence: `video-tutorial-no-captions.md:155-158` — `<section class="tutorial-meta">` contains only duration; no transcript
    - User group: Deaf and hard of hearing users; cognitive/attention users
    - Expected fix: Add a `<section>` with the full transcript text, or a visible link to a transcript page
 
 3. **MAJOR: No caption toggle button in player UI** — The controls group has no button to enable or disable captions. Even if a `<track>` element were present, users need a UI control to turn captions on or off. WCAG 1.2.2 requires user-controllable captions.
-   - Evidence: `video-tutorial-no-captions.md:130-132` — comment marks where caption toggle should be; no button rendered
+   - Evidence: `video-tutorial-no-captions.md:104-152` — `player-controls` group contains no caption toggle button
    - User group: Deaf and hard of hearing users; users in quiet/noisy environments
    - Expected fix: Add a button that toggles `videoRef.current.textTracks[0].mode` between `'showing'` and `'hidden'`
 
 4. **MAJOR: Audio-only error and completion signals with no visual DOM equivalent** — The `handleError` callback fires an audio beep (sawtooth wave at 220 Hz) with no visual DOM change to indicate the error state. The `handleEnded` callback fires a success beep (880 Hz) with no visible on-screen change. `hasError` and `hasCompleted` are set in state but never rendered. Deaf users, users with hearing loss, and users in muted environments receive no feedback.
-   - Evidence: `video-tutorial-no-captions.md:30-41` — `handleEnded` sets `hasCompleted` but renders nothing; `handleError` sets `hasError` but renders nothing; both fire `AudioContext` beeps
+   - Evidence: `video-tutorial-no-captions.md:25-44` — `handleEnded` sets `hasCompleted` but renders nothing; `handleError` sets `hasError` but renders nothing; both fire `AudioContext` beeps
    - User group: Deaf and hard of hearing users; users with audio disabled
    - Expected fix: Render visible status text (e.g., "Video complete" or "Error loading video") when `hasCompleted` or `hasError` is true
 

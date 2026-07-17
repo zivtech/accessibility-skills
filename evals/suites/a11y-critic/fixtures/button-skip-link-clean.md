@@ -1,4 +1,4 @@
-# Fixture: Navigation with Skip Link (CLEAN)
+# Fixture: Navigation with Skip Link
 
 ## Component Code
 
@@ -118,6 +118,10 @@ footer {
 ✓ Clear link text
 ✓ Focus indicators visible on nav links
 ✓ List semantics for navigation
+
+## Accessibility Issues
+
+**NONE.** This is a CLEAN fixture — the component above is a correct implementation with no planted bugs. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
 
 ## Difficulty Level
 
