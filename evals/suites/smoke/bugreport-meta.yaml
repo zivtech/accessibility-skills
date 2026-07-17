@@ -1,0 +1,23 @@
+fixture_id: bugreport-smoke
+suite: bug-reporting
+input_format: axe-json
+difficulty: SMOKE
+description: Synthetic metadata for score_bugreport.py smoke cases.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://shop.example.test/pricing"]
+  - ["2.4.4", "4.1.2"]
+  - ["link-name"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/pricing"
+  rule_id: link-name
+  instances:
+    - selector: "#plans > a.buy"
+
+na_fields:
+  - "Screen reader"
