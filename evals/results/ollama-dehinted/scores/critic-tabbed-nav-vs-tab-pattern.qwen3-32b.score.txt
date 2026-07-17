@@ -1,0 +1,33 @@
+Response length: 5073 chars
+Fixture: tabbed-nav-vs-tab-pattern
+Difficulty: ADVERSARIAL
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: 1 complete / 1 total
+Required fields: PASS
+Stable finding ids: PASS
+Trend values: PASS
+
+Verdict: ACCEPT-WITH-RESERVATIONS (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE)
+Verdict acceptable: YES
+
+Must-articulate tradeoffs: 1/1
+  + Tension between tabs interaction model and navigation semantic model
+
+Should-find issues: 1/1
+  + Missing link affordances — buttons with router.push lose right-click, cmd+click,
+
+Must-articulate rate: 100%
+Status: PASS

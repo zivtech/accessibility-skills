@@ -1,0 +1,34 @@
+Response length: 6595 chars
+Fixture: checkout-form-broken-errors
+Difficulty: HAS-BUGS
+
+Escalated perspectives: environmental_contrast, keyboard_motor, screen_reader_semantic, cognitive_neurodivergent
+LOW perspectives: magnification_reflow, vestibular_motion, auditory_access
+
+Perspective coverage: 4/4
+  + Contrast
+  + Keyboard
+  + Screen Reader
+  + Cognitive
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 3/3
+  + [-] htmlFor mismatch on First Name field — label not associated with input
+  + [-] htmlFor mismatch on Street Address field — label not associated with input
+  + [W] Error messages not associated with fields via aria-describedby
+
+Should-find issues: 1/2
+  + [W] Error summary links do not navigate to fields
+  X [-] Step indicator communicates state via color alone  (keywords: ['color alone', 'color only', '1.4.1', 'use of color', 'sole differentiator', 'non-color'])
+
+Nice-to-find issues: 1/1
+  + Error summary region has no aria-live — validation failures not announced
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS
