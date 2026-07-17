@@ -122,7 +122,12 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > fixture ids still name their planted defect ("Custom Dropdown with Focus Restoration Bug",
 > "Tabs Component Missing Arrow Key Navigation") and titles sit above the cut line — ids double as
 > filenames and result keys, so renaming is a separate decision (the fixture erratum's open
-> axis (b)). Scorers untouched. **Comparability:** rows recorded before this change
+> axis (b)). A second known residual, surfaced in the merge review of this pass: the
+> `## Accessibility Features Present` checklists (suite-wide, above the cut line by design)
+> occasionally carry self-verdict phrasing ("— correct pattern for chat", "works correctly
+> (Tab/Shift+Tab)") — factual feature context by suite convention, but eval-authored assurance
+> at the margin; not machine-guarded because the checklist form is intentional, logged here so
+> the axis is named. Scorers untouched. **Comparability:** rows recorded before this change
 > are not comparable with post-change runs on (a) critic CLEAN false-positive resistance,
 > (b) critic ADVERSARIAL analysis quality, (c) perspective FP-trap avoidance — in addition to the
 > hint-comment caveat on detection rates; within-lane cross-model rankings hold (identical
