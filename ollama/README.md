@@ -112,9 +112,15 @@ disclosure in BENCHMARK.md). The blind qwen3:32b row is the corrected basis; raw
 `evals/results/ollama-blind/`. A second caveat applies to **every** row above, blind lanes
 included: until 2026-07-16 the fixture code blocks carried inline `// BUG:` hint comments that
 survived answer-key stripping (24/33 critic, 20/25 perspective fixtures), so must-find/detection
-numbers are hint-assisted upper bounds pending de-hinted re-runs — see the hint-comment
-disclosure in BENCHMARK.md. CLEAN false-positive rows are unaffected (CLEAN fixtures carried no
-hints); cross-model comparisons within a lane are unaffected (identical prompts).
+numbers are hint-assisted upper bounds — see the hint-comment disclosure in BENCHMARK.md. The
+first de-hinted re-run (qwen3:32b, 2026-07-16, `evals/results/ollama-dehinted/`) measures that
+bound for this model: **nil on critic** (67/68 content-adjudicated in both lanes, CLEAN 4/4
+with zero findings) and **−1 must-find item on perspective** (the hint-carried
+`map-interface-zoom` target-size defect; 36/37 vs 37/37). It also re-characterizes the blind
+lane's perspective CLEAN weakness (4/5 wrong verdicts) as run-unstable: the re-run drew 1/5
+wrong on byte-identical CLEAN prompts. CLEAN false-positive rows are unaffected by hints (CLEAN
+fixtures carried none); cross-model comparisons within a lane are unaffected (identical
+prompts).
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
 

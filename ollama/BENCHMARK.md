@@ -48,14 +48,20 @@ The first fixture tables below are historical Phase 4 local-model rows. Hosted r
 > **including the 2026-07-13 blind lanes** — saw those hints. Direction of bias: the hints name
 > the planted defects (often with the exact attribute or WCAG SC the rubric keys on), so
 > must-find/detection rates and PASS verdicts on hinted fixtures are **hint-assisted upper
-> bounds** pending de-hinted re-runs. Not affected: CLEAN-fixture false-positive rows (no CLEAN
-> fixture in either suite carried hints — the blind perspective CLEAN-FP weakness stands), the
+> bounds** pending de-hinted re-runs (first such re-run: qwen3:32b, 2026-07-16 — see the
+> de-hinted lane section at the end of this file). Not affected: CLEAN-fixture false-positive
+> rows (no CLEAN
+> fixture in either suite carried hints — the blind perspective CLEAN-FP weakness stands as a
+> hint-analysis statement, but the de-hinted re-run re-characterizes it as run-unstable), the
 > 3 critic ADVERSARIAL fixtures (unhinted), planner rows (suite verified hint-free), and
 > within-lane cross-model comparisons (every model saw identical prompts, so relative rankings
 > hold). Measured effect size, in-repo: the perspective pilot's hinted-vs-stripped A/B
 > (`evals/suites/perspectives/PILOT-REPORT.md`, Rounds 1–2) found **no finding-count difference**
-> for Claude Opus/Sonnet on 5 fixtures; the effect is unmeasured for local models and for the
-> critic suite, so absolute rows should not be quoted as hint-free performance. Remediation
+> for Claude Opus/Sonnet on 5 fixtures; the 2026-07-16 de-hinted re-run measures it for
+> qwen3:32b at **nil on the critic suite** (67/68 content-adjudicated in both lanes) and
+> **−1 must-find item on perspective** (the hint-carried `map-interface-zoom` target-size
+> defect; 36/37 vs 37/37 content). The effect remains unmeasured for the other local models,
+> so absolute historical rows should not be quoted as hint-free performance. Remediation
 > (2026-07-16): fixtures de-hinted in place (hints removed above the blind cut line; answer-key
 > sections kept; line references in answer keys, `.metadata.yaml`, and `.rubric.yaml`
 > renumbered; scorers untouched); `test_blind_prompts.py` extended to fail on hint patterns
@@ -1325,6 +1331,11 @@ stripping (guard-verified). **Scorer**: post-003 `score_output.py` / `score_pers
 answer keys withheld: must-find/detection numbers are hint-assisted upper bounds, while the
 CLEAN rows (critic 4/4, perspective CLEAN-FP finding) are unaffected — no CLEAN fixture carried
 hints.
+**Outcome (de-hinted re-run, same day)**: the upper bound is now measured for qwen3:32b —
+nil on critic (67/68 content-adjudicated in both lanes), −1 must-find item on perspective
+(`map-interface-zoom`); and this lane's perspective CLEAN characterization (4/5 wrong verdicts)
+proved run-unstable — the de-hinted re-run drew 1/5 wrong on byte-identical CLEAN prompts. See
+the de-hinted lane section below.
 
 ### a11y-critic (33 fixtures) — historical numbers CONFIRMED blind
 
@@ -1413,3 +1424,73 @@ navigation; infinite-scroll discoverability).
 mechanism not discoverable" is missed blind by all three local models (each surfaces the
 impact, none raises it as a standalone finding) — the hardest item in the suite for local
 models, worth remembering when reading per-model must-find deltas.
+
+## Ollama de-hinted re-run lane — qwen3:32b (2026-07-16, first post-de-hint rows)
+
+**Run**: the remediation lane promised by the hint-comment disclosure — the first rows in this
+file produced against comment-de-hinted fixtures. Per the Scoring changelog (2026-07-16
+de-hint), **not 1:1 comparable with any row above this section**; the paired lane for reading
+deltas is the 2026-07-13 blind lane, via the attribution ledger below.
+**Machine protocol**: identical to the blind lane — dedicated `127.0.0.1:11435` server (Ollama
+0.31.1), Ollama.app quit (`*:11434` reverted to the OrbStack container), full Metal offload
+verified (`size == size_vram`, 24.2 GB). The app-server stall behavior was independently
+re-verified the same day (single CLEAN fixture 15+ min stalled on the app server vs 66–215 s
+dedicated).
+**Fixture state**: main@ff982fb — de-hint pass (c0d21cc/0011346/f1f0b2b) + `modal-complete-clean`
+repair (6420ea9). Guards green at run time: `test_blind_prompts.py` (166 prompts, no answer-key
+markers, no hint comments) and the `\bBUG\b` leak one-liner (`[]`).
+**Attribution ledger — the lanes differ by more than the de-hint**: (a) `modal-complete-clean`
+conflates the component repair with its verdict-hint strip (both in 6420ea9) — the other 32
+critic / 25 perspective fixtures differ only on the hint-comment axis; (b) the critic system
+prompt gained 3 lines between lanes (native-HTML-first rule, 4d8f196) — the perspective system
+prompt is byte-identical; (c) the CLEAN verdict-prose/title axis (3 remaining critic CLEAN
+fixtures) and the bug-naming-title axis stay open per the 2026-07-16 erratum — this lane is
+comment-axis de-hinted, not fully unhinted; (d) reassurance comments deliberately kept
+(separate calibration decision, in discussion).
+**Wall-clock**: critic 33 fixtures in 1.57 h (median 159 s), perspective 25 in 1.38 h (median
+192 s) — the uncontended dedicated-server profile reproduced, no FLAWED/ADVERSARIAL blowup.
+Full receipts and per-fixture adjudication: `evals/results/ollama-dehinted/README.md`.
+
+### a11y-critic (33 fixtures) — detection survives de-hinting intact
+
+| Measure | De-hinted (this lane) | Hinted blind lane (2026-07-13) |
+|---|---|---|
+| Fixture statuses | **33/33 PASS** | 33/33 PASS |
+| Must-find aggregate | **67/68 (98.5%) scorer / 67/68 content-adjudicated** | 66/68 scorer / 67/68 content |
+| CLEAN false positives | **0 structured findings**, 4/4 correct verdicts — incl. the repaired `modal-complete-clean` (ACCEPT-W-R, 0 findings: its **first valid FP-avoidance data point**) | 0 findings, 4/4 (modal row = hint-following + defect blindness per the erratum) |
+| ADVERSARIAL | 3/3 ACCEPT-W-R, 3/3 tradeoffs articulated | 3/3 |
+| Verdict inflation | 5 REJECT (3 where rubric expects REVISE) | 7 REJECT |
+
+The single miss is the same in both lanes and content-adjudicates as genuine both times:
+`infinite-scroll-no-announcement` scroll-to-load discoverability (impact mentioned, never raised
+as a finding) — the cross-model hardest item holds de-hinted. The scorer-level +1 is the
+`expandable-section-no-button` `<div>` keyword artifact resolving (the audit emits the literal
+`<div>` this run, plausibly nudged by the new native-HTML-first rule; content coverage was 4/4
+in both lanes). **For qwen3:32b on this suite, the measured hint effect on detection is nil.**
+
+### perspective-audit (25 fixtures) — one hint-dependent miss; the CLEAN flip is variance
+
+| Measure | De-hinted (this lane) | Hinted blind lane (2026-07-13) |
+|---|---|---|
+| Fixture statuses | **20 PASS / 4 WARN / 1 FAIL** | 20 PASS / 1 WARN / 4 FAIL |
+| HAS-BUGS + ADVERSARIAL | **20/20 PASS** | 20/20 PASS |
+| Must-find (37 items) | **35/37 scorer / 36/37 content** | 36/37 scorer / 37/37 content |
+| CLEAN verdicts | **4/5 correct** (1 FAIL) | 1/5 correct (4 FAIL) |
+
+The content-level miss is the run's one measured de-hint effect: `map-interface-zoom`'s
+18×18px target-size defect — found in the hinted lane, absent from this audit (no discussion of
+control size at all), named by the stripped hint comment. The other scorer residual is the
+`tab-panel-arrow-keys` compound-keyword rubric artifact, present in every lane.
+
+**The CLEAN flip (4/5 wrong → 1/5 wrong) is run-to-run variance, not a de-hint effect.** No
+CLEAN perspective fixture carried hints; none of the five fixture/metadata files changed since
+2026-06-13 or earlier; the perspective system prompt is byte-identical across lanes — the five
+CLEAN prompts are **byte-identical in both runs** (temperature 0.3). Stable across the two
+draws: correct PASS on `article-page-clean`; wrong REVISE on `media-player-captions` (this run
+manufactures a MAJOR demanding `aria-expanded` on a native `<details>`/`<summary>` disclosure,
+miscited as 2.4.4; the blind run over-escalated two MINOR open questions); and
+`nav-menu-landmarks`' manufactured page-shell findings (missing `<title>`/`lang` against a
+component fixture) in both runs with only the verdict moving (BLOCK → REVISE, the latter
+metadata-accepted). Everything else flipped. **Neither draw is the model's stable CLEAN rate —
+cite both or neither.** The routing rule (don't route CLEAN-confirmation perspective audits to
+local models without a second opinion) is reinforced, with verdict instability as the mechanism.
