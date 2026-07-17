@@ -1,6 +1,6 @@
-# a11y-meta-skills
+# Accessibility Meta Skills (a11y-meta-skills)
 
-Cross-model accessibility skill and evaluation bundle — plan, test, review, and audit from real perspectives. It ships Claude Code-compatible skills and benchmark assets used across Claude, Codex/OpenAI, Gemini-ready hosted runs, and local Ollama models.
+Cross-model accessibility skill and evaluation bundle — plan, test, review, and audit web accessibility from real perspectives. It ships Claude Code-compatible skills and benchmark assets used across Claude, Codex/OpenAI, Gemini-ready hosted runs, and local Ollama models.
 
 ```bash
 npx skills add zivtech/a11y-meta-skills
@@ -10,14 +10,14 @@ npx skills add zivtech/a11y-meta-skills
 
 This bundle packages four core skills that cover the full accessibility development lifecycle:
 
-- `a11y-planner`: designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
-- `a11y-critic`: reviews plans before implementation AND implementations after testing
-- `a11y-test`: runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
-- `perspective-audit`: deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
+- **Accessibility Planner** (`a11y-planner`): designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
+- **Accessibility Critic** (`a11y-critic`): reviews plans before implementation AND implementations after testing
+- **Accessibility Tester** (`a11y-test`): runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
+- **Perspective Audit** (`perspective-audit`): deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
 
 Additional companion skill:
 
-- `bug-reporting`: converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency)
+- **Accessibility Bug Reporting** (`bug-reporting`): converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency)
 
 ## Why this bundle exists
 
@@ -37,9 +37,9 @@ This repo combines four skills that cover the full lifecycle:
 
 ## What’s in the bundle
 
-### `a11y-planner`
+### Accessibility Planner (`a11y-planner`)
 
-`a11y-planner` is the pre-implementation design surface. It produces plans for:
+The Accessibility Planner is the pre-implementation design surface. It produces plans for:
 
 - semantic HTML structure and landmark strategy
 - APG pattern choice for interactive components
@@ -60,9 +60,9 @@ The planner uses a 9-phase protocol:
 8. Testing strategy
 9. Implementation tasks
 
-### `a11y-critic`
+### Accessibility Critic (`a11y-critic`)
 
-`a11y-critic` reviews accessibility design decisions at two points: **after planning** (to catch gaps before code is written) and **after testing** (to verify the implementation). It looks for:
+The Accessibility Critic reviews accessibility design decisions at two points: **after planning** (to catch gaps before code is written) and **after testing** (to verify the implementation). It looks for:
 
 - semantic mismatches between UI intent and HTML structure
 - incomplete or incorrect ARIA pattern implementations
@@ -78,9 +78,9 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 - low-vision user
 - cognitive accessibility lens
 
-### `a11y-test`
+### Accessibility Tester (`a11y-test`)
 
-`a11y-test` is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with five execution modes:
+The Accessibility Tester is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with five execution modes:
 
 - **`npx playwright test`** — Codified CI keyboard tests, visual regression, axe-core scans. Primary path.
 - **`agent-browser`** — Interactive reconnaissance: snapshot ARIA structure, verify fixes, probe widgets. Fastest for exploratory work (~1.5-2.6s per task).
@@ -100,9 +100,9 @@ Test capabilities:
 - Goal-driven journey audits with per-step trace, reading-order census, and screenshot evidence (keyboard-a11y-tester)
 - Screen-reader announcement and reading-order assertions at the component level, including live-region capture with politeness prefixes (virtual-screen-reader)
 
-### `perspective-audit`
+### Perspective Audit (`perspective-audit`)
 
-`perspective-audit` provides deep accessibility review from 7 disability and situational access perspectives. It is activated by escalation — when the planner or critic flags one or more perspectives at MEDIUM or HIGH alarm level, those perspectives get a focused deep review.
+The Perspective Audit provides deep accessibility review from 7 disability and situational access perspectives. It is activated by escalation — when the planner or critic flags one or more perspectives at MEDIUM or HIGH alarm level, those perspectives get a focused deep review.
 
 The 7 perspectives:
 
@@ -135,12 +135,12 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 
 ## Commands
 
-- `/a11y-workflow` — orchestrate the full lifecycle (scout → plan → critique → test → critique), Claude Code only
-- `/a11y-planner` — design accessibility before coding
-- `/a11y-critic` — review plans or implementations
-- `/a11y-test` — run keyboard, axe-core, and visual regression tests; journey audits (keyboard-a11y-tester); component screen-reader assertions (virtual-screen-reader)
-- `/perspective-audit` — deep review from escalated disability/situational access perspectives
-- `/bug-reporting` — produce reproducible accessibility bug reports from test or review findings
+- `/a11y-workflow` — Accessibility Workflow: orchestrate the full lifecycle (scout → plan → critique → test → critique), Claude Code only
+- `/a11y-planner` — Accessibility Planner: design accessibility before coding
+- `/a11y-critic` — Accessibility Critic: review plans or implementations
+- `/a11y-test` — Accessibility Tester: run keyboard, axe-core, and visual regression tests; journey audits (keyboard-a11y-tester); component screen-reader assertions (virtual-screen-reader)
+- `/perspective-audit` — Perspective Audit: deep review from escalated disability/situational access perspectives
+- `/bug-reporting` — Accessibility Bug Reporting: produce reproducible bug reports from test or review findings
 
 ## Evidence Contract and Vital-Core Boundary
 

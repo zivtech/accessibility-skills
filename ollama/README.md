@@ -1,6 +1,6 @@
-# A11y Model Benchmarks and Local Skills
+# Accessibility Model Benchmarks and Local Skills
 
-Run a11y-critic, a11y-planner, and perspective-audit locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini, and local models share the same results story, with raw hosted-run artifacts committed under `evals/results/`.
+Run the Accessibility Critic (`a11y-critic`), Accessibility Planner (`a11y-planner`), and Perspective Audit (`perspective-audit`) locally via Ollama, then compare those runs against hosted baselines. The benchmark suite is cross-model: Claude, Codex/OpenAI, Gemini, and local models share the same results story, with raw hosted-run artifacts committed under `evals/results/`.
 
 ## Prerequisites
 
