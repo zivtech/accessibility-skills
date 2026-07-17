@@ -22,7 +22,10 @@ the fixtures no longer carry the inline `// BUG:` hint comments that every earli
 - Blindness receipts, this worktree, post-merge: `python3 ollama/test_blind_prompts.py` →
   "OK — 166 prompts checked across both runners; no answer-key markers, no hint comments"
   (run after each merge), and the leak one-liner
-  (`re.search(r'\bBUG\b', load_fixture(f))` over all critic fixtures) prints `[]`.
+  (`re.search(r'\bBUG\b', load_fixture(f))` over all critic fixtures) prints `[]`. Note the
+  guard version at run time covered answer-key markers and `BUG`-hint patterns only; the
+  reassurance/verdict-text patterns were added to the guard by PR #4 after this run, so this
+  receipt does not certify the absence of verdict-steering text (ledger item 4 below).
 - Scoring: post-003 `ollama/score_output.py` / `ollama/score_perspective.py`, unmodified; one
   output per fixture under `scores/`. Raw response JSONs (`response` + `_benchmark` provenance)
   committed so every number below re-derives.
@@ -45,13 +48,20 @@ Read every delta below against this ledger — the lanes differ by more than the
    gained 3 lines (native-HTML-first rule, 4d8f196) between the lanes. Small, but it plausibly
    nudges div-vs-button findings — see the `expandable-section` keyword note below. The
    perspective system prompt (SKILL + references) is byte-identical across lanes.
-4. **Still open, disclosed, deliberate**: the CLEAN verdict-prose/title axis on the other 3
-   critic CLEAN fixtures, and the HAS-BUGS/FLAWED title-leakage axis (fixture h1 titles name
-   their planted bugs), both per 6420ea9's changelog entry. This lane is **comment-axis
-   de-hinted, not fully unhinted**. Reassurance comments ("NOT a bug", "Works:") are deliberately
-   kept per c0d21cc (FP-trap difficulty the rubrics were normed on); their fate is a separate
-   calibration decision under discussion — if they change, that is a new changelog entry and a
-   follow-up lane, not a revision of this one.
+4. **Verdict-steering exposure — named after this run by PR #4's reassurance &
+   verdict-steering disclosure (merged to main as 8f921ff/666e6eb)**: at run time the 3
+   non-modal critic CLEAN fixtures and all 3 ADVERSARIAL fixtures had **no blind cut line**, so
+   this lane's prompts contained the CLEAN fixtures' "should receive a clean verdict / ACCEPT"
+   grading prose and the ADVERSARIAL fixtures' full "The Ambiguity" analysis plus "the
+   'correct' review is NOT to flag…" grading criteria. This lane's critic CLEAN rows (except
+   `modal-complete-clean`, whose cut line landed with the fixture erratum before this run) and
+   its ADVERSARIAL rows are therefore **verdict-assisted upper bounds**. Reassurance comments
+   ("NOT a bug", "Works:") were also still present at run time (deliberately kept by c0d21cc,
+   removed suite-wide by PR #4 afterward), so this lane's FP traps are softer than the
+   post-PR-4 corpus. PR #4 also closed the CLEAN title axis; the HAS-BUGS/FLAWED
+   title-leakage axis (h1 titles naming planted bugs) remains open in both. Net framing:
+   **this is the hint-comment-axis lane** — the post-PR-4 re-baseline (verdict-steering and
+   reassurance axes closed) is the open follow-up lane.
 
 ## Headline — qwen3:32b
 
@@ -79,11 +89,16 @@ Read every delta below against this ledger — the lanes differ by more than the
   ACCEPT-WITH-RESERVATIONS). `modal-complete-clean` — repaired and verdict-hint-stripped in
   6420ea9 — scores ACCEPT-WITH-RESERVATIONS with 0 findings: per the erratum's own criterion,
   this is the **first valid false-positive-avoidance data point for that fixture** (all earlier
-  ACCEPT rows were hint-following plus defect blindness). Two-change conflation caveat applies
+  ACCEPT rows were hint-following plus defect blindness), and the only unassisted CLEAN row in
+  this lane — the other three CLEAN prompts contained "should receive a clean verdict" prose
+  (ledger item 4), so those rows are verdict-assisted. Two-change conflation caveat applies
   (ledger item 2).
 - ADVERSARIAL: 3/3 ACCEPT-WITH-RESERVATIONS with the central tradeoff articulated (semantic
   mismatch on `tabbed-nav-vs-tab-pattern`; dual-announcement tradeoff on
   `form-field-vs-summary-errors`; intentional focus retention on `search-focus-stays-in-input`).
+  Verdict-assisted (ledger item 4): these prompts contained each fixture's own two-sided
+  Ambiguity analysis and grading criteria, so articulation quality here is an assisted upper
+  bound, as it is in every lane before PR #4.
 - Verdict severity inflation persists but softer: 5 REJECT verdicts (3 where the rubric expects
   REVISE — popover, toast, video-player; 2 where no expected verdict is recorded) vs 7 in the
   blind lane. As before, the gate scores detection, not verdict match, on HAS-BUGS/FLAWED.
@@ -142,9 +157,13 @@ Read every delta below against this ledger — the lanes differ by more than the
 - `modal-complete-clean` gains its first valid FP-avoidance evidence (ACCEPT-W-R, 0 findings,
   post-repair, post-verdict-hint-strip).
 - Negative space: this lane says nothing about the hint effect on other models (unmeasured);
-  nothing about the still-open title/CLEAN-prose hint axes; its own numbers are a single run and
-  carry the same single-sample caveat it documents; and the critic comparison is mildly
-  confounded by the +3-line skill-rule delta (ledger item 3).
+  its own numbers are a single run and carry the same single-sample caveat it documents; the
+  critic comparison is mildly confounded by the +3-line skill-rule delta (ledger item 3); and
+  its critic CLEAN (non-modal) and ADVERSARIAL rows are verdict-assisted per PR #4's
+  disclosure (ledger item 4) — the post-PR-4 re-baseline lane, on the corpus with
+  verdict-steering sections cut and reassurance comments removed, is the open follow-up and
+  the first place critic CLEAN FP-resistance and ADVERSARIAL analysis quality can be measured
+  unassisted.
 
 Score any response here with:
 

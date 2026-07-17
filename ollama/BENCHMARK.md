@@ -1551,10 +1551,13 @@ markers, no hint comments) and the `\bBUG\b` leak one-liner (`[]`).
 conflates the component repair with its verdict-hint strip (both in 6420ea9) — the other 32
 critic / 25 perspective fixtures differ only on the hint-comment axis; (b) the critic system
 prompt gained 3 lines between lanes (native-HTML-first rule, 4d8f196) — the perspective system
-prompt is byte-identical; (c) the CLEAN verdict-prose/title axis (3 remaining critic CLEAN
-fixtures) and the bug-naming-title axis stay open per the 2026-07-16 erratum — this lane is
-comment-axis de-hinted, not fully unhinted; (d) reassurance comments deliberately kept
-(separate calibration decision, in discussion).
+prompt is byte-identical; (c) at run time the 3 non-modal critic CLEAN and all 3 ADVERSARIAL
+fixtures had no blind cut line — their verdict prose and Ambiguity/grading sections reached
+this lane's prompts (named after this run by the reassurance & verdict-steering disclosure),
+so those rows are **verdict-assisted upper bounds here too**; PR #4 closed the CLEAN-title
+axis after this run, and the bug-naming-title axis stays open; (d) reassurance comments were
+still present at run time (removed suite-wide by PR #4 afterward), so this lane's FP traps are
+softer than the post-PR-4 corpus — the post-PR-4 re-baseline is the open follow-up lane.
 **Wall-clock**: critic 33 fixtures in 1.57 h (median 159 s), perspective 25 in 1.38 h (median
 192 s) — the uncontended dedicated-server profile reproduced, no FLAWED/ADVERSARIAL blowup.
 Full receipts and per-fixture adjudication: `evals/results/ollama-dehinted/README.md`.
@@ -1565,8 +1568,8 @@ Full receipts and per-fixture adjudication: `evals/results/ollama-dehinted/READM
 |---|---|---|
 | Fixture statuses | **33/33 PASS** | 33/33 PASS |
 | Must-find aggregate | **67/68 (98.5%) scorer / 67/68 content-adjudicated** | 66/68 scorer / 67/68 content |
-| CLEAN false positives | **0 structured findings**, 4/4 correct verdicts — incl. the repaired `modal-complete-clean` (ACCEPT-W-R, 0 findings: its **first valid FP-avoidance data point**) | 0 findings, 4/4 (modal row = hint-following + defect blindness per the erratum) |
-| ADVERSARIAL | 3/3 ACCEPT-W-R, 3/3 tradeoffs articulated | 3/3 |
+| CLEAN false positives | **0 structured findings**, 4/4 correct verdicts — incl. the repaired `modal-complete-clean` (ACCEPT-W-R, 0 findings: its **first valid FP-avoidance data point**, and the lane's only unassisted CLEAN row — the other 3 prompts carried verdict prose, ledger c) | 0 findings, 4/4 (modal row = hint-following + defect blindness per the erratum; all 4 verdict-assisted) |
+| ADVERSARIAL | 3/3 ACCEPT-W-R, 3/3 tradeoffs articulated (verdict-assisted — prompts carried the Ambiguity/grading sections, ledger c) | 3/3 (same assist) |
 | Verdict inflation | 5 REJECT (3 where rubric expects REVISE) | 7 REJECT |
 
 The single miss is the same in both lanes and content-adjudicates as genuine both times:
