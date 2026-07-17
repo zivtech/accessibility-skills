@@ -1,6 +1,6 @@
-# a11y-meta-skills
+# accessibility-skills
 
-This repository contains the standalone a11y-meta-skills accessibility bundle — planner, critic, tester, and perspective auditor — plus cross-model benchmark assets. Claude Code is one supported install/runtime surface; the evals and runners now compare Claude, Codex/OpenAI, local Ollama models, and other hosted model families as peer baselines.
+This repository contains the standalone Accessibility Skills (accessibility-skills) bundle — planner, critic, tester, and perspective auditor — plus cross-model benchmark assets. Claude Code is one supported install/runtime surface; the evals and runners now compare Claude, Codex/OpenAI, local Ollama models, and other hosted model families as peer baselines.
 
 ## Dead Output
 

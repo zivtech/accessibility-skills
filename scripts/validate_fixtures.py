@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate fixture files and runner registries for the a11y-meta-skills eval suites.
+"""Validate fixture files and runner registries for the accessibility-skills eval suites.
 
 Checks:
 1. YAML parse: all *.metadata.yaml and *.rubric.yaml files parse without error

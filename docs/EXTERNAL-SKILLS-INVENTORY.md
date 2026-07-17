@@ -1,4 +1,4 @@
-# External Skills Inventory for a11y-meta-skills
+# External Skills Inventory for accessibility-skills
 
 Research conducted 2026-03-28. This document catalogs publicly available Claude Code skills relevant to the **a11y-critic** (post-implementation accessibility design review) and **a11y-planner** (pre-implementation accessibility design specification).
 
@@ -230,7 +230,7 @@ For each skill: what it does, how it differs from our approach, what techniques 
 
 Vital-Core is an adjacent site-quality scanner, not an external skill to install. Its useful contribution here is the reporting discipline: issue-first findings, stable fingerprints, trend language, generated-output boundaries, and reproducible gates. The adopted v1 surface is documented in [Vital-Core Adoption Assessment](vital-core-adoption-assessment.md) and [A11y Evidence Finding Contract](a11y-evidence-finding-contract.md).
 
-Do not copy Vital-Core runtime code into this repo in v1. Continuous crawling, ISO-week dashboards, generated GitHub Pages reports, mutable crawl state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and scanner configuration remain out of scope for `a11y-meta-skills`.
+Do not copy Vital-Core runtime code into this repo in v1. Continuous crawling, ISO-week dashboards, generated GitHub Pages reports, mutable crawl state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and scanner configuration remain out of scope for `accessibility-skills`.
 
 ### Do NOT adopt
 

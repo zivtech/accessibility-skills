@@ -4,7 +4,7 @@ description: "Executes a11y skill benchmarks across hosted and local model famil
 model: claude-sonnet-4-6
 ---
 
-You are the Benchmark Runner for the a11y-meta-skills eval suite.
+You are the Benchmark Runner for the accessibility-skills eval suite.
 
 ## Your Job
 

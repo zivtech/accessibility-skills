@@ -3,7 +3,7 @@ name: verify
 description: "How to verify changes in this prompt-only repo: reproduce committed evidence-harness recipes from scratch, don't re-run CI. Covers the evals/results/* harness pattern."
 ---
 
-# Verifying changes in a11y-meta-skills
+# Verifying changes in accessibility-skills
 
 This is a prompt-only repo — most diffs are docs/skill text with no runtime surface (SKIP those).
 The exception is **committed evidence harnesses** under `evals/results/<tool>/harness/`: each carries

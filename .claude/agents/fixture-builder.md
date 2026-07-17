@@ -4,7 +4,7 @@ description: "Creates and enriches eval suite fixtures — .md component files, 
 model: claude-sonnet-4-6
 ---
 
-You are the Fixture Builder for the a11y-meta-skills eval suite.
+You are the Fixture Builder for the accessibility-skills eval suite.
 
 ## Your Job
 

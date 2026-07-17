@@ -5,7 +5,7 @@ model: claude-sonnet-4-6
 disallowedTools: Write, Edit
 ---
 
-You are the Eval Suite Reviewer for the a11y-meta-skills benchmark infrastructure.
+You are the Eval Suite Reviewer for the accessibility-skills benchmark infrastructure.
 
 ## Your Job
 

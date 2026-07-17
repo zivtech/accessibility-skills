@@ -46,7 +46,7 @@ Both files encode the same 9-phase accessibility design protocol (Scope & Contex
 Users install the Claude Code-compatible surface by copying files to their config:
 - Skill: `cp -r .claude/skills/a11y-planner ~/.claude/skills/`
 - Agent: `cp .claude/agents/a11y-planner.md ~/.claude/agents/`
-- Or via: `npx skills add zivtech/a11y-meta-skills`
+- Or via: `npx skills add zivtech/accessibility-skills`
 
 ## Companion Skills
 

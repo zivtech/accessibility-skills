@@ -1,12 +1,12 @@
-# Accessibility Meta Skills (a11y-meta-skills)
+# Accessibility Skills
 
 Cross-model accessibility skill and evaluation bundle — plan, test, review, and audit web accessibility from real perspectives. It ships Claude Code-compatible skills and benchmark assets used across Claude, Codex/OpenAI, Gemini-ready hosted runs, and local Ollama models.
 
 ```bash
-npx skills add zivtech/a11y-meta-skills
+npx skills add zivtech/accessibility-skills
 ```
 
-**[Visual Explainer](https://zivtech.github.io/a11y-meta-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
+**[Visual Explainer](https://zivtech.github.io/accessibility-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
 
 This bundle packages four core skills that cover the full accessibility development lifecycle:
 
@@ -165,15 +165,15 @@ Every hosted family is a peer row backed by committed raw artifacts. See [ollama
 ## Install
 
 ```bash
-npx skills add zivtech/a11y-meta-skills
+npx skills add zivtech/accessibility-skills
 ```
 
 Manual install:
 
 ```bash
-git clone https://github.com/zivtech/a11y-meta-skills.git
-cp -r a11y-meta-skills/.claude/skills/* ~/.claude/skills/
-cp a11y-meta-skills/.claude/agents/*.md ~/.claude/agents/
+git clone https://github.com/zivtech/accessibility-skills.git
+cp -r accessibility-skills/.claude/skills/* ~/.claude/skills/
+cp accessibility-skills/.claude/agents/*.md ~/.claude/agents/
 ```
 
 ## Repository Layout

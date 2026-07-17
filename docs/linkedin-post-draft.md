@@ -10,6 +10,6 @@ The cost to test 33 components: $0.65. Or $0.00 if you run qwen3:32b locally —
 
 The benchmark dashboard is itself accessible (because it had to be).
 
-github.com/zivtech/a11y-meta-skills
+github.com/zivtech/accessibility-skills
 
 #accessibility #a11y #AI #OpenSource

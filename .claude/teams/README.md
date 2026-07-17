@@ -19,7 +19,7 @@ See [a11y-workflow.md](a11y-workflow.md) for full details. Invoked via `/a11y-wo
 
 ## A11y Benchmark Team
 
-Default team structure for the a11y-meta-skills eval suite.
+Default team structure for the accessibility-skills eval suite.
 
 ## Roles
 
