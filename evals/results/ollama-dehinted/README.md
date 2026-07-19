@@ -160,10 +160,10 @@ Read every delta below against this ledger — the lanes differ by more than the
   its own numbers are a single run and carry the same single-sample caveat it documents; the
   critic comparison is mildly confounded by the +3-line skill-rule delta (ledger item 3); and
   its critic CLEAN (non-modal) and ADVERSARIAL rows are verdict-assisted per PR #4's
-  disclosure (ledger item 4) — the post-PR-4 re-baseline lane, on the corpus with
-  verdict-steering sections cut and reassurance comments removed, is the open follow-up and
-  the first place critic CLEAN FP-resistance and ADVERSARIAL analysis quality can be measured
-  unassisted.
+  disclosure (ledger item 4) — the post-PR-4 re-baseline lane landed 2026-07-19
+  (`evals/results/ollama-rebaseline/`): its unassisted critic CLEAN draw moved materially
+  (first wrong REVISE plus finding-raising WARNs), confirming the verdict-assist concern this
+  ledger records.
 
 Score any response here with:
 

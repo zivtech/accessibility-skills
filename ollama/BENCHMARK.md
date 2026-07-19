@@ -1569,7 +1569,8 @@ this lane's prompts (named after this run by the reassurance & verdict-steering 
 so those rows are **verdict-assisted upper bounds here too**; PR #4 closed the CLEAN-title
 axis after this run, and the bug-naming-title axis stays open; (d) reassurance comments were
 still present at run time (removed suite-wide by PR #4 afterward), so this lane's FP traps are
-softer than the post-PR-4 corpus — the post-PR-4 re-baseline is the open follow-up lane.
+softer than the post-PR-4 corpus — the post-PR-4 re-baseline landed 2026-07-19 (see the
+re-baseline lane section below: the unassisted CLEAN/ADVERSARIAL rows move materially).
 **Wall-clock**: critic 33 fixtures in 1.57 h (median 159 s), perspective 25 in 1.38 h (median
 192 s) — the uncontended dedicated-server profile reproduced, no FLAWED/ADVERSARIAL blowup.
 Full receipts and per-fixture adjudication: `evals/results/ollama-dehinted/README.md`.
@@ -1617,3 +1618,59 @@ component fixture) in both runs with only the verdict moving (BLOCK → REVISE, 
 metadata-accepted). Everything else flipped. **Neither draw is the model's stable CLEAN rate —
 cite both or neither.** The routing rule (don't route CLEAN-confirmation perspective audits to
 local models without a second opinion) is reinforced, with verdict instability as the mechanism.
+
+## Ollama post-PR-4 re-baseline lane — qwen3:32b (2026-07-17→19, first unassisted rows)
+
+**Run**: first lane on the fully corrected corpus (**main@666e6eb**: de-hint + PR #4
+verdict-steering cut + reassurance comments removed + CLEAN titles de-hinted) — the first
+rows anywhere in this file where critic CLEAN FP-resistance and ADVERSARIAL analysis quality
+are **unassisted**. Guard at run time: upgraded `test_blind_prompts.py` (166 prompts, incl.
+REASSURANCE_PATTERNS) green.
+**Machine protocol**: dedicated `127.0.0.1:11435` (Ollama 0.31.1), app quit, full offload
+verified. Interruptions documented in the lane README: 9 critic fixtures ran across macOS
+maintenance-sleep windows (artifacts complete and valid; their `elapsed_seconds` are junk) and
+two session restarts exercised the `*-remaining` resume path; the run finished under
+`caffeinate -is`, which is now part of the protocol. Uncontaminated timing: critic median
+~150 s, perspective median 218 s.
+**Comparability**: compare against the de-hinted lane only via the reassurance & verdict-
+steering disclosure — critic CLEAN/ADVERSARIAL and perspective FP-trap rows changed corpus
+class here. Full receipts and per-fixture adjudication: `evals/results/ollama-rebaseline/README.md`.
+
+### a11y-critic (33 fixtures) — the "0% CLEAN false positives" era was verdict-assisted
+
+| Measure | Post-PR-4 unassisted (this lane) | De-hinted lane (verdict-assisted CLEAN/ADV) |
+|---|---|---|
+| Fixture statuses | **30 PASS / 2 WARN / 1 FAIL** | 33/33 PASS |
+| Must-find aggregate | **65/68 (95.6%) scorer = content** | 67/68 / 67/68 |
+| CLEAN | **1 wrong REVISE** (`button-skip-link-clean` — skip-link over-flag), 2 correct verdicts **with findings** (modal: 0→2 findings on a byte-identical prompt; search-results: over-flag with accessible name present at source), 1 clean pass | 4/4, zero findings (3 of 4 prompts carried verdict prose) |
+| ADVERSARIAL | 3/3 PASS, verdicts stricter without grading notes (2 REVISE + 1 ACCEPT-W-R, all metadata-valid) | 3/3 ACCEPT-W-R (prompts carried Ambiguity + grading notes) |
+| Verdict inflation | 5 REJECT (3 vs expected REVISE) — stable across all 2026-07 lanes | 5 REJECT |
+
+Must-find misses, adjudicated: accordion `role="region"` (genuine, **byte-identical prompt
+found 2/2 in the prior lane** — detection variance), tooltip announce-mechanism (genuine
+partial, same variance), infinite-scroll discoverability (genuine, all lanes). Detection
+deltas of ±2–3 items between lanes are within observed draw-to-draw variance at temp 0.3 —
+adjudicate before attributing to corpus changes.
+
+### perspective-audit (25 fixtures) — first HAS-BUGS FAIL; CLEAN draw 3 lands 4/5 wrong
+
+| Measure | Post-PR-4 unassisted (this lane) | De-hinted lane |
+|---|---|---|
+| Fixture statuses | **19 PASS / 1 WARN / 5 FAIL** | 20 PASS / 4 WARN / 1 FAIL |
+| HAS-BUGS | **15/16** — `checkout-form-broken-errors` FAIL at 1/3 (both `htmlFor` label-mismatch bugs unmentioned; byte-identical prompt scored 3/3 in the prior lane — variance at fixture-FAIL magnitude) | 16/16 |
+| ADVERSARIAL | 4/4 | 4/4 |
+| Must-find (37) | **33/37 scorer / 34/37 content** (checkout ×2 genuine; `map-interface-zoom` target-size missed again — **hint-dependence confirmed over two de-hinted draws**; tab-panel compound-keyword artifact) | 35/37 / 36/37 |
+| CLEAN verdicts | **1/5 correct** (4 wrong REVISE; nav-menu REVISE tolerated → WARN) | 4/5 correct |
+
+CLEAN three-draw ledger (receipts in the lane README): draws 1↔2 byte-identical prompts →
+4/5 wrong then 1/5 wrong (variance proven); draw 3 on the harder corpus (titles de-hinted,
+reassurance gone) → 4/5 wrong — consistent with variance and/or corpus, not decomposable at
+n=1. Stable across all three draws: `media-player-captions` wrong REVISE (every draw, a
+different manufactured rationale each time) and `nav-menu-landmarks` page-shell MAJORs.
+`article-page-clean` flipped for the first time — after three draws, no CLEAN fixture except
+media-player (stably wrong) has a stable outcome.
+
+**Routing implication (supersedes the per-lane phrasings above)**: local qwen3:32b is a
+detector, not a verdict authority. On clean code its verdicts are unstable in both suites;
+detection itself varies draw-to-draw. Use it to surface candidate findings; route severity
+and verdicts through a second opinion.
