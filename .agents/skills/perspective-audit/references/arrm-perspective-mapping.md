@@ -69,3 +69,20 @@ When the perspective audit produces a finding, tag it:
 | UX Design | Information architecture, wireframes, interaction patterns | UX Designer, Product Designer, Service Designer |
 | Visual Design | Look and feel, color, typography, layout, spacing | Visual Designer, UI Designer, Graphic Designer |
 | Front-End Dev | HTML, CSS, JavaScript, ARIA, keyboard handling | Front-End Developer, Web Developer, Full-Stack Dev |
+
+---
+
+## Full Role Definitions
+
+For complete role definitions with review checklists, blind spots, collaboration points, and ARRM task ownership details, see:
+
+- `roles/visual-design.md`
+- `roles/ux-design.md`
+- `roles/front-end-development.md`
+- `roles/content-authoring.md`
+- `roles/business-analysis.md`
+- `roles/testing.md`
+
+For the full WCAG SC → role mapping: `roles/arrm-task-mapping.yaml`
+
+For role-based review as a standalone audit: `.claude/skills/a11y-role-audit/SKILL.md`

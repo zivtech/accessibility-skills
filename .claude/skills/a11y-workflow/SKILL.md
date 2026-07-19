@@ -83,8 +83,20 @@ Agent(subagent_type="perspective-audit", model="opus", prompt="
 ")
 ```
 
+### Step 4b: Role Audit — Design Mode (optional)
+If user requests role-specific review, or the plan affects multiple team roles:
+```
+Agent(subagent_type="a11y-role-auditor", model="opus", prompt="
+  Review this accessibility plan from team responsibility perspectives.
+  Mode: design
+  Roles: visual-design, ux-design (or all if requested)
+  Plan file: <path>
+  Source files: <file paths>
+")
+```
+
 ### Step 5: Return to User
-Present the plan + critique + perspective audit findings. User revises and implements.
+Present the plan + critique + perspective audit + role audit findings. User revises and implements.
 
 ### Step 6: Test (after implementation)
 Invoke the `/a11y-test` skill, routing by target kind:
@@ -94,6 +106,18 @@ Invoke the `/a11y-test` skill, routing by target kind:
 - **Live URL + user journey** ("can a keyboard-only or screen-reader user complete X on this page?") → keyboard-a11y-tester: batch crawl for recon, then a driven `serve`/`step` session for interaction evidence. The main session drives the serve/step loop directly — it is a CLI, not an agent, so depth-1 is preserved. Calibration: batch-mode 4.1.3 findings are prompts to drive, never failures.
 
 All lanes produce evidence for Step 7.
+
+### Step 6b: Role Audit — Code Mode (optional)
+If user requests role-attributed findings, or findings need to be routed to specific team members:
+```
+Agent(subagent_type="a11y-role-auditor", model="opus", prompt="
+  Review this implementation from team responsibility perspectives.
+  Mode: code
+  Roles: all (or specific roles if requested)
+  Source files: <file paths>
+  Test results summary: <inject test output summary>
+")
+```
 
 ### Step 7: Critique the Implementation
 ```
@@ -125,6 +149,7 @@ User drives each step manually. The skill spawns the appropriate agent for the r
 | `critique` | a11y-critic | opus | Review plan or implementation |
 | `test` | a11y-test skill | n/a | Run Playwright + axe-core; virtual-screen-reader assertions for component announcement targets; keyboard-a11y-tester journey audit for live-URL targets |
 | `audit` | perspective-audit | opus | Deep perspective review (specify `--perspectives` to limit) |
+| `roles` | a11y-role-auditor | opus | ARRM role-based review (specify `--roles` to limit) |
 
 ### Examples
 ```
@@ -132,6 +157,7 @@ User drives each step manually. The skill spawns the appropriate agent for the r
 /a11y-workflow step plan src/components/Modal.tsx
 /a11y-workflow step critique src/components/Modal.tsx
 /a11y-workflow step audit src/components/Modal.tsx --perspectives keyboard,cognitive
+/a11y-workflow step roles src/components/Modal.tsx --roles visual-design,ux-design
 ```
 
 ## Triage Mode (Cost-Sensitive)

@@ -17,24 +17,31 @@ Three rules:
 
 ## Lifecycle
 
-The critic serves at **two checkpoints** in the accessibility development lifecycle:
+The critic serves at **two checkpoints** in the accessibility development lifecycle, with role-audit available at two additional points:
 
 ```
-plan → critique plan → [perspective audit] → revise → implement → test → critique implementation → [perspective audit] → fix → re-test
+plan → [role audit: design] → critique plan → [perspective audit] → revise → implement → test → [role audit: code] → critique implementation → [perspective audit] → fix → re-test
 ```
 
 | Step | Skill | Role |
 |------|-------|------|
 | 1. Plan | a11y-planner | Design accessibility before coding |
+| 1b. Role audit (design) | a11y-role-audit | Review plan from team responsibility lenses (optional) |
 | 2. Critique plan | a11y-critic | Review plan for gaps before implementation |
 | 2b. Perspective audit | perspective-audit | Deep review of MEDIUM/HIGH alarm perspectives (if escalated) |
 | 3. Revise | manual | Address critic findings |
 | 4. Implement | executor | Build according to reviewed plan |
 | 5. Test | a11y-test | Automated scans + keyboard tests (Playwright); journey audits (keyboard-a11y-tester); component SR assertions (virtual-screen-reader) |
+| 5b. Role audit (code) | a11y-role-audit | Review implementation from team responsibility lenses (optional) |
 | 6. Critique implementation | a11y-critic | Review design decisions after tests pass |
 | 6b. Perspective audit | perspective-audit | Deep review of escalated perspectives (if escalated) |
 | 7. Fix | executor | Address findings |
 | 8. Re-test | a11y-test | Verify fixes |
+
+The three audit dimensions are orthogonal:
+- **a11y-critic**: "Is the accessibility approach sound?" (design quality)
+- **perspective-audit**: "Who is blocked?" (access-method perspectives — screen reader, keyboard, low vision...)
+- **a11y-role-audit**: "Who on the team owns this?" (ARRM responsibility roles — designer, developer, content author...)
 
 ## Skills
 
@@ -45,6 +52,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | a11y-critic | critic | `/a11y-critic` |
 | a11y-test | tester | `/a11y-test` |
 | perspective-audit | auditor | `/perspective-audit` |
+| a11y-role-audit | role auditor | `/a11y-role-audit` |
 | bug-reporting | reporter | `/bug-reporting` |
 
 `bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; eval lane added 2026-07-17 (`evals/suites/bug-reporting/`: 6 fixtures across axe-core/pa11y/keyboard-a11y-tester/manual-prose inputs, rule-based scorer `ollama/score_bugreport.py` with recomputed stable-ID and fabrication checks; instrument validated, no model rows yet).
@@ -69,6 +77,7 @@ The `/a11y-workflow` skill orchestrates the full lifecycle by spawning specialis
 - `a11y-planner` — Opus, no Bash. 9-phase accessibility design.
 - `a11y-critic` — Opus, read-only. 8-phase investigation protocol.
 - `perspective-audit` — Opus, read-only. 7-perspective deep review (escalation only).
+- `a11y-role-auditor` — Opus, read-only. 6-role ARRM-based responsibility review.
 
 See `.claude/teams/a11y-workflow.md` for full team definition and escalation signals.
 
@@ -79,6 +88,7 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 - `.claude/agents/*.md` — companion agent prompts
 - `.agents/skills/*/SKILL.md` — Codex-compatible skill mirrors
 - `.codex/agents/*.toml` — Codex agent definitions for planner/critic
+- `roles/` — ARRM-based role definitions and task mapping (see below)
 - `docs/` — per-skill documentation and external skills inventory
 - `docs/EXTERNAL-SKILLS-INVENTORY.md` — landscape scan of 13 external a11y skills with adoption recommendations
 - `templates/` — copied base protocol templates required by the skills
