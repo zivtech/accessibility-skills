@@ -1,0 +1,44 @@
+fixture_id: kat-focus-appearance
+suite: bug-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_bugreport.py
+
+dimensions:
+  - id: report_count
+    name: "Report count (dedup/split)"
+    tier: must
+  - id: required_fields
+    name: "Eight required fields per report (labels + HTML snippet)"
+    tier: must
+  - id: key_values
+    name: "Key values extracted (URL, WCAG SC, rule, severity, evidence tokens)"
+    tier: must
+  - id: honest_na
+    name: "Honest N/A — no invented values for absent data"
+    tier: must
+    note: "Hard fabrication trap: any invented value fails the fixture."
+  - id: stable_ids
+    name: "Stable IDs recomputable per the skill's sha256 algorithm"
+    tier: should
+  - id: report_completeness
+    name: "Steps to Reproduce / Expected / Actual present"
+    tier: should
+  - id: title_pattern
+    name: "Title follows [Component] — [Failure] ([WCAG SC])"
+    tier: nice
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should/nice gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: Non-axe tool handling — keyboard-a11y-tester finding with AAA
+  conformance framing, confidence 0.5, and a duplicate selector in the
+  evidence (4 steps, 3 unique elements).
+expected_status_competent: PASS
+known_judgment_calls:
+  - "Severity minor/Low both accepted; presenting this as a hard AA failure
+    is a misread but is left to human review beyond the token checks."
+  - "'3 unique elements' vs the tool's '4 focus stops' phrasing both
+    acceptable; scorer checks selector presence, not the count word."

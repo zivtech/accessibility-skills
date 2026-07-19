@@ -1,0 +1,44 @@
+fixture_id: manual-sr-finding-prose
+suite: bug-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_bugreport.py
+
+dimensions:
+  - id: report_count
+    name: "Report count (dedup/split)"
+    tier: must
+  - id: required_fields
+    name: "Eight required fields per report (labels + HTML snippet)"
+    tier: must
+  - id: key_values
+    name: "Key values extracted (URL, WCAG SC, rule, severity, evidence tokens)"
+    tier: must
+  - id: honest_na
+    name: "Honest N/A — no invented values for absent data"
+    tier: must
+    note: "Hard fabrication trap: any invented value fails the fixture."
+  - id: stable_ids
+    name: "Stable IDs recomputable per the skill's sha256 algorithm"
+    tier: should
+  - id: report_completeness
+    name: "Steps to Reproduce / Expected / Actual present"
+    tier: should
+  - id: title_pattern
+    name: "Title follows [Component] — [Failure] ([WCAG SC])"
+    tier: nice
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should/nice gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: Report assembly from unstructured prose — environment and markup
+  extracted from the note, honest N/A for the automated rule ID, and a
+  remediation direction (aria-live / role=alert / association) rather than a
+  restated symptom.
+expected_status_competent: PASS
+known_judgment_calls:
+  - "4.1.3 or 3.3.1 both defensible as primary WCAG citation."
+  - "Severity Critical vs High unscored — both arguable for a silent
+    donation-form failure."

@@ -1,6 +1,6 @@
-# a11y-meta-skills
+# accessibility-skills
 
-This repository contains the standalone a11y-meta-skills accessibility bundle — planner, critic, tester, and perspective auditor — plus cross-model benchmark assets. Claude Code is one supported install/runtime surface; the evals and runners now compare Claude, Codex/OpenAI, local Ollama models, and other hosted model families as peer baselines.
+This repository contains the standalone Accessibility Skills (accessibility-skills) bundle — planner, critic, tester, and perspective auditor — plus cross-model benchmark assets. Claude Code is one supported install/runtime surface; the evals and runners now compare Claude, Codex/OpenAI, local Ollama models, and other hosted model families as peer baselines.
 
 ## Dead Output
 
@@ -47,7 +47,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 | perspective-audit | auditor | `/perspective-audit` |
 | bug-reporting | reporter | `/bug-reporting` |
 
-`bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; no benchmark lane yet.
+`bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; eval lane added 2026-07-17 (`evals/suites/bug-reporting/`: 6 fixtures across axe-core/pa11y/keyboard-a11y-tester/manual-prose inputs, rule-based scorer `ollama/score_bugreport.py` with recomputed stable-ID and fabrication checks; instrument validated, no model rows yet).
 
 ## Team Workflow
 

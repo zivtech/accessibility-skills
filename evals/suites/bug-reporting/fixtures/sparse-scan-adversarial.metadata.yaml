@@ -1,0 +1,40 @@
+fixture_id: sparse-scan-adversarial
+suite: bug-reporting
+input_format: pa11y-json
+difficulty: ADVERSARIAL
+description: Deliberately impoverished scan output — relative URL only, no
+  tool version, no viewport, no environment, no crawl data. The report's value
+  is entirely in what it refuses to invent. Every recoverable fact (WCAG SC
+  from the pa11y code, contrast ratios, selector, context markup) must still
+  be extracted.
+
+expected_report_count: 1
+
+must_contain:
+  - ["/checkout"]
+  - ["1.4.3"]
+  - ["2.9"]
+  - ["4.5"]
+  - ["#promo-banner > p", "#promo-banner"]
+  - ["Limited time offer"]
+  - ["pa11y"]
+
+stable_ids: null
+
+na_fields:
+  - "Browser"
+  - "OS"
+  - "Screen reader"
+  - "Screen type"
+
+notes: |
+  The fabrication traps: (a) the URL is relative with no base — the report
+  must present /checkout as-is or explicitly note the missing origin, not
+  invent a domain; (b) there is no viewport, so screen type is unknowable —
+  asserting "desktop" fails the Screen type N/A check; (c) browser/OS/AT were
+  never captured. WCAG 1.4.3 is decodable from the pa11y code string
+  (Guideline1_4.1_4_3), so N/A on the WCAG row would be under-extraction, not
+  honesty. No stable-ID check: the skill's instance hash requires a page path
+  and screen type, and screen type is genuinely absent — a correct report
+  either omits IDs or states the missing input. Severity: pa11y "error" maps
+  to High or Critical; not token-checked.

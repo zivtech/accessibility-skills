@@ -2,7 +2,7 @@
 
 **Decision:** adopt Vital-Core's reporting discipline, not its scanner product.
 
-This assessment covers `/Users/AlexUA_1/claude/vital-core` as reviewed on 2026-06-19. It does not copy runtime code, generated report code, vendor code, crawler state, or dashboard assets into `a11y-meta-skills`.
+This assessment covers `/Users/AlexUA_1/claude/vital-core` as reviewed on 2026-06-19. It does not copy runtime code, generated report code, vendor code, crawler state, or dashboard assets into `accessibility-skills`.
 
 ## V1 Adoption Matrix
 
@@ -21,7 +21,7 @@ This assessment covers `/Users/AlexUA_1/claude/vital-core` as reviewed on 2026-0
 | ISO-week dashboards and ledgers | defer | Valuable for site monitoring, but not for the existing planner/test/critic lifecycle. |
 | GitHub Pages publishing | defer | This repo publishes docs, but should not become a generated audit-report app in v1. |
 | Multi-engine consensus | defer | axe/Alfa consensus is valuable in Vital-Core. This repo should first prove a source-neutral evidence contract. |
-| Mutable crawl state | reject for v1 | `a11y-meta-skills` has no crawler frontier, no target config, and no week-over-week site state. |
+| Mutable crawl state | reject for v1 | `accessibility-skills` has no crawler frontier, no target config, and no week-over-week site state. |
 | Scanner runtime code | reject for v1 | Direct reuse is blocked by product scope and license/provenance review. |
 | Wappalyzer vendor surface | reject for v1 | Technology fingerprinting is not part of the meta-skill lifecycle and introduces GPL-vendored data scope. |
 | ParaCharts vendor/runtime | reject for v1 | Generated dashboard chart runtime is outside the skill/eval boundary and introduces AGPL vendor obligations. |
@@ -31,7 +31,7 @@ This assessment covers `/Users/AlexUA_1/claude/vital-core` as reviewed on 2026-0
 
 Direct code reuse remains blocked until a license/provenance decision reconciles:
 
-- `a11y-meta-skills` repository license: GPL-3.0-or-later.
+- `accessibility-skills` repository license: GPL-3.0-or-later.
 - Per-skill frontmatter currently declaring Apache-2.0.
 - `vital-core` package license: AGPL-3.0-only.
 - Vital-Core vendor surfaces including GPL Wappalyzer fingerprints and AGPL ParaCharts runtime.
@@ -58,5 +58,5 @@ Official references:
 
 - This is not a full VPAT, ACR, or legal conformance statement.
 - This is not a replacement for manual testing with assistive technology or users with disabilities.
-- This does not make `a11y-meta-skills` a site-scale crawler, generated dashboard, or continuous monitoring product.
+- This does not make `accessibility-skills` a site-scale crawler, generated dashboard, or continuous monitoring product.
 - This does not authorize copying Vital-Core AGPL runtime code into this repository.

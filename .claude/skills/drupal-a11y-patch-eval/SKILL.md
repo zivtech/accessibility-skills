@@ -169,7 +169,7 @@ No subagent may patch or reroll in a shared checkout without a main-session-gran
 
 Any packet headed to `VERIFIED` or upstream filing must pass an `a11y-critic` review. This is a hard gate, not optional.
 
-The critic gate checks (from the packet template's a11y-meta-skills review checklist):
+The critic gate checks (from the packet template's accessibility-skills review checklist):
 
 - `a11y-test` measured the target rule, keyboard behavior, or color/visual condition.
 - `a11y-critic` reviewed the packet for evidence gaps, WCAG mapping, severity, and overclaiming.

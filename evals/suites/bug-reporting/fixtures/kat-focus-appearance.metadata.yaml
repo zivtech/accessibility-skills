@@ -1,0 +1,40 @@
+fixture_id: kat-focus-appearance
+suite: bug-reporting
+input_format: keyboard-a11y-tester-json
+difficulty: MEDIUM
+description: A real keyboard-a11y-tester finding shape (deterministic runner,
+  keyboard persona). Tests non-axe tool handling, AAA/informative framing,
+  confidence surfacing, and dedup of a duplicate selector — the 4 evidence
+  steps cover only 3 unique elements.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://staging.example.dev/pricing"]
+  - ["2.4.13"]
+  - ["focus-appearance-weak-desktop", "keyboard-a11y-tester"]
+  - ["AAA"]
+  - ["minor", "low", "Minor", "Low"]
+  - ["0.5", "confidence"]
+  - ["div.tier:nth-of-type(1) > button.select-plan"]
+  - ["div.tier:nth-of-type(2) > button.select-plan"]
+  - ["button.annual", "#billing-toggle"]
+  - ["2.41"]
+
+stable_ids: null
+
+na_fields:
+  - "Browser"
+  - "Screen reader"
+
+notes: |
+  No stable-ID check: the finding carries no page-path/selector pairing in the
+  skill's canonical hash-input form, and forcing one would reward guessing.
+  The finding's confidence 0.5 and "Informative only"/AAA framing should
+  surface in the report (severity Low/minor, confidence noted) — a report that
+  presents this as a hard AA failure has misread the input, but severity
+  inflation beyond the token check is left to human review. The tool emits no
+  browser/AT data, hence the N/A rows. The duplicate first selector means
+  "3 unique elements" is the honest instance count; "4 focus stops" (the
+  tool's phrasing) is also accepted — the scorer checks selector presence,
+  not the count word.

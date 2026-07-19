@@ -49,7 +49,7 @@ Both files encode the same 11-phase a11y-specific review protocol.
 Users install the Claude Code-compatible surface by copying files to their config:
 - Skill: `cp -r .claude/skills/a11y-critic ~/.claude/skills/`
 - Agent: `cp .claude/agents/a11y-critic.md ~/.claude/agents/`
-- Or via package manager: `npx skills add zivtech/a11y-meta-skills`
+- Or via package manager: `npx skills add zivtech/accessibility-skills`
 
 ## Companion Skills
 

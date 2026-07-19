@@ -1,4 +1,4 @@
-# AGENTS.md — a11y-meta-skills
+# AGENTS.md — accessibility-skills
 
 | Agent | Type | Command | Companion |
 |-------|------|---------|-----------|

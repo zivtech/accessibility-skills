@@ -144,6 +144,42 @@ run_case \
     "Verdict: PASS" \
     "Status: PASS"
 
+# Case 12: bug-report complete report (PASS incl. stable-ID verification)
+run_case \
+    "bugreport complete report (PASS, stable IDs verified)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-good-response.json" \
+    "bugreport-meta.yaml" \
+    "Stable IDs: 2/2 verified" \
+    "Status: PASS"
+
+# Case 13: bug-report missing required field (FAIL, names the label)
+run_case \
+    "bugreport missing Severity row (FAIL)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-missing-field-response.json" \
+    "bugreport-meta.yaml" \
+    "missing labels: Severity" \
+    "Status: FAIL"
+
+# Case 14: bug-report fabricated environment value (FAIL as fabrication)
+run_case \
+    "bugreport invented screen reader value (FABRICATION -> FAIL)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-fabricated-response.json" \
+    "bugreport-meta.yaml" \
+    "FABRICATION: 'Screen reader'" \
+    "Status: FAIL"
+
+# Case 15: bug-report duplicate filing instead of dedup (count FAIL)
+run_case \
+    "bugreport two reports where dedup demands one (FAIL)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-overreported-response.json" \
+    "bugreport-meta.yaml" \
+    "report count 2 != 1" \
+    "Status: FAIL"
+
 echo
 echo "Results: $pass_count passed, $fail_count failed"
 if [ "$fail_count" -gt 0 ]; then

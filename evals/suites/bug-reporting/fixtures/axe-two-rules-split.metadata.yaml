@@ -1,0 +1,42 @@
+fixture_id: axe-two-rules-split
+suite: bug-reporting
+input_format: axe-json
+difficulty: MEDIUM
+description: Two DIFFERENT rules in one scan — color-contrast (2 nodes) and
+  link-name (1 node). The inverse of the dedup fixture — grouping is per
+  rule+page, so the correct output is TWO reports, with the two color-contrast
+  nodes aggregated inside the first. One giant merged report or three separate
+  reports both fail the count check.
+
+expected_report_count: 2
+
+must_contain:
+  - ["https://app.example.io/settings/profile"]
+  - ["1.4.3"]
+  - ["color-contrast"]
+  - ["3.13"]
+  - ["link-name"]
+  - ["2.4.4", "4.1.2"]
+  - ["serious", "high", "High", "Serious"]
+  - ["#display-name-field"]
+  - ["#pronouns-field"]
+  - ["a.help-icon", "#visibility-section"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/settings/profile"
+  rule_id: color-contrast
+  instances:
+    - selector: "#display-name-field > span.field-hint"
+    - selector: "#pronouns-field > span.field-hint"
+
+na_fields:
+  - "Screen reader"
+
+notes: |
+  Stable-ID verification covers the color-contrast report's two instances;
+  the link-name report's ID is not additionally checked (one hash exercise per
+  fixture keeps scoring interpretable). axe "serious" maps to the skill's
+  "High" tier — the scorer accepts either token. link-name legitimately cites
+  2.4.4 or 4.1.2 (axe tags carry both); either satisfies the check.

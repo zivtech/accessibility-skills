@@ -16,6 +16,6 @@ This is a prompt-only repository. Changes usually affect markdown prompt files, 
 Before shipping changes:
 
 1. Verify all four skill directories (`a11y-critic`, `a11y-planner`, `a11y-test`, `perspective-audit`) and both agent files exist under root `.claude/`.
-2. Check install instructions reference `https://github.com/zivtech/a11y-meta-skills`.
+2. Check install instructions reference `https://github.com/zivtech/accessibility-skills`.
 3. Check no stale `(future)` wording remains for the companion relationship.
 4. Confirm eval suite directories are still present.

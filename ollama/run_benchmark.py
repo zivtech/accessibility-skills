@@ -3,6 +3,8 @@
 
 Usage:
     python3 ollama/run_benchmark.py critic-remaining [model]       # All un-benchmarked critic fixtures (default: qwen3:32b)
+    python3 ollama/run_benchmark.py bugreport <model> <fixture-id> # Bug-reporting single fixture
+    python3 ollama/run_benchmark.py bugreport-remaining [model]    # All un-benchmarked bug-reporting fixtures
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
@@ -35,8 +37,29 @@ PERSPECTIVE_REFS = [
 PLANNER_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-planner", "fixtures")
 PLANNER_SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "a11y-planner", "SKILL.md")
 
+BUGREPORT_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "bug-reporting", "fixtures")
+BUGREPORT_SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "bug-reporting", "SKILL.md")
+
+BUGREPORT_FIXTURES = [
+    "axe-image-alt-single",
+    "axe-select-name-dedup",
+    "axe-two-rules-split",
+    "kat-focus-appearance",
+    "manual-sr-finding-prose",
+    "sparse-scan-adversarial",
+]
+
 PROMPT_PREFIX = "Review the following React component for accessibility design issues. Execute all phases of the investigation protocol.\n\n"
 PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
+BUGREPORT_PROMPT_PREFIX = (
+    "Convert the following raw accessibility finding(s) into bug report(s) ready to file "
+    "as GitHub Issue(s), following the bug-reporting skill exactly. Apply every rule "
+    "applicable to the input (deduplication/aggregation, both XPath forms, stable "
+    "identifiers, severity, frequency, WCAG SC, rule IDs, environment, impact, suggested "
+    "fix, steps to reproduce). Where the input genuinely lacks a value, follow the "
+    "skill's guidance on absent data instead of inventing one. Return only the finished "
+    "report(s) in the skill's Markdown template.\n\n"
+)
 
 PLANNER_FIXTURES = [
     "aria-combobox-autocomplete",
@@ -358,6 +381,51 @@ def run_planner(model, fixture_id, system_prompt):
     return out_path
 
 
+def run_bugreport(model, fixture_id, system_prompt):
+    fixture_content = load_fixture(fixture_id, BUGREPORT_FIXTURES_DIR)
+    prompt = BUGREPORT_PROMPT_PREFIX + fixture_content
+
+    payload = {
+        "model": model,
+        "system": system_prompt,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"num_ctx": 16384, "temperature": 0.3},
+    }
+
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-bugreport-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"BUGREPORT | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1200) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "bug-reporting",
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
 PERSPECTIVE_CTX = {
     "qwen3:32b": 32768,
     "llama3.3:70b": 32768,
@@ -532,6 +600,39 @@ def main():
         for i, fixture_id in enumerate(remaining, 1):
             print(f"\n[{i}/{len(remaining)}]")
             run_ollama(model, fixture_id, system_prompt)
+
+    elif cmd == "bugreport":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py bugreport <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        with open(BUGREPORT_SKILL_PATH) as f:
+            system_prompt = strip_frontmatter(f.read())
+        run_bugreport(model, fixture_id, system_prompt)
+
+    elif cmd == "bugreport-remaining":
+        import glob as _bglob
+        model = sys.argv[2] if len(sys.argv) > 2 else "qwen3:32b"
+        model_tag = make_model_tag(model)
+        done = set()
+        for f in _bglob.glob(os.path.join(RESULTS_DIR, f"ollama-bugreport-*-{model_tag}-response.json")):
+            name = os.path.basename(f)
+            name = name.replace("ollama-bugreport-", "").replace(f"-{model_tag}-response.json", "")
+            done.add(name)
+        remaining = [f for f in BUGREPORT_FIXTURES if f not in done]
+        print(f"Model: {model}")
+        print(f"Total fixtures: {len(BUGREPORT_FIXTURES)}")
+        print(f"Already done: {len(done)}")
+        print(f"Remaining: {len(remaining)}")
+        if not remaining:
+            print("All bug-reporting fixtures benchmarked!")
+            sys.exit(0)
+        with open(BUGREPORT_SKILL_PATH) as f:
+            system_prompt = strip_frontmatter(f.read())
+        for i, fixture_id in enumerate(remaining, 1):
+            print(f"\n[{i}/{len(remaining)}]")
+            run_bugreport(model, fixture_id, system_prompt)
 
     elif cmd == "score-all":
         import glob

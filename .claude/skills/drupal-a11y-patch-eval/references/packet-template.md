@@ -223,7 +223,7 @@ Describe the smallest code change that fixes the issue and why it matches the WC
 
 This packet and/or patch was prepared with AI assistance. The accessibility finding was verified with the evidence above and was not filed from AI code inspection alone.
 
-## a11y-meta-skills Review Checklist
+## accessibility-skills Review Checklist
 
 - [ ] `a11y-test` measured the target rule, keyboard behavior, or color/visual condition.
 - [ ] `a11y-critic` reviewed the packet for evidence gaps, WCAG mapping, severity, and overclaiming.

@@ -1,0 +1,35 @@
+fixture_id: manual-sr-finding-prose
+suite: bug-reporting
+input_format: manual-prose
+difficulty: MEDIUM-HARD
+description: An unstructured manual-testing note. The report must be assembled
+  from prose — URL, environment (VoiceOver / macOS 14 / Safari 17.4), the
+  failing markup, steps, expected/actual — with an honest N/A for the
+  automated rule ID, because no tool ran.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://give.example.org/donate"]
+  - ["4.1.3", "3.3.1"]
+  - ["VoiceOver"]
+  - ["Safari"]
+  - ["form-error", "Please enter a donation amount"]
+  - ["donation-amount"]
+  - ["aria-live", "role=\"alert\"", "role='alert'", "status message"]
+
+stable_ids: null
+
+na_fields:
+  - "Rule"
+
+notes: |
+  WCAG mapping: 4.1.3 Status Messages (the error is not announced) is the
+  primary citation; 3.3.1 Error Identification is also defensible since the
+  error is not programmatically associated with the field — either satisfies
+  the check. The suggested-fix check (aria-live / role=alert / association)
+  verifies the report points at a real remediation direction rather than
+  restating the symptom. The Rule row must be N/A-ish — inventing an axe rule
+  ID for a hand-found issue is the fabrication this fixture traps. Severity is
+  not token-checked: Critical and High are both arguable for a silent
+  donation-form failure, and adjudicating that is rubric/human territory.

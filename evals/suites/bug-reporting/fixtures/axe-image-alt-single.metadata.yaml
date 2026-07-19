@@ -1,0 +1,38 @@
+fixture_id: axe-image-alt-single
+suite: bug-reporting
+input_format: axe-json
+difficulty: EASY
+description: Complete single-node axe-core violation. Everything needed for all
+  eight required fields is present; nothing needs to be marked N/A except the
+  screen-reader row (no AT was used in an automated scan).
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://news.example.com/articles/spring-garden-guide"]
+  - ["1.1.1"]
+  - ["image-alt"]
+  - ["critical", "Critical"]
+  - ["article.feature-story > img.hero", "article.feature-story"]
+  - ["hero-2481.jpg"]
+  - ["axe-core"]
+  - ["1280"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/articles/spring-garden-guide"
+  rule_id: image-alt
+  instances:
+    - selector: "article.feature-story > img.hero"
+
+na_fields:
+  - "Screen reader"
+
+notes: |
+  Frequency: the scan contains no crawl context, so a correct report states
+  1 instance on this page and does not invent site-wide counts. The scorer
+  does not trap this (phrasing varies too much to check mechanically); the
+  na_fields trap covers the screen-reader row instead. Browser (Chrome 126)
+  and OS (macOS 14) ARE derivable from the userAgent string, so N/A there is
+  overly timid but not scored either way.

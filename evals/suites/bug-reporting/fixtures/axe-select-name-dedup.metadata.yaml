@@ -1,0 +1,42 @@
+fixture_id: axe-select-name-dedup
+suite: bug-reporting
+input_format: axe-json
+difficulty: MEDIUM
+description: One rule (select-name), two nodes on the page, plus crawl context
+  (19 of 38 pages). Tests the skill's dedup rule — ONE report with an
+  instances/aggregation view, not two near-identical issues — and per-instance
+  stable-ID generation. Hash expectations were independently verified against
+  the skill's algorithm on 2026-07-16.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://shop.example.org/products?category=outdoor"]
+  - ["4.1.2"]
+  - ["select-name"]
+  - ["critical", "Critical"]
+  - ["#product-toolbar"]
+  - ["#mobile-toolbar"]
+  - ["19"]
+  - ["38"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/products"
+  rule_id: select-name
+  instances:
+    - selector: "#product-toolbar > select.sort-control"
+    - selector: "#mobile-toolbar > select.sort-control"
+
+na_fields:
+  - "Screen reader"
+
+notes: |
+  The two nodes share a rule and a page: filing two separate issues fails the
+  report-count check (the skill's rule 5.2 requires grouping). The full DOM
+  path is genuinely absent from axe target data — a report may mark it N/A or
+  explain it needs DevTools confirmation; the scorer does not require a value
+  for it here. The #mobile-toolbar instance may be CSS-hidden at the scan's
+  1440px viewport; noting that ambiguity is good analyst behavior but is not
+  scored.

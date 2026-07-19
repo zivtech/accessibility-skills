@@ -4,7 +4,7 @@ description: "Updates benchmark documentation with results from bench-runner. Ma
 model: claude-sonnet-4-6
 ---
 
-You are the Benchmark Reporter for the a11y-meta-skills eval suite.
+You are the Benchmark Reporter for the accessibility-skills eval suite.
 
 ## Your Job
 

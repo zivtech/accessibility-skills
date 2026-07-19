@@ -4,7 +4,7 @@ I've been building AI agent skills for about six months now — Markdown protoco
 
 ## The bundle
 
-[a11y-meta-skills](https://github.com/zivtech/a11y-meta-skills) is four skills that cover the full accessibility development lifecycle:
+[Accessibility Skills](https://github.com/zivtech/accessibility-skills) is four skills that cover the full accessibility development lifecycle:
 
 - **a11y-planner** designs accessible implementations before you write code — semantic structure, ARIA patterns, keyboard behavior, focus management
 - **a11y-critic** reviews what you built after testing, looking for design-level gaps that automated tools miss
@@ -14,7 +14,7 @@ I've been building AI agent skills for about six months now — Markdown protoco
 That last one is the one I'm most proud of. Most accessibility tools check attributes. This one asks: what would a screen reader user actually experience? What about someone with a vestibular disorder watching your page transition animations?
 
 ```bash
-npx skills add zivtech/a11y-meta-skills
+npx skills add zivtech/accessibility-skills
 ```
 
 ## But does it work?
@@ -59,9 +59,9 @@ It's accessibility skills all the way down.
 ## Try it
 
 ```bash
-npx skills add zivtech/a11y-meta-skills
+npx skills add zivtech/accessibility-skills
 ```
 
 The full benchmark data, eval fixtures, and scoring scripts are all in the repo. If you want to test your own model against the fixtures, there's a runner for that too.
 
-If you're using agentic coding tools and care about accessibility — or if you just want to see what a rigorous AI skill eval suite looks like — [take a look](https://github.com/zivtech/a11y-meta-skills).
+If you're using agentic coding tools and care about accessibility — or if you just want to see what a rigorous AI skill eval suite looks like — [take a look](https://github.com/zivtech/accessibility-skills).

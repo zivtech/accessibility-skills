@@ -41,6 +41,7 @@ SKILL_PROMPTS = {
     "critic": "Review the following component for accessibility design issues. Execute all phases of the investigation protocol.\n\n",
     "planner": "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n",
     "perspective": "Run the perspective audit on the following component. The escalated perspectives are listed in the input.\n\n",
+    "bugreport": "Convert the following raw accessibility finding(s) into bug report(s) ready to file as GitHub Issue(s), following the bug-reporting skill exactly. Where the input genuinely lacks a value, follow the skill's guidance on absent data instead of inventing one. Return only the finished report(s) in the skill's Markdown template.\n\n",
 }
 
 SKILL_REFS = {
@@ -52,7 +53,8 @@ SKILL_REFS = {
 
 
 def load_skill_prompt(skill_name: str) -> str:
-    skill_dir_name = "perspective-audit" if skill_name == "perspective" else f"a11y-{skill_name}"
+    special_dirs = {"perspective": "perspective-audit", "bugreport": "bug-reporting"}
+    skill_dir_name = special_dirs.get(skill_name, f"a11y-{skill_name}")
     skill_path = os.path.join(SKILLS_DIR, skill_dir_name, "SKILL.md")
     if not os.path.exists(skill_path):
         print(f"ERROR: Skill file not found: {skill_path}", file=sys.stderr)
@@ -134,7 +136,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
-    parser.add_argument("skill", choices=["critic", "planner", "perspective"], help="Which a11y skill to run")
+    parser.add_argument("skill", choices=["critic", "planner", "perspective", "bugreport"], help="Which a11y skill to run")
     parser.add_argument("input", help="Path to component/requirements file, or - for stdin")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Ollama model (default: {DEFAULT_MODEL})")
     parser.add_argument("--ctx", type=int, default=32768, help="Context window size (default: 32768)")
