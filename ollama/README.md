@@ -47,7 +47,7 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 
 | Model | Size | Recommended | Notes |
 |-------|------|-------------|-------|
-| **qwen3:32b** | 18.8 GB | **Yes — production** | Blind re-run 2026-07-13: critic 33/33 PASS, 97% must-find, 0 false positives (blind-confirmed); perspective detection 20/20 + 36/37 must-find, **but 4/5 CLEAN fixtures draw false REVISE/BLOCK verdicts blind** (historical "100% perspective, 0% FP" was answer-key-assisted on CLEAN). Perfect planner. |
+| **qwen3:32b** | 18.8 GB | **Yes — detection; verdicts need a second opinion** | Three 2026-07 lanes (blind → de-hinted → post-PR-4 unassisted): critic detection 95.6–98.5% content-adjudicated, perspective 92–97% — byte-identical prompts flip 2–3 items per draw at temp 0.3. **CLEAN verdicts unstable in both suites once unassisted**: critic drew its first wrong REVISE + findings on 2 more of 4 CLEAN fixtures (2026-07-19); perspective CLEAN ran 4/5→1/5→4/5 wrong across draws. Perfect planner. Detector, not verdict authority — receipts: `evals/results/ollama-rebaseline/`. |
 | qwen3.5:27b | 17.4 GB | Detection-critical | 100% must-find (13 HAS-BUGS), found `role="alert"` (only local model to do so). Prone to `/think` stalls on some fixtures — use with retry. NOT tested on perspective-audit. |
 | llama3.3:70b | 39.6 GB | Phase-compliant output | Blind full-suite 2026-07-13: 33/33 PASS, 92.6% must-find scorer / 97.1% adjudicated, zero truncations. Follows all 11 protocol phases in output. |
 | qwen3.5:latest | 6.6 GB | Fast critic-only | Blind full-suite 2026-07-13: 33/33 PASS, 98.5% must-find, ~34 s/fixture (fastest lane). **Needs ≥32K num_ctx on long critic fixtures** (4/33 prompts exceed 16K tokens on its tokenizer — empty/truncated otherwise). **NOT viable for perspective-audit** (same context-exhaustion mechanism, 50% empty responses). |
@@ -96,7 +96,8 @@ kept this way.
 | GPT-5.5 | 2 (escalated) | n/a | 0% | 1/2 PASS |
 | GPT-5.5 (low) | 1 (escalated) | n/a | 0% | 1/1 PASS |
 | qwen3.5:27b | 17* | **100%** | 0%† | 16/17 PASS |
-| **qwen3:32b BLIND (2026-07-13)** | **33** | **97%** | **0%** | **33/33 PASS** |
+| **qwen3:32b POST-PR-4 unassisted (2026-07-19)** | **33** | **95.6%** | **1 REVISE + 2 WARN** | **30/33 PASS** |
+| **qwen3:32b BLIND (2026-07-13)** | **33** | **97%** | **0%†† (verdict-assisted)** | **33/33 PASS** |
 | **qwen3.5:latest BLIND (2026-07-13)** | **33** | **98.5%** | **0%** | **33/33 PASS*** |
 | **llama3.3:70b BLIND (2026-07-13)** | **33** | **92.6%** (97.1% adjudicated) | **0%** | **33/33 PASS** |
 | qwen3:32b (non-blind) | 33 | 96% | 0% | 33/33 PASS |
@@ -115,14 +116,27 @@ disclosure in BENCHMARK.md). The blind qwen3:32b row is the corrected basis; raw
 `evals/results/ollama-blind/`. A second caveat applies to **every** row above, blind lanes
 included: until 2026-07-16 the fixture code blocks carried inline `// BUG:` hint comments that
 survived answer-key stripping (24/33 critic, 20/25 perspective fixtures), so must-find/detection
-numbers are hint-assisted upper bounds pending de-hinted re-runs — see the hint-comment
-disclosure in BENCHMARK.md. A third caveat (2026-07-16 follow-up): the 4 critic CLEAN and 3
-critic ADVERSARIAL fixtures had no blind cut line at run time, so their prompts included the
-expected verdict / grading notes — critic "CLEAN FP 0%" columns above are verdict-assisted upper
-bounds; and reassurance comments (`NOT a bug`, `Works:`/`Good:`) were removed suite-wide the same
-day, so FP-trap difficulty is higher for post-change runs — see the reassurance & verdict-steering
-disclosure in BENCHMARK.md. Cross-model comparisons within a lane are unaffected by all three
-caveats (identical prompts per lane).
+numbers are hint-assisted upper bounds — see the hint-comment disclosure in BENCHMARK.md. The
+first de-hinted re-run (qwen3:32b, 2026-07-16, `evals/results/ollama-dehinted/`) measures that
+bound for this model: **nil on critic** (67/68 content-adjudicated in both lanes) and **−1
+must-find item on perspective** (the hint-carried `map-interface-zoom` target-size defect;
+36/37 vs 37/37). It also re-characterizes the blind lane's perspective CLEAN weakness (4/5
+wrong verdicts) as run-unstable: the re-run drew 1/5 wrong on byte-identical CLEAN prompts.
+A third caveat (2026-07-16 follow-up): the 4 critic CLEAN and 3 critic ADVERSARIAL fixtures
+had no blind cut line until after the de-hinted re-run, so their prompts included the expected
+verdict / grading notes in every lane above **and in the de-hinted lane** — critic "CLEAN FP
+0%" columns are verdict-assisted upper bounds (exception: the de-hinted lane's
+`modal-complete-clean` row, whose cut line landed with the same-day fixture erratum); and
+reassurance comments (`NOT a bug`, `Works:`/`Good:`) were removed suite-wide the same day, so
+FP-trap difficulty is higher for post-change runs — see the reassurance & verdict-steering
+disclosure in BENCHMARK.md. Perspective CLEAN rows are structurally unaffected (all 25
+perspective fixtures had cut lines). Cross-model comparisons within a lane are unaffected by
+all three caveats (identical prompts per lane). ††The **post-PR-4 unassisted re-baseline**
+(qwen3:32b, 2026-07-19, `evals/results/ollama-rebaseline/`) measures what the verdict assist
+was worth: critic CLEAN moves from 4/4-zero-findings to **1 wrong REVISE + 2 finding-raising
+WARNs**, ADVERSARIAL verdicts shift stricter (still metadata-valid), detection lands at 65/68
+within draw-to-draw variance, and perspective adds its first HAS-BUGS FAIL (checkout-form,
+byte-identical prompt — variance) with CLEAN at 4/5 wrong on the harder corpus.
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
 

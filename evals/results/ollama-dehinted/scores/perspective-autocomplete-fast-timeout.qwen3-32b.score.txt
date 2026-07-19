@@ -1,0 +1,32 @@
+Response length: 6724 chars
+Fixture: autocomplete-fast-timeout
+Difficulty: ADVERSARIAL
+
+Escalated perspectives: keyboard_motor, screen_reader_semantic, cognitive_neurodivergent
+LOW perspectives: magnification_reflow, environmental_contrast, vestibular_motion, auditory_access
+
+Perspective coverage: 3/3
+  + Keyboard
+  + Screen Reader
+  + Cognitive
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 2/2
+  + [W] Suggestions disappear after 800ms inactivity — too fast for slow navigators
+  + [-] Enter both selects suggestion AND submits form — double-action
+
+Should-find issues: 1/1
+  + [W] Suggestions list has no role='listbox' — SR can't announce as options
+
+Nice-to-find issues: 1/2
+  + 'No results' state shows italic gray text with no aria-live
+  - Loading spinner during fetch has no aria-busy or text
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

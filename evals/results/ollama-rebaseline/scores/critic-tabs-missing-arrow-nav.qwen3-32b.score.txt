@@ -1,0 +1,33 @@
+Response length: 4352 chars
+Fixture: tabs-missing-arrow-nav
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: 1 complete / 1 total
+Required fields: PASS
+Stable finding ids: PASS
+Trend values: PASS
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 1/1
+  + [W] Arrow key navigation not implemented for tab cycling
+
+Should-find issues: 1/1
+  + [W] Active tab not focused after keyboard selection
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

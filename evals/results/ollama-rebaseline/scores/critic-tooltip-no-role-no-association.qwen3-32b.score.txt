@@ -1,0 +1,31 @@
+Response length: 3202 chars
+Fixture: tooltip-no-role-no-association
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 2/3
+  + [-] Tooltip only appears on hover, not on focus
+  + [-] Missing aria-describedby on trigger button
+  X [-] Tooltip not announced when button is focused  (keywords: ['aria-live', 'role="alert"', "role='alert'", 'live region', 'status message', '4.1.3'])
+
+Should-find issues: 0/0
+
+Must-find detection rate: 67%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

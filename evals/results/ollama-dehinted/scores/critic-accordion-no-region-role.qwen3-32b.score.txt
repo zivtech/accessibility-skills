@@ -1,0 +1,31 @@
+Response length: 3407 chars
+Fixture: accordion-no-region-role
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 2/2
+  + [-] Missing role='region' on accordion panel
+  + [-] Missing aria-labelledby on accordion panel
+
+Should-find issues: 0/1
+  X [-] Consider keeping all panels in DOM with visibility control  (keywords: ['consider', 'keeping', 'panels'])
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

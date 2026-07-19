@@ -1,0 +1,31 @@
+Response length: 6864 chars
+Fixture: product-carousel-autoplay
+Difficulty: HAS-BUGS
+
+Escalated perspectives: vestibular_motion, cognitive_neurodivergent
+LOW perspectives: magnification_reflow, environmental_contrast, auditory_access, keyboard_motor, screen_reader_semantic
+
+Perspective coverage: 2/2
+  + Vestibular
+  + Cognitive
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 2/2
+  + [W] No pause/stop control for auto-advancing content
+  + [W] CSS slide transition ignores prefers-reduced-motion
+
+Should-find issues: 1/1
+  + [-] Parallax background-attachment: fixed with no reduced-motion alternative
+
+Nice-to-find issues: 1/2
+  + Rapid badge pulse animation is distracting for cognitive/attention users
+  - No aria-live region announcing slide changes
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

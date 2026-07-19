@@ -1,0 +1,34 @@
+Response length: 5226 chars
+Fixture: search-focus-stays-in-input
+Difficulty: ADVERSARIAL
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: 2 complete / 2 total
+Required fields: PASS
+Stable finding ids: PASS
+Trend values: PASS
+
+Verdict: REVISE (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE)
+Verdict acceptable: YES
+
+Must-articulate tradeoffs: 1/1
+  + Tension between keeping focus in the search input (user agency, typing flow, ind
+
+Should-find issues: 1/2
+  X aria-live='polite' announcements can be suppressed during active typing — screen  (keywords: ["aria-live='polite", 'announcements'])
+  + Mixed interaction model — listbox role implies Arrow key navigation, but Tab als
+
+Must-articulate rate: 100%
+Status: PASS

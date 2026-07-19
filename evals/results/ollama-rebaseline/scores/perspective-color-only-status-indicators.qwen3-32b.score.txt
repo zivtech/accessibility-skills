@@ -1,0 +1,36 @@
+Response length: 6502 chars
+Fixture: color-only-status-indicators
+Difficulty: ADVERSARIAL
+
+Escalated perspectives: magnification_reflow, environmental_contrast, keyboard_motor, screen_reader_semantic, cognitive_neurodivergent
+LOW perspectives: vestibular_motion, auditory_access
+
+Perspective coverage: 5/5
+  + Magnification
+  + Contrast
+  + Keyboard
+  + Screen Reader
+  + Cognitive
+
+LOW perspective leakage: none (correct)
+
+Must-find issues: 2/2
+  + [W] Status indicators (blocked/at-risk/on-track/not-started) rely on color alone. Th
+  + [W] Full task descriptions are only accessible via CSS :hover. No :focus equivalent 
+
+Should-find issues: 1/2
+  X [-] Sort icon is 10x10px with no padding. Minimum target size is 24x24px.
+  (keywords: ['target size', 'touch target', '2.5.8', '24x24', '10px'])
+  + [-] Effort (L/M/S) and priority (P1/P2/P3) abbreviations are never defined or expand
+
+Nice-to-find issues: 2/2
+  + Row selection indicated only by background-color shift (light blue tint). No ari
+  + No option to reduce information density, hide columns, or access a simplified vi
+
+ARRM role routing: YES
+Verdict: REVISE (expected: REVISE)
+Verdict acceptable: YES
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

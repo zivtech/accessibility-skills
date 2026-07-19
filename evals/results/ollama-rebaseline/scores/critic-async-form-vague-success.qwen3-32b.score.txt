@@ -1,0 +1,30 @@
+Response length: 4345 chars
+Fixture: async-form-vague-success
+Difficulty: FLAWED
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 1/1
+  + [W] Success message is generic — doesn't identify what was submitted
+
+Should-find issues: 1/1
+  + [W] aria-busy cleared 200ms before success content arrives in live region
+
+Must-find detection rate: 100%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS

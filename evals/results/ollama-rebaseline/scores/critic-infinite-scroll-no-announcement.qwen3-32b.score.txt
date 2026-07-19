@@ -1,0 +1,32 @@
+Response length: 3551 chars
+Fixture: infinite-scroll-no-announcement
+Difficulty: HAS-BUGS
+
+Phases found: 0/11
+  - phase_0
+  - phase_1
+  - phase_2
+  - phase_3
+  - phase_4
+  - phase_5
+  - phase_6
+  - phase_7
+  - phase_8
+  - phase_9
+  - phase_10
+
+Evidence contract: no findings declared
+
+Verdict: REVISE (expected: REVISE)
+
+Must-find issues: 3/4
+  + [W] Missing aria-live region for loading announcements
+  + [W] No loading state announcement
+  + [-] Missing main landmark
+  X [-] Scroll-to-load mechanism not discoverable  (keywords: ['scroll-to-load', 'mechanism', 'discoverable'])
+
+Should-find issues: 0/0
+
+Must-find detection rate: 75%
+Abort threshold: 40% (escalation gate — see score_common.py)
+Status: PASS
