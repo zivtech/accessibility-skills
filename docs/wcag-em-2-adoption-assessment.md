@@ -103,6 +103,8 @@ Each phase is a single revertible commit; SKILL.md edits mirror to `.agents/skil
 
 ### Phase 3 — Eval-suite alignment
 
+**Step 10 status: executed 2026-07-28** — controlled A/B (old vs new protocol × Haiku/Sonnet/Opus subagents + qwen3:32b ×2 draws) on the multi-page-audit fixture; receipts in `evals/results/wcag-em-phase3/`. Verdict: the rubric gate saturates at 11/11 in both conditions (the fixture text cues the graded keywords — instrument finding), but EM-depth markers the fixture never names rise for every model (Haiku 1→5, Sonnet 2→5, Opus 4→10, qwen 1→5 draw-stable): sub-Opus tiers stop missing EM sampling (fully at Sonnet, partially at Haiku), Opus upgrades from hedged training recall to exact operationalization. Step 11's de-hinted audit fixture is now the priority instrument fix; step 11 remains open.
+
 10. Re-run the multi-page-audit lane after Phase 2 to confirm the protocol now *teaches* what the rubric grades (prediction: sub-Opus tiers should stop missing WCAG-EM once it's in the protocol — that delta is the measure of Phase 2's value).
 11. Candidate new fixtures, costed separately: (a) an audit-scope plan for a hybrid web/native product — the trap is claiming axe/Playwright coverage for native screens (false-coverage honesty, in the spirit of the CLEAN-fixture discipline); (b) a chain fixture aggregating a11y-test findings into a contract-shaped evaluation report.
 
