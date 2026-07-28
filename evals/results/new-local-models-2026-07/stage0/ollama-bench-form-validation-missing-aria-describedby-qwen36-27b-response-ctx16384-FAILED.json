@@ -1,0 +1,12 @@
+{
+  "response": "",
+  "done": true,
+  "total_duration": 92731884583,
+  "eval_count": 969,
+  "_benchmark": {
+    "model": "qwen3.6:27b",
+    "fixture_id": "form-validation-missing-aria-describedby",
+    "elapsed_seconds": 92.8,
+    "timestamp": "2026-07-28T14:35:39"
+  }
+}

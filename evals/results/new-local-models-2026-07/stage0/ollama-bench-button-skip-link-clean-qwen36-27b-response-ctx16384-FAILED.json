@@ -1,0 +1,12 @@
+{
+  "response": "",
+  "done": true,
+  "total_duration": 126075124917,
+  "eval_count": 1586,
+  "_benchmark": {
+    "model": "qwen3.6:27b",
+    "fixture_id": "button-skip-link-clean",
+    "elapsed_seconds": 126.1,
+    "timestamp": "2026-07-28T14:37:45"
+  }
+}
