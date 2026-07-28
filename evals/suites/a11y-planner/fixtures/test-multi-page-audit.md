@@ -56,7 +56,7 @@ This is a **COMPLEX** difficulty fixture — audit planning at site-level requir
 ## What Success Looks Like
 
 An excellent plan would:
-- ✓ Reference WCAG-EM (Website Accessibility Conformance Evaluation Methodology) as the sampling framework
+- ✓ Reference WCAG-EM — the W3C evaluation methodology, in either version: 1.0 ("Website Accessibility Conformance Evaluation Methodology", 2014) or 2.0 ("WCAG Evaluation Methodology", 2026 Group Note) — as the sampling framework
 - ✓ Prioritize page sampling by risk: authenticated flows first, shared components second, public content pages third
 - ✓ Define a testing matrix: which tool(s) and methods apply to which page types
 - ✓ Specify axe DevTools Enterprise configuration (which rule sets, which exclusions)
@@ -70,7 +70,7 @@ An excellent plan would:
 ## What Would Be Below Expectations
 
 - ✗ Page sampling strategy of "test all 20 pages equally" — this misunderstands audit methodology and is not feasible in 3 months with a 2-person team
-- ✗ No reference to WCAG-EM — the W3C's own methodology for evaluating websites for conformance
+- ✗ No reference to WCAG-EM — the W3C's own methodology for evaluating websites (1.0) / digital products (2.0) for conformance
 - ✗ Tool selection that treats WAVE and axe as equivalent — they cover different things and should be used in complementary, not substitution, roles
 - ✗ No handling of third-party components — reCAPTCHA inaccessibility is a VPAT documentation issue, not a remediation issue; omitting this will produce a legally incorrect VPAT
 - ✗ Prioritization framework that ranks issues by WCAG criterion number rather than user impact
