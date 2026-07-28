@@ -86,11 +86,15 @@ Each phase is a single revertible commit; SKILL.md edits mirror to `.agents/skil
 
 ### Phase 1 — Reference & terminology refresh (docs only, no behavior change)
 
+**Status: completed 2026-07-28.** Fixture, rubric (accept-either with 2.0 as bonus; scoring key renamed in lockstep with its must_have entry), bug-reporting EARL line (both mirrors), and README index landed.
+
 3. `evals/suites/a11y-planner/fixtures/test-multi-page-audit.md` + `.metadata.yaml` + rubric: current name and URL; rubric explicitly accepts a 1.0 **or** 2.0 citation as the pass signal (training-data lag is real — a 2.0-only gate would fail good plans for years), with 2.0 terminology as bonus evidence, not a gate.
 4. `bug-reporting` EARL section: one line noting WCAG-EM 2.0 and the planned EM 2 Report Tool.
 5. This doc indexed from `README.md` docs list.
 
 ### Phase 2 — Audit-scope methodology wiring
+
+**Status: completed 2026-07-28.** AUDIT-SCOPE MODE added to the planner protocol (both mirrors) with the five-step overlay, declarations, and the EM-does-not-supply rules; a11y-test §Scale-and-Sampling gained the random sample, representativeness check, complete-process routing, and state coverage; `docs/a11y-evaluation-report-contract.md` committed; `evaluation_context` added to the evidence-finding contract; CLAUDE.md routing note added. Phase 3 (eval re-run) remains open — it is a benchmark-spend decision.
 
 6. **Planner:** add an explicit audit-scope mode to the protocol (trigger: the target is a site/product evaluation, not a component build) structured on the five steps, requiring: conformance target + accessibility support baseline declarations; sample-set rationale (structured + random + complete processes + shared-component leverage); state coverage per sample; the report skeleton from the contract below; and the boundary sentence for anything the web stack can't measure. Risk-based prioritization and third-party handling stay — EM doesn't provide them and the fixture is right to demand them.
 7. **`a11y-test` §4 sampling:** add the random sample, the structured-vs-random comparison rule ("divergence means the structured sample was not representative — expand and re-classify"), and complete-process routing to keyboard-a11y-tester driven sessions.

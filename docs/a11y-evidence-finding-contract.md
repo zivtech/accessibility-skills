@@ -20,6 +20,7 @@ Do not emit a contract for passing checks or clean reviews. A clean result with 
 | `expected_behavior` | yes | What the user or assistive technology should experience. |
 | `actual_behavior` | yes | What the evidence shows happened instead. |
 | `trend` | optional | One of `new`, `persistent`, `worsening`, `improving`, or `resolved`. |
+| `evaluation_context` | optional | Audit-scope only: `evaluation_id` plus `sample_id` (and `process_id` when the finding sits inside a complete process), linking the finding into an evaluation report's sample set. |
 
 ## Example
 
@@ -79,6 +80,16 @@ When wrapping a `virtual-screen-reader` component-assertion result (adopted 2026
 | `reproduction_steps` | install pin (`npm i -D @guidepup/virtual-screen-reader@<version>`) + committed test file path + runner command |
 
 Calibration: never wrap a silent mount-with-content `role="alert"` as a failed fix — it is inconclusive; restate the assertion in the persistent-container shape first. An empty `"polite: "` entry is an `aria-atomic` region-clear marker. Components containing open shadow roots are outside VSR evidence entirely (record: `evals/results/virtual-screen-reader/`).
+
+## Evaluation Context (audit scope only)
+
+When a finding is produced inside an audit-scope engagement (see the [A11y Evaluation Report Contract](a11y-evaluation-report-contract.md)), `evaluation_context` records its sample-set membership so the report can aggregate findings and re-evaluations can compare like with like:
+
+```
+evaluation_context: evaluation_id=portal-2026q3; sample_id=S07-application-step3; process_id=application/default-sequence
+```
+
+Omit the field entirely outside audit engagements — it must not become ritual on component-scope findings.
 
 ## Trend Language
 
