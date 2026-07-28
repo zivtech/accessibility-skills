@@ -279,6 +279,9 @@ CRITIC_CTX = {
     # inside the thinking stream and the scored response comes back empty.
     "qwen3.6:27b": 32768,
     "qwen3.6:35b": 32768,
+    # gemma4 tokenizer: critic prompt alone measures 16,477 tokens (num_predict=1
+    # probe, 2026-07-28) — exceeds the 16384 default before generation starts.
+    "gemma4:31b": 32768,
 }
 CRITIC_CTX_DEFAULT = 16384
 
