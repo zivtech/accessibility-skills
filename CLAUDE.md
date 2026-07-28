@@ -103,6 +103,7 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 - Prefer targeted edits over large rewrites.
 - The critic serves at two lifecycle points — keep both documented in companion tables.
 - Vital-Core adoption is limited to reporting discipline: stable evidence findings, fingerprints, trend language, and benchmark gates. Do not import scanner runtime, generated dashboard state, crawl state, Wappalyzer/ParaCharts vendors, or Lighthouse/security/sustainability engines. See `docs/vital-core-adoption-assessment.md` and `docs/a11y-evidence-finding-contract.md`.
+- Audit-scope engagements follow WCAG-EM. The planner's AUDIT-SCOPE MODE, a11y-test's audit sampling discipline (structured + 10% random + representativeness check + complete processes), and `docs/a11y-evaluation-report-contract.md` implement WCAG-EM 2.0 (verified reference: `docs/wcag-em-2-reference.md`; adoption boundary: `docs/wcag-em-2-adoption-assessment.md`). Conformance outcomes and impact severity are orthogonal — report both, never derive one from the other. WCAG-EM citations belong at audit scope only; treat an EM citation in a component-scope review as a finding against the output.
 
 ## Browser Automation Tooling
 

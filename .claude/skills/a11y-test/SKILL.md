@@ -775,6 +775,13 @@ For large sites, classify pages into template groups and scan one representative
 3. Scan representatives, report which templates were covered
 4. Document sampling strategy in the test report
 
+For audit-scope runs (conformance audits, pre-VPAT work), extend template sampling with WCAG-EM sampling discipline (Steps 3–4 of [WCAG-EM 2.0](https://www.w3.org/TR/wcag-em-2/); verified reference: `docs/wcag-em-2-reference.md`):
+
+5. **Random sample:** add a randomly selected sample of 10% of the structured (template-based) sample, on top, drawn from routes not already selected; record the selection method in the test report
+6. **Representativeness check:** if the random sample surfaces content types or violation patterns the structured sample missed, the template classification was not representative — expand the structured sample, re-classify, and repeat until the random sample stops surfacing new finding types
+7. **Complete processes:** multi-view journeys (checkout, multi-step applications, auth) are tested end-to-end, never as isolated pages — include every view in the process (the default sequence plus completion-critical branches) and route them to keyboard-a11y-tester driven sessions (see "Goal-driven journey audits" above); per-page scans do not count as process evidence
+8. **State coverage:** each sampled page is evaluated in its states (default, loading, error, expanded — the Multi-Page Scanning list above); name the state coverage in the sampling documentation
+
 ### Output Format
 Report axe-core results alongside keyboard and visual regression results:
 ```
