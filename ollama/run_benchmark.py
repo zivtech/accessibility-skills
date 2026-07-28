@@ -444,6 +444,9 @@ PERSPECTIVE_CTX = {
     "llama3.3:70b": 32768,
     "deepseek-r1:70b": 32768,
     "qwen3.5:27b": 32768,
+    # qwen3.6: thinking-by-default — reasoning tokens share the window (2026-07-28)
+    "qwen3.6:27b": 32768,
+    "qwen3.6:35b": 32768,
 }
 PERSPECTIVE_CTX_DEFAULT = 16384
 
