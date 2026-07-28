@@ -273,6 +273,16 @@ def build_escalation_prompt(fixture_id):
     )
 
 
+CRITIC_CTX = {
+    # qwen3.6 (thinking-by-default): critic prompt alone measured at 16,157 tokens
+    # (prompt_eval, 2026-07-28 smoke) — at 16384 generation hits done_reason=length
+    # inside the thinking stream and the scored response comes back empty.
+    "qwen3.6:27b": 32768,
+    "qwen3.6:35b": 32768,
+}
+CRITIC_CTX_DEFAULT = 16384
+
+
 def run_ollama(model, fixture_id, system_prompt):
     fixture_content = load_fixture(fixture_id)
     prompt = PROMPT_PREFIX + fixture_content
@@ -282,7 +292,7 @@ def run_ollama(model, fixture_id, system_prompt):
         "system": system_prompt,
         "prompt": prompt,
         "stream": True,
-        "options": {"num_ctx": 16384, "temperature": 0.3},
+        "options": {"num_ctx": CRITIC_CTX.get(model, CRITIC_CTX_DEFAULT), "temperature": 0.3},
     }
 
     model_tag = make_model_tag(model)
