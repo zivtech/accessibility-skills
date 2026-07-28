@@ -51,7 +51,7 @@ key_evaluation_criteria:
 
 expected_findings:
   must_have:
-    - WCAG-EM methodology reference (https://www.w3.org/TR/WCAG-EM/)
+    - WCAG-EM methodology reference, either version (https://www.w3.org/TR/WCAG-EM/ or https://www.w3.org/TR/wcag-em-2/)
     - Risk-based page sampling strategy (authenticated flows first, shared components second)
     - Tool selection rationale (axe DevTools + WAVE + manual keyboard + SR — complementary roles)
     - Testing matrix (page type × test method)
@@ -74,7 +74,7 @@ expected_findings:
     - 'Estimated effort per page type (automated: 30min; manual keyboard: 2hr; SR: 3hr)'
 
   nice_to_have:
-    - WCAG-EM structured sample definition (random representative sample + critical pages)
+    - WCAG-EM sample-set structure named (structured sample set + 10% random sample set + complete processes)
     - High contrast mode testing plan for government compliance
     - Cognitive accessibility review (WCAG 2.1 + 2.2 cognitive criteria: 1.3.5, 2.4.6, 3.1.1, 3.3.2)
     - Third-party vendor contact process for VPAT supplemental documentation
@@ -109,7 +109,14 @@ notes: |
   Baseline plans will likely produce a generic "test all pages with axe and SR" plan without
   sampling strategy, WCAG-EM reference, tool matrix, or third-party handling.
 
-  Key discriminator: Does the plan reference WCAG-EM (https://www.w3.org/TR/WCAG-EM/)?
+  Key discriminator: Does the plan reference WCAG-EM (https://www.w3.org/TR/WCAG-EM/ or
+  https://www.w3.org/TR/wcag-em-2/)? Either version citation is the pass signal: WCAG-EM 2.0
+  (Group Note, 2026-07-23) renamed and generalized the methodology, but models with pre-2026
+  training data legitimately cite the 1.0 identity — a 2.0-only gate would fail good plans
+  for years. 2.0 terminology (digital product, sample set, structured + 10% random sampling,
+  complete processes) is bonus evidence of currency, never a gate. /TR/WCAG-EM/ now serves
+  the 2.0 text byte-identically (verified 2026-07-28; see docs/wcag-em-2-reference.md), so
+  the scoring keywords match both versions by design.
   Government portal audits that produce VPATs are expected to follow WCAG-EM. A plan that
   doesn't know this methodology exists cannot produce a legally defensible VPAT.
 
@@ -122,7 +129,7 @@ notes: |
   or Dragon NaturallySpeaking specifics.
 
 scoring_keywords:
-  "WCAG-EM methodology reference (https://www.w3.org/TR/WCAG-EM/)":
+  "WCAG-EM methodology reference, either version (https://www.w3.org/TR/WCAG-EM/ or https://www.w3.org/TR/wcag-em-2/)":
     - "WCAG-EM"
     - "w3.org/TR/WCAG-EM"
   "Risk-based page sampling strategy (authenticated flows first, shared components second)":

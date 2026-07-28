@@ -209,6 +209,8 @@ docs/
   vital-core-adoption-assessment.md     # Adopt/adapt/defer/reject boundary
   keyboard-a11y-tester-adoption-assessment.md   # Journey-audit mode adoption + cross-validation
   virtual-screen-reader-adoption-assessment.md  # Component SR-assertion mode adoption + cross-validation
+  wcag-em-2-adoption-assessment.md      # WCAG-EM 2.0 gap analysis + tiered audit-scope adoption plan
+  wcag-em-2-reference.md                # Verified WCAG-EM 2.0 spec reference (Phase 0 gate artifact)
   drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
   a11y-planner/
   a11y-critic/
