@@ -2,7 +2,12 @@
 
 Phase 0 deliverable of [the adoption assessment](wcag-em-2-adoption-assessment.md). Facts below were read directly from the published document text on 2026-07-28, not from secondary sources.
 
-**Provenance:** read from `https://w3c.github.io/wai-wcag-em/` — which the Note's own front matter names as its "Latest editor's draft" URL — after the session's egress allowlist was opened for `www.w3.org` and GitHub Pages. The TR-hosted copy (`https://www.w3.org/TR/wcag-em-2/`) serves a Cloudflare JS challenge to non-browser clients and was not fetched; the editors'-draft page carries the identical Group Note front matter (title, date, this-version URL), so divergence risk is negligible. **Residual checks:** a human-browser glance at the TR copy, and where the 1.0 shortname `https://www.w3.org/TR/WCAG-EM/` now resolves (the Note lists 1.0, `https://www.w3.org/TR/2014/NOTE-WCAG-EM-20140710/`, as "Previous version", so the old shortname likely still serves 1.0 — relevant only to the fixture rubric's URL keyword).
+**Provenance — two independent reads on 2026-07-28, agreeing on every shared fact:**
+
+1. **Editors'-draft read (remote session):** `https://w3c.github.io/wai-wcag-em/` — the Note's own designated "Latest editor's draft" URL — after that session's egress allowlist was opened. From that egress, the TR host served a Cloudflare JS challenge to non-browser clients.
+2. **TR read (local session):** `https://www.w3.org/TR/wcag-em-2/` and `https://www.w3.org/TR/WCAG-EM/` fetched directly with plain `curl` (HTTP 200, full content — the Cloudflare challenge is egress-dependent, not universal) and byte-compared; the archived 1.0 Note (`/TR/2014/NOTE-WCAG-EM-20140710/`) and the publication-history page fetched for the 1.0 delta and date pinning.
+
+The TR read settles the first read's residual checks: the TR copy matches the editors' draft, and the 1.0-shortname question is answered below. Quotes are short and attributed; the source is © W3C, used under the [W3C Document License](https://www.w3.org/copyright/document-license/).
 
 ## Identity
 
@@ -10,7 +15,12 @@ Phase 0 deliverable of [the adoption assessment](wcag-em-2-adoption-assessment.m
 - **Status:** W3C **Group Note, 23 July 2026**, Note track — informative; "endorsed by the Accessibility Guidelines Working Group, but is not endorsed by W3C itself nor its Members." Builds on WCAG-EM 1.0 (2014, Eval TF of WCAG WG + ERT WG).
 - **This version:** `https://www.w3.org/TR/2026/NOTE-wcag-em-2-20260723/` · **Latest published:** `https://www.w3.org/TR/wcag-em-2/` · **Editors' draft / feedback repo:** `w3c/wai-wcag-em` on GitHub.
 - **Editors:** Hidde de Vries (Logius), Jeroen Hulscher (Logius), Steve Faulkner (Tetralogical). Former editors: Eric Velleman, Shadi Abou-Zahra.
+- **History:** `https://www.w3.org/standards/history/wcag-em-2/` — Draft Note 5 February 2026 → Group Note 23 July 2026 (pins the date; the lone "24 July" secondary report was wrong). **Previous version:** `https://www.w3.org/TR/2014/NOTE-WCAG-EM-20140710/` (WCAG-EM 1.0).
 - Abstract scope: evaluate how well **digital products** conform to WCAG 2; technology-agnostic; suitable for self-assessment and third-party evaluation. Explicitly does **not** add to or change WCAG 2 requirements.
+
+## Where `/TR/WCAG-EM/` now resolves
+
+Settled 2026-07-28 by the TR read: `https://www.w3.org/TR/WCAG-EM/` returns HTTP 200 with **no redirect** and serves content **byte-identical** to `https://www.w3.org/TR/wcag-em-2/`. The 1.0-era shortname is now an alias of the 2.0 Note (the editors'-draft read's "likely still serves 1.0" guess was wrong); WCAG-EM 1.0 remains reachable only at its dated URI. Consequences: a `w3.org/TR/WCAG-EM` citation is a live pointer to the current methodology but version-ambiguous; the canonical current citation is `/TR/wcag-em-2/` (the Note's own declared latest-published URL); the fixture rubric's URL keyword substring-matches both, which Phase 1 makes deliberate rather than lucky.
 
 ## Document structure
 
@@ -24,13 +34,31 @@ Each step and sub-step is framed as a numbered **"Methodology Requirement N[.M]"
 | 2. Explore the target digital product | 2.1 common views · 2.2 essential functionality · 2.3 variety of sample types · 2.4 technologies relied upon (note encourages also recording CMS, design system, frameworks, versions) · 2.5 other relevant samples (accessibility help, settings, contact, auth/financial) |
 | 3. Select a representative sample set | 3.1 structured sample set · 3.2 randomly selected sample set · 3.3 complete processes |
 | 4. Evaluate the selected sample set | 4.1 check all initial samples (SC · conforming alternate versions · accessibility support · non-interference) · 4.2 check all complete processes · 4.3 compare structured and random sample sets |
-| 5. Report the evaluation findings | 5.1 document the outcomes of each step · 5.2 record the evaluation specifics *(optional)* · 5.3 evaluation statement *(optional)* · 5.4 aggregated score *(optional)* · 5.5 machine-readable reports *(optional, new as its own sub-step)* |
+| 5. Report the evaluation findings | 5.1 document the outcomes of each step · 5.2 record the evaluation specifics *(optional)* · 5.3 evaluation statement *(optional)* · 5.4 aggregated score *(optional)* · 5.5 machine-readable reports *(optional)* |
 
 Evaluators may return to any preceding step as new information emerges.
 
+### 1.0 mapping (verified against the archived 1.0 Note)
+
+Every 2.0 sub-step maps 1:1 onto a 1.0 sub-step — letters became decimals, "web pages" became views/samples, and **no sub-step was added or removed** (1.0 already had 2.e "Identify Other Relevant Web Pages", 4.a "Check All Initial Web Pages", and 5.e "Provide Machine-Readable Reports (Optional)"):
+
+| WCAG-EM 2.0 | WCAG-EM 1.0 |
+|---|---|
+| 1.1 scope of the digital product | 1.a Define the Scope of the Website |
+| 1.2 conformance target · 1.3 accessibility support baseline · 1.4 additional requirements | 1.b · 1.c · 1.d (same titles) |
+| 2.1 common views | 2.a Identify Common Web Pages of the Website |
+| 2.2 essential functionality | 2.b Identify Essential Functionality of the Website |
+| 2.3 variety of sample types | 2.c Identify the Variety of Web Page Types |
+| 2.4 technologies relied upon | 2.d Identify Web Technologies Relied Upon |
+| 2.5 other relevant samples | 2.e Identify Other Relevant Web Pages |
+| 3.1 structured sample set · 3.2 randomly selected sample set · 3.3 complete processes | 3.a Include a Structured Sample · 3.b Include a Randomly Selected Sample · 3.c Include Complete Processes |
+| 4.1 check all initial samples | 4.a Check All Initial Web Pages |
+| 4.2 check all complete processes · 4.3 compare structured and random sample sets | 4.b · 4.c Compare Structured and Random Samples |
+| 5.1–5.5 report sub-steps | 5.a–5.e (same five, same optionality) |
+
 ## Load-bearing specifics (verbatim-anchored)
 
-1. **Random sample sizing (3.2):** "The number of samples to randomly select is **10% of the structured sample set**" — added *on top* (80 structured → 8 random → 88 total). Must exclude samples already selected (pick a replacement on collision; if no new views exist, the step is complete), span the entire product scope, follow no predictable pattern, and the **selection method must be documented**.
+1. **Random sample sizing (3.2):** "The number of samples to randomly select is **10% of the structured sample set**" — added *on top* (80 structured → 8 random → 88 total). Must exclude samples already selected (pick a replacement on collision; if no new views exist, the step is complete), span the entire product scope, follow no predictable pattern, and the **selection method must be documented**. **Unchanged from 1.0** — the archived Note uses the identical 10%-of-structured rule with the same 80→8 example and no minimum in either version.
 2. **Representativeness check (4.3):** the random set must show no *types of content* and no *evaluation findings* absent from the structured set. If it does, "evaluators need to go back to Step 3" (and possibly adjust Step 2 findings) and the step "is repeated until the structured sample set is adequately representative."
 3. **Evaluation basis (4):** each sample is checked against **the five WCAG 2 conformance requirements** at the target level — conformance level, full pages, complete processes, only accessibility-supported ways of using technologies, non-interference — not SC pass/fail alone. Alternate versions are "not considered to be separate samples" — evaluated with the sample as one unit. SC with no relevant content are *satisfied* per WCAG 2 (a report may optionally mark them "not present"). Repeated components (header, nav, search) need not be re-evaluated per occurrence unless they differ.
 4. **Complete processes (3.3/4.2):** include the process starting point, the **default sequence** (standard use case: no input errors, no optional selections) and **commonly-accessed, critical branch sequences** (a branch may terminate where it re-enters the default). Record the *actions* needed to move sample-to-sample — "In most cases the web address (URL) will not be sufficient to identify the sample in a complete process." In Step 4.2, evaluate only the content that changes along the process; interaction, form feedback, error messages, and settings/device variations are in scope.
@@ -51,6 +79,8 @@ Evaluators may return to any preceding step as new information emerges.
 - **essential functionality** — "functionality that, if removed, fundamentally changes the use or purpose of the product for users."
 - **evaluator** / **evaluation commissioner** — who performs vs. who commissioned the evaluation (commissioner may be owner, developer, procurer, or survey owner).
 
+Two terms the adoption assessment expected in the glossary are defined elsewhere: **accessibility support baseline** is operational in Methodology Requirement 1.3 (the browsers, assistive technologies, and other user agents the product's features must be accessibility supported for — set with the commissioner, extendable mid-evaluation, narrowable only for closed networks); **complete process** is grounded in WCAG 2.2 conformance requirement 3, with its mechanics (starting point, default sequence, branch sequences) specified in Step 3.3.
+
 ## Scope-of-applicability notes that matter to this bundle
 
 - **Principle of product enclosure:** scope includes "all views, states and functionality of a digital product, without excluding specific parts" — exclusions conflict with WCAG 2's full-pages/complete-processes requirements or distort results. (Generalizes 1.0's full-pages provision.)
@@ -64,4 +94,6 @@ Evaluators may return to any preceding step as new information emerges.
 
 ## What this settles from the adoption assessment
 
-All *(verify)* marks in the assessment are resolved except the `/TR/WCAG-EM/` shortname resolution (above). Corrections applied to the assessment: publication date firm (23 July); sub-steps are decimal with a new standalone 5.5; the sample/view/sample-set terminology chain; random-sample parameters and the 4.3 iteration loop; the five-conformance-requirements evaluation basis; and EM 2.0's own caution against aggregated scores.
+All *(verify)* marks in the assessment are resolved — including the `/TR/WCAG-EM/` shortname resolution, settled above by the TR read. Corrections applied to the assessment: publication date firm (23 July — dated URI plus history page); sub-steps are decimal and map 1:1 onto 1.0's letters (the editors'-draft read initially called 5.5 "a new standalone sub-step" — wrong, 1.0 had 5.e); the sample/view/sample-set terminology chain; random-sample parameters (1.0-identical) and the 4.3 iteration loop; the five-conformance-requirements evaluation basis; EM 2.0's own caution against aggregated scores; and "accessibility support baseline" / "complete process" being operational definitions rather than glossary terms.
+
+Two provenance notes: the Note has **no changes-from-1.0 appendix** — the 1.0 delta in this document comes from directly comparing the two published Notes, not from a changelog; and the "WCAG-EM 2 Report Tool later in 2026" plan remains a secondary-source claim (WAI announcement, not the spec), correctly attributed as a watch item.
