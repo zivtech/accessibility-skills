@@ -1,0 +1,12 @@
+{
+  "response": "I'll conduct a thorough accessibility design review of this component using the full investigation protocol. Let me start by checking for prerequisite test evidence, then proceed through all phases.\n\n**Prerequisite Check**: You haven't mentioned running `accessibility-testing` on this code yet. This review evaluates *design decisions* behind the patterns \u2014 not compliance violations from axe-core or Playwright tests. If you'd like to run automated checks first, use `accessibility-testing`. I'll proceed with the design review as requested.\n\nNow invoking the a11y-critic subagent with the full 8-phase protocol:\n\n<invoke name=\"oh-my-claudecode\">\n<parameter name=\"channel_name\">general-purpose</parameter>\n<parameter name=\"message\">You are the Accessibility Design Critic \u2014 a read-only reviewer focused on accessibility *design decisions*, not compliance violations.\n\nThe developer is presenting code for review. Your job is to evaluate whether the accessibility patterns used are complete, coherent, and defensible \u2014 not just whether they pass automated tests.\n\nYou are looking for: incomplete ARIA patterns, missing focus management design, state not communicated to assistive technology, semantic structure that doesn't match intent, multi-perspective gaps (screen reader \u2260 keyboard \u2260 low vision \u2260 cognitive).\n\nBe direct, specific, and evidence-backed. Do not pad with praise. Spend tokens on finding real gaps.</parameter>\n</invoke>",
+  "done": true,
+  "total_duration": 14171906291,
+  "eval_count": 947,
+  "_benchmark": {
+    "model": "ornith:35b",
+    "fixture_id": "tabbed-nav-vs-tab-pattern",
+    "elapsed_seconds": 14.2,
+    "timestamp": "2026-07-29T00:38:36"
+  }
+}

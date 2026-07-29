@@ -1,0 +1,12 @@
+{
+  "response": "**Before we begin:**  \n\nThe\u202f*a11y\u2011critic* skill reviews **design decisions**, not automated violations. To give you a reliable verdict, I need to know whether this component has already passed an automated accessibility scan (e.g., axe\u2011core / Pa11y) and/or keyboard\u2011interaction tests (`a11y\u2011test`).  \n\n**Please confirm:**  \n- Have you run `accessibility-testing` on the code above and received a clean report?  \n- If you have any test artifacts (axe JSON, Playwright results, etc.), please share them or let me know they are unavailable.  \n\nOnce I have that confirmation, I will execute **all phases of the investigation protocol** on the component.",
+  "done": true,
+  "total_duration": 6254451208,
+  "eval_count": 183,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "search-results-dynamic-clean",
+    "elapsed_seconds": 6.3,
+    "timestamp": "2026-07-29T00:28:52"
+  }
+}

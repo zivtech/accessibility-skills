@@ -1,0 +1,12 @@
+{
+  "response": "**Before I begin the full A11y Design Review, I need to confirm the prerequisite step.**\n\nHave you already run an **automated accessibility\u2011testing** pass (e.g., axe\u2011core / Pa11y) on this component and its page?  \nThe\u202f*a11y\u2011critic* skill reviews *design decisions* **after** automated checks have passed; if those checks are still pending, we should run them first.  \n\nPlease let me know whether the tests have been executed and, if possible, share any test output (axe rule IDs, impact levels, etc.). Once confirmed, I\u2019ll proceed through all phases of the investigation protocol you requested.",
+  "done": true,
+  "total_duration": 7055873167,
+  "eval_count": 228,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "tabbed-nav-vs-tab-pattern",
+    "elapsed_seconds": 7.1,
+    "timestamp": "2026-07-29T00:29:00"
+  }
+}

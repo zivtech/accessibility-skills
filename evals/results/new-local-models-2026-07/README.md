@@ -63,8 +63,18 @@ Flip-set stability (detection side): accordion 2/2 in all three draws; checkout-
 
 **Stage-3-backed routing outcome:** the detector recommendation moves to qwen3.6:35b (best detection ever recorded: 68/68 critic sweep, 36/37 perspective, faster than the incumbent, flip-set no worse); the "detector, not a verdict authority" rule is retained verbatim and now applies to the whole local tier. Data-fidelity caveat from the bugreport lane carries into the routing note.
 
+## Final screening round (2026-07-29, ollama 0.32.5, receipts in `stage1-*/`)
+
+| Model | Detection | CLEAN wrong (≤1) | Incompletions | Verdict |
+|---|---|---|---|---|
+| laguna-s-2.1 (96 GB) | 14/15 | **1/4** — first model to judge interactive-dropdown correctly | 0 | **ADVANCE** → Stage 2 (running overnight; ~7–8 min/fixture). Adjudication oddity: found accordion's bugs 2/2 then verdicted ACCEPT — under-calibration, the inverse of qwen severity overshoot |
+| laguna-xs-2.1 (20 GB) | 13/15 | 3/4 (inverse profile: only button-skip-link correct) | 0 (3 `Verdict: NONE` format gaps on scored-PASS detection rows) | **STOP** |
+| gemma4:26b (17 GB) | 13/15 | 2/4 | 0 | **STOP** — better verdict calibration than its 31b sibling; the MoE speed holds but the gate is the gate |
+| gpt-oss:120b (65 GB) | 0/15 as-run | 4/4 as-run | 10/10 non-executions | **STOP — behavioral incompatibility, adjudicated:** it does not execute the protocol single-shot; every run asks for automated-test results and halts (Phase 0 treated as a conversational prerequisite). Not a scorer artifact. Recoverable-hypothesis (prompt addendum "assume no automated results") would be a different condition — not run |
+| ornith:35b (21 GB) | 14/15 on completed rows | 1/4 on completed rows (3/4 correct) | **2/10** — agentic wrapper hijacks mid-review (`subagent` invocation attempts, stray `</think>`, `<|mask_end|>` halt); the 8 completed rows carry zero contamination | **STOP** on the zero-incompletions gate — second-best completed-row profile of the funnel; watch item: intermittent agentic derail may be template/params-fixable (different condition) |
+
 ## Status
 
-- **Done:** Stage 0/1 (27b stop, 35b advance, gemma4:31b stop); Stage 2 full lanes for 35b; Ollama 0.31.1 → 0.32.5 upgrade (unblocked Laguna); laguna-s audit + smoke (full offload at 96 GB, ~7–8 min/fixture, advances); Stage 3 + control (above).
-- **Running:** laguna-s Stage 1; laguna-xs audit + smoke.
-- **Queued:** gemma4:26b, gpt-oss:120b, ornith:35b screenings; BENCHMARK.md rows + routing-note edits (Stage 3 evidence in hand).
+- **Done:** all Stage 0/1 screening (8 candidates), Stage 2 + Stage 3 + control for qwen3.6:35b, Ollama 0.31.1 → 0.32.5 upgrade.
+- **Running:** laguna-s Stage 2 full lanes (overnight, user-approved).
+- **Queued:** laguna-s Stage 2 scoring; BENCHMARK.md rows + routing-note edits (Stage 3 evidence in hand, staged for review); restore Ollama.app + launchd agent at window close.
