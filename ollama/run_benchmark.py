@@ -282,6 +282,13 @@ CRITIC_CTX = {
     # gemma4 tokenizer: critic prompt alone measures 16,477 tokens (num_predict=1
     # probe, 2026-07-28) — exceeds the 16384 default before generation starts.
     "gemma4:31b": 32768,
+    "gemma4:26b": 32768,
+    # New-model default: every current-gen tokenizer measured puts the critic
+    # prompt at >=16.1K, so new candidates start at 32768 (probe confirms at audit).
+    "laguna-s-2.1:q4_k_m": 32768,
+    "laguna-xs-2.1": 32768,
+    "gpt-oss:120b": 32768,
+    "ornith:35b": 32768,
 }
 CRITIC_CTX_DEFAULT = 16384
 
