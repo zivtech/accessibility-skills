@@ -28,8 +28,21 @@ Verdict-severity note (all three scored models): REJECT drawn where REVISE expec
 
 Baseline context for the CLEAN gate: qwen3:32b's own unassisted draw had 1 wrong CLEAN verdict + 2 finding-raising WARNs on this subset, and its CLEAN verdicts are draw-unstable (1/5↔4/5 wrong across perspective draws). 35b's 1-wrong + 1-WARN screening result is at or better than the incumbent — the Stage 3 ×3-draw protocol decides the verdict-authority question, not this single draw.
 
+## Stage 2 — qwen3.6:35b full lanes (2026-07-28, ollama 0.31.1, receipts in `stage2-qwen36-35b/`)
+
+All four lanes completed with zero incompletions and zero empty responses (guards green). Scorer-level results; per the invariants every scorer **miss** requires content adjudication — the critic lane has none to adjudicate:
+
+| Suite | Result | vs qwen3:32b unassisted rebaseline |
+|---|---|---|
+| a11y-critic (33) | **68/68 must-find** — first full-suite sweep by any local model. 30 PASS / 1 WARN / **1 FAIL** (interactive-dropdown-clean false REJECT — same fixture as its screening draw: a stable, narrow CLEAN failure, not draw noise). button-skip-link-clean judged **correctly** (the incumbent's known miss). | 65/68; 1 wrong CLEAN verdict + 2 finding-raising WARNs |
+| perspective-audit (25) | **36/37 must-find** (tab-panel-arrow-keys 1/2). Zero HAS-BUGS verdict failures. CLEAN: 3/5 correct (media-player-captions and dashboard-text-labels wrong; media-player-captions is wrong in every qwen-family draw ever recorded) | 34/37; first-ever HAS-BUGS FAIL (checkout-form); CLEAN 1/5–4/5 draw-unstable |
+| planner (25) | 25/25 PASS, 249/250 must-have (test-modal 10/11) | 25/25 (parity) |
+| bug-reporting (6) | **First model rows for this suite:** 1 PASS / 1 WARN / 4 FAIL. Structure perfect (7/7 labels + snippet on every report, correct report counts, N/A fields honored). Failures are **value fidelity**: exact selectors dropped (2 fixtures), recomputed stable IDs 0/N verified everywhere checked, and **2 fabrications** — an invented ACT rule id (manual-sr-finding-prose) and an invented Screen-type on the absent-data trap (sparse-scan-adversarial) | no prior rows (instrument-validated suite) |
+
+**Interim profile:** detection and planning at or above the incumbent across every analysis suite, with severity overshoot (REJECT-where-REVISE on ~6 HAS-BUGS fixtures) and a data-fidelity weakness — qwen3.6:35b paraphrases where exactness is required (also seen at 27b: the 10%→20% parameter flip in the WCAG-EM probe). Do not route bug-report *generation* to it without a value-checking pass. The verdict-authority question (routing-rule change) stays open until Stage 3 ×3-draw stability.
+
 ## Status
 
-- **Stage 2 (qwen3.6:35b): running** — critic-remaining → perspective-remaining → planner-all → bugreport-remaining, with an empty-response guard between lanes (the `-remaining` modes treat any existing artifact as done, so silent empties would otherwise become permanent gaps).
-- **P2 pulls**: gemma4:26b, gpt-oss:120b, ornith:35b, laguna-xs-2.1 downloading; each gets audit → ctx decision → smoke → Stage 1 before any full lane.
-- Not yet run: qwen3:32b control draw (planned), Stage 3 stability draws.
+- **Done:** Stage 0/1 screening (27b stop, 35b advance, gemma4:31b stop); Stage 2 full lanes for 35b (above).
+- **Running:** Ollama upgrade 0.31.1 → 0.32.5 + laguna-s audit/smoke (user-prioritized ahead of the P2 trio). The 0.32.5 runs are a **disclosed runtime change**; every lane README section states its server version.
+- **Queued:** laguna-xs pull retry + funnel; gemma4:26b, gpt-oss:120b, ornith:35b screenings; qwen3:32b control draw (on 0.32.5, since it anchors the new-version lanes); Stage 3 stability draws for 35b (+ top survivor).
