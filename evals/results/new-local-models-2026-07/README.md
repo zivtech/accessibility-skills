@@ -41,8 +41,30 @@ All four lanes completed with zero incompletions and zero empty responses (guard
 
 **Interim profile:** detection and planning at or above the incumbent across every analysis suite, with severity overshoot (REJECT-where-REVISE on ~6 HAS-BUGS fixtures) and a data-fidelity weakness — qwen3.6:35b paraphrases where exactness is required (also seen at 27b: the 10%→20% parameter flip in the WCAG-EM probe). Do not route bug-report *generation* to it without a value-checking pass. The verdict-authority question (routing-rule change) stays open until Stage 3 ×3-draw stability.
 
+## Stage 3 — verdict-stability characterization (2026-07-28, **ollama 0.32.5**, receipts in `stage3-35b/`)
+
+qwen3.6:35b, 9 CLEAN fixtures ×3 draws + flip-set re-draws + a qwen3:32b control draw. Verdict-correctness per draw (✓ = correct verdict, WARN counts as correct with findings; ✗ = wrong verdict):
+
+| CLEAN fixture | d1 / d2 / d3 | Stable? |
+|---|---|---|
+| button-skip-link (critic) | ✓ / ✗ / ✓ | no |
+| interactive-dropdown (critic) | ✗ / ✗ / ✗ | stably wrong |
+| modal-complete (critic) | ✓ / ✓ / ✓ | **stable correct** |
+| search-results-dynamic (critic) | ✗ / ✗ / ✗ | stably wrong on 0.32.5 (was correct in both 0.31.1 draws — runtime-shift vs draw-variance not disentangled; disclosed, not claimed) |
+| article-page (persp) | ✓ / ✗ / ✗ | no |
+| login-form (persp) | ✓ / ✓ / ✗ | no |
+| nav-menu-landmarks (persp) | ✓ / ✓ / ✓ | **stable correct** |
+| dashboard-text-labels (persp) | ✗ / ✗ / ✗ | stably wrong |
+| media-player-captions (persp) | ✗ / ✗ / ✓ | no (wrong in every qwen-family draw before this one) |
+
+**Promotion bar (all-3-draws correct on 4/4 critic + ≥4/5 perspective): FAILED — 1/4 critic, 1/5 perspective.** The control run confirms symmetry: qwen3:32b's fresh 0.32.5 draw got 3/4 critic CLEANs and 2/5 perspective CLEANs wrong. Per the plan's own framing, the null result publishes: **no local verdict authority exists at ≤128 GB as of July 2026** — now established against the strongest local candidate ever measured, with a same-day incumbent control.
+
+Flip-set stability (detection side): accordion 2/2 in all three draws; checkout-form 3/3 in all three (the incumbent's variance-FAIL fixture is stable at 35b); tooltip 3/3 → 2/3 → 2/3 (one item flips — the known pair behavior persists).
+
+**Stage-3-backed routing outcome:** the detector recommendation moves to qwen3.6:35b (best detection ever recorded: 68/68 critic sweep, 36/37 perspective, faster than the incumbent, flip-set no worse); the "detector, not a verdict authority" rule is retained verbatim and now applies to the whole local tier. Data-fidelity caveat from the bugreport lane carries into the routing note.
+
 ## Status
 
-- **Done:** Stage 0/1 screening (27b stop, 35b advance, gemma4:31b stop); Stage 2 full lanes for 35b (above).
-- **Running:** Ollama upgrade 0.31.1 → 0.32.5 + laguna-s audit/smoke (user-prioritized ahead of the P2 trio). The 0.32.5 runs are a **disclosed runtime change**; every lane README section states its server version.
-- **Queued:** laguna-xs pull retry + funnel; gemma4:26b, gpt-oss:120b, ornith:35b screenings; qwen3:32b control draw (on 0.32.5, since it anchors the new-version lanes); Stage 3 stability draws for 35b (+ top survivor).
+- **Done:** Stage 0/1 (27b stop, 35b advance, gemma4:31b stop); Stage 2 full lanes for 35b; Ollama 0.31.1 → 0.32.5 upgrade (unblocked Laguna); laguna-s audit + smoke (full offload at 96 GB, ~7–8 min/fixture, advances); Stage 3 + control (above).
+- **Running:** laguna-s Stage 1; laguna-xs audit + smoke.
+- **Queued:** gemma4:26b, gpt-oss:120b, ornith:35b screenings; BENCHMARK.md rows + routing-note edits (Stage 3 evidence in hand).
