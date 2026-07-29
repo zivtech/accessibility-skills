@@ -73,8 +73,18 @@ Flip-set stability (detection side): accordion 2/2 in all three draws; checkout-
 | gpt-oss:120b (65 GB) | 0/15 as-run | 4/4 as-run | 10/10 non-executions | **STOP — behavioral incompatibility, adjudicated:** it does not execute the protocol single-shot; every run asks for automated-test results and halts (Phase 0 treated as a conversational prerequisite). Not a scorer artifact. Recoverable-hypothesis (prompt addendum "assume no automated results") would be a different condition — not run |
 | ornith:35b (21 GB) | 14/15 on completed rows | 1/4 on completed rows (3/4 correct) | **2/10** — agentic wrapper hijacks mid-review (`subagent` invocation attempts, stray `</think>`, `<|mask_end|>` halt); the 8 completed rows carry zero contamination | **STOP** on the zero-incompletions gate — second-best completed-row profile of the funnel; watch item: intermittent agentic derail may be template/params-fixable (different condition) |
 
-## Status
+## Stage 2 — laguna-s-2.1 full lanes (2026-07-29, ollama 0.32.5, receipts in `stage2-laguna-s/`)
 
-- **Done:** all Stage 0/1 screening (8 candidates), Stage 2 + Stage 3 + control for qwen3.6:35b, Ollama 0.31.1 → 0.32.5 upgrade.
-- **Running:** laguna-s Stage 2 full lanes (overnight, user-approved).
-- **Queued:** laguna-s Stage 2 scoring; BENCHMARK.md rows + routing-note edits (Stage 3 evidence in hand, staged for review); restore Ollama.app + launchd agent at window close.
+| Suite | Result | Notes |
+|---|---|---|
+| a11y-critic (33) | **67/68 must-find**, CLEAN 3/4 correct (button-skip-link wrong — its stable miss; interactive-dropdown correct again) | one shy of 35b's sweep; above the incumbent's 65/68 |
+| perspective-audit (25) | 35/37 must-find; **CLEAN 1/5 correct** — BLOCK verdicts on two PASS fixtures, one `Verdict: NONE` | detection strong, clean-code verdict calibration poor |
+| planner (25) | 20/25 PASS; **2 agentic non-executions** (0-score stubs: "Let me invoke the a11y-planner skill…" then halt — the ornith failure mode at lower frequency); 3 low-score rows | the overnight lane also crashed silently after 3 fixtures (transient; re-run completed — chain-guard gap noted: guards catch empty files, not missing ones) |
+| bug-reporting (6) | **0/6** — fabrications on 5 (invented screen readers, an "assumed" browser version), one merged report where two were required | worst data-fidelity in the funnel |
+
+**laguna-s verdict:** capability proof, not a routing winner — 96 GB runs full-offload on this hardware with near-35b critic detection, but it is 4–8× slower, derails intermittently into agentic mode, misjudges clean code at the perspective layer, and fabricates environment data. qwen3.6:35b remains the routing recommendation on every axis.
+
+## Status — funnel complete
+
+- **Done:** Stage 0/1 for all 8 candidates; Stage 2 for both gate-clearers (qwen3.6:35b, laguna-s); Stage 3 + incumbent control for 35b; Ollama 0.31.1 → 0.32.5.
+- **Remaining:** BENCHMARK.md rows + routing-note edits (drafted on this branch for review); Ollama.app + launchd agent restore at window close.
