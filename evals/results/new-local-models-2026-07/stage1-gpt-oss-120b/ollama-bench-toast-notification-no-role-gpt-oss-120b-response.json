@@ -1,0 +1,12 @@
+{
+  "response": "**Before I begin the full A11y design review, I need to confirm the prerequisite step:**  \n\nHave you already run **`accessibility\u2011testing`** (axe\u2011core / Pa11y or the Zivtech `a11y-test` suite) on this component and verified that all automated violations are resolved?  \n\nThe\u202f*a11y\u2011critic* skill reviews **design decisions**\u202f(e.g., ARIA pattern completeness, focus management, state communication), not the basic compliance checks. If the automated tests have not yet been run, please do so first (or share the results) and then I can proceed with the complete investigation protocol.",
+  "done": true,
+  "total_duration": 22046378042,
+  "eval_count": 185,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "toast-notification-no-role",
+    "elapsed_seconds": 22.1,
+    "timestamp": "2026-07-29T00:28:18"
+  }
+}

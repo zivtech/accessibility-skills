@@ -1,0 +1,12 @@
+{
+  "response": "**Before I begin a full A11y\u2011Design Review, could you let me know whether this component has already been run through the `accessibility-testing` tool (axe\u2011core / Pa11y) and\u202f\u2014\u202fif so\u202f\u2014\u202fwhether all automated violations are currently passing?**\n\nThe **a11y\u2011critic** skill is intended to evaluate *design decisions* after any compliance violations have been resolved. If the automated checks haven\u2019t been run yet, I\u2019ll need you to run them first (or share the results) before we move on to the detailed investigation protocol.",
+  "done": true,
+  "total_duration": 23029657541,
+  "eval_count": 171,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "form-validation-missing-aria-describedby",
+    "elapsed_seconds": 23.1,
+    "timestamp": "2026-07-29T00:27:33"
+  }
+}

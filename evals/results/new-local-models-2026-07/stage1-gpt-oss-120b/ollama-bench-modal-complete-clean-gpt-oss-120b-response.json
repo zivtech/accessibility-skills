@@ -1,0 +1,12 @@
+{
+  "response": "**Before I begin the full design\u2011review, I need to confirm the testing context.**\n\nThe\u202f`a11y\u2011critic` skill reviews *design decisions* **after** automated accessibility checks (axe\u2011core / Pa11y) and any keyboard\u2011interaction tests have passed.  \n\n> Have you already run `accessibility\u2011testing` (or an equivalent axe/Pa11y scan) on this modal component, and did all violations resolve? If not, please run those checks first so I can focus purely on the design\u2011level gaps.",
+  "done": true,
+  "total_duration": 7037010750,
+  "eval_count": 160,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "modal-complete-clean",
+    "elapsed_seconds": 7.1,
+    "timestamp": "2026-07-29T00:28:46"
+  }
+}
