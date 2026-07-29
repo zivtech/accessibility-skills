@@ -1,0 +1,93 @@
+===== CRITIC (33) =====
+accordion-no-region-role                       Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+app-focus-order-illogical                      Verdict: REJECT (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+async-form-vague-success                       Verdict: REVISE (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+breadcrumb-navigation-no-nav-landmark          Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+button-skip-link-clean                         Verdict: ACCEPT-WITH-RESERVATIONS (expected: ACCEPT or ACCEPT-WITH-RESERVATIONS) Verdict correct: YES Status: PASS 
+checkbox-group-no-fieldset                     Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+combobox-autocomplete-no-listbox-role          Verdict: REJECT (expected: REVISE) Must-find issues: 4/4 Status: PASS 
+dashboard-heading-inconsistency                Verdict: REVISE (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+data-table-missing-scope                       Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+expandable-section-no-button                   Verdict: REJECT (expected: unknown) Must-find issues: 4/4 Status: PASS 
+file-input-no-labels                           Verdict: REVISE (expected: REVISE) Must-find issues: 4/4 Status: PASS 
+form-field-vs-summary-errors                   Verdict: REVISE (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE) Status: PASS 
+form-validation-missing-aria-describedby       Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+heading-hierarchy-skipped                      Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+image-carousel-no-region                       Verdict: REVISE (expected: REVISE) Must-find issues: 4/4 Status: PASS 
+infinite-scroll-no-announcement                Verdict: REVISE (expected: REVISE) Must-find issues: 4/4 Status: PASS 
+interactive-dropdown-clean                     Verdict: REJECT (expected: ACCEPT or ACCEPT-WITH-RESERVATIONS) Verdict correct: NO — FALSE ALARM Status: FAIL 
+interactive-dropdown-focus-bug                 Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+loading-state-missing-aria-busy                Verdict: REVISE (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+megamenu-no-structure                          Verdict: REJECT (expected: unknown) Must-find issues: 6/6 Status: PASS 
+modal-complete-clean                           Verdict: ACCEPT-WITH-RESERVATIONS (expected: ACCEPT or ACCEPT-WITH-RESERVATIONS) Verdict correct: YES Status: WARN — correct verdict but raised findings (review manually) 
+multistep-form-error-clearing                  Verdict: REVISE (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+pagination-no-nav-landmark                     Verdict: REVISE (expected: REVISE) Must-find issues: 3/3 Status: PASS 
+popover-no-focus-management                    Verdict: REJECT (expected: REVISE) Must-find issues: 5/5 Status: PASS 
+radio-button-group-no-grouping                 Verdict: REJECT (expected: REVISE) Must-find issues: 2/2 Status: PASS 
+search-focus-stays-in-input                    Verdict: REVISE (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE) Status: PASS 
+search-results-dynamic-clean                   Verdict: ACCEPT-WITH-RESERVATIONS (expected: ACCEPT or ACCEPT-WITH-RESERVATIONS) Verdict correct: YES Status: PASS 
+tabbed-nav-vs-tab-pattern                      Verdict: REVISE (valid for ADVERSARIAL: ACCEPT-WITH-RESERVATIONS, REVISE) Status: PASS 
+tabs-incomplete-aria-selected                  Verdict: REVISE (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+tabs-missing-arrow-nav                         Verdict: REVISE (expected: REVISE) Must-find issues: 1/1 Status: PASS 
+toast-notification-no-role                     Verdict: REJECT (expected: REVISE) Must-find issues: 4/4 Status: PASS 
+tooltip-no-role-no-association                 Verdict: REJECT (expected: REVISE) Must-find issues: 3/3 Status: PASS 
+video-player-missing-captions                  Verdict: REVISE (expected: REVISE) Must-find issues: 3/3 Status: PASS 
+===== PERSPECTIVE (25) =====
+animated-onboarding-flow                       LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+article-page-clean                             Verdict: PASS (expected: PASS) Verdict correct: YES Status: WARN — correct verdict but raised findings 
+autocomplete-fast-timeout                      LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+chat-cognitive-load                            Must-find issues: 1/1 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+checkout-form-broken-errors                    LOW perspective leakage: none (correct) Must-find issues: 3/3 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+color-only-status-indicators                   LOW perspective leakage: none (correct) Must-find issues: 2/2   + [W] Status indicators (blocked/at-risk/on-track/not-started) rely on color alone. Th Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+custom-select-combobox                         LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+dashboard-text-labels                          Verdict: REVISE (expected: PASS) Verdict correct: NO — should be PASS Status: FAIL 
+data-table-sortable-columns                    LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+data-viz-color-encoding                        LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+dense-admin-jargon                             LOW perspective leakage: none (correct) Must-find issues: 1/1 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+hover-reveal-navigation                        Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+image-gallery-small-targets                    Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+infinite-scroll-cognitive                      LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+login-form-clean                               Verdict: PASS (expected: PASS) Verdict correct: YES Status: WARN — correct verdict but raised findings 
+map-interface-zoom                             LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+media-player-captions                          Verdict: REVISE (expected: PASS) Verdict correct: NO — should be PASS Status: FAIL 
+modal-broken-focus-trap                        Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+multi-column-pricing                           Must-find issues: 1/1 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+nav-menu-landmarks                             Verdict: PASS (expected: PASS or REVISE) Verdict correct: YES Status: WARN — correct verdict but raised findings 
+podcast-audio-only                             LOW perspective leakage: none (correct) Must-find issues: 1/1 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+product-carousel-autoplay                      LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+search-results-dynamic-update                  LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+tab-panel-arrow-keys                           LOW perspective leakage: none (correct) Must-find issues: 1/2 Verdict: BLOCK (expected: REVISE, BLOCK also valid) Verdict acceptable: YES Must-find detection rate: 50% Status: PASS 
+video-tutorial-no-captions                     LOW perspective leakage: none (correct) Must-find issues: 2/2 Verdict: REVISE (expected: REVISE) Verdict acceptable: YES Must-find detection rate: 100% Status: PASS 
+===== PLANNER (25) =====
+aria-combobox-autocomplete                     Score: 11/11 Status: PASS 
+aria-data-table-sorting                        Score: 10/10 Status: PASS 
+aria-disclosure-widget                         Score: 9/9 Status: PASS 
+aria-modal-form-validation                     Score: 11/11 Status: PASS 
+aria-tab-dynamic-content                       Score: 10/10 Status: PASS 
+keyboard-breadcrumb                            Score: 5/5 Status: PASS 
+keyboard-button-bar                            Score: 6/6 Status: PASS 
+keyboard-menu-dropdown                         Score: 9/9 Status: PASS 
+keyboard-modal-focus-trap                      Score: 10/10 Status: PASS 
+keyboard-roving-tabindex                       Score: 9/9 Status: PASS 
+sr-article-page                                Score: 8/8 Status: PASS 
+sr-form-field-help                             Score: 13/13 Status: PASS 
+sr-notification-system                         Score: 12/12 Status: PASS 
+sr-product-listing                             Score: 10/10 Status: PASS 
+sr-search-results-live                         Score: 11/11 Status: PASS 
+test-data-table                                Score: 13/13 Status: PASS 
+test-form                                      Score: 11/11 Status: PASS 
+test-modal                                     Score: 10/11 Status: PASS 
+test-multi-page-audit                          Score: 11/11 Status: PASS 
+test-simple-button                             Score: 9/9 Status: PASS 
+visual-animated-transition                     Score: 7/7 Status: PASS 
+visual-dark-mode                               Score: 7/7 Status: PASS 
+visual-data-viz                                Score: 6/6 Status: PASS 
+visual-form-validation                         Score: 10/10 Status: PASS 
+visual-status-colors                           Score: 6/6 Status: PASS 
+===== BUGREPORT (6) =====
+axe-image-alt-single                           
+axe-select-name-dedup                          
+axe-two-rules-split                            
+kat-focus-appearance                           
+manual-sr-finding-prose                        
+sparse-scan-adversarial                        
