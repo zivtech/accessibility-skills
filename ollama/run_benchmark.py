@@ -273,6 +273,26 @@ def build_escalation_prompt(fixture_id):
     )
 
 
+CRITIC_CTX = {
+    # qwen3.6 (thinking-by-default): critic prompt alone measured at 16,157 tokens
+    # (prompt_eval, 2026-07-28 smoke) — at 16384 generation hits done_reason=length
+    # inside the thinking stream and the scored response comes back empty.
+    "qwen3.6:27b": 32768,
+    "qwen3.6:35b": 32768,
+    # gemma4 tokenizer: critic prompt alone measures 16,477 tokens (num_predict=1
+    # probe, 2026-07-28) — exceeds the 16384 default before generation starts.
+    "gemma4:31b": 32768,
+    "gemma4:26b": 32768,
+    # New-model default: every current-gen tokenizer measured puts the critic
+    # prompt at >=16.1K, so new candidates start at 32768 (probe confirms at audit).
+    "laguna-s-2.1:q4_k_m": 32768,
+    "laguna-xs-2.1": 32768,
+    "gpt-oss:120b": 32768,
+    "ornith:35b": 32768,
+}
+CRITIC_CTX_DEFAULT = 16384
+
+
 def run_ollama(model, fixture_id, system_prompt):
     fixture_content = load_fixture(fixture_id)
     prompt = PROMPT_PREFIX + fixture_content
@@ -282,7 +302,7 @@ def run_ollama(model, fixture_id, system_prompt):
         "system": system_prompt,
         "prompt": prompt,
         "stream": True,
-        "options": {"num_ctx": 16384, "temperature": 0.3},
+        "options": {"num_ctx": CRITIC_CTX.get(model, CRITIC_CTX_DEFAULT), "temperature": 0.3},
     }
 
     model_tag = make_model_tag(model)
@@ -431,6 +451,9 @@ PERSPECTIVE_CTX = {
     "llama3.3:70b": 32768,
     "deepseek-r1:70b": 32768,
     "qwen3.5:27b": 32768,
+    # qwen3.6: thinking-by-default — reasoning tokens share the window (2026-07-28)
+    "qwen3.6:27b": 32768,
+    "qwen3.6:35b": 32768,
 }
 PERSPECTIVE_CTX_DEFAULT = 16384
 

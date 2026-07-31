@@ -1,0 +1,12 @@
+{
+  "response": "**Pre\u2011review Check**\n\nBefore I dive into the full A11y Design Review, I need to confirm that you\u2019ve already run an **automated accessibility test suite** (e.g., axe\u2011core, Pa11y, `accessibility-testing`) on this component and that those tests are passing.  \n\nThe\u202f*a11y\u2011critic* skill evaluates *design decisions* **after** the automated checks have cleared the obvious violations. If any automated failures remain, they should be fixed first.\n\n> **Please let me know:**  \n> 1\ufe0f\u20e3 Have you run an accessibility\u2011testing step on this component?  \n> 2\ufe0f\u20e3 Did it report\u202fno\u202fviolations (or only minor, already\u2011acknowledged ones)?\n\nOnce I have that confirmation, I\u2019ll execute all phases of the investigation protocol and give you a structured verdict with evidence, WCAG/APG citations, and actionable fixes.",
+  "done": true,
+  "total_duration": 7287487291,
+  "eval_count": 236,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "interactive-dropdown-clean",
+    "elapsed_seconds": 7.3,
+    "timestamp": "2026-07-29T00:28:39"
+  }
+}

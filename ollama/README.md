@@ -18,7 +18,8 @@ Run the Accessibility Critic (`a11y-critic`), Accessibility Planner (`a11y-plann
 ```bash
 # Ensure Ollama is running with a supported model
 ollama serve  # in another terminal
-ollama pull qwen3:32b      # Recommended (18.8 GB, best accuracy-to-size ratio)
+ollama pull qwen3.6:35b    # Recommended (23 GB — first-ever 68/68 critic sweep, July 2026 funnel)
+ollama pull qwen3:32b      # Prior baseline / fallback (18.8 GB, three lanes of history)
 ollama pull llama3.3:70b   # Alternative (39.6 GB, follows all protocol phases)
 
 # Review a component for accessibility issues
@@ -33,7 +34,7 @@ python3 ollama/ollama_a11y.py perspective path/to/component.jsx
 # Convert a raw finding (axe/pa11y JSON, tool output, manual note) into a filable bug report
 python3 ollama/ollama_a11y.py bugreport path/to/finding.json
 
-# Use a specific model
+# Use a specific model (default is qwen3.6:35b)
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
 
 # Pipe from stdin
@@ -47,7 +48,8 @@ python3 ollama/ollama_a11y.py critic component.jsx --json
 
 | Model | Size | Recommended | Notes |
 |-------|------|-------------|-------|
-| **qwen3:32b** | 18.8 GB | **Yes — detection; verdicts need a second opinion** | Three 2026-07 lanes (blind → de-hinted → post-PR-4 unassisted): critic detection 95.6–98.5% content-adjudicated, perspective 92–97% — byte-identical prompts flip 2–3 items per draw at temp 0.3. **CLEAN verdicts unstable in both suites once unassisted**: critic drew its first wrong REVISE + findings on 2 more of 4 CLEAN fixtures (2026-07-19); perspective CLEAN ran 4/5→1/5→4/5 wrong across draws. Perfect planner. Detector, not verdict authority — receipts: `evals/results/ollama-rebaseline/`. |
+| **qwen3.6:35b** | 23 GB | **Yes — detection; verdicts need a second opinion** | July 2026 funnel (`evals/results/new-local-models-2026-07/`): **first-ever full critic sweep 68/68 must-find**, perspective 36/37 with zero HAS-BUGS verdict failures, planner 25/25, faster than qwen3:32b. Needs 32K num_ctx on the critic suite (thinking model — `CRITIC_CTX` map handles it). Stage 3 ×3-draw CLEAN characterization failed the verdict-authority bar (as did the same-day qwen3:32b control) — detector, not verdict authority. Data-fidelity caveat: fabrication-prone on exact selectors/IDs/environment fields; never route bug-report generation without a value check. |
+| qwen3:32b | 18.8 GB | Prior baseline / fallback | Three 2026-07 lanes (blind → de-hinted → post-PR-4 unassisted): critic detection 95.6–98.5% content-adjudicated, perspective 92–97% — byte-identical prompts flip 2–3 items per draw at temp 0.3. **CLEAN verdicts unstable in both suites once unassisted**: critic drew its first wrong REVISE + findings on 2 more of 4 CLEAN fixtures (2026-07-19); perspective CLEAN ran 4/5→1/5→4/5 wrong across draws. Perfect planner. Detector, not verdict authority — receipts: `evals/results/ollama-rebaseline/`. |
 | qwen3.5:27b | 17.4 GB | Detection-critical | 100% must-find (13 HAS-BUGS), found `role="alert"` (only local model to do so). Prone to `/think` stalls on some fixtures — use with retry. NOT tested on perspective-audit. |
 | llama3.3:70b | 39.6 GB | Phase-compliant output | Blind full-suite 2026-07-13: 33/33 PASS, 92.6% must-find scorer / 97.1% adjudicated, zero truncations. Follows all 11 protocol phases in output. |
 | qwen3.5:latest | 6.6 GB | Fast critic-only | Blind full-suite 2026-07-13: 33/33 PASS, 98.5% must-find, ~34 s/fixture (fastest lane). **Needs ≥32K num_ctx on long critic fixtures** (4/33 prompts exceed 16K tokens on its tokenizer — empty/truncated otherwise). **NOT viable for perspective-audit** (same context-exhaustion mechanism, 50% empty responses). |

@@ -33,7 +33,7 @@ if not _OLLAMA_HOST.startswith(("http://", "https://")):
     _OLLAMA_HOST = "http://" + _OLLAMA_HOST
 OLLAMA_URL = _OLLAMA_HOST + "/api/generate"
 OLLAMA_TAGS_URL = _OLLAMA_HOST + "/api/tags"
-DEFAULT_MODEL = "llama3.3:70b"
+DEFAULT_MODEL = "qwen3.6:35b"
 
 SKILLS_DIR = os.path.join(os.path.dirname(__file__), "..", ".claude", "skills")
 

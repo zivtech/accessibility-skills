@@ -1,0 +1,12 @@
+{
+  "response": "The user wants me to review this React component for accessibility design issues using the full investigation protocol from the a11y-critic skill. Let me work through this systematically.\n\nFirst, let me understand what I'm reviewing:\n- A tabbed navigation component that uses tabs pattern for page-level routes in Next.js\n- Each tab navigates to a different URL (route-based tabs)\n- Uses WAI-ARIA Tabs pattern with roving tabindex\n\nLet me follow the investigation protocol phases:\n\n**Phase 0 - Pre-commitment Predictions:**\nBefore reading code deeply, I should predict what issues might exist. For custom tabs:\n1. Focus management after navigation - does focus go where it should?\n2. Arrow key navigation completeness\n3. State communication to assistive tech\n4. Semantic structure correctness\n\n**Phase 1-10 will follow the detailed protocol.**\n\nLet me start by reading and understanding the code, then invoke the subagent with the full protocol.I'll conduct a thorough accessibility design review of this tabbed navigation component using the full investigation protocol. Let me first understand what we're reviewing, then apply each phase systematically.",
+  "done": true,
+  "total_duration": 3969965584,
+  "eval_count": 256,
+  "_benchmark": {
+    "model": "laguna-xs-2.1",
+    "fixture_id": "tabbed-nav-vs-tab-pattern",
+    "elapsed_seconds": 4.0,
+    "timestamp": "2026-07-29T00:19:56"
+  }
+}

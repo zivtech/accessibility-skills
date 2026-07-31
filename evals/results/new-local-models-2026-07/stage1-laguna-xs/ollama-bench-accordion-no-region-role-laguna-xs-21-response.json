@@ -1,0 +1,12 @@
+{
+  "response": "The user wants me to review this React accordion component for accessibility design issues using the full a11y-critic investigation protocol. Let me start by understanding what we're dealing with:\n\n1. This is an accordion component (disclosure widget)\n2. It has some ARIA features but may be missing key ones per WAI-ARIA APG patterns\n3. I need to execute all 10 phases of the investigation protocol\n\nLet me first check if there's any test evidence available, then proceed with the review.\n\nKey things to look for in an accordion:\n- Per WAI-ARIA Disclosure pattern: should have role=\"region\" on expanded content\n- Should be labeled by its trigger button (aria-labelledby)\n- Focus management when expanding/collapsing\n- Keyboard navigation (arrow keys for composite widgets)\n- State communication\n\nLet me start the review.I'll conduct a thorough accessibility design review of this accordion component using the full investigation protocol. Let me begin by checking for any test evidence and then proceed systematically through all phases.",
+  "done": true,
+  "total_duration": 2746804792,
+  "eval_count": 261,
+  "_benchmark": {
+    "model": "laguna-xs-2.1",
+    "fixture_id": "accordion-no-region-role",
+    "elapsed_seconds": 2.8,
+    "timestamp": "2026-07-29T00:18:03"
+  }
+}
