@@ -86,5 +86,5 @@ Flip-set stability (detection side): accordion 2/2 in all three draws; checkout-
 
 ## Status — funnel complete
 
-- **Done:** Stage 0/1 for all 8 candidates; Stage 2 for both gate-clearers (qwen3.6:35b, laguna-s); Stage 3 + incumbent control for 35b; Ollama 0.31.1 → 0.32.5.
-- **Remaining:** BENCHMARK.md rows + routing-note edits (drafted on this branch for review); Ollama.app + launchd agent restore at window close.
+- **Done:** Stage 0/1 for all 8 candidates; Stage 2 for both gate-clearers (qwen3.6:35b, laguna-s); Stage 3 + incumbent control for 35b; Ollama 0.31.1 → 0.32.5; BENCHMARK.md funnel section and routing updates (CLAUDE.md, README, ollama/README, wrapper default) committed on this branch; Ollama.app + launchd agent restored (post-window reboot, 0.32.5 serving normally).
+- **Continuation:** reopen-triggers (Qwen 3.7 open weights, official DeepSeek V4 small variant, calibration-focused releases) are monitored by the weekly `local-model-watch-weekly` cloud routine; the funnel reopens only when one fires.
