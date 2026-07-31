@@ -1,0 +1,12 @@
+{
+  "response": "**Quick Check \u2013 Prerequisite**\n\nBefore diving into the full design review, I need to know whether this component has already been run through an automated accessibility test suite (e.g., axe\u2011core, Pa11y, or the `accessibility-testing` skill).  \n\nThe **a11y\u2011critic** skill focuses on *design decisions* that can slip past those tools. If any violations are still present, they should be fixed first.\n\n> **Have you run an automated accessibility test on this component, and did it pass?**  \n> (If not, let me know so we can address the violations before proceeding with the design\u2011level critique.)",
+  "done": true,
+  "total_duration": 4250151041,
+  "eval_count": 181,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "accordion-no-region-role",
+    "elapsed_seconds": 4.3,
+    "timestamp": "2026-07-29T00:28:27"
+  }
+}

@@ -5,6 +5,22 @@
 **System prompt**: ~40K chars (Role + Investigation_Protocol + Severity_Scale + Output_Format from SKILL.md)
 **Scoring**: `ollama/score_output.py` against graded fixture rubrics
 
+## July 2026 New-Model Funnel (2026-07-28/29, ollama 0.31.1→0.32.5, dedicated :11435)
+
+Eight candidates through the staged funnel of `docs/plans/2026-07-28-new-local-model-benchmark-plan.md`; full receipts and adjudications in `evals/results/new-local-models-2026-07/`. Baseline: the post-PR-4 unassisted qwen3:32b lane only.
+
+| Model | Outcome | One-line record |
+|---|---|---|
+| **qwen3.6:35b** | **new detector recommendation** | First-ever critic sweep **68/68** must-find (incumbent: 65/68); perspective 36/37; planner 25/25; fastest of the funnel. Stage 3 ×3 CLEAN draws + same-day incumbent control: **promotion bar failed for both** → the "detector, not verdict authority" rule now covers the whole local tier. Bug-reporting: structure perfect, exact-value fidelity poor (2 fabrications) — never route report generation without a value check. |
+| laguna-s-2.1 (96 GB) | gate-clearer, not routed | 67/68 critic, near-peak detection, 96 GB full-offload capability proof; 4–8× slower, intermittent agentic derail, 1/5 perspective CLEAN, 0/6 bug-reporting (5 fabrications). |
+| qwen3.6:27b | stopped (Stage 1) | Perfect 15/15 screening detection incl. infinite-scroll; 3/4 CLEAN wrong. |
+| gemma4:31b / gemma4:26b | stopped (Stage 1) | Detection fine; CLEAN 4/4 and 2/4 wrong — the family flags clean code. |
+| laguna-xs-2.1 | stopped (Stage 1) | 3/4 CLEAN wrong (inverse profile); 3 verdict-format gaps. |
+| gpt-oss:120b | stopped (adjudicated) | Never executes single-shot: asks for automated-test results and halts, all 10 runs. |
+| ornith:35b | stopped (adjudicated) | 2/10 agentic-wrapper incompletions (`subagent` calls, `<|mask_end|>` halts); its 8 complete rows were the funnel's second-best profile — watch item. |
+
+Cross-cutting findings: the critic prompt sits at the 16K-token boundary for every current-gen tokenizer (per-model `CRITIC_CTX` map added); qwen3.6 emits reasoning in a separate `thinking` field (scored text clean by construction); laguna requires ollama ≥0.32.x; **no local verdict authority exists at ≤128 GB as of July 2026** (Stage-3 confirmed, controlled).
+
 ## Baseline Families
 
 This file began as an Ollama benchmark log and now serves as the cross-model benchmark record. Keep Claude, Codex/OpenAI, Gemini, and local models as peer baseline families when result artifacts exist.

@@ -1,0 +1,12 @@
+{
+  "response": "**Prerequisite Check**\n\nBefore diving into a full design\u2011review,\u202fa11y\u2011critic works **after** the automated accessibility checks (axe\u2011core / Pa11y) have been run and any violations have been resolved.\n\n*Have you already executed `accessibility-testing` on this component (or on the page that uses it) and confirmed that all automated violations are fixed?*  \n\nIf not, please run those tests first so we can focus the review on **design\u2011level gaps** that pass the checks but may still hinder screen\u2011reader or keyboard\u2011only users. Once you confirm the test results (or share them), I\u2019ll proceed with the complete investigation protocol.",
+  "done": true,
+  "total_duration": 4707046375,
+  "eval_count": 187,
+  "_benchmark": {
+    "model": "gpt-oss:120b",
+    "fixture_id": "tooltip-no-role-no-association",
+    "elapsed_seconds": 4.7,
+    "timestamp": "2026-07-29T00:28:32"
+  }
+}
