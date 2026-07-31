@@ -126,9 +126,9 @@ The analysis-only skills (critic, planner, perspective-audit) run locally via Ol
 **Prior baseline**: `qwen3:32b` (18.8 GB) — strongest local model across the three 2026-07 lanes (blind → de-hinted → post-PR-4 unassisted), with calibrated caveats. Detection: critic must-find 67/68 → 65/68 content-adjudicated across consecutive draws — byte-identical prompts flip 2–3 items at temperature 0.3, so treat single-lane deltas as variance until adjudicated; perspective detection 36/37 → 34/37, with exactly one item proven hint-carried (the map-interface-zoom target-size defect, absent in both de-hinted draws) and one first-ever HAS-BUGS FAIL on a byte-identical prompt (checkout-form 1/3 — variance at fixture-FAIL magnitude). False positives: the historical "zero CLEAN false positives" was verdict-assisted — the first unassisted draw (post-PR-4 corpus, 2026-07-19) drew a wrong REVISE on button-skip-link-clean plus structured findings on two more of the four critic CLEAN fixtures, and perspective CLEAN verdicts ran 4/5 → 1/5 → 4/5 wrong across the three draws (media-player-captions wrong in all three, nav-menu-landmarks page-shell over-flagging in all three; no other CLEAN fixture has a stable outcome). Perfect planner scores. Routing rule: qwen3:32b is a **detector, not a verdict authority** — use it to surface candidate findings; never take a single local verdict on clean code as a conclusion (receipts: `evals/results/ollama-rebaseline/README.md`, `evals/results/ollama-dehinted/README.md`, and the disclosures in `ollama/BENCHMARK.md`).
 
 ```bash
-python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
-python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3:32b
-python3 ollama/ollama_a11y.py perspective path/to/component.jsx --model qwen3:32b
+python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3.6:35b
+python3 ollama/ollama_a11y.py planner path/to/requirements.md --model qwen3.6:35b
+python3 ollama/ollama_a11y.py perspective path/to/component.jsx --model qwen3.6:35b
 ```
 
 Benchmarked against the 33 critic fixtures, 25 perspective-audit fixtures, and 25 planner fixtures in full, with cross-platform baselines for Claude API, Claude Code subagents (planner lane, 25/25 PASS), Codex/OpenAI, Gemini (CLI lane, 31/33 critic PASS), and local Ollama models. Hosted-run raw artifacts are committed under `evals/results/` — every hosted family is a first-class peer row. See `ollama/BENCHMARK.md` for full results and `ollama/README.md` for usage.
