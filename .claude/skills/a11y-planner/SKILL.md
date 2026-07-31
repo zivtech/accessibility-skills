@@ -209,6 +209,7 @@ Copy this protocol into the subagent prompt:
     6. What is the risk level? (Simple component with no interaction = Low. Form with validation and errors = Medium. Complex modal with focus trap and dynamic state = High. Multi-page flow = High.)
     7. What existing code does this modify/extend? (If redesigning an existing component, understand current structure)
     8. What constraints exist? (Browser compatibility, device capabilities, third-party library limitations, design system restrictions)
+    9. Is this an audit? If the target is an evaluation of an existing site or digital product (conformance audit, pre-VPAT work, periodic monitoring) rather than a component build, apply AUDIT-SCOPE MODE (WCAG-EM) — see below — on top of the nine phases
 
     Phase 2 — Semantic Structure Plan:
     Design the HTML structure and landmark regions:
@@ -642,6 +643,38 @@ Copy this protocol into the subagent prompt:
     - Simple component (button, link, text input): 1-2 pages. Just structure, ARIA attributes, keyboard keys, basic tests.
     - Medium feature (form with validation, disclosure widget, dropdown): 3-5 pages. Full structure plan, all ARIA states, focus management, state communication, test strategy.
     - Complex feature (modal dialog with form, tab panel with dynamic content, data table with sorting): 6-10 pages. Detailed structure, complete ARIA plan, detailed focus management, state communication across all modes, comprehensive testing strategy, implementation task breakdown.
+    - Audit-scope plan (site/product evaluation): 5-7 pages. The nine phases plus AUDIT-SCOPE MODE below.
+
+    AUDIT-SCOPE MODE (WCAG-EM):
+
+    Trigger: the target is an evaluation of an existing site or digital product (conformance audit, pre-VPAT assessment, periodic monitoring), not a component or feature build. Keep the nine phases and layer the W3C evaluation methodology onto them: WCAG-EM (1.0 "Website Accessibility Conformance Evaluation Methodology", 2014; 2.0 "WCAG Evaluation Methodology", Group Note 2026, https://www.w3.org/TR/wcag-em-2/). Cite the WCAG-EM version the engagement requires. WCAG-EM lives at audit scope only — never cite it in component-scope plans.
+
+    EM Step 1 (Define the evaluation scope) → Phase 1 must DECLARE as artifacts:
+    - Product scope: an unambiguous in/out rule for every view (full product enclosure — excluding parts of the product conflicts with WCAG 2 full-page and complete-process conformance requirements)
+    - Conformance target: WCAG 2 version and level (AA is the default)
+    - Accessibility support baseline: the explicit OS + browser + assistive technology combinations the evaluation tests against, agreed with the commissioner; if additional tools get used mid-evaluation, extend the declared baseline
+    - Additional requirements: report template (e.g., VPAT edition), issue-report granularity, user involvement
+
+    EM Step 2 (Explore the product) → Phases 1/8: list common views, essential functionality, the variety of sample types (templates, technologies, dynamic states), technologies relied upon, and other accessibility-relevant samples (help, accessibility statement, contact, auth, payment). These five lists drive sampling.
+
+    EM Step 3 (Select a representative sample set) → Phase 8 sampling plan needs all three parts, each with rationale:
+    - Structured sample set covering all five Step 2 lists; use shared-component leverage — one sample can represent several criteria, and fixing a shared component fixes every page that uses it
+    - Random sample set: 10% of the structured set, added on top, drawn from views not already selected; record the selection method
+    - Complete processes: every view in each process — the default sequence (no input errors, no optional branches) plus completion-critical branch sequences; record the actions between views, because a URL alone does not identify a process state
+    - State coverage per sample: default, loading, error, and expanded/dialog states are part of evaluating the sample
+
+    EM Step 4 (Evaluate the sample set) → Phase 8:
+    - Initial samples (not part of a process) are evaluated as full pages; complete processes are evaluated along their sequences, checking the content that changes at each step
+    - Representativeness check: if the random sample surfaces content types or findings the structured sample missed, the structured sample was not representative — expand it, re-classify, and repeat the check until the random sample stops surfacing new finding types
+    - Route complete-process evaluation to keyboard-a11y-tester driven journey sessions (via a11y-test); route per-sample scanning to the a11y-test automated + manual matrix
+
+    EM Step 5 (Report the findings) → Phase 9: plan the deliverable on the A11y Evaluation Report Contract (docs/a11y-evaluation-report-contract.md): scope/target/baseline declarations, the sample set with rationale and selection method, per-SC outcomes (passed / failed / cantTell / inapplicable / untested) with at least one example per failed criterion, and optional evaluation-statement language. Individual findings carry the A11y Evidence Finding Contract with `evaluation_context` linking them into the sample set.
+
+    Audit-mode rules WCAG-EM does not supply (keep them — the methodology is a skeleton, not a triage system):
+    - Risk-based prioritization: order testing depth by user-journey risk (authenticated and transactional flows first, public content last), never alphabetically or by rule number
+    - Third-party content (CAPTCHAs, embedded video, analytics): document under partial-conformance/VPAT third-party language with best-effort testing — never plan remediation of third-party internals the product owner cannot change
+    - Severity stays user-impact-based (CRITICAL/MAJOR/MINOR/ENHANCEMENT) and is ORTHOGONAL to per-SC conformance outcomes: report both, never derive one from the other
+    - Coverage honesty: name every sample the web measurement stack (Playwright, axe-core, CDP) cannot measure — native app screens, hardware kiosk steps, documents — and assign the manual/AT method that covers it instead. Never imply automated coverage of non-web samples.
 
     OUTPUT FORMAT:
 

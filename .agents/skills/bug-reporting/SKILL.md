@@ -510,7 +510,7 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
 | `earl:mode` | How the test was performed: `earl:automatic`, `earl:manual`, or `earl:semiAuto` |
 | `earl:assertedBy` | The tool or person that produced the assertion |
 
-EARL output can be produced by [Alfa](https://github.com/Siteimprove/alfa), [Axe Reporter EARL](https://github.com/dequelabs/axe-reporter-earl), and [ACT-Rules implementations](https://act-rules.github.io/). The W3C [WCAG-EM Report Tool](https://www.w3.org/WAI/eval/report-tool/) also exports EARL.
+EARL output can be produced by [Alfa](https://github.com/Siteimprove/alfa), [Axe Reporter EARL](https://github.com/dequelabs/axe-reporter-earl), and [ACT-Rules implementations](https://act-rules.github.io/). The W3C [WCAG-EM Report Tool](https://www.w3.org/WAI/eval/report-tool/) also exports EARL. [WCAG-EM 2.0](https://www.w3.org/TR/wcag-em-2/) (Group Note, 2026) keeps EARL as its recommended machine-readable report format while generalizing the methodology from websites to digital products; the Report Tool is still WCAG-EM 1-based, with a WCAG-EM 2 version announced for later in 2026.
 
 ---
 
