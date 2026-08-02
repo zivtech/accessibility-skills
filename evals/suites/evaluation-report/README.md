@@ -113,17 +113,23 @@ smoke statuses were unchanged by the fix, and it flatters neither condition
 
 ## First model rows (2026-08-01)
 
-qwen3.6:35b, one draw per condition — first receipts, not stable rows
-(full adjudications: `evals/results/wcag-em-step11/`):
+qwen3.6:35b × 2 draws per condition (byte-identical prompts, temp 0.3) plus
+a qwen3:32b single-draw control — full adjudications in
+`evals/results/wcag-em-step11/`:
 
-| Condition | Result |
-|---|---|
-| contract | **WARN** — 0 must misses, 0 fabrications; every trap passed; the one should-miss is withholding vocabulary ("does not meet the target level" isn't in the token list) |
-| baseline | **FAIL** — 12 must misses: no per-SC outcome map, no coverage-boundary declaration, no selection method, distorted representativeness narrative; severities preserved |
+| Condition | 35b draw 1 | 35b draw 2 | 32b control |
+|---|---|---|---|
+| contract | **WARN** — 0 must, 0 fab; every trap passed | **FAIL** — 3 must: all severity data silently dropped | **FAIL** — 1 must: 1.2.x `untested` where evidence supports `inapplicable` |
+| baseline | **FAIL** — 12 must | **FAIL** — 9 must | **FAIL** — 18+ must, four sections missing |
 
-The A/B separates on the first draw: what the contract carries is the
-report's *shape* — the outcome map, the boundary, the sampling method, and
-statement restraint.
+Two findings, one per direction: the **A/B direction is draw-stable** —
+what the contract carries is the report's *shape* (outcome map, boundary,
+sampling method, statement restraint), absent in every baseline draw — and
+the **35b contract verdict is not**: draw 2 kept the orthogonality sentence
+and dropped every CRITICAL/MAJOR/MINOR token in the document, the model's
+known data-fidelity class surfacing at must-tier magnitude. Routing
+consequence: a local contract-condition report is detector output; a human
+reads it before it ships.
 
 ## Running the lane
 

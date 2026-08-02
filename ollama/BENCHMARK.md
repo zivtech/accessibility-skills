@@ -1094,9 +1094,16 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   quoted the commissioner's question on a negation-free line above an explicit "Determination:
   No." and the claim scan called it a fabrication; interrogative lines are now exempt
   (questions are not assertions; calibration/smoke unchanged, flatters neither condition).
-  First rows, qwen3.6:35b single draws: contract WARN (0 must / 0 fab) vs baseline FAIL
-  (12 must misses), planner de-hinted fixture 7/11 NEEDS REVIEW — receipts and adjudications
-  in `evals/results/wcag-em-step11/`.
+  First rows (qwen3.6:35b ×2 draws + qwen3:32b control, receipts and adjudications in
+  `evals/results/wcag-em-step11/`): the A/B direction is draw-stable — every baseline draw
+  FAILs on report shape (no outcome map, no boundary, no sampling method) — while the 35b
+  contract verdict is not (WARN d1 → FAIL d2, draw 2 silently dropping all severity data:
+  the known data-fidelity class at must-tier magnitude). 32b contract: 1 must miss
+  (untested-vs-inapplicable class error), the best single evalreport row. Planner de-hinted
+  fixture: 35b 7/11 → 9/11 across draws; 32b control 3/11 vs its 11/11 on the hinted
+  sibling — the saturation was fixture-cueing. No instrument tuning between draws; keyword
+  undercounts ("cannot evaluate"/"cannot measure" for the boundary item) recorded as
+  future-rev candidates only.
 
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
@@ -1221,7 +1228,7 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Planner benchmark (post-002 scoring, 25 fixtures)
 
-> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only row so far is a single-fixture receipt (qwen3.6:35b 7/11 NEEDS REVIEW, one draw, `evals/results/wcag-em-step11/`), not a lane row. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the first live row landing mid-gate is the discrimination working.
+> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only rows so far are single-fixture receipts (`evals/results/wcag-em-step11/`: qwen3.6:35b 7/11 → 9/11 across two draws, qwen3:32b control 3/11), not lane rows. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the live rows spreading across the gate (3 to 9) instead of pinning at 11 is the discrimination working, most sharply in the control: the same qwen3:32b that saturated the hinted sibling scores 3/11 de-hinted.
 
 **Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
 
