@@ -89,7 +89,16 @@ def any_token(text_lower, tokens):
 
 
 def strip_negation_lines(text):
-    return "\n".join(l for l in text.splitlines() if not NEGATION_RE.search(l))
+    """Drop negated lines and interrogative lines before the assertive-claim
+    scan. Questions are not assertions: the first live baseline row (2026-08-01)
+    quoted the commissioner's question — "Can the final report state that the
+    portal 'is WCAG 2.2 AA conformant'?" — on a line with no negation word,
+    directly above an explicit "Determination: No.", and the scan called it a
+    fabrication. Adjudicated a false positive; '?' lines are now exempt."""
+    return "\n".join(
+        l for l in text.splitlines()
+        if not NEGATION_RE.search(l) and "?" not in l
+    )
 
 
 def check_outcomes(span, checks, tier, must_miss, fabrications):

@@ -330,7 +330,7 @@
 - **Name:** Hybrid Product Evaluation Plan
 - **Difficulty:** COMPLEX
 - **Risk:** High
-- **Added:** 2026-08-01 (adoption plan step 11a — de-hinted audit fixture; no model rows yet)
+- **Added:** 2026-08-01 (adoption plan step 11a — de-hinted audit fixture; first row same day: qwen3.6:35b 7/11 NEEDS REVIEW single draw, `evals/results/wcag-em-step11/`)
 - **Scenario:** Formal WCAG 2.2 AA evaluation of a credit union's hybrid product (WordPress marketing site, React banking portal, native iOS/Android apps, vendor PDFs) for a regulator and a county contract — written as a client-voice brief with zero methodology vocabulary
 - **Key a11y concerns:** WCAG-EM structure brought unprompted (structured + random selection, 10% sizing, representativeness comparison, declared accessibility-support baseline, complete processes, per-criterion outcome vocabulary); coverage honesty — the axe/Playwright web stack does not reach native app screens or vendor PDFs (central false-coverage trap); no product-wide conformance claim from a sampled evaluation
 - **De-hint contract:** none of the scoring keywords appear in the fixture text — enforced by `check_dehinted.py`; re-run after any fixture edit

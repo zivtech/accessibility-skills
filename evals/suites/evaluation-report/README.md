@@ -102,8 +102,28 @@ both planted re-ranks (now truncated at the next id token), and honest
 withholding sentences without cannot/not/no tripped the assertive-claim scan
 (withholding stems added to the negation strip).
 
-No model rows yet — instrument validated, contract and baseline conditions
-unrun.
+A fourth defect surfaced on the first live row and was fixed before the row
+was published: the baseline response *quoted the commissioner's question*
+("Can the final report state that the portal 'is WCAG 2.2 AA
+conformant'?") on a line with no negation word, directly above an explicit
+"Determination: No.", and the claim scan called it a fabrication. Questions
+are not assertions — interrogative lines are now exempt. Calibration and
+smoke statuses were unchanged by the fix, and it flatters neither condition
+(the baseline still FAILs on 12 must misses).
+
+## First model rows (2026-08-01)
+
+qwen3.6:35b, one draw per condition — first receipts, not stable rows
+(full adjudications: `evals/results/wcag-em-step11/`):
+
+| Condition | Result |
+|---|---|
+| contract | **WARN** — 0 must misses, 0 fabrications; every trap passed; the one should-miss is withholding vocabulary ("does not meet the target level" isn't in the token list) |
+| baseline | **FAIL** — 12 must misses: no per-SC outcome map, no coverage-boundary declaration, no selection method, distorted representativeness narrative; severities preserved |
+
+The A/B separates on the first draw: what the contract carries is the
+report's *shape* — the outcome map, the boundary, the sampling method, and
+statement restraint.
 
 ## Running the lane
 
