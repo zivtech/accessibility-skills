@@ -298,4 +298,4 @@ Depends on: None
 - [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 - [WCAG 2.2 Specification](https://www.w3.org/WAI/WCAG22/quickref/)
 - [a11y-critic skill](https://github.com/zivtech/a11y-meta-skills)
-- [accessibility-testing skill](https://github.com/zivtech/zivtech-claude-skills)
+- [accessibility-testing skill](https://github.com/zivtech/zivtech-ai-skills)
