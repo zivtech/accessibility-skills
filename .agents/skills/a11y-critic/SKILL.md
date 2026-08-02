@@ -725,7 +725,7 @@ Do NOT: invoke a11y-critic on untested code.
 
 ## Related Skills in Zivtech Tooling
 
-- **accessibility-testing** (from zivtech-claude-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
-- **a11y-test** (from zivtech-claude-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
-- **accessibility-standards** (from zivtech-claude-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
+- **accessibility-testing** (from zivtech-ai-skills): Run Playwright + axe-core, Pa11y-CI, keyboard tests, visual regression. Validates compliance.
+- **a11y-test** (from zivtech-ai-skills): Keyboard navigation testing with real Playwright key presses. Verifies operability.
+- **accessibility-standards** (from zivtech-ai-skills): WCAG 2.2 AA reference, coding patterns, enforcement layers.
 - **ui-design-critic** (from zivtech-design-skill): Comprehensive design review — accessibility is one of many perspectives.
