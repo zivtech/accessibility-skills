@@ -3,9 +3,9 @@ name: CI
 on:
   push:
     branches: [main]
-    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', '.github/workflows/ci.yml']
+    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', 'docs/**', 'CLAUDE.md', '.github/workflows/ci.yml']
   pull_request:
-    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', '.github/workflows/ci.yml']
+    paths: ['ollama/**', 'evals/**', 'scripts/**', '.claude/**', '.agents/**', 'docs/**', 'CLAUDE.md', '.github/workflows/ci.yml']
 
 permissions:
   contents: read
