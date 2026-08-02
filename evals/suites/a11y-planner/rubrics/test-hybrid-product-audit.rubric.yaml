@@ -1,0 +1,189 @@
+fixture_id: test-hybrid-product-audit
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# De-hinted fixture (adoption plan step 11a). Unlike test-multi-page-audit,
+# the fixture text supplies NONE of the graded vocabulary — every
+# methodology check below probes knowledge the plan must bring itself.
+# check_dehinted.py enforces the property; re-run it after any fixture edit.
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: audit_methodology
+    name: "Audit Methodology (de-hinted)"
+    description: "Does the plan bring WCAG-EM structure unprompted — named framework, structured selection with rationale, random addition sized at 10%, representativeness comparison, complete processes, declared support baseline, per-criterion outcome vocabulary?"
+    weight: 3
+    rule_based_checks:
+      - references_wcag_em_unprompted: true
+      - defines_structured_selection_with_rationale: true
+      - adds_random_selection_with_method: true
+      - sizes_random_addition_10pct: true
+      - runs_representativeness_comparison: true
+      - declares_accessibility_support_baseline: true
+      - evaluates_complete_processes: true
+      - uses_per_criterion_outcome_vocabulary: true
+    llm_judge_criteria:
+      - "Is the methodology operationalized (numbers, named screens, a documented selection method) or merely name-dropped?"
+      - "Did the plan choose and declare specific OS/browser/AT combinations even though the client provided none?"
+      - "Are the five member journeys (login, balances, transfers, bill pay, check deposit, disputes) evaluated as full sequences including error paths?"
+
+  - id: coverage_honesty
+    name: "Coverage Honesty (central probe)"
+    description: "Does the plan state what the web stack cannot measure and route those surfaces correctly — or does it extend axe/Playwright to native screens and PDFs?"
+    weight: 3
+    rule_based_checks:
+      - states_web_stack_boundary_explicitly: true
+      - routes_native_apps_to_platform_at_and_manual: true
+      - names_free_platform_tooling_not_new_purchases: true
+      - gives_vendor_pdfs_a_document_method: true
+      - corrects_the_qa_lead_assumption: true
+      - does_not_budget_axe_playwright_time_against_app_screens: true
+    llm_judge_criteria:
+      - "Does the plan tell the QA lead directly that the existing setup stops at the web surfaces, and what the apps get instead?"
+      - "Is the app testing plan concrete (platform screen readers, platform accessibility tooling, manual session structure) or hand-waved as 'mobile testing'?"
+      - "Are the vendor PDFs handled as documents (tagged-PDF checking, vendor documentation request) rather than absorbed into web scans or dropped?"
+      - "FAIL CHECK: does any part of the plan claim or imply axe-core, Playwright, or the existing QA suite will execute against the native iOS/Android screens? If yes, this dimension scores 0 regardless of other checks."
+
+  - id: statement_discipline
+    name: "Statement Discipline"
+    description: "Does the plan constrain what the final report lets the credit union say — no product-wide conformance claim from a sampled evaluation, honest language for the county and the regulator?"
+    weight: 2
+    rule_based_checks:
+      - constrains_product_wide_claims: true
+      - reports_outcomes_with_honesty_states: true
+      - separates_impact_severity_from_outcome: true
+    llm_judge_criteria:
+      - "Would the compliance officer, reading this plan, understand what the finished report will and will not let them assert to the county?"
+      - "Is severity tied to member impact (a blocked dispute, a failed transfer) rather than criterion numbers?"
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does the plan cite the criteria this product will actually stress — one-time-code time limits, dispute/transfer error handling, focus order in the SPA, contrast, name/role/value in custom controls?"
+    weight: 2
+    rule_based_checks:
+      - cites_wcag_2_2_1_timing_adjustable: true
+      - cites_wcag_3_3_1_or_3_3_3_errors: true
+      - cites_wcag_2_4_3_focus_order: true
+      - cites_wcag_4_1_2_name_role_value: true
+      - cites_wcag_1_4_3_contrast: true
+    expected_citations:
+      - "WCAG 2.2.1 Timing Adjustable (SMS one-time-code login)"
+      - "WCAG 3.3.1/3.3.3 Error Identification & Suggestion (transfers, bill pay, disputes)"
+      - "WCAG 2.4.3 Focus Order (React SPA route changes)"
+      - "WCAG 4.1.2 Name, Role, Value (card controls, custom widgets)"
+      - "WCAG 1.4.3 Contrast (marketing site, PDFs)"
+      - "WCAG 1.3.5 Identify Input Purpose (payment and login fields)"
+      - "WCAG 2.5.8 Target Size (native app touch targets)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Can 2 QA engineers execute this in 10 weeks? Per-surface methods with owners, effort allocation, test-account needs, and a report skeleton the compliance officer can preview."
+    weight: 2
+    rule_based_checks:
+      - assigns_methods_per_surface: true
+      - allocates_the_10_weeks: true
+      - names_owners_for_each_method: true
+      - plans_test_accounts_or_sandbox: true
+    llm_judge_criteria:
+      - "Is the 10-week allocation believable for 2 engineers plus a part-time developer, or is this a 6-month plan wearing a 10-week label?"
+      - "Does the plan say who runs what on which surface, or only list techniques?"
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Keyboard, screen reader (desktop AND platform mobile SRs on the native apps), low vision/magnification, cognitive, and touch all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader_desktop: true
+      - addresses_screen_reader_native_mobile: true
+      - addresses_low_vision_zoom_and_text_size: true
+      - addresses_cognitive: true
+      - addresses_mobile_touch: true
+      - reproduces_the_regulator_complaint_scenario: true
+
+  - id: sampling_strategy
+    name: "Selection Strategy (de-hinted)"
+    description: "Is the screen selection risk-based and justified — authenticated money-movement flows deepest, shared-design-system components leveraged, marketing pages lightest — with the random addition and divergence handling?"
+    weight: 2
+    rule_based_checks:
+      - risk_based_selection_not_arbitrary: true
+      - deep_vs_light_coverage_differentiated: true
+      - leverages_shared_design_system: true
+      - handles_divergence_by_expanding: true
+    llm_judge_criteria:
+      - "Would the selection rationale survive a regulator asking 'why these screens and not others?'"
+      - "Does the plan exploit the shared design system (fix once, propagates to portal + both apps) instead of treating five surfaces as five isolated audits?"
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Proportional to COMPLEX audit scope; avoids the traps: no equal-depth-everything, no new-tool purchases, no dropped PDFs, no criterion-number prioritization."
+    weight: 1
+    rule_based_checks:
+      - avoids_equal_depth_all_screens: true
+      - respects_no_new_tool_budget: true
+      - does_not_drop_the_pdfs: true
+      - does_not_rank_by_criterion_number: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner
+    expected_score: 78-92
+    reasoning: "AUDIT-SCOPE MODE carries the entire methodology gate: the five-step structure, the random addition with 10% sizing, the representativeness comparison, the declared support baseline, complete-process routing, outcome vocabulary, and the mandatory boundary sentence for surfaces the web stack cannot measure. The native-app routing and PDF method require applying the protocol's boundary rule to a scenario the protocol never names — that transfer is what separates 78 from 92."
+
+  - condition: baseline-zero-shot
+    expected_score: 25-45
+    reasoning: "With no methodology vocabulary in the brief to echo, baselines have nothing to parrot — this is the fixture's reason to exist. Expect a generic per-surface tool list, axe/Playwright extended to the apps (the trap), no random addition, no representativeness comparison, no declared baseline, and a promised compliance sign-off. The step-10 A/B measured exactly this gap as depth-markers: old-protocol Haiku 1/12, Sonnet 2/12 on EM content the fixture never names."
+
+  - condition: baseline-few-shot
+    expected_score: 35-55
+    reasoning: "Structured examples supply plan shape but not the evaluation methodology, the sizing rule, or the coverage-boundary discipline. The false-coverage trap remains likely."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Companion to test-multi-page-audit, replacing nothing: the sibling stays as
+  the hinted/saturating fixture with three lanes of history; this fixture is
+  the discriminating instrument (step 11a). If both conditions of a future
+  A/B saturate HERE, the de-hinting failed — investigate the fixture before
+  crediting the models.
+
+  Hard verdict rule (mirrors the trap): a plan that extends axe/Playwright
+  coverage to the native app screens is REVISE at best, regardless of
+  composite score. False coverage in a regulator-facing evaluation plan is
+  the exact failure this fixture exists to catch.
+
+  Scoring keyword hazards, named for adjudicators: "combinations" (support
+  baseline item) and "boundary"/"does not run" (coverage item) are paraphrase-
+  prone in both directions — confirm hits and misses by reading, per the
+  wcag-em-phase3 adjudication practice. The mechanical gate is
+  score_planner.py any-match; treat it as a detector, not a verdict.

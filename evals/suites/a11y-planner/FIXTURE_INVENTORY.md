@@ -1,6 +1,6 @@
 # A11y-Planner Fixture Inventory
 
-**Total Fixtures:** 25 (25 .md + 25 .metadata.yaml + 25 .rubric.yaml = 75 files)
+**Total Fixtures:** 26 (26 .md + 26 .metadata.yaml + 26 .rubric.yaml = 78 files) — #26 `test-hybrid-product-audit` added 2026-08-01 (de-hinted, adoption plan step 11a); all benchmark rows dated earlier were measured on the original 25
 
 ---
 
@@ -264,7 +264,7 @@
 
 ---
 
-## Domain 5: Testing & Audit Planning (5 fixtures)
+## Domain 5: Testing & Audit Planning (6 fixtures)
 
 ### 5.1 test-simple-button
 - **Name:** Simple Component Testing
@@ -326,6 +326,20 @@
   - `fixtures/test-multi-page-audit.metadata.yaml`
   - `rubrics/test-multi-page-audit.rubric.yaml`
 
+### 5.6 test-hybrid-product-audit
+- **Name:** Hybrid Product Evaluation Plan
+- **Difficulty:** COMPLEX
+- **Risk:** High
+- **Added:** 2026-08-01 (adoption plan step 11a — de-hinted audit fixture; no model rows yet)
+- **Scenario:** Formal WCAG 2.2 AA evaluation of a credit union's hybrid product (WordPress marketing site, React banking portal, native iOS/Android apps, vendor PDFs) for a regulator and a county contract — written as a client-voice brief with zero methodology vocabulary
+- **Key a11y concerns:** WCAG-EM structure brought unprompted (structured + random selection, 10% sizing, representativeness comparison, declared accessibility-support baseline, complete processes, per-criterion outcome vocabulary); coverage honesty — the axe/Playwright web stack does not reach native app screens or vendor PDFs (central false-coverage trap); no product-wide conformance claim from a sampled evaluation
+- **De-hint contract:** none of the scoring keywords appear in the fixture text — enforced by `check_dehinted.py`; re-run after any fixture edit
+- **Expected plan length:** 5-7 pages
+- **Files:**
+  - `fixtures/test-hybrid-product-audit.md`
+  - `fixtures/test-hybrid-product-audit.metadata.yaml`
+  - `rubrics/test-hybrid-product-audit.rubric.yaml`
+
 ---
 
 ## Fixture Distribution Summary
@@ -336,18 +350,18 @@
 | **Keyboard Nav** | 5 | 1 | 2 | 1 | 1 |
 | **Screen Reader** | 5 | 1 | 2 | 1 | 1 |
 | **Visual/Cognitive** | 5 | 2 | 2 | 1 | — |
-| **Testing/Audit** | 5 | 1 | 2 | 2 | — |
-| **TOTAL** | **25** | **6** | **10** | **6** | **3** |
+| **Testing/Audit** | 6 | 1 | 2 | 3 | — |
+| **TOTAL** | **26** | **6** | **10** | **7** | **3** |
 
 ---
 
 ## File Checklist
 
-All 75 fixture files should exist:
+All 78 fixture files should exist:
 
-- [ ] 25 fixture description files (.md)
-- [ ] 25 fixture metadata files (.metadata.yaml)
-- [ ] 25 fixture rubric files (.rubric.yaml)
+- [ ] 26 fixture description files (.md)
+- [ ] 26 fixture metadata files (.metadata.yaml)
+- [ ] 26 fixture rubric files (.rubric.yaml)
 
 For each fixture, the files should be named consistently:
 - Fixture: `{fixture_id}.md`

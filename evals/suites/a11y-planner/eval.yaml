@@ -12,11 +12,11 @@ evaluation:
   description: Comprehensive evaluation of a11y-planner skill vs generic planning baselines
   version: "1.0"
   created_at: "2026-03-09"
-  estimated_total_evaluations: 225
+  estimated_total_evaluations: 234  # 26 fixtures × 3 conditions × 3 repetitions (fixture #26 added 2026-08-01)
 
 fixtures:
   directory: ./fixtures
-  count: 25
+  count: 26
   pattern: "*.md"
   metadata_suffix: ".metadata.yaml"
 
@@ -25,12 +25,16 @@ fixtures:
     - Keyboard Navigation Design (5 fixtures)
     - Screen Reader Experience (5 fixtures)
     - Visual & Cognitive Accessibility (5 fixtures)
-    - Testing & Audit Planning (5 fixtures)
+    - Testing & Audit Planning (6 fixtures)
 
   difficulty_distribution:
+    # Corrected 2026-08-01: the original 25-fixture counts here read 11
+    # MODERATE / 5 COMPLEX, disagreeing with FIXTURE_INVENTORY.md's per-domain
+    # table (10/6, which matches the fixtures). Counts below are the true
+    # 26-fixture distribution including test-hybrid-product-audit (COMPLEX).
     - TRIVIAL (6 fixtures)
-    - MODERATE (11 fixtures)
-    - COMPLEX (5 fixtures)
+    - MODERATE (10 fixtures)
+    - COMPLEX (7 fixtures)
     - AMBIGUOUS (3 fixtures)
 
   fixture_list:
@@ -163,6 +167,15 @@ fixtures:
       domain: Testing & Audit Planning
       difficulty: COMPLEX
       name: "Multi-Page Audit Plan"
+
+    - id: test-hybrid-product-audit
+      domain: Testing & Audit Planning
+      difficulty: COMPLEX
+      name: "Hybrid Product Evaluation Plan"
+      # De-hinted audit fixture (adoption plan step 11a, added 2026-08-01).
+      # No model rows yet — all planner results dated before 2026-08-01 were
+      # measured on the 25-fixture suite. De-hint property enforced by
+      # check_dehinted.py; re-run it after any edit to this fixture.
 
 rubrics:
   directory: ./rubrics
