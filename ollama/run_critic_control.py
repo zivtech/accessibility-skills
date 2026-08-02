@@ -13,7 +13,7 @@ Run: OLLAMA_HOST=127.0.0.1:11435 python3 /tmp/run_critic_control.py
 """
 import os, sys, glob
 
-ROOT = "/Users/AlexUA_1/claude/a11y-meta-skills"
+ROOT = "/Users/AlexUA_1/claude/accessibility-skills"
 sys.path.insert(0, os.path.join(ROOT, "ollama"))
 sys.path.insert(0, os.path.join(ROOT, "evals", "suites", "chain"))
 import ollama_a11y as oa
