@@ -1,138 +1,144 @@
-# WCAG-EM Step 11 — First Model Rows on Both Instruments (2026-08-01)
+# WCAG-EM Step 11 — First Rows on Both Instruments: Two Draws + Control (2026-08-01)
 
 First live rows on the two step-11 instruments the same day they were built
 (adoption plan: [docs/wcag-em-2-adoption-assessment.md](../../../docs/wcag-em-2-adoption-assessment.md),
 Step 11 status): the evaluation-report chain lane (`transit-portal-q3`,
 contract vs baseline conditions) and the de-hinted planner audit fixture
-(`test-hybrid-product-audit`).
+(`test-hybrid-product-audit`). Coverage: **qwen3.6:35b × 2 draws per
+condition** (byte-identical prompts, temp 0.3) plus a **qwen3:32b single-draw
+control** — the same model that scored 11/11 draw-stable on the *hinted*
+sibling in the step-10 A/B, which makes it the cleanest possible probe of
+the de-hint.
 
-**Single draw per condition — these are first receipts, not stable rows.**
-The qwen3:32b history shows byte-identical prompts flipping 2–3 scored items
-at temperature 0.3; treat every delta below as provisional until a repeat
-draw confirms it. Nothing here is folded into BENCHMARK.md aggregates.
+Files without a draw suffix are draw 1; `-draw2-` marks the repeat;
+`qwen3-32b` files are the control (one draw). Every response has a matching
+`score-*.txt`.
 
 ## Method
 
-- Model: `qwen3.6:35b` (current detector recommendation), temp 0.3, one draw
-  per condition. num_ctx 32768 (evalreport lane), planner lane default.
-- Runner: `ollama/run_benchmark.py` at the step-11b commit —
-  `evalreport` / `evalreport-baseline` / `planner` verbs.
-- **Server gotcha, disclosed:** the first launch 404'd. On this dual-stack
-  macOS host, `localhost:11434` resolves to `::1`, where the CPU-only
-  OrbStack container listens with a 5-model store that lacks qwen3.6:35b;
-  the native Metal server with the full store is on IPv4 `127.0.0.1:11434`.
-  Runs here used `OLLAMA_URL=http://127.0.0.1:11434/api/generate`; the
-  runner default now pins 127.0.0.1 (matching `ollama_a11y.py`). Note for
-  historical interpretation: models present on *both* servers (e.g.
-  qwen3:32b) would have run correctly-but-on-CPU under the old default, so
-  elapsed-seconds columns in older lanes may mix CPU and Metal timings —
-  detection scores are unaffected.
-- Scoring: `ollama/score_evalreport.py` (as committed after the calibration
-  fixes, plus the interrogative-line exemption below) and
-  `ollama/score_planner.py` (unchanged).
+- Runner: `ollama/run_benchmark.py` (`evalreport` / `evalreport-baseline` /
+  `planner`), temp 0.3, evalreport num_ctx 32768. Native Metal server on
+  IPv4 `127.0.0.1:11434`.
+- **Server gotcha, disclosed:** the very first launch 404'd — on this
+  dual-stack macOS host `localhost` resolves `::1` first, where the CPU-only
+  OrbStack container listens with a 5-model store lacking qwen3.6:35b. The
+  runner default now pins 127.0.0.1 (matching `ollama_a11y.py`). Historical
+  note: models present on *both* servers (e.g. qwen3:32b) would have run
+  correctly-but-on-CPU under the old default, so elapsed-seconds columns in
+  older lanes may mix CPU and Metal timings — detection scores unaffected.
+- Scoring: `ollama/score_evalreport.py` (post-calibration, including the
+  interrogative-line exemption below) and `ollama/score_planner.py`
+  (untouched). **No instrument was tuned between draw 1 and draw 2 or for
+  the control** — keyword-undercount candidates found by adjudication are
+  recorded here for a future instrument rev, not applied mid-measurement.
 
 ## Results
 
-| Run | Condition | Elapsed | Scored | Status |
+| Instrument | Condition | qwen3.6:35b d1 | qwen3.6:35b d2 | qwen3:32b (control) |
 |---|---|---|---|---|
-| evaluation-report | contract (system prompt = report contract) | 86s | 0 must misses, 0 fabrications, 1 should miss | **WARN** |
-| evaluation-report | baseline (no system prompt) | 55s | 12 must misses, 0 fabrications (1 overturned — see below) | **FAIL** |
-| planner `test-hybrid-product-audit` | full planner SKILL.md | 182s | gate 7/11 | **NEEDS REVIEW** |
+| evaluation-report | contract | **WARN** (0 must, 0 fab) | **FAIL** (3 must, 0 fab) | **FAIL** (1 must, 0 fab) |
+| evaluation-report | baseline (no contract) | **FAIL** (12 must) | **FAIL** (9 must) | **FAIL** (18+ must) |
+| planner de-hinted #26 | full protocol | **7/11** NEEDS REVIEW | **9/11** PASS | **3/11** NEEDS REVIEW |
 
-Raw responses and scorer outputs are committed alongside this README.
+Elapsed: 35b 72–182s/run; 32b 178–362s/run.
 
-## Evaluation-report lane: what the contract carries
+## Evaluation-report lane
 
-The A/B is the lane's designed measurement, and the first draw separates
-cleanly:
+**What is draw-stable: the A/B direction.** In every draw of every model,
+the no-contract baseline FAILs on report *shape* — the per-SC outcome map,
+the coverage-boundary declaration, and the random-selection method do not
+exist without the contract (35b baseline: 12 → 9 must misses across draws,
+same failure class; 32b baseline: 18+ must misses, four required sections
+missing outright). What the contract carries is the report's shape.
 
-**Contract condition (WARN).** Every trap passed: 8/8 finding ids, none
-invented; severities preserved per-finding (CRITICAL / MINOR / MAJOR trio,
-orthogonality stated in prose); full per-SC outcome table in EARL vocabulary
-with 3.1.2 `untested` and 1.2.x `inapplicable`; representativeness result
-reported honestly (divergence → S11 expansion, seed 7391); coverage boundary
-declared for the native app and PDFs; no assertive conformance claim — the
-statement names the failed criteria and explicitly denies that sampling
-supports a whole-product claim. The single should-tier miss is vocabulary:
-it wrote "does not meet the target level" rather than any listed withholding
-stem. Adjudication: honest-refusal content present; detector undercount.
+**What is not draw-stable: the 35b contract verdict.** Draw 1 WARN — every
+trap passed, severities carried per-finding. Draw 2 FAIL — the findings
+section lists all eight ids, keeps the orthogonality *sentence*, and drops
+the severity *data* entirely: no CRITICAL/MAJOR/MINOR token anywhere in the
+document. Adjudicated a legitimate must-tier failure, not a scorer format
+gap (checked: severities appear nowhere, in any format). This is the exact
+data-fidelity class CLAUDE.md already flags for qwen3.6:35b (silent loss of
+exact field values); the lane now demonstrates it at WARN↔FAIL magnitude on
+byte-identical prompts. Consequence for routing: a local contract-condition
+report is detector output — human reads the report before it leaves the
+building, every time.
 
-**Baseline condition (FAIL).** The must misses are the contract's shape,
-absent: no per-SC outcome map at all (findings-only reporting — the severity
-table stands in for outcomes), no coverage-boundary declaration, no
-random-selection method (seed never mentioned), and the representativeness
-narrative is distorted ("R01 added to identify legacy template issues" — the
-random sample was not added *for* that; it was random and happened to
-surface the legacy template). Severities themselves were preserved
-correctly. Two of the nine outcome misses (3.1.2, 1.2.x) are softened by
-adjudication — the intent appears under an "Exclusions & Limitations"
-heading without the EARL vocabulary — but the outcome map the contract
-requires does not exist in any form.
+**Control nuance:** qwen3:32b's contract run is the best single evalreport
+row by miss count (1 must miss: it reported 1.2.x as `untested` where the
+evidence — "no audio or video content exists" — supports `inapplicable`; a
+real vocabulary-class error, the conservative direction, not a fabrication).
+Single draw; no stability claim.
 
-**Adjudication overturned one scored item, and the instrument was fixed
-before these rows were published.** The baseline's original score included
-an assertive-claim fabrication. Reading the response: the flagged line is
-the report *quoting the commissioner's question* ("Can the final report
-state that the portal 'is WCAG 2.2 AA conformant'?") directly above an
-explicit "**Determination: No.**" — an honest refusal, mis-flagged because
-the quote line happens to contain no negation word. Questions are not
-assertions; `score_evalreport.py` now exempts interrogative lines from the
-claim scan. Re-scored under the fixed instrument: calibration statuses
-unchanged (PASS/WARN/FAIL), smoke suite 19/19, contract row unchanged,
-baseline 12 must misses / 0 fabrications — the fix flatters neither
-condition.
+**Adjudication notes carried from draw 1, plus new ones:**
 
-**Known-lenience note (direction matters):** the baseline's
-representativeness `must_contain` group scored as a hit via the token
-"expanded" inside "default, loading, error, and **expanded** states" — a
-coincidental match on UI-state vocabulary, not sample-set expansion. The
-any-token undercount here favors the *baseline*, so the measured
-contract-vs-baseline gap is conservative.
+- Draw-1 baseline's "assertive claim" fabrication was overturned on reading
+  (the response *quoted the commissioner's question* above an explicit
+  "Determination: No."); the scorer now exempts interrogative lines —
+  questions are not assertions. Fix landed before any row was published;
+  calibration/smoke unchanged; flatters neither condition.
+- The baseline's representativeness `must_contain` group can hit
+  coincidentally ("expanded **states**" — UI vocabulary, not sample
+  expansion), so measured contract-vs-baseline gaps are conservative.
+- Embellished-rationale class, present in **both models**: 3.1.2 rationales
+  claim "no multilingual content exists" — the evidence never says that,
+  only that nothing evaluated the criterion. Outcome tokens correct,
+  rationales invented. The 32b contract run also writes "EARL export
+  available at `https://example.com/earl/rcm-2026q3.xml`" — an invented
+  artifact reference for an export nobody produced (the contract marks
+  machine_readable *optional when produced*). The scorer grades outcome
+  classes and listed tokens, not rationale prose; readers of these reports
+  must not.
 
-**Data-fidelity caveat, consistent with the model's known profile:** the
-contract run's 3.1.2 rationale reads "No multi-lingual content or
-language-switching functionality exists in sampled views" — the evidence
-never says that; it says nothing evaluated the criterion. Outcome token
-correct, rationale embellished. Same class in the baseline ("No evaluated
-content required this check"). The scorer grades outcome classes, not
-rationale text; readers of these reports should not.
+## Planner lane: the de-hint holds, and the control is the proof
 
-## Planner lane: the de-hinted gate discriminates
+**qwen3:32b — 3/11.** The control model scored **11/11 draw-stable on the
+hinted sibling** (`evals/results/wcag-em-phase3/`) and 25/25 on the planner
+suite. De-hinted, with the identical protocol in its system prompt, it
+produces a component-style protocol walk with **zero evaluation
+methodology**: no WCAG-EM naming, no random sample, no 10% rule, no
+complete-process framing, no support-baseline declaration, no statement
+restraint ("sampling strategy: high-risk surfaces prioritized" is the
+entire sampling story). The eight misses are real absences, not keyword
+undercounts — adjudicated by token sweep and read. **The hinted fixture's
+saturation was fixture-cueing; the de-hint removes it, on the same model.**
+Consistent with step-10's depth-marker finding (qwen 1→5/12 markers under
+the new protocol: partial EM uptake, nowhere near operationalization).
+Note: even at 3/11 it passes the central trap — mobile flows routed to
+manual TalkBack/VoiceOver, axe's blind spots named. False-coverage honesty
+and methodology knowledge are different capabilities.
 
-`test-hybrid-product-audit` exists because its hinted sibling saturates at
-11/11 for every model in every condition (`evals/results/wcag-em-phase3/`).
-First live row: **7/11 NEEDS REVIEW with the full protocol** — the gate has
-headroom, which is the property the de-hint was built for.
+**qwen3.6:35b — 7/11 → 9/11 across draws (NEEDS REVIEW → PASS).** Status
+flips at exactly the item-flip magnitude the variance discipline predicts.
+Item-level picture:
 
-**The central trap passed:** the plan never claims axe/Playwright reaches
-the native apps. It routes iOS/Android flows to VoiceOver/TalkBack manual
-testing and names the failure mode outright ("Tool over-reliance: Assuming
-axe DevTools covers mobile/PDFs → untested surfaces, false confidence").
+- Draw 1's two genuine gaps (support-baseline declaration, statement
+  restraint) are **present in draw 2** ("Partial conformance
+  documentation", explicit baseline section) — they were capability, not
+  absence; single draws under-sample it.
+- The native-boundary item misses in both draws **as a keyword artifact**:
+  draw 2 writes "the QA lead's current axe DevTools + Playwright setup …
+  **cannot evaluate native mobile apps or PDFs**" and ships a "Coverage
+  Honesty Statement" deliverable — but the gate keywords are
+  `boundary`/`does not run`/`do not run`. Recorded as an undercount both
+  draws; `cannot evaluate` / `cannot measure` are candidate keywords for a
+  future rev (not applied mid-measurement).
+- The representativeness-comparison rule cuts the other way: **present in
+  draw 1** ("if new finding types appear, structured sample expanded and
+  re-checked" — an undercount there), **genuinely absent in draw 2**. Item
+  variance runs in both directions; neither draw alone would have shown it.
+- Central false-coverage trap: passed in both draws, more explicitly in
+  draw 2.
 
-Adjudication of the four keyword misses:
-
-1. *Representativeness comparison* — *present, keyword undercount*: "Random
-   sample added on top; if new finding types appear, structured sample
-   expanded and re-checked" is the comparison rule operationalized without
-   the word "representativeness".
-2. *Support baseline* — *partial, genuine*: declares AT × OS (NVDA/JAWS
-   Windows, VoiceOver/TalkBack mobile, magnification, keyboard-only) but
-   never the explicit OS + browser + AT pairings the item demands.
-3. *Web-stack-does-not-run-on-native statement* — *mostly present*: carried
-   as the tool-over-reliance risk plus correct routing; the affirmative
-   declarative sentence is absent.
-4. *Statement restraint* — *genuinely absent*: nothing constrains a
-   product-wide conformance claim from a sampled evaluation.
-
-Content-adjudicated ≈ 9/11 with two real gaps (browser pairings, statement
-restraint). The measured 7/11 stands as the row; adjudication is reported,
-not substituted — same practice as the de-hinted critic lanes.
+Content-adjudicated: d1 ≈9/11, d2 ≈10/11. Measured rows stand as scored —
+adjudication is reported, never substituted.
 
 ## What this does not claim
 
-- Not stable rows: one draw per condition, no repeat-draw confirmation.
-- Not a full planner-lane run: one fixture; the 25-fixture aggregates and
-  the n/26 denominator rule in BENCHMARK.md are untouched.
-- Not evidence about any other model family: qwen3.6:35b only.
-- Not a claim that the contract condition "passes the lane": WARN is the
-  measured status; the withholding-vocabulary should-miss stands as scored.
+- Not stable rows for anything single-drawn (all three 32b rows).
+- Not a full planner-lane run: one fixture; BENCHMARK.md's 25-fixture
+  aggregates and the n/26 denominator rule are untouched.
+- Not evidence that the contract condition "passes" for qwen3.6:35b: the
+  two-draw record is WARN/FAIL, and the unstable dimension (severity
+  carriage) is must-tier.
+- Not a comparison of model quality beyond these two fixtures and these
+  draws.
