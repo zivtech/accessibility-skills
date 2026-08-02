@@ -5,7 +5,7 @@
 **Sources:**
 - [CivicActions Accessibility Personas](https://accessibility.civicactions.com/personas/)
 - [W3C WAI ARRM](https://www.w3.org/WAI/planning/arrm/) (Accessibility Roles and Responsibilities Mapping)
-- a11y-meta-skills bundle (planner, critic, test)
+- accessibility-skills bundle (planner, critic, test)
 - zivtech-meta-skills catalog
 
 ---
