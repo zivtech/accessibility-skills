@@ -2,6 +2,8 @@
 
 Comprehensive evaluation framework for the **a11y-planner** skill — a 9-phase protocol for designing accessible implementations before coding.
 
+> **2026-08-01 — suite is now 26 fixtures.** `test-hybrid-product-audit` (COMPLEX, de-hinted — adoption plan step 11a) joined the original 25. The statistical-design and repetition math below describe the original 25-fixture design and every benchmark row dated before 2026-08-01; the 26th fixture has no model rows yet. Its de-hint property (no scoring keyword appears in the fixture text) is enforced by `check_dehinted.py` — run it after any edit to that fixture.
+
 ---
 
 ## Quick Start

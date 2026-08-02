@@ -79,6 +79,7 @@ PLANNER_FIXTURES = [
     "sr-search-results-live",
     "test-data-table",
     "test-form",
+    "test-hybrid-product-audit",  # 26th fixture, de-hinted (step 11a, 2026-08-01) — no model rows yet
     "test-modal",
     "test-multi-page-audit",
     "test-simple-button",

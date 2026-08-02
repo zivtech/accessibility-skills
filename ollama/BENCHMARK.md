@@ -1195,6 +1195,8 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Planner benchmark (post-002 scoring, 25 fixtures)
 
+> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture has **no model rows yet**. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11.
+
 **Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
 
 First full planner-suite measurement (previously 2/25 fixtures). Produced on the
