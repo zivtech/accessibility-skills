@@ -1,0 +1,301 @@
+fixture_id: test-hybrid-product-audit
+name: Hybrid Product Evaluation Plan
+description: De-hinted audit-scope fixture (adoption plan step 11a) — a credit
+  union with a WordPress marketing site, a React banking portal, native
+  iOS/Android apps, and vendor PDFs needs a formal WCAG 2.2 AA evaluation. The
+  brief supplies no methodology vocabulary; the plan must bring WCAG-EM
+  structure itself, and the central trap is claiming axe/Playwright coverage
+  for the native app screens (false-coverage honesty).
+language: mixed
+framework: WordPress + React SPA + Swift/SwiftUI + Kotlin/Compose + vendor PDFs
+difficulty: COMPLEX
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: High
+
+# ── De-hinted design (step 11a of docs/wcag-em-2-adoption-assessment.md) ──
+# The Phase 3 step-10 A/B (evals/results/wcag-em-phase3/) proved the sibling
+# fixture test-multi-page-audit cues its own rubric: its Scope Hints name
+# WCAG-EM, the tool matrix, risk-based sampling, and third-party handling, so
+# every model at every tier scores 11/11 regardless of protocol. This fixture
+# is the durable fix: the .md is a client-voice brief only — no Scope Hints,
+# no What-Success-Looks-Like, and none of the scoring keywords below appear
+# in the fixture text. A plan can only hit the gate items by carrying the
+# methodology itself (protocol-taught or training-known), never by echoing
+# the brief. Enforced mechanically: evals/suites/a11y-planner/check_dehinted.py
+dehinted: true
+dehint_forbidden:
+  # cue-adjacent terms banned from the fixture text beyond the scoring
+  # keywords themselves (check_dehinted.py scans the union of both lists)
+  - "WCAG-EM"
+  - "evaluation methodology"
+  - "methodology"
+  - "sampl"
+  - "random"
+  - "representativ"
+  - "10%"
+  - "ten percent"
+  - "baseline"
+  - "combinations"
+  - "structured"
+  - "complete process"
+  - "end-to-end"
+  - "end to end"
+  - "cantTell"
+  - "inapplicable"
+  - "untested"
+  - "NVDA"
+  - "JAWS"
+  - "VoiceOver"
+  - "TalkBack"
+  - "matrix"
+  - "conformance"
+  - "certif"
+  - "boundary"
+  - "EARL"
+  - "WCAG2ICT"
+  - "enclosure"
+  - "third-party"
+  - "third party"
+
+scenario:
+  feature: A formal accessibility evaluation of a hybrid credit-union product
+    (marketing site, authenticated banking portal, two native mobile apps,
+    vendor-generated PDF statements) triggered by a regulator complaint and a
+    county contract requiring documented WCAG 2.2 AA evaluation
+  user_need: A written evaluation report a non-technical compliance officer
+    can hand to a county client and a state regulator, produced in 10 weeks
+    by 2 QA engineers, with honest coverage on the surfaces the web tooling
+    cannot measure
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - Unspecified by the client (screen readers and screen magnification in
+      use; no data on which) — the plan must choose and declare the tested
+      combinations itself
+  scope: ~30 marketing pages, ~60 authenticated portal screens, 2 native
+    mobile apps (feature-matched), monthly vendor PDFs, 1 embedded third-party
+    map
+  constraints:
+    - 10-week deadline for the written report
+    - 2 QA engineers + part-time front-end developer
+    - No budget for new commercial tools (existing axe DevTools + Playwright)
+    - Native apps are genuinely native (no webviews) — web tooling does not
+      reach them
+    - Vendor PDFs cannot be regenerated this year
+    - QA lead assumes the existing web setup can be pointed at the apps
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - WCAG-EM named as the framework with zero prompting from the brief
+  - Structured screen selection per surface with rationale, plus the random
+    addition, the representativeness comparison, and the 10% sizing rule
+  - Accessibility support baseline chosen and declared by the plan (client
+    provided none)
+  - Member journeys evaluated as complete processes end-to-end
+  - Coverage honesty — web stack stops at web surfaces; native screens routed
+    to platform AT + manual testing; PDFs to a document method
+  - No product-wide conformance claim promised from a sampled evaluation
+  - Feasible within 10 weeks / 2 engineers (no equal-depth-everything plan)
+
+expected_findings:
+  must_have:
+    - Names the W3C evaluation methodology (WCAG-EM, either version) as the
+      framework — unprompted by the brief
+    - Selects a structured set of screens per surface with documented
+      rationale (templates, functionality, technology), not everything and
+      not arbitrary picks
+    - Adds a randomly selected set on top of the structured selection, with
+      the selection method documented
+    - Compares what the random selection surfaces against the structured
+      selection and expands when they diverge (representativeness check)
+    - Sizes the random addition per the EM rule (10% of the structured set,
+      on top)
+    - Declares an accessibility support baseline — explicit OS + browser +
+      assistive technology combinations — as a report artifact, chosen by the
+      plan since the client provided none
+    - Evaluates the named member journeys as complete processes end-to-end
+      (login through completion, including error paths), not screen-by-screen
+      only
+    - Plans per-criterion outcome reporting including the honesty states
+      (cantTell / inapplicable / untested)
+    - Routes the native iOS/Android screens to platform assistive-technology
+      and manual testing (TalkBack, Accessibility Scanner, Accessibility
+      Inspector — the platform tooling by name)
+    - States plainly that the axe/Playwright web stack does not run on the
+      native app screens or the vendor PDFs (a declared coverage boundary,
+      not silence)
+    - Constrains the final statement — a sampled evaluation does not support
+      a product-wide conformance claim, and the report's language must say
+      what it can and cannot support
+
+  should_have:
+    - Vendor PDFs get a named document method (tagged-PDF / PDF/UA checking)
+      plus the vendor-documentation route, since the files cannot be
+      regenerated this year
+    - WCAG2ICT (or the in-progress WCAG2Mobile work) cited for applying web
+      criteria to native software
+    - State coverage per selected screen (default, error, loading, expanded)
+    - Shared-design-system leverage — fixing a component once propagates
+      across the portal and both apps
+    - Test-account / sandbox needs for evaluating a banking product without
+      moving real money
+    - SMS one-time-code login evaluated for time limits (WCAG 2.2.1 Timing
+      Adjustable) and AT usability
+    - Effort allocation with named owners across the 2 QA engineers and the
+      part-time developer
+    - Plain-language executive summary planned for the non-technical
+      compliance officer
+
+  nice_to_have:
+    - Random-selection method recorded reproducibly (seed or documented
+      procedure)
+    - Machine-readable outcome export (EARL) mentioned as optional
+    - Embedded map handled as third-party content with documented limits
+    - Re-evaluation cadence proposed for regulator follow-up
+    - Product-enclosure framing — all screens and states in scope unless an
+      exclusion is named
+
+false_positive_traps:
+  - Endorsing the QA lead's assumption — extending axe DevTools or the
+    Playwright suite to the native iOS/Android apps. The apps are native; the
+    web stack does not execute there. A plan that budgets axe/Playwright time
+    against app screens has failed the fixture's central probe regardless of
+    other content.
+  - Promising the credit union a product-wide WCAG 2.2 AA conformance
+    statement (or "certification") once the evaluation passes — sampled
+    evaluation does not support one, and the county-contract pressure is the
+    bait.
+  - Treating the vendor PDFs as covered by the portal scans, or silently
+    dropping them from scope.
+  - Equal-depth testing of all ~90 web screens plus both apps — infeasible in
+    10 weeks with 2 engineers and methodologically wrong.
+  - Recommending new commercial mobile-scanning tools despite the stated
+    no-budget constraint — the correct route is free platform tooling plus
+    manual AT sessions.
+  - Prioritizing findings by WCAG criterion number instead of member-task
+    impact.
+
+multi_perspective_coverage:
+  keyboard: "Full keyboard path through login (including the one-time-code
+    step), transfers, bill pay, and dispute flows in the portal; SPA focus
+    management on route changes; embedded-map keyboard access on the
+    marketing site"
+  screen_reader: "Per-surface screen reader assignment chosen and declared by
+    the plan — desktop SRs against the portal and marketing site, the
+    platform mobile SRs against the native apps; the regulator complaint
+    (dispute flow, Android) reproduced with the platform SR"
+  low_vision: "Zoom and reflow on portal flows; platform text-size settings
+    honored in both native apps; contrast on the marketing site and in the
+    vendor PDFs"
+  cognitive: "One-time-code time limits; dispute flow comprehension; error
+    recovery in transfers and bill pay; consistent naming across the five
+    surfaces"
+  mobile_touch: "Native app target sizes; check-deposit camera flow operable
+    without vision of the frame; magnification gestures not trapped by app
+    gestures"
+
+notes: |
+  Step 11(a) of docs/wcag-em-2-adoption-assessment.md — the de-hinted audit
+  fixture, built 2026-08-01 as the durable fix for the step-10 instrument
+  finding (the sibling test-multi-page-audit cues its own rubric keywords, so
+  its gate saturates at 11/11 for every model and condition).
+
+  Design contract:
+  1. The fixture .md is a client-voice brief ONLY. No Scope Hints, no
+     What-Success-Looks-Like, no methodology vocabulary. The union of
+     scoring_keywords and dehint_forbidden must never appear in the fixture
+     text — enforced by evals/suites/a11y-planner/check_dehinted.py. Any
+     future edit to the .md must re-run that check.
+  2. Every gate item is therefore a knowledge probe, not an echo probe: the
+     plan can only name WCAG-EM, the random-addition rule, the 10% sizing,
+     the representativeness comparison, the support baseline, the outcome
+     vocabulary, and the platform AT routing by carrying the methodology
+     itself (AUDIT-SCOPE MODE in the planner protocol teaches all of them).
+  3. The central trap is false-coverage honesty, in the spirit of the CLEAN
+     fixture discipline: the QA lead's assumption invites the plan to extend
+     axe/Playwright to native screens. The correct plan says the web stack
+     stops at web surfaces, routes the apps to platform AT + manual sessions
+     (free tooling — the budget constraint blocks the buy-a-scanner escape),
+     and gives the PDFs a document-specific method.
+
+  Expected discrimination (the reason this fixture exists): protocol-following
+  planners should clear the gate; baseline/zero-shot plans should now MISS
+  the EM items they previously copied out of the brief. If baselines still
+  saturate this gate, the de-hinting failed — treat that as an instrument
+  finding, not a model achievement.
+
+  Adjudication guidance (variance discipline, July 2026): items 6 ("support
+  baseline") and 10 (coverage-boundary phrasing) undercount paraphrase — a
+  plan may declare an AT matrix without the word "baseline" or state the
+  boundary as "axe cannot execute inside native apps" without any keyword.
+  Content-adjudicate misses on those two items before counting them, same as
+  the wcag-em-phase3 marker adjudication. Local-model draws: byte-identical
+  prompts flip 2-3 items at temperature 0.3; adjudicate across draws before
+  treating a delta as real.
+
+  Benchmark bookkeeping: added 2026-08-01 as planner fixture #26 (domain
+  Testing & Audit Planning #6, COMPLEX #6). All BENCHMARK.md planner rows
+  dated before 2026-08-01 were measured on the 25-fixture suite; this fixture
+  has NO model rows yet. Do not fold it into historical 25/25 aggregates.
+
+  Expected verdict: ACCEPT for a protocol-following planner. REVISE or worse
+  for baselines that miss the methodology items or fall into the
+  false-coverage trap. A plan that extends axe/Playwright to the native apps
+  cannot be ACCEPT regardless of gate score.
+
+scoring_keywords:
+  "Names the W3C evaluation methodology (WCAG-EM, either version) as the framework — unprompted by the brief":
+    - "WCAG-EM"
+    - "w3.org/TR/WCAG-EM"
+    - "wcag-em-2"
+    - "WCAG Evaluation Methodology"
+    - "Website Accessibility Conformance Evaluation Methodology"
+  "Selects a structured set of screens per surface with documented rationale (templates, functionality, technology), not everything and not arbitrary picks":
+    - "sampl"
+  "Adds a randomly selected set on top of the structured selection, with the selection method documented":
+    - "random"
+  "Compares what the random selection surfaces against the structured selection and expands when they diverge (representativeness check)":
+    - "representativen"
+    - "not representative"
+  "Sizes the random addition per the EM rule (10% of the structured set, on top)":
+    - "10%"
+    - "10 %"
+    - "ten percent"
+  "Declares an accessibility support baseline — explicit OS + browser + assistive technology combinations — as a report artifact, chosen by the plan since the client provided none":
+    - "support baseline"
+    - "combinations"
+  "Evaluates the named member journeys as complete processes end-to-end (login through completion, including error paths), not screen-by-screen only":
+    - "complete process"
+    - "end-to-end"
+    - "end to end"
+  "Plans per-criterion outcome reporting including the honesty states (cantTell / inapplicable / untested)":
+    - "cantTell"
+    - "inapplicable"
+    - "untested"
+  "Routes the native iOS/Android screens to platform assistive-technology and manual testing (TalkBack, Accessibility Scanner, Accessibility Inspector — the platform tooling by name)":
+    - "TalkBack"
+    - "Accessibility Scanner"
+    - "Accessibility Inspector"
+  "States plainly that the axe/Playwright web stack does not run on the native app screens or the vendor PDFs (a declared coverage boundary, not silence)":
+    - "boundary"
+    - "does not run"
+    - "do not run"
+    - "won't run"
+    - "not measurable"
+    - "outside the reach"
+  "Constrains the final statement — a sampled evaluation does not support a product-wide conformance claim, and the report's language must say what it can and cannot support":
+    - "conformance claim"
+    - "cannot claim"
+    - "does not support a claim"
+    - "partial conformance"
+    - "certify"

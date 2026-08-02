@@ -1,0 +1,81 @@
+Fixture: transit-portal-q3
+Response length: 5149 chars
+
+Required sections:
+  + evaluation identity
+  + scope
+  + conformance target
+  X accessibility support baseline
+  + technologies relied upon
+  X sample set
+  X outcomes
+  + findings
+  X coverage boundary
+
+Finding ids: 8/8 present, 0 invented
+
+Severity preservation:
+  X a11y_fare_zone_slider_keyboard stays CRITICAL
+  X a11y_swap_button_name stays MINOR
+  X a11y_ticket_activate_unlabeled stays MAJOR
+
+Outcomes (whole-document):
+  X 2.1.1 → fail
+  X 4.1.2 → fail
+  X 1.4.3 → fail
+  X 3.3.1 → fail
+  X 4.1.3 → fail
+  X 2.4.1 → fail
+  X 1.3.1 → fail
+  X 3.1.2 → untested
+  X 1.2.2 → inapplicable
+  x 2.4.7 → pass (should)
+  x 2.4.3 → pass (should)
+  x 1.1.1 → pass (should)
+
+Key values:
+  + any of ['expanded', 'expand', 'divergen']
+  X any of ['S11']
+  X any of ['seed', '7391']
+  + any of ['NVDA']
+  + any of ['TalkBack']
+  + any of ['VoiceOver']
+  + any of ['keyboard-only', 'keyboard only']
+  + any of ['Meridian']
+  + any of ['RiverCity', 'Office of Civil Rights']
+  + any of ['WCAG-EM 2.0', 'wcag-em-2', 'WCAG-EM']
+  + any of ['2026-06-22', '2026-07-24', 'June 22']
+  + boundary: any of ['native', 'RideRC']
+  + boundary: any of ['TalkBack', 'manual']
+  + boundary: any of ['PDF', 'timetable']
+
+Statement: no assertive claim; withholding language absent (should)
+
+Must misses: 18
+  - section missing: accessibility support baseline
+  - section missing: sample set
+  - section missing: outcomes
+  - section missing: coverage boundary
+  - severity: a11y_fare_zone_slider_keyboard not reported CRITICAL
+  - severity: a11y_swap_button_name not reported MINOR
+  - severity: a11y_ticket_activate_unlabeled not reported MAJOR
+  - outcome: 2.1.1 not reported fail
+  - outcome: 4.1.2 not reported fail
+  - outcome: 1.4.3 not reported fail
+  - outcome: 3.3.1 not reported fail
+  - outcome: 4.1.3 not reported fail
+  - outcome: 2.4.1 not reported fail
+  - outcome: 1.3.1 not reported fail
+  - outcome: no line names 3.1.2
+  - outcome: no line names 1.2.2
+  - missing all of: ['S11']
+  - missing all of: ['seed', '7391']
+Fabrications: 0
+Should/nice misses: 5
+  - outcome: 2.4.7 → pass
+  - outcome: 2.4.3 → pass
+  - outcome: 1.1.1 → pass
+  - no explicit statement-withholding language
+  - no orthogonality language (nice)
+
+Status: FAIL

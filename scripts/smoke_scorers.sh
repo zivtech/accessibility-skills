@@ -180,6 +180,48 @@ run_case \
     "report count 2 != 1" \
     "Status: FAIL"
 
+# Case 16: evaluation-report honest aggregation (PASS)
+run_case \
+    "evalreport honest aggregation (PASS)" \
+    "ollama/score_evalreport.py" \
+    "evalreport-good-response.json" \
+    "evalreport-meta.yaml" \
+    "Finding ids: 3/3 present, 0 invented" \
+    "withholding language present" \
+    "Status: PASS"
+
+# Case 17: evaluation-report severity re-ranked while the NEXT finding line
+# legitimately carries the expected token — regression guard for the
+# truncated severity span (2026-08-01: untruncated window masked re-ranks)
+run_case \
+    "evalreport severity re-rank beside MINOR neighbor (FAIL)" \
+    "ollama/score_evalreport.py" \
+    "evalreport-severity-rerank-response.json" \
+    "evalreport-meta.yaml" \
+    "severity: a11y_icon_button_name not reported MINOR" \
+    "Status: FAIL"
+
+# Case 18: evaluation-report fabrications — never-evaluated criterion passed,
+# invented finding id, environment token from no input stream
+run_case \
+    "evalreport fabrications: untested->passed, invented id, JAWS (FAIL)" \
+    "ollama/score_evalreport.py" \
+    "evalreport-fabricated-response.json" \
+    "evalreport-meta.yaml" \
+    "invented finding_id: a11y_ghost_finding" \
+    "3.1.2 marked passed but nothing evaluated it" \
+    "environment token never in input: JAWS" \
+    "Status: FAIL"
+
+# Case 19: evaluation-report assertive product-wide conformance claim (FAIL)
+run_case \
+    "evalreport assertive conformance claim (FAIL)" \
+    "ollama/score_evalreport.py" \
+    "evalreport-claim-response.json" \
+    "evalreport-meta.yaml" \
+    "assertive conformance claim: 'is WCAG 2.2 AA conformant'" \
+    "Status: FAIL"
+
 echo
 echo "Results: $pass_count passed, $fail_count failed"
 if [ "$fail_count" -gt 0 ]; then

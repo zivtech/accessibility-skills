@@ -5,6 +5,9 @@ Usage:
     python3 ollama/run_benchmark.py critic-remaining [model]       # All un-benchmarked critic fixtures (default: qwen3:32b)
     python3 ollama/run_benchmark.py bugreport <model> <fixture-id> # Bug-reporting single fixture
     python3 ollama/run_benchmark.py bugreport-remaining [model]    # All un-benchmarked bug-reporting fixtures
+    python3 ollama/run_benchmark.py evalreport <model> <fixture-id>          # Evaluation-report single fixture (contract = system prompt)
+    python3 ollama/run_benchmark.py evalreport-baseline <model> <fixture-id> # Same fixture, no contract (baseline condition)
+    python3 ollama/run_benchmark.py evalreport-remaining [model]             # All un-benchmarked evaluation-report fixtures (contract condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
@@ -49,6 +52,18 @@ BUGREPORT_FIXTURES = [
     "sparse-scan-adversarial",
 ]
 
+# Evaluation-report lane (adoption plan step 11b, 2026-08-01). The system
+# prompt is the report contract itself — this is a prompt-only repo, so the
+# contract IS the skill under test. No prompt prefix: the fixture .md carries
+# its own minimal task instruction, and the honesty rules being graded must
+# come from the contract, not the task prompt (see fixture metadata notes).
+EVALREPORT_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "evaluation-report", "fixtures")
+EVALREPORT_CONTRACT_PATH = os.path.join(BASE_DIR, "..", "docs", "a11y-evaluation-report-contract.md")
+
+EVALREPORT_FIXTURES = [
+    "transit-portal-q3",
+]
+
 PROMPT_PREFIX = "Review the following React component for accessibility design issues. Execute all phases of the investigation protocol.\n\n"
 PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
 BUGREPORT_PROMPT_PREFIX = (
@@ -79,6 +94,7 @@ PLANNER_FIXTURES = [
     "sr-search-results-live",
     "test-data-table",
     "test-form",
+    "test-hybrid-product-audit",  # 26th fixture, de-hinted (step 11a, 2026-08-01) — no model rows yet
     "test-modal",
     "test-multi-page-audit",
     "test-simple-button",
@@ -127,7 +143,12 @@ ALL_PERSPECTIVE_FIXTURES = [
     "video-tutorial-no-captions",
 ]
 
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/generate")
+# 127.0.0.1, not localhost: on dual-stack macOS, localhost resolves ::1
+# first, where the CPU-only OrbStack container may listen with a different
+# model store — a model missing there 404s even though `ollama list` (native
+# Metal server on IPv4) shows it. Matches ollama_a11y.py's default.
+# (2026-08-01: the evalreport first-rows run hit exactly this.)
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434/api/generate")
 
 OLLAMA_MODELS = ["llama3.3:70b", "qwen3:32b", "deepseek-r1:70b", "qwen3.5:27b"]
 SMALL_MODELS = ["qwen3.5:latest"]  # 6.6 GB — test as lightweight tier
@@ -446,6 +467,65 @@ def run_bugreport(model, fixture_id, system_prompt):
     return out_path
 
 
+def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
+    """Evaluation-report lane. condition="baseline" runs the identical fixture
+    with no system prompt to measure what the contract carries; its output file
+    gets a distinct prefix so the -remaining glob never counts it as a
+    contract-condition run."""
+    prompt = load_fixture(fixture_id, EVALREPORT_FIXTURES_DIR)
+
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        # 32k flat: contract + evidence package + a full report is the longest
+        # input/output pair in the benchmark, and thinking-by-default models
+        # share the window with reasoning tokens.
+        "options": {"num_ctx": 32768, "temperature": 0.3},
+    }
+    if system_prompt:
+        payload["system"] = system_prompt
+
+    file_prefix = "ollama-evalreport" if condition == "contract" else "ollama-evalreport-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"EVALREPORT ({condition}) | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1200) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "evaluation-report",
+        "condition": condition,
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
+def load_evalreport_contract():
+    with open(EVALREPORT_CONTRACT_PATH) as f:
+        return f.read()
+
+
 PERSPECTIVE_CTX = {
     "qwen3:32b": 32768,
     "llama3.3:70b": 32768,
@@ -656,6 +736,46 @@ def main():
         for i, fixture_id in enumerate(remaining, 1):
             print(f"\n[{i}/{len(remaining)}]")
             run_bugreport(model, fixture_id, system_prompt)
+
+    elif cmd == "evalreport":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py evalreport <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_evalreport(model, fixture_id, load_evalreport_contract())
+
+    elif cmd == "evalreport-baseline":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py evalreport-baseline <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_evalreport(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "evalreport-remaining":
+        import glob as _eglob
+        model = sys.argv[2] if len(sys.argv) > 2 else "qwen3.6:35b"
+        model_tag = make_model_tag(model)
+        done = set()
+        for f in _eglob.glob(os.path.join(RESULTS_DIR, f"ollama-evalreport-*-{model_tag}-response.json")):
+            name = os.path.basename(f)
+            name = name.replace("ollama-evalreport-", "").replace(f"-{model_tag}-response.json", "")
+            if name.startswith("baseline-"):
+                continue  # baseline runs never satisfy the contract condition
+            done.add(name)
+        remaining = [f for f in EVALREPORT_FIXTURES if f not in done]
+        print(f"Model: {model}")
+        print(f"Total fixtures: {len(EVALREPORT_FIXTURES)}")
+        print(f"Already done: {len(done)}")
+        print(f"Remaining: {len(remaining)}")
+        if not remaining:
+            print("All evaluation-report fixtures benchmarked!")
+            sys.exit(0)
+        system_prompt = load_evalreport_contract()
+        for i, fixture_id in enumerate(remaining, 1):
+            print(f"\n[{i}/{len(remaining)}]")
+            run_evalreport(model, fixture_id, system_prompt)
 
     elif cmd == "score-all":
         import glob
