@@ -1072,6 +1072,25 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-08-01 (new lane — evaluation-report, adoption plan step 11b): instrument only, no model
+  rows yet. `evals/suites/evaluation-report/` adds the `transit-portal-q3` chain fixture
+  (finished audit evidence in, contract-shaped Accessibility Evaluation Report out) with
+  metadata-driven rule-based scoring (`ollama/score_evalreport.py`): required contract
+  sections, finding-id integrity both directions, severity-orthogonality probe with the match
+  span truncated at the next id token, per-SC outcome checks with an untested-reported-passed
+  fabrication trap (3.1.2), aggregation-fidelity groups, negation-stripped statement
+  discipline, and environment-token fabrication (JAWS/Dragon). Two conditions: contract as
+  system prompt (`run_benchmark.py evalreport`) vs no-contract baseline (`evalreport-baseline`)
+  — the contract document IS the skill under test. Runner lane + `evalreport-remaining`,
+  `ollama_a11y.py evalreport` verb, validator triplet/registry checks, and 4 scorer smoke
+  cases wired into CI. Calibration (suite README) surfaced and fixed three instrument defects
+  pre-commit: unparseable metadata YAML, a severity window that bled into neighboring list
+  findings and masked both planted re-ranks, and honest withholding phrasing tripping the
+  assertive-claim scan. Fixtures are input artifacts (no answer keys in the `.md`), so the
+  blind protocol is a pass-through, as with bug-reporting. Same-commit registry hygiene:
+  `run_cloud_benchmark.PLANNER_FIXTURES` synced to 26 (step 11a had drifted it for a day) and
+  `validate_fixtures.py` now cross-checks planner lists between the two runners.
+
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
   single/dedup/two-rule, keyboard-a11y-tester finding, manual-prose note, sparse pa11y
