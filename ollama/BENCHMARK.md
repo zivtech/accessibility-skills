@@ -1072,6 +1072,39 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Scoring changelog
 
+- 2026-08-01 (new lane — evaluation-report, adoption plan step 11b): instrument only, no model
+  rows yet. `evals/suites/evaluation-report/` adds the `transit-portal-q3` chain fixture
+  (finished audit evidence in, contract-shaped Accessibility Evaluation Report out) with
+  metadata-driven rule-based scoring (`ollama/score_evalreport.py`): required contract
+  sections, finding-id integrity both directions, severity-orthogonality probe with the match
+  span truncated at the next id token, per-SC outcome checks with an untested-reported-passed
+  fabrication trap (3.1.2), aggregation-fidelity groups, negation-stripped statement
+  discipline, and environment-token fabrication (JAWS/Dragon). Two conditions: contract as
+  system prompt (`run_benchmark.py evalreport`) vs no-contract baseline (`evalreport-baseline`)
+  — the contract document IS the skill under test. Runner lane + `evalreport-remaining`,
+  `ollama_a11y.py evalreport` verb, validator triplet/registry checks, and 4 scorer smoke
+  cases wired into CI. Calibration (suite README) surfaced and fixed three instrument defects
+  pre-commit: unparseable metadata YAML, a severity window that bled into neighboring list
+  findings and masked both planted re-ranks, and honest withholding phrasing tripping the
+  assertive-claim scan. Fixtures are input artifacts (no answer keys in the `.md`), so the
+  blind protocol is a pass-through, as with bug-reporting. Same-commit registry hygiene:
+  `run_cloud_benchmark.PLANNER_FIXTURES` synced to 26 (step 11a had drifted it for a day) and
+  `validate_fixtures.py` now cross-checks planner lists between the two runners.
+  Same-day addendum, first live rows: a fourth scorer fix pre-publication — the baseline row
+  quoted the commissioner's question on a negation-free line above an explicit "Determination:
+  No." and the claim scan called it a fabrication; interrogative lines are now exempt
+  (questions are not assertions; calibration/smoke unchanged, flatters neither condition).
+  First rows (qwen3.6:35b ×2 draws + qwen3:32b control, receipts and adjudications in
+  `evals/results/wcag-em-step11/`): the A/B direction is draw-stable — every baseline draw
+  FAILs on report shape (no outcome map, no boundary, no sampling method) — while the 35b
+  contract verdict is not (WARN d1 → FAIL d2, draw 2 silently dropping all severity data:
+  the known data-fidelity class at must-tier magnitude). 32b contract: 1 must miss
+  (untested-vs-inapplicable class error), the best single evalreport row. Planner de-hinted
+  fixture: 35b 7/11 → 9/11 across draws; 32b control 3/11 vs its 11/11 on the hinted
+  sibling — the saturation was fixture-cueing. No instrument tuning between draws; keyword
+  undercounts ("cannot evaluate"/"cannot measure" for the boundary item) recorded as
+  future-rev candidates only.
+
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
   single/dedup/two-rule, keyboard-a11y-tester finding, manual-prose note, sparse pa11y
@@ -1194,6 +1227,8 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   retained, so historical tables stand as-is.
 
 ## Planner benchmark (post-002 scoring, 25 fixtures)
+
+> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only rows so far are single-fixture receipts (`evals/results/wcag-em-step11/`: qwen3.6:35b 7/11 → 9/11 across two draws, qwen3:32b control 3/11), not lane rows. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the live rows spreading across the gate (3 to 9) instead of pinning at 11 is the discrimination working, most sharply in the control: the same qwen3:32b that saturated the hinted sibling scores 3/11 de-hinted.
 
 **Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
 

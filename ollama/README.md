@@ -34,6 +34,10 @@ python3 ollama/ollama_a11y.py perspective path/to/component.jsx
 # Convert a raw finding (axe/pa11y JSON, tool output, manual note) into a filable bug report
 python3 ollama/ollama_a11y.py bugreport path/to/finding.json
 
+# Aggregate a finished audit's evidence into an evaluation report
+# (system prompt is docs/a11y-evaluation-report-contract.md — the contract is the skill)
+python3 ollama/ollama_a11y.py evalreport path/to/evidence.md
+
 # Use a specific model (default is qwen3.6:35b)
 python3 ollama/ollama_a11y.py critic path/to/component.jsx --model qwen3:32b
 
@@ -141,6 +145,8 @@ within draw-to-draw variance, and perspective adds its first HAS-BUGS FAIL (chec
 byte-identical prompt — variance) with CLEAN at 4/5 wrong on the harder corpus.
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
+
+> Suite is 26 fixtures as of 2026-08-01 (`test-hybrid-product-audit`, de-hinted, step 11a — first rows: qwen3.6:35b 7/11 → 9/11 across two draws; qwen3:32b control 3/11, `evals/results/wcag-em-step11/`). Rows below were measured on the original 25.
 
 | Lane | PASS | Must-have criteria | Raw results |
 |------|------|--------------------|-------------|

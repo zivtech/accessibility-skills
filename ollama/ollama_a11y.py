@@ -14,8 +14,13 @@ Usage:
     # Review from stdin
     cat component.jsx | python3 ollama/ollama_a11y.py critic -
 
-Supported skills: critic, planner, perspective
-Default model: llama3.3:70b (Tier 1)
+    # Aggregate finished audit evidence into an evaluation report
+    python3 ollama/ollama_a11y.py evalreport path/to/evidence.md
+
+Supported skills: critic, planner, perspective, bugreport, evalreport
+(evalreport's system prompt is docs/a11y-evaluation-report-contract.md —
+the report contract is the skill under test)
+Default model: qwen3.6:35b
 """
 
 import argparse
@@ -36,12 +41,20 @@ OLLAMA_TAGS_URL = _OLLAMA_HOST + "/api/tags"
 DEFAULT_MODEL = "qwen3.6:35b"
 
 SKILLS_DIR = os.path.join(os.path.dirname(__file__), "..", ".claude", "skills")
+DOCS_DIR = os.path.join(os.path.dirname(__file__), "..", "docs")
 
 SKILL_PROMPTS = {
     "critic": "Review the following component for accessibility design issues. Execute all phases of the investigation protocol.\n\n",
     "planner": "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n",
     "perspective": "Run the perspective audit on the following component. The escalated perspectives are listed in the input.\n\n",
     "bugreport": "Convert the following raw accessibility finding(s) into bug report(s) ready to file as GitHub Issue(s), following the bug-reporting skill exactly. Where the input genuinely lacks a value, follow the skill's guidance on absent data instead of inventing one. Return only the finished report(s) in the skill's Markdown template.\n\n",
+    "evalreport": "Aggregate the following finished evaluation evidence into an Accessibility Evaluation Report, following the A11y Evaluation Report Contract exactly. Report only what the evidence contains. Return only the finished report in Markdown.\n\n",
+}
+
+# Skills whose system prompt is a contract document rather than a SKILL.md
+# (prompt-only repo: the contract IS the skill under test).
+DOC_SKILLS = {
+    "evalreport": "a11y-evaluation-report-contract.md",
 }
 
 SKILL_REFS = {
@@ -53,9 +66,12 @@ SKILL_REFS = {
 
 
 def load_skill_prompt(skill_name: str) -> str:
-    special_dirs = {"perspective": "perspective-audit", "bugreport": "bug-reporting"}
-    skill_dir_name = special_dirs.get(skill_name, f"a11y-{skill_name}")
-    skill_path = os.path.join(SKILLS_DIR, skill_dir_name, "SKILL.md")
+    if skill_name in DOC_SKILLS:
+        skill_path = os.path.join(DOCS_DIR, DOC_SKILLS[skill_name])
+    else:
+        special_dirs = {"perspective": "perspective-audit", "bugreport": "bug-reporting"}
+        skill_dir_name = special_dirs.get(skill_name, f"a11y-{skill_name}")
+        skill_path = os.path.join(SKILLS_DIR, skill_dir_name, "SKILL.md")
     if not os.path.exists(skill_path):
         print(f"ERROR: Skill file not found: {skill_path}", file=sys.stderr)
         sys.exit(1)
@@ -136,7 +152,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
-    parser.add_argument("skill", choices=["critic", "planner", "perspective", "bugreport"], help="Which a11y skill to run")
+    parser.add_argument("skill", choices=["critic", "planner", "perspective", "bugreport", "evalreport"], help="Which a11y skill to run")
     parser.add_argument("input", help="Path to component/requirements file, or - for stdin")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Ollama model (default: {DEFAULT_MODEL})")
     parser.add_argument("--ctx", type=int, default=32768, help="Context window size (default: 32768)")

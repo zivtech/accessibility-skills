@@ -1,0 +1,54 @@
+fixture_id: evalreport-smoke
+suite: evaluation-report
+input_format: synthetic evidence digest
+difficulty: SMOKE
+description: Synthetic metadata for score_evalreport.py smoke cases.
+
+required_sections:
+  - name: outcomes
+    patterns: ["outcome"]
+  - name: findings
+    patterns: ["finding"]
+  - name: coverage boundary
+    patterns: ["coverage boundary", "boundary"]
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_checkout_slider_keyboard
+  - a11y_icon_button_name
+  - a11y_footer_link_contrast
+
+# a11y_icon_button_name at MINOR directly precedes a MINOR neighbor in the
+# severity-rerank smoke response — regression guard for the truncated-span
+# fix (2026-08-01): an untruncated window let the neighbor's severity
+# satisfy the check.
+severity_window: 400
+severity_pairs:
+  a11y_checkout_slider_keyboard: CRITICAL
+  a11y_icon_button_name: MINOR
+
+outcome_checks:
+  must:
+    - { sc_patterns: ["2.1.1"], expect: fail }
+    - { sc_patterns: ["3.1.2"], expect: untested }
+  should:
+    - { sc_patterns: ["2.4.7"], expect: pass }
+
+must_contain:
+  - ["seed 4242"]
+  - ["NVDA"]
+
+boundary_must_contain:
+  - ["kiosk", "manual"]
+
+assertive_claim_must_not:
+  - "is WCAG 2.2 AA conformant"
+statement_withholding_should:
+  - "withheld"
+  - "cannot state"
+
+fabricated_tokens:
+  - "JAWS"
+
+nice_to_have_tokens:
+  - "orthogonal"
