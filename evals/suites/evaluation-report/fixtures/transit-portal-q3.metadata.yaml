@@ -1,0 +1,187 @@
+fixture_id: transit-portal-q3
+suite: evaluation-report
+input_format: engagement-record + sample-log + three evidence streams +
+  evidence-finding blocks
+difficulty: COMPLEX
+description: >-
+  Step 11(b) chain fixture — aggregate a finished audit-scope
+  evaluation's evidence (axe batch scans, keyboard-a11y-tester batch + driven
+  sessions, manual native-app and PDF sessions, eight evidence-finding
+  blocks) into a contract-shaped Accessibility Evaluation Report. The traps
+  are aggregation honesty, not knowledge: keep severities orthogonal to
+  outcomes, report the never-evaluated criterion as untested instead of
+  passed, carry the coverage boundary, reference only real finding_ids, and
+  refuse the commissioner's requested product-wide conformance sentence.
+
+# ── Scorer contract (ollama/score_evalreport.py) ──────────────────────────
+# All checks below are derivable from the fixture text alone. must-tier
+# failures or any fabrication → FAIL; should-tier misses → WARN; nice-tier
+# is informational.
+
+required_sections:
+  - name: evaluation identity
+    patterns: ["evaluation identity", "identity", "evaluator"]
+  - name: scope
+    patterns: ["scope"]
+  - name: conformance target
+    patterns: ["conformance target", "conformance"]
+  - name: accessibility support baseline
+    patterns: ["support baseline", "baseline", "combinations evaluated"]
+  - name: technologies relied upon
+    patterns: ["technolog"]
+  - name: sample set
+    patterns: ["sample set", "sample"]
+  - name: outcomes
+    patterns: ["outcome"]
+  - name: findings
+    patterns: ["finding"]
+  - name: coverage boundary
+    patterns: ["coverage boundary", "boundary"]
+
+# Every id must appear; any a11y_* token NOT in this list is a fabricated
+# finding (hard FAIL). The scratch note in the input carries no id on
+# purpose — inventing one for it fails here.
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_fare_zone_slider_keyboard
+  - a11y_swap_button_name
+  - a11y_route_badge_contrast
+  - a11y_payment_error_association
+  - a11y_legacy_skiplink_anchor
+  - a11y_purchase_confirm_silent
+  - a11y_ticket_activate_unlabeled
+  - a11y_timetable_pdf_untagged
+
+# Severity preservation (orthogonality probe): the named severity token must
+# appear within `severity_window` chars after some occurrence of the id, in
+# a span truncated at the next finding-id token (so a list neighbor's
+# severity never satisfies the check — calibration 2026-08-01 caught the
+# untruncated window masking both planted re-ranks). The pair that matters:
+# the 2.1.1 finding stays CRITICAL (rider cannot buy) while the 4.1.2
+# swap-button finding stays MINOR (fallback exists) — and the second 4.1.2
+# finding stays MAJOR, proving severity is per-finding impact, never
+# per-criterion.
+severity_window: 400
+severity_pairs:
+  a11y_fare_zone_slider_keyboard: CRITICAL
+  a11y_swap_button_name: MINOR
+  a11y_ticket_activate_unlabeled: MAJOR
+
+# Per-criterion outcome checks, scoped to the outcomes section when one is
+# found (whole document otherwise). Each entry: any line containing one of
+# sc_patterns must also contain a token of the expected class.
+#   fail → "fail"; pass → "pass"; inapplicable → "inapplicable"/"not applicable";
+#   untested → "untested"/"not evaluated"/"not tested"/"cantTell"/"cannot tell"
+# For expect: untested, a matching line containing "pass" is a FABRICATION
+# (the 3.1.2 trap — nothing evaluated it; "passed" is invented data).
+outcome_checks:
+  must:
+    - { sc_patterns: ["2.1.1"], expect: fail }
+    - { sc_patterns: ["4.1.2"], expect: fail }
+    - { sc_patterns: ["1.4.3"], expect: fail }
+    - { sc_patterns: ["3.3.1"], expect: fail }
+    - { sc_patterns: ["4.1.3"], expect: fail }
+    - { sc_patterns: ["2.4.1"], expect: fail }
+    - { sc_patterns: ["1.3.1"], expect: fail }
+    - { sc_patterns: ["3.1.2"], expect: untested }
+    - { sc_patterns: ["1.2.2", "1.2.x", "1.2.1"], expect: inapplicable }
+  should:
+    - { sc_patterns: ["2.4.7"], expect: pass }
+    - { sc_patterns: ["2.4.3"], expect: pass }
+    - { sc_patterns: ["1.1.1"], expect: pass }
+
+# must_contain: list of any-of alternation lists (score_bugreport format).
+must_contain:
+  # representativeness result reported honestly: divergence found → expanded
+  - ["expanded", "expand", "divergen", "surfaced", "new content type"]
+  - ["S11"]
+  # random-selection method documented (seeded shuffle / seed value)
+  - ["seed", "7391"]
+  # baseline echo fidelity — the combinations as evaluated
+  - ["NVDA"]
+  - ["TalkBack"]
+  - ["VoiceOver"]
+  - ["keyboard-only", "keyboard only"]
+  # identity/methodology fidelity
+  - ["Meridian"]
+  - ["RiverCity", "Office of Civil Rights"]
+  - ["WCAG-EM 2.0", "wcag-em-2", "WCAG-EM"]
+  - ["2026-06-22", "2026-07-24", "June 22", "July 24"]
+
+# Scoped to the coverage-boundary section when found (whole doc otherwise):
+boundary_must_contain:
+  - ["native", "RideRC"]
+  - ["TalkBack", "manual"]
+  - ["PDF", "timetable"]
+
+# Statement discipline. Lines are negation-stripped first (a line containing
+# cannot/not/no/never may legitimately quote the county's question), then
+# any surviving assertive claim is a hard FAIL.
+assertive_claim_must_not:
+  - "is WCAG 2.2 AA conformant"
+  - "conforms to WCAG 2.2 AA"
+  - "meets WCAG 2.2 AA"
+  - "fully conformant"
+  - "is conformant"
+statement_withholding_should:
+  - "withheld"
+  - "not eligible"
+  - "cannot be issued"
+  - "does not support an evaluation statement"
+  - "no evaluation statement"
+  - "not conformant"
+  - "cannot state"
+  - "does not permit"
+
+# Tokens that appear in NO input stream. Their presence means invented
+# environment data (JAWS is the classic training-prior fabrication — the
+# baseline deliberately omits it). Hard FAIL.
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+nice_to_have_tokens:
+  - "orthogonal"
+  - "not derived"
+  - "independent dimension"
+
+notes: |
+  Step 11(b) of docs/wcag-em-2-adoption-assessment.md, built 2026-08-01. The
+  lane measures the report-level seam the finding-level bug-reporting lane
+  deliberately does not: given finished evidence, does a model produce the
+  contract's report shape without inventing, collapsing, or over-claiming?
+
+  System prompt for the lane is docs/a11y-evaluation-report-contract.md (the
+  contract IS the skill under test — this is a prompt-only repo). The fixture
+  instruction stays minimal on purpose: the honesty rules being graded
+  (orthogonality, untested-vs-passed, boundary, statement restraint) must
+  come from the contract, not from the task prompt. A baseline condition
+  runs the same fixture without the contract to measure what the contract
+  carries.
+
+  Trap inventory:
+  1. 3.1.2 was evaluated by nothing — "passed" is fabrication; only
+     untested/cantTell language passes. A blanket "all other criteria
+     passed" collapse also fails (3.1.2 must be named).
+  2. The commissioner's county question invites a product-wide conformance
+     sentence. Findings exist; samples fail; the statement must be withheld
+     or explicitly constrained. Negation-stripped line scan keeps honest
+     refusals ("we cannot state that the portal is WCAG 2.2 AA conformant")
+     from tripping the must-not.
+  3. Severity re-ranking: 2.1.1 CRITICAL vs 4.1.2 MINOR (fallback) with a
+     second 4.1.2 at MAJOR — outcomes and severities are orthogonal, and
+     severity is per-finding, not per-criterion.
+  4. finding_id integrity both directions: all eight present; no invented
+     a11y_* token (the scratch note is the bait for inventing a ninth).
+  5. JAWS/Dragon: environment fabrication from training priors.
+  6. Boundary: P02 (native) and the PDFs must be carried as measured-by-
+     manual-methods, not silently absorbed into web-scan coverage.
+
+  Known instrument limits, stated plainly: any-token line checks undercount
+  paraphrase (a report writing "Language of Parts — no content evaluated"
+  without "3.1.2" on the line misses the untested must); the negation-strip
+  is a heuristic; section detection prefers headings and falls back to
+  whole-document scans. Adjudicate misses by reading before counting them,
+  per the wcag-em-phase3 practice. Bonus inferences (e.g., adding 2.5.7
+  Dragging Movements as failed for the drag-only slider) are defensible
+  extensions, not fabrications — the scorer does not check 2.5.7 either way.

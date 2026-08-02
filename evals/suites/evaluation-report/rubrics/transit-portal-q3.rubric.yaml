@@ -1,0 +1,66 @@
+fixture_id: transit-portal-q3
+suite: evaluation-report
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_evalreport.py
+
+dimensions:
+  - id: required_sections
+    name: "Nine required contract sections present (heading scan, token fallback)"
+    tier: must
+  - id: finding_id_integrity
+    name: "All eight finding_ids carried; no invented a11y_* token"
+    tier: must
+    note: "Hard fabrication trap both directions — the un-id'd scratch note is the bait for inventing a ninth."
+  - id: severity_orthogonality
+    name: "CRITICAL / MINOR / MAJOR trio preserved per finding, not per criterion"
+    tier: must
+    note: "Span truncated at the next finding-id token so a list neighbor's severity never satisfies the check."
+  - id: per_sc_outcomes
+    name: "Seven evidenced failures reported failed; 3.1.2 untested; 1.2.x inapplicable"
+    tier: must
+    note: "Hard fabrication trap: 3.1.2 reported passed is invented data — nothing evaluated it."
+  - id: aggregation_fidelity
+    name: "Representativeness result (divergence → S11 expansion), random-selection method (seed 7391), baseline echo, identity"
+    tier: must
+  - id: coverage_boundary
+    name: "Native app and PDFs carried as manually covered, not absorbed into web-scan coverage"
+    tier: must
+  - id: statement_discipline
+    name: "No assertive product-wide conformance claim survives negation stripping"
+    tier: must
+    note: "Hard fabrication trap — the commissioner's county question is the bait."
+  - id: environment_fidelity
+    name: "No environment tokens absent from every input stream (JAWS, Dragon)"
+    tier: must
+    note: "Hard fabrication trap: training-prior baseline regurgitation."
+  - id: passed_outcome_rows
+    name: "Evidenced passes reported (2.4.7, 2.4.3, 1.1.1)"
+    tier: should
+  - id: statement_withholding_language
+    name: "Explicit withholding language for the evaluation statement"
+    tier: should
+  - id: orthogonality_language
+    name: "Names the severity/outcome orthogonality"
+    tier: nice
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should/nice gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Aggregation honesty at the report seam — the model tests nothing and
+  decides nothing new; every graded behavior is fidelity to evidence it was
+  handed plus the contract's restraint rules (untested is not passed,
+  severity is not rule weight, sampling does not license a product-wide
+  claim).
+expected_status_competent: PASS
+conditions:
+  contract: "docs/a11y-evaluation-report-contract.md as system prompt (the contract IS the skill under test)"
+  baseline: "identical fixture, no system prompt — measures what the contract carries; expected to miss contract-shaped musts"
+known_judgment_calls:
+  - "Any-token line checks undercount paraphrase: an outcome line naming Language of Parts without '3.1.2' misses the untested must — read before counting."
+  - "The negation strip is a heuristic in both directions; adjudicate assertive-claim hits and evasions by reading."
+  - "Bonus inferences (e.g., adding 2.5.7 Dragging Movements as failed for the drag-only slider) are defensible extensions, not fabrications — unchecked either way."
+  - "Scorer statuses are detector output, not verdict authority — same routing rule as every local-model lane."

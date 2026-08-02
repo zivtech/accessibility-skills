@@ -138,6 +138,15 @@ def check_registries():
     for fid in sorted(fs_bugreport - rb_bugreport):
         problems.append(f"  run_benchmark.BUGREPORT_FIXTURES: filesystem has {fid} not in list")
 
+    # evaluation-report registry vs filesystem
+    evalreport_dir = os.path.join(SUITES_DIR, "evaluation-report", "fixtures")
+    fs_evalreport = set(fs_fixture_ids(evalreport_dir))
+    rb_evalreport = set(run_benchmark.EVALREPORT_FIXTURES)
+    for fid in sorted(rb_evalreport - fs_evalreport):
+        problems.append(f"  run_benchmark.EVALREPORT_FIXTURES: {fid} not on filesystem")
+    for fid in sorted(fs_evalreport - rb_evalreport):
+        problems.append(f"  run_benchmark.EVALREPORT_FIXTURES: filesystem has {fid} not in list")
+
     # run_cloud_benchmark vs run_benchmark (the two in-code copies)
     for fid in sorted(rcb_critic - rb_critic):
         problems.append(f"  run_cloud_benchmark vs run_benchmark critic: {fid} in cloud only")
@@ -149,6 +158,14 @@ def check_registries():
     for fid in sorted(rb_perspective - rcb_perspective):
         problems.append(f"  run_cloud_benchmark vs run_benchmark perspective: {fid} in local only")
 
+    # planner lists between the two runners ("KEEP IN SYNC" comment is not a
+    # check — step 11a drifted here for a day before this guard existed)
+    rcb_planner = set(run_cloud_benchmark.PLANNER_FIXTURES)
+    for fid in sorted(rcb_planner - rb_planner):
+        problems.append(f"  run_cloud_benchmark vs run_benchmark planner: {fid} in cloud only")
+    for fid in sorted(rb_planner - rcb_planner):
+        problems.append(f"  run_cloud_benchmark vs run_benchmark planner: {fid} in local only")
+
     return problems
 
 
@@ -158,7 +175,7 @@ def main():
     # 1. YAML parse: all suites (excluding smoke/)
     total_yaml = 0
     yaml_errors = []
-    for suite in ("a11y-critic", "a11y-planner", "perspectives", "bug-reporting"):
+    for suite in ("a11y-critic", "a11y-planner", "perspectives", "bug-reporting", "evaluation-report"):
         suite_path = os.path.join(SUITES_DIR, suite)
         count, errs = yaml_parse_dir(suite_path)
         total_yaml += count
@@ -172,7 +189,7 @@ def main():
 
     # 2. Triplet completeness
     triplet_ok = True
-    for suite in ("a11y-critic", "a11y-planner", "bug-reporting"):
+    for suite in ("a11y-critic", "a11y-planner", "bug-reporting", "evaluation-report"):
         fixtures_dir = os.path.join(SUITES_DIR, suite, "fixtures")
         rubrics_dir = os.path.join(SUITES_DIR, suite, "rubrics")
         count, problems = check_triplets(suite, fixtures_dir, rubrics_dir)
@@ -218,7 +235,7 @@ def main():
                 print(p)
             errors.extend(reg_problems)
         else:
-            print("Registries: 6 checks OK")
+            print("Registries: 8 checks OK")
     except Exception as e:
         msg = f"  Registry check failed: {e}"
         print(f"Registries: ERROR")
