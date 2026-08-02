@@ -143,7 +143,12 @@ ALL_PERSPECTIVE_FIXTURES = [
     "video-tutorial-no-captions",
 ]
 
-OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/generate")
+# 127.0.0.1, not localhost: on dual-stack macOS, localhost resolves ::1
+# first, where the CPU-only OrbStack container may listen with a different
+# model store — a model missing there 404s even though `ollama list` (native
+# Metal server on IPv4) shows it. Matches ollama_a11y.py's default.
+# (2026-08-01: the evalreport first-rows run hit exactly this.)
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434/api/generate")
 
 OLLAMA_MODELS = ["llama3.3:70b", "qwen3:32b", "deepseek-r1:70b", "qwen3.5:27b"]
 SMALL_MODELS = ["qwen3.5:latest"]  # 6.6 GB — test as lightweight tier

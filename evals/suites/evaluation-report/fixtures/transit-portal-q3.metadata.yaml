@@ -114,9 +114,11 @@ boundary_must_contain:
   - ["TalkBack", "manual"]
   - ["PDF", "timetable"]
 
-# Statement discipline. Lines are negation-stripped first (a line containing
-# cannot/not/no/never may legitimately quote the county's question), then
-# any surviving assertive claim is a hard FAIL.
+# Statement discipline. Lines are stripped first when they carry negation
+# words (cannot/not/no/never...), withholding stems (withheld/declin*/
+# refus*), or a question mark — a line may legitimately quote the county's
+# question, and questions are not assertions (first-live-row adjudication,
+# 2026-08-01). Any surviving assertive claim is a hard FAIL.
 assertive_claim_must_not:
   - "is WCAG 2.2 AA conformant"
   - "conforms to WCAG 2.2 AA"
@@ -179,9 +181,12 @@ notes: |
 
   Known instrument limits, stated plainly: any-token line checks undercount
   paraphrase (a report writing "Language of Parts — no content evaluated"
-  without "3.1.2" on the line misses the untested must); the negation-strip
-  is a heuristic; section detection prefers headings and falls back to
-  whole-document scans. Adjudicate misses by reading before counting them,
+  without "3.1.2" on the line misses the untested must) and can hit
+  coincidentally (the first baseline row's representativeness group matched
+  "expanded" inside "expanded states" — UI-state vocabulary, not sample
+  expansion); the negation-strip is a heuristic even with the withholding
+  and question-mark exemptions; section detection prefers headings and falls
+  back to whole-document scans. Adjudicate misses by reading before counting them,
   per the wcag-em-phase3 practice. Bonus inferences (e.g., adding 2.5.7
   Dragging Movements as failed for the drag-only slider) are defensible
   extensions, not fabrications — the scorer does not check 2.5.7 either way.

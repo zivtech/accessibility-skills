@@ -1090,6 +1090,13 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   blind protocol is a pass-through, as with bug-reporting. Same-commit registry hygiene:
   `run_cloud_benchmark.PLANNER_FIXTURES` synced to 26 (step 11a had drifted it for a day) and
   `validate_fixtures.py` now cross-checks planner lists between the two runners.
+  Same-day addendum, first live rows: a fourth scorer fix pre-publication — the baseline row
+  quoted the commissioner's question on a negation-free line above an explicit "Determination:
+  No." and the claim scan called it a fabrication; interrogative lines are now exempt
+  (questions are not assertions; calibration/smoke unchanged, flatters neither condition).
+  First rows, qwen3.6:35b single draws: contract WARN (0 must / 0 fab) vs baseline FAIL
+  (12 must misses), planner de-hinted fixture 7/11 NEEDS REVIEW — receipts and adjudications
+  in `evals/results/wcag-em-step11/`.
 
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
@@ -1214,7 +1221,7 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Planner benchmark (post-002 scoring, 25 fixtures)
 
-> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture has **no model rows yet**. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11.
+> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only row so far is a single-fixture receipt (qwen3.6:35b 7/11 NEEDS REVIEW, one draw, `evals/results/wcag-em-step11/`), not a lane row. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the first live row landing mid-gate is the discrimination working.
 
 **Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
 

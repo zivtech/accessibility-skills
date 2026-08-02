@@ -1,0 +1,21 @@
+Fixture: test-hybrid-product-audit
+Response length: 19926 chars
+
+Key sections:
+  + Names the W3C evaluation methodology (WCAG-EM, either version) as the framework 
+  + Selects a structured set of screens per surface with documented rationale (templ
+  + Adds a randomly selected set on top of the structured selection, with the select
+  X Compares what the random selection surfaces against the structured selection and  (keywords: ['representativen', 'not representative'])
+  + Sizes the random addition per the EM rule (10% of the structured set, on top)
+  X Declares an accessibility support baseline — explicit OS + browser + assistive t  (keywords: ['support baseline', 'combinations'])
+  + Evaluates the named member journeys as complete processes end-to-end (login thro
+  + Plans per-criterion outcome reporting including the honesty states (cantTell / i
+  + Routes the native iOS/Android screens to platform assistive-technology and manua
+  X States plainly that the axe/Playwright web stack does not run on the native app   (keywords: ['boundary', 'does not run', 'do not run'])
+  X Constrains the final statement — a sampled evaluation does not support a product  (keywords: ['conformance claim', 'cannot claim', 'does not support a claim'])
+
+Score: 7/11
+WCAG criterion numbers cited: 50
+HTML/JSX code stubs: NO
+
+Status: NEEDS REVIEW

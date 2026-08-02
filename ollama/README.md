@@ -146,7 +146,7 @@ byte-identical prompt — variance) with CLEAN at 4/5 wrong on the harder corpus
 
 ### a11y-planner (25 of 25 fixtures, two lanes)
 
-> Suite is 26 fixtures as of 2026-08-01 (`test-hybrid-product-audit`, de-hinted, step 11a — no model rows yet). Rows below were measured on the original 25.
+> Suite is 26 fixtures as of 2026-08-01 (`test-hybrid-product-audit`, de-hinted, step 11a — first row: qwen3.6:35b 7/11 NEEDS REVIEW single draw, `evals/results/wcag-em-step11/`). Rows below were measured on the original 25.
 
 | Lane | PASS | Must-have criteria | Raw results |
 |------|------|--------------------|-------------|
