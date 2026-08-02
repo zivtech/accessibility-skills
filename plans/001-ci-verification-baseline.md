@@ -61,7 +61,7 @@ Confirmed by reading the scorers:
 | Mirror report | `python3 scripts/check_mirrors.py` | exit 0, drift report printed (created in step 4) |
 | Smoke tests | `bash scripts/smoke_scorers.sh` | exit 0, `ALL SMOKE TESTS PASSED` (created in step 5) |
 
-All commands run from the repo root: `/Users/AlexUA_1/claude/a11y-meta-skills`.
+All commands run from the repo root: `/Users/AlexUA_1/claude/accessibility-skills`.
 
 ## Scope
 

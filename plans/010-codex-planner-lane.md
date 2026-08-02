@@ -93,7 +93,7 @@ table stops being single-hosted-lane.
 
 ## Git workflow
 
-This work commits directly to `main` of the **a11y-meta-skills repo** (the
+This work commits directly to `main` of the **accessibility-skills repo** (the
 advisor/* branch pattern ended when plans 001–009 merged). Conventional
 commits, e.g. `feat: add codex planner lane to cloud benchmark runner`.
 Push only after step-4 verification passes.
