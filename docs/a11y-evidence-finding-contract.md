@@ -64,7 +64,7 @@ When wrapping a `keyboard-a11y-tester` journey-audit finding (adopted 2026-07-10
 | `evidence` | trace step ids + measured values (e.g., `step_0003: outline 3px solid; AAA contrast 2.34`), or census selector for structural findings |
 | `reproduction_steps` | the serve/step keystroke sequence from the trace, or the batch command + URL |
 
-Calibration: never wrap a batch-crawl 4.1.3 "silent live region" finding as a failure — it is a verification prompt; re-test with a driven session and cite `live_announcements` presence/absence instead.
+Calibration: never wrap a batch-crawl 4.1.3 "silent live region" finding as a failure — it is a verification prompt; re-test with a driven session and cite `live_announcements` presence/absence instead. And never carry the tool's `conformance_level` into the finding or a report as the SC's WCAG level — it is a pass-fail (`AA`) / informative (`AAA`) gate ([upstream #27](https://github.com/ezufelt/keyboard-a11y-tester/issues/27): only the 2.4.13 check emits `AAA`; every other finding defaults to `AA`, mislabeling Level A SCs). The "AAA-informative → ENHANCEMENT" severity mapping above is the field's only safe reading; derive the SC's true WCAG level from the SC number. Drop this rule when the pin advances past a fix.
 
 ## virtual-screen-reader Source Mapping
 

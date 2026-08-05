@@ -151,6 +151,7 @@ These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wi
 3. **Component-scale pages ≠ full pages.** Skip-link (2.4.1) and landmark findings assume a whole page; on component targets treat them as granularity artifacts.
 4. **AA vs AAA honesty.** 2.4.13 focus-appearance findings are AAA-informative by design — never report them as 2.4.7 failures. The AAA pixel measurement is also rendering-environment-sensitive (macOS locally can emit AAA-informative findings that Linux CI does not, observed at both `97eb13e` and `0.5.0`) — one more reason never to gate on it.
 5. **Emulated SR ≠ real AT.** Findings are spec-compliant-announcement evidence; the §6 manual NVDA/VoiceOver protocol still applies before shipping.
+6. **`conformance_level` is the check's gate, not the SC's WCAG level** *(code-read at `0.5.0`, not fixture-measured — [upstream #27](https://github.com/ezufelt/keyboard-a11y-tester/issues/27), filed 2026-08-04)*. Only the 2.4.13 check emits `AAA`; every other finding falls through `level || 'AA'` to `"AA"`, mislabeling the nine Level A SCs the checks cover (1.1.1, 1.3.1, 1.4.1, 2.1.2, 2.4.1, 2.4.3, 3.2.1, 3.3.2, 4.1.2) — 2.4.7 and 4.1.3 are coincidentally correct. Read the field only as pass-fail (`AA`) vs informative (`AAA`) and derive the SC's true level from the SC number. Delete this rule when the pin advances past a fix for #27.
 
 ### Mapping findings → A11y Evidence Finding Contract
 
