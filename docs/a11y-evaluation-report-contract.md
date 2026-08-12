@@ -8,7 +8,7 @@ Use it for **audit-scope work only**: conformance evaluations of an existing sit
 
 | Section | Required | Contents |
 |---|---:|---|
-| `evaluation_identity` | yes | Evaluator name; evaluation commissioner; evaluation date (completion date or duration); methodology + version cited (e.g., WCAG-EM 2.0 — cite the version the engagement requires). Optional: report version/identifier, repeat-evaluation dates, party responsible for the product. |
+| `evaluation_identity` | yes | Evaluator name; evaluation commissioner; evaluation date (completion date or duration); methodology + version cited (e.g., WCAG-EM 2.0 — cite the version the engagement requires). Optional: report version/identifier, repeat-evaluation dates, party responsible for the product. ACR-feed fields — required whenever the engagement's report template is an ACR in OpenACR format: report title, product name + version, evaluator contact email (`author.email` is schema-required there), feedback channel. |
 | `scope` | yes | Unambiguous in/out rule for every view (full product enclosure); named exclusions only where the engagement's own scope statement makes them explicit. |
 | `conformance_target` | yes | WCAG 2 version and level (e.g., WCAG 2.2 AA). |
 | `accessibility_support_baseline` | yes | The explicit OS + browser + assistive technology combinations evaluated against. If tools were added mid-evaluation, the extended baseline — as evaluated, not as originally planned. |
@@ -20,7 +20,7 @@ Use it for **audit-scope work only**: conformance evaluations of an existing sit
 | `coverage_boundary` | yes | Every sample the web measurement stack (Playwright, axe-core, CDP) could not measure — native screens, kiosk hardware, documents — and the manual/AT method that covered it instead. "None" is a valid value; silence is not. |
 | `evaluation_statement` | optional | Only when every non-optional methodology requirement is satisfied and all evaluated samples meet the target level. Includes issue date, guidelines title/version/URI, level, product definition, technologies relied upon, and baseline. Partial-conformance statements name the non-conforming areas and the reason. Sampling-based evaluation alone does not support a WCAG 2 conformance claim for the whole product — statements must not imply one. |
 | `aggregated_score` | discouraged | WCAG-EM cautions that scores can mislead. If the commissioner requires one, document the scoring approach alongside it. |
-| `machine_readable` | optional | EARL export reference, when produced. |
+| `machine_readable` | optional | EARL export reference and/or OpenACR draft reference, when produced. EARL is the assertion-level evidence export; OpenACR is the ACR-shaped deliverable (via the `acr-reporting` skill — eval lane pending, not yet recommended; receipts in [openacr-reference.md](openacr-reference.md)). |
 | `federal_annex` | optional | Declared-508 engagements only (the planner federal profile's floor declaration is the gate): per-baseline-test outcome rollup — see "Federal Annex" below. Not an ACR/VPAT. |
 
 ## Orthogonality Rule
