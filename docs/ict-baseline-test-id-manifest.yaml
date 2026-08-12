@@ -1,0 +1,177 @@
+# ICT Testing Baseline — machine-readable test-ID manifest
+#
+# Phase 0 deliverable of docs/ict-testing-baseline-adoption-assessment.md; human-readable
+# companion: docs/ict-testing-baseline-reference.md. Ground truth for baseline-test-ID
+# validity checking (the Phase 3 fabrication scorer) and the Phase 2 coverage crosswalk.
+# An ID is valid only within its baseline: the two baselines share the ID grammar but
+# diverge (11.A-PageTitled is web-only; 11.A-DocumentTitled is documents-only).
+#
+# Originating source (cited per the license's citation condition): ICT Testing Baseline
+# Portfolio, authored under the Federal CIO Council Accessibility Community of Practice
+# (ACOP, https://www.cio.gov/about/accessibility-cop/), maintained by the ICT Testing
+# Baseline Working Group; distributed at https://ictbaseline.access-board.gov/ and
+# https://github.com/atbcb/ICTTestingBaseline (LICENSE, 2018, grants use/copy/modify/
+# publish subject to citing the ACOP as originating source including the URL).
+# Per that license, modifications are not attributable to ACOP: the `classification`
+# and `classification_note` fields are THIS repository's provisional hand judgment
+# (2026-08-12), expected to be superseded if the upstream ACT mapping branch
+# (kengdoj-BaselinetoACT) publishes. Everything else restates published upstream content.
+meta:
+  retrieved: "2026-08-12"
+  published_pages:
+    web: https://ictbaseline.access-board.gov/allwebbaselines.html
+    documents: https://ictbaseline.access-board.gov/alldocsbaselines.html
+  pin:
+    repo: atbcb/ICTTestingBaseline
+    main_sha: 6c537a3b79992237b6edb9b0b608730d8da8cdef
+    main_sha_committed: "2026-07-24"
+    last_baselines_content_commit: "fc8fb9b1b 2026-02-05 (#570, Appendix A 18.A meaningful-content addition)"
+    nearest_release_tag: "v3.1, 2024-04-01, b0e0fe2e2ba728cd87380e1181ece450297f1938 (the rendered site is not the tag; the SHA is the identity)"
+    site_self_label_web: "version 3.1 (published April 1, 2024)"
+    site_self_label_documents: "Version 1.0 (published September 30, 2024)"
+  id_grammar: "<family-number>.<letter>-<CamelCaseName>"
+  classification_values: [machine-evaluable, tool-assisted, judgment-only, always-passes]
+  # Strings that look like test IDs and appear in published page text but are NOT valid
+  # IDs *in the baseline of the page they appear on*. A validity check is per-baseline:
+  # 15.A-LanguagePage / 15.B-LanguagePart are valid WEB IDs leaked into the documents
+  # page's Test Results sentences (cross-baseline confusables); the other two are valid
+  # nowhere. All four occur verbatim upstream — reject them for the cited baseline anyway.
+  invalid_id_strings_on_published_pages:
+    - {string: 21.B-AutoUpdate, page: web, where: "21.C Test Results sentence", valid_id: 21.C-AutoUpdate, valid_elsewhere: false}
+    - {string: 5.A-Control, page: documents, where: "5.A Test Results sentence (space typo: '5.A-Control Name')", valid_id: 5.A-ControlName, valid_elsewhere: false}
+    - {string: 15.A-LanguagePage, page: documents, where: "15.A Test Results sentence", valid_id: 15.A-LanguageDocument, valid_elsewhere: "valid in the web baseline"}
+    - {string: 15.B-LanguagePart, page: documents, where: "15.B Test Results sentence", valid_id: 15.B-LanguageParts, valid_elsewhere: "valid in the web baseline"}
+  retired_sections:
+    - {page: web, heading: "18.A for Test Procedure for Meaningful Background Image", status: "retired stub (v3.1) — content now under 6.B-DecorativeImage; declares no test ID; heading typo is upstream"}
+web:
+  family_count: 24
+  test_count: 62
+  tests:
+    - {id: 1.A-KeyboardAccess, family: 1, family_name: "Keyboard Accessible", name: "Keyboard Access", wcag20_scs: [2.1.1], classification: tool-assisted}
+    - {id: 1.B-NoKeyboardTrap, family: 1, family_name: "Keyboard Accessible", name: "No Keyboard Trap", wcag20_scs: [2.1.2], classification: tool-assisted}
+    - {id: 2.A-FocusVisible, family: 2, family_name: "Focus", name: "Focus Visible", wcag20_scs: [2.4.7], classification: tool-assisted}
+    - {id: 2.B-FocusOrder, family: 2, family_name: "Focus", name: "Focus Order", wcag20_scs: [2.4.3], classification: tool-assisted}
+    - {id: 2.C-OnFocus, family: 2, family_name: "Focus", name: "On Focus", wcag20_scs: [3.2.1], classification: tool-assisted}
+    - {id: 3.A-NonInterference, family: 3, family_name: "Non-Interference", name: "Non-Interference", wcag20_ref: "Conformance Requirement 5 (non-interference: SC 1.4.2, 2.1.2, 2.3.1, 2.2.2)", classification: tool-assisted}
+    - {id: 4.A-BypassBlocks, family: 4, family_name: "Repetitive Content", name: "Bypass Blocks", wcag20_scs: [2.4.1], classification: tool-assisted}
+    - {id: 4.B-ConsistentNavigation, family: 4, family_name: "Repetitive Content", name: "Consistent Navigation", wcag20_scs: [3.2.3], classification: tool-assisted}
+    - {id: 4.C-ConsistentIdentification, family: 4, family_name: "Repetitive Content", name: "Consistent Identification", wcag20_scs: [3.2.4], classification: tool-assisted}
+    - {id: 5.A-ControlName, family: 5, family_name: "User Controls", name: "Control Name", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 5.B-ControlRole, family: 5, family_name: "User Controls", name: "Control Role", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 5.C-ControlState, family: 5, family_name: "User Controls", name: "Control State", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 5.D-ControlValue, family: 5, family_name: "User Controls", name: "Control Value", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 6.A-MeaningfulImage, family: 6, family_name: "Images", name: "Images with a non-empty text alternative", wcag20_scs: [1.1.1, 4.1.2], classification: judgment-only, classification_note: "computed text alternative is extractable evidence; equivalence of meaning is the decisive human check"}
+    - {id: 6.B-DecorativeImage, family: 6, family_name: "Images", name: "Images with an empty text alternative", wcag20_scs: [1.1.1], classification: tool-assisted, classification_note: "programmatic decorative marking is computable; whether content is truly decorative is judgment"}
+    - {id: 6.C-Captcha, family: 6, family_name: "Images", name: "Captchas", wcag20_scs: [1.1.1], classification: judgment-only}
+    - {id: 6.D-ImageText, family: 6, family_name: "Images", name: "Images of Text", wcag20_scs: [1.4.5], classification: judgment-only}
+    - {id: 7.A-Color, family: 7, family_name: "Sensory Characteristics", name: "Use of Color", wcag20_scs: [1.4.1], classification: judgment-only}
+    - {id: 7.B-SensoryCharacteristics, family: 7, family_name: "Sensory Characteristics", name: "Sensory Characteristics", wcag20_scs: [1.3.3], classification: judgment-only}
+    - {id: 7.C-AudibleCues, family: 7, family_name: "Sensory Characteristics", name: "Audible Cues", wcag20_scs: [1.1.1], classification: judgment-only}
+    - {id: 8.A-ContrastMinimum, family: 8, family_name: "Contrast", name: "Contrast (minimum)", wcag20_scs: [1.4.3], classification: machine-evaluable, classification_note: "ratio computation is deterministic; gradient/image-of-text pairs still need human sampling"}
+    - {id: 9.A-Flashes, family: 9, family_name: "Flashing", name: "Three Flashes or Below Threshold", wcag20_scs: [2.3.1], classification: judgment-only, classification_note: "flash-frequency analysis needs specialized tooling (PEAT-class), outside generic web automation"}
+    - {id: 10.A-FormName, family: 10, family_name: "Forms", name: "Form Names", wcag20_scs: [1.3.1, 4.1.2], classification: tool-assisted}
+    - {id: 10.B-FormDescriptiveLabel, family: 10, family_name: "Forms", name: "Form Labels Descriptive", wcag20_scs: [2.4.6], classification: judgment-only}
+    - {id: 10.C-OnInput, family: 10, family_name: "Forms", name: "On Input", wcag20_scs: [3.2.2], classification: tool-assisted}
+    - {id: 10.D-ErrorIdentification, family: 10, family_name: "Forms", name: "Error Identification", wcag20_scs: [3.3.1], classification: tool-assisted}
+    - {id: 10.E-FormHasLabel, family: 10, family_name: "Forms", name: "Form has a Visible Label", wcag20_scs: [3.3.2], classification: tool-assisted}
+    - {id: 10.F-ErrorSuggestion, family: 10, family_name: "Forms", name: "Error Suggestion", wcag20_scs: [3.3.3], classification: judgment-only}
+    - {id: 10.G-ErrorPrevention, family: 10, family_name: "Forms", name: "Error Prevention (Legal, Financial, Data)", wcag20_scs: [3.3.4], classification: judgment-only}
+    - {id: 11.A-PageTitled, family: 11, family_name: "Page Titles", name: "Page Titled", wcag20_scs: [2.4.2], classification: tool-assisted}
+    - {id: 12.A-DataTableRole, family: 12, family_name: "Tables", name: "Data Table Roles", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 12.B-DataTableHeaderAssociation, family: 12, family_name: "Tables", name: "Data Table Header Association", wcag20_scs: [1.3.1], classification: tool-assisted}
+    - {id: 12.C-LayoutTable, family: 12, family_name: "Tables", name: "Layout Tables", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 13.A-HeadingDescriptive, family: 13, family_name: "Content Structure", name: "Descriptive Headings", wcag20_scs: [2.4.6], classification: judgment-only}
+    - {id: 13.B-VisHeadingProg, family: 13, family_name: "Content Structure", name: "Visual Headings Programmatic", wcag20_scs: [1.3.1], classification: tool-assisted, classification_note: "programmatic heading inventory is computable; identifying visual-only headings is the human half"}
+    - {id: 13.C-ProgHeadingVisual, family: 13, family_name: "Content Structure", name: "Programmatic Headings Visual", wcag20_scs: [1.3.1], classification: tool-assisted}
+    - {id: 13.D-List, family: 13, family_name: "Content Structure", name: "Visually Apparent Lists", wcag20_scs: [1.3.1], classification: tool-assisted}
+    - {id: 14.A-LinkPurpose, family: 14, family_name: "Links", name: "Link Purpose (In Context)", wcag20_scs: [2.4.4, 4.1.2], classification: judgment-only}
+    - {id: 15.A-LanguagePage, family: 15, family_name: "Language", name: "Language of Page", wcag20_scs: [3.1.1], classification: machine-evaluable, classification_note: "lang attribute presence/validity computable; wrong-language edge needs a trivial human check"}
+    - {id: 15.B-LanguagePart, family: 15, family_name: "Language", name: "Language of Parts", wcag20_scs: [3.1.2], classification: tool-assisted}
+    - {id: 16.A-AudioOnlyTranscript, family: 16, family_name: "Audio-Only and Video-Only", name: "Audio-only (Prerecorded)", wcag20_scs: [1.2.1], classification: judgment-only}
+    - {id: 16.B-VideoOnlyAlt, family: 16, family_name: "Audio-Only and Video-Only", name: "Video-only (Prerecorded)", wcag20_scs: [1.2.1], classification: judgment-only}
+    - {id: 16.C-AudioMediaAlternative, family: 16, family_name: "Audio-Only and Video-Only", name: "Audio Media Alternative (Prerecorded)", wcag20_scs: [1.2.1], classification: judgment-only}
+    - {id: 16.D-VideoMediaAlternative, family: 16, family_name: "Audio-Only and Video-Only", name: "Video Media Alternative (Prerecorded)", wcag20_scs: [1.2.1], classification: judgment-only}
+    - {id: 17.A-MediaPlayerCCADControls, family: 17, family_name: "Synchronized Media", name: "Media Player Controls", wcag20_scs: [1.2.2, 1.2.3, 1.2.4, 1.2.5], section_508: [503.4], classification: tool-assisted}
+    - {id: 17.B-MediaPlayerCCLevel, family: 17, family_name: "Synchronized Media", name: "Media Player Caption Control Level", wcag20_scs: [1.2.2, 1.2.3, 1.2.4, 1.2.5], section_508: [503.4.1], classification: tool-assisted}
+    - {id: 17.C-MediaPlayerADLevel, family: 17, family_name: "Synchronized Media", name: "Media Player Audio Description Control Level", wcag20_scs: [1.2.2, 1.2.3, 1.2.4, 1.2.5], section_508: [503.4.2], classification: tool-assisted}
+    - {id: 17.D-CaptionsPrerecorded, family: 17, family_name: "Synchronized Media", name: "Captions (Prerecorded)", wcag20_scs: [1.2.2], classification: judgment-only, classification_note: "caption-track presence is machine-flaggable; accuracy/sync is judgment"}
+    - {id: 17.E-ADPrerecorded, family: 17, family_name: "Synchronized Media", name: "Audio Description (Prerecorded)", wcag20_scs: [1.2.5], classification: judgment-only}
+    - {id: 17.F-CaptionsLive, family: 17, family_name: "Synchronized Media", name: "Captions (Live)", wcag20_scs: [1.2.4], classification: judgment-only}
+    - {id: 17.G-SyncMediaAlternative, family: 17, family_name: "Synchronized Media", name: "Sync Media Alternative (Prerecorded)", wcag20_scs: [1.2.2, 1.2.3, 1.2.4, 1.2.5], classification: judgment-only}
+    - {id: 18.B-CSSPositionedContent, family: 18, family_name: "CSS Positioning", name: "CSS Positioned Content", wcag20_scs: [1.3.2], classification: tool-assisted}
+    - {id: 19.A-FrameTitle, family: 19, family_name: "Frames and iFrames", name: "Frames", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 19.B-iFrameName, family: 19, family_name: "Frames and iFrames", name: "iFrames", wcag20_scs: [4.1.2], classification: tool-assisted}
+    - {id: 20.A-ConformingAltVersion, family: 20, family_name: "Conforming Alternate Version", name: "Conforming Alternate Version", wcag20_ref: "Conformance Requirement 1 (conforming alternate versions)", classification: judgment-only}
+    - {id: 21.A-TimingAdjustable, family: 21, family_name: "Timed Events", name: "Timing Adjustable", wcag20_scs: [2.2.1], classification: judgment-only}
+    - {id: 21.B-MovingInfo, family: 21, family_name: "Timed Events", name: "Moving Information", wcag20_scs: [2.2.2], classification: tool-assisted}
+    - {id: 21.C-AutoUpdate, family: 21, family_name: "Timed Events", name: "Auto-updating information", wcag20_scs: [2.2.2], classification: tool-assisted}
+    - {id: 21.D-AudioControl, family: 21, family_name: "Timed Events", name: "Audio Control", wcag20_scs: [1.4.2], classification: tool-assisted}
+    - {id: 22.A-ResizeText, family: 22, family_name: "Resize Text", name: "Resize Text", wcag20_scs: [1.4.4], classification: tool-assisted}
+    - {id: 23.A-MultipleWays, family: 23, family_name: "Multiple Ways", name: "Related Web Pages", wcag20_scs: [2.4.5], classification: judgment-only}
+    - {id: 24.A-Parsing, family: 24, family_name: "Parsing", name: "Parsing", wcag20_scs: [4.1.1], classification: always-passes, classification_note: "upstream test instructions are 'No testing necessary'; result text is 'Baseline Test 24.A-Parsing passes' (WCAG 2.0 Errata 13)"}
+documents:
+  family_count: 23  # family 19 (Frames) exists only as a not-applicable note, not a section
+  test_count: 57  # declared IDs; includes 6.C-Captcha, declared but marked not applicable
+  measurement_scope: "out of this bundle's measurement scope (web-only stack) — declared boundary; IDs listed for validity checking only"
+  families_without_tests:
+    - {family: 4, name: "Repetitive Content", reason: "E205.4 exception — SC 2.4.1/3.2.3/3.2.4 not applied to non-web documents; section retained for harmonization"}
+    - {family: 19, name: "Frames and iFrames", reason: "not implemented in non-web documents; N/A note names 19.A-FrameTitle and 19.B-iFrameName, which are NOT valid documents-baseline IDs"}
+    - {family: 23, name: "Multiple Ways", reason: "E205.4 exception — SC 2.4.5 not applied to non-web documents; section retained for harmonization"}
+  tests:
+    - {id: 1.A-KeyboardAccess, family: 1, name: "Keyboard Access"}
+    - {id: 1.B-NoKeyboardTrap, family: 1, name: "No Keyboard Trap"}
+    - {id: 2.A-FocusVisible, family: 2, name: "Focus Visible"}
+    - {id: 2.B-FocusOrder, family: 2, name: "Focus Order"}
+    - {id: 2.C-OnFocus, family: 2, name: "On Focus"}
+    - {id: 3.A-NonInterference, family: 3, name: "Non-Interference"}
+    - {id: 5.A-ControlName, family: 5, name: "Control Name"}
+    - {id: 5.B-ControlRole, family: 5, name: "Control Role"}
+    - {id: 5.C-ControlState, family: 5, name: "Control State"}
+    - {id: 5.D-ControlValue, family: 5, name: "Control Value"}
+    - {id: 6.A-MeaningfulImage, family: 6, name: "Images with a non-empty text alternative"}
+    - {id: 6.B-DecorativeImage, family: 6, name: "Images with an empty text alternative"}
+    - {id: 6.C-Captcha, family: 6, name: "Captchas – Not applicable to documents", not_applicable: true}
+    - {id: 6.D-ImageText, family: 6, name: "Images of Text"}
+    - {id: 7.A-Color, family: 7, name: "Use of Color"}
+    - {id: 7.B-SensoryCharacteristics, family: 7, name: "Sensory Characteristics"}
+    - {id: 7.C-AudibleCues, family: 7, name: "Audible Cues"}
+    - {id: 8.A-ContrastMinimum, family: 8, name: "Contrast (minimum)"}
+    - {id: 9.A-Flashes, family: 9, name: "Three Flashes or Below Threshold"}
+    - {id: 10.A-FormName, family: 10, name: "Form Names"}
+    - {id: 10.B-FormDescriptiveLabel, family: 10, name: "Form Labels Descriptive"}
+    - {id: 10.C-OnInput, family: 10, name: "On Input"}
+    - {id: 10.D-ErrorIdentification, family: 10, name: "Error Identification"}
+    - {id: 10.E-FormHasLabel, family: 10, name: "Form has a Visible Label"}
+    - {id: 10.F-ErrorSuggestion, family: 10, name: "Error Suggestion"}
+    - {id: 10.G-ErrorPrevention, family: 10, name: "Error Prevention (Legal, Financial, Data)"}
+    - {id: 11.A-DocumentTitled, family: 11, name: "Document Titled"}
+    - {id: 12.A-DataTableRole, family: 12, name: "Data Table Roles"}
+    - {id: 12.B-DataTableHeaderAssociation, family: 12, name: "Data Table Header Association"}
+    - {id: 12.C-LayoutTable, family: 12, name: "Layout Tables"}
+    - {id: 13.A-HeadingDescriptive, family: 13, name: "Descriptive Headings"}
+    - {id: 13.B-VisHeadingProg, family: 13, name: "Visual Headings Programmatic"}
+    - {id: 13.C-ProgHeadingVisual, family: 13, name: "Programmatic Headings Visual"}
+    - {id: 13.D-List, family: 13, name: "Visually Apparent Lists"}
+    - {id: 14.A-LinkPurpose, family: 14, name: "Link Purpose (In Context)"}
+    - {id: 15.A-LanguageDocument, family: 15, name: "Language of Document"}
+    - {id: 15.B-LanguageParts, family: 15, name: "Language of Parts"}
+    - {id: 16.A-AudioOnlyTranscript, family: 16, name: "Audio-only (Prerecorded)"}
+    - {id: 16.B-VideoOnlyAlt, family: 16, name: "Video-only (Prerecorded)"}
+    - {id: 16.C-AudioMediaAlternative, family: 16, name: "Audio Media Alternative (Prerecorded)"}
+    - {id: 16.D-VideoMediaAlternative, family: 16, name: "Video Media Alternative (Prerecorded)"}
+    - {id: 17.A-MediaPlayerCCADControls, family: 17, name: "Media Player Controls"}
+    - {id: 17.B-MediaPlayerCCLevel, family: 17, name: "Media Player Caption Control Level"}
+    - {id: 17.C-MediaPlayerADLevel, family: 17, name: "Media Player Audio Description Control Level"}
+    - {id: 17.D-CaptionsPrerecorded, family: 17, name: "Captions (Prerecorded)"}
+    - {id: 17.E-ADPrerecorded, family: 17, name: "Audio Description (Prerecorded)"}
+    - {id: 17.F-CaptionsLive, family: 17, name: "Captions (Live)"}
+    - {id: 17.G-SyncMediaAlternative, family: 17, name: "Sync Media Alternative (Prerecorded)"}
+    - {id: 18.A-MeaningfulContent, family: 18, name: "Meaningful Visible Content"}
+    - {id: 18.B-MeaningfulSequence, family: 18, name: "Meaningful Sequence"}
+    - {id: 20.A-ConformingAltVersion, family: 20, name: "Conforming Alternate Version"}
+    - {id: 21.A-TimingAdjustable, family: 21, name: "Timing Adjustable"}
+    - {id: 21.B-MovingInfo, family: 21, name: "Moving Information"}
+    - {id: 21.C-AutoUpdate, family: 21, name: "Auto-updating Information"}
+    - {id: 21.D-AudioControl, family: 21, name: "Audio Control"}
+    - {id: 22.A-ResizeText, family: 22, name: "Resize Text"}
+    - {id: 24.A-Parsing, family: 24, name: "Parsing"}
