@@ -4,11 +4,15 @@
 Checks per skill directory:
 1. Heading set diff (## headings present in one surface but not the other)
 2. .Codex/ path hits in the .agents/ file (broken paths)
-3. Diff stat (count of differing lines)
-4. References files: byte-for-byte match
+3. URL set diff (URLs present in one surface but not the other — catches
+   over-eager Claude->Codex string rewrites that mangle URLs, e.g.
+   zivtech-ai-skills rewritten to the nonexistent zivtech-Codex-skills)
+4. Diff stat (count of differing lines)
+5. References files: byte-for-byte match
 
 Always exits 0 in report-only mode (default).
-Use --strict to exit 1 on any .Codex/ hit or heading-set difference.
+Use --strict to exit 1 on any reported drift (heading, .Codex/ path, URL,
+or references mismatch).
 Plan 004 will wire --strict into CI after syncing the mirrors.
 
 Run from repo root:
@@ -44,6 +48,14 @@ def count_codex_hits(text, path):
         if ".Codex/" in line:
             hits.append((i, line.strip()))
     return hits
+
+
+URL_RE = re.compile(r"https?://[^\s)\"'`>\]]+")
+
+
+def extract_urls(text):
+    """Return the set of URLs in text, trailing punctuation stripped."""
+    return {url.rstrip(".,;:") for url in URL_RE.findall(text)}
 
 
 def diff_stat(text_a, text_b, label_a, label_b):
@@ -108,11 +120,28 @@ def check_skill(skill_name, strict_mode):
     else:
         print(f"  .Codex/ hits: none")
 
-    # 3. Diff stat
+    # 3. URL drift between surfaces
+    claude_urls = extract_urls(claude_text)
+    agents_urls = extract_urls(agents_text)
+
+    only_claude_urls = claude_urls - agents_urls
+    only_agents_urls = agents_urls - claude_urls
+
+    if only_claude_urls or only_agents_urls:
+        has_drift = True
+        print(f"  URL drift detected:")
+        for url in sorted(only_claude_urls):
+            print(f"    - only in .claude/: {url}")
+        for url in sorted(only_agents_urls):
+            print(f"    + only in .agents/: {url}")
+    else:
+        print(f"  URLs: identical ({len(claude_urls)} unique)")
+
+    # 4. Diff stat
     changed = diff_stat(claude_text, agents_text, f".claude/{skill_name}", f".agents/{skill_name}")
     print(f"  Diff stat: {changed} differing lines")
 
-    # 4. References files
+    # 5. References files
     claude_refs_dir = os.path.join(CLAUDE_SKILLS, skill_name, "references")
     agents_refs_dir = os.path.join(AGENTS_SKILLS, skill_name, "references")
 
