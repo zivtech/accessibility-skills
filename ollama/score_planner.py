@@ -15,7 +15,13 @@ import sys
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import strip_thinking, PLANNER_SECTION_PASS_THRESHOLD, fallback_keywords  # noqa: E402
+from score_common import (  # noqa: E402
+    PLANNER_SECTION_PASS_THRESHOLD,
+    check_baseline_ids,
+    fallback_keywords,
+    load_baseline_manifest,
+    strip_thinking,
+)
 
 
 def load_response(path: str) -> tuple[str, bool]:
@@ -133,7 +139,55 @@ def score_planner(text: str, rubric: dict):
     has_html = bool(re.search(r"```(?:html|jsx|tsx)?[\s\S]*?```", text))
     print(f"HTML/JSX code stubs: {'YES' if has_html else 'NO'}")
 
-    print(f"\nStatus: {'PASS' if found / max(total, 1) >= PLANNER_SECTION_PASS_THRESHOLD else 'NEEDS REVIEW'}")
+    # ICT baseline test-ID fidelity (adoption plan Phase 3 step 11). Scans
+    # every plan: fabricated IDs and out-of-scope citations force NEEDS
+    # REVIEW regardless of gate score. Cross-baseline (documents) IDs in plan
+    # prose are flagged for reading, not auto-failed — a plan may legitimately
+    # name a documents ID while declaring the documents boundary.
+    b508 = rubric.get("baseline_508") or {}
+    declared = bool(b508.get("declared", False))
+    bl = check_baseline_ids(
+        text,
+        load_baseline_manifest(),
+        declared=declared,
+        expected_ids=b508.get("expected_ids") or [],
+    )
+    baseline_violation = False
+    if bl["cited"]:
+        print(f"Baseline IDs cited: {len(bl['cited'])} "
+              f"(valid web: {len(bl['valid'])})")
+    for tok, hint in bl["fabricated"]:
+        baseline_violation = True
+        print(f"FABRICATION: baseline ID '{tok}' — {hint}")
+    for tok in bl["cross_baseline"]:
+        print(f"  ! cross-baseline ID '{tok}' (documents-only) — verify context by reading")
+    if bl["undeclared"]:
+        baseline_violation = True
+        print("VIOLATION: baseline citation(s) outside declared 508 scope: "
+              + ", ".join(bl["undeclared"]))
+    for missing in bl["expected_missing"]:
+        baseline_violation = True
+        print(f"MUST MISS: expected baseline ID {missing} not cited")
+
+    # Trap markers (fixture-declared, read-verified detectors): regexes that
+    # match trap-TAKING language. The keyword gate is polarity-blind — a plan
+    # can hit federal vocabulary while taking the bait — so any marker hit
+    # forces NEEDS REVIEW regardless of gate score. Markers are detectors:
+    # a human reads the hit before the row is used anywhere.
+    trap_hits = []
+    for marker in rubric.get("trap_markers") or []:
+        if re.search(marker["pattern"], text, re.IGNORECASE):
+            trap_hits.append(marker["name"])
+            print(f"TRAP MARKER: {marker['name']} — read-verify before using this row")
+
+    status = (
+        "PASS"
+        if found / max(total, 1) >= PLANNER_SECTION_PASS_THRESHOLD
+        else "NEEDS REVIEW"
+    )
+    if baseline_violation or trap_hits:
+        status = "NEEDS REVIEW"
+    print(f"\nStatus: {status}")
 
 
 if __name__ == "__main__":

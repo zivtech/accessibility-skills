@@ -1,0 +1,13 @@
+Fixture: axe-button-name-federal
+Reports: 1 (expected 1)
+[report 1] labels: 7/7 | snippet: yes
+Key values: 6/7 groups present
+Stable IDs: 2/2 verified
+N/A field 'Screen reader': OK
+Baseline IDs (declared 508): cited 0, valid 0, filed rows 0
+
+MUST MISS: none of ['5.A-ControlName'] found
+MUST MISS: declared-508 report has no Baseline test row
+MUST MISS: expected baseline ID 5.A-ControlName not FILED (filed: none)
+
+Status: FAIL

@@ -179,6 +179,7 @@ PLANNER_FIXTURES = [
     "sr-product-listing",
     "sr-search-results-live",
     "test-data-table",
+    "test-federal-agency-audit",  # 27th fixture, de-hinted declared-508 (ICT baseline Phase 3 step 10, 2026-08-12) — no model rows yet
     "test-form",
     "test-hybrid-product-audit",  # 26th fixture, de-hinted (step 11a, 2026-08-01) — no model rows yet
     "test-modal",

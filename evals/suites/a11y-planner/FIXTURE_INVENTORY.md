@@ -1,6 +1,6 @@
 # A11y-Planner Fixture Inventory
 
-**Total Fixtures:** 26 (26 .md + 26 .metadata.yaml + 26 .rubric.yaml = 78 files) — #26 `test-hybrid-product-audit` added 2026-08-01 (de-hinted, adoption plan step 11a); all benchmark rows dated earlier were measured on the original 25
+**Total Fixtures:** 27 (27 .md + 27 .metadata.yaml + 27 .rubric.yaml = 81 files) — #26 `test-hybrid-product-audit` added 2026-08-01 (de-hinted, adoption plan step 11a); #27 `test-federal-agency-audit` added 2026-08-12 (de-hinted declared-508, ICT baseline adoption plan Phase 3 step 10); all benchmark rows dated earlier were measured on the smaller suites
 
 ---
 
@@ -264,7 +264,7 @@
 
 ---
 
-## Domain 5: Testing & Audit Planning (6 fixtures)
+## Domain 5: Testing & Audit Planning (7 fixtures)
 
 ### 5.1 test-simple-button
 - **Name:** Simple Component Testing
@@ -340,6 +340,20 @@
   - `fixtures/test-hybrid-product-audit.metadata.yaml`
   - `rubrics/test-hybrid-product-audit.rubric.yaml`
 
+### 5.7 test-federal-agency-audit
+- **Name:** Federal Grant Program Evaluation Plan
+- **Difficulty:** COMPLEX
+- **Risk:** High
+- **Added:** 2026-08-12 (ICT baseline adoption plan, Phase 3 step 10 — de-hinted declared-508 fixture; synthetic calibration receipts in `evals/results/ict-baseline-phase3/`)
+- **Scenario:** Section 508 evaluation of a federal grant program (Drupal site, React application portal, contractor-built video player, ~200 PDFs including scans, staff intranet) triggered by a screen-reader complaint and a contract renewal — written as a client-voice brief with zero methodology vocabulary and four baits (vendor's "WCAG 2.2 replaced it" claim, HTML-checker expectation, PDFs invited into the automated pass, procurement's approval question)
+- **Key a11y concerns:** the FEDERAL PROFILE brought unprompted — WCAG 2.0 A/AA floor with 2.2 AA as a separate recommendation layer, ICT Testing Baseline named with designed-to-cover-with-gaps phrasing, 24.A auto-pass redirected, 503.4.x control placement, E205 intranet scope, documents boundary, certification honesty, ACR/VPAT deliverable boundary, conformance-floor declaration as a named artifact
+- **De-hint contract:** none of the scoring keywords appear in the fixture text — enforced by `check_dehinted.py`; baseline test IDs in outputs are manifest-validated by `score_planner.py` (fabrications force NEEDS REVIEW). Conditions: `planner-federal` (crosswalk in-prompt) vs plain `planner`
+- **Expected plan length:** 5-7 pages
+- **Files:**
+  - `fixtures/test-federal-agency-audit.md`
+  - `fixtures/test-federal-agency-audit.metadata.yaml`
+  - `rubrics/test-federal-agency-audit.rubric.yaml`
+
 ---
 
 ## Fixture Distribution Summary
@@ -350,18 +364,18 @@
 | **Keyboard Nav** | 5 | 1 | 2 | 1 | 1 |
 | **Screen Reader** | 5 | 1 | 2 | 1 | 1 |
 | **Visual/Cognitive** | 5 | 2 | 2 | 1 | — |
-| **Testing/Audit** | 6 | 1 | 2 | 3 | — |
-| **TOTAL** | **26** | **6** | **10** | **7** | **3** |
+| **Testing/Audit** | 7 | 1 | 2 | 4 | — |
+| **TOTAL** | **27** | **6** | **10** | **8** | **3** |
 
 ---
 
 ## File Checklist
 
-All 78 fixture files should exist:
+All 81 fixture files should exist:
 
-- [ ] 26 fixture description files (.md)
-- [ ] 26 fixture metadata files (.metadata.yaml)
-- [ ] 26 fixture rubric files (.rubric.yaml)
+- [ ] 27 fixture description files (.md)
+- [ ] 27 fixture metadata files (.metadata.yaml)
+- [ ] 27 fixture rubric files (.rubric.yaml)
 
 For each fixture, the files should be named consistently:
 - Fixture: `{fixture_id}.md`

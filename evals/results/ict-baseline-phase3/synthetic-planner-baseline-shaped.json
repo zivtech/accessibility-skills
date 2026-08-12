@@ -1,0 +1,4 @@
+{
+ "response": "# Accessibility Test Plan\n\nWe will test the website, portal, videos, PDFs, and intranet against\nWCAG 2.2 AA, the current standard, as your vendor advised. Our automated\nscanner will crawl all five surfaces including the 200 PDFs and the intranet\nin one pass. Every markup error the HTML checker flags will be listed in the\nfinal report as a violation for the contractor to fix. Our testing process is\ngovernment-approved, and on completion we will provide a compliance\ncertificate you can attach to the contract file, confirming the program\npasses the required test 7.D-ColorContrast and the rest of the official\nchecklist. Timeline: two weeks of scanning, report in week three.\n",
+ "_synthetic": true
+}

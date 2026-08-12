@@ -64,3 +64,101 @@ def fallback_keywords(description: str, max_words: int = 4) -> list[str]:
     words = [w.strip(".,;:()\"'") for w in description.split()[:max_words]]
     filtered = [w for w in words if len(w) > 3]
     return filtered or [w for w in words if w] or [description.strip()[:40]]
+
+
+# ── ICT Testing Baseline test-ID fidelity (adoption plan Phase 3, step 11) ──
+# Baseline test IDs (`5.C-ControlState`) are the exact-ID class local models
+# fabricate. Ground truth is docs/ict-baseline-test-id-manifest.yaml; validity
+# is PER-BASELINE (11.A-PageTitled is web-only, 11.A-DocumentTitled is
+# documents-only). Comparison is case-insensitive on membership (a lowercased
+# real ID is sloppy, not fabricated); grammar detection is deliberately narrow
+# so version strings ("4.9.1"), WCAG SC numbers, and CSS selectors never match.
+
+BASELINE_ID_RE = re.compile(r"\b\d{1,2}\.[A-Z]-[A-Za-z]{2,}\b", re.IGNORECASE)
+
+BASELINE_MANIFEST_RELPATH = ("..", "docs", "ict-baseline-test-id-manifest.yaml")
+
+
+def load_baseline_manifest(path: str | None = None) -> dict:
+    """Load the test-ID manifest into the shape check_baseline_ids consumes.
+
+    yaml is imported lazily so this module's import stays stdlib-only; every
+    scorer that calls this already depends on PyYAML. A missing manifest is a
+    hard usage error — the check must never silently pass on absent ground
+    truth.
+    """
+    import os
+
+    import yaml
+
+    if path is None:
+        path = os.path.join(os.path.dirname(__file__), *BASELINE_MANIFEST_RELPATH)
+    with open(path) as f:
+        man = yaml.safe_load(f)
+    web = {t["id"] for t in man["web"]["tests"]}
+    documents = {t["id"] for t in man["documents"]["tests"]}
+    stale = {
+        str(e["string"]).lower(): e
+        for e in man["meta"].get("invalid_id_strings_on_published_pages", [])
+    }
+    return {
+        "web_ids": web,
+        "web_lower": {i.lower(): i for i in web},
+        "documents_lower": {i.lower(): i for i in documents},
+        "stale": stale,
+    }
+
+
+def check_baseline_ids(
+    text: str,
+    manifest: dict,
+    *,
+    declared: bool,
+    expected_ids: tuple | list = (),
+) -> dict:
+    """Classify every baseline-test-ID-shaped token in `text`.
+
+    Returns a dict of sorted lists:
+      cited            — every distinct grammar-shaped token found
+      valid            — tokens that are real WEB baseline IDs
+      fabricated       — tokens in neither baseline's list (hard failure);
+                         entries are (token, hint) where hint names the
+                         upstream stale string's valid ID when applicable
+      cross_baseline   — documents-only IDs (hard when filed on a web finding;
+                         verify context when they appear in prose)
+      undeclared       — equals `cited` when declared is False: any baseline
+                         citation outside declared 508 scope is a violation
+                         (the checklist-creep tripwire)
+      expected_missing — expected_ids with no token in the text
+    """
+    tokens = {m.group(0) for m in BASELINE_ID_RE.finditer(text)}
+    web_lower = manifest["web_lower"]
+    documents_lower = manifest["documents_lower"]
+    stale = manifest["stale"]
+
+    valid, fabricated, cross = [], [], []
+    for tok in sorted(tokens):
+        low = tok.lower()
+        if low in web_lower:
+            valid.append(tok)
+        elif low in documents_lower:
+            cross.append(tok)
+        elif low in stale:
+            entry = stale[low]
+            fabricated.append(
+                (tok, f"upstream stale string, never a valid ID — the valid ID is {entry['valid_id']}")
+            )
+        else:
+            fabricated.append((tok, "no such test in either baseline"))
+
+    text_lower = text.lower()
+    expected_missing = [e for e in expected_ids if e.lower() not in text_lower]
+
+    return {
+        "cited": sorted(tokens),
+        "valid": valid,
+        "fabricated": fabricated,
+        "cross_baseline": cross,
+        "undeclared": sorted(tokens) if (tokens and not declared) else [],
+        "expected_missing": expected_missing,
+    }

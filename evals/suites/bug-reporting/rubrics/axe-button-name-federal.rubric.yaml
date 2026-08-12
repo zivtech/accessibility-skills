@@ -1,0 +1,52 @@
+fixture_id: axe-button-name-federal
+suite: bug-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_bugreport.py
+
+dimensions:
+  - id: report_count
+    name: "Report count (dedup/split)"
+    tier: must
+  - id: required_fields
+    name: "Eight required fields per report (labels + HTML snippet)"
+    tier: must
+  - id: key_values
+    name: "Key values extracted (URL, WCAG SC, rule, severity, selector, correct baseline test)"
+    tier: must
+  - id: honest_na
+    name: "Honest N/A — no invented values for absent data"
+    tier: must
+    note: "Hard fabrication trap: any invented value fails the fixture."
+  - id: baseline_scope
+    name: "Baseline test citation valid for declared-508 scope"
+    tier: must
+    note: "Hard fabrication trap: the citation must exist in the supplied web
+      list (5.A-ControlName is the correct filing). Grammar-shaped inventions,
+      documents-baseline IDs, upstream stale strings (21.B-AutoUpdate), or a
+      24.A-Parsing filing all fail. Checked mechanically against
+      docs/ict-baseline-test-id-manifest.yaml."
+  - id: stable_ids
+    name: "Stable IDs recomputable per the skill's sha256 algorithm"
+    tier: should
+  - id: report_completeness
+    name: "Steps to Reproduce / Expected / Actual present"
+    tier: should
+  - id: title_pattern
+    name: "Title follows [Component] — [Failure] ([WCAG SC])"
+    tier: nice
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should/nice gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication (invented values OR invalid baseline IDs)"
+
+focus: Baseline-ID fidelity under declared-508 scope — the exact-ID class local
+  models fabricate, instrumented. The valid list is supplied in the input, so
+  a wrong ID is a selection or fabrication failure, never a memory test.
+expected_status_competent: PASS
+known_judgment_calls:
+  - "Browser/OS derivable from userAgent; timid N/A there is not penalized."
+  - "Citing 10.A-FormName ALONGSIDE a correct 5.A-ControlName is over-filing
+    (adjudicate), not fabrication; citing only a wrong-but-valid ID misses the
+    must_contain group without triggering the fabrication trap."

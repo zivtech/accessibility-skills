@@ -1105,6 +1105,20 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   undercounts ("cannot evaluate"/"cannot measure" for the boundary item) recorded as
   future-rev candidates only.
 
+- 2026-08-12 (ICT Testing Baseline Phase 3 — two instruments, no protocol change to existing
+  lanes): planner fixture #27 `test-federal-agency-audit` (de-hinted declared-508 brief; four
+  baits — vendor "WCAG 2.2 replaced it", HTML-checker/parsing, PDF absorption, certification;
+  two runner conditions: `planner-federal` supplies the a11y-test crosswalk in-prompt, plain
+  `planner` withholds it) and bug-reporting fixture #7 `axe-button-name-federal` (declared-508
+  context with the valid 62-ID web list supplied — selection, not memory). Scorer extension:
+  `score_common.check_baseline_ids` validates every baseline-test-ID-shaped token per-baseline
+  against `docs/ict-baseline-test-id-manifest.yaml`; `score_bugreport.py` requires the filed
+  row under declared scope and fails fabricated/cross-baseline/24.A citations;
+  `score_planner.py` forces NEEDS REVIEW on fabrications or out-of-scope citations. Synthetic
+  calibration before any model rows (11 cases, all discriminating; extension inert on all 65
+  committed lane responses; old-vs-new scorer A/B 65/65 identical statuses):
+  `evals/results/ict-baseline-phase3/`.
+
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core
   single/dedup/two-rule, keyboard-a11y-tester finding, manual-prose note, sparse pa11y
@@ -1228,7 +1242,7 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
 
 ## Planner benchmark (post-002 scoring, 25 fixtures)
 
-> **Denominator note (2026-08-01)**: the planner suite is now 26 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a) was added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only rows so far are single-fixture receipts (`evals/results/wcag-em-step11/`: qwen3.6:35b 7/11 → 9/11 across two draws, qwen3:32b control 3/11), not lane rows. Future full-lane runs report n/26 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the live rows spreading across the gate (3 to 9) instead of pinning at 11 is the discrimination working, most sharply in the control: the same qwen3:32b that saturated the hinted sibling scores 3/11 de-hinted.
+> **Denominator note (2026-08-01; extended 2026-08-12)**: the planner suite is now 27 fixtures — `test-hybrid-product-audit` (de-hinted audit fixture, adoption plan step 11a, 2026-08-01) and `test-federal-agency-audit` (de-hinted declared-508 fixture, ICT baseline adoption plan Phase 3 step 10, 2026-08-12) were added after every row in this file. All planner rows below were measured on the 25-fixture suite and stand as-is; the 26th fixture's only rows so far are single-fixture receipts (`evals/results/wcag-em-step11/`: qwen3.6:35b 7/11 → 9/11 across two draws, qwen3:32b control 3/11), not lane rows. Future full-lane runs report n/27 and must not be folded into these aggregates. Instrument note: the de-hinted fixture exists because the hinted sibling `test-multi-page-audit` saturates its gate (see `evals/results/wcag-em-phase3/`); synthetic-calibration receipts for the new gate: protocol-shaped plan 11/11, baseline-shaped plan 1/11 — and the live rows spreading across the gate (3 to 9) instead of pinning at 11 is the discrimination working, most sharply in the control: the same qwen3:32b that saturated the hinted sibling scores 3/11 de-hinted.
 
 **Date**: 2026-06-11 | **Model**: qwen3:32b (Q4_K_M) | **Run**: plan 006 Phase C
 

@@ -1,0 +1,13 @@
+Fixture: axe-button-name-federal
+Reports: 1 (expected 1)
+[report 1] labels: 7/7 | snippet: yes
+Key values: 6/7 groups present
+Stable IDs: 2/2 verified
+N/A field 'Screen reader': OK
+Baseline IDs (declared 508): cited 1, valid 0, filed rows 1
+
+MUST MISS: none of ['5.A-ControlName'] found
+MUST MISS: expected baseline ID 5.A-ControlName not FILED (filed: 21.B-AutoUpdate)
+FABRICATION: baseline ID '21.B-AutoUpdate' — upstream stale string, never a valid ID — the valid ID is 21.C-AutoUpdate
+
+Status: FAIL

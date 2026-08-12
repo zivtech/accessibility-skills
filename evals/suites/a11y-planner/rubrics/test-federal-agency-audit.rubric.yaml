@@ -1,0 +1,235 @@
+fixture_id: test-federal-agency-audit
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# De-hinted declared-508 fixture (ICT baseline adoption plan, Phase 3 step 10).
+# The fixture text supplies NONE of the graded vocabulary — every federal check
+# below probes knowledge the plan must bring itself (the planner FEDERAL
+# PROFILE teaches all of it). check_dehinted.py enforces the property; re-run
+# it after any fixture edit. The mechanical gate is score_planner.py any-match
+# plus its baseline-ID fidelity check (baseline_508 metadata block) — treat the
+# gate as a detector, not a verdict.
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: federal_floor_discipline
+    name: "Federal Floor Discipline (central probe)"
+    description: "Does the plan set the compliance basis to WCAG 2.0 A/AA per Revised 508, correct the vendor's 2.2 claim, keep 2.2 AA as a visibly separate recommendation layer, and carry the conformance-floor declaration as a named artifact?"
+    weight: 3
+    rule_based_checks:
+      - names_wcag_20_as_the_508_basis: true
+      - corrects_the_vendor_22_claim: true
+      - keeps_22_as_separate_recommendation_layer: true
+      - files_reflow_magnification_on_recommendation_layer: true
+      - carries_conformance_floor_declaration_artifact: true
+      - never_labels_22_only_criteria_as_508_failures: true
+    llm_judge_criteria:
+      - "Is the floor-vs-target distinction operationalized (two visibly separate reporting tracks) or merely mentioned once?"
+      - "Would the contracting officer, reading this plan, know exactly which standard the conformance outcome is reported against and why the vendor's claim was wrong?"
+      - "FAIL CHECK: does the plan adopt WCAG 2.2 AA as the conformance basis, or label any 2.1/2.2-only criterion a Section 508 violation? If yes, this dimension scores 0 regardless of other checks."
+
+  - id: baseline_coverage_honesty
+    name: "Baseline Coverage Honesty"
+    description: "Does the plan name the ICT Testing Baseline, answer the required-tests question as designed-to-cover-with-named-gaps consistent with the supplied crosswalk, and cite only real baseline test IDs?"
+    weight: 3
+    rule_based_checks:
+      - names_ict_testing_baseline: true
+      - uses_designed_to_cover_phrasing: true
+      - names_gaps_and_manual_assignment: true
+      - coverage_counts_consistent_with_crosswalk: true
+      - zero_fabricated_baseline_ids: true
+    llm_judge_criteria:
+      - "Is the coverage answer sourced from the supplied crosswalk (counts or named tests that match it) or invented?"
+      - "Are the not-covered tests assigned to a manual/AT method rather than left implied?"
+      - "FAIL CHECK: does any cited baseline test ID not exist in the manifest's web list (fabrication), or is a documents-baseline ID cited for web findings? If yes, this dimension scores 0 and the fixture verdict cannot be ACCEPT."
+
+  - id: non_wcag_provisions
+    name: "Non-WCAG 508 Provisions"
+    description: "Does the plan bring 503.4.x for the buried caption/description controls (placement at the same menu level as volume) and the E205 scope provisions for the intranet decision?"
+    weight: 2
+    rule_based_checks:
+      - cites_503_4_for_control_placement: true
+      - evaluates_menu_level_parity_with_volume: true
+      - cites_e205_scope_for_intranet: true
+      - resolves_intranet_by_category_not_wholesale: true
+    llm_judge_criteria:
+      - "Does the plan recognize that control PLACEMENT (not just presence) is a federal requirement a WCAG-only review would never check?"
+      - "Is the intranet handled as a scope decision (which content categories must conform) rather than scanned by default or dropped?"
+
+  - id: parsing_autopass
+    name: "Parsing Auto-Pass Discipline"
+    description: "Does the plan redirect the HTML-checker expectation — 4.1.1 in the 508 basis, 24.A always passes per the WCAG 2.0 errata, markup consequences reported under the criteria they break?"
+    weight: 2
+    rule_based_checks:
+      - explains_411_in_basis_but_autopasses: true
+      - does_not_plan_parsing_testing: true
+      - reroutes_markup_consequences_to_other_criteria: true
+      - addresses_the_web_lead_directly: true
+    llm_judge_criteria:
+      - "Does the plan tell the web lead what happens to the HTML-checker output (triaged into name/role/state and other real criteria) instead of either promising it verbatim or dismissing it?"
+
+  - id: documents_boundary
+    name: "Documents & Third-Party Boundary"
+    description: "PDFs routed to a documents-appropriate method with the limit stated; scanned PDFs called out; shared login treated as third-party; nothing absorbed into the automated pass by silence."
+    weight: 2
+    rule_based_checks:
+      - routes_pdfs_out_of_web_scan: true
+      - names_a_documents_method: true
+      - calls_out_scanned_pdfs: true
+      - treats_shared_login_as_third_party: true
+      - states_the_boundary_plainly: true
+    llm_judge_criteria:
+      - "FAIL CHECK: does any part of the plan claim or imply the automated web pass covers the 200 PDFs or the intranet without a scope decision? If yes, this dimension scores 0 regardless of other checks."
+
+  - id: certification_and_deliverable
+    name: "Certification & Deliverable Discipline"
+    description: "The government-approval question answered without any certification claim; the deliverable named as evidence feeding a downstream ACR/VPAT, not as one."
+    weight: 2
+    rule_based_checks:
+      - claims_no_certification_or_approval: true
+      - explains_alignment_is_external_review: true
+      - names_tt_certification_as_human_credential: true
+      - deliverable_feeds_acr_not_is_one: true
+    llm_judge_criteria:
+      - "Polarity check: naming VPAT/Trusted Tester while PROMISING certification or a self-declared aligned badge is the trap, not the pass."
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does the plan cite the criteria this product will stress — the 20-minute timeout, multi-step form errors, upload status, player control name/role/value, captions, contrast?"
+    weight: 2
+    rule_based_checks:
+      - cites_wcag_2_2_1_timing_adjustable: true
+      - cites_wcag_3_3_1_or_3_3_3_errors: true
+      - cites_wcag_4_1_2_name_role_value: true
+      - cites_wcag_1_2_2_captions: true
+      - cites_wcag_1_4_3_contrast: true
+    expected_citations:
+      - "WCAG 2.2.1 Timing Adjustable (20-minute application timeout — floor-level)"
+      - "WCAG 3.3.1/3.3.3 Error Identification & Suggestion (multi-step application)"
+      - "WCAG 4.1.2 Name, Role, Value (custom player controls, upload widget)"
+      - "WCAG 1.2.2/1.2.5 Captions & Audio Description (video library — floor-level presence; quality is human review)"
+      - "WCAG 1.4.3 Contrast (site, portal, PDFs)"
+      - "WCAG 1.4.10 Reflow (magnification complaints — recommendation layer, not a 508 violation)"
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Executable in 12 weeks with one part-time agency QA person plus the evaluator? Per-surface methods with owners, the complaint journey scheduled, and a report skeleton the three named readers can use."
+    weight: 2
+    rule_based_checks:
+      - assigns_methods_per_surface: true
+      - allocates_the_12_weeks: true
+      - names_owners_per_method: true
+      - schedules_the_complaint_journey_reproduction: true
+      - plans_plain_language_summary_for_nontechnical_readers: true
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Keyboard, screen reader (the complaint journey), low vision/magnification (filed on the right layer), cognitive (timeout, multi-step burden), auditory (captions + placement) all addressed?"
+    weight: 2
+    rule_based_checks:
+      - addresses_keyboard: true
+      - addresses_screen_reader_complaint_journey: true
+      - addresses_low_vision_on_recommendation_layer: true
+      - addresses_cognitive_timeout_and_form_burden: true
+      - addresses_auditory_captions_and_placement: true
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Proportional to COMPLEX declared-508 audit scope; avoids the traps: no 2.2-as-basis, no parsing re-litigation, no PDF/intranet absorption, no certification claim, no fabricated IDs, no floor-only remediation."
+    weight: 1
+    rule_based_checks:
+      - avoids_vendor_22_adoption: true
+      - avoids_parsing_relitigation: true
+      - avoids_pdf_intranet_absorption: true
+      - avoids_certification_claims: true
+      - avoids_floor_only_remediation: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: planner-federal (protocol + crosswalk in-prompt)
+    expected_score: 78-92
+    reasoning: "The FEDERAL PROFILE teaches every gate item — floor, dual
+      posture, baseline naming, designed-to-cover phrasing, 24.A, 503.4.x,
+      E205, the documents boundary, certification honesty, the ACR boundary,
+      and the floor declaration. The crosswalk supplies the coverage counts.
+      What separates 78 from 92 is operationalizing the dual posture into two
+      reporting tracks and handling the intranet as a categorized scope
+      decision."
+
+  - condition: planner (no crosswalk supplied)
+    expected_score: 65-85
+    reasoning: "Same protocol knowledge; the coverage-statement items should
+      either hedge honestly (the profile says to source the statement from a
+      crosswalk the model cannot read) or degrade. The instrumented risk is
+      fabricated counts or invented baseline test IDs — the baseline_508
+      fidelity check exists for exactly this condition (with the crosswalk
+      supplied, fabrication is unlikely by design; withhold it and the
+      fabrication machinery gets its real test bed)."
+
+  - condition: baseline-zero-shot
+    expected_score: 15-40
+    reasoning: "With no methodology vocabulary in the brief to echo, the
+      expected baseline behavior is agreeing with the vendor (2.2 as the
+      basis), promising the HTML-checker output as violations, sweeping PDFs
+      into the scan, and offering compliance assurance — the four traps. Any
+      federal vocabulary it produces comes from training, not the brief."
+
+verdict_expectations:
+  planner-federal: ACCEPT
+  planner: ACCEPT or REVISE (coverage statement must hedge or match; fabrication → REVISE)
+  baseline-zero-shot: REVISE or REJECT
+
+notes: |
+  Companion to test-hybrid-product-audit: that fixture probes WCAG-EM audit
+  structure de-hinted; this one probes the declared-508 FEDERAL PROFILE
+  de-hinted. Both are COMPLEX Testing & Audit Planning fixtures; they share
+  the client-voice de-hint discipline and the coverage-honesty center of
+  gravity but grade disjoint knowledge (EM mechanics vs federal floor/
+  baseline discipline).
+
+  Hard verdict rules (mirror the traps):
+  1. A plan that adopts WCAG 2.2 as the conformance basis or labels 2.1/2.2-
+     only criteria as Section 508 violations is REVISE at best.
+  2. A plan that extends the automated pass over the PDFs (or the intranet
+     without a scope decision) is REVISE at best.
+  3. A plan that claims certification, government approval, or a self-
+     declared "aligned" badge is REVISE at best.
+  4. Any fabricated baseline test ID (not in the manifest web list, or a
+     documents-baseline ID on web findings) is REVISE at best — machine-
+     checked by score_planner.py via the fixture's baseline_508 block.
+
+  Scoring keyword hazards, named for adjudicators: the gate is
+  POLARITY-BLIND on items 1, 3, 5, 7, 9, 10 (a trap-taking plan emits the
+  same vocabulary — measured at the 2026-08-12 critic gate: 8/11 on a fluent
+  all-four-baits plan) and FALSE-MISS-PRONE on items 2, 4, 8 (correct
+  paraphrase without the phrases). Hard rules 1–3 are mechanically enforced
+  by the metadata's trap_markers (any hit forces NEEDS REVIEW; read-verify
+  every hit) and rule 4 by the baseline_508 fidelity check. The mechanical
+  gate is a detector, not a verdict.

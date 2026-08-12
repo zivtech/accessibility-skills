@@ -1,0 +1,26 @@
+Fixture: test-federal-agency-audit
+Response length: 2146 chars
+
+Key sections:
+  + Sets the evaluation's compliance basis to WCAG 2.0 Level A/AA as what Revised Se
+  + Keeps WCAG 2.2 AA as a separately-reported remediation-recommendation layer — th
+  + Names the ICT Testing Baseline as the federal test-completeness standard behind 
+  X Answers the required-tests question in the honest phrasing — designed to cover N  (keywords: ['designed to cover', 'of 62', '62 web tests'])
+  + Redirects the HTML-checker expectation — 4.1.1 is in the Section 508 basis but i
+  X Brings the non-WCAG Section 508 provisions for the video player — caption and de  (keywords: ['503.4'])
+  + Decides which intranet content must conform using the Section 508 scope provisio
+  X Routes the PDF library and scanned files out of the automated web pass — a docum  (keywords: ['PDF/UA', 'tagged PDF', 'tagged-PDF'])
+  + Answers the government-approval question without claiming certification — alignm
+  + Names the deliverable boundary for procurement — evidence that feeds an Accessib
+  X Carries an explicit conformance-floor declaration as a named plan artifact — the  (keywords: ['conformance floor', 'floor declaration'])
+
+Score: 7/11
+WCAG criterion numbers cited: 1
+HTML/JSX code stubs: NO
+TRAP MARKER: adopts-22-as-conformance-basis — read-verify before using this row
+TRAP MARKER: claims-certification — read-verify before using this row
+TRAP MARKER: absorbs-documents-into-web-scan — read-verify before using this row
+TRAP MARKER: relitigates-parsing — read-verify before using this row
+TRAP MARKER: promises-completed-acr — read-verify before using this row
+
+Status: NEEDS REVIEW

@@ -8,6 +8,7 @@ Usage:
     python3 ollama/run_benchmark.py evalreport <model> <fixture-id>          # Evaluation-report single fixture (contract = system prompt)
     python3 ollama/run_benchmark.py evalreport-baseline <model> <fixture-id> # Same fixture, no contract (baseline condition)
     python3 ollama/run_benchmark.py evalreport-remaining [model]             # All un-benchmarked evaluation-report fixtures (contract condition)
+    python3 ollama/run_benchmark.py planner-federal <model> <fixture-id>     # Planner + a11y-test crosswalk in-prompt (declared-508 condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
@@ -44,6 +45,7 @@ BUGREPORT_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "bug-re
 BUGREPORT_SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "bug-reporting", "SKILL.md")
 
 BUGREPORT_FIXTURES = [
+    "axe-button-name-federal",  # 7th fixture, declared-508 (ICT baseline Phase 3 step 11, 2026-08-12) — no model rows yet
     "axe-image-alt-single",
     "axe-select-name-dedup",
     "axe-two-rules-split",
@@ -51,6 +53,18 @@ BUGREPORT_FIXTURES = [
     "manual-sr-finding-prose",
     "sparse-scan-adversarial",
 ]
+
+# Declared-508 planner condition (ICT baseline adoption plan, Phase 3 step 10).
+# `planner-federal` appends the a11y-test coverage crosswalk to the planner
+# system prompt — the report-contract-as-system-prompt precedent: models
+# cannot read repo files, so the reference the profile says to source the
+# coverage statement from must be supplied in-prompt. Plain `planner` on the
+# same fixture is the no-crosswalk condition (the fabrication check
+# instruments what the plan does without the reference).
+CROSSWALK_PATH = os.path.join(
+    BASE_DIR, "..", ".claude", "skills", "a11y-test", "references",
+    "ict-baseline-crosswalk.yaml",
+)
 
 # Evaluation-report lane (adoption plan step 11b, 2026-08-01). The system
 # prompt is the report contract itself — this is a prompt-only repo, so the
@@ -93,6 +107,7 @@ PLANNER_FIXTURES = [
     "sr-product-listing",
     "sr-search-results-live",
     "test-data-table",
+    "test-federal-agency-audit",  # 27th fixture, de-hinted declared-508 (ICT baseline Phase 3 step 10, 2026-08-12) — no model rows yet
     "test-form",
     "test-hybrid-product-audit",  # 26th fixture, de-hinted (step 11a, 2026-08-01) — no model rows yet
     "test-modal",
@@ -377,7 +392,24 @@ def load_planner_system_prompt():
         return strip_frontmatter(f.read())
 
 
-def run_planner(model, fixture_id, system_prompt):
+def load_planner_federal_system_prompt():
+    """Planner protocol + the a11y-test crosswalk supplied in-prompt (the
+    declared-508 condition). The FEDERAL PROFILE tells the planner to source
+    its coverage statement from the crosswalk; a local model cannot read repo
+    files, so the condition supplies it — the report-contract-as-system-prompt
+    precedent from the evaluation-report lane."""
+    with open(CROSSWALK_PATH) as f:
+        crosswalk = f.read()
+    return (
+        load_planner_system_prompt()
+        + "\n\n---\n\nSupplied reference for declared-508 engagements — the "
+        "a11y-test ICT Testing Baseline coverage crosswalk "
+        "(references/ict-baseline-crosswalk.yaml in the a11y-test skill):\n\n"
+        "```yaml\n" + crosswalk + "\n```\n"
+    )
+
+
+def run_planner(model, fixture_id, system_prompt, condition="planner"):
     fixture_content = load_fixture(fixture_id, PLANNER_FIXTURES_DIR)
     prompt = PLANNER_PROMPT_PREFIX + fixture_content
 
@@ -390,10 +422,11 @@ def run_planner(model, fixture_id, system_prompt):
     }
 
     model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"ollama-planner-{fixture_id}-{model_tag}-response.json")
+    file_prefix = "ollama-planner-federal" if condition == "planner-federal" else "ollama-planner"
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
-    print(f"PLANNER | Model: {model} | Fixture: {fixture_id}")
+    print(f"PLANNER | Model: {model} | Fixture: {fixture_id} | Condition: {condition}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
 
@@ -411,6 +444,7 @@ def run_planner(model, fixture_id, system_prompt):
         "model": model,
         "fixture_id": fixture_id,
         "skill": "a11y-planner",
+        "condition": condition,
         "elapsed_seconds": round(elapsed, 1),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
     }
@@ -633,6 +667,15 @@ def main():
         validate_fixture_id(fixture_id)
         system_prompt = load_planner_system_prompt()
         run_planner(model, fixture_id, system_prompt)
+
+    elif cmd == "planner-federal":
+        if len(sys.argv) != 4:
+            print("Usage: run_benchmark.py planner-federal <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        system_prompt = load_planner_federal_system_prompt()
+        run_planner(model, fixture_id, system_prompt, condition="planner-federal")
 
     elif cmd == "planner-all":
         model = sys.argv[2] if len(sys.argv) > 2 else None

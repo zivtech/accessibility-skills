@@ -12,11 +12,11 @@ evaluation:
   description: Comprehensive evaluation of a11y-planner skill vs generic planning baselines
   version: "1.0"
   created_at: "2026-03-09"
-  estimated_total_evaluations: 234  # 26 fixtures × 3 conditions × 3 repetitions (fixture #26 added 2026-08-01)
+  estimated_total_evaluations: 243  # 27 fixtures × 3 conditions × 3 repetitions (fixture #26 added 2026-08-01, #27 added 2026-08-12)
 
 fixtures:
   directory: ./fixtures
-  count: 26
+  count: 27
   pattern: "*.md"
   metadata_suffix: ".metadata.yaml"
 
@@ -25,16 +25,17 @@ fixtures:
     - Keyboard Navigation Design (5 fixtures)
     - Screen Reader Experience (5 fixtures)
     - Visual & Cognitive Accessibility (5 fixtures)
-    - Testing & Audit Planning (6 fixtures)
+    - Testing & Audit Planning (7 fixtures)
 
   difficulty_distribution:
     # Corrected 2026-08-01: the original 25-fixture counts here read 11
     # MODERATE / 5 COMPLEX, disagreeing with FIXTURE_INVENTORY.md's per-domain
     # table (10/6, which matches the fixtures). Counts below are the true
-    # 26-fixture distribution including test-hybrid-product-audit (COMPLEX).
+    # 27-fixture distribution including test-hybrid-product-audit (COMPLEX,
+    # 2026-08-01) and test-federal-agency-audit (COMPLEX, 2026-08-12).
     - TRIVIAL (6 fixtures)
     - MODERATE (10 fixtures)
-    - COMPLEX (7 fixtures)
+    - COMPLEX (8 fixtures)
     - AMBIGUOUS (3 fixtures)
 
   fixture_list:
@@ -176,6 +177,17 @@ fixtures:
       # No model rows yet — all planner results dated before 2026-08-01 were
       # measured on the 25-fixture suite. De-hint property enforced by
       # check_dehinted.py; re-run it after any edit to this fixture.
+
+    - id: test-federal-agency-audit
+      domain: Testing & Audit Planning
+      difficulty: COMPLEX
+      name: "Federal Grant Program Evaluation Plan"
+      # De-hinted declared-508 fixture (ICT baseline adoption plan, Phase 3
+      # step 10, added 2026-08-12). Two runner conditions: planner-federal
+      # (a11y-test crosswalk supplied in-prompt) and plain planner. Baseline
+      # test IDs in outputs are validated against the manifest by
+      # score_planner.py (baseline_508 metadata block). De-hint property
+      # enforced by check_dehinted.py; re-run it after any edit.
 
 rubrics:
   directory: ./rubrics

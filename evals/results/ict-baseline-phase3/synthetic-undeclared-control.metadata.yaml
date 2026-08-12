@@ -1,0 +1,8 @@
+fixture_id: synthetic-undeclared-control
+dehinted: false
+expected_findings:
+  must_have:
+    - Mentions a focus trap
+scoring_keywords:
+  "Mentions a focus trap":
+    - "focus trap"

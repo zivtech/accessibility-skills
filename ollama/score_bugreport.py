@@ -22,10 +22,26 @@ Usage:
 
 import hashlib
 import json
+import os
 import re
 import sys
 
 import yaml
+
+sys.path.insert(0, os.path.dirname(__file__))
+from score_common import BASELINE_ID_RE, check_baseline_ids, load_baseline_manifest  # noqa: E402
+
+# Filed-row detection for the declared-508 `Baseline test` field. Generous on
+# label variants (dash bullets, "ICT Baseline test", parentheticals, markdown
+# bold, table rows) and on JSON-shaped output, so a false FAIL never comes
+# from formatting. The label must still be colon/pipe-shaped — prose mentions
+# ("the baseline test 24.A-Parsing always passes") are NOT filings; that
+# distinction carries the 24.A prose-vs-filed rule.
+BASELINE_ROW_RE = re.compile(
+    r"(?im)^[\s|>*+-]{0,8}[^:\n|]{0,32}?baseline\s*test(?:\s*id)?"
+    r"(?:\s*\([^)]*\))?\*{0,2}\s*[:|]\s*(.*)$"
+)
+BASELINE_JSON_RE = re.compile(r'(?i)"baseline_test"\s*:\s*"([^"]*)"')
 
 REQUIRED_LABELS = (
     "URL",
@@ -173,6 +189,57 @@ def main():
             fabrications.append(f"'{label}' carries invented value(s): {bad[:2]}")
         else:
             print(f"N/A field '{label}': OK")
+
+    # 6. ICT baseline test-ID fidelity (declared-508 scope; adoption plan
+    # Phase 3 step 11). Runs on EVERY fixture: outside declared scope, any
+    # baseline citation is the checklist-creep violation; inside it, every
+    # cited ID is validated per-baseline against the manifest and the filed
+    # row is required.
+    b508 = meta.get("baseline_508") or {}
+    declared = bool(b508.get("declared", False))
+    bl = check_baseline_ids(
+        text,
+        load_baseline_manifest(),
+        declared=declared,
+        expected_ids=b508.get("expected_ids") or [],
+    )
+    filed = []
+    for row in BASELINE_ROW_RE.findall(text) + BASELINE_JSON_RE.findall(text):
+        filed += [m.group(0) for m in BASELINE_ID_RE.finditer(row)]
+    if declared:
+        print(f"Baseline IDs (declared 508): cited {len(bl['cited'])}, "
+              f"valid {len(bl['valid'])}, filed rows {len(filed)}")
+        for tok, hint in bl["fabricated"]:
+            fabrications.append(f"baseline ID '{tok}' — {hint}")
+        for tok in bl["cross_baseline"]:
+            fabrications.append(
+                f"baseline ID '{tok}' is documents-baseline-only — invalid on a web finding"
+            )
+        if not filed:
+            must_miss.append("declared-508 report has no Baseline test row")
+        if any(tok.lower() == "24.a-parsing" for tok in filed):
+            must_miss.append(
+                "24.A-Parsing filed as a finding — it always passes upstream; "
+                "file markup consequences under the criteria they break"
+            )
+        # The expected ID must be what was FILED, not merely mentioned — a
+        # report that files the wrong test while quoting the right ID in
+        # prose (e.g. a "candidates considered" footer) is a wrong filing.
+        filed_lower = {tok.lower() for tok in filed}
+        for exp in b508.get("expected_ids") or []:
+            if exp.lower() not in filed_lower:
+                must_miss.append(
+                    f"expected baseline ID {exp} not FILED "
+                    f"(filed: {', '.join(filed) if filed else 'none'})"
+                )
+    elif bl["undeclared"]:
+        must_miss.append(
+            f"baseline citation(s) outside declared 508 scope: {', '.join(bl['undeclared'])}"
+        )
+        for tok, hint in bl["fabricated"]:
+            fabrications.append(f"baseline ID '{tok}' — {hint}")
+    else:
+        print("Baseline IDs: none cited (fixture not declared-508) — OK")
 
     # verdict
     print()

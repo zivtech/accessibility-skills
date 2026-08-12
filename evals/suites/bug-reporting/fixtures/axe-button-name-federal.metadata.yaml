@@ -1,0 +1,74 @@
+fixture_id: axe-button-name-federal
+suite: bug-reporting
+input_format: axe-json-with-508-context
+difficulty: MEDIUM
+description: Declared-508 variant (ICT baseline adoption plan, Phase 3 step 11).
+  Complete single-node button-name violation plus an engagement-context block
+  declaring Revised Section 508 scope and supplying the full valid web
+  test-ID list (62 IDs, manifest-sourced — models cannot read the manifest, so
+  the task is honest selection from a provided list, mirroring the
+  crosswalk-supplied-in-prompt planner condition). The report must FILE the
+  right test picked from the list — an unnamed icon button is a Control Name
+  failure (5.A), not Control Role (5.B), not Form Names (10.A) — and the
+  scorer compares the FILED value, not mere mention (a wrong filing with the
+  right ID quoted in prose fails). With the list supplied, fabrication is
+  unlikely by design; the fabrication machinery's real test bed is the
+  planner fixture's no-crosswalk condition.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://apply.ruralgrants.example.gov/application/step-2"]
+  - ["4.1.2"]
+  - ["button-name"]
+  - ["critical", "Critical"]
+  - ["ul.uploaded-docs > li:nth-child(3) button.doc-remove", "button.doc-remove"]
+  - ["axe-core"]
+  - ["5.A-ControlName"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/application/step-2"
+  rule_id: button-name
+  instances:
+    - selector: "ul.uploaded-docs > li:nth-child(3) button.doc-remove"
+
+na_fields:
+  - "Screen reader"
+
+# Declared-508 scope for the baseline-ID fidelity check (Phase 3 step 11):
+# score_bugreport.py validates the "Baseline test" label row and every
+# ID-shaped token against the manifest's web list. 5.A-ControlName is the
+# correct filing; 24.A-Parsing on a report, documents-baseline IDs, upstream
+# stale strings (21.B-AutoUpdate), and grammar-shaped inventions all fail.
+baseline_508:
+  declared: true
+  expected_ids:
+    - 5.A-ControlName
+
+notes: |
+  Phase 3, step 11 of docs/ict-testing-baseline-adoption-assessment.md — the
+  first declared-508 bug-reporting fixture, built 2026-08-12. NO model rows
+  yet; synthetic calibration receipts: evals/results/ict-baseline-phase3/.
+
+  Selection nuance (why the full 62-ID list is supplied): the discriminating
+  behavior is picking 5.A-ControlName over the near neighbors — 5.B-ControlRole
+  (the button's role is fine; its NAME is missing), 10.A-FormName (that family
+  is form fields/labels, and the failing element is a control in an upload
+  widget), and 6.A-MeaningfulImage (the SVG is aria-hidden decoration inside
+  the button; the defect is the control's accessible name). Adjudication: a
+  report citing 10.A alongside a correct 5.A is over-filing, not fabrication;
+  a report citing ONLY a wrong-but-valid ID misses the must_contain group and
+  scores accordingly without triggering the fabrication trap.
+
+  Sibling discipline: everything else about the report follows the
+  axe-image-alt-single shape — all eight required fields derivable, honest
+  N/A only for the screen-reader row, one report, verifiable stable IDs.
+
+  Case rule (which check governs): the filed-row comparison and manifest
+  membership are case-insensitive (a lowercased real ID is sloppy, not
+  fabricated), but must_contain stays case-sensitive — the valid list is
+  supplied verbatim, and copying it exactly is part of value fidelity. A
+  lowercased correct filing therefore FAILs via the must_contain group as a
+  fidelity miss, never as a fabrication.

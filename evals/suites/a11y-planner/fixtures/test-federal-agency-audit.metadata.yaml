@@ -1,0 +1,355 @@
+fixture_id: test-federal-agency-audit
+name: Federal Grant Program Evaluation Plan
+description: De-hinted declared-508 audit fixture (ICT Testing Baseline adoption
+  plan, Phase 3 step 10) — a federal agency's grant program (Drupal site, React
+  application portal, contractor-built video player, 200 PDFs, staff intranet)
+  needs a Section 508 evaluation. The brief supplies the 508 trigger and four
+  baits in client voice with zero methodology vocabulary; the plan must bring
+  the federal profile itself. Traps are floor-vs-target correctness (a vendor
+  said WCAG 2.2 replaced the old standard), the parsing auto-pass (an HTML-checker
+  expectation), PDF/intranet false coverage, and certification honesty.
+language: mixed
+framework: Drupal + React SPA + custom video player + PDFs + intranet
+difficulty: COMPLEX
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: High
+
+# ── De-hinted design (ICT baseline adoption plan step 10; pattern from
+# test-hybrid-product-audit, step 11a of the WCAG-EM adoption) ──
+# The .md is a client-voice brief only. None of the scoring keywords below nor
+# any dehint_forbidden term appears in the fixture text, so a gate hit can only
+# come from knowledge the plan brought itself (the planner FEDERAL PROFILE
+# teaches every item). Enforced: evals/suites/a11y-planner/check_dehinted.py —
+# re-run after ANY edit to the .md or this metadata.
+dehinted: true
+dehint_forbidden:
+  - "WCAG-EM"
+  - "methodology"
+  - "sampl"
+  - "random"
+  - "representativ"
+  - "baseline"
+  - "floor"
+  - "conformance"
+  - "crosswalk"
+  - "manifest"
+  - "parsing"
+  - "errata"
+  - "Trusted"
+  - "certification"
+  - "incorporate"
+  - "provision"
+  - "E205"
+  - "503"
+  - "24.A"
+  - "delta"
+  - "annex"
+  - "not covered"
+  - "not-covered"
+  - "gaps"
+  - "Electronic Documents"
+
+# Declared-508 scope for the baseline-ID fidelity check (Phase 3 step 11):
+# ollama/score_planner.py validates every baseline-test-ID-shaped token in the
+# plan against the manifest's web list. Fabricated or cross-baseline IDs are
+# the instrumented failure class; no specific ID is required (a correct
+# coverage statement may quote counts without per-ID citations).
+baseline_508:
+  declared: true
+  expected_ids: []
+
+# Trap markers (score_planner.py): read-verified detectors for trap-TAKING
+# language. The keyword gate is polarity-blind — the 2026-08-12 critic gate
+# demonstrated a fluent plan taking all four baits scoring 8/11 PASS on
+# keywords alone — so any marker hit forces NEEDS REVIEW regardless of gate
+# score. Patterns are written to fire on bait-agreement phrasing and stay
+# silent on the FEDERAL PROFILE's own correct vocabulary; every hit is a
+# read-this-row signal, not a verdict.
+trap_markers:
+  - name: adopts-22-as-conformance-basis
+    # No supersede/replace alternative: correct plans QUOTE the vendor's claim
+    # while refuting it ("the claim that WCAG 2.2 replaced ... is incorrect"),
+    # and regex cannot read negation. Key on unambiguous adoption phrasing.
+    pattern: 'report(ing)?\s+conformance\s+against\s+WCAG\s*2\.2|conformance\s+(basis|target)[^.\n]{0,20}WCAG\s*2\.2|WCAG\s*2\.2[^.\n]{0,30}\b(is|as)\s+the\s+current\s+standard|evaluate\s+and\s+report[^.\n]{0,40}against\s+WCAG\s*2\.2'
+  - name: claims-certification
+    pattern: '\b(is|are)\s+(certified|government[- ]approved)\b|certified\s+against|supply\s+the\s+certificate|provide\s+a\s+certificate'
+  - name: absorbs-documents-into-web-scan
+    pattern: '\b(crawls?|scans?|sweeps?|crawler)\b[^.\n]{0,60}\bPDFs?\b|\bPDFs?\b[^.\n]{0,50}\b(in|into)\s+(the\s+|one\s+)?same\s+(crawl|scan|pass|sweep)|one\s+pass[^.\n]{0,80}\bPDFs?\b|same\s+crawl'
+  - name: relitigates-parsing
+    pattern: 'WCAG\s*4\.1\.1[^.\n]{0,40}violation|4\.1\.1\s+Parsing\s+violation|markup\s+errors?[^.\n]{0,60}\b(as|is)\s+(a\s+)?violation'
+  - name: promises-completed-acr
+    pattern: 'completed\s+VPAT|deliverable\s+is\s+(a\s+)?(completed\s+)?(VPAT|ACR)\b|we\s+will\s+(produce|deliver|provide)\s+(a\s+|the\s+)?(completed\s+)?(VPAT|ACR)\b'
+
+scenario:
+  feature: A Section 508 accessibility evaluation of a federal grant program's
+    five digital surfaces (public Drupal site, authenticated React application
+    portal, contractor-built video player library, ~200 PDFs including scans,
+    staff intranet), triggered by a screen-reader user's complaint to the 508
+    coordinator and a contract renewal requiring documented testing
+  user_need: A written evaluation report a program director, a 508 coordinator,
+    and a contracting officer can act on — with the compliance basis right
+    (Revised 508's WCAG 2.0 A/AA, not the vendor's claimed 2.2), the required
+    federal test set named honestly, and no coverage claims the tooling cannot
+    back
+  compliance_target: Revised Section 508 (the engagement's declared authority);
+    WCAG 2.2 AA remains the bundle's remediation-recommendation layer
+  assistive_technologies:
+    - Unspecified by the client (a screen-reader complaint and screen-magnification
+      complaints are known) — the plan must choose and declare tested combinations
+  scope: ~120 public pages, ~25 authenticated portal screens, ~40 videos in a
+    custom player, ~200 PDFs (some scanned), staff intranet of unknown obligation
+  constraints:
+    - 12-week deadline for the written report
+    - One part-time agency QA person; the evaluator supplies the rest
+    - Shared cross-agency login in front of the portal (third-party)
+    - 20-minute inactivity timeout on applications
+    - Caption/description controls buried two menu levels down while play and
+      volume sit on the main toolbar (the 503.4.1/.2 placement scenario, unnamed)
+    - Vendor misinformation in the room ("WCAG 2.2 replaced the old versions")
+    - HTML-checker expectation (every markup error = a violation in the report)
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Conformance floor set to WCAG 2.0 A/AA per Revised 508, vendor claim corrected
+  - Dual posture — report to the floor, recommend to WCAG 2.2 AA, visibly separate
+  - ICT Testing Baseline named and the coverage question answered in
+    designed-to-cover-with-gaps phrasing consistent with the supplied crosswalk
+  - Parsing auto-pass (24.A) taught, HTML-checker expectation redirected
+  - Non-WCAG provisions brought for the video player (503.4.x) and intranet scope (E205)
+  - PDFs and intranet routed honestly, never absorbed into the automated web pass
+  - No certification or government-approval claim; deliverable feeds an ACR, is not one
+  - No fabricated baseline test IDs (scorer-checked against the manifest)
+
+expected_findings:
+  must_have:
+    - Sets the evaluation's compliance basis to WCAG 2.0 Level A/AA as what
+      Revised Section 508 incorporates — correcting the vendor's claim that
+      WCAG 2.2 replaced it
+    - Keeps WCAG 2.2 AA as a separately-reported remediation-recommendation
+      layer — the two targets visibly separate, magnification/reflow complaints
+      filed there, never as Section 508 violations
+    - Names the ICT Testing Baseline as the federal test-completeness standard
+      behind the required-tests question
+    - Answers the required-tests question in the honest phrasing — designed to
+      cover N with named gaps — consistent with the supplied coverage table
+    - Redirects the HTML-checker expectation — 4.1.1 is in the Section 508
+      basis but its test auto-passes (24.A, WCAG 2.0 errata), and markup
+      consequences are reported under the criteria they actually break
+    - Brings the non-WCAG Section 508 provisions for the video player —
+      caption and description user-control placement at the same menu level
+      as volume (503.4)
+    - Decides which intranet content must conform using the Section 508 scope
+      provisions (public-facing content; the agency-official-communication
+      categories)
+    - Routes the PDF library and scanned files out of the automated web pass —
+      a documents-appropriate method with the coverage limit stated plainly,
+      never implied scan coverage
+    - Answers the government-approval question without claiming certification —
+      alignment recognition is an external review of a test process, and
+      Trusted Tester certification belongs to people (DHS), not tooling
+    - Names the deliverable boundary for procurement — evidence that feeds an
+      Accessibility Conformance Report (VPAT/ACR) authored downstream; the
+      evaluation report itself is not one
+    - Carries an explicit conformance-floor declaration as a named plan
+      artifact — the declaration that makes federal citations valid for this
+      engagement
+
+  should_have:
+    - Complete-process evaluation of the complaint journey (login through
+      application submission, including the 20-minute timeout and error paths)
+    - Accessibility support baseline declared (OS + browser + AT combinations
+      chosen by the plan; the client provided none)
+    - The 20-minute timeout evaluated under WCAG 2.2.1 Timing Adjustable —
+      a floor-level criterion, not a recommendation-layer item
+    - Functional performance criteria (Chapter 3 via E204) mentioned for
+      functions the technical provisions do not address
+    - Coverage counts quoted consistently with the supplied crosswalk
+      (22 covered / 26 partial / 13 not-covered / 1 always-passes of 62)
+    - Caption accuracy/sync and described-version adequacy routed to human
+      judgment (partial-coverage tests), not claimed as automated
+    - Shared login treated as third-party with best-effort testing and
+      documented limits
+    - Scanned PDFs called out as the hardest document class (image-only,
+      likely OCR-less)
+    - Plain-language summary planned for the program director and contracting
+      officer (non-technical readers)
+
+  nice_to_have:
+    - Wayback/pinned-source discipline echoed (the federal test set cited at a
+      pinned version rather than "current")
+    - Re-evaluation cadence proposed for the contract term
+    - EARL/machine-readable outcome export mentioned as optional
+    - The intranet's undecided obligation resolved with legal by category
+      rather than assumed in or out wholesale
+
+false_positive_traps:
+  - Adopting the vendor's claim — evaluating conformance against WCAG 2.2 AA
+    (or labeling 2.1/2.2-only failures as Section 508 violations). The floor
+    is WCAG 2.0 A/AA via Revised 508; 2.2 findings are recommendations.
+  - Promising the HTML-checker's markup errors as Section 508 conformance
+    failures — re-litigating parsing. Baseline test 24.A always passes
+    (WCAG 2.0 errata); real markup consequences file under other criteria.
+  - Extending the automated web pass over the 200 PDFs or the intranet
+    (or silently dropping either). Documents are a different test regime;
+    the intranet needs a scope decision first, not a scan.
+  - Claiming the testing approach is certified, government-approved,
+    "baseline-aligned", or Trusted-Tester-certified — or promising any stamp.
+    The honest phrasing is designed-to-cover-with-gaps; alignment recognition
+    is an external review; TT certification belongs to humans.
+  - Citing baseline test IDs that do not exist in the manifest's web list
+    (fabrication — machine-checked), or citing documents-baseline IDs for web
+    findings.
+  - Lowering the remediation recommendation target to the 2.0 floor ("only
+    fix what 508 strictly requires").
+  - Treating ADA Title II or EN 301 549 as interchangeable with Revised 508.
+
+multi_perspective_coverage:
+  keyboard: "Full keyboard path through the shared login, multi-step
+    application, document upload, and the video player including the buried
+    caption/description submenu; timeout extension operable by keyboard"
+  screen_reader: "The complaint journey reproduced with a declared screen
+    reader; form step announcements, error identification, upload status;
+    video player control names and states"
+  low_vision: "The magnification complaints — zoom/reflow behavior on the
+    portal — evaluated and filed on the recommendation layer (reflow is a
+    2.1-era criterion, not a 508 violation), with contrast at the floor"
+  cognitive: "Plain-language eligibility content, multi-step form memory
+    burden, timeout pressure, error recovery on application steps"
+  auditory: "Caption presence at the floor; caption quality and the described
+    version routed to human review; control placement under the non-WCAG
+    provisions"
+
+notes: |
+  Phase 3, step 10 of docs/ict-testing-baseline-adoption-assessment.md — the
+  de-hinted federal planner fixture, built 2026-08-12, patterned on
+  test-hybrid-product-audit (the WCAG-EM step-11a instrument).
+
+  Design contract:
+  1. The fixture .md is a client-voice brief ONLY. "Section 508" and
+     "WCAG 2.2" appear in the text — they are the trigger and the bait, not
+     hints. The union of scoring_keywords and dehint_forbidden never appears
+     in the fixture text (check_dehinted.py enforces; re-run on any edit).
+  2. Every gate item is a knowledge probe for the planner FEDERAL PROFILE:
+     the floor, the dual posture, the ICT Testing Baseline by name, the
+     designed-to-cover phrasing, the 24.A auto-pass, 503.4.x placement, E205
+     scope, the documents boundary, certification honesty, the ACR/VPAT
+     deliverable boundary, and the floor declaration as a named artifact.
+  3. Conditions: `planner-federal` (run_benchmark.py) supplies the a11y-test
+     crosswalk in-prompt after the protocol — the report-contract-as-system-
+     prompt precedent from the evaluation-report lane. Plain `planner` runs
+     the same fixture without the crosswalk: the coverage-statement items
+     then measure whether the plan hedges honestly or fabricates counts/IDs
+     (the fabrication check instruments exactly this).
+  4. The baseline-ID fidelity check (baseline_508 block above) runs on every
+     condition: any ID-shaped token not in the manifest web list is a
+     fabrication finding regardless of gate score.
+
+  Adjudication guidance (variance discipline; sharpened by the 2026-08-12
+  critic gate, which demonstrated a fluent all-four-baits plan scoring 8/11
+  on keywords alone):
+
+  - POLARITY-BLIND items — 1, 3, 5, 7, 9, 10: their keywords ("WCAG 2.0",
+    "ICT Testing Baseline", "4.1.1", "public-facing", "certif", "VPAT") are
+    vocabulary a trap-TAKING plan emits just as readily as a correct one.
+    Every hit on these items requires reading, in both conditions. The
+    trap_markers block carries the polarity override mechanically (any
+    marker hit forces NEEDS REVIEW); markers are detectors — read the row.
+  - FALSE-MISS-PRONE items — 2, 4, 8: a plan may keep the layers separate,
+    quote the exact coverage counts, or route PDFs correctly with none of
+    the listed phrases. Content-adjudicate misses before counting them, per
+    the wcag-em-phase3 practice.
+  - Item 3's hit rate is not a pure knowledge signal: the brief's
+    required-tests question (client voice, deliberate) hands over the SHAPE
+    of the coverage answer — that a federal test list exists and that
+    performed/not-performed is the expected format. What stays a knowledge
+    probe is NAMING the ICT Testing Baseline and sourcing the counts from
+    the crosswalk.
+  - Item 9 was strengthened 2026-08-12 by removing the brief's "answer that
+    directly" instruction: the plan must now volunteer the correction, not
+    comply with a prompt.
+
+  Benchmark bookkeeping: added 2026-08-12 as planner fixture #27 (domain
+  Testing & Audit Planning #7, COMPLEX #7). NO model rows yet. All planner
+  aggregates dated before 2026-08-12 were measured on smaller suites; do not
+  fold this fixture into them. Synthetic calibration receipts:
+  evals/results/ict-baseline-phase3/.
+
+  Expected discrimination: protocol-following planners (FEDERAL PROFILE in
+  the system prompt) should clear the gate in the planner-federal condition;
+  the no-crosswalk condition should degrade only the coverage-statement item
+  or hedge it honestly; baselines without the protocol should miss the floor
+  (agreeing with the vendor's 2.2 claim is the expected baseline failure),
+  the auto-pass, the provisions, and the phrasing discipline. If baselines
+  saturate this gate, the de-hinting failed — instrument finding, not model
+  achievement.
+
+  Expected verdict: ACCEPT for a protocol-following planner in the
+  planner-federal condition. REVISE or worse for any plan that adopts 2.2 as
+  the compliance basis, extends the automated pass over the PDFs, claims
+  certification/approval, or cites fabricated baseline IDs — regardless of
+  gate score.
+
+scoring_keywords:
+  "Sets the evaluation's compliance basis to WCAG 2.0 Level A/AA as what Revised Section 508 incorporates — correcting the vendor's claim that WCAG 2.2 replaced it":
+    - "WCAG 2.0"
+  "Keeps WCAG 2.2 AA as a separately-reported remediation-recommendation layer — the two targets visibly separate, magnification/reflow complaints filed there, never as Section 508 violations":
+    - "recommendation layer"
+    - "advisory"
+    - "dual posture"
+    - "recommend against WCAG 2.2"
+    - "as recommendations"
+    - "are recommendations"
+    - "never 508 conformance failures"
+    - "remediation-recommendation"
+    - "separately-reported"
+    - "additionally-evaluated"
+    - "not a Section 508 violation"
+    - "not Section 508 violations"
+  "Names the ICT Testing Baseline as the federal test-completeness standard behind the required-tests question":
+    - "ICT Testing Baseline"
+    - "ictbaseline"
+  "Answers the required-tests question in the honest phrasing — designed to cover N with named gaps — consistent with the supplied coverage table":
+    - "designed to cover"
+    - "of 62"
+    - "62 web tests"
+  "Redirects the HTML-checker expectation — 4.1.1 is in the Section 508 basis but its test auto-passes (24.A, WCAG 2.0 errata), and markup consequences are reported under the criteria they actually break":
+    - "24.A"
+    - "4.1.1"
+    - "errata"
+  "Brings the non-WCAG Section 508 provisions for the video player — caption and description user-control placement at the same menu level as volume (503.4)":
+    - "503.4"
+  "Decides which intranet content must conform using the Section 508 scope provisions (public-facing content; the agency-official-communication categories)":
+    - "E205"
+    - "official communication"
+    - "public-facing"
+    - "public facing"
+  "Routes the PDF library and scanned files out of the automated web pass — a documents-appropriate method with the coverage limit stated plainly, never implied scan coverage":
+    - "PDF/UA"
+    - "tagged PDF"
+    - "tagged-PDF"
+    - "cannot measure"
+    - "does not run"
+    - "do not run"
+    - "not measurable"
+  "Answers the government-approval question without claiming certification — alignment recognition is an external review of a test process, and Trusted Tester certification belongs to people (DHS), not tooling":
+    - "Trusted Tester"
+    - "external review"
+    - "certif"
+  "Names the deliverable boundary for procurement — evidence that feeds an Accessibility Conformance Report (VPAT/ACR) authored downstream; the evaluation report itself is not one":
+    - "VPAT"
+    - "Accessibility Conformance Report"
+    - "Conformance Report"
+  "Carries an explicit conformance-floor declaration as a named plan artifact — the declaration that makes federal citations valid for this engagement":
+    - "conformance floor"
+    - "floor declaration"

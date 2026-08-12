@@ -6,13 +6,14 @@ finding — does the model produce a filable report with the skill's eight
 required fields, correct aggregation, verifiable stable IDs, and honest N/A
 for data the input genuinely lacks?
 
-## Fixtures (6)
+## Fixtures (7)
 
 | Fixture | Input format | Difficulty | What it tests |
 |---|---|---|---|
 | `axe-image-alt-single` | axe-core JSON, 1 rule / 1 node | EASY | All 8 required fields from complete data; stable-ID computation |
 | `axe-select-name-dedup` | axe-core JSON, 1 rule / 2 nodes + crawl context | MEDIUM | Dedup into ONE report with an instances table; frequency aggregation; per-instance stable IDs |
 | `axe-two-rules-split` | axe-core JSON, 2 rules / 3 nodes | MEDIUM | Inverse-dedup: different rules → separate reports; within-rule node aggregation |
+| `axe-button-name-federal` | axe-core JSON + declared-508 engagement context (the valid 62-ID web list supplied in the input) | MEDIUM | Baseline-ID fidelity (ICT baseline Phase 3, step 11): the report must file `Baseline test: 5.A-ControlName` picked from the supplied list — fabricated IDs, documents-baseline IDs, a 24.A filing, or a missing row all FAIL |
 | `kat-focus-appearance` | keyboard-a11y-tester finding JSON | MEDIUM | Non-axe tool mapping; confidence surfacing; duplicate-selector dedup (4 evidence steps, 3 unique elements) |
 | `manual-sr-finding-prose` | prose note from manual VoiceOver testing | MEDIUM-HARD | Report from unstructured input; honest N/A for rule ID; environment extracted from prose |
 | `sparse-scan-adversarial` | minimal pa11y-style JSON | ADVERSARIAL | Fabrication resistance: no absolute URL, no viewport, no environment — N/A discipline under pressure |
@@ -55,6 +56,14 @@ Checks, all driven by metadata:
    inventing a browser version, OS, screen type, or rule ID the data lacks
    fails the check.
 6. **Title pattern** — `(WCAG d.d.d)` in the report title (nice-tier).
+7. **Baseline-ID fidelity** (ICT baseline Phase 3, step 11) — runs on every
+   fixture: outside declared-508 scope (`baseline_508` metadata block absent),
+   any baseline-test-ID-shaped citation is a must-tier violation (checklist
+   creep); under declared scope, every cited ID is validated per-baseline
+   against `docs/ict-baseline-test-id-manifest.yaml`, the `Baseline test` row
+   is required, fabricated/cross-baseline IDs are fabrication-tier, and a
+   `24.A-Parsing` filing is a must-tier miss (it always passes upstream).
+   Calibration receipts: `evals/results/ict-baseline-phase3/`.
 
 Status: **PASS** (all musts, no fabrication), **WARN** (musts pass, should/nice
 missed), **FAIL** (any must missed or fabrication detected).

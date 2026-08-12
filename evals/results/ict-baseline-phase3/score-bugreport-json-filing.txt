@@ -1,0 +1,10 @@
+Fixture: axe-button-name-federal
+Reports: 1 (expected 1)
+[report 1] labels: 7/7 | snippet: yes
+Key values: 7/7 groups present
+Stable IDs: 2/2 verified
+N/A field 'Screen reader': OK
+Baseline IDs (declared 508): cited 1, valid 1, filed rows 1
+
+
+Status: PASS

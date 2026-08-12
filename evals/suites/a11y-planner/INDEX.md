@@ -4,7 +4,7 @@
 
 **Status:** Core infrastructure COMPLETE, sample fixtures ready for batch generation
 
-**Last Updated:** 2026-08-01 — fixture #26 `test-hybrid-product-audit` added (de-hinted audit-scope fixture, adoption plan step 11a). References to "25 fixtures" below describe the original design and all pre-2026-08 benchmark rows.
+**Last Updated:** 2026-08-12 — fixture #27 `test-federal-agency-audit` added (de-hinted declared-508 fixture, ICT baseline adoption plan Phase 3 step 10; two runner conditions, manifest-validated baseline IDs). #26 `test-hybrid-product-audit` added 2026-08-01 (de-hinted audit-scope fixture, WCAG-EM adoption plan step 11a). References to "25 fixtures" below describe the original design and all pre-2026-08 benchmark rows.
 
 ---
 

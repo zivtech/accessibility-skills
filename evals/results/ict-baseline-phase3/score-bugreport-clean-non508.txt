@@ -1,0 +1,10 @@
+Fixture: axe-image-alt-single
+Reports: 1 (expected 1)
+[report 1] labels: 7/7 | snippet: yes
+Key values: 8/8 groups present
+Stable IDs: 2/2 verified
+N/A field 'Screen reader': OK
+Baseline IDs: none cited (fixture not declared-508) — OK
+
+
+Status: PASS

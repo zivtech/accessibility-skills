@@ -1,0 +1,25 @@
+Fixture: test-federal-agency-audit
+Response length: 678 chars
+
+Key sections:
+  X Sets the evaluation's compliance basis to WCAG 2.0 Level A/AA as what Revised Se  (keywords: ['WCAG 2.0'])
+  X Keeps WCAG 2.2 AA as a separately-reported remediation-recommendation layer — th  (keywords: ['recommendation layer', 'advisory', 'dual posture'])
+  X Names the ICT Testing Baseline as the federal test-completeness standard behind   (keywords: ['ICT Testing Baseline', 'ictbaseline'])
+  X Answers the required-tests question in the honest phrasing — designed to cover N  (keywords: ['designed to cover', 'of 62', '62 web tests'])
+  X Redirects the HTML-checker expectation — 4.1.1 is in the Section 508 basis but i  (keywords: ['24.A', '4.1.1', 'errata'])
+  X Brings the non-WCAG Section 508 provisions for the video player — caption and de  (keywords: ['503.4'])
+  X Decides which intranet content must conform using the Section 508 scope provisio  (keywords: ['E205', 'official communication', 'public-facing'])
+  X Routes the PDF library and scanned files out of the automated web pass — a docum  (keywords: ['PDF/UA', 'tagged PDF', 'tagged-PDF'])
+  + Answers the government-approval question without claiming certification — alignm
+  X Names the deliverable boundary for procurement — evidence that feeds an Accessib  (keywords: ['VPAT', 'Accessibility Conformance Report', 'Conformance Report'])
+  X Carries an explicit conformance-floor declaration as a named plan artifact — the  (keywords: ['conformance floor', 'floor declaration'])
+
+Score: 1/11
+WCAG criterion numbers cited: 0
+HTML/JSX code stubs: NO
+Baseline IDs cited: 1 (valid web: 0)
+FABRICATION: baseline ID '7.D-ColorContrast' — no such test in either baseline
+TRAP MARKER: claims-certification — read-verify before using this row
+TRAP MARKER: absorbs-documents-into-web-scan — read-verify before using this row
+
+Status: NEEDS REVIEW

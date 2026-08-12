@@ -1,0 +1,13 @@
+Fixture: synthetic-undeclared-control
+Response length: 134 chars
+
+Key sections:
+  + Mentions a focus trap
+
+Score: 1/1
+WCAG criterion numbers cited: 1
+HTML/JSX code stubs: NO
+Baseline IDs cited: 1 (valid web: 1)
+VIOLATION: baseline citation(s) outside declared 508 scope: 1.A-KeyboardAccess
+
+Status: NEEDS REVIEW

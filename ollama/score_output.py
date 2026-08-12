@@ -18,7 +18,12 @@ import re
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import strip_thinking, MUST_FIND_ABORT_THRESHOLD  # noqa: E402
+from score_common import (  # noqa: E402
+    MUST_FIND_ABORT_THRESHOLD,
+    check_baseline_ids,
+    load_baseline_manifest,
+    strip_thinking,
+)
 
 REQUIRED_EVIDENCE_FIELDS = {
     "finding_id",
@@ -277,6 +282,17 @@ def score(response_path: str, rubric_path: str):
         print(f"  {marker} {phase}")
     print()
 
+    # ICT baseline checklist-creep tripwire (adoption plan Phase 3). Critic
+    # reviews are component-scope by definition, so declared-508 scope never
+    # applies in this lane: ANY baseline-test-ID citation in a review is a
+    # finding against the output and fails the fixture.
+    bl = check_baseline_ids(text, load_baseline_manifest(), declared=False)
+    baseline_ok = not bl["undeclared"]
+    if not baseline_ok:
+        print("VIOLATION: baseline citation(s) outside declared 508 scope "
+              f"(component-scope review): {', '.join(bl['undeclared'])}")
+        print()
+
     verdict = check_verdict(text)
     print_evidence_contract_summary(contract)
     if contract_required:
@@ -299,6 +315,7 @@ def score(response_path: str, rubric_path: str):
 
         passed = correct_verdict and not fp["wrong_verdict"]
         passed = passed and evidence_contract_gate_ok(contract, contract_required)
+        passed = passed and baseline_ok
         status = "PASS" if passed else "FAIL"
         if fp["structured_findings"] > 0 and passed:
             status = "WARN — correct verdict but raised findings (review manually)"
@@ -341,6 +358,7 @@ def score(response_path: str, rubric_path: str):
         articulate_score = sum(1 for r in must_articulate if r["found"]) / max(len(must_articulate), 1)
         passed = verdict_ok and articulate_score >= 0.5
         passed = passed and evidence_contract_gate_ok(contract, contract_required)
+        passed = passed and baseline_ok
         print(f"Must-articulate rate: {articulate_score:.0%}")
         print(f"Status: {'PASS' if passed else 'FAIL'}")
     else:
@@ -382,6 +400,7 @@ def score(response_path: str, rubric_path: str):
         print(f"Abort threshold: {MUST_FIND_ABORT_THRESHOLD:.0%} (escalation gate — see score_common.py)")
         passed = must_score >= MUST_FIND_ABORT_THRESHOLD
         passed = passed and evidence_contract_gate_ok(contract, contract_required)
+        passed = passed and baseline_ok
         print(f"Status: {'PASS' if passed else 'FAIL'}")
 
 
