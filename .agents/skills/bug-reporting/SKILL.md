@@ -503,6 +503,8 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
 
 ### EARL: Evaluation and Report Language
 
+**Report-level companion — `acr-reporting`.** This skill is finding-level: findings in, filable issues out. Aggregating a *finished audit-scope evaluation* into an Accessibility Conformance Report is the `acr-reporting` skill's job (OpenACR format, draft-only, human sign-off) — route ACR/VPAT-shaped requests there, and keep reports here citing their `finding_id`s so ACR remarks can trace back to the same findings.
+
 [EARL (Evaluation and Report Language)](https://www.w3.org/WAI/standards-guidelines/earl/) is a W3C standard for expressing test results in a machine-readable format. Use EARL when you need interoperable, tool-agnostic reports that can be processed by different systems — for example, aggregating results from multiple tools, feeding a compliance dashboard, or archiving audit evidence.
 
 ```turtle

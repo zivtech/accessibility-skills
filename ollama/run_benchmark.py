@@ -877,7 +877,6 @@ def main():
             print("Usage: run_benchmark.py acr <model> <fixture-id>")
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
-        check_server()
         run_acr(model, fixture_id, load_acr_skill())
 
     elif cmd == "acr-baseline":
@@ -885,7 +884,6 @@ def main():
             print("Usage: run_benchmark.py acr-baseline <model> <fixture-id>")
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
-        check_server()
         run_acr(model, fixture_id, "", condition="baseline")
 
     elif cmd == "evalreport-remaining":

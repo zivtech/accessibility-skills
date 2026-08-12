@@ -653,7 +653,7 @@ Copy this protocol into the subagent prompt:
     - Product scope: an unambiguous in/out rule for every view (full product enclosure — excluding parts of the product conflicts with WCAG 2 full-page and complete-process conformance requirements)
     - Conformance target: WCAG 2 version and level (AA is the default)
     - Accessibility support baseline: the explicit OS + browser + assistive technology combinations the evaluation tests against, agreed with the commissioner; if additional tools get used mid-evaluation, extend the declared baseline
-    - Additional requirements: report template (e.g., VPAT edition), issue-report granularity, user involvement
+    - Additional requirements: report template (e.g., VPAT edition; an ACR in OpenACR format routes to the `acr-reporting` skill after the evaluation report is delivered — and the OpenACR catalog is chosen HERE, at planning time: `2.5-edition-wcag-2.2-508-en` by default, `2.4-edition-wcag-2.1-508-en` when GSA's ACR Editor is the required finish surface, never downgraded silently at serialization time), issue-report granularity, user involvement
 
     EM Step 2 (Explore the product) → Phases 1/8: list common views, essential functionality, the variety of sample types (templates, technologies, dynamic states), technologies relied upon, and other accessibility-relevant samples (help, accessibility statement, contact, auth, payment). These five lists drive sampling.
 

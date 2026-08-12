@@ -1,6 +1,6 @@
 # OpenACR Gap Analysis & Adoption Assessment
 
-> **Status: adopted for Lane A drafting via the `acr-reporting` skill — EVAL LANE PENDING, NOT YET RECOMMENDED** (Phase 2 gate of the [integration plan](plans/2026-08-12-openacr-integration-plan.md) defines "recommended").
+> **Status: adopted for Lane A drafting via the `acr-reporting` skill — RECOMMENDED as of 2026-08-12** (the [integration plan](plans/2026-08-12-openacr-integration-plan.md)'s Phase 2 gate passed: hosted tier, fixtures 1/2/3/5, stable across 2 draws, zero must-tier misses — receipts in `evals/results/acr-reporting-phase2/`). Lanes B/C remain future phases.
 > Verified facts + receipts: [openacr-reference.md](openacr-reference.md) (2026-08-12).
 
 ## What It Is

@@ -21,9 +21,10 @@ This bundle packages four core skills that cover the full accessibility developm
 - **Accessibility Tester** (`a11y-test`): runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
 - **Perspective Audit** (`perspective-audit`): deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
 
-Additional companion skill:
+Additional companion skills:
 
 - **Accessibility Bug Reporting** (`bug-reporting`): converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency)
+- **ACR Reporting** (`acr-reporting`): serializes a finished audit-scope evaluation into a draft Accessibility Conformance Report in GSA's OpenACR format — validated/rendered via the routed pinned `@openacr/openacr` CLI, finished and signed by a human (Phase 2 gate passed 2026-08-12; receipts in `evals/results/acr-reporting-phase2/`)
 
 ## Why this bundle exists
 
@@ -147,6 +148,7 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/a11y-test` — Accessibility Tester: run keyboard, axe-core, and visual regression tests; journey audits (keyboard-a11y-tester); component screen-reader assertions (virtual-screen-reader)
 - `/perspective-audit` — Perspective Audit: deep review from escalated disability/situational access perspectives
 - `/bug-reporting` — Accessibility Bug Reporting: produce reproducible bug reports from test or review findings
+- `/acr-reporting` — ACR Reporting: serialize a finished audit-scope evaluation into a draft OpenACR Accessibility Conformance Report for human sign-off
 
 ## Evidence Contract and Vital-Core Boundary
 
