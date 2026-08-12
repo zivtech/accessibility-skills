@@ -1,11 +1,24 @@
 #!/usr/bin/env python3
-"""Report drift between .claude/skills/ and .agents/skills/ mirror surfaces.
+"""Report drift between .claude/skills/ and .agents/skills/ mirror surfaces,
+and between skills and their embedded agent-def protocol copies.
 
 Checks per skill directory:
 1. Heading set diff (## headings present in one surface but not the other)
 2. .Codex/ path hits in the .agents/ file (broken paths)
 3. Diff stat (count of differing lines)
 4. References files: byte-for-byte match
+
+Checks per agent def (skills-vs-agent-def protocol drift):
+- Embedded protocol copies (.claude/agents/*.md, .codex/agents/*.toml for
+  a11y-planner and a11y-critic): every protocol section marker in the
+  canonical SKILL.md — "Phase N — Title:" headings and ALL-CAPS block labels
+  (HARD GATES:, AUDIT-SCOPE MODE (WCAG-EM):, FEDERAL PROFILE (...)) — must
+  appear in the def. Defs are intentionally condensed, so a full-text mirror
+  check would be wrong; a def missing a whole section runs an old protocol
+  (the issue #17 failure class: the planner def predated the Phase 2 FEDERAL
+  PROFILE and could not execute declared-508 audit planning).
+- Thin-wrapper defs (perspective-audit, a11y-role-auditor) load SKILL.md at
+  runtime instead of embedding it: verify the reference path is present.
 
 Always exits 0 in report-only mode (default).
 Use --strict to exit 1 on any .Codex/ hit or heading-set difference.
@@ -26,6 +39,33 @@ CLAUDE_SKILLS = os.path.join(REPO, ".claude", "skills")
 AGENTS_SKILLS = os.path.join(REPO, ".agents", "skills")
 
 SKILL_NAMES = ["a11y-critic", "a11y-planner", "a11y-test", "perspective-audit", "bug-reporting"]
+
+# Agent defs that EMBED a condensed copy of the skill protocol (drift-prone:
+# a new SKILL.md section does not propagate on its own). Not covered:
+# a11y-scout (no skill counterpart) and .agents/skills/a11y-role-audit
+# (an intentionally condensed Codex mirror, declared in its own frontmatter).
+EMBEDDED_AGENT_DEFS = {
+    "a11y-planner": [
+        os.path.join(".claude", "agents", "a11y-planner.md"),
+        os.path.join(".codex", "agents", "a11y-planner.toml"),
+    ],
+    "a11y-critic": [
+        os.path.join(".claude", "agents", "a11y-critic.md"),
+        os.path.join(".codex", "agents", "a11y-critic.toml"),
+    ],
+}
+
+# Agent defs that load the canonical SKILL.md at runtime (drift-free by
+# design) — checked only for the presence of the skill reference path.
+WRAPPER_AGENT_DEFS = {
+    "perspective-audit": os.path.join(".claude", "agents", "perspective-audit.md"),
+    "a11y-role-audit": os.path.join(".claude", "agents", "a11y-role-auditor.md"),
+}
+
+PHASE_MARKER_RE = re.compile(r"^\s*(Phase \d+ — [^:]+):\s*$")
+BLOCK_MARKER_RE = re.compile(r"^\s*([A-Z][A-Z 0-9()-]{4,}(?: \([^)]+\))?)(?: — [^:]*)?:\s*$")
+# Generic emphasis labels, and sections a condensed def legitimately drops.
+BLOCK_MARKER_DENYLIST = {"IMPORTANT", "WARNING", "CAUTION", "TIP", "TIPS", "EXAMPLE", "EXAMPLES"}
 
 
 def extract_headings(text):
@@ -149,6 +189,86 @@ def check_skill(skill_name, strict_mode):
     return has_drift
 
 
+def extract_protocol_markers(text):
+    """Protocol section markers from a SKILL.md: phase headings + CAPS block labels."""
+    markers = []
+    for line in text.splitlines():
+        phase = PHASE_MARKER_RE.match(line)
+        if phase:
+            markers.append(phase.group(1).strip())
+            continue
+        block = BLOCK_MARKER_RE.match(line)
+        if block:
+            label = block.group(1).strip()
+            if label not in BLOCK_MARKER_DENYLIST:
+                markers.append(label)
+    seen = set()
+    deduped = []
+    for marker in markers:
+        if marker not in seen:
+            seen.add(marker)
+            deduped.append(marker)
+    return deduped
+
+
+def normalize_ws(text):
+    """Collapse all whitespace runs so markers match across line-wrap differences."""
+    return " ".join(text.split())
+
+
+def check_agent_defs():
+    """Check embedded agent-def protocol copies and thin wrappers. Returns has_drift."""
+    has_drift = False
+
+    for skill_name, def_paths in EMBEDDED_AGENT_DEFS.items():
+        skill_file = os.path.join(CLAUDE_SKILLS, skill_name, "SKILL.md")
+        print(f"\n=== agent defs: {skill_name} ===")
+
+        if not os.path.isfile(skill_file):
+            print(f"  MISSING: {skill_file}")
+            has_drift = True
+            continue
+        with open(skill_file) as f:
+            markers = extract_protocol_markers(f.read())
+        print(f"  Protocol markers in SKILL.md: {len(markers)}")
+
+        for rel_path in def_paths:
+            def_file = os.path.join(REPO, rel_path)
+            if not os.path.isfile(def_file):
+                print(f"  MISSING: {rel_path}")
+                has_drift = True
+                continue
+            with open(def_file) as f:
+                def_norm = normalize_ws(f.read())
+            missing = [m for m in markers if normalize_ws(m) not in def_norm]
+            if missing:
+                has_drift = True
+                print(f"  {rel_path}: MISSING {len(missing)} protocol section(s):")
+                for marker in missing:
+                    print(f"    - {marker}")
+            else:
+                print(f"  {rel_path}: all {len(markers)} protocol sections present")
+
+    for skill_name, rel_path in WRAPPER_AGENT_DEFS.items():
+        def_file = os.path.join(REPO, rel_path)
+        print(f"\n=== agent defs: {skill_name} (thin wrapper) ===")
+
+        if not os.path.isfile(def_file):
+            print(f"  MISSING: {rel_path}")
+            has_drift = True
+            continue
+        expected_ref = f".claude/skills/{skill_name}/SKILL.md"
+        with open(def_file) as f:
+            def_text = f.read()
+        if expected_ref in def_text:
+            print(f"  {rel_path}: references {expected_ref}")
+        else:
+            has_drift = True
+            print(f"  {rel_path}: does NOT reference {expected_ref} — wrapper must load the canonical protocol")
+
+    return has_drift
+
+
 def main():
     strict_mode = "--strict" in sys.argv
 
@@ -162,6 +282,9 @@ def main():
         drift = check_skill(skill_name, strict_mode)
         if drift:
             any_drift = True
+
+    if check_agent_defs():
+        any_drift = True
 
     print()
     if any_drift:

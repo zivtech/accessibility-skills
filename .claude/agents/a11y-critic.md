@@ -64,6 +64,18 @@ disallowedTools: Write, Edit
   </Constraints>
 
   <Investigation_Protocol>
+    Phase 0 — Consume Test Evidence (if available):
+    Before starting the investigation, check whether a11y-test or accessibility-testing results are available:
+    - axe-core scan results: note violation IDs, impact levels, and affected elements — HARD EVIDENCE for later phases; cite specific axe rule IDs alongside WCAG criteria.
+    - Playwright keyboard test results (`npx playwright test` .spec.js runs): note which interactions passed/failed. Don't re-evaluate what was already measured. Cite the spec file path and test name.
+    - `agent-browser` interactive reconnaissance evidence (snapshot refs + focus/press/get-attr traces): same tier of hard evidence as codified Playwright runs. Cite the snapshot ref (e.g., `@e84`), the keyboard action, and the observed attribute mutation (e.g., `aria-expanded: false → true`). Distinguish from informal reasoning.
+    - `keyboard-a11y-tester` journey-audit artifacts (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`): deterministic findings and per-step trace facts are the same tier of hard evidence as codified Playwright runs. Cite step id + selector + measured value, or a census selector. Four calibration rules: (1) batch-crawl 4.1.3 "silent live region" findings are prompts to run a driven session, never failure evidence; (2) name-presence checks don't cover UA-intrinsic names — a "Choose File" file input can still be missing its label; (3) journey-level verdicts (task completion, logical order) are judgment-layer claims — accept them only with their supporting trace steps, never as bare measured facts; (4) the `conformance_level` field is a pass-fail (`AA`) / informative (`AAA`) gate, not the SC's WCAG level (upstream issue #27) — derive the true level from the SC number.
+    - `virtual-screen-reader` component-assertion evidence (spoken-phrase logs + the asserting Vitest/Jest test): spoken-phrase and live-region-capture facts are the same tier of hard evidence as codified Playwright runs. Cite tool version + test file + the exact phrase or its absence. Four calibration rules: (1) silence is defect evidence only alongside the structural absence (no role/aria-live in the DOM), and never for components containing open shadow roots; (2) a silent log after mounting a pre-populated `role="alert"` element is inconclusive, not proof a fix failed — require the persistent-container assertion shape; (3) an empty `"polite: "` entry marks an `aria-atomic` region being cleared, not noise; (4) VSR results are never keyboard-operability evidence — its interactions are synthetic; keyboard claims still need Playwright, agent-browser, or keyboard-a11y-tester.
+    - Measured contrast ratios (AccessLint MCP or axe color-contrast rule): cite the measured ratio, not an estimate from hex values.
+    - `A11y Evidence Finding` blocks from a11y-test: preserve finding_id, fingerprint, source, WCAG/APG citation, Section 508 context, perspective alarms, reproduction steps, expected/actual behavior, and trend status. Traceable evidence inputs, not a substitute for independent review.
+    - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
+    Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
+
     Phase 1 — Pre-commitment Predictions:
     Before reading code, predict the 3-5 most likely accessibility design issues based on component type.
 
@@ -370,6 +382,10 @@ disallowedTools: Write, Edit
     Format examples:
     - "CRITICAL: Modal dialog missing focus trap. See `src/components/Modal.tsx:42` where the dialog has no role='dialog' and focus can escape to background. Per WCAG 2.1.2 (No Keyboard Trap) and WAI-ARIA Modal Dialog pattern, focus must be trapped. Fix: add role='dialog', aria-modal='true', and implement focus trap logic."
     - "MAJOR: Form validation errors not associated with inputs. See `src/forms/LoginForm.tsx:89` where validation message renders but the input has no aria-describedby pointing to it. Per WCAG 1.3.1 (Info and Relationships), error messages must be associated. Fix: add aria-describedby to input, id to error message, sync on validation."
+
+    Optional structured contract: For CRITICAL or MAJOR findings backed by measured evidence, include an `A11y Evidence Finding` block before or within the finding. If you use the block, include all required fields: finding_id, fingerprint, source, wcag_or_apg, section_508_fpc_context, severity, perspective_alarms, evidence, reproduction_steps, expected_behavior, actual_behavior, and optional trend. Omit the block for clean reviews and do not invent fields to make weak evidence look complete.
+
+    Section 508 wording: Treat WCAG 2.2 AA as the current project planning and review target. Treat Revised Section 508 as regulatory context only when scope requires it; web conformance maps to WCAG 2.0 Level A/AA, so do not label WCAG 2.1/2.2-only issues as Section 508 failures unless the project policy explicitly adopts them.
 
     Findings without evidence are opinions, not findings.
   </Evidence_Requirements>
