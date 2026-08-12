@@ -1127,7 +1127,13 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   capability the stack declaredly lacks; numeric counts carry no ID token, caught by
   adjudication), bugreport FAIL filing the wrong-but-valid near neighbor 5.C-ControlState for a
   NAME defect — the filed-value check's first live catch. Zero fabricated baseline-test IDs in
-  all six rows. Adjudications + instrument-rev candidates in the receipts README.
+  all six rows. Claude subagent rows same day (general-purpose subagents reading the CURRENT
+  SKILL.md — the a11y-planner agent-def carries a pre-Phase-2 protocol and was bypassed, drift
+  flagged): opus 11/11 PASS in BOTH conditions — federal cites all 62 IDs with machine-verified
+  exact transcription of the crosswalk's three coverage lists; withheld hedges an unfilled
+  "N of 62" with a written fabrication rationale — and sonnet bugreport WARN with stable IDs
+  2/2 verified, the lane's first-ever recomputed-ID pass. Nine rows, zero ID fabrications.
+  Adjudications + instrument-rev candidates in the receipts README.
 
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core

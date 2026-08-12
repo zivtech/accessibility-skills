@@ -107,6 +107,9 @@ in the intact 327 GB native store all along.
 | qwen3:32b planner (control) | planner-federal | **10/11 PASS**, 0 markers | 602s |
 | qwen3:32b planner (control) | planner (no crosswalk) | 7/11 → **NEEDS REVIEW** (gate) | 364s |
 | qwen3:32b bugreport (control) | declared-508 | **FAIL** (wrong-but-valid neighbor FILED) | 136s |
+| claude opus (subagent) planner | planner-federal (crosswalk read in-repo) | **11/11 PASS** — 62 baseline IDs cited, 62 valid | 544s |
+| claude opus (subagent) planner | planner (crosswalk read forbidden) | **11/11 PASS** — 1 valid memory citation (24.A), honest unfilled "N of 62" | 389s |
+| claude sonnet (subagent) bugreport | declared-508 | **WARN** — all musts, **stable IDs 2/2 verified** (first row ever); nice-tier title gap only | 409s |
 
 **Adjudication (every row was read; the gate is a detector):**
 
@@ -163,13 +166,53 @@ in the intact 327 GB native store all along.
   comparison, this row would have scored the citation as merely valid. Same
   fabrication class as 35b on the environment table ("VoiceOver / NVDA").
 
-**Cross-row facts:** zero fabricated baseline-test IDs in all six rows (the
-ID-grammar fabrication class did not fire once — the live fabrication risk
-materialized as invented COUNTS, not invented IDs); the federal condition
-outscored the no-crosswalk condition on both models (10 vs 9; 10 vs 7); and
-both models' bugreport value-fidelity failures reproduce the standing
-never-route-generation-without-a-value-check caveat, now with the baseline
-field itself instrumented.
+**Cross-row facts (local):** zero fabricated baseline-test IDs in all six
+rows (the ID-grammar fabrication class did not fire once — the live
+fabrication risk materialized as invented COUNTS, not invented IDs); the
+federal condition outscored the no-crosswalk condition on both models
+(10 vs 9; 10 vs 7); and both models' bugreport value-fidelity failures
+reproduce the standing never-route-generation-without-a-value-check caveat,
+now with the baseline field itself instrumented.
+
+**Claude subagent lane (same day, method disclosed in each row's
+`_benchmark`):** run as `general-purpose` subagents reading the CURRENT
+SKILL.md as their protocol — the established `a11y-planner` agent-def was
+deliberately bypassed because it carries a condensed pre-Phase-2 protocol
+with no FEDERAL PROFILE (drift flagged for repair as its own task; the
+condensed defs need a Phase 2 sync and a marker-based drift check). Fixtures
+inlined (they live under `evals/`, which the agents were barred from
+reading); the federal condition read the crosswalk in-repo (the
+subagent-native equivalent of crosswalk-in-prompt); the withheld condition
+was explicitly forbidden it. Adjudication highlights:
+
+- **planner-federal (opus, 11/11 PASS):** cited all 62 baseline IDs — and
+  the three coverage lists (22 covered / 26 partial / 13 not-covered) are
+  machine-verified **exact transcriptions** of the crosswalk's group
+  membership, with per-test grades also woven inline through the plan body.
+  Polarity clean everywhere the gate is blind: certification ("No. Plainly
+  no"), ACR boundary, both-directions vendor refutation, 503.4.x as a
+  hypothesis-to-confirm rather than a pre-written finding.
+- **planner no-crosswalk (opus, 11/11 PASS):** the withheld condition's
+  designed-correct behavior, executed: full federal-profile knowledge, the
+  coverage answer in the required phrasing with **N deliberately left
+  unfilled** and a written rationale naming exact-ID fabrication as the
+  reason, plus pre-issue transcription gates. Its single ID citation
+  (`24.A-Parsing`, from memory) is valid. Gate saturation here is honest —
+  the item asks for the phrasing discipline, and an honest hedge satisfies
+  it by design.
+- **bugreport (sonnet, WARN):** every must passes; **stable IDs 2/2
+  recomputed correctly — the first row in the lane's history to verify
+  them** (the July local funnel and both same-day local rows scored 0);
+  filed `5.A-ControlName`; refused to fabricate the full DOM path with an
+  explanation (honest-absence on a row the input genuinely cannot support);
+  derived browser/OS from the userAgent per the fixture's judgment-call
+  note. The only gap is nice-tier (title lacks the `(WCAG x.y.z)` suffix).
+
+Cross-lane picture after nine rows: the instrument separates models and
+conditions exactly along its designed axes — value fidelity (stable IDs:
+claude 2/2, locals 0/2), selection fidelity (5.A: claude+35b correct, 32b
+wrong-but-valid), and count honesty (unfilled-N hedge: claude+35b; invented
+counts: 32b). Zero ID-grammar fabrications in nine of nine rows.
 
 **Future instrument-rev candidates (recorded, not applied mid-measurement,
 per the step-11 discipline):** the `adopts-22-as-conformance-basis`
