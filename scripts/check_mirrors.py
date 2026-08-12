@@ -9,16 +9,16 @@ Checks per skill directory:
 4. References files: byte-for-byte match
 
 Checks per agent def (skills-vs-agent-def protocol drift):
-5. Embedded protocol copies (.claude/agents/*.md, .codex/agents/*.toml for
-   a11y-planner and a11y-critic): every protocol section marker in the
-   canonical SKILL.md — "Phase N — Title:" headings and ALL-CAPS block labels
-   (HARD GATES:, AUDIT-SCOPE MODE (WCAG-EM):, FEDERAL PROFILE (...)) — must
-   appear in the def. Defs are intentionally condensed, so a full-text mirror
-   check would be wrong; a def missing a whole section runs an old protocol
-   (the issue #17 failure class: the planner def predated the Phase 2 FEDERAL
-   PROFILE and could not execute declared-508 audit planning).
-6. Thin-wrapper defs (perspective-audit, a11y-role-auditor) load SKILL.md at
-   runtime instead of embedding it: verify the reference path is present.
+- Embedded protocol copies (.claude/agents/*.md, .codex/agents/*.toml for
+  a11y-planner and a11y-critic): every protocol section marker in the
+  canonical SKILL.md — "Phase N — Title:" headings and ALL-CAPS block labels
+  (HARD GATES:, AUDIT-SCOPE MODE (WCAG-EM):, FEDERAL PROFILE (...)) — must
+  appear in the def. Defs are intentionally condensed, so a full-text mirror
+  check would be wrong; a def missing a whole section runs an old protocol
+  (the issue #17 failure class: the planner def predated the Phase 2 FEDERAL
+  PROFILE and could not execute declared-508 audit planning).
+- Thin-wrapper defs (perspective-audit, a11y-role-auditor) load SKILL.md at
+  runtime instead of embedding it: verify the reference path is present.
 
 Always exits 0 in report-only mode (default).
 Use --strict to exit 1 on any .Codex/ hit or heading-set difference.
