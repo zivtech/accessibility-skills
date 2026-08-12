@@ -301,3 +301,7 @@ This repo includes eval suites for `a11y-planner`, `a11y-critic`, and `perspecti
 ## License
 
 GPL-3.0-or-later. See [LICENSE](LICENSE).
+
+## Repository History Note
+
+**2026-08-12:** Repository history was rewritten; all commit hashes changed. Existing clones and forks should re-clone, or fetch and hard-reset their local branches to the new `origin/main`.
