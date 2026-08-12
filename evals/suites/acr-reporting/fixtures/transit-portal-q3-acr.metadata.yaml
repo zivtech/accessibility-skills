@@ -1,0 +1,247 @@
+fixture_id: transit-portal-q3-acr
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields) + finished contract-shaped
+  evaluation report + nine evidence-finding blocks + catalog frame
+difficulty: COMPLEX
+description: >-
+  Lane A serialization chain fixture (integration-plan eval item 1) — the
+  finished rcm-2026q3 evaluation (the same engagement the evaluation-report
+  suite grades one step upstream) serialized into a draft OpenACR document on
+  the default WCAG 2.2 catalog. Graded properties are exactly the plan's
+  list — schema-valid, mapping-table-correct per SC, canonical note forms,
+  notes cite real finding_ids, no fabricated dates/versions/contacts, author
+  block sourced from the bundle — plus the component policy (native and PDF
+  evidence stays out of web criteria entries) and the dual "removed
+  criterion" edge (4.1.1 rides the catalog as not-applicable).
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+# The scorer parses the YAML fence structurally, validates it with the
+# pinned @openacr/openacr CLI, then applies the checks below. must-tier
+# failures or any fabrication → FAIL; should-tier misses → WARN.
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+# Structural fields compared exactly against the engagement record
+# (value-provenance class: absence is a must-miss; a different well-formed
+# value is a fabrication).
+exact_fields:
+  title: "RiverCity Metro Rider Portal Accessibility Conformance Report"
+  product.name: "RiverCity Metro Rider Portal"
+  product.version: "2026.3"
+  author.email: "dana.okafor@meridian-a11y.example"
+  report_date: "2026-07-28"
+
+# The record explicitly withholds these ("leave unset") — presence is
+# invention. last_modified_date is handled by the scorer's built-in rule
+# (present and != report_date → fabrication).
+forbidden_root_fields:
+  - license
+
+# Should-tier: the record states OpenACR document version 1.
+doc_version_expected: 1
+
+# Web-component adherence term per A/AA SC. Every catalog A/AA SC must be
+# present (or in the INCOMPLETE gap list — not this fixture); a term
+# mismatch is a must-miss (the mapping table is deterministic).
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": partially-supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": partially-supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  "3.3.1": partially-supports
+  "3.3.2": supports
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  "4.1.2": partially-supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": does-not-support
+  "1.4.3": partially-supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  "1.4.11": supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.4.7": supports
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.4": supports
+  "3.3.8": supports
+  # 4.1.3: failed at the S07 confirmation, passed at the S04 alert list →
+  # mixed across samples → partially-supports by the mapping table.
+  "4.1.3": partially-supports
+
+# AAA policy for this fixture: no AAA evidence exists — every AAA entry, if
+# present, must be not-evaluated; any other AAA term is an unevidenced
+# invention (must-miss). AAA chapter presence itself is should-tier.
+expected_terms_aaa: {}
+
+# Canonical supports-note stem numbers (from the report's sample set):
+# "Sample-scoped: passes across 11 structured + 1 random samples (WCAG-EM)."
+supports_note_counts:
+  structured: 11
+  random: 1
+
+# does-not-support / partially-supports notes must cite ≥1 of these ids
+# (per SC) — recomputed against the bundle, per score_bugreport discipline.
+note_citations:
+  "1.3.5": [a11y_form_autocomplete_missing]
+  "1.4.3": [a11y_route_badge_contrast]
+  "2.1.1": [a11y_fare_zone_slider_keyboard]
+  "2.4.1": [a11y_legacy_skiplink_anchor]
+  "3.3.1": [a11y_payment_error_association]
+  "4.1.2": [a11y_swap_button_name]
+  "4.1.3": [a11y_purchase_confirm_silent]
+
+# Failing-sample enumeration required in the same notes (any-of per SC).
+note_samples:
+  "1.3.5": ["S07"]
+  "1.4.3": ["S03"]
+  "2.1.1": ["S07"]
+  "2.4.1": ["R01", "S11"]
+  "3.3.1": ["S07"]
+  "4.1.2": ["S02"]
+  "4.1.3": ["S07"]
+
+# Non-web evidence must not ride web criteria entries (component policy):
+# these ids may appear in document notes / disabled-chapter notes / the
+# handoff, but never inside success-criteria adherence notes.
+forbidden_in_criteria_ids:
+  - a11y_ticket_activate_unlabeled
+  - a11y_timetable_pdf_untagged
+
+# Fabrication frame: any a11y_* token not in this list is an invented
+# finding (hard FAIL). The un-id'd scratch note is the bait.
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_fare_zone_slider_keyboard
+  - a11y_swap_button_name
+  - a11y_route_badge_contrast
+  - a11y_payment_error_association
+  - a11y_legacy_skiplink_anchor
+  - a11y_purchase_confirm_silent
+  - a11y_form_autocomplete_missing
+  - a11y_ticket_activate_unlabeled
+  - a11y_timetable_pdf_untagged
+
+# Complete evidence — the INCOMPLETE marker must NOT appear in the document
+# notes (spurious-gap false positive; the 3.1.2 follow-up closed the one
+# historically-untested criterion).
+incomplete:
+  expected: false
+
+# 508 chapters: disabled: true + note beginning the canonical stem is
+# must-tier; the per-chapter content groups are should-tier.
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["manual", "TalkBack", "VoiceOver", "native", "PDF"]
+  hardware:
+    should_tokens:
+      - ["validator", "not in scope", "no hardware", "separate procurement", "hardware"]
+  software:
+    should_tokens:
+      - ["RideRC", "native"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["support", "documentation", "not evaluated"]
+
+# Document notes must state the web-only method scope (component policy).
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+# evaluation_methods_used must state WCAG-EM + the sample sizes.
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["11 structured"]
+  - ["1 random"]
+
+# legal_disclaimer: draft language is must; non-binding phrasing is should.
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+# Environment tokens present in NO input stream (training-prior
+# regurgitation — same trap family as the evaluation-report lane).
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+# Handoff (the non-YAML remainder of the response) — should-tier groups.
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["a11y_ticket_activate_unlabeled"]
+  - ["a11y_timetable_pdf_untagged"]
+
+notes: |
+  Integration-plan eval item 1 (serialization), built 2026-08-12. The lane's
+  system prompt in the skill condition is .claude/skills/acr-reporting/
+  SKILL.md — the skill IS the instrument, mirroring the evaluation-report
+  lane where the contract is the system prompt. The acr-baseline condition
+  runs the identical fixture with no system prompt to measure what the
+  skill carries (mapping table, canonical note forms, INCOMPLETE protocol,
+  chapter policy, draft-only stance).
+
+  Trap inventory:
+  1. Component policy: the native-app and PDF findings are labeled non-web
+     in the input; citing them inside web criteria entries is mis-scoped
+     evidence (structural must-fail). 1.3.1 web = passed even though the
+     PDF finding cites 1.3.1 — the classic absorption temptation.
+  2. Mapping: 1.3.5 failed wherever applicable → does-not-support (MINOR/
+     MAJOR severities never soften terms); six mixed failures →
+     partially-supports with failing samples enumerated; 2.1.1's CRITICAL
+     severity must not escalate a one-sample failure to does-not-support.
+  3. 4.1.1 rides the catalog as not-applicable with the removal note — a
+     model working from WCAG 2.2 memory instead of the catalog frame drops
+     the row (completeness must-miss); one working from training-prior VPAT
+     habits marks it supports (term must-miss).
+  4. 3.1.2 was untested in the upstream chain fixture and closed by the
+     follow-up session here — pattern-matching the old story into an
+     INCOMPLETE marker is the false-positive trap (incomplete.expected:
+     false).
+  5. Value provenance: title/product/version/email/report_date exact from
+     the record; license withheld ("leave unset"); report_date is the
+     completion date, never the drafting day; JAWS/Dragon appear in no
+     stream.
+  6. The scratch note (S04 aria-live, no id) is the invent-a-finding bait,
+     carried over from the upstream fixture.
+
+  Known instrument limits: note-form checks are stem-anchored regexes —
+  models that lead with context before the canonical stem miss should/must
+  tiers and need adjudication by reading (wcag-em-phase3 practice);
+  token groups undercount paraphrase. The scorer is detector output — the
+  repo-wide routing rule applies.

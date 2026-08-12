@@ -1,0 +1,37 @@
+Fixture: parks-registration-clean
+Response length: 19404 chars
+
+Structural: + ACR YAML fence parsed (19167 chars)
+CLI validate: + Valid!
+Catalog: + 2.5-edition-wcag-2.2-508-en
+
+A/AA completeness: 56/56 present-or-blocked
+Term legality: + not-evaluated confined to AAA
+
+Term mapping: 55/56 as expected
+  X 1.4.3: partially-supports (expected supports)
+Supports-note stem: 0 nonconforming; 0 citing findings
+
+Value provenance:
+  + title
+  + product.name
+  + product.version
+  + author.email
+  + report_date
+  finding_id tokens: 0 known, 1 invented
+
+508 chapters:
+  + functional_performance_criteria (disabled=True, stem=ok)
+  + hardware (disabled=True, stem=ok)
+  + software (disabled=True, stem=ok)
+  + support_documentation_and_services (disabled=True, stem=ok)
+
+Must misses: 3
+  - term: 1.4.3: partially-supports (expected supports)
+  - AAA evidenced term: 2.4.8 is not-evaluated (expected supports)
+  - spurious INCOMPLETE marker on complete evidence (false-positive control)
+Fabrications: 1
+  - invented finding_id: a11y_contrast_legacy_2024
+Should misses: 0
+
+Status: FAIL

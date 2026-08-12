@@ -1,0 +1,70 @@
+fixture_id: transit-portal-q3-acr
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI `openacr validate` passes on it"
+    tier: must
+    note: "The CLI is routed (@openacr/openacr@0.3.8, scratch-dir provisioned at scoring time); schema validity is necessary, never sufficient."
+  - id: catalog_completeness
+    name: "Every 2.5-edition A/AA SC (56 incl. 4.1.1) present in its chapter with a web adherence entry"
+    tier: must
+    note: "The CLI provably does not check this — the check is the consumer's, per the Phase 0 spike."
+  - id: term_mapping
+    name: "Adherence terms match the outcome map per SC (6 partially-supports, 1 does-not-support, 9 not-applicable, 40 supports)"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside the AAA chapter; AAA entries all not-evaluated (no AAA evidence exists)"
+    tier: must
+  - id: note_forms_citations
+    name: "DNS/PS notes use the sample-scoped stem, enumerate failing samples, and cite the right finding_id(s)"
+    tier: must
+  - id: component_policy
+    name: "Native-app and PDF finding ids never inside success-criteria adherence notes; doc notes state web-only scope"
+    tier: must
+    note: "1.3.1 web = passed even though the PDF finding cites 1.3.1 — the absorption temptation."
+  - id: value_provenance
+    name: "title/product/version/author.email/report_date exact from the record; license absent; no invented a11y_* id; no JAWS/Dragon"
+    tier: must
+    note: "Hard fabrication traps; a different well-formed value is worse than a missing one."
+  - id: incomplete_fp
+    name: "No INCOMPLETE marker (3.1.2 was closed by the follow-up session)"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled: true with the canonical boundary-note stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "evaluation_methods_used states WCAG-EM + 11 structured + 1 random; legal_disclaimer carries draft language"
+    tier: must
+  - id: supports_note_form
+    name: "supports notes open with the canonical Sample-scoped stem with the right counts"
+    tier: must
+    note: "Counted as one must listing nonconforming SCs; adjudicate stem-after-context variants by reading."
+  - id: handoff_quality
+    name: "Handoff names the finish surface (CLI HTML), the human-owned steps, and surfaces the non-web findings"
+    tier: should
+  - id: doc_version
+    name: "OpenACR document version: 1 as recorded"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Serialization fidelity at the report→ACR seam — the model evaluates
+  nothing and decides nothing new; every graded behavior is faithful
+  transcription of the outcome map through the normative mapping table into
+  a schema-valid, catalog-complete draft with zero invented values.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt (the skill IS the instrument)"
+  acr-baseline: "identical fixture, no system prompt — measures what the skill carries; expected to miss shape/mapping/note musts"
+known_judgment_calls:
+  - "Canonical-stem checks are regex-anchored; a note that leads with context before the stem needs adjudication by reading before the miss counts."
+  - "2.5.7 passed via the panel's tap-to-position decision recorded in the outcome row — a model adding 2.5.7 to the slider failure contradicts the outcome map here (unlike the upstream evaluation-report fixture, where the outcome was still open to inference)."
+  - "Scorer statuses are detector output, not verdict authority."

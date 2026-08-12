@@ -1,0 +1,60 @@
+Fixture: permit-portal-acreditor
+Response length: 17522 chars
+
+Structural: + ACR YAML fence parsed (17285 chars)
+CLI validate: + Valid!
+Catalog: X 2.5-edition-wcag-2.2-508-en
+
+A/AA completeness: 50/50 present-or-blocked
+Term legality: + not-evaluated confined to AAA
+
+Term mapping: 48/50 as expected
+  X 1.1.1: supports (expected does-not-support)
+  X 2.2.1: does-not-support (expected supports)
+Supports-note stem: 0 nonconforming; 0 citing findings
+
+Value provenance:
+  + title
+  + product.name
+  + product.version
+  + author.email
+  + report_date
+  + license
+  finding_id tokens: 2 known, 0 invented
+
+Annex:
+  X notes marker absent
+  X 2.4.11 accounted (pass)
+  X 2.5.7 accounted (pass)
+  X 2.5.8 accounted (fail)
+  X 3.2.6 accounted (pass)
+  X 3.3.7 accounted (fail)
+  X 3.3.8 accounted (pass)
+
+508 chapters:
+  + functional_performance_criteria (disabled=True, stem=ok)
+  + hardware (disabled=True, stem=ok)
+  + software (disabled=True, stem=ok)
+  + support_documentation_and_services (disabled=True, stem=ok)
+
+Must misses: 16
+  - catalog is '2.5-edition-wcag-2.2-508-en', engagement requires '2.4-edition-wcag-2.1-508-en' (no silent catalog change)
+  - term: 1.1.1: supports (expected does-not-support)
+  - term: 2.2.1: does-not-support (expected supports)
+  - 1.1.1 note lacks the 'Sample-scoped: fails in' stem
+  - 1.1.1 note cites none of ['a11y_decorative_divider_alt']
+  - 1.1.1 note names no failing sample of ['all', 'S01–S08', 'S01-S08', 'every sample', '9 samples']
+  - 2.2.1 adherence note cites forbidden id(s) ['a11y_session_timeout_no_warning'] (resolved/out-of-component evidence)
+  - document notes lack the 'Out-of-catalog annex' marker
+  - annex SC 2.4.11 not accounted with its pass outcome
+  - annex SC 2.5.7 not accounted with its pass outcome
+  - annex SC 2.5.8 not accounted with its fail outcome
+  - annex SC 2.5.8 lacks citation a11y_toolbar_target_size
+  - annex SC 3.2.6 not accounted with its pass outcome
+  - annex SC 3.3.7 not accounted with its fail outcome
+  - annex SC 3.3.7 lacks citation a11y_reentry_address
+  - annex SC 3.3.8 not accounted with its pass outcome
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

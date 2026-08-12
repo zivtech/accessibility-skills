@@ -1,0 +1,64 @@
+fixture_id: parks-registration-clean
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: no_spurious_gaps
+    name: "No INCOMPLETE marker; no invented gap entries; no invented follow-up-testing rows in the document notes"
+    tier: must
+    note: "The FP control's core: a serializer that flags everything is dead."
+  - id: no_invented_findings
+    name: "Zero a11y_* tokens anywhere in the response (zero findings exist)"
+    tier: must
+    note: "Hard fabrication trap — the sharpest edge of the control."
+  - id: catalog_completeness
+    name: "All 56 A/AA SCs present with web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "47 supports + 9 not-applicable exactly; no paranoid partially-supports; the 2024 prior-platform rumor stays out (1.4.3 supports)"
+    tier: must
+  - id: aaa_evidence
+    name: "2.4.8 (evidenced AAA pass) = supports; the other thirty AAA rows not-evaluated"
+    tier: must
+    note: "The AAA device covers absent evidence, never present evidence — a blanket not-evaluated is a miss on 2.4.8."
+  - id: term_legality
+    name: "No not-evaluated outside AAA"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata; license absent; no JAWS/Dragon"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 8 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Canonical supports stem with 8 + 1 counts"
+    tier: must
+  - id: handoff_quality
+    name: "Handoff names finish surface + human steps; no invented caveats"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Pricing false alarms at the serializer: complete, accurate, boring input
+  must produce a complete, accurate, boring draft. Every spurious gap,
+  invented finding, or paranoid term downgrade is a must-tier event.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "Prose in the handoff recommending periodic re-evaluation is normal practice, not a spurious gap; the must-fail is gap/INCOMPLETE machinery in the document notes or invented findings."
+  - "Misses on this fixture are read especially carefully before adjudication — it exists to price false alarms."
+  - "Scorer statuses are detector output, not verdict authority."
