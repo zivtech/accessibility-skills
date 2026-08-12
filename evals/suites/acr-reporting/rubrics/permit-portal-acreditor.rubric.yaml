@@ -1,0 +1,72 @@
+fixture_id: permit-portal-acreditor
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: orthogonality_resolved
+    name: "2.2.1 = supports despite the CRITICAL trend:resolved finding; the resolved id never cited in its adherence note"
+    tier: must
+    note: "The trap's first arm: terms come from outcomes, and supports notes carry no finding_id."
+  - id: orthogonality_minor
+    name: "1.1.1 = does-not-support despite MINOR severity; all-samples scope stated; id cited"
+    tier: must
+    note: "The trap's second arm: the supports-with-remarks fudge is the classic VPAT move."
+  - id: catalog_pin
+    name: "catalog stays 2.4-edition-wcag-2.1-508-en (the acreditor requirement) — no silent upgrade to the 2.5/2.2 catalog"
+    tier: must
+  - id: annex_completeness
+    name: "Out-of-catalog annex marker in doc notes; all six measured 2.2-only SCs accounted for; the two failures carry outcome + finding_id; none of the six appear as YAML criteria"
+    tier: must
+    note: "Measured outcomes are never silently dropped — the dual-catalog policy's core promise."
+  - id: catalog_completeness
+    name: "Every 2.1-catalog A/AA SC (50) present with a web adherence entry"
+    tier: must
+  - id: term_mapping
+    name: "Terms match the outcome map (1 DNS, 1 PS, 8 NA, 40 supports)"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata incl. the PROVIDED license (CC0-1.0) and document version 2; no invented ids; no JAWS/Dragon"
+    tier: must
+    note: "License provided here, withheld in the transit fixture — provenance measured from both sides."
+  - id: incomplete_fp
+    name: "No INCOMPLETE marker (nothing is untested)"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 8 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Canonical supports stem with 8 + 1 counts"
+    tier: must
+  - id: handoff_surface
+    name: "Handoff names acreditor as the finish surface and the human-owned steps"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Orthogonality under pressure (severity never selects the term, in either
+  direction) plus the dual-catalog policy end to end: a 2.2-measured
+  engagement drafted down-catalog for acreditor without dropping a single
+  measured outcome.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "The annex per-SC accounting is line-scoped token matching — a handoff that groups the six SCs in prose may undercount; read before scoring the miss."
+  - "A model that mentions the resolved 2.2.1 history in the DOCUMENT notes (not the criterion's adherence note) is compliant — only the adherence-note citation is forbidden."
+  - "Scorer statuses are detector output, not verdict authority."
