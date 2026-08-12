@@ -204,7 +204,7 @@ Copy this protocol into the subagent prompt:
     1. What is being built? One sentence describing the component/feature/page
     2. What user need does it address? Why does this exist?
     3. Who needs accessibility? (All users? Specific audiences? Secondary features?)
-    4. What is the compliance target? (WCAG 2.2 AA is the default. WCAG 2.2 AAA? Section 508? ADA?)
+    4. What is the compliance target? (WCAG 2.2 AA is the default. WCAG 2.2 AAA? Section 508? ADA?) — if the engagement declares Revised Section 508 AND the target is an audit, apply the FEDERAL PROFILE inside AUDIT-SCOPE MODE below; component-scope 508 work keeps the evidence contract's 508 boundary rule instead, with no baseline citations
     5. What assistive technologies must be supported? (Screen readers: NVDA, JAWS, VoiceOver. Keyboard-only users. Screen magnifier users. High contrast mode. Voice control. Switch access.)
     6. What is the risk level? (Simple component with no interaction = Low. Form with validation and errors = Medium. Complex modal with focus trap and dynamic state = High. Multi-page flow = High.)
     7. What existing code does this modify/extend? (If redesigning an existing component, understand current structure)
@@ -643,7 +643,7 @@ Copy this protocol into the subagent prompt:
     - Simple component (button, link, text input): 1-2 pages. Just structure, ARIA attributes, keyboard keys, basic tests.
     - Medium feature (form with validation, disclosure widget, dropdown): 3-5 pages. Full structure plan, all ARIA states, focus management, state communication, test strategy.
     - Complex feature (modal dialog with form, tab panel with dynamic content, data table with sorting): 6-10 pages. Detailed structure, complete ARIA plan, detailed focus management, state communication across all modes, comprehensive testing strategy, implementation task breakdown.
-    - Audit-scope plan (site/product evaluation): 5-7 pages. The nine phases plus AUDIT-SCOPE MODE below.
+    - Audit-scope plan (site/product evaluation): 5-7 pages. The nine phases plus AUDIT-SCOPE MODE below (+1 page for the FEDERAL PROFILE when Revised Section 508 is declared).
 
     AUDIT-SCOPE MODE (WCAG-EM):
 
@@ -675,6 +675,27 @@ Copy this protocol into the subagent prompt:
     - Third-party content (CAPTCHAs, embedded video, analytics): document under partial-conformance/VPAT third-party language with best-effort testing — never plan remediation of third-party internals the product owner cannot change
     - Severity stays user-impact-based (CRITICAL/MAJOR/MINOR/ENHANCEMENT) and is ORTHOGONAL to per-SC conformance outcomes: report both, never derive one from the other
     - Coverage honesty: name every sample the web measurement stack (Playwright, axe-core, CDP) cannot measure — native app screens, hardware kiosk steps, documents — and assign the manual/AT method that covers it instead. Never imply automated coverage of non-web samples.
+
+    FEDERAL PROFILE (Revised Section 508) — applies inside AUDIT-SCOPE MODE only:
+
+    Trigger: the engagement declares Revised Section 508 (federal agency scope, federal procurement, or the commissioner names 508). Government-adjacent is not federal: ADA Title II (WCAG 2.1 AA basis) and EN 301 549 are different regimes with different WCAG versions — name the mismatch and stop; this profile covers Revised Section 508 only. Component-scope 508 work does NOT enter this profile: it keeps the evidence contract's boundary rule (map to WCAG 2.0 A/AA, never overstate 2.2-only findings) with no baseline citations.
+
+    Conformance floor declaration (a Phase 1 / EM Step 1 artifact — REQUIRED, and it IS the scope gate):
+    - Floor: WCAG 2.0 Level A/AA as incorporated by Revised Section 508, plus the applicable non-WCAG 508 provisions (verified extract: docs/ict-testing-baseline-reference.md): E205.2/E205.3 scope provisions (which content must conform), E205.4 and its non-web-document exception, 503.4/503.4.1/503.4.2 caption and audio-description user-control placement (the only non-WCAG provisions the web baseline directly tests — baseline family 17.A–C), and Chapter 3 FPC via E204 where technical provisions don't address a function (the existing `section_508_fpc_context` regime).
+    - Under this profile, the EM Step 1 / report-contract `conformance_target` declaration IS this floor — declare it as "Revised Section 508 (WCAG 2.0 Level A/AA + the named provisions)", and build the per-SC outcome map against it. WCAG 2.2 AA remains the remediation-recommendation and additionally-evaluated layer; it is never the declared conformance target of a declared-508 evaluation.
+    - Gate rule: "declared 508 scope" exists iff the audit-scope plan carries this floor declaration. Findings inherit the declaration via `evaluation_context` plus `section_508_fpc_context`; the optional `baseline_test` finding field and the report contract's federal annex are valid only under it. No floor declaration → no ICT Testing Baseline citations anywhere in the engagement's outputs — and a baseline citation outside declared 508 scope is a finding against the output. One exemption: an engagement-independent capability statement quoting the a11y-test crosswalk verbatim ("designed to cover N of 62; gaps: ...") may answer a pre-award/procurement capability question with no floor declaration — the phrasing discipline still binds, and findings, reviews, and reports stay gated.
+
+    Dual posture (keep the two visibly separate in every output):
+    - REPORT conformance against the floor (WCAG 2.0 A/AA + the provisions above). Never label WCAG 2.1/2.2-only criteria as Section 508 failures.
+    - RECOMMEND remediation against WCAG 2.2 AA — the bundle's default target never lowers to the federal floor.
+    - Declare the delta in BOTH directions: (a) target-not-floor — 2.1/2.2-only SCs (4.1.3 Status Messages, 1.4.10 Reflow, 1.4.11 Non-text Contrast, 2.4.11, 2.5.8, ...) are recommendations, never 508 conformance failures; (b) floor-not-target — 4.1.1 Parsing is formally in the 508 basis and removed from WCAG 2.2, and baseline test `24.A-Parsing` ALWAYS PASSES by upstream design (WCAG 2.0 Errata 13): teach why it auto-passes, never plan testing for it, and report real markup consequences (bad nesting, duplicate IDs) under the SCs they actually break (name/role/state etc.). The residual failure modes are a reviewer re-litigating parsing or dropping the re-routing.
+    - Version-skew reading trap: baseline text links WCAG 2.2 Understanding articles as reading aids while mapping to the 2.0/508 basis — never read those links as WCAG 2.2 conformance mappings.
+
+    Baseline-coverage statement (REQUIRED in the plan): source it from the a11y-test crosswalk (`references/ict-baseline-crosswalk.yaml` in the a11y-test skill — hand-verified against the pinned reference; 62 active web tests): which baseline tests the planned execution modes are designed to cover or partially cover, and which are NOT-COVERED and therefore assigned to manual/AT methods in the sampling plan. Phrasing discipline: "designed to cover N of 62; gaps: ..." — never "baseline-aligned" or "baseline-conformant" (alignment recognition is an external review of a test process, and Trusted Tester certification is a DHS credential held by humans; claim neither). Every baseline test ID cited must exist in the web list of docs/ict-baseline-test-id-manifest.yaml — baseline IDs are the exact-ID class models fabricate; hand-verify them.
+
+    Documents/native boundary (REQUIRED sentence): PDFs, Office documents, native software, and hardware in engagement scope are outside the web measurement stack. Documents map to the Electronic Documents baseline — a declared boundary (57 tests), not a capability — and are assigned to manual/AT methods in the EM coverage boundary; never imply stack coverage of them.
+
+    Deliverable boundary: the report contract's optional federal annex aggregates per-baseline-test outcomes as evidence FOR whoever authors the Accessibility Conformance Report — it is not an ACR/VPAT and must never be presented as one.
 
     OUTPUT FORMAT:
 

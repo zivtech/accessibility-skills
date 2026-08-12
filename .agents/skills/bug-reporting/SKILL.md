@@ -324,6 +324,22 @@ UI state:      Modal open / Accordion expanded / Dropdown active
 Login state:   Authenticated (standard user role) / Guest / Admin
 ```
 
+### Baseline Test ID (declared Section 508 audits only)
+
+When — and only when — the report belongs to an audit engagement whose audit-scope plan carries a Revised Section 508 conformance floor declaration (the a11y-planner federal profile), add the ICT Testing Baseline **web** test the issue files under:
+
+```
+Baseline test:  5.C-ControlState
+```
+
+Rules (they mirror the A11y Evidence Finding Contract's `baseline_test` field):
+
+* The ID must exist in the web list of `docs/ict-baseline-test-id-manifest.yaml` — baseline IDs are valid per-baseline (`11.A-PageTitled` is web-only, `11.A-DocumentTitled` documents-only) and are the exact-ID class automated generators fabricate. Verify against the manifest; never trust a generated ID.
+* For the three media-player-control tests (`17.A`–`17.C`) the failing requirement is a 508 provision, not a WCAG SC — cite the provision (e.g. `508 503.4.1`) in the WCAG field position, matching the evidence contract's rule.
+* `24.A-Parsing` never appears on a report — it always passes upstream (WCAG 2.0 Errata 13); file markup consequences under the criteria they actually break.
+* Severity stays impact-based (this skill's scale) and is orthogonal to the baseline outcome.
+* Outside a declared-508 audit, omit the field entirely — a baseline citation on a component-scope report is itself a defect in the report.
+
 ---
 
 ## Structured Report Templates
@@ -418,6 +434,12 @@ Use this schema when scripts or CI pipelines emit machine-readable accessibility
     "wcag_level": { "type": "string", "enum": ["A", "AA", "AAA"] },
     "rule_id": { "type": "string" },
     "act_rule_id": { "type": "string" },
+    "baseline_test": {
+      "type": "string",
+      "pattern": "^\\d{1,2}\\.[A-Z]-[A-Za-z]+$",
+      "examples": ["5.C-ControlState"],
+      "description": "Declared Section 508 audits only: ICT Testing Baseline web test ID. Pattern match is not validity — the ID must exist in the web list of docs/ict-baseline-test-id-manifest.yaml. Omit outside declared-508 scope."
+    },
     "tool": { "type": "string" },
     "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
     "frequency": {

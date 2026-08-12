@@ -21,6 +21,7 @@ Use it for **audit-scope work only**: conformance evaluations of an existing sit
 | `evaluation_statement` | optional | Only when every non-optional methodology requirement is satisfied and all evaluated samples meet the target level. Includes issue date, guidelines title/version/URI, level, product definition, technologies relied upon, and baseline. Partial-conformance statements name the non-conforming areas and the reason. Sampling-based evaluation alone does not support a WCAG 2 conformance claim for the whole product — statements must not imply one. |
 | `aggregated_score` | discouraged | WCAG-EM cautions that scores can mislead. If the commissioner requires one, document the scoring approach alongside it. |
 | `machine_readable` | optional | EARL export reference, when produced. |
+| `federal_annex` | optional | Declared-508 engagements only (the planner federal profile's floor declaration is the gate): per-baseline-test outcome rollup — see "Federal Annex" below. Not an ACR/VPAT. |
 
 ## Orthogonality Rule
 
@@ -69,6 +70,19 @@ a11y_appform_step3_error_assoc (CRITICAL), a11y_megamenu_esc_trap (MAJOR), ...
 ## Coverage Boundary
 None — all samples are web views reachable by the measurement stack.
 ```
+
+## Federal Annex (declared Section 508 engagements only)
+
+When the engagement's audit-scope plan carries the planner federal profile's conformance floor declaration (WCAG 2.0 A/AA + the applicable non-WCAG 508 provisions — that declaration is the gate; without it this annex must not exist), the report may append a federal annex that rolls the per-SC outcomes up by ICT Testing Baseline web test:
+
+- One row per web baseline test (62 at the pin — enumerated in [ict-baseline-test-id-manifest.yaml](ict-baseline-test-id-manifest.yaml); every cited ID must exist there). Each row: the test ID, the outcome (same EARL vocabulary: `passed` / `failed` / `cantTell` / `inapplicable` / `untested`), and the backing `finding_id` references.
+- Derivation rule: a row is `failed` only from findings carrying that test in `baseline_test` — never from SC-level fan-out (one 4.1.2 failure does not fail every 4.1.2-citing test: `5.A`–`5.D`, `12.A`, `19.A`/`19.B` are distinct rows). A row is `passed` when its constituent SC/provision outcomes pass across the sample set AND no finding carries the test. Rows `17.A`–`17.C` derive from the 503.4.x provision checks (their findings cite the provision in `wcag_or_apg` per the evidence contract), not from the WCAG outcome map.
+- Under declared 508 scope, the report's `conformance_target` declaration is the floor itself — "Revised Section 508 (WCAG 2.0 Level A/AA + the named non-WCAG provisions)" — and the per-SC outcome map is built against it. WCAG 2.2 AA appears as the separately-reported recommendation layer, never as the declared conformance target.
+- `24.A-Parsing` is always `passed` by upstream design (WCAG 2.0 Errata 13) — record it that way with that note, never as evidence of markup quality.
+- A coverage statement sourced from the a11y-test crosswalk (`references/ict-baseline-crosswalk.yaml` in the a11y-test skill): "designed to cover N of 62; gaps: ...", with the not-covered tests' manual/AT assignment named. Never "baseline-aligned" or "baseline-conformant".
+- The floor-vs-target dual posture restated: annex outcomes are against the 508 floor; WCAG 2.1/2.2-only findings stay out of the annex's outcome rows and appear as recommendations against the bundle's 2.2 AA target.
+- The annex aggregates evidence **for** whoever authors the Accessibility Conformance Report — it is not an ACR/VPAT, must not be presented as one, and carries no conformance badge for the test process itself.
+- If the commissioner declines the annex, a declared-508 report still carries the plan's baseline-coverage statement — restate it alongside `coverage_boundary`, the same honesty axis (what the stack could not measure and what covered it instead).
 
 ## Lifecycle Wiring
 

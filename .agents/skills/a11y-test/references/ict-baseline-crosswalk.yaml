@@ -1,0 +1,351 @@
+# ICT Testing Baseline (Web) → a11y-test execution-mode coverage crosswalk
+#
+# Phase 2 deliverable of docs/ict-testing-baseline-adoption-assessment.md. Maps every
+# active web baseline test at the pinned upstream state to the execution mode(s) that
+# produce evidence for it and the artifact that evidence takes, with honest NOT-COVERED
+# rows. HAND-BUILT against docs/ict-testing-baseline-reference.md and the per-test
+# instructions' SC basis — never regenerate mechanically; a generated crosswalk without
+# value-checking is the exact-ID fabrication failure mode by construction. Rebuild by
+# hand on the reference doc's recheck triggers.
+#
+# ID ground truth: docs/ict-baseline-test-id-manifest.yaml (62 active web tests at
+# atbcb/ICTTestingBaseline main @ 6c537a3b, 2026-08-12). Every id below must exist in
+# that manifest's web list; the manifest also carries each test's WCAG 2.0/508 basis and
+# this repo's provisional classification — not duplicated here to avoid drift.
+#
+# Originating source (cited per the upstream license's citation condition): ICT Testing
+# Baseline Portfolio, authored under the Federal CIO Council Accessibility Community of
+# Practice (ACOP, https://www.cio.gov/about/accessibility-cop/), distributed at
+# https://ictbaseline.access-board.gov/ and https://github.com/atbcb/ICTTestingBaseline.
+# Test IDs and names restate published upstream content; the coverage grades, mode
+# assignments, and notes are THIS repository's additions, not ACOP content.
+#
+# Usage rules:
+# - Declared-508 audit scope only (the planner federal profile's floor declaration is
+#   the gate). Never cite this file or baseline IDs in component-scope reviews. One
+#   exemption: engagement-independent capability statements quoting this file verbatim
+#   ("designed to cover N of 62; gaps: ...") may answer pre-award/procurement capability
+#   questions with no floor declaration — findings, reviews, and reports stay gated.
+# - Coverage grades what the stack contributes to each test's Test Instructions check.
+#   The baseline's per-test "Identify Content" enumeration step (find the tables, the
+#   media, the moving content) is always shared human/agent scoping work and is not
+#   graded — except where identification IS the check (those rows say so).
+# - coverage values:
+#     covered      — an execution mode produces the decisive machine evidence for the
+#                    check on sampled views (human review of artifacts still applies)
+#     partial      — a mode produces real evidence substrate (targeted extraction or a
+#                    machine check on part of the condition) but the decisive
+#                    determination is human
+#     not-covered  — no mode produces meaningful evidence; the test is assigned to
+#                    manual/AT method in the engagement plan. These rows are the
+#                    deliverable of this file, not an embarrassment.
+#     always-passes — upstream defines the outcome; nothing to execute
+# - Invariant: a test classified judgment-only in the manifest is never `covered` here.
+# - Phrasing rule: this file supports "designed to cover N of 62; gaps: M" statements.
+#   It never supports "baseline-aligned" or "baseline-conformant" — alignment
+#   recognition is an external review of a test process, not a self-declared badge.
+#
+# Mode vocabulary (see SKILL.md routing table):
+#   playwright-spec  — codified .spec.js real-key, zoom/reflow, visual-regression tests
+#   axe-core         — §4 automated scans (rule ids named where certain; representative,
+#                      not exhaustive)
+#   kat              — keyboard-a11y-tester batch/driven runs (trace, findings,
+#                      reading-order census, dual-signal focus-indicator measurement,
+#                      live-region capture)
+#   vsr              — @guidepup/virtual-screen-reader component assertions (computed
+#                      names/roles, reading order, announcements; synthetic interactions
+#                      — never keyboard-operability evidence; blind to open shadow DOM
+#                      and aria-busy)
+#   agent-browser    — interactive reconnaissance (ARIA snapshots, attribute checks) —
+#                      supporting evidence only
+#   manual           — human judgment / assistive-technology session
+
+meta:
+  built: "2026-08-12"
+  manifest: docs/ict-baseline-test-id-manifest.yaml
+  reference: docs/ict-testing-baseline-reference.md
+  pin: "atbcb/ICTTestingBaseline main @ 6c537a3b (site snapshot 2026-08-12)"
+  web_test_count: 62
+  coverage_totals: {covered: 22, partial: 26, not-covered: 13, always-passes: 1}
+  granularity: >-
+    Test-level, matching the manifest and the baseline_test finding field. Upstream
+    Appendix A maps at instruction level (1.A-1, 1.A-2, ...) and remains the seed if
+    finer granularity is ever needed.
+
+web:
+  # Family 1 — Keyboard Accessible
+  - {id: 1.A-KeyboardAccess, name: Keyboard Access, coverage: covered,
+     modes: [playwright-spec, kat, agent-browser],
+     evidence: "real-key .spec.js results; kat trace + findings for journey operability",
+     notes: "functionality enumeration for full-page claims is the shared identify-content step"}
+  - {id: 1.B-NoKeyboardTrap, name: No Keyboard Trap, coverage: covered,
+     modes: [playwright-spec, kat],
+     evidence: "focus-trap .spec.js assertions; kat batch Tab-crawl trap detection"}
+
+  # Family 2 — Focus
+  - {id: 2.A-FocusVisible, name: Focus Visible, coverage: covered,
+     modes: [kat, playwright-spec],
+     evidence: "kat dual-signal focus-indicator measurement (the stack's only machine evidence of indicator sufficiency); :focus visual-regression shots"}
+  - {id: 2.B-FocusOrder, name: Focus Order, coverage: covered,
+     modes: [playwright-spec, kat],
+     evidence: "tab-sequence assertions; kat trace order vs reading-order census"}
+  - {id: 2.C-OnFocus, name: On Focus, coverage: covered,
+     modes: [playwright-spec, kat],
+     evidence: "focus-each-element .spec.js with no-context-change assertions; kat driven-session traces"}
+
+  # Family 3 — Non-Interference
+  - {id: 3.A-NonInterference, name: Non-Interference, coverage: partial,
+     modes: [kat, playwright-spec, axe-core, manual],
+     evidence: "per-component evidence on ALL views incl. non-conforming ones: trap detection (kat), autoplay-audio (axe no-autoplay-audio), pause/stop/hide operability (real keys)",
+     human: "composite verdict; the flashing component (2.3.1) has no machine evidence — see 9.A"}
+
+  # Family 4 — Repetitive Content
+  - {id: 4.A-BypassBlocks, name: Bypass Blocks, coverage: covered,
+     modes: [axe-core, playwright-spec],
+     evidence: "axe bypass rule; skip-link focus + target .spec.js verification"}
+  - {id: 4.B-ConsistentNavigation, name: Consistent Navigation, coverage: partial,
+     modes: [playwright-spec, agent-browser],
+     evidence: "per-page nav snapshots/inventories across the multi-page scan set",
+     human: "same-relative-order judgment across pages"}
+  - {id: 4.C-ConsistentIdentification, name: Consistent Identification, coverage: partial,
+     modes: [playwright-spec, agent-browser, vsr],
+     evidence: "computed accessible-name inventories for same-function components across pages",
+     human: "same-function equivalence judgment"}
+
+  # Family 5 — User Controls
+  - {id: 5.A-ControlName, name: Control Name, coverage: covered,
+     modes: [axe-core, vsr, kat],
+     evidence: "axe button-name/link-name/label/select-name; vsr computed names; kat missing-from-accessibility-tree + UA-default-name checks"}
+  - {id: 5.B-ControlRole, name: Control Role, coverage: covered,
+     modes: [axe-core, vsr, agent-browser],
+     evidence: "axe ARIA rules (e.g. aria-allowed-role); vsr/ARIA-snapshot computed roles",
+     notes: "missing/invalid roles are machine-decided; wrong-but-valid role choices remain a human residual"}
+  - {id: 5.C-ControlState, name: Control State, coverage: covered,
+     modes: [playwright-spec, vsr, axe-core],
+     evidence: "before/after state assertions (aria-expanded, aria-checked...) under real keys; vsr announcement of state changes"}
+  - {id: 5.D-ControlValue, name: Control Value, coverage: covered,
+     modes: [playwright-spec, vsr, axe-core],
+     evidence: "value reflection assertions (aria-valuenow, selected option, range) under real interaction"}
+
+  # Family 6 — Images
+  - {id: 6.A-MeaningfulImage, name: Images with a non-empty text alternative, coverage: partial,
+     modes: [axe-core, vsr],
+     evidence: "axe image-alt/input-image-alt presence; computed text alternatives extracted per image",
+     human: "equivalence of meaning is the decisive check"}
+  - {id: 6.B-DecorativeImage, name: Images with an empty text alternative, coverage: partial,
+     modes: [axe-core, agent-browser],
+     evidence: "programmatic decorative marking (alt=\"\", role=presentation, aria-hidden) inventory",
+     human: "whether the image is truly decorative"}
+  - {id: 6.C-Captcha, name: Captchas, coverage: not-covered,
+     modes: [manual],
+     evidence: "recon can locate CAPTCHAs; nothing decides purpose-identification or alternative-forms availability",
+     notes: "usually third-party — apply the audit-mode third-party/partial-conformance rule"}
+  - {id: 6.D-ImageText, name: Images of Text, coverage: not-covered,
+     modes: [manual],
+     evidence: "no OCR/visual text-in-image detection in the stack; screenshots support the human pass only"}
+
+  # Family 7 — Sensory Characteristics
+  - {id: 7.A-Color, name: Use of Color, coverage: partial,
+     modes: [axe-core, manual],
+     evidence: "axe link-in-text-block for color-only link distinction",
+     human: "all other color-as-sole-means judgments (charts, status, required-field marking)"}
+  - {id: 7.B-SensoryCharacteristics, name: Sensory Characteristics, coverage: not-covered,
+     modes: [manual],
+     evidence: "no targeted extraction distinguishes instructional text that relies on shape/size/location"}
+  - {id: 7.C-AudibleCues, name: Audible Cues, coverage: not-covered,
+     modes: [manual],
+     evidence: "audio cue detection and visual-equivalent judgment need human listening"}
+
+  # Family 8 — Contrast
+  - {id: 8.A-ContrastMinimum, name: "Contrast (minimum)", coverage: covered,
+     modes: [axe-core, playwright-spec],
+     evidence: "axe color-contrast measured ratios; DevTools/contrast audits",
+     notes: "gradient and image-backed text pairs still need human sampling (axe flags cantTell-class cases)"}
+
+  # Family 9 — Flashing
+  - {id: 9.A-Flashes, name: Three Flashes or Below Threshold, coverage: not-covered,
+     modes: [manual],
+     evidence: "flash-frequency analysis needs PEAT-class tooling the stack does not have; recon can only note that flashing content exists"}
+
+  # Family 10 — Forms
+  - {id: 10.A-FormName, name: Form Names, coverage: covered,
+     modes: [axe-core, vsr, kat],
+     evidence: "axe label/select-name; vsr computed field names; kat form-name findings"}
+  - {id: 10.B-FormDescriptiveLabel, name: Form Labels Descriptive, coverage: partial,
+     modes: [vsr, agent-browser],
+     evidence: "label/name inventory per field",
+     human: "descriptive adequacy is the decisive check"}
+  - {id: 10.C-OnInput, name: On Input, coverage: covered,
+     modes: [playwright-spec, kat],
+     evidence: "change-setting-then-assert-no-context-change under real keys; kat driven traces"}
+  - {id: 10.D-ErrorIdentification, name: Error Identification, coverage: covered,
+     modes: [playwright-spec, vsr, kat],
+     evidence: "submit-invalid flows asserting text error + programmatic association (aria-describedby/aria-invalid); vsr announcement capture"}
+  - {id: 10.E-FormHasLabel, name: Form has a Visible Label, coverage: covered,
+     modes: [axe-core, kat, playwright-spec],
+     evidence: "axe label; kat 3.3.2 UA-default-name check; visible-label presence shots"}
+  - {id: 10.F-ErrorSuggestion, name: Error Suggestion, coverage: partial,
+     modes: [playwright-spec, kat],
+     evidence: "captured error text from driven invalid-submission flows",
+     human: "suggestion adequacy is the decisive check"}
+  - {id: 10.G-ErrorPrevention, name: "Error Prevention (Legal, Financial, Data)", coverage: partial,
+     modes: [kat, playwright-spec],
+     evidence: "driven-session traces evidence review/confirm steps in the flow",
+     human: "reversible/checked/confirmed sufficiency is a human/process determination"}
+
+  # Family 11 — Page Titles
+  - {id: 11.A-PageTitled, name: Page Titled, coverage: partial,
+     modes: [axe-core, playwright-spec],
+     evidence: "axe document-title presence; extracted titles per sampled view",
+     human: "does the title describe topic or purpose"}
+
+  # Family 12 — Tables
+  - {id: 12.A-DataTableRole, name: Data Table Roles, coverage: covered,
+     modes: [axe-core, agent-browser],
+     evidence: "table semantics in the accessibility tree (native/role=table)",
+     notes: "div-built visual tables enter via the identify-content step"}
+  - {id: 12.B-DataTableHeaderAssociation, name: Data Table Header Association, coverage: partial,
+     modes: [axe-core, agent-browser],
+     evidence: "axe td-headers-attr / th-has-data-cells / scope-attr-valid validate association markup that EXISTS",
+     human: "a data table with no header markup at all passes those rules in silence — header absence on identified data tables, and visual↔programmatic header correspondence, are the decisive checks"}
+  - {id: 12.C-LayoutTable, name: Layout Tables, coverage: covered,
+     modes: [axe-core, agent-browser],
+     evidence: "data-semantics-absent checks on layout tables (e.g. presentation-role-conflict, th/caption presence)",
+     notes: "layout-vs-data classification is the identify-content step"}
+
+  # Family 13 — Content Structure
+  - {id: 13.A-HeadingDescriptive, name: Descriptive Headings, coverage: partial,
+     modes: [agent-browser, axe-core],
+     evidence: "heading inventory (level + text) per view",
+     human: "descriptiveness is the decisive check"}
+  - {id: 13.B-VisHeadingProg, name: Visual Headings Programmatic, coverage: partial,
+     modes: [agent-browser, playwright-spec],
+     evidence: "programmatic heading inventory + page screenshots",
+     human: "identifying text that visually acts as a heading is the decisive half"}
+  - {id: 13.C-ProgHeadingVisual, name: Programmatic Headings Visual, coverage: partial,
+     modes: [axe-core, agent-browser],
+     evidence: "heading inventory (axe empty-heading/heading-order as structure signals) + screenshots",
+     human: "whether each marked heading visually functions as one"}
+  - {id: 13.D-List, name: Visually Apparent Lists, coverage: partial,
+     modes: [axe-core, agent-browser],
+     evidence: "axe list/listitem validate marked-up lists",
+     human: "finding visually-apparent-but-unmarked lists"}
+
+  # Family 14 — Links
+  - {id: 14.A-LinkPurpose, name: "Link Purpose (In Context)", coverage: partial,
+     modes: [axe-core, vsr, kat],
+     evidence: "axe link-name for empty names; computed name + programmatic-context extraction per link",
+     human: "purpose clarity in context is the decisive check"}
+
+  # Family 15 — Language
+  - {id: 15.A-LanguagePage, name: Language of Page, coverage: covered,
+     modes: [axe-core],
+     evidence: "axe html-has-lang / html-lang-valid",
+     notes: "wrong-language-declared edge is a trivial human confirm"}
+  - {id: 15.B-LanguagePart, name: Language of Parts, coverage: partial,
+     modes: [axe-core],
+     evidence: "axe valid-lang validates existing lang attributes on parts",
+     human: "detecting unmarked language changes in content"}
+
+  # Family 16 — Audio-Only and Video-Only
+  - {id: 16.A-AudioOnlyTranscript, name: "Audio-only (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "transcript identification is unstructured and equivalence requires listening; recon inventories media elements only"}
+  - {id: 16.B-VideoOnlyAlt, name: "Video-only (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "alternative equivalence requires watching the media"}
+  - {id: 16.C-AudioMediaAlternative, name: "Audio Media Alternative (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "alternative-vs-media comparison is human"}
+  - {id: 16.D-VideoMediaAlternative, name: "Video Media Alternative (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "alternative-vs-media comparison is human"}
+
+  # Family 17 — Synchronized Media (508 503.4.x is the non-WCAG basis for A–C)
+  - {id: 17.A-MediaPlayerCCADControls, name: Media Player Controls, coverage: partial,
+     modes: [agent-browser, playwright-spec, kat],
+     evidence: "player control inventory (CC/AD controls present, keyboard-operable with real keys)",
+     human: "custom/cross-origin players vary; confirming the controls are the required user controls"}
+  - {id: 17.B-MediaPlayerCCLevel, name: Media Player Caption Control Level, coverage: partial,
+     modes: [agent-browser],
+     evidence: "control/menu structure inventory",
+     human: "same-menu-level-as-volume equivalence judgment (508 503.4.1)"}
+  - {id: 17.C-MediaPlayerADLevel, name: Media Player Audio Description Control Level, coverage: partial,
+     modes: [agent-browser],
+     evidence: "control/menu structure inventory",
+     human: "same-menu-level equivalence judgment (508 503.4.2)"}
+  - {id: 17.D-CaptionsPrerecorded, name: "Captions (Prerecorded)", coverage: partial,
+     modes: [agent-browser, playwright-spec],
+     evidence: "caption-track presence is machine-flaggable (track elements / player caption menus)",
+     human: "caption accuracy and sync require watching"}
+  - {id: 17.E-ADPrerecorded, name: "Audio Description (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "AD is often a separate audio mix invisible to the DOM; presence and adequacy require listening"}
+  - {id: 17.F-CaptionsLive, name: "Captions (Live)", coverage: not-covered,
+     modes: [manual],
+     evidence: "requires attending live content"}
+  - {id: 17.G-SyncMediaAlternative, name: "Sync Media Alternative (Prerecorded)", coverage: not-covered,
+     modes: [manual],
+     evidence: "alternative-vs-media equivalence requires watching"}
+
+  # Family 18 — CSS Positioning
+  - {id: 18.B-CSSPositionedContent, name: CSS Positioned Content, coverage: covered,
+     modes: [kat, vsr],
+     evidence: "kat reading-order census (DOM order vs visual order); vsr reading order at component level"}
+
+  # Family 19 — Frames and iFrames
+  - {id: 19.A-FrameTitle, name: Frames, coverage: covered,
+     modes: [axe-core],
+     evidence: "axe frame-title"}
+  - {id: 19.B-iFrameName, name: iFrames, coverage: covered,
+     modes: [axe-core, agent-browser],
+     evidence: "axe frame-title (applies to iframe); accessible-name checks on iframe elements"}
+
+  # Family 20 — Conforming Alternate Version
+  - {id: 20.A-ConformingAltVersion, name: Conforming Alternate Version, coverage: not-covered,
+     modes: [manual],
+     evidence: "whether a conforming alternate version exists/is reachable is an evaluation-structure judgment",
+     notes: "the alternate version itself is evaluated with the full stack like any view"}
+
+  # Family 21 — Timed Events
+  - {id: 21.A-TimingAdjustable, name: Timing Adjustable, coverage: partial,
+     modes: [axe-core, kat],
+     evidence: "axe meta-refresh; driven-session capture of timeout dialogs and extend mechanisms when exercised",
+     human: "discovering all time limits (session, inactivity) is human-led"}
+  - {id: 21.B-MovingInfo, name: Moving Information, coverage: partial,
+     modes: [playwright-spec, agent-browser, axe-core],
+     evidence: "pause/stop/hide control operability under real keys once content is identified (axe blink/marquee for deprecated elements)",
+     human: "identifying moving/scrolling content needs temporal observation the standard scans don't do"}
+  - {id: 21.C-AutoUpdate, name: Auto-updating information, coverage: partial,
+     modes: [playwright-spec, agent-browser],
+     evidence: "pause/stop/hide control operability once auto-updating regions are identified",
+     human: "identifying auto-updating content (feeds, tickers) is observation-led"}
+  - {id: 21.D-AudioControl, name: Audio Control, coverage: partial,
+     modes: [axe-core, playwright-spec],
+     evidence: "axe no-autoplay-audio; autoplay attributes and pause/volume control presence",
+     human: "confirming actual audio behavior (>3s, stop mechanism works) is human"}
+
+  # Family 22 — Resize Text
+  - {id: 22.A-ResizeText, name: Resize Text, coverage: covered,
+     modes: [playwright-spec],
+     evidence: "200% zoom/reflow .spec.js verification + visual regression (§2)"}
+
+  # Family 23 — Multiple Ways
+  - {id: 23.A-MultipleWays, name: Related Web Pages, coverage: partial,
+     modes: [agent-browser, playwright-spec],
+     evidence: "mechanism inventory (nav, search, sitemap, index presence) across the scan set",
+     human: "sufficiency and applicability (process-step exemption) judgment"}
+
+  # Family 24 — Parsing
+  - {id: 24.A-Parsing, name: Parsing, coverage: always-passes,
+     modes: [],
+     evidence: "upstream Test Instructions: 'No testing necessary'; result is 'Baseline Test 24.A-Parsing passes' (WCAG 2.0 Errata 13)",
+     notes: "never re-litigate parsing; real markup consequences are reported under other SCs' tests (5.x name/role/state, etc.) per the test's own Limitations"}
+
+documents:
+  measurement_scope: >-
+    Out of this bundle's measurement scope entirely (web-only stack) — the Electronic
+    Documents baseline (57 declared tests) is a declared boundary, not a crosswalk.
+    A declared-508 engagement whose scope includes PDFs or Office documents assigns
+    those samples to manual/AT methods in the evaluation plan's coverage boundary and
+    never implies stack coverage. IDs for validity checking live in the manifest.

@@ -21,6 +21,7 @@ Do not emit a contract for passing checks or clean reviews. A clean result with 
 | `actual_behavior` | yes | What the evidence shows happened instead. |
 | `trend` | optional | One of `new`, `persistent`, `worsening`, `improving`, or `resolved`. |
 | `evaluation_context` | optional | Audit-scope only: `evaluation_id` plus `sample_id` (and `process_id` when the finding sits inside a complete process), linking the finding into an evaluation report's sample set. |
+| `baseline_test` | optional | Declared-508 audit scope only: the ICT Testing Baseline **web** test this finding files under (e.g. `5.C-ControlState`). Valid only if the ID exists in the web list of [ict-baseline-test-id-manifest.yaml](ict-baseline-test-id-manifest.yaml) — see the Section 508 boundary rules below. |
 
 ## Example
 
@@ -112,6 +113,16 @@ For this bundle, WCAG 2.2 AA is the current planning and review target. Section 
 - Do not label WCAG 2.1 or 2.2-only criteria as Section 508 failures unless the project policy explicitly adopts them.
 - The federal test-completeness standard for a Section 508 conformance test process is the [ICT Testing Baseline for Web](https://ictbaseline.access-board.gov/) — what minimum tests a 508 test process must include, orthogonal to WCAG-EM's evaluation structure. Verified reference: [ict-testing-baseline-reference.md](ict-testing-baseline-reference.md); test-ID ground truth: [ict-baseline-test-id-manifest.yaml](ict-baseline-test-id-manifest.yaml).
 - Baseline reading trap: baseline text quotes WCAG 2.0-basis requirements while linking WCAG 2.2 Understanding articles as reading aids — never read a 2.2 link in baseline text as a WCAG 2.2 conformance mapping. Related: baseline test `24.A-Parsing` always passes by upstream design (WCAG 2.0 Errata 13), with markup consequences re-routed to other SCs.
+
+### `baseline_test` rules (declared 508 scope only)
+
+"Declared 508 scope" exists iff the engagement's audit-scope plan carries the planner federal profile's conformance floor declaration (WCAG 2.0 A/AA + the applicable non-WCAG 508 provisions); the finding links into that engagement through `evaluation_context`. Under it:
+
+- Populate `baseline_test` with the web baseline test the finding files under. Validity is per-baseline against the manifest's web list — documents-baseline IDs never appear (the documents baseline is a declared measurement boundary), and an ID not in the manifest is a fabrication, not a citation.
+- The three media-player-control tests (`17.A`–`17.C`) test 508 provisions 503.4/503.4.1/503.4.2, not WCAG SCs — a caption control buried below the volume control's menu level violates 503.4.1 while 1.2.2 passes. For that class, `wcag_or_apg` carries the named provision citation instead (e.g. `508 503.4.1 caption control menu level`). This substitution is valid only under declared 508 scope; everywhere else `wcag_or_apg` keeps its WCAG/APG requirement.
+- `24.A-Parsing` never appears on a finding: it always passes upstream, and real markup consequences file under the SCs they break (name/role/state and peers).
+- Severity stays user-impact-based and orthogonal — never derive it from the baseline outcome, and never derive a baseline outcome from severity.
+- Outside declared 508 scope the field is absent entirely; a populated `baseline_test` on a component-scope finding is itself a finding against the output.
 
 ## Perspective and ARRM Routing
 

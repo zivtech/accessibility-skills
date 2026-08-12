@@ -859,6 +859,19 @@ rm eslint.a11y.mjs
 ### Known False Positives
 Custom component `role` props, ARIA passed via spread, dynamic content loaded post-render, Next.js `<Link>` components (render valid anchors at runtime).
 
+## ICT Testing Baseline coverage crosswalk (declared Section 508 audits only)
+
+When an audit-scope engagement declares Revised Section 508, its baseline-coverage statement is sourced from [references/ict-baseline-crosswalk.yaml](references/ict-baseline-crosswalk.yaml): a hand-built map of all 62 active web baseline tests (pinned at `atbcb/ICTTestingBaseline` `main` @ `6c537a3b`, 2026-08-12) to the execution modes above and the evidence artifact each produces — 22 covered / 26 partial / 13 not-covered / 1 always-passes. The gate is the planner federal profile's conformance floor declaration in the engagement's audit-scope plan: no floor declaration → no baseline citations in any output, and a baseline citation in a component-scope review is a finding against the output. One exemption: an engagement-independent capability statement quoting the crosswalk verbatim ("designed to cover N of 62; gaps: ...") may answer a pre-award/procurement capability question with no floor declaration — findings, reviews, and reports stay gated.
+
+Rules:
+
+- **The not-covered and partial rows are the deliverable.** They name what gets assigned to manual/AT methods in the evaluation plan's sampling and coverage boundary. Never imply stack coverage the crosswalk doesn't grant; a test classified judgment-only in the manifest is never `covered`.
+- **Every baseline test ID cited must exist in `docs/ict-baseline-test-id-manifest.yaml` for the web baseline.** IDs are valid per-baseline (`11.A-PageTitled` is web-only; `11.A-DocumentTitled` is documents-only), and baseline IDs are the exact-ID class models fabricate — hand-verify every one; never generate them.
+- **Phrasing:** "designed to cover N of 62; gaps: ..." — never "baseline-aligned" or "baseline-conformant" (alignment recognition is an external review of a test process), and never any Trusted Tester certification claim (a DHS credential held by humans).
+- **`24.A-Parsing` always passes by upstream design** (WCAG 2.0 Errata 13) — execute nothing for it; report real markup consequences under the SCs they actually break.
+- **The Electronic Documents baseline is out of measurement scope entirely** (web-only stack): document samples go to the report's coverage boundary with a manual/AT method, never to these execution modes.
+- **Maintenance:** the crosswalk is rebuilt by hand against `docs/ict-testing-baseline-reference.md` on that reference's recheck triggers — a regenerated crosswalk without value-checking is the fabrication failure mode by construction.
+
 ## Test Execution Order
 1. Static analysis (§5) — fast, no server needed
 2. Keyboard accessibility tests (§1)
