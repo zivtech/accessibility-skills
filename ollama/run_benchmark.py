@@ -94,6 +94,8 @@ ACR_FIXTURES = [
     "permit-portal-acreditor",
     "campus-events-untested",
     "parks-registration-clean",
+    "shiftline-vendor-acr",          # Lane B claims audit (Phase 3, 2026-08-12)
+    "courseware-vendor-acr-clean",   # Lane B clean control (Phase 3, 2026-08-12)
 ]
 
 PROMPT_PREFIX = "Review the following React component for accessibility design issues. Execute all phases of the investigation protocol.\n\n"

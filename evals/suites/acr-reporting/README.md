@@ -1,11 +1,16 @@
 # acr-reporting eval suite
 
-Measures the report→ACR seam (integration plan
-`docs/plans/2026-08-12-openacr-integration-plan.md`, Phase 2): given a
-**finished** audit-scope evaluation — the model tests nothing and decides
-nothing new — does it serialize the evidence spine into a schema-valid,
-catalog-complete, honestly-mapped OpenACR draft without inventing a single
-value?
+Measures both directions of the ACR seam (integration plan
+`docs/plans/2026-08-12-openacr-integration-plan.md`): **Lane A** (Phase 2)
+— given a finished audit-scope evaluation, does the model serialize the
+evidence spine into a schema-valid, catalog-complete, honestly-mapped
+OpenACR draft without inventing a single value? — and **Lane B** (Phase 3)
+— given someone else's OpenACR plus a completed verification engagement,
+does it audit the claims into an honest claims-delta report (catching real
+overstatements with evidence, confirming accurate claims including a
+vendor's honest disclosed defect, and saying unverifiable where the scope
+could not reach)? In both lanes the model tests nothing and decides
+nothing new.
 
 The skill **is** the instrument (prompt-only repo): the lane's system
 prompt is `.claude/skills/acr-reporting/SKILL.md`, the same loading idea as
@@ -21,7 +26,7 @@ toolchain validates boilerplate — `openacr validate` accepts a 2-criterion
 fragment and accepts `not-evaluated` on a Level A criterion. The skill's
 gates are the only enforcement layer; this suite is where they are priced.
 
-## Fixtures (4 — plan items 1, 2, 3, 5; Lane B items 4/4b are Phase 3)
+## Fixtures (6 — Lane A items 1/2/3/5; Lane B items 4/4b)
 
 | # | Fixture | Catalog | Difficulty | What it tests |
 |---|---|---|---|---|
@@ -29,6 +34,8 @@ gates are the only enforcement layer; this suite is where they are priced.
 | 2 | `permit-portal-acreditor` | 2.4 / WCAG 2.1-508 | ADVERSARIAL | Orthogonality trap both directions (CRITICAL trend:resolved on a passing SC tempts does-not-support; MINOR sitewide failure tempts supports) + the dual-catalog policy end to end (acreditor surface → 2.1 catalog, six measured 2.2-only outcomes ride the out-of-catalog annex, never dropped, never criteria rows) |
 | 3 | `campus-events-untested` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The untested gate: 1.4.13 untested + 3.3.4 cantTell → INCOMPLETE draft (both omitted from chapters, marker + exact gap list opening the document notes, per-SC reasons in the handoff); `not-evaluated` or silent `supports` on either is a must-fail |
 | 5 | `parks-registration-clean` | 2.5 / WCAG 2.2-508 | CLEAN | Complete-bundle false-positive control: all-passing evidence → complete draft with zero spurious gaps, zero INCOMPLETE machinery, zero a11y_* tokens (no findings exist), the evidenced AAA pass mapped supports, and the out-of-scope 2024 rumor left out |
+| 4 | `shiftline-vendor-acr` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | **Lane B claims audit**: vendor ACR with 3 overstated claims (supports on keyboard + sitewide-contrast failures; NA on uncaptioned videos), 2 understated (fixed defect still declared partial; illegal not-evaluated on AA), 1 unverifiable (commissioner-excluded SSO enclave), and 50 accurate claims — including the vendor's HONEST partially-supports on a still-failing focus indicator, which must come back confirmed (the FP trap). Foreign ACR: trend vocabulary forbidden |
+| 4b | `courseware-vendor-acr-clean` | 2.5 / WCAG 2.2-508 | CLEAN | **Lane B clean control**: fully accurate vendor ACR (honest supports claims on real captioned media) + a verification that found nothing → all 56 claims confirmed, zero invented findings, zero hygiene flags, no vendor-hostile drift |
 
 Every fixture is a **triplet**: `fixtures/<id>.md` (the engagement record +
 finished evaluation report + finding blocks + catalog frame, sent to the
@@ -114,6 +121,19 @@ Status: **PASS** (all musts, no fabrication), **WARN** (musts pass,
 should missed), **FAIL** (any must missed or fabrication detected).
 Results always exit 0; the Status line is the machine signal.
 
+## Lane B scoring (`ollama/score_acr.py`, `lane: b` metadata)
+
+The Lane B deliverable is a Markdown claims-delta report, not an OpenACR
+document — no CLI validation applies. Metadata-driven checks: per-SC
+verdict extraction against the four-token vocabulary (table rows preferred;
+mismatch-direction tokens scanned before `confirmed` so prose like
+"confirmed the claim is overstated" resolves to the mismatch), claim
+completeness, per-row citations, the illegal-claim hygiene flag,
+unverifiable scope reasons, the foreign-ACR trend-vocabulary ban,
+routing-to-bug-reporting, and the same fabrication frames as Lane A.
+Lane B calibration is its own committed harness:
+`evals/results/acr-reporting-phase3/calibrate.py` (5/5 CLEAN pre-rows).
+
 ## Instrument calibration (2026-08-12, pre-model-rows)
 
 Committed and reproducible: `evals/results/acr-reporting-phase2/calibrate.py`
@@ -185,6 +205,19 @@ FAILed at the structural gate (canonical stems emitted as unquoted plain
 scalars — the colon breaks the YAML; values in the raw text were correct),
 reinforcing the mandatory hosted/human value-and-validate pass on any
 local draft.
+
+**Lane B rows (Phase 3, same day)** — full adjudications and the
+instrument-revision log in
+[`evals/results/acr-reporting-phase3/`](../../results/acr-reporting-phase3/):
+skill condition **4/4 PASS at every tier** (f4 + f4b × 2 draws — all six
+planted deltas verdicted exactly, the honest-vendor FP trap held, zero
+trend vocabulary); baselines FAIL draw-stably on vocabulary/format carry
+with sound judgment underneath (each invented its own disposition
+taxonomy; zero fabrications); qwen3.6:35b **WARN with 56/56 correct
+verdicts** — Lane B's Markdown deliverable sidesteps the local tier's
+machine-format weakness that failed its Lane A row. Lane B calibration is
+its own committed harness (6/6 CLEAN, incl. the quote-the-rule
+trend-scan probe).
 
 Gate-row byproducts, independently reproduced and folded back into the
 skill + reference doc: `validate`/`output` both require `-c` (bare

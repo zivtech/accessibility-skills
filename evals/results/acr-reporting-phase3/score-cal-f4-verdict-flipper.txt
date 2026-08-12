@@ -1,0 +1,18 @@
+Fixture: shiftline-vendor-acr (lane B)
+Response length: 5131 chars
+
+Claims-delta verdicts: 54/56 as expected
+  X 1.4.3: confirmed (expected overstated)
+  X 2.4.7: overstated (expected confirmed)
+  finding_id tokens: 3 known, 1 invented
+
+Must misses: 4
+  - verdict: 1.4.3: confirmed (expected overstated)
+  - verdict: 2.4.7: overstated (expected confirmed)
+  - 2.1.1 row cites none of ['a11y_grid_cells_keyboard']
+  - trend vocabulary against a foreign ACR: 'persistent' (term-level deltas only): "The 1.4.3 contrast defect is persistent since the vendor's ACR (see also a11y_bo"
+Fabrications: 1
+  - invented finding_id: a11y_bogus_extra
+Should misses: 0
+
+Status: FAIL

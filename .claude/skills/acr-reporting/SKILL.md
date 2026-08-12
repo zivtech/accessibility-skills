@@ -4,9 +4,10 @@ description: >
   Load this skill whenever you are converting a finished audit-scope
   accessibility evaluation into an Accessibility Conformance Report (ACR) draft
   in the OpenACR format, validating or rendering OpenACR YAML, or preparing the
-  handoff to GSA's ACR Editor (https://acreditor.section508.gov/). Report-level
-  companion to bug-reporting: findings→issues is bug-reporting;
-  evaluation-report→ACR is this skill. Output is always a DRAFT for human review
+  handoff to GSA's ACR Editor (https://acreditor.section508.gov/), or auditing
+  a third-party OpenACR's claims against verification evidence (Lane B
+  claims-delta report). Report-level companion to bug-reporting:
+  findings→issues is bug-reporting; evaluation-report→ACR is this skill. Output is always a DRAFT for human review
   and sign-off — never a final or signed ACR. Under no circumstances map an
   untested Level A/AA criterion to any adherence term, derive a conformance term
   from finding severity, or invent metadata values (contacts, dates, versions).
@@ -189,6 +190,41 @@ Catalogs, schemas, and templates all ship inside the package — reference them 
 
 ---
 
+
+## Lane B — Claims Verification (subject ACR → claims-delta report)
+
+Input: **someone's OpenACR** (a vendor product, an upstream project, or our own past report) plus a **completed verification engagement** — the planner's audit-scope mode scoped a WCAG-EM sample of the live product, the testing stack produced an outcome map and evidence-contract findings at a declared scope. This lane aggregates the comparison; it tests nothing and decides nothing new. No verification evidence, no delta report.
+
+**Verdict vocabulary (exactly four):** `confirmed` / `overstated` / `understated` / `unverifiable-at-this-scope`.
+
+**Comparison rule (normative).** Derive the observed would-be term from the verification outcome map using the Lane A mapping table, then compare claim vs observation on the conformance axis `supports = not-applicable > partially-supports > does-not-support`:
+
+| Comparison | Verdict |
+|---|---|
+| Claimed term = observed would-be term (incl. NA vs NA) | `confirmed` |
+| Claimed term ranks better than observed | `overstated` |
+| Claimed term ranks worse than observed | `understated` |
+| Observed outcome is `untested`/`cantTell` at this scope (excluded surface, blocked flow, content type absent from the sample where the claim assumes presence) | `unverifiable-at-this-scope` + the scope reason |
+
+Edge rules, all deterministic:
+
+- **`not-applicable` claimed where the content type exists in the sample:** observed failures → `overstated`; observed passes → `confirmed`, with a classification note (the claim's NA reasoning is wrong even though its conformance content holds).
+- **`not-evaluated` claimed on an A/AA criterion** (illegal — the catalog restricts the term to AAA): flag a **claim-hygiene finding** on the subject ACR, and the verdict follows the omission's direction — observed passed → `understated`; observed failed → `overstated` (the ACR presents better-than-reality by silence).
+- **AAA rows claimed `not-evaluated`:** a legal no-claim — outside the delta table entirely.
+- **A confirmed row may carry findings**: a vendor's honest `partially-supports` verified still-failing is `confirmed` and cites the verification finding(s). Verification accuracy is not vendor hostility — accurate claims are the false-positive trap of this lane.
+
+**Canonical delta table (machine-checkable):**
+
+```
+| SC | Claimed | Observed (this scope) | Verdict | Evidence |
+```
+
+Every A/AA claim in the subject ACR gets a row. `overstated` rows and confirmed-with-findings rows cite ≥1 verification `finding_id`; `understated` rows cite a finding **only when failures back them** — the common understated shape observes a *pass*, the evidence contract forbids findings for passing checks, and those rows cite the verification outcome-map row instead (never an invented id); `unverifiable-at-this-scope` rows state the scope reason in the Evidence column. After the table: a summary block with per-verdict counts and the scope statement (the verification sample set — never a whole-product conclusion), and the routing line: **overstated claims route into `bug-reporting`** for filable issues.
+
+**Trend boundary (load-bearing):** foreign ACRs get **term-level deltas only**. The evidence contract's trend vocabulary (`persistent`/`worsening`/`improving`/`resolved`) requires our own prior fingerprints and is legal only when the subject is a self-produced ACR carrying them; emitting trend language against a foreign ACR fabricates a comparison history that does not exist.
+
+**Adjudication (Decision 3):** the delta report is detector output for procurement — **a11y-critic adjudicates** every non-`confirmed` verdict against the evidence before the report is delivered; no new critic mode exists. This lane never modifies the subject ACR, never emits a corrected ACR (that is Lane A on a new engagement), and never files anything externally.
+
 ## Model Routing
 
 ACR YAML is value-dense (contacts, dates, versions, per-SC terms) — the documented local-model fabrication class. **Generation runs on the hosted tier.** Local models are detectors only; any locally-produced draft requires a mandatory **field-by-field value-check pass** — performed by a hosted-tier model or the human — comparing every metadata value and every term against the source evaluation report before validation counts for anything.
@@ -207,7 +243,7 @@ ACR YAML is value-dense (contacts, dates, versions, per-SC terms) — the docume
 
 ## Boundaries
 
-- **Not yet in this skill:** claims verification of third-party ACRs (Lane B — Phase 3, adjudicated by a11y-critic), ACR drift diffs (Lane C — Phase 4), and merging a new audit into an existing hand-maintained ACR (explicitly out of scope; say so when asked).
+- **Not yet in this skill:** ACR drift diffs (Lane C — Phase 4) and merging a new audit into an existing hand-maintained ACR (explicitly out of scope; say so when asked). Lane B (claims verification) is in this skill — see the Lane B section.
 - **Naming:** the artifact is "an ACR in OpenACR format" — never "a VPAT" (VPAT® is an ITI trademark; VPAT edition names appear only inside catalog identifiers).
 - **Non-web conclusions are human-owned.** This skill serializes their boundary statements, never their conclusions.
 - **No report-generator runtime** in the skills repo (existing contract ruling): the agent authors the YAML per this skill; validation/rendering route to the pinned CLI.
