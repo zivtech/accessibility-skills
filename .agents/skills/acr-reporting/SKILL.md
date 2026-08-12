@@ -155,17 +155,27 @@ Exact-pin **`@openacr/openacr@0.3.8`** (frozen upstream; CC0). Consuming project
 
 ```bash
 mkdir -p /tmp/acr-check && cd /tmp/acr-check && npm init -y >/dev/null && npm i @openacr/openacr@0.3.8
-npx openacr validate -f draft.yaml
-npx openacr output -f draft.yaml -t node_modules/@openacr/openacr/templates/openacr-html-0.1.0.handlebars -o draft.html
+npx openacr validate -f draft.yaml -c node_modules/@openacr/openacr/catalog/<catalog-id>.yaml
+npx openacr output -f draft.yaml -c node_modules/@openacr/openacr/catalog/<catalog-id>.yaml \
+  -t node_modules/@openacr/openacr/templates/openacr-html-0.1.0.handlebars -o draft.html
 ```
+
+**Always pass `-c` — on both commands.** Neither command loads the document's
+own `catalog:` field (Phase 2, reproduced): `validate` without `-c` is
+schema-shape only and accepts nonexistent criterion numbers; `output`
+without `-c` exits successfully and silently renders a metadata-only shell
+with zero criteria tables. A bare `validate -f` is no validation at all, and
+a rendered HTML must be checked to actually contain its criteria tables
+before it is circulated.
 
 Catalogs, schemas, and templates all ship inside the package — reference them from `node_modules/@openacr/openacr/`, never copy them into a repo.
 
 | The CLI checks | The CLI does NOT check (skill self-checks) |
 |---|---|
 | YAML/schema shape; `author.email` present | A/AA completeness (step 6) |
-| Criterion numbers exist in the named catalog | `not-evaluated` restricted to AAA (INCOMPLETE protocol) |
-| Term strings are catalog terms | Term appropriateness vs outcomes; note forms; value provenance |
+| Criterion numbers exist in the catalog — **only with `-c`** | `not-evaluated` restricted to AAA (INCOMPLETE protocol) |
+| Term strings are catalog terms — **only with `-c`** | Term appropriateness vs outcomes; note forms; value provenance |
+| — | An absent `license` (the schema assumes **CC-BY-4.0** "in any output" — a withheld license must be surfaced in the handoff as a decision the owner still owes, never treated as safely empty) |
 
 ---
 
@@ -175,7 +185,7 @@ Catalogs, schemas, and templates all ship inside the package — reference them 
 
 **2.2-catalog drafts:** the human reviews the rendered HTML + YAML directly (acreditor cannot import them today — reference doc, watch rule). Edits go into the YAML; re-validate after.
 
-**The human owns:** sign-off, publication, removal of the draft disclaimer, and every conformance statement made to a third party. This skill never auto-publishes, never auto-signs, never emits a final ACR, and never writes to acreditor.
+**The human owns:** sign-off, publication, removal of the draft disclaimer, the license decision (an absent `license` renders as CC-BY-4.0 by the schema's own default — say so in the handoff whenever the engagement record withholds one), and every conformance statement made to a third party. This skill never auto-publishes, never auto-signs, never emits a final ACR, and never writes to acreditor.
 
 ---
 

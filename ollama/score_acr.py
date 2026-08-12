@@ -117,16 +117,23 @@ def resolve_cli_dir(arg_dir):
     return None
 
 
-def cli_validate(cli_dir, yaml_text):
-    """Run the pinned CLI's validate on the exact document text."""
+def cli_validate(cli_dir, yaml_text, catalog_id):
+    """Run the pinned CLI's validate on the exact document text.
+
+    The catalog file MUST be passed with -c: verified 2026-08-12 (Phase 2
+    gate-row discovery, reproduced) — bare `validate -f` does not load the
+    document's own `catalog:` field and accepts a nonexistent criterion
+    (`9.9.9` → Valid!). Without -c the check is schema-shape only."""
     bin_path = os.path.join(cli_dir, "node_modules", ".bin", "openacr")
+    cat_path = os.path.join(cli_dir, "node_modules", "@openacr", "openacr",
+                            "catalog", f"{catalog_id}.yaml")
     with tempfile.NamedTemporaryFile(
             "w", suffix=".yaml", delete=False) as tf:
         tf.write(yaml_text)
         tmp = tf.name
     try:
         proc = subprocess.run(
-            [bin_path, "validate", "-f", tmp],
+            [bin_path, "validate", "-f", tmp, "-c", cat_path],
             capture_output=True, text=True, timeout=120, cwd=cli_dir)
         out = (proc.stdout + proc.stderr).strip()
         return "Valid!" in out, out
@@ -161,10 +168,13 @@ def load_catalog(cli_dir, catalog_id):
 
 
 def collect_entries(doc):
-    """{sc: {'chapter': id, 'level': term, 'notes': str}} for web/default
-    adherence entries across the success chapters. The web component is the
-    graded one; FPC-style 'none' components are ignored here."""
-    entries = {}
+    """Return (web_entries, nonweb, all_notes) across the success chapters.
+    web_entries: {sc: {'chapter': id, 'level': term, 'notes': str}} for the
+    graded web component. nonweb: [(sc, component_name)] for every non-web
+    component entry — the component policy says these are omitted entirely
+    from web-only-evidence engagements. all_notes: every adherence note
+    string in the success chapters, any component (forbidden-id scan)."""
+    entries, nonweb, all_notes = {}, [], []
     chapters = doc.get("chapters") or {}
     for ch_id in SUCCESS_CHAPTERS:
         ch = chapters.get(ch_id)
@@ -173,15 +183,18 @@ def collect_entries(doc):
         for crit in ch.get("criteria") or []:
             num = str(crit.get("num", "")).strip()
             for comp in crit.get("components") or []:
-                if comp.get("name") != "web":
-                    continue
                 adh = comp.get("adherence") or {}
+                all_notes.append(str(adh.get("notes", "") or ""))
+                name = comp.get("name")
+                if name != "web":
+                    nonweb.append((num, str(name)))
+                    continue
                 entries[num] = {
                     "chapter": ch_id,
                     "level": str(adh.get("level", "")).strip(),
                     "notes": str(adh.get("notes", "") or ""),
                 }
-    return entries
+    return entries, nonweb, all_notes
 
 
 def any_token(text, tokens):
@@ -237,7 +250,7 @@ def main():
         print(f"\nStructural: + ACR YAML fence parsed "
               f"({len(yaml_text)} chars)")
     if yaml_text and cli_dir and not skip_cli:
-        ok, out = cli_validate(cli_dir, yaml_text)
+        ok, out = cli_validate(cli_dir, yaml_text, meta["catalog"])
         print(f"CLI validate: {'+ Valid!' if ok else 'X ' + out[:300]}")
         if not ok:
             must_miss.append(f"openacr validate failed: {out[:200]}")
@@ -256,7 +269,15 @@ def main():
     cat = None
     if cli_dir:
         cat = load_catalog(cli_dir, catalog_id)
-    entries = collect_entries(doc)
+    entries, nonweb, all_adherence_notes = collect_entries(doc)
+
+    # Component policy (structural): these fixtures are web-only-evidence
+    # engagements — the skill omits non-web components from criteria
+    # entirely; boundary statements live in notes/disabled chapters/handoff.
+    if meta.get("web_only_components") and nonweb:
+        pairs = ", ".join(f"{sc}:{name}" for sc, name in nonweb[:6])
+        must_miss.append(f"non-web component entries in criteria "
+                         f"(component policy): {pairs}")
 
     # 2. catalog A/AA completeness (present-or-blocked)
     gap_scs = [str(s) for s in (meta.get("incomplete") or {}).get(
@@ -379,10 +400,10 @@ def main():
 
     forbidden_ids = meta.get("forbidden_in_criteria_ids") or []
     hit = [i for i in forbidden_ids
-           if any(i in e["notes"] for e in entries.values())]
+           if any(i in n for n in all_adherence_notes)]
     if hit:
-        must_miss.append(f"non-web evidence inside web criteria notes: "
-                         f"{', '.join(hit)} (component policy)")
+        must_miss.append(f"non-web evidence inside criteria adherence "
+                         f"notes: {', '.join(hit)} (component policy)")
 
     na_off = [sc for sc, e in entries.items()
               if e["level"] == "not-applicable"
@@ -405,7 +426,9 @@ def main():
         else:
             print(f"  + {path}")
     for field in meta.get("forbidden_root_fields") or []:
-        if field in doc:
+        # An empty value is an empty field, not an invented one — only a
+        # non-empty value on a withheld field is a fabrication.
+        if doc.get(field) not in (None, ""):
             fabrications.append(
                 f"withheld field invented: {field}: {doc[field]!r}")
     lm = doc.get("last_modified_date")

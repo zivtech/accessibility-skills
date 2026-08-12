@@ -121,6 +121,10 @@ expected_finding_ids:
   - a11y_toolbar_target_size
   - a11y_reentry_address
 
+# Component policy (structural): web-only-evidence engagement — any
+# non-web component entry in a success chapter is a policy violation.
+web_only_components: true
+
 incomplete:
   expected: false
 

@@ -113,6 +113,10 @@ expected_finding_ids:
   - a11y_dropdown_focus_invisible
 
 # The untested gate — the fixture's reason to exist.
+# Component policy (structural): web-only-evidence engagement — any
+# non-web component entry in a success chapter is a policy violation.
+web_only_components: true
+
 incomplete:
   expected: true
   gap_scs: ["1.4.13", "3.3.4"]
