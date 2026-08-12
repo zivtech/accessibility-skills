@@ -8,6 +8,12 @@ npx skills add zivtech/accessibility-skills
 
 **[Visual Explainer](https://zivtech.github.io/accessibility-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
 
+## Release status — v1.0.0 (2026-08-12)
+
+**v1's supported runtime is Claude**: the Claude Code skills in `.claude/skills/` (the `npx skills add` install above) and the Claude subagent lane behind `/a11y-workflow`. Receipts for that surface: the Opus subagent planner lane (25/25, 2026-06-12) and the 2026-08-12 declared-508 rows — 11/11 PASS in both crosswalk conditions plus the lane's first verified stable-ID recomputation on the bug-report fixture ([receipts](evals/results/ict-baseline-phase3/README.md)).
+
+Everything else in the repo ships as benchmark infrastructure, not a supported v1 runtime: the local Ollama lane remains what its own results say it is — a **detector, never a verdict authority** — and the Codex/Gemini/Claude-API rows for the newest instruments, cloud-runner `planner-federal` condition parity, and the batched instrument revisions are TBD, tracked on [#17](https://github.com/zivtech/accessibility-skills/issues/17). Known issue at cut: the condensed `.claude/agents/` definitions predate the Phase 2 federal profile (sync in flight) — the skills themselves are current.
+
 This bundle packages four core skills that cover the full accessibility development lifecycle:
 
 - **Accessibility Planner** (`a11y-planner`): designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
