@@ -110,6 +110,8 @@ For this bundle, WCAG 2.2 AA is the current planning and review target. Section 
 - Use Section 508 language when the project scope explicitly requires Revised Section 508.
 - Map Section 508 web conformance to WCAG 2.0 Level A/AA.
 - Do not label WCAG 2.1 or 2.2-only criteria as Section 508 failures unless the project policy explicitly adopts them.
+- The federal test-completeness standard for a Section 508 conformance test process is the [ICT Testing Baseline for Web](https://ictbaseline.access-board.gov/) — what minimum tests a 508 test process must include, orthogonal to WCAG-EM's evaluation structure. Verified reference: [ict-testing-baseline-reference.md](ict-testing-baseline-reference.md); test-ID ground truth: [ict-baseline-test-id-manifest.yaml](ict-baseline-test-id-manifest.yaml).
+- Baseline reading trap: baseline text quotes WCAG 2.0-basis requirements while linking WCAG 2.2 Understanding articles as reading aids — never read a 2.2 link in baseline text as a WCAG 2.2 conformance mapping. Related: baseline test `24.A-Parsing` always passes by upstream design (WCAG 2.0 Errata 13), with markup consequences re-routed to other SCs.
 
 ## Perspective and ARRM Routing
 

@@ -53,6 +53,7 @@ Official references:
 
 - [Section508.gov Applicability and Conformance Requirements](https://www.section508.gov/develop/applicability-conformance/) states that the Revised 508 Standards incorporate WCAG 2.0 Level AA for web and non-web electronic content.
 - [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) is the current W3C recommendation this bundle uses as its planning and review target.
+- [ICT Testing Baseline Portfolio](https://ictbaseline.access-board.gov/) — the named federal test-completeness standard behind this section's 508 context: what minimum tests a Section 508 conformance test process must include. Its text links WCAG 2.2 Understanding articles as reading aids while mapping to 508's WCAG 2.0 A/AA basis — never read those links as 2.2 conformance mappings. Adoption boundary and verified extraction: [ict-testing-baseline-adoption-assessment.md](ict-testing-baseline-adoption-assessment.md), [ict-testing-baseline-reference.md](ict-testing-baseline-reference.md).
 
 ## What This Does Not Claim
 

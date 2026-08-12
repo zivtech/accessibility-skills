@@ -150,6 +150,8 @@ At audit scope, the report-level companion [A11y Evaluation Report Contract](doc
 
 The v1 boundary keeps continuous crawling, ISO-week dashboards, generated report state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and mutable crawl state out of this bundle. See [Vital-Core Adoption Assessment](docs/vital-core-adoption-assessment.md). Use [Section508.gov conformance guidance](https://www.section508.gov/develop/applicability-conformance/) as regulatory context for WCAG 2.0 Level A/AA, and use [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) as the current planning and review target.
 
+The federal test-completeness standard behind that Section 508 context now has a name here: the [ICT Testing Baseline](https://ictbaseline.access-board.gov/) — what minimum tests a Section 508 conformance test process must include, sitting beside WCAG-EM at audit scope (EM structures the evaluation; the baseline defines the minimum test set), not on top of it. Baseline vocabulary belongs to declared Revised-508 engagements at audit scope only — a baseline citation in a component-scope review is a finding against the output, mirroring the EM rule — and the bundle's WCAG 2.2 AA default target never lowers to the federal 2.0 floor. The reference layer landed 2026-08-12 (Phase 0; audit-scope wiring is planned, not yet built): [adoption assessment](docs/ict-testing-baseline-adoption-assessment.md), [verified reference](docs/ict-testing-baseline-reference.md), [test-ID manifest](docs/ict-baseline-test-id-manifest.yaml).
+
 ## Model Baselines
 
 The evaluation story is cross-provider. The benchmark suite compares the same fixtures and rubrics across hosted and local model families.
@@ -218,6 +220,9 @@ docs/
   virtual-screen-reader-adoption-assessment.md  # Component SR-assertion mode adoption + cross-validation
   wcag-em-2-adoption-assessment.md      # WCAG-EM 2.0 gap analysis + tiered audit-scope adoption plan
   wcag-em-2-reference.md                # Verified WCAG-EM 2.0 spec reference (Phase 0 gate artifact)
+  ict-testing-baseline-adoption-assessment.md   # ICT Testing Baseline gap analysis + tiered federal-scope adoption plan
+  ict-testing-baseline-reference.md     # Verified ICT Testing Baseline reference (Phase 0 gate artifact)
+  ict-baseline-test-id-manifest.yaml    # Machine-readable baseline test-ID ground truth (62 web / 57 documents)
   drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
   a11y-planner/
   a11y-critic/
