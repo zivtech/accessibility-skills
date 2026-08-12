@@ -179,7 +179,10 @@ now with the baseline field itself instrumented.
 SKILL.md as their protocol — the established `a11y-planner` agent-def was
 deliberately bypassed because it carries a condensed pre-Phase-2 protocol
 with no FEDERAL PROFILE (drift flagged for repair as its own task; the
-condensed defs need a Phase 2 sync and a marker-based drift check). Fixtures
+condensed defs need a Phase 2 sync and a marker-based drift check —
+repaired same day: FEDERAL PROFILE synced to both planner defs, critic
+defs' Phase 0/evidence-wording gaps closed, marker check added to
+`scripts/check_mirrors.py` strict CI). Fixtures
 inlined (they live under `evals/`, which the agents were barred from
 reading); the federal condition read the crosswalk in-repo (the
 subagent-native equivalent of crosswalk-in-prompt); the withheld condition
