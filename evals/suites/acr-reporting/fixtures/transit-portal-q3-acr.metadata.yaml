@@ -159,6 +159,10 @@ expected_finding_ids:
 # Complete evidence — the INCOMPLETE marker must NOT appear in the document
 # notes (spurious-gap false positive; the 3.1.2 follow-up closed the one
 # historically-untested criterion).
+# Component policy (structural): web-only-evidence engagement — any
+# non-web component entry in a success chapter is a policy violation.
+web_only_components: true
+
 incomplete:
   expected: false
 

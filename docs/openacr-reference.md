@@ -16,13 +16,16 @@ Facts verified 2026-08-12 against `@openacr/openacr@0.3.8` (npm), `GSA/openacr` 
 ## CLI (`@openacr/openacr`)
 
 - Installs and runs on Node v24.13.0, 0 vulnerabilities (verified 2026-08-12). Ships catalogs, schemas, Handlebars templates, and example ACRs inside the package — consuming projects get everything from the one pin.
-- Commands: `openacr validate -f <file> [-c <catalogFile>]` and `openacr output -f <file> -t <templateFile> -o <outFile>`. Templates shipped: `openacr-markdown-0.1.0.handlebars`, `openacr-html-0.1.0.handlebars`, `openacr-simple-html-0.1.0.handlebars` (+ CSS). `output` without `-t` fails ("template file is invalid") — always pass the template.
+- Commands: `openacr validate -f <file> -c <catalogFile>` and `openacr output -f <file> -c <catalogFile> -t <templateFile> -o <outFile>`. Templates shipped: `openacr-markdown-0.1.0.handlebars`, `openacr-html-0.1.0.handlebars`, `openacr-simple-html-0.1.0.handlebars` (+ CSS). `output` without `-t` fails ("template file is invalid") — always pass the template.
+- **`-c` is load-bearing on BOTH commands (Phase 2 gate-row discovery, reproduced 2026-08-12):** neither command loads the document's own `catalog:` field. `validate` without `-c` is schema-shape only — a document claiming nonexistent criterion `9.9.9` validates (`Valid!`); with `-c` it is correctly rejected. `output` without `-c` exits successfully and silently renders a metadata-only shell with zero criteria tables (14 KB vs 120 KB on the package's own `drupal-10-16.yaml`). Treat a bare `validate -f` as no validation at all, and check a rendered HTML actually contains its criteria tables before circulating it.
+- **Absent `license` is not neutral:** the schema states "If none is provided 'CC-BY-4.0' is assumed default in any output" (verbatim, `openacr-0.1.0.json`), and rendered HTML asserts that license. A deliberately-undecided license must be surfaced to the human at handoff, not treated as a safely-empty field.
 - Verified round-trip: upstream `drupal-10-16.yaml` → `Valid!`; hand-authored minimal WCAG 2.2 document (catalog `2.5-edition-wcag-2.2-508-en`, incl. 2.2-only SC 2.5.8) → `Valid!` → rendered to Markdown and HTML.
 - **Validation gaps — all verified, all load-bearing for consumers:**
   1. `validate` does **not** enforce the not-evaluated-AAA-only rule its own catalog text states: `not-evaluated` on Level A SC 1.1.1 → `Valid!`.
   2. `validate` does **not** enforce SC completeness: a document with 2 of ~50 A/AA criteria → `Valid!`.
   3. `disabled: true` chapters → `Valid!`.
-  - Consequence: "schema-valid" is a weak gate. Completeness checking and per-level term legality fall entirely on the consumer (in this repo: `score_acr.py` and the acr-reporting skill's own gates).
+  4. Catalog membership of criterion numbers is checked **only when `-c` is passed** (Phase 2 correction of this document's earlier claim — without `-c`, membership is not checked at all; see the `-c` bullet above).
+  - Consequence: "schema-valid" is a weak gate. Completeness checking and per-level term legality fall entirely on the consumer (in this repo: `score_acr.py` and the acr-reporting skill's own gates), and even the membership check requires the explicit catalog flag.
 
 ## Editor (acreditor.section508.gov)
 

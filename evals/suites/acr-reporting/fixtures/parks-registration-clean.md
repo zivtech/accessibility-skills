@@ -180,7 +180,8 @@ Exception); 2.2.3 No Timing; 2.2.4 Interruptions; 2.2.5 Re-authenticating;
 2.4.12 Focus Not Obscured (Enhanced); 2.4.13 Focus Appearance; 2.5.5 Target
 Size (Enhanced); 2.5.6 Concurrent Input Mechanisms; 3.1.3 Unusual Words;
 3.1.4 Abbreviations; 3.1.5 Reading Level; 3.1.6 Pronunciation; 3.2.5 Change
-on Request; 3.3.5 Help; 3.3.6 Error Prevention (All).
+on Request; 3.3.5 Help; 3.3.6 Error Prevention (All); 3.3.9 Accessible
+Authentication (Enhanced).
 
 Revised Section 508 chapters: `functional_performance_criteria` (9
 provisions, 302.1–302.9); `hardware` (55 provisions, 402.2.1–415.1.2);

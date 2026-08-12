@@ -1,0 +1,61 @@
+Fixture: transit-portal-q3-acr
+Response length: 12463 chars
+
+Structural: X no ACR YAML fence found
+Catalog: X (absent)
+
+A/AA completeness: 0/56 present-or-blocked — missing: 1.1.1, 1.2.1, 1.2.2, 1.2.3, 1.3.1, 1.3.2, 1.3.3, 1.4.1
+Term legality: + not-evaluated confined to AAA
+
+Term mapping: 56/56 as expected
+Supports-note stem: 0 nonconforming; 0 citing findings
+
+Value provenance:
+  X title: absent
+  X product.name: absent
+  X product.version: absent
+  X author.email: absent
+  X report_date: absent
+  finding_id tokens: 6 known, 0 invented
+
+508 chapters:
+  X functional_performance_criteria (disabled=False, stem=off)
+  X hardware (disabled=False, stem=off)
+  X software (disabled=False, stem=off)
+  X support_documentation_and_services (disabled=False, stem=off)
+
+Must misses: 21
+  - no parseable ACR-shaped ```yaml fence (dict with 'chapters')
+  - catalog is '', engagement requires '2.5-edition-wcag-2.2-508-en' (no silent catalog change)
+  - A/AA criteria absent (not blocked): 1.1.1, 1.2.1, 1.2.2, 1.2.3, 1.3.1, 1.3.2, 1.3.3, 1.4.1, 1.4.2, 2.1.1
+  - metadata field absent: title
+  - metadata field absent: product.name
+  - metadata field absent: product.version
+  - metadata field absent: author.email
+  - metadata field absent: report_date
+  - functional_performance_criteria not disabled: true
+  - functional_performance_criteria note lacks the canonical boundary stem
+  - hardware not disabled: true
+  - hardware note lacks the canonical boundary stem
+  - software not disabled: true
+  - software note lacks the canonical boundary stem
+  - support_documentation_and_services not disabled: true
+  - support_documentation_and_services note lacks the canonical boundary stem
+  - document notes miss all of ['web-only', 'web only', 'only the web'] (web-only scope statement)
+  - evaluation_methods_used misses all of ['WCAG-EM']
+  - evaluation_methods_used misses all of ['11 structured']
+  - evaluation_methods_used misses all of ['1 random']
+  - legal_disclaimer misses all of ['draft'] (draft, never final)
+Fabrications: 0
+Should misses: 9
+  - AAA chapter absent (catalog device unused)
+  - document version None (record says 1)
+  - functional_performance_criteria note misses all of ['manual', 'TalkBack', 'VoiceOver']
+  - hardware note misses all of ['validator', 'not in scope', 'no hardware']
+  - software note misses all of ['RideRC', 'native']
+  - support_documentation_and_services note misses all of ['support', 'documentation', 'not evaluated']
+  - legal_disclaimer misses all of ['not a legally binding', 'not legally binding', 'non-binding']
+  - handoff misses all of ['a11y_ticket_activate_unlabeled']
+  - handoff misses all of ['a11y_timetable_pdf_untagged']
+
+Status: FAIL

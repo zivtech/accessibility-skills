@@ -157,6 +157,44 @@ single-draw gates pass by luck). "Recommended" means exactly: the
 pending-caveat line is removed from SKILL.md and the CLAUDE.md skill row.
 On fail: the plan's rollback table applies.
 
+## First model rows + gate verdict (2026-08-12) — **GATE PASSED**
+
+Eleven rows (opus subagents ×8 skill-condition + ×2 baseline, one
+qwen3.6:35b detector row), full adjudications and the instrument-revision
+log in [`evals/results/acr-reporting-phase2/`](../../results/acr-reporting-phase2/):
+
+| Fixture | opus draw 1 | opus draw 2 |
+|---|---|---|
+| transit-portal-q3-acr | **PASS** | **PASS** |
+| permit-portal-acreditor | **PASS** | **PASS** |
+| campus-events-untested | **WARN** (1 should-tier token miss, adjudicated a false miss — content present) | **PASS** |
+| parks-registration-clean | **PASS** | **PASS** |
+| f1 baseline (A/B) | FAIL (20 must) | FAIL (19 must) |
+| f1 qwen3.6:35b (detector) | FAIL (unparseable YAML) | — |
+
+**Eight of eight skill rows: zero must-tier misses, zero fabrications,
+across all four fixtures and both draws** — both traps held, the FP
+control stayed clean, and every metadata value traced. The A/B direction
+is draw-stable and characterizes what the skill carries precisely: both
+baselines had **zero term-mapping misses and zero fabrications** (bare
+opus judges correctly) but missed the machine contract everywhere —
+schema exactness (CLI-invalid `version` string; an invented
+`release_date` field), the component policy, all canonical note stems,
+boundary stems, and methods/disclaimer phrasing. The local detector row
+FAILed at the structural gate (canonical stems emitted as unquoted plain
+scalars — the colon breaks the YAML; values in the raw text were correct),
+reinforcing the mandatory hosted/human value-and-validate pass on any
+local draft.
+
+Gate-row byproducts, independently reproduced and folded back into the
+skill + reference doc: `validate`/`output` both require `-c` (bare
+`validate -f` accepts nonexistent criteria; bare `output` silently renders
+a criteria-less shell), and an absent `license` renders as CC-BY-4.0 by
+the schema's own default. The plan's re-verification checklist also
+closed: a full-size 2.1-catalog gate draft imported into acreditor
+(78/312 progress, disabled chapters dropped, notes populated into the
+editor's controls) and a 2.2 gate draft rendered to full HTML via the CLI.
+
 ## Running the lane (local detector rows)
 
 ```
