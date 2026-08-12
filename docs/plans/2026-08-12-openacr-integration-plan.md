@@ -136,9 +136,9 @@ ACR YAML is value-dense: product versions, dates, URLs, contact blocks, per-SC t
 
 **Phase 2 — Eval lane: COMPLETE 2026-08-12, GATE PASSED.** Fixtures 1/2/3/5 + `ollama/score_acr.py` (calibrated 9/9 pre-rows, `evals/results/acr-reporting-phase2/calibrate.py`); hosted rows: opus ×2 draws ×4 fixtures all must-clean (7 PASS + 1 read-adjudicated WARN), A/B baselines FAIL draw-stably with zero term misses (the skill carries the machine contract), qwen3.6:35b detector row FAILed structurally (unparseable YAML — the expected-direction detector result, stronger). Pending-caveats removed; CLAUDE.md row, planner audit-mode template mention, and bug-reporting cross-ref wired. Gate-row byproducts folded back: `-c` is load-bearing on validate AND output; absent `license` renders as CC-BY-4.0.
 
-**Phase 3 — Lane B (separate PR):** claims-delta protocol in `acr-reporting` with a11y-critic as adjudicator; fixtures 4/4b; first rows.
+**Phase 3 — Lane B: COMPLETE 2026-08-12 (stacked PR).** Claims-delta protocol in `acr-reporting` (four-verdict vocabulary, deterministic comparison rule with the NA and illegal-term edges, canonical delta table, foreign-ACR trend boundary, a11y-critic as adjudicator per Decision 3); fixtures 4 (`shiftline-vendor-acr`) + 4b (`courseware-vendor-acr-clean`); `lane: b` scorer path calibrated 6/6 pre-rows. First rows: opus 4/4 PASS at every tier across 2 draws on both fixtures; baselines FAIL draw-stably (vocabulary/format carry, judgment intact); qwen3.6:35b WARN with 56/56 correct verdicts (receipts: `evals/results/acr-reporting-phase3/`). Two gate-row-sourced amendments folded back same day: the understated-on-pass citation rule, and the negation-aware trend scan.
 
-**Phase 4 — Lane C + upstream:** drift-diff narration rules (self vs foreign boundary); file the two upstream issue candidates from the reference doc (search existing issues first; KAT #27 precedent).
+**Phase 4 — Lane C + upstream:** drift-diff narration rules (self vs foreign boundary); file the upstream issue candidates — now five, with ready-to-file drafts and the filing-approval boundary in [the Phase 4 handoff](2026-08-12-openacr-phase4-handoff.md) (search existing issues first; KAT #27 precedent).
 
 ## Rollback / Failure Modes
 

@@ -1,0 +1,111 @@
+fixture_id: courseware-vendor-acr-clean
+suite: acr-reporting
+input_format: engagement record + subject vendor OpenACR (verbatim YAML) +
+  finished verification evidence with zero findings + catalog frame
+difficulty: CLEAN
+description: >-
+  Lane B clean control (integration-plan eval item 4b) — the claims-audit
+  counterpart of parks-registration-clean. A fully accurate vendor ACR
+  (including honest supports claims on real captioned media) verified by
+  an engagement that found nothing: every one of the 56 A/AA claims must
+  come back confirmed, with zero invented findings (none exist — any
+  a11y_* token is a fabrication), zero hygiene flags, zero trend
+  vocabulary, and no vendor-hostile verdict drift. A verifier that
+  overstates-hunts on honest claims is dead.
+
+# ── Scorer contract (ollama/score_acr.py, lane B path) ───────────────────
+
+lane: b
+catalog: 2.5-edition-wcag-2.2-508-en
+
+expected_verdicts:
+  "1.1.1": confirmed
+  "1.2.1": confirmed
+  "1.2.2": confirmed
+  "1.2.3": confirmed
+  "1.3.1": confirmed
+  "1.3.2": confirmed
+  "1.3.3": confirmed
+  "1.4.1": confirmed
+  "1.4.2": confirmed
+  "2.1.1": confirmed
+  "2.1.2": confirmed
+  "2.1.4": confirmed
+  "2.2.1": confirmed
+  "2.2.2": confirmed
+  "2.3.1": confirmed
+  "2.4.1": confirmed
+  "2.4.2": confirmed
+  "2.4.3": confirmed
+  "2.4.4": confirmed
+  "2.5.1": confirmed
+  "2.5.2": confirmed
+  "2.5.3": confirmed
+  "2.5.4": confirmed
+  "3.1.1": confirmed
+  "3.2.1": confirmed
+  "3.2.2": confirmed
+  "3.2.6": confirmed
+  "3.3.1": confirmed
+  "3.3.2": confirmed
+  "3.3.7": confirmed
+  "4.1.1": confirmed
+  "4.1.2": confirmed
+  "1.2.4": confirmed
+  "1.2.5": confirmed
+  "1.3.4": confirmed
+  "1.3.5": confirmed
+  "1.4.3": confirmed
+  "1.4.4": confirmed
+  "1.4.5": confirmed
+  "1.4.10": confirmed
+  "1.4.11": confirmed
+  "1.4.12": confirmed
+  "1.4.13": confirmed
+  "2.4.5": confirmed
+  "2.4.6": confirmed
+  "2.4.7": confirmed
+  "2.4.11": confirmed
+  "2.5.7": confirmed
+  "2.5.8": confirmed
+  "3.1.2": confirmed
+  "3.2.3": confirmed
+  "3.2.4": confirmed
+  "3.3.3": confirmed
+  "3.3.4": confirmed
+  "3.3.8": confirmed
+  "4.1.3": confirmed
+
+verdict_citations: {}
+hygiene_must: {}
+unverifiable_reasons: {}
+na_note_should: {}
+
+forbidden_trend_tokens: ["persistent", "worsening", "improving", "resolved"]
+
+# No overstated claims exist — no routing line is owed; summary honesty is
+# should-tier.
+routing_must: []
+
+summary_should:
+  - ["confirmed"]
+  - ["sample", "scope"]
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids: []
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["human", "review", "procurement"]
+
+notes: |
+  Integration-plan eval item 4b (Lane B clean control), built 2026-08-12.
+  The FP surface: any non-confirmed verdict on an accurate claim, any
+  invented a11y_* finding (zero exist), any hygiene flag (the vendor ACR
+  is term-legal), any trend vocabulary (foreign ACR), or spurious
+  cannot-verify hedging where the evidence is complete. Misses here are
+  read especially carefully before adjudication — the fixture exists to
+  price false alarms on honest vendors.

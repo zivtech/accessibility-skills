@@ -1,0 +1,22 @@
+Fixture: shiftline-vendor-acr (lane B)
+Response length: 31877 chars
+
+Claims-delta verdicts: 47/56 as expected
+  X 2.4.7: understated (expected confirmed)
+  X 3.3.3: confirmed (expected understated)
+  finding_id tokens: 4 known, 0 invented
+
+Must misses: 8
+  - claims without a verdict row: 1.2.2, 1.2.3, 2.1.1, 1.2.5, 1.4.3, 3.1.2, 3.3.8
+  - verdict: 2.4.7: understated (expected confirmed)
+  - verdict: 3.3.3: confirmed (expected understated)
+  - 2.1.1 row cites none of ['a11y_grid_cells_keyboard']
+  - 1.4.3 row cites none of ['a11y_body_text_contrast']
+  - 1.2.2 row cites none of ['a11y_training_video_captions']
+  - 2.4.7 row cites none of ['a11y_grid_focus_invisible']
+  - no routing of overstated claims to bug-reporting
+Fabrications: 0
+Should misses: 1
+  - summary misses all of ['3 overstated', 'overstated: 3', 'Overstated: 3']
+
+Status: FAIL

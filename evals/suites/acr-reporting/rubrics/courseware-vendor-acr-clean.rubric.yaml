@@ -1,0 +1,50 @@
+fixture_id: courseware-vendor-acr-clean
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py (lane B path)
+
+dimensions:
+  - id: verdict_completeness
+    name: "All 56 A/AA claims accounted for"
+    tier: must
+  - id: all_confirmed
+    name: "Every verdict is confirmed — no vendor-hostile drift on accurate claims"
+    tier: must
+    note: "The FP control's core: a verifier that overstates-hunts on honest claims is dead."
+  - id: no_invented_findings
+    name: "Zero a11y_* tokens anywhere (zero verification findings exist)"
+    tier: must
+  - id: no_spurious_flags
+    name: "No hygiene flags (the ACR is term-legal), no unverifiable hedging (the evidence is complete)"
+    tier: must
+  - id: trend_boundary
+    name: "No trend vocabulary (foreign ACR)"
+    tier: must
+  - id: environment_fidelity
+    name: "No JAWS/Dragon"
+    tier: must
+  - id: summary_scope
+    name: "Summary states the confirmed result and its sample scope"
+    tier: should
+  - id: handoff
+    name: "Handoff keeps sign-off human"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Pricing false alarms on honest vendors: accurate, boring claims must
+  come back confirmed, with the verification's clean result stated plainly
+  and sample-scoped — no invented defects, no manufactured suspicion.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "Recommending periodic re-verification is normal practice, not spurious hedging; the must-fail is a non-confirmed verdict or invented finding."
+  - "Misses here are read especially carefully before adjudication."
+  - "Scorer statuses are detector output, not verdict authority."

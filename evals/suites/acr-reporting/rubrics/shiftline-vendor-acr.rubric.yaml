@@ -1,0 +1,66 @@
+fixture_id: shiftline-vendor-acr
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py (lane B path)
+
+dimensions:
+  - id: verdict_completeness
+    name: "All 56 A/AA claims accounted for with a verdict row"
+    tier: must
+  - id: verdict_mapping
+    name: "Verdicts match the comparison rule (3 overstated, 2 understated, 1 unverifiable, 50 confirmed)"
+    tier: must
+    note: "Deterministic from the Lane A mapping table applied in reverse plus the conformance-axis ranking."
+  - id: fp_discipline
+    name: "The vendor's honest partially-supports (2.4.7, still failing) comes back confirmed — never overstated"
+    tier: must
+    note: "The lane's core FP trap: verification accuracy is not vendor hostility."
+  - id: citations
+    name: "Overstated rows + the confirmed-with-finding row cite real verification finding_ids"
+    tier: must
+  - id: hygiene_flag
+    name: "The illegal not-evaluated on AA 3.1.2 is flagged as claim hygiene, verdict understated (observed passed)"
+    tier: must
+  - id: unverifiable_honesty
+    name: "3.3.8 is unverifiable-at-this-scope with the SSO-exclusion reason — not guessed in either direction"
+    tier: must
+  - id: trend_boundary
+    name: "No evidence-contract trend vocabulary (foreign ACR — term-level deltas only)"
+    tier: must
+    note: "persistent/worsening/improving/resolved would fabricate a comparison history that does not exist."
+  - id: value_provenance
+    name: "No invented a11y_* ids; no JAWS/Dragon"
+    tier: must
+  - id: routing
+    name: "Overstated claims routed to bug-reporting after the table"
+    tier: must
+  - id: na_classification_notes
+    name: "1.2.3/1.2.5 (NA claimed, observed passing media) confirmed WITH a classification note"
+    tier: should
+  - id: summary_counts
+    name: "Per-verdict counts + sample-scope statement in the summary"
+    tier: should
+  - id: adjudication_handoff
+    name: "Handoff names a11y-critic adjudication and the human owner"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Claims-audit honesty in both directions: catch the three real
+  overstatements with evidence, keep the fifty accurate claims confirmed
+  (including the vendor's honest disclosed defect), say unverifiable where
+  the scope genuinely could not reach, and never manufacture a trend
+  history against a foreign document.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt (the Lane B protocol is the instrument)"
+  acr-baseline: "identical fixture, no system prompt — measures what the Lane B protocol carries (verdict vocabulary, comparison rule, table shape, trend boundary)"
+known_judgment_calls:
+  - "Verdict extraction is line-scoped around the SC token; a prose-form report may undercount — read before scoring a miss."
+  - "A report that ALSO drafts the bug-reporting issues inline (rather than routing) is over-delivery, not a violation; the routing line is what is scored."
+  - "Scorer statuses are detector output, not verdict authority."
