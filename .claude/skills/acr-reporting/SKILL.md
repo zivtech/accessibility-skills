@@ -19,7 +19,7 @@ metadata:
 
 # ACR Reporting Skill (OpenACR)
 
-> **STATUS: EVAL LANE PENDING — NOT YET RECOMMENDED.** This skill ships ahead of its eval suite (`evals/suites/acr-reporting/`, Phase 2 of the [integration plan](../../../docs/plans/2026-08-12-openacr-integration-plan.md)). Until the Phase 2 gate passes (fixtures 1/2/3/5, hosted tier, stable across 2 draws), treat every output as experimental and route every draft through the mandatory human handoff below. Removing this banner **is** the act of recommending the skill — it happens only at gate-pass.
+> **Status: RECOMMENDED — Phase 2 gate passed 2026-08-12.** The eval lane lives at `evals/suites/acr-reporting/` (fixtures 1/2/3/5 + rule-based scorer `ollama/score_acr.py` invoking the routed pinned CLI); the gate — hosted tier passes all four fixtures, stable across 2 independent draws — was met with zero must-tier misses and zero fabrications across eight opus rows (receipts: `evals/results/acr-reporting-phase2/`). The mandatory human handoff below is unchanged by the gate: every output is a draft, and model routing stands — generation on the hosted tier; a locally-produced draft is detector output behind the mandatory value-and-validate pass.
 
 > **Verified facts + receipts:** [docs/openacr-reference.md](../../../docs/openacr-reference.md) (format, schema, CLI behavior, editor behavior — all claims receipted 2026-08-12). **Boundary ruling:** [docs/openacr-adoption-assessment.md](../../../docs/openacr-adoption-assessment.md).
 

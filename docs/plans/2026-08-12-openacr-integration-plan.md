@@ -1,6 +1,6 @@
 # OpenACR / acreditor.section508.gov Integration Plan
 
-> **Status:** APPROVED + REVISED — recommendations accepted 2026-08-12; proposal-critic verdict REVISE, all findings addressed below; **Phase 0 spike COMPLETE 2026-08-12** (results in Assumption Register)
+> **Status:** APPROVED + REVISED — recommendations accepted 2026-08-12; proposal-critic verdict REVISE, all findings addressed below; **Phase 0 spike COMPLETE 2026-08-12** (results in Assumption Register); **Phase 1 COMPLETE 2026-08-12**; **Phase 2 COMPLETE 2026-08-12 — GATE PASSED** (opus 8/8 must-clean across 2 draws; receipts `evals/results/acr-reporting-phase2/`; skill RECOMMENDED, wiring landed)
 > **Consequence level:** Internal Tool (prompt-only skill + docs + eval lane; no production runtime). One consequence-raising caveat: the output artifact is a *conformance report draft* that a human may publish — the gates below exist because of that.
 > **Companion docs:** `docs/openacr-reference.md` (verified format facts, written from the Phase 0 spike), `docs/openacr-adoption-assessment.md` (boundary ruling — Phase 1)
 
@@ -134,7 +134,7 @@ ACR YAML is value-dense: product versions, dates, URLs, contact blocks, per-SC t
 
 **Phase 1 — Skill + docs (~1-2 sessions):** `acr-reporting` SKILL.md (mapping table, catalog/component/author policies, INCOMPLETE protocol, canonical note forms, five non-negotiables, handoff instructions incl. acreditor-vs-CLI surface choice) + Codex mirror in `.agents/skills/` + `openacr-adoption-assessment.md` + report-contract edit (ACR-feed fields in `evaluation_identity`/optional sections; `machine_readable` gains the OpenACR pointer alongside EARL). **Every touched file carries: "Eval lane pending — not yet recommended."** No planner/bug-reporting/CLAUDE.md wiring yet.
 
-**Phase 2 — Eval lane (~1-2 sessions):** Fixtures 1–3 + 5, scorer, hosted baseline rows + one qwen3.6:35b detector row (expected: structure-pass / value-flags — that's the point). **Gate as defined above. On pass:** remove pending-caveats, add the CLAUDE.md Skills-table row, wire planner audit-mode template mention + bug-reporting cross-ref. **On fail:** see Rollback.
+**Phase 2 — Eval lane: COMPLETE 2026-08-12, GATE PASSED.** Fixtures 1/2/3/5 + `ollama/score_acr.py` (calibrated 9/9 pre-rows, `evals/results/acr-reporting-phase2/calibrate.py`); hosted rows: opus ×2 draws ×4 fixtures all must-clean (7 PASS + 1 read-adjudicated WARN), A/B baselines FAIL draw-stably with zero term misses (the skill carries the machine contract), qwen3.6:35b detector row FAILed structurally (unparseable YAML — the expected-direction detector result, stronger). Pending-caveats removed; CLAUDE.md row, planner audit-mode template mention, and bug-reporting cross-ref wired. Gate-row byproducts folded back: `-c` is load-bearing on validate AND output; absent `license` renders as CC-BY-4.0.
 
 **Phase 3 — Lane B (separate PR):** claims-delta protocol in `acr-reporting` with a11y-critic as adjudicator; fixtures 4/4b; first rows.
 
@@ -152,11 +152,11 @@ ACR YAML is value-dense: product versions, dates, URLs, contact blocks, per-SC t
 
 ## Success Criteria
 
-- [ ] A finished audit bundle serializes to a CLI-valid, catalog-complete (present-or-blocked) draft with zero fabricated values (fixture 1 + 5 pass, 2 draws).
-- [ ] Both traps (orthogonality, untested-gate) held by the hosted tier (2 draws).
-- [ ] A WCAG 2.1-catalog draft imports into acreditor and renders its notes (spike-proven; re-verified at Phase 2 with a full-size draft).
-- [ ] A WCAG 2.2 draft renders to reviewable HTML via the CLI (spike-proven).
-- [ ] Docs: reference + adoption assessment + contract edits merged; pending-caveat lifecycle honored.
+- [x] A finished audit bundle serializes to a CLI-valid, catalog-complete (present-or-blocked) draft with zero fabricated values (fixture 1 + 5 pass, 2 draws — 2026-08-12).
+- [x] Both traps (orthogonality, untested-gate) held by the hosted tier (2 draws — 2026-08-12).
+- [x] A WCAG 2.1-catalog draft imports into acreditor and renders its notes (spike-proven; re-verified 2026-08-12 with the full-size f2 gate draft — 78/312 progress, notes populated into the editor's controls).
+- [x] A WCAG 2.2 draft renders to reviewable HTML via the CLI (spike-proven; re-verified 2026-08-12 with the f1 gate draft, 123 KB with all tables — `-c` required).
+- [x] Docs: reference + adoption assessment + contract edits merged; pending-caveat lifecycle honored (caveats removed only at gate-pass, same day).
 
 ## Explicitly OUT of Scope
 
