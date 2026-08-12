@@ -1,0 +1,21 @@
+Fixture: test-federal-agency-audit
+Response length: 11123 chars
+
+Key sections:
+  + Sets the evaluation's compliance basis to WCAG 2.0 Level A/AA as what Revised Se
+  + Keeps WCAG 2.2 AA as a separately-reported remediation-recommendation layer — th
+  + Names the ICT Testing Baseline as the federal test-completeness standard behind 
+  + Answers the required-tests question in the honest phrasing — designed to cover N
+  + Redirects the HTML-checker expectation — 4.1.1 is in the Section 508 basis but i
+  + Brings the non-WCAG Section 508 provisions for the video player — caption and de
+  + Decides which intranet content must conform using the Section 508 scope provisio
+  + Routes the PDF library and scanned files out of the automated web pass — a docum
+  X Answers the government-approval question without claiming certification — alignm  (keywords: ['Trusted Tester', 'external review', 'certif'])
+  + Names the deliverable boundary for procurement — evidence that feeds an Accessib
+  + Carries an explicit conformance-floor declaration as a named plan artifact — the
+
+Score: 10/11
+WCAG criterion numbers cited: 3
+HTML/JSX code stubs: YES
+
+Status: PASS

@@ -1115,9 +1115,19 @@ The initial run hit GPT-5.3 (which doesn't exist in Codex), causing `codex exec`
   against `docs/ict-baseline-test-id-manifest.yaml`; `score_bugreport.py` requires the filed
   row under declared scope and fails fabricated/cross-baseline/24.A citations;
   `score_planner.py` forces NEEDS REVIEW on fabrications or out-of-scope citations. Synthetic
-  calibration before any model rows (11 cases, all discriminating; extension inert on all 65
-  committed lane responses; old-vs-new scorer A/B 65/65 identical statuses):
-  `evals/results/ict-baseline-phase3/`.
+  calibration before any model rows (16 cases, all discriminating, incl. an adversarial
+  trap-taker; extension inert on all 65 committed lane responses; old-vs-new scorer A/B 65/65
+  identical statuses): `evals/results/ict-baseline-phase3/`. First rows same day (both models
+  Metal, both planner conditions + bugreport): qwen3.6:35b federal 10/11 PASS (content-adj
+  ≈11/11), no-crosswalk 9/11 NEEDS REVIEW (marker false-fire on concede-then-refute phrasing,
+  adjudicated correct; coverage honestly hedged with an UNFILLED "N of 62" — zero invented
+  counts), bugreport FAIL on the documented value-fidelity classes while FILING 5.A-ControlName
+  correctly; qwen3:32b control federal 10/11 PASS, no-crosswalk 7/11 with the run's headline
+  hazard — FABRICATED coverage counts ("54/62 … 45/57 PDF baseline tests performed", a
+  capability the stack declaredly lacks; numeric counts carry no ID token, caught by
+  adjudication), bugreport FAIL filing the wrong-but-valid near neighbor 5.C-ControlState for a
+  NAME defect — the filed-value check's first live catch. Zero fabricated baseline-test IDs in
+  all six rows. Adjudications + instrument-rev candidates in the receipts README.
 
 - 2026-07-17 (new lane — bug-reporting, issue #3): instrument only, no protocol change to any
   existing lane and no model rows yet. `evals/suites/bug-reporting/` adds 6 fixtures (axe-core

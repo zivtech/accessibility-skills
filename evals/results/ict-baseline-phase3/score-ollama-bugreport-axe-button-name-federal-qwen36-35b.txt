@@ -1,0 +1,13 @@
+Fixture: axe-button-name-federal
+Reports: 1 (expected 1)
+[report 1] labels: 7/7 | snippet: yes
+Key values: 6/7 groups present
+Stable IDs: 0/2 verified
+Baseline IDs (declared 508): cited 1, valid 1, filed rows 1
+
+MUST MISS: none of ['ul.uploaded-docs > li:nth-child(3) button.doc-remove', 'button.doc-remove'] found
+FABRICATION: 'Screen reader' carries invented value(s): ['VoiceOver (default) |']
+should miss: instance id cb692d7d (ul.uploaded-docs > li:nth-child(3) button.doc-remove) not found
+should miss: pattern id 99471cd8 (ul.uploaded-docs > li:nth-child(3) button.doc-remove) not found
+
+Status: FAIL
