@@ -8,6 +8,8 @@ Usage:
     python3 ollama/run_benchmark.py evalreport <model> <fixture-id>          # Evaluation-report single fixture (contract = system prompt)
     python3 ollama/run_benchmark.py evalreport-baseline <model> <fixture-id> # Same fixture, no contract (baseline condition)
     python3 ollama/run_benchmark.py evalreport-remaining [model]             # All un-benchmarked evaluation-report fixtures (contract condition)
+    python3 ollama/run_benchmark.py acr <model> <fixture-id>                 # ACR-reporting single fixture (skill = system prompt)
+    python3 ollama/run_benchmark.py acr-baseline <model> <fixture-id>        # Same fixture, no skill (baseline condition)
     python3 ollama/run_benchmark.py planner-federal <model> <fixture-id>     # Planner + a11y-test crosswalk in-prompt (declared-508 condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
@@ -76,6 +78,22 @@ EVALREPORT_CONTRACT_PATH = os.path.join(BASE_DIR, "..", "docs", "a11y-evaluation
 
 EVALREPORT_FIXTURES = [
     "transit-portal-q3",
+]
+
+# ACR-reporting lane (OpenACR integration plan Phase 2, 2026-08-12). The
+# system prompt is the acr-reporting SKILL.md — the skill IS the instrument,
+# same loading idea as the evaluation-report lane. No prompt prefix: the
+# fixture .md carries its own minimal task instruction, and the gates being
+# graded (mapping, untested gate, note forms, value provenance) must come
+# from the skill, not the task prompt.
+ACR_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "acr-reporting", "fixtures")
+ACR_SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "acr-reporting", "SKILL.md")
+
+ACR_FIXTURES = [
+    "transit-portal-q3-acr",
+    "permit-portal-acreditor",
+    "campus-events-untested",
+    "parks-registration-clean",
 ]
 
 PROMPT_PREFIX = "Review the following React component for accessibility design issues. Execute all phases of the investigation protocol.\n\n"
@@ -560,6 +578,64 @@ def load_evalreport_contract():
         return f.read()
 
 
+def run_acr(model, fixture_id, system_prompt, condition="acr"):
+    """ACR-reporting lane. condition="baseline" runs the identical fixture
+    with no system prompt to measure what the skill carries; its output file
+    gets a distinct prefix so skill-condition globs never count it."""
+    prompt = load_fixture(fixture_id, ACR_FIXTURES_DIR)
+
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        # 40k: the longest pair in the benchmark — a ~10k-token evidence
+        # bundle + the skill + a full 56-criterion YAML draft, with
+        # thinking-by-default models sharing the window with reasoning.
+        "options": {"num_ctx": 40960, "temperature": 0.3},
+    }
+    if system_prompt:
+        payload["system"] = system_prompt
+
+    file_prefix = "ollama-acr" if condition == "acr" else "ollama-acr-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"ACR ({condition}) | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1800) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "acr-reporting",
+        "condition": condition,
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
+def load_acr_skill():
+    with open(ACR_SKILL_PATH) as f:
+        return f.read()
+
+
 PERSPECTIVE_CTX = {
     "qwen3:32b": 32768,
     "llama3.3:70b": 32768,
@@ -795,6 +871,20 @@ def main():
         model, fixture_id = sys.argv[2], sys.argv[3]
         validate_fixture_id(fixture_id)
         run_evalreport(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "acr":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py acr <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        run_acr(model, fixture_id, load_acr_skill())
+
+    elif cmd == "acr-baseline":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py acr-baseline <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        run_acr(model, fixture_id, "", condition="baseline")
 
     elif cmd == "evalreport-remaining":
         import glob as _eglob

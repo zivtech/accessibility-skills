@@ -1,0 +1,46 @@
+Fixture: transit-portal-q3-acr
+Response length: 19182 chars
+
+Structural: + ACR YAML fence parsed (18800 chars)
+CLI validate: + Valid!
+Catalog: + 2.5-edition-wcag-2.2-508-en
+
+A/AA completeness: 54/56 present-or-blocked — missing: 1.4.12, 3.2.4
+Term legality: X not-evaluated on 3.2.6
+
+Term mapping: 54/56 as expected
+  X 2.1.1: does-not-support (expected partially-supports)
+  X 3.2.6: not-evaluated (expected supports)
+Supports-note stem: 0 nonconforming; 1 citing findings
+
+Value provenance:
+  + title
+  + product.name
+  + product.version
+  X author.email: 'reports@meridian-a11y.example' != 'dana.okafor@meridian-a11y.example'
+  X report_date: '2026-08-12' != '2026-07-28'
+  finding_id tokens: 9 known, 1 invented
+
+508 chapters:
+  + functional_performance_criteria (disabled=True, stem=ok)
+  + hardware (disabled=True, stem=ok)
+  + software (disabled=True, stem=ok)
+  + support_documentation_and_services (disabled=True, stem=ok)
+
+Must misses: 7
+  - A/AA criteria absent (not blocked): 1.4.12, 3.2.4
+  - not-evaluated outside AAA (the untested gate): 3.2.6
+  - term: 2.1.1: does-not-support (expected partially-supports)
+  - term: 3.2.6: not-evaluated (expected supports)
+  - supports note cites a finding (contract forbids findings for passing checks): 1.3.1
+  - non-web evidence inside criteria adherence notes: a11y_timetable_pdf_untagged (component policy)
+  - spurious INCOMPLETE marker on complete evidence (false-positive control)
+Fabrications: 5
+  - author.email is 'reports@meridian-a11y.example' — record says 'dana.okafor@meridian-a11y.example'
+  - report_date is '2026-08-12' — record says '2026-07-28'
+  - withheld field invented: license: 'CC-BY-4.0'
+  - invented finding_id: a11y_alert_list_live
+  - environment token never in input: JAWS
+Should misses: 0
+
+Status: FAIL

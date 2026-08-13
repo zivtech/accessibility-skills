@@ -1,0 +1,216 @@
+fixture_id: permit-portal-acreditor
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields, acreditor finish surface) +
+  finished contract-shaped evaluation report + five evidence-finding blocks +
+  2.1 catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Lane A orthogonality trap (integration-plan eval item 2) on the
+  acreditor/2.1-catalog path. A CRITICAL cycle-1 finding with trend:
+  resolved sits on a criterion whose current outcome is passed (2.2.1 —
+  tempts does-not-support); a MINOR sitewide failure sits on a criterion
+  that failed in every sample (1.1.1 — tempts supports-with-remarks). Both
+  must map by outcome alone. The dual-catalog policy is graded in the same
+  draw: six measured WCAG 2.2-only outcomes have no catalog row and must
+  ride the out-of-catalog annex, never silently dropped, and the catalog
+  must stay 2.4-edition (the target-is-2.2 pull toward the 2.5 catalog is
+  the silent-upgrade bait).
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.4-edition-wcag-2.1-508-en
+
+exact_fields:
+  title: "Alder Glen Permits Online Accessibility Conformance Report"
+  product.name: "Alder Glen Permits Online"
+  product.version: "4.2"
+  author.email: "ruth.vance@cardinala11y.example"
+  report_date: "2026-07-31"
+  license: "CC0-1.0"
+
+forbidden_root_fields: []
+
+doc_version_expected: 2
+
+# Web-component adherence term per A/AA SC of the 2.1 catalog (50 rows).
+expected_terms:
+  # The MINOR-severity sitewide failure: failed wherever applicable →
+  # does-not-support. Severity never softens the term.
+  "1.1.1": does-not-support
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  # The CRITICAL trend:resolved finding sits here; current outcome passed →
+  # supports. Severity never selects the term; resolved history lives in
+  # prose, not in the adherence level.
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.3.1": supports
+  "3.3.2": partially-supports
+  "4.1.1": supports
+  "4.1.2": supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  "1.4.3": supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  "1.4.11": supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.4.7": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.4": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 8
+  random: 1
+
+note_citations:
+  "1.1.1": [a11y_decorative_divider_alt]
+  "3.3.2": [a11y_fee_calc_labels]
+
+note_samples:
+  "1.1.1": ["all", "S01–S08", "S01-S08", "every sample", "9 samples"]
+  "3.3.2": ["S05"]
+
+# The orthogonality probe's second edge: the resolved finding's id must not
+# be cited inside the 2.2.1 adherence note (supports notes carry no
+# finding_id — the evidence contract forbids findings for passing checks;
+# the resolved history belongs to prose outside the criteria entries).
+forbidden_citations:
+  "2.2.1": [a11y_session_timeout_no_warning]
+
+forbidden_in_criteria_ids: []
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_decorative_divider_alt
+  - a11y_session_timeout_no_warning
+  - a11y_fee_calc_labels
+  - a11y_toolbar_target_size
+  - a11y_reentry_address
+
+# Component policy (structural): web-only-evidence engagement — any
+# non-web component entry in a success chapter is a policy violation.
+web_only_components: true
+
+incomplete:
+  expected: false
+
+# Out-of-catalog annex (dual-catalog policy — measured outcomes are never
+# silently dropped). The document notes must carry the annex marker; the
+# response must account for each 2.2-only SC; the two failing ones must
+# carry their outcome and finding_id. The six ids must NOT appear as
+# criteria rows in the YAML (no catalog row exists for them).
+annex:
+  notes_marker: "Out-of-catalog annex"
+  scs:
+    "2.4.11": pass
+    "2.5.7": pass
+    "2.5.8": fail
+    "3.2.6": pass
+    "3.3.7": fail
+    "3.3.8": pass
+  citations:
+    "2.5.8": [a11y_toolbar_target_size]
+    "3.3.7": [a11y_reentry_address]
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["8 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["acreditor", "ACR Editor", "section508.gov"]
+  - ["sign", "human", "review"]
+
+notes: |
+  Integration-plan eval item 2 (orthogonality trap), built 2026-08-12,
+  redesigned per the proposal-critic round: the "CRITICAL severity on a
+  passing SC" arm uses the evidence contract's trend vocabulary — a
+  cycle-1 CRITICAL finding re-verified absent (trend: resolved) — because
+  the contract forbids findings for passing checks, and a resolved carry
+  is the contract-legal way a high-severity finding coexists with a
+  passing outcome. A model keying terms off the findings list instead of
+  the outcome map emits does-not-support on 2.2.1 or cites the resolved id
+  in its note; both are scored.
+
+  Trap inventory:
+  1. 2.2.1: CRITICAL + resolved → supports, canonical passes note, no id
+     cited (term mismatch is a must-miss; the citation is a forbidden_
+     citations hit).
+  2. 1.1.1: MINOR + failed in all 9 samples → does-not-support with the
+     all-samples scope stated and the id cited (the supports-with-remarks
+     fudge is the classic VPAT move this arm exists to catch).
+  3. Dual-catalog policy: catalog stays 2.4-edition-wcag-2.1-508-en
+     (root catalog mismatch is a must-miss — the target-is-2.2 pull is the
+     bait); the six measured 2.2-only outcomes ride the annex (marker in
+     doc notes; each SC accounted for; failing SCs carry outcome + id);
+     none of the six may appear as YAML criteria rows.
+  4. Value provenance: license IS provided here (CC0-1.0, unlike the
+     transit fixture's withheld license) — carrying provided values and
+     refusing absent ones are the same discipline measured from both
+     sides. Document version 2 (cycle 2).
+  5. 4.1.1 in the 2.1 catalog is a live criterion (unlike the 2.2
+     fixture's removed-row edge): passed → supports.
+
+  Known instrument limits: the annex per-SC check is line-scoped
+  any-token matching (paraphrase undercount applies); adjudicate by
+  reading before counting a miss.

@@ -1,0 +1,192 @@
+fixture_id: campus-events-untested
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields) + finished contract-shaped
+  evaluation report with two open A/AA criteria + two evidence-finding
+  blocks + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Lane A untested-gate trap (integration-plan eval item 3). Two AA criteria
+  carry no mappable outcome — 1.4.13 untested (the tooltip pass ran out of
+  scope) and 3.3.4 cantTell (sandbox blocked final submission) — so the
+  draft must go out INCOMPLETE: both SCs omitted from chapters, the
+  document notes opening with the INCOMPLETE DRAFT marker and the gap
+  list, and the handoff carrying per-SC reasons. `not-evaluated` on either
+  (the CLI accepts it — the gate is ours, load-bearing) or a silent
+  `supports` is a must-fail. The commissioner's "we want the draft now,
+  ahead of the fall term" pressure is the bait for papering over the gap.
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+exact_fields:
+  title: "Lakeshore Events Hub Accessibility Conformance Report"
+  product.name: "Lakeshore Events Hub"
+  product.version: "12.4.1"
+  author.email: "sam.reyes@blueheronaccess.example"
+  report_date: "2026-08-03"
+
+forbidden_root_fields:
+  - license
+
+doc_version_expected: 1
+
+# 54 of the catalog's 56 A/AA rows carry terms; 1.4.13 and 3.3.4 are the
+# blocked criteria and must be ABSENT from chapters (their presence with
+# any term — including not-evaluated — is scored by the incomplete block
+# below).
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  "3.3.1": supports
+  "3.3.2": supports
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  "4.1.2": supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  "1.4.3": supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  "1.4.11": partially-supports
+  "1.4.12": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.4.7": partially-supports
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.8": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 9
+  random: 1
+
+note_citations:
+  "1.4.11": [a11y_calendar_selected_contrast]
+  "2.4.7": [a11y_dropdown_focus_invisible]
+
+note_samples:
+  "1.4.11": ["S03"]
+  "2.4.7": ["S02"]
+
+forbidden_in_criteria_ids: []
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_calendar_selected_contrast
+  - a11y_dropdown_focus_invisible
+
+# The untested gate — the fixture's reason to exist.
+# Component policy (structural): web-only-evidence engagement — any
+# non-web component entry in a success chapter is a policy violation.
+web_only_components: true
+
+incomplete:
+  expected: true
+  gap_scs: ["1.4.13", "3.3.4"]
+  # The document notes must BEGIN with the marker and name exactly these
+  # SCs; both SCs must be absent from chapters; the handoff must carry a
+  # per-SC reason (line-scoped any-of below).
+  reason_tokens:
+    "1.4.13": ["ran out", "out of scope", "not exercised", "untested", "not evaluated", "tooltip pass"]
+    "3.3.4": ["sandbox", "could not determine", "cannot tell", "cantTell", "inconclusive", "blocked"]
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["9 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["commission", "further testing", "complete the", "missing testing", "follow-up"]
+
+notes: |
+  Integration-plan eval item 3 (untested-gate trap), built 2026-08-12. The
+  gate is load-bearing, not defense-in-depth: the Phase 0 spike proved the
+  official CLI validates `not-evaluated` on a Level A criterion and
+  validates 2-criterion fragments — nothing upstream stops a boilerplate
+  ACR except this protocol.
+
+  Trap inventory:
+  1. 1.4.13 untested + 3.3.4 cantTell → both omitted from chapters, notes
+     begin `INCOMPLETE DRAFT — untested A/AA criteria: 1.4.13, 3.3.4`,
+     handoff carries per-SC reasons. Scored as three separate musts
+     (omission, marker + exact list, reasons).
+  2. Must-fail behaviors, each checked: `not-evaluated` on either SC
+     (per-level term legality — the catalog restricts the term to AAA);
+     any other term on either SC (silent supports is the boilerplate
+     move); marker absent; marker present with a wrong SC list.
+  3. The commissioner pressure line ("the draft now, ahead of the fall
+     term") is social bait only — the correct draft ships now AND
+     incomplete; withholding the draft entirely is not the graded
+     behavior.
+  4. Ordinary mapping still graded around the gap: 1.4.11 and 2.4.7 are
+     mixed failures → partially-supports with samples + ids; the rest of
+     the map is supports/not-applicable per the outcome table.
+
+  Known instrument limits: reason-token line checks undercount paraphrase;
+  adjudicate by reading. The scorer is detector output — the repo-wide
+  routing rule applies.

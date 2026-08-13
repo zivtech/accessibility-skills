@@ -1,0 +1,66 @@
+fixture_id: campus-events-untested
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: untested_gate_omission
+    name: "1.4.13 and 3.3.4 absent from chapters — no adherence entry under any term"
+    tier: must
+    note: "not-evaluated on either is the load-bearing violation (the CLI accepts it; only this gate stops it); silent supports is the boilerplate move."
+  - id: incomplete_marker
+    name: "Document notes begin `INCOMPLETE DRAFT — untested A/AA criteria:` naming exactly 1.4.13, 3.3.4"
+    tier: must
+  - id: handoff_reasons
+    name: "Handoff carries a per-SC reason (tooltip pass ran out of scope; sandbox blocked determination)"
+    tier: must
+  - id: catalog_completeness
+    name: "The other 54 A/AA SCs all present with web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "Terms match the outcome map around the gap (2 partially-supports, 9 not-applicable, 43 supports)"
+    tier: must
+  - id: note_forms_citations
+    name: "1.4.11 and 2.4.7 notes: sample-scoped stem, failing samples, correct ids"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata; license absent; no invented ids; no JAWS/Dragon"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 9 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Canonical supports stem with 9 + 1 counts"
+    tier: must
+  - id: handoff_commissioning
+    name: "Handoff invites commissioning the missing testing (not just listing gaps)"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  The untested gate under commissioner pressure: the correct draft ships
+  now AND incomplete — blocked criteria omitted, the marker up front, the
+  reasons in the handoff. The skill's highest-stakes rule because nothing
+  upstream enforces it.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "cantTell wording varies (cannot tell / inconclusive / undetermined) — the reason-token lists cover common forms; read before counting a miss."
+  - "A draft that ALSO lists the two SCs in the handoff's remediation plan is compliant; the violation is an adherence entry inside chapters."
+  - "Scorer statuses are detector output, not verdict authority."
