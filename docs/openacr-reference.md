@@ -18,6 +18,7 @@ Facts verified 2026-08-12 against `@openacr/openacr@0.3.8` (npm), `GSA/openacr` 
 - Installs and runs on Node v24.13.0, 0 vulnerabilities (verified 2026-08-12). Ships catalogs, schemas, Handlebars templates, and example ACRs inside the package — consuming projects get everything from the one pin.
 - Commands: `openacr validate -f <file> -c <catalogFile>` and `openacr output -f <file> -c <catalogFile> -t <templateFile> -o <outFile>`. Templates shipped: `openacr-markdown-0.1.0.handlebars`, `openacr-html-0.1.0.handlebars`, `openacr-simple-html-0.1.0.handlebars` (+ CSS). `output` without `-t` fails ("template file is invalid") — always pass the template.
 - **`-c` is load-bearing on BOTH commands (Phase 2 gate-row discovery, reproduced 2026-08-12):** neither command loads the document's own `catalog:` field. `validate` without `-c` is schema-shape only — a document claiming nonexistent criterion `9.9.9` validates (`Valid!`); with `-c` it is correctly rejected. `output` without `-c` exits successfully and silently renders a metadata-only shell with zero criteria tables (14 KB vs 120 KB on the package's own `drupal-10-16.yaml`). Treat a bare `validate -f` as no validation at all, and check a rendered HTML actually contains its criteria tables before circulating it.
+- **`validate` exits 0 on invalid input** (Phase 3 gate-row observation, reproduced 2026-08-12): the Invalid/Valid signal is stdout-only — a CI check keyed on exit status passes invalid (even unparseable) documents silently. Gate on the `Valid!` string, never the exit code.
 - **Absent `license` is not neutral:** the schema states "If none is provided 'CC-BY-4.0' is assumed default in any output" (verbatim, `openacr-0.1.0.json`), and rendered HTML asserts that license. A deliberately-undecided license must be surfaced to the human at handoff, not treated as a safely-empty field.
 - Verified round-trip: upstream `drupal-10-16.yaml` → `Valid!`; hand-authored minimal WCAG 2.2 document (catalog `2.5-edition-wcag-2.2-508-en`, incl. 2.2-only SC 2.5.8) → `Valid!` → rendered to Markdown and HTML.
 - **Validation gaps — all verified, all load-bearing for consumers:**
@@ -36,7 +37,12 @@ Facts verified 2026-08-12 against `@openacr/openacr@0.3.8` (npm), `GSA/openacr` 
 - `disabled: true` chapters import cleanly: chapter notes render in the chapter's Notes field; the chapter drops out of the progress sidebar. Progress counts are per-component cells ("Reported on 1 of 327 Total Criteria"; A 1/120, AAA 0/112, FPC 0/9, Hardware 0/55).
 - Watch rule: re-verify import compatibility and the catalog edition **on every editor release** (editor moves, pin doesn't — the KAT pin-bump pattern).
 
-## Upstream Issue Candidates (Phase 4 — search existing issues before filing)
+## Upstream Issues (FILED 2026-08-13, after searching open+closed issues in both repos — no duplicates existed; the editor repo routes issues to the main repo per openacr-editor#43)
 
-1. `GSA/openacr-editor`: no support for the 2.5-edition / WCAG 2.2 catalogs the format itself ships; valid 2.2 documents are rejected on import.
-2. `GSA/openacr`: `validate` does not enforce the "Not Evaluated only for WCAG Level AAA" constraint stated in its own catalog term description.
+1. [GSA/openacr#363](https://github.com/GSA/openacr/issues/363) — `validate` without `-c` skips all catalog checks; nonexistent criteria report `Valid!`.
+2. [GSA/openacr#364](https://github.com/GSA/openacr/issues/364) — `output` without `-c` reports success but renders a page with no criteria tables (shipped Drupal example: 14 KB vs 121 KB).
+3. [GSA/openacr#365](https://github.com/GSA/openacr/issues/365) — `validate` always exits 0; Invalid results are stdout-only (gate on the `Valid!` string, never the exit code).
+4. [GSA/openacr#366](https://github.com/GSA/openacr/issues/366) — `validate` does not enforce the catalog's own "Not Evaluated … only … WCAG Level AAA" rule.
+5. [GSA/openacr#367](https://github.com/GSA/openacr/issues/367) — the ACR Editor cannot import documents using the 2.5-edition / WCAG 2.2 catalogs the format ships (the live skew this document's watch rule tracks).
+
+**Watch rule (KAT #27 pattern):** re-check these five on every `@openacr/openacr` pin bump and every editor release; drop the corresponding caveat here and in the acr-reporting skill when one is fixed upstream. Filed drafts and provenance: [the Phase 4 handoff](plans/2026-08-12-openacr-phase4-handoff.md).

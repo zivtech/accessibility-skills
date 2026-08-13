@@ -1,0 +1,14 @@
+Fixture: shiftline-vendor-acr (lane B)
+Response length: 4573 chars
+
+Claims-delta verdicts: 56/56 as expected
+  finding_id tokens: 4 known, 0 invented
+
+Must misses: 0
+Fabrications: 0
+Should misses: 3
+  - 1.2.3: NA-claim classification note absent
+  - 1.2.5: NA-claim classification note absent
+  - summary misses all of ['3 overstated', 'overstated: 3', 'Overstated: 3']
+
+Status: WARN

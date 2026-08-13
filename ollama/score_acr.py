@@ -206,6 +206,114 @@ def sc_lines(text, sc):
     return [l for l in text.splitlines() if sc in l]
 
 
+# ── Lane B: claims-delta scoring ─────────────────────────────────────────
+# Verdict scan order matters: "unverifiable" first (never a stray word),
+# then the mismatch directions before "confirmed", so prose like
+# "confirmed the claim is overstated" resolves to the mismatch.
+VERDICT_SCAN = ("unverifiable", "overstated", "understated", "confirmed")
+
+
+def lane_b_verdict(text, sc):
+    """(verdict_key, lines) for one SC — table rows preferred over prose."""
+    lines = sc_lines(text, sc)
+    table = [l for l in lines if l.lstrip().startswith("|")]
+    for pool in (table, lines):
+        for l in pool:
+            low = l.lower()
+            for v in VERDICT_SCAN:
+                if v in low:
+                    return v, lines
+    return None, lines
+
+
+def score_lane_b(meta, text, must_miss, should_miss, fabrications):
+    expected = {str(k): v for k, v in meta["expected_verdicts"].items()}
+    wrong, missing = [], []
+    got_map = {}
+    for sc, want in expected.items():
+        got, _ = lane_b_verdict(text, sc)
+        want_key = "unverifiable" if want.startswith("unverifiable") else want
+        got_map[sc] = got
+        if got is None:
+            missing.append(sc)
+        elif got != want_key:
+            wrong.append(f"{sc}: {got} (expected {want})")
+    print(f"\nClaims-delta verdicts: "
+          f"{len(expected) - len(missing) - len(wrong)}/{len(expected)} "
+          f"as expected")
+    if missing:
+        must_miss.append(f"claims without a verdict row: "
+                         f"{', '.join(missing[:10])}"
+                         + (f" (+{len(missing)-10} more)"
+                            if len(missing) > 10 else ""))
+    for w in wrong:
+        print(f"  X {w}")
+        must_miss.append(f"verdict: {w}")
+
+    for sc, ids in (meta.get("verdict_citations") or {}).items():
+        _, lines = lane_b_verdict(text, str(sc))
+        if not any(i in l for i in ids for l in lines):
+            must_miss.append(f"{sc} row cites none of {ids}")
+
+    for sc, toks in (meta.get("hygiene_must") or {}).items():
+        _, lines = lane_b_verdict(text, str(sc))
+        if not lines or not any_token("\n".join(lines), toks):
+            must_miss.append(f"{sc}: illegal-claim hygiene flag absent "
+                             f"(not-evaluated on A/AA)")
+
+    for sc, toks in (meta.get("unverifiable_reasons") or {}).items():
+        _, lines = lane_b_verdict(text, str(sc))
+        if not lines or not any_token("\n".join(lines), toks):
+            must_miss.append(f"{sc}: unverifiable row states no scope "
+                             f"reason of {toks[:3]}")
+
+    for sc, toks in (meta.get("na_note_should") or {}).items():
+        _, lines = lane_b_verdict(text, str(sc))
+        if not lines or not any_token("\n".join(lines), toks):
+            should_miss.append(f"{sc}: NA-claim classification note absent")
+
+    # Trend-token scan is negation-aware (first-local-row adjudication,
+    # 2026-08-12): a report that QUOTES the boundary rule ("trend
+    # vocabulary (persistent/…/resolved) is out of scope for third-party
+    # claims") is complying, not violating — the eval-report scorer's
+    # negation-strip precedent. A line carrying boundary/negation
+    # vocabulary is exempt; surviving hits are violations. Heuristic in
+    # both directions — adjudicate by reading.
+    TREND_NEGATION = re.compile(
+        r"(?i)\b(not|never|no|none|without|forbidden|out of scope"
+        r"|only when|requires|excluded|boundary|cannot|does not"
+        r"|inapplicable|foreign)\b")
+    for tok in meta.get("forbidden_trend_tokens") or []:
+        hits = [l for l in text.splitlines()
+                if re.search(rf"(?i)\b{re.escape(tok)}\b", l)
+                and not TREND_NEGATION.search(l)]
+        if hits:
+            must_miss.append(f"trend vocabulary against a foreign ACR: "
+                             f"'{tok}' (term-level deltas only): "
+                             f"{hits[0][:80]!r}")
+
+    for grp in meta.get("routing_must") or []:
+        if not any_token(text, grp):
+            must_miss.append(f"no routing of overstated claims to "
+                             f"{grp[0]}")
+    for grp in meta.get("summary_should") or []:
+        if not any_token(text, grp):
+            should_miss.append(f"summary misses all of {grp[:3]}")
+    for grp in meta.get("handoff_should") or []:
+        if not any_token(text, grp):
+            should_miss.append(f"handoff misses all of {grp[:3]}")
+
+    found_ids = set(re.findall(meta["finding_id_pattern"], text))
+    invented = sorted(found_ids - set(meta.get("expected_finding_ids") or []))
+    for i in invented:
+        fabrications.append(f"invented finding_id: {i}")
+    print(f"  finding_id tokens: "
+          f"{len(found_ids - set(invented))} known, {len(invented)} invented")
+    for tok in meta.get("fabricated_tokens") or []:
+        if re.search(rf"(?i)\b{re.escape(tok)}\b", text):
+            fabrications.append(f"environment token never in input: {tok}")
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     skip_cli = "--skip-cli" in sys.argv
@@ -225,6 +333,27 @@ def main():
         return
     with open(args[1]) as f:
         meta = yaml.safe_load(f)
+
+    # Lane B (claims-delta report): a Markdown deliverable — no YAML
+    # document, no CLI validation; the check families are its own.
+    if meta.get("lane") == "b":
+        must_miss, should_miss, fabrications = [], [], []
+        print(f"Fixture: {meta['fixture_id']} (lane B)")
+        print(f"Response length: {len(text)} chars")
+        score_lane_b(meta, text, must_miss, should_miss, fabrications)
+        print(f"\nMust misses: {len(must_miss)}")
+        for m in must_miss:
+            print(f"  - {m}")
+        print(f"Fabrications: {len(fabrications)}")
+        for f_ in fabrications:
+            print(f"  - {f_}")
+        print(f"Should misses: {len(should_miss)}")
+        for s in should_miss:
+            print(f"  - {s}")
+        status = ("FAIL" if must_miss or fabrications
+                  else "WARN" if should_miss else "PASS")
+        print(f"\nStatus: {status}")
+        return
 
     cli_dir = resolve_cli_dir(cli_arg)
     if cli_dir is None and not skip_cli:

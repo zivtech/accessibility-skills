@@ -1,0 +1,161 @@
+fixture_id: shiftline-vendor-acr
+suite: acr-reporting
+input_format: engagement record + subject vendor OpenACR (verbatim YAML) +
+  finished verification evidence (outcome map + four finding blocks) +
+  catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Lane B claims-audit fixture (integration-plan eval item 4). A vendor ACR
+  with three overstated claims (supports on a keyboard failure and a
+  sitewide contrast failure; not-applicable on uncaptioned videos), two
+  understated claims (a fixed defect still declared partial; an illegal
+  not-evaluated on AA where verification passed), one
+  unverifiable-at-this-scope claim (SSO enclave excluded by the
+  commissioner), and — the false-positive trap — fifty accurate claims
+  including the vendor's HONEST partially-supports on a still-failing
+  focus indicator, which must come back confirmed, not overstated.
+  Foreign ACR: term-level deltas only; trend vocabulary is forbidden.
+
+# ── Scorer contract (ollama/score_acr.py, lane B path) ───────────────────
+
+lane: b
+catalog: 2.5-edition-wcag-2.2-508-en
+
+# Per-SC verdict over the subject ACR's A/AA claims (56 rows). Missing row
+# = completeness must-miss; wrong verdict = must-miss.
+expected_verdicts:
+  "1.1.1": confirmed
+  "1.2.1": confirmed
+  "1.2.2": overstated
+  "1.2.3": confirmed
+  "1.3.1": confirmed
+  "1.3.2": confirmed
+  "1.3.3": confirmed
+  "1.4.1": confirmed
+  "1.4.2": confirmed
+  "2.1.1": overstated
+  "2.1.2": confirmed
+  "2.1.4": confirmed
+  "2.2.1": confirmed
+  "2.2.2": confirmed
+  "2.3.1": confirmed
+  "2.4.1": confirmed
+  "2.4.2": confirmed
+  "2.4.3": confirmed
+  "2.4.4": confirmed
+  "2.5.1": confirmed
+  "2.5.2": confirmed
+  "2.5.3": confirmed
+  "2.5.4": confirmed
+  "3.1.1": confirmed
+  "3.2.1": confirmed
+  "3.2.2": confirmed
+  "3.2.6": confirmed
+  "3.3.1": confirmed
+  "3.3.2": confirmed
+  "3.3.7": confirmed
+  "4.1.1": confirmed
+  "4.1.2": confirmed
+  "1.2.4": confirmed
+  "1.2.5": confirmed
+  "1.3.4": confirmed
+  "1.3.5": confirmed
+  "1.4.3": overstated
+  "1.4.4": confirmed
+  "1.4.5": confirmed
+  "1.4.10": confirmed
+  "1.4.11": confirmed
+  "1.4.12": confirmed
+  "1.4.13": confirmed
+  "2.4.5": confirmed
+  "2.4.6": confirmed
+  "2.4.7": confirmed
+  "2.4.11": confirmed
+  "2.5.7": confirmed
+  "2.5.8": confirmed
+  "3.1.2": understated
+  "3.2.3": confirmed
+  "3.2.4": confirmed
+  "3.3.3": understated
+  "3.3.4": confirmed
+  "3.3.8": unverifiable-at-this-scope
+  "4.1.3": confirmed
+
+# Non-confirmed rows (and the confirmed-with-finding row 2.4.7) must cite
+# ≥1 of these verification finding_ids on their row.
+verdict_citations:
+  "2.1.1": [a11y_grid_cells_keyboard]
+  "1.4.3": [a11y_body_text_contrast]
+  "1.2.2": [a11y_training_video_captions]
+  "2.4.7": [a11y_grid_focus_invisible]
+
+# The illegal not-evaluated claim on AA 3.1.2: the report must flag the
+# claim-hygiene violation (line naming 3.1.2 carries hygiene vocabulary).
+hygiene_must:
+  "3.1.2": ["not-evaluated", "AAA", "illegal", "restrict", "hygiene", "reserved"]
+
+# The unverifiable row must state its scope reason on the row/nearby line.
+unverifiable_reasons:
+  "3.3.8": ["SSO", "sign-in", "identity provider", "IdP", "excluded", "untested", "demo tenant", "authentication"]
+
+# NA claimed where the content type exists but passes → confirmed with a
+# classification note (should-tier).
+na_note_should:
+  "1.2.3": ["classification", "not-applicable is wrong", "NA is wrong", "rationale wrong", "rationale is wrong", "reason is wrong", "reasoning is wrong", "wrong reason", "does exist", "media exists", "videos exist", "misclassif"]
+  "1.2.5": ["classification", "not-applicable is wrong", "NA is wrong", "rationale wrong", "rationale is wrong", "reason is wrong", "reasoning is wrong", "wrong reason", "does exist", "media exists", "videos exist", "misclassif"]
+
+# Foreign ACR — the evidence contract's trend vocabulary requires our own
+# prior fingerprints. Any of these word-boundary tokens is a must-miss.
+forbidden_trend_tokens: ["persistent", "worsening", "improving", "resolved"]
+
+# Routing line after the table (the SKILL's canonical shape).
+routing_must:
+  - ["bug-reporting", "bug reporting"]
+
+summary_should:
+  - ["3 overstated", "overstated: 3", "Overstated: 3", "three overstated"]
+  - ["sample", "scope"]
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_grid_cells_keyboard
+  - a11y_body_text_contrast
+  - a11y_training_video_captions
+  - a11y_grid_focus_invisible
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["a11y-critic", "critic", "adjudicat"]
+  - ["human", "review", "procurement"]
+
+notes: |
+  Integration-plan eval item 4 (Lane B claims audit), built 2026-08-12.
+  Decision 3 governs: the claims-delta shape lives in acr-reporting;
+  a11y-critic is the adjudicator of non-confirmed verdicts; no new critic
+  mode. The model under test produces the delta report only — critic
+  adjudication is the downstream lifecycle step, not simulated here.
+
+  Trap inventory:
+  1. FP trap (the lane's reason to exist beside 4b): the vendor's honest
+     partially-supports on 2.4.7 verifies as still-failing → confirmed
+     (with the finding cited). A vendor-hostile prior marks it overstated.
+  2. Overstated arms: supports vs mixed keyboard failures (2.1.1),
+     supports vs fails-everywhere contrast (1.4.3), and the NA-with-
+     failures arm (1.2.2 — "no media" while uncaptioned videos exist).
+  3. Understated arms: a fixed defect still declared partial (3.3.3), and
+     the illegal not-evaluated on AA with verification passing (3.1.2 —
+     also the claim-hygiene flag).
+  4. Unverifiable arm: 3.3.8 behind the commissioner-excluded SSO enclave
+     — an honest verifier says so instead of guessing either direction.
+  5. NA-passes edge both ways: 1.2.3/1.2.5 claimed NA, observed passed →
+     confirmed with a classification note (the NA reasoning is wrong even
+     though the conformance content holds).
+  6. Foreign-ACR trend boundary: no persistent/worsening/improving/
+     resolved vocabulary anywhere.
+
+  Known instrument limits: verdict extraction is line-scoped around the SC
+  token — prose-form reports (no table) undercount; adjudicate by reading
+  before counting a miss. Scorer statuses are detector output.
