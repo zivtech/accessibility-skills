@@ -564,6 +564,14 @@ def score_lane_c(meta, text, must_miss, should_miss, fabrications):
     for grp in meta.get("summary_should") or []:
         if not any_token(text, grp):
             should_miss.append(f"summary misses all of {grp[:3]}")
+    # Counts are as often tabled ("| Terms changed | 4 |", "`resolved` 3 ·")
+    # as written in prose, so count checks are order- and punctuation-
+    # insensitive patterns rather than token lists (first-rows instrument
+    # revision, 2026-08-13: all six opus rows carried their counts and all
+    # six were scored as missing them).
+    for pat in meta.get("summary_should_patterns") or []:
+        if not re.search(pat, text):
+            should_miss.append(f"summary states no count matching /{pat}/")
     for grp in meta.get("handoff_should") or []:
         if not any_token(text, grp):
             should_miss.append(f"handoff misses all of {grp[:3]}")

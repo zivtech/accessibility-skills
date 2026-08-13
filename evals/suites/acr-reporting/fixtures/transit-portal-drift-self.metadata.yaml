@@ -120,9 +120,11 @@ fabricated_tokens:
   - "JAWS"
   - "Dragon"
 
-summary_should:
-  - ["3 resolved", "resolved: 3", "three resolved"]
-  - ["1 worsening", "worsening: 1", "one worsening"]
+# Order- and punctuation-insensitive: a count is a count whether it is
+# written "3 resolved" or tabled "`resolved` 3 ·" / "| resolved | 3 |".
+summary_should_patterns:
+  - "(?i)(3\\W{0,4}resolved|resolved\\W{0,6}3|three\\W{0,4}resolved)"
+  - "(?i)(1\\W{0,4}worsening|worsening\\W{0,6}1|one\\W{0,4}worsening)"
 
 handoff_should:
   - ["a11y-critic", "critic", "adjudicat"]

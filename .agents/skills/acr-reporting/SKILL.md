@@ -21,7 +21,7 @@ metadata:
 
 # ACR Reporting Skill (OpenACR)
 
-> **Status: RECOMMENDED — Phase 2 gate passed 2026-08-12.** The eval lane lives at `evals/suites/acr-reporting/` (fixtures 1/2/3/5 + rule-based scorer `ollama/score_acr.py` invoking the routed pinned CLI); the gate — hosted tier passes all four fixtures, stable across 2 independent draws — was met with zero must-tier misses and zero fabrications across eight opus rows (receipts: `evals/results/acr-reporting-phase2/`). The mandatory human handoff below is unchanged by the gate: every output is a draft, and model routing stands — generation on the hosted tier; a locally-produced draft is detector output behind the mandatory value-and-validate pass.
+> **Status: RECOMMENDED — Phase 2 gate passed 2026-08-12.** The eval lane lives at `evals/suites/acr-reporting/` (8 fixtures + rule-based scorer `ollama/score_acr.py` invoking the routed pinned CLI); the gate — hosted tier passes all four Lane A fixtures, stable across 2 independent draws — was met with zero must-tier misses and zero fabrications across eight opus rows (receipts: `evals/results/acr-reporting-phase2/`). Lane B landed the same day (`-phase3/`) and **Lane C on 2026-08-13** (`-phase4/`: 4/4 opus skill rows must-clean across both fixtures and both draws; baselines FAIL draw-stably on vocabulary carry). The mandatory human handoff below is unchanged by any of it: every output is a draft, and model routing stands — generation on the hosted tier; a locally-produced draft is detector output behind the mandatory value-and-validate pass.
 
 > **Verified facts + receipts:** [docs/openacr-reference.md](../../../docs/openacr-reference.md) (format, schema, CLI behavior, editor behavior — all claims receipted 2026-08-12). **Boundary ruling:** [docs/openacr-adoption-assessment.md](../../../docs/openacr-adoption-assessment.md).
 
@@ -272,6 +272,7 @@ Two ACRs rest on two sample sets. WCAG-EM's re-evaluation guidance keeps a sub-s
 
 - Never emits a merged or corrected ACR — that is Lane A on a new engagement — and never modifies either input document.
 - Foreign drift never routes to `bug-reporting`: nothing was verified, so there is nothing to file. It routes to Lane B.
+- **Self-pair drift files nothing either.** The current cycle's still-open findings (`new`, `worsening`, `persistent`, `improving`) route into `bug-reporting` on the strength of **that evaluation's** evidence — which did test — never on the strength of the diff. A drift report commissions no work and creates no issues; no delta in it was produced by testing anything.
 - **`resolved` rows carry the publication risk in this lane** — they retire a defect from a document someone may publish. Any `resolved` row not backed by the current evaluation's verified-absent evidence is adjudicated by `a11y-critic` before delivery, on the Lane B pattern.
 
 ## Model Routing

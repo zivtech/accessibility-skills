@@ -1,5 +1,5 @@
 Fixture: shiftline-drift-foreign (lane C)
-Response length: 1796 chars
+Response length: 16515 chars
 Pair kind: foreign
 
 SC deltas: 4/4 reported with both terms
@@ -8,8 +8,7 @@ Unchanged-criteria FP arm: 0 dramatized of 10 checked
 
 Must misses: 0
 Fabrications: 0
-Should misses: 2
-  - 3.1.2: prior-document claim-hygiene note absent (not-evaluated on A/AA)
+Should misses: 1
   - summary states no count matching /(?i)(4\W{0,4}(criteria|changed|terms?)|(terms?|criteria)\W{0,4}changed\W{0,6}4|four\W{0,4}(criteria|changed|terms?))/
 
 Status: WARN

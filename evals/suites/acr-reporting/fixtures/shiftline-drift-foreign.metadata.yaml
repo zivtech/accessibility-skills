@@ -85,9 +85,13 @@ fabricated_tokens:
   - "NVDA"
 
 summary_should:
-  - ["4 criteria", "four criteria", "4 changed", "four changed",
-     "4 term", "four term"]
   - ["51", "fifty-one", "unchanged"]
+
+# Order- and punctuation-insensitive (see the self fixture's note): the
+# changed-criteria count is as often tabled ("| Terms changed | 4 |") as
+# written in prose ("four criteria changed term").
+summary_should_patterns:
+  - "(?i)(4\\W{0,4}(criteria|changed|terms?)|(terms?|criteria)\\W{0,4}changed\\W{0,6}4|four\\W{0,4}(criteria|changed|terms?))"
 
 handoff_should:
   - ["procurement", "renewal", "owner"]

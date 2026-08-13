@@ -276,7 +276,7 @@ def f6_comp(text, meta):
 
 
 @case("f6-shoulds-missed", SELF_FIXTURE, "WARN", (
-    "summary misses all of", "handoff misses all of"))
+    "summary states no count matching", "handoff misses all of"))
 def f6_warn(text, meta):
     # Drops the per-verdict counts and the handoff while KEEPING the
     # sample-scope sentence — a should-tier miss must not take a must with it.
@@ -339,7 +339,7 @@ def f6b_absence(text, meta):
 
 @case("f6b-shoulds-missed", FOREIGN_FIXTURE, "WARN", (
     "3.1.2: prior-document claim-hygiene note absent",
-    "summary misses all of",
+    "summary states no count matching",
 ))
 def f6b_warn(text, meta):
     text = text.replace(
