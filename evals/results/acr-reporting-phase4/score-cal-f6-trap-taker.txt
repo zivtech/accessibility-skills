@@ -1,0 +1,23 @@
+Fixture: transit-portal-drift-self (lane C)
+Response length: 3645 chars
+Pair kind: self
+
+SC deltas: 6/6 reported with both terms
+Unchanged-criteria FP arm: 0 dramatized of 10 checked
+
+Finding trend: 6/8 as expected
+  X a11y_form_autocomplete_missing: resolved (expected improving)
+  X a11y_legacy_skiplink_anchor: new (expected worsening)
+  finding_id tokens: 8 known, 1 invented
+  fingerprint tokens: 7 known, 1 invented
+
+Must misses: 3
+  - trend: a11y_form_autocomplete_missing: resolved (expected improving)
+  - trend: a11y_legacy_skiplink_anchor: new (expected worsening)
+  - a11y_route_badge_contrast trend row does not cite its fingerprint 2ab9d871
+Fabrications: 2
+  - invented finding_id: a11y_phantom_regression
+  - invented fingerprint: aa11bb22
+Should misses: 0
+
+Status: FAIL

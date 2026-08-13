@@ -24,6 +24,16 @@ against a fixture's metadata expectations
 9. Chapter policy — disabled 508 chapters with canonical boundary notes,
    web-only scope statement, AAA evidence map
 
+Lane B (`lane: b`) scores a Markdown claims-delta report instead — verdict
+vocabulary, comparison rule, citations, the foreign-ACR trend boundary.
+
+Lane C (`lane: c`) scores a Markdown drift report over two OpenACR
+documents: SC-level term deltas with both values compared, the
+identical-criteria false-positive arm, and then by pair kind — self-produced
+pairs get finding-level trend keyed on fingerprints plus the WCAG-EM
+comparability statement; foreign pairs get term-level deltas only, with the
+trend vocabulary banned and the claim-not-evidence framing required.
+
 Status: PASS (all musts, no fabrication), WARN (musts pass, should
 missed), FAIL (any must missed or fabrication detected). Results always
 exit 0; non-zero exits are reserved for usage errors.
@@ -212,6 +222,19 @@ def sc_lines(text, sc):
 # "confirmed the claim is overstated" resolves to the mismatch.
 VERDICT_SCAN = ("unverifiable", "overstated", "understated", "confirmed")
 
+# Trend-token scan is negation-aware (first-local-row adjudication,
+# 2026-08-12): a report that QUOTES the boundary rule ("trend vocabulary
+# (persistent/…/resolved) is out of scope for third-party claims") is
+# complying, not violating — the eval-report scorer's negation-strip
+# precedent. A line carrying boundary/negation vocabulary is exempt;
+# surviving hits are violations. Heuristic in both directions — adjudicate
+# by reading. Shared by the lane B verdict path and the lane C foreign-pair
+# path, which enforce the same boundary from opposite inputs.
+TREND_NEGATION = re.compile(
+    r"(?i)\b(not|never|no|none|without|forbidden|out of scope"
+    r"|only when|requires|excluded|boundary|cannot|does not"
+    r"|inapplicable|foreign)\b")
+
 
 def lane_b_verdict(text, sc):
     """(verdict_key, lines) for one SC — table rows preferred over prose."""
@@ -272,17 +295,6 @@ def score_lane_b(meta, text, must_miss, should_miss, fabrications):
         if not lines or not any_token("\n".join(lines), toks):
             should_miss.append(f"{sc}: NA-claim classification note absent")
 
-    # Trend-token scan is negation-aware (first-local-row adjudication,
-    # 2026-08-12): a report that QUOTES the boundary rule ("trend
-    # vocabulary (persistent/…/resolved) is out of scope for third-party
-    # claims") is complying, not violating — the eval-report scorer's
-    # negation-strip precedent. A line carrying boundary/negation
-    # vocabulary is exempt; surviving hits are violations. Heuristic in
-    # both directions — adjudicate by reading.
-    TREND_NEGATION = re.compile(
-        r"(?i)\b(not|never|no|none|without|forbidden|out of scope"
-        r"|only when|requires|excluded|boundary|cannot|does not"
-        r"|inapplicable|foreign)\b")
     for tok in meta.get("forbidden_trend_tokens") or []:
         hits = [l for l in text.splitlines()
                 if re.search(rf"(?i)\b{re.escape(tok)}\b", l)
@@ -314,6 +326,249 @@ def score_lane_b(meta, text, must_miss, should_miss, fabrications):
             fabrications.append(f"environment token never in input: {tok}")
 
 
+# ── Lane C: drift scoring ────────────────────────────────────────────────
+# Trend extraction prefers a table CELL that *is* a trend token (the SKILL's
+# canonical drift table has a Trend column), which keeps prose in the
+# Evidence cell from voting. Prose falls back to the earliest non-negated
+# token on a line naming the finding — earliest-position beats a fixed
+# priority order here, because the honest phrasing of the central trap is
+# "improving — the fingerprint persists, not resolved".
+TREND_TOKENS = ("resolved", "worsening", "improving", "persistent", "new")
+CATALOG_TERMS = ("partially-supports", "does-not-support", "not-applicable",
+                 "not-evaluated", "supports")
+NEG_BEFORE = re.compile(
+    r"(?i)\b(not|never|no longer|not yet|isn't|is not|rather than"
+    r"|instead of|as opposed to)\s+(?:\w+\s+){0,2}$")
+CELL_TREND_RE = {t: re.compile(rf"(?i)^{t}\b(?:[\s—–\-(:;,/]|$)")
+                 for t in TREND_TOKENS}
+
+
+# The overclaim patterns already name the claim, so they need only a LOCAL
+# negation guard — a sentence that forbids the claim ("never say the
+# product improved") is compliance. Line-level exemption is far too broad
+# here: the honest summary's own anti-overclaim sentence carries "never".
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|\n+")
+OVERCLAIM_NEG = re.compile(
+    r"(?i)\b(never|not|no|avoid|cannot|don't|do not|must not|rather than"
+    r"|instead of|forbidden|out of scope)\b")
+
+
+def sentences(text):
+    return [s for s in SENTENCE_SPLIT.split(text) if s.strip()]
+
+
+def term_present(text, term):
+    """Word-boundary term match: 'partially-supports' never satisfies
+    'supports' (the substring trap in this vocabulary)."""
+    return re.search(rf"(?i)(?<![\w-]){re.escape(term)}\b", text) is not None
+
+
+def _cell_trend(cell):
+    for t in TREND_TOKENS:
+        if CELL_TREND_RE[t].match(cell.strip()):
+            return t
+    return None
+
+
+def _first_trend(line):
+    best = None
+    for t in TREND_TOKENS:
+        for mt in re.finditer(rf"(?i)\b{t}\b", line):
+            if NEG_BEFORE.search(line[:mt.start()]):
+                continue
+            if best is None or mt.start() < best[1]:
+                best = (t, mt.start())
+            break
+    return best[0] if best else None
+
+
+def lane_c_trend(text, key):
+    """(trend_key, lines) for one finding_id — trend cell preferred."""
+    lines = sc_lines(text, key)
+    for l in lines:
+        if l.lstrip().startswith("|"):
+            for cell in l.strip().strip("|").split("|"):
+                t = _cell_trend(cell)
+                if t:
+                    return t, lines
+    for l in lines:
+        t = _first_trend(l)
+        if t:
+            return t, lines
+    return None, lines
+
+
+def delta_rows(text, sc):
+    """Table rows whose FIRST cell names this SC (keyed rows only) — keeps
+    a summary line that lists many SCs and many terms from voting."""
+    out = []
+    for l in sc_lines(text, sc):
+        if not l.lstrip().startswith("|"):
+            continue
+        cells = [c.strip() for c in l.strip().strip("|").split("|")]
+        if cells and sc in cells[0]:
+            out.append(cells)
+    return out
+
+
+def score_lane_c(meta, text, must_miss, should_miss, fabrications):
+    pair = meta["pair_kind"]
+    print(f"Pair kind: {pair}")
+
+    # 1. SC-level deltas — the row names BOTH terms (exact values compared)
+    deltas = {str(k): v for k, v in (meta.get("expected_sc_deltas")
+                                     or {}).items()}
+    missing_delta = []
+    for sc, spec in deltas.items():
+        lines = sc_lines(text, sc)
+        if not any(term_present(l, spec["prior"])
+                   and term_present(l, spec["current"]) for l in lines):
+            missing_delta.append(
+                f"{sc} ({spec['prior']} → {spec['current']})")
+    print(f"\nSC deltas: {len(deltas) - len(missing_delta)}/{len(deltas)} "
+          f"reported with both terms")
+    for d in missing_delta:
+        print(f"  X {d}")
+        must_miss.append(f"delta not reported with both terms: {d}")
+
+    for sc, toks in (meta.get("absent_rows") or {}).items():
+        lines = sc_lines(text, str(sc))
+        if not lines or not any_token("\n".join(lines), toks):
+            must_miss.append(f"{sc}: claim present in the prior document and "
+                             f"absent from the current one is not reported "
+                             f"as a delta")
+
+    # 2. false-positive arm — identical criteria tabled as movement
+    dramatized = []
+    for sc in meta.get("unchanged_scs") or []:
+        for cells in delta_rows(text, str(sc)):
+            found = {t for t in CATALOG_TERMS
+                     if any(term_present(c, t) for c in cells)}
+            if len(found) > 1:
+                dramatized.append(f"{sc}: {sorted(found)}")
+                break
+    print(f"Unchanged-criteria FP arm: {len(dramatized)} dramatized "
+          f"of {len(meta.get('unchanged_scs') or [])} checked")
+    for d in dramatized:
+        must_miss.append(f"criterion identical in both documents tabled as "
+                         f"a term change — {d}")
+
+    # 3. finding-level trend (self-produced pairs only)
+    if pair == "self":
+        expected = meta.get("expected_trends") or {}
+        wrong, absent = [], []
+        for fid, want in expected.items():
+            got, _ = lane_c_trend(text, fid)
+            if got is None:
+                absent.append(fid)
+            elif got != want:
+                wrong.append(f"{fid}: {got} (expected {want})")
+        print(f"\nFinding trend: "
+              f"{len(expected) - len(wrong) - len(absent)}/{len(expected)} "
+              f"as expected")
+        if absent:
+            must_miss.append(f"findings without a trend row: "
+                             f"{', '.join(absent)}")
+        for w in wrong:
+            print(f"  X {w}")
+            must_miss.append(f"trend: {w}")
+
+        # fingerprints are what license finding-level trend at all
+        for fid, fp in (meta.get("trend_fingerprints") or {}).items():
+            _, lines = lane_c_trend(text, fid)
+            if not any(fp in l for l in lines):
+                must_miss.append(f"{fid} trend row does not cite its "
+                                 f"fingerprint {fp}")
+        for fid, sc in (meta.get("trend_scs") or {}).items():
+            _, lines = lane_c_trend(text, fid)
+            if not any(str(sc) in l for l in lines):
+                should_miss.append(f"{fid} trend row does not name its "
+                                   f"criterion ({sc})")
+
+        for sc, toks in (meta.get("noncomparable_scs") or {}).items():
+            lines = sc_lines(text, str(sc))
+            if not lines or not any_token("\n".join(lines), toks):
+                must_miss.append(f"{sc}: delta resting on a sample with no "
+                                 f"prior-cycle counterpart is not marked "
+                                 f"non-comparable")
+
+        for grp in meta.get("comparability_must") or []:
+            if not any_token(text, grp):
+                must_miss.append(f"comparability statement misses all of "
+                                 f"{grp[:3]} (WCAG-EM re-evaluation)")
+
+    # 4. foreign pairs: term-level deltas only, and a term change is a claim
+    else:
+        for tok in meta.get("forbidden_trend_tokens") or []:
+            hits = [l for l in text.splitlines()
+                    if re.search(rf"(?i)\b{re.escape(tok)}\b", l)
+                    and not TREND_NEGATION.search(l)]
+            if hits:
+                must_miss.append(f"trend vocabulary against a foreign pair: "
+                                 f"'{tok}' (term-level deltas only): "
+                                 f"{hits[0][:80]!r}")
+        # Colocated, not merely present: "claim" alone is free vocabulary in
+        # a document diff. The gate is one SENTENCE saying both halves —
+        # this is a claim, and nothing here verified it.
+        for grp_a, grp_b in meta.get("claim_change_colocated") or []:
+            if not any(any_token(s, grp_a) and any_token(s, grp_b)
+                       for s in sentences(text)):
+                must_miss.append(f"no claim-change framing — no single "
+                                 f"sentence carries both {grp_a[:2]} and "
+                                 f"{grp_b[:2]} (a rewritten term is not "
+                                 f"measured evidence)")
+        for grp in meta.get("routing_must") or []:
+            if not any_token(text, grp):
+                must_miss.append(f"no routing to verification: {grp[0]}")
+        for sc, toks in (meta.get("hygiene_should") or {}).items():
+            lines = sc_lines(text, str(sc))
+            if not lines or not any_token("\n".join(lines), toks):
+                should_miss.append(f"{sc}: prior-document claim-hygiene note "
+                                   f"absent (not-evaluated on A/AA)")
+
+    # 5. anti-overclaim (both pair kinds). Polarity-blind by measurement —
+    # the token gate passes on a sentence that DENIES the claim too;
+    # adjudicate by reading (repo practice for keyword gates).
+    for grp in meta.get("no_wholeproduct_must") or []:
+        if not any_token(text, grp):
+            must_miss.append(f"no sample-scope statement — misses all of "
+                             f"{grp[:3]} (deltas are never a whole-product "
+                             f"claim)")
+    for pat in meta.get("forbidden_overclaim_patterns") or []:
+        for s in sentences(text):
+            mt = re.search(rf"(?i){pat}", s)
+            if mt and not OVERCLAIM_NEG.search(s[:mt.start()]):
+                must_miss.append(f"whole-product improvement claim: "
+                                 f"{s.strip()[:90]!r}")
+                break
+
+    # 6. fabrication frames
+    found_ids = set(re.findall(meta["finding_id_pattern"], text))
+    invented = sorted(found_ids - set(meta.get("expected_finding_ids") or []))
+    for i in invented:
+        fabrications.append(f"invented finding_id: {i}")
+    print(f"  finding_id tokens: {len(found_ids) - len(invented)} known, "
+          f"{len(invented)} invented")
+    fp_pat = meta.get("fingerprint_pattern")
+    if fp_pat:
+        known_fp = set((meta.get("trend_fingerprints") or {}).values())
+        bad_fp = sorted(set(re.findall(fp_pat, text)) - known_fp)
+        for f_ in bad_fp:
+            fabrications.append(f"invented fingerprint: {f_}")
+        print(f"  fingerprint tokens: {len(known_fp & set(re.findall(fp_pat, text)))}"
+              f" known, {len(bad_fp)} invented")
+    for tok in meta.get("fabricated_tokens") or []:
+        if re.search(rf"(?i)\b{re.escape(tok)}\b", text):
+            fabrications.append(f"token never in this input: {tok}")
+
+    for grp in meta.get("summary_should") or []:
+        if not any_token(text, grp):
+            should_miss.append(f"summary misses all of {grp[:3]}")
+    for grp in meta.get("handoff_should") or []:
+        if not any_token(text, grp):
+            should_miss.append(f"handoff misses all of {grp[:3]}")
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     skip_cli = "--skip-cli" in sys.argv
@@ -334,13 +589,17 @@ def main():
     with open(args[1]) as f:
         meta = yaml.safe_load(f)
 
-    # Lane B (claims-delta report): a Markdown deliverable — no YAML
-    # document, no CLI validation; the check families are its own.
-    if meta.get("lane") == "b":
+    # Lanes B and C are Markdown deliverables — no YAML document, no CLI
+    # validation; each carries its own check families.
+    if meta.get("lane") in ("b", "c"):
+        lane = meta["lane"]
         must_miss, should_miss, fabrications = [], [], []
-        print(f"Fixture: {meta['fixture_id']} (lane B)")
+        print(f"Fixture: {meta['fixture_id']} (lane {lane.upper()})")
         print(f"Response length: {len(text)} chars")
-        score_lane_b(meta, text, must_miss, should_miss, fabrications)
+        if lane == "b":
+            score_lane_b(meta, text, must_miss, should_miss, fabrications)
+        else:
+            score_lane_c(meta, text, must_miss, should_miss, fabrications)
         print(f"\nMust misses: {len(must_miss)}")
         for m in must_miss:
             print(f"  - {m}")

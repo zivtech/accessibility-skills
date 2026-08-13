@@ -1,0 +1,69 @@
+fixture_id: transit-portal-drift-self
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py (lane C path, pair_kind self)
+
+dimensions:
+  - id: trend_mapping
+    name: "All eight findings carry the right trend (3 resolved, 2 persistent, 1 improving, 1 worsening, 1 new)"
+    tier: must
+    note: "Derived from the current cycle's fingerprint re-check table, not from the term movement."
+  - id: term_vs_fingerprint
+    name: "1.3.5 is improving, not resolved — the term moved up while a11y_form_autocomplete_missing stayed on the ledger"
+    tier: must
+    note: "The lane's central trap. `resolved` requires verified absence; a narrower failing surface is not absence."
+  - id: worsening_not_new
+    name: "2.4.1 is worsening, not new — the same fingerprint 5f77ab02 spread across more templates at raised severity"
+    tier: must
+    note: "The mirror trap. A term that moved down under an existing fingerprint is not a fresh find."
+  - id: sc_deltas
+    name: "All six changed criteria reported with both prior and current terms"
+    tier: must
+  - id: fingerprint_citation
+    name: "Every trend row cites its fingerprint — the value that licenses finding-level trend at all"
+    tier: must
+  - id: fp_discipline
+    name: "The fifty identical criteria are not tabled as movement"
+    tier: must
+    note: "The serializer's version of a critic that flags everything, aimed at the differ."
+  - id: comparability
+    name: "The carried-over / retired / added sample split is stated, and 2.4.11 is marked non-comparable"
+    tier: must
+    note: "WCAG-EM re-evaluation: S14 station detail has no prior-cycle counterpart, so its newly-failing row is a coverage change, not movement."
+  - id: no_wholeproduct_claim
+    name: "The summary is sample-scoped — three resolved against one worsening is never 'the portal improved'"
+    tier: must
+  - id: value_provenance
+    name: "No invented finding_ids and no invented fingerprints"
+    tier: must
+  - id: summary_counts
+    name: "Per-trend counts in the summary"
+    tier: should
+  - id: trend_row_criterion
+    name: "Each trend row names the criterion it belongs to"
+    tier: should
+  - id: adjudication_handoff
+    name: "Handoff names a11y-critic adjudication of resolved rows and the human owner"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Drift honesty on a self-produced pair: read the fingerprint before the
+  term, keep the two discrimination traps apart, say which samples the two
+  cycles share, and never let a net-positive column of deltas become a
+  claim about the product.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt (the Lane C protocol is the instrument)"
+  acr-baseline: "identical fixture, no system prompt — measures what the Lane C protocol carries (trend-vs-term discipline, the comparability statement, the anti-overclaim rule, table shape)"
+known_judgment_calls:
+  - "Trend extraction prefers a table cell that IS a trend token; a prose-form report falls back to the earliest non-negated token on a line naming the finding, and may undercount. Read before scoring a miss."
+  - "The non-comparability check is line-scoped over every line naming the criterion — a caveat carried on the trend row rather than the delta row still counts, and that is correct."
+  - "The no-overclaim token gate is polarity-blind by measurement: it passes on a sentence that denies the claim too. The forbidden-pattern scan is the narrow complement, and it is sentence-local."
+  - "A report that also drafts the revised ACR is over-delivery, not a violation — but it is Lane A work and belongs to a new engagement."
+  - "Scorer statuses are detector output, not verdict authority."

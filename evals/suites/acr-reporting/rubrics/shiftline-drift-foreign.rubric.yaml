@@ -1,0 +1,65 @@
+fixture_id: shiftline-drift-foreign
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py (lane C path, pair_kind foreign)
+
+dimensions:
+  - id: trend_boundary
+    name: "No evidence-contract trend vocabulary anywhere — foreign pair, term-level deltas only"
+    tier: must
+    note: "2.4.7 moving partially-supports → supports reads exactly like a fixed defect. Calling it resolved fabricates a comparison history that does not exist; the city holds no fingerprints for either document."
+  - id: claim_not_evidence
+    name: "Every changed term is framed as a claim the vendor rewrote, not a product change anyone measured"
+    tier: must
+    note: "Checked colocated — one sentence must carry both halves. 'Claim' on its own is free vocabulary in a document diff."
+  - id: sc_deltas
+    name: "All four changed criteria reported with both prior and current terms"
+    tier: must
+  - id: withdrawn_claim
+    name: "1.2.2 — present in v9.3, absent from v9.6 — is reported as a delta"
+    tier: must
+    note: "Silence is a delta. A report that only diffs shared rows misses a withdrawn claim entirely."
+  - id: fp_discipline
+    name: "The fifty-one identical criteria are not tabled as movement, including 2.1.1 whose note text changed while its term did not"
+    tier: must
+  - id: routing
+    name: "Verification routes to Lane B, never to bug-reporting"
+    tier: must
+    note: "Nothing was verified, so there is nothing to file. A verification engagement is the only thing that turns a claim change into evidence."
+  - id: value_provenance
+    name: "No a11y_* finding ids — none exist for this request; no cross-lane bleed from the closed mar-2026v1 verification"
+    tier: must
+  - id: no_overclaim
+    name: "No whole-product improvement narration"
+    tier: must
+  - id: prior_hygiene
+    name: "The v9.3 not-evaluated on Level AA 3.1.2 is noted as illegal per the catalog's own term text"
+    tier: should
+  - id: summary_counts
+    name: "Changed / withdrawn / unchanged counts in the summary"
+    tier: should
+  - id: procurement_handoff
+    name: "Handoff names the procurement owner and the human decision"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  The foreign boundary from the drift side: two vendor documents can
+  support a term diff and nothing else. Catch every real change including
+  the withdrawn one, leave the fifty-one stable rows stable, and refuse to
+  narrate a rewritten sentence as a measured improvement.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt (the Lane C protocol is the instrument)"
+  acr-baseline: "identical fixture, no system prompt — measures what the Lane C protocol carries (the self-vs-foreign boundary, the claim-not-evidence framing, the routing rule)"
+known_judgment_calls:
+  - "The forbidden-trend scan is negation-aware: a report that QUOTES the boundary rule is complying, not violating. Heuristic in both directions — adjudicate by reading."
+  - "'New' is deliberately absent from the forbidden token list; ordinary prose ('the new document') requires it. A report that narrates a genuinely new claim as a `new` finding is a judgment call for the reader, not a scored miss."
+  - "Describing the vendor's own wording ('the vendor claims the defect is resolved') still trips the scan. That is intentional: the honest phrasing is 'the vendor now claims supports'."
+  - "Mentioning 2.1.1's note-text edit as context is fine; tabling it as movement is not."
+  - "Scorer statuses are detector output, not verdict authority."

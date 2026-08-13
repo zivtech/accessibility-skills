@@ -4,9 +4,10 @@ description: >
   Load this skill whenever you are converting a finished audit-scope
   accessibility evaluation into an Accessibility Conformance Report (ACR) draft
   in the OpenACR format, validating or rendering OpenACR YAML, or preparing the
-  handoff to GSA's ACR Editor (https://acreditor.section508.gov/), or auditing
+  handoff to GSA's ACR Editor (https://acreditor.section508.gov/), auditing
   a third-party OpenACR's claims against verification evidence (Lane B
-  claims-delta report). Report-level companion to bug-reporting:
+  claims-delta report), or diffing two OpenACR documents for the same product
+  across cycles (Lane C drift report). Report-level companion to bug-reporting:
   findings→issues is bug-reporting; evaluation-report→ACR is this skill. Output is always a DRAFT for human review
   and sign-off — never a final or signed ACR. Under no circumstances map an
   untested Level A/AA criterion to any adherence term, derive a conformance term
@@ -225,6 +226,54 @@ Every A/AA claim in the subject ACR gets a row. `overstated` rows and confirmed-
 
 **Adjudication (Decision 3):** the delta report is detector output for procurement — **a11y-critic adjudicates** every non-`confirmed` verdict against the evidence before the report is delivered; no new critic mode exists. This lane never modifies the subject ACR, never emits a corrected ACR (that is Lane A on a new engagement), and never files anything externally.
 
+## Lane C — ACR Drift (prior document → current document)
+
+Input: **two OpenACR documents for the same product** — a prior and a current — and nothing else. This lane reads documents. It tests nothing, verifies nothing, and commissions nothing. Where Lane B compares a claim against evidence, Lane C compares a claim against an earlier claim.
+
+**Self-produced vs foreign is decided by fingerprints, not by authorship.** A pair is self-produced when the adherence notes in **both** documents carry `finding_id` + `fingerprint` values traceable to our engagement record — the Lane A note forms embed them precisely to enable this. Anything else is foreign: a vendor's two ACRs, an upstream project's, and our own pre-fingerprint output alike.
+
+| Pair | Output | Vocabulary |
+|---|---|---|
+| Self-produced (fingerprints in both) | SC-level outcome deltas **plus** finding-level trend | `new` / `persistent` / `worsening` / `improving` / `resolved` |
+| Foreign (fingerprints absent from either) | SC-level term deltas **only** | No trend vocabulary at all — emitting it is a must-fail |
+
+### SC-level deltas (both pair kinds)
+
+```
+| SC | Prior term | Current term | Delta | Comparable? | Evidence |
+```
+
+Every criterion whose term changed gets a row. A criterion present in one document and **absent from the other** gets a row too, with the absence named in the Delta column — a withdrawn or newly-added claim is a delta, never a silent omission. Criteria whose terms are identical are reported as unchanged in the summary counts and nowhere else: manufacturing movement out of a stable row is this lane's version of a critic that flags everything.
+
+**A term delta is not a product delta.** For a **foreign** pair it is a *claim* change and nothing more — the vendor rewrote a sentence; no one measured anything. Say exactly that, and route the question to **Lane B**: commissioning a verification engagement is the only thing that turns a claim change into evidence. For a **self-produced** pair the term delta rests on our own two evaluations, and the finding-level table below carries the evidence.
+
+### Finding-level trend (self-produced pairs only)
+
+```
+| finding_id | fingerprint | SC | Prior | Current | Trend | Evidence |
+```
+
+Trend follows the evidence contract's definitions applied to the **fingerprint**, never to the term:
+
+- `resolved` — the fingerprint was **verified absent** in the current evaluation. A better term alone never earns it.
+- `improving` / `worsening` — the fingerprint is still present with decreased / increased scope, severity, or affected samples.
+- `persistent` — still present, materially unchanged.
+- `new` — first appearance in the current document.
+
+**The term-moved-but-fingerprint-persists discrimination is the reason this lane exists.** An SC that moves `does-not-support` → `partially-supports` while its finding is still on the ledger is `improving`, not `resolved`. An SC that moves `partially-supports` → `does-not-support` under the same fingerprint is `worsening`, not a new finding. Read the fingerprint first, the term second.
+
+### Comparability (WCAG-EM re-evaluation — mandatory statement)
+
+Two ACRs rest on two sample sets. WCAG-EM's re-evaluation guidance keeps a sub-set of the prior sample for comparability and replaces a sub-set for coverage, so the sets are expected to differ. Every drift report MUST therefore state up front **which samples are common to both cycles and which are not**, and MUST mark any delta whose evidence lives only in a replaced or newly-added sample as **not comparable** — that is a coverage change, not movement. If the two documents cannot be compared at all (different product, conformance target, catalog, or component set), say so and stop rather than tabling a meaningless diff.
+
+**Never narrate a delta as a whole-product improvement claim.** Both documents are sample-scoped; a net-positive column of deltas describes the sampled surface across two scopes, not a product that got better. The same anti-overclaim rule that governs Lane A notes governs every sentence of the drift summary.
+
+### Lane C Boundaries
+
+- Never emits a merged or corrected ACR — that is Lane A on a new engagement — and never modifies either input document.
+- Foreign drift never routes to `bug-reporting`: nothing was verified, so there is nothing to file. It routes to Lane B.
+- **`resolved` rows carry the publication risk in this lane** — they retire a defect from a document someone may publish. Any `resolved` row not backed by the current evaluation's verified-absent evidence is adjudicated by `a11y-critic` before delivery, on the Lane B pattern.
+
 ## Model Routing
 
 ACR YAML is value-dense (contacts, dates, versions, per-SC terms) — the documented local-model fabrication class. **Generation runs on the hosted tier.** Local models are detectors only; any locally-produced draft requires a mandatory **field-by-field value-check pass** — performed by a hosted-tier model or the human — comparing every metadata value and every term against the source evaluation report before validation counts for anything.
@@ -243,7 +292,7 @@ ACR YAML is value-dense (contacts, dates, versions, per-SC terms) — the docume
 
 ## Boundaries
 
-- **Not yet in this skill:** ACR drift diffs (Lane C — Phase 4) and merging a new audit into an existing hand-maintained ACR (explicitly out of scope; say so when asked). Lane B (claims verification) is in this skill — see the Lane B section.
+- **Not in this skill:** merging a new audit into an existing hand-maintained ACR (explicitly out of scope; say so when asked). Lanes A (serialization), B (claims verification), and C (drift diffs) are all in this skill — see their sections.
 - **Naming:** the artifact is "an ACR in OpenACR format" — never "a VPAT" (VPAT® is an ITI trademark; VPAT edition names appear only inside catalog identifiers).
 - **Non-web conclusions are human-owned.** This skill serializes their boundary statements, never their conclusions.
 - **No report-generator runtime** in the skills repo (existing contract ruling): the agent authors the YAML per this skill; validation/rendering route to the pinned CLI.

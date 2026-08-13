@@ -1,0 +1,159 @@
+fixture_id: transit-portal-drift-self
+suite: acr-reporting
+input_format: engagement record + two self-produced OpenACR documents
+  (verbatim YAML, fingerprints in the adherence notes) + both cycles'
+  sample sets + the current cycle's prior-fingerprint re-check table
+difficulty: ADVERSARIAL
+description: >-
+  Lane C drift fixture, self-produced pair (Phase 4 handoff item 2,
+  fixture 6). Two RiverCity Metro ACRs from the same evaluator one release
+  apart. Eight findings carry the full trend vocabulary — three resolved,
+  two persistent, one improving, one worsening, one new — and the two
+  discrimination traps are term-vs-fingerprint: 1.3.5 moves
+  does-not-support to partially-supports while its fingerprint is still on
+  the ledger (improving, never resolved), and 2.4.1 moves
+  partially-supports to does-not-support under the same fingerprint
+  (worsening, never a new finding). The sample sets differ by WCAG-EM
+  re-evaluation design, so the report must state the comparable core and
+  mark the one delta that rests on a sample with no prior counterpart
+  (2.4.11, on the station-detail template shipped after cycle 1).
+
+# ── Scorer contract (ollama/score_acr.py, lane C path) ───────────────────
+
+lane: c
+pair_kind: self
+catalog: 2.5-edition-wcag-2.2-508-en
+
+# Finding-level trend, keyed by finding_id. Extraction prefers a trend
+# cell in a table row; prose falls back to a negation-aware line scan.
+expected_trends:
+  a11y_fare_zone_slider_keyboard: resolved
+  a11y_payment_error_association: resolved
+  a11y_purchase_confirm_silent: resolved
+  a11y_route_badge_contrast: persistent
+  a11y_swap_button_name: persistent
+  a11y_form_autocomplete_missing: improving
+  a11y_legacy_skiplink_anchor: worsening
+  a11y_sticky_filterbar_obscures_focus: new
+
+# A trend row that does not say which criterion it belongs to is unusable.
+trend_scs:
+  a11y_fare_zone_slider_keyboard: "2.1.1"
+  a11y_payment_error_association: "3.3.1"
+  a11y_purchase_confirm_silent: "4.1.3"
+  a11y_route_badge_contrast: "1.4.3"
+  a11y_swap_button_name: "4.1.2"
+  a11y_form_autocomplete_missing: "1.3.5"
+  a11y_legacy_skiplink_anchor: "2.4.1"
+  a11y_sticky_filterbar_obscures_focus: "2.4.11"
+
+# Finding-level trend is licensed by the fingerprints in the notes — the
+# value is compared, never mere mention (score_bugreport discipline).
+trend_fingerprints:
+  a11y_fare_zone_slider_keyboard: 7c1f22ab
+  a11y_payment_error_association: c30e51f9
+  a11y_purchase_confirm_silent: e8c2447d
+  a11y_route_badge_contrast: 2ab9d871
+  a11y_swap_button_name: 91d4e0c3
+  a11y_form_autocomplete_missing: 44b09ce6
+  a11y_legacy_skiplink_anchor: 5f77ab02
+  a11y_sticky_filterbar_obscures_focus: 3d90c7e1
+
+# SC-level deltas: the row must name BOTH terms (word-boundary matched so
+# "partially-supports" never satisfies "supports").
+expected_sc_deltas:
+  "2.1.1": {prior: partially-supports, current: supports}
+  "3.3.1": {prior: partially-supports, current: supports}
+  "4.1.3": {prior: partially-supports, current: supports}
+  "1.3.5": {prior: does-not-support, current: partially-supports}
+  "2.4.1": {prior: partially-supports, current: does-not-support}
+  "2.4.11": {prior: supports, current: partially-supports}
+
+# False-positive arm: these criteria are identical in both documents. A
+# row naming two different terms for one of them is manufactured movement.
+unchanged_scs: ["1.1.1", "1.3.1", "1.3.2", "2.1.2", "2.2.1", "2.4.3", "2.4.7", "3.2.6", "3.3.4", "3.3.8"]
+
+# The one delta whose evidence has no prior-cycle counterpart.
+noncomparable_scs:
+  "2.4.11": ["not comparable", "no counterpart", "no prior counterpart",
+             "new template", "new sample", "did not exist", "no prior",
+             "coverage change", "not directly comparable", "new to this cycle",
+             "added this cycle", "shipped 2026-12"]
+
+# The mandatory comparability statement (WCAG-EM re-evaluation).
+comparability_must:
+  - ["S01", "S02", "S03", "S06", "S07", "S08", "S11"]
+  - ["carried over", "carried-over", "kept", "retained", "common to both",
+     "in both cycles", "comparable core", "shared", "overlap"]
+  - ["S12", "S13", "S14", "S15", "R02", "replaced", "retired", "added"]
+
+# Anti-overclaim: the summary must be sample-scoped. Polarity-blind by
+# measurement — adjudicate by reading (repo practice for keyword gates).
+no_wholeproduct_must:
+  - ["sample-scoped", "sample scope", "scoped to the sample",
+     "within the sample", "not a whole-product", "whole-product"]
+
+forbidden_overclaim_patterns:
+  - "the (product|portal|site) (has |had )?improved"
+  - "overall (accessibility|conformance) (has |had )?improved"
+  - "now (fully )?conforms"
+  - "more accessible than"
+  - "net improvement in accessibility"
+
+# A fingerprint that is not one of the eight is invented — the value that
+# licenses the whole finding-level table. Requires a letter so an 8-digit
+# date (20260728) is not read as a hash.
+fingerprint_pattern: "\\b(?=[0-9a-f]{8}\\b)[0-9a-f]*[a-f][0-9a-f]*\\b"
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_fare_zone_slider_keyboard
+  - a11y_payment_error_association
+  - a11y_purchase_confirm_silent
+  - a11y_route_badge_contrast
+  - a11y_swap_button_name
+  - a11y_form_autocomplete_missing
+  - a11y_legacy_skiplink_anchor
+  - a11y_sticky_filterbar_obscures_focus
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+summary_should:
+  - ["3 resolved", "resolved: 3", "three resolved"]
+  - ["1 worsening", "worsening: 1", "one worsening"]
+
+handoff_should:
+  - ["a11y-critic", "critic", "adjudicat"]
+  - ["human", "owner", "review", "publish"]
+
+notes: |
+  Phase 4 handoff item 2, fixture 6, built 2026-08-13. The pair is
+  self-produced by construction: both documents carry this engagement's
+  finding_id + fingerprint values in their adherence notes, which is what
+  licenses finding-level trend at all (SKILL Lane C: self vs foreign is
+  decided by fingerprints, not authorship).
+
+  Trap inventory:
+  1. Term-improved-but-fingerprint-persists (1.3.5): does-not-support to
+     partially-supports with a11y_form_autocomplete_missing still on the
+     ledger at S08. `resolved` here is the central must-fail; the answer
+     is `improving`. Sits on comparable ground (S07 and S08 are both
+     carried over), so a comparability caveat cannot substitute for it.
+  2. Term-worsened-under-one-fingerprint (2.4.1): partially-supports to
+     does-not-support as the legacy shell spread. `new` here is the
+     must-fail; the answer is `worsening` — same fingerprint 5f77ab02.
+  3. Non-comparable delta (2.4.11): the only newly-failing criterion, and
+     its sample (S14 station detail) has no prior-cycle counterpart. The
+     row must be marked not comparable — a coverage change, not movement.
+  4. Whole-product overclaim: three resolved against one worsening plus
+     one new tempts "the portal improved". Both documents are
+     sample-scoped across two different scopes.
+  5. FP arm: the ten criteria in `unchanged_scs` are byte-identical in
+     both documents and must not be tabled as movement.
+
+  Known instrument limits: trend extraction prefers a table cell and falls
+  back to a negation-aware line scan, so a prose-form report may
+  undercount; the no-overclaim token gate is polarity-blind. Scorer
+  statuses are detector output — adjudicate by reading.
