@@ -45,7 +45,19 @@ Nearly free after Lane A, per the plan. Scope:
    status; SKILL Boundaries list (drop Lane C from "not yet"; the merge-
    into-hand-maintained-ACR exclusion stays permanently).
 
-## Part 2 — Upstream filing (GSA repos)
+## Part 2 — Upstream filing (GSA repos) — **EXECUTED 2026-08-13 (user-approved)**
+
+Filed after searching both repos' open AND closed issues (no duplicates;
+adjacent history: #352, #246, openacr-editor#83; the editor repo routes
+issues to the main repo per openacr-editor#43). All five landed on
+`GSA/openacr` with fresh reproduction transcripts:
+A → [#363](https://github.com/GSA/openacr/issues/363) ·
+B → [#364](https://github.com/GSA/openacr/issues/364) ·
+E → [#365](https://github.com/GSA/openacr/issues/365) ·
+C → [#366](https://github.com/GSA/openacr/issues/366) ·
+D → [#367](https://github.com/GSA/openacr/issues/367).
+URLs + the KAT-style watch rule are in `docs/openacr-reference.md`
+§Upstream. The drafts below are retained as the filed record.
 
 **Requires explicit user approval before posting — filing issues on
 external repos is outward-facing publication.** Search each repo's open
