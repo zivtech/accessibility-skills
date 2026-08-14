@@ -87,9 +87,10 @@ The critic uses an 8-phase review protocol with evidence-backed severity and a m
 
 ### Accessibility Tester (`a11y-test`)
 
-The Accessibility Tester is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with five execution modes:
+The Accessibility Tester is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with six execution modes:
 
 - **`npx playwright test`** — Codified CI keyboard tests, visual regression, axe-core scans. Primary path.
+- **`references/baseline-url-scan.mjs`** — Baseline URL-list scans: point at a list of URLs, get per-page axe-core results with no spec authoring. Detector output for regression baselines and sweep triage — never keyboard-operability or screen-reader evidence, and a clean scan is not conformance. See [adoption assessment](docs/baseline-url-scan-adoption-assessment.md).
 - **`agent-browser`** — Interactive reconnaissance: snapshot ARIA structure, verify fixes, probe widgets. Fastest for exploratory work (~1.5-2.6s per task).
 - **`/webwright:run`** — Generate complete Python Playwright test scripts from prose descriptions. LLM-generated, ~30-130s first run, then ~4s re-runs with no LLM cost. Produces reusable `.py` artifacts.
 - **`keyboard-a11y-tester`** — Goal-driven journey audits of live URLs: keyboard + emulated screen-reader personas, evidence-linked WCAG findings, live-region capture, focus-indicator measurement. External clone pinned to release `0.5.0`; cross-validated against this repo's 33 critic fixtures. See [adoption assessment](docs/keyboard-a11y-tester-adoption-assessment.md).

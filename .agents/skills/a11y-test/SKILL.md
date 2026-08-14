@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Accessibility Testing Skill
@@ -17,6 +17,7 @@ Pick the right execution mode from the routing table before running anything (th
 | Task | Tool | Why |
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
+| Baseline sweep across a list of URLs — machine-readable axe-core evidence per page, no `.spec.js` authoring, not CI-embedded | [`references/baseline-url-scan.mjs`](references/baseline-url-scan.mjs) (in-repo reference script; peer deps `playwright` + `@axe-core/playwright`) | Sequential per-page axe scan + summary JSON for baseline/regression evidence across many pages in one run. Detector output, not a conformance verdict — axe-detectable subset only. See "Baseline URL-list scan" below. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
@@ -29,6 +30,7 @@ Pick the right execution mode from the routing table before running anything (th
 Do you have a prose description of what to test, but no test script yet?
   YES → /webwright:run (one-shot) or /webwright:craft (reusable parameterized tool)
   NO, you need to run an existing test → npx playwright test
+  NO, you have a list of URLs and need machine-readable axe evidence across all of them, no test file → references/baseline-url-scan.mjs (or pa11y-ci --sitemap for sitemap-wide sweeps)
   NO, you need to audit a live URL against a user goal (journey, announcements, focus indicators) → keyboard-a11y-tester
   NO, you need to assert component announcements, names, or reading order in unit tests (no URL yet) → virtual-screen-reader
   NO, you need to explore interactively → agent-browser
@@ -251,6 +253,40 @@ Calibration rules 1–5 below apply unchanged in this lane (rule 3 re-verified i
 ### Evidence
 
 The artifacts are spoken-phrase logs plus the asserting test file — a11y-critic Phase 0 hard evidence (gate passed 2026-07-11: `evals/results/virtual-screen-reader/`; contract mapping in `docs/a11y-evidence-finding-contract.md`). Cite tool version + test file + the exact phrase or its absence, and pair silence with the structural fact (no role/aria-live present). Platform note: plain npm library — works from Claude Code and Codex.
+
+## Baseline URL-list scan with references/baseline-url-scan.mjs
+
+**When to use:** you have a list of URLs — a spot-check set, a sampled route list from a discovery or audit-scope engagement, a client's page inventory — and need machine-readable axe-core evidence across all of them in one run, without authoring a `.spec.js` file per page or wiring CI. Promoted 2026-08-14 from a one-off evidence harness written for the 2026-08-13 EPA public-sites engagement (the zivtech/a11y-audits repo (private), `2026-08-13-epa-public-sites/evidence/harness/audit-pages.mjs`, run against 40 views) into a reusable, generalized reference script: [references/baseline-url-scan.mjs](references/baseline-url-scan.mjs). **When NOT to use:** a single page or component you're actively developing against (→ `.spec.js` + the APG templates, or `agent-browser` for quick probing); keyboard operability or screen-reader announcement evidence — this mode never presses a key or captures an announcement (→ keyboard-a11y-tester or virtual-screen-reader); a sitemap-wide sweep where a maintained, hosted CI tool fits better than an in-repo script (→ pa11y-ci, below).
+
+**What it is:** a plain Node script depending only on `playwright` and `@axe-core/playwright` — peer dependencies installed in your own project, never in this repo (this bundle stays prompt-only; see this repo's `CLAUDE.md`). It launches one Chromium browser, visits each URL sequentially with a polite delay between requests, scans with axe-core scoped to this bundle's WCAG 2.2 AA default tag set at each configured viewport — default `1280x800,320x800`, matching the EPA harness's desktop+narrow lineage, override with `--viewports WxH[,WxH...]` — and writes a per-URL JSON result keyed by viewport (rule id, impact, node count, up to 3 sample selectors per viewport) plus an aggregated `summary.json` (violation counts by impact, violations by rule across all pages and viewports). It deliberately drops the EPA harness's other engagement-specific extras — full structure inventory, ARIA snapshot, keyboard tab-trace, text-spacing reflow probe, per-node XPath — to stay a focused baseline tool; reach for `agent-browser` or `keyboard-a11y-tester` when you need those.
+
+### Install and run
+
+```bash
+npm install -D playwright @axe-core/playwright   # peer deps — install in your own project, never in this repo
+npx playwright install chromium
+
+node .claude/skills/a11y-test/references/baseline-url-scan.mjs --urls-file urls.txt --out ./baseline-scan-output
+# or pass URLs directly, with a custom viewport list:
+node .claude/skills/a11y-test/references/baseline-url-scan.mjs --out ./out --viewports 1280x800,320x800 https://example.com https://example.org/page
+```
+
+`urls.txt`: one absolute `http(s)://` URL per line; blank lines and `#`-prefixed lines are ignored. Raise `--delay` (default 500ms) for rate-limited or robots-restricted targets — confirm you're authorized to test the target and check its robots.txt/terms of service before scanning a third party's production site. Exact-pin `@axe-core/playwright` in your own project's `package.json`, since rule availability is per-axe-core-version — the resolved version is recorded as `axe_core_version` in `summary.json` for exactly this reason.
+
+### What this mode IS and IS NOT
+
+- **IS for:** baseline and regression sweeps across many pages in one run; machine-readable evidence (rule id, impact, node count, sample selectors) that can feed a11y-critic Phase 0 or the Optional A11y Evidence Finding Contract (§4 below); trend baselines across repeated runs of the same URL list — rerun and diff `summary.json`.
+- **IS NOT:** keyboard-operability or screen-reader evidence of any kind — it never presses a key or captures an announcement (route those to keyboard-a11y-tester or virtual-screen-reader). Axe-core is a **detector, not a verdict authority** here, same as every other automated lane in this bundle: it covers roughly 30-40% of WCAG 2.2 issue classes (the same axe-detectable-subset ceiling as the §4 in-spec-file scans below), and its rules are heuristics, not the standard itself. **A clean scan is not a conformance claim** — it means axe found nothing in its rule set on the URLs scanned, nothing more. Treat the output as candidate findings for human review.
+
+### pa11y-ci for sitemap-wide sweeps (routed, not vendored)
+
+For a sweep driven by a sitemap rather than a hand-maintained URL list, route to `pa11y-ci` instead of adding sitemap discovery to this script:
+
+```bash
+npx pa11y-ci --sitemap https://example.com/sitemap.xml --runner axe --runner htmlcs
+```
+
+Same adoption boundary as keyboard-a11y-tester and virtual-screen-reader: a routed external tool the operator installs in their own project, never vendored into this repo.
 
 ## 1. Keyboard Accessibility Tests
 
