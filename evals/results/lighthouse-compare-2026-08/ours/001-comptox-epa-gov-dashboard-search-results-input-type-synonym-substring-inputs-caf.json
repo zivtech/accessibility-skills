@@ -1,0 +1,612 @@
+{
+  "url": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "started": "2026-08-14T17:48:20.283Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+      "title": "CompTox Chemicals Dashboard",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "aria-allowed-attr",
+          "impact": "critical",
+          "help": "Elements must only use supported ARIA attributes",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-attr?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            "li[aria-label=\"Search_\"] > .dropdown-toggler[data-v-ade5bc5c=\"\"] > div[item-loc=\"mdb-dropdown-toggle\"][waves-fixed=\"\"][data-cy=\"navDropdownLink\"]",
+            "div[title=\"Lists of chemicals and assays\"][item-loc=\"mdb-dropdown-toggle\"][waves-fixed=\"\"]",
+            "li[aria-label=\"About_\"] > .dropdown-toggler[data-v-ade5bc5c=\"\"] > div[item-loc=\"mdb-dropdown-toggle\"][waves-fixed=\"\"][data-cy=\"navDropdownLink\"]"
+          ]
+        },
+        {
+          "id": "aria-allowed-role",
+          "impact": "minor",
+          "help": "ARIA role should be appropriate for the element",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
+          "tags": [
+            "cat.aria",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".navbarLinks"
+          ]
+        },
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-parent?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".ag-header-cell-text[role=\"columnheader\"]"
+          ]
+        },
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT6.a",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.9.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#toggle-grid-btn"
+          ]
+        },
+        {
+          "id": "empty-table-header",
+          "impact": "minor",
+          "help": "Table header text should not be empty",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-table-header?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "best-practice"
+          ],
+          "node_count": 9,
+          "sample_selectors": [
+            "div[col-id=\"2_0\"]",
+            "div[col-id=\"3_0\"]",
+            "div[col-id=\"4_0\"]"
+          ]
+        },
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311",
+            "TTv5",
+            "TT11.a",
+            "EN-301-549",
+            "EN-9.3.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-8.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "image-alt",
+          "impact": "critical",
+          "help": "Images must have alternative text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=playwright",
+          "tags": [
+            "cat.text-alternatives",
+            "wcag2a",
+            "wcag111",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT7.a",
+            "TT7.b",
+            "EN-301-549",
+            "EN-9.1.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-1.1.1"
+          ],
+          "node_count": 10,
+          "sample_selectors": [
+            "div[comp-id=\"158\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]",
+            "div[comp-id=\"172\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]",
+            "div[comp-id=\"186\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]"
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#comptox-nav-bar"
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/link-in-text-block?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2a",
+            "wcag141",
+            "TTv5",
+            "TT13.a",
+            "EN-301-549",
+            "EN-9.1.4.1",
+            "RGAAv4",
+            "RGAA-10.6.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            "a[rel=\"noopener nofollow\"]",
+            ".l-page__footer-contact > a[data-v-24800751=\"\"]"
+          ]
+        },
+        {
+          "id": "list",
+          "impact": "serious",
+          "help": "<ul> and <ol> must only directly contain <li>, <script> or <template> elements",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/list?application=playwright",
+          "tags": [
+            "cat.structure",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".pr-5",
+            ".ml-auto.navbar-nav[data-v-b87b353c=\"\"]:nth-child(3)"
+          ]
+        },
+        {
+          "id": "listitem",
+          "impact": "serious",
+          "help": "<li> elements must be contained in a <ul> or <ol>",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/listitem?application=playwright",
+          "tags": [
+            "cat.structure",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 5,
+          "sample_selectors": [
+            ".navbarLinks > .mainNav.nuxt-nav.default-color",
+            "li[aria-label=\"Search_\"]",
+            "li[aria-label=\"Lists_\"]"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".l-page__footer",
+            ".back-to-top"
+          ]
+        },
+        {
+          "id": "tabindex",
+          "impact": "serious",
+          "help": "Elements should not have tabindex greater than zero",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".vs__search"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            "a[title=\"Environmental Topics\"]",
+            ".menu__item:nth-child(2) > .menu__item[title=\"Report a violation\"]",
+            ".menu__item:nth-child(3) > .menu__item[title=\"Report a violation\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-required-children",
+          "impact": "critical",
+          "help": "Certain ARIA roles must contain particular children",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-children?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 5,
+          "sample_selectors": [
+            ".ag-full-width-container",
+            ".ag-sticky-top-container",
+            ".ag-sticky-top-full-width-container"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "div[comp-id=\"144\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > .relatedText[data-v-9004b716=\"\"]"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 23,
+          "sample_selectors": [
+            ".ag-floating-filter.ag-header-cell[aria-colindex=\"3\"]",
+            "#ag-110-input",
+            "#ag-113-input"
+          ]
+        }
+      ],
+      "passes_count": 46,
+      "inapplicable_count": 40
+    },
+    "320x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+      "title": "CompTox Chemicals Dashboard",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-parent?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".ag-header-cell-text[role=\"columnheader\"]"
+          ]
+        },
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT6.a",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.9.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            ".dropdown[data-v-201cbff8=\"\"][data-v-ade5bc5c=\"\"] > .dropdown-toggler[data-v-ade5bc5c=\"\"] > .btn-undefined.dropdown-toggle[aria-haspopup=\"true\"]",
+            "button[data-cy=\"copyUrlBtn\"]",
+            "#toggle-grid-btn"
+          ]
+        },
+        {
+          "id": "empty-table-header",
+          "impact": "minor",
+          "help": "Table header text should not be empty",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-table-header?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "best-practice"
+          ],
+          "node_count": 9,
+          "sample_selectors": [
+            "div[col-id=\"2_0\"]",
+            "div[col-id=\"3_0\"]",
+            "div[col-id=\"4_0\"]"
+          ]
+        },
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311",
+            "TTv5",
+            "TT11.a",
+            "EN-301-549",
+            "EN-9.3.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-8.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "image-alt",
+          "impact": "critical",
+          "help": "Images must have alternative text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=playwright",
+          "tags": [
+            "cat.text-alternatives",
+            "wcag2a",
+            "wcag111",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT7.a",
+            "TT7.b",
+            "EN-301-549",
+            "EN-9.1.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-1.1.1"
+          ],
+          "node_count": 12,
+          "sample_selectors": [
+            "div[comp-id=\"172\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]",
+            "div[comp-id=\"186\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]",
+            "div[comp-id=\"200\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > div[data-v-9004b716=\"\"] > .image[data-v-9004b716=\"\"] > img[height=\"95\"][title=\"\"]"
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/link-in-text-block?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2a",
+            "wcag141",
+            "TTv5",
+            "TT13.a",
+            "EN-301-549",
+            "EN-9.1.4.1",
+            "RGAAv4",
+            "RGAA-10.6.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            "a[rel=\"noopener nofollow\"]",
+            ".l-page__footer-contact > a[data-v-24800751=\"\"]"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".l-page__footer"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-allowed-role",
+          "impact": "minor",
+          "help": "ARIA role should be appropriate for the element",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
+          "tags": [
+            "cat.aria",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".navbarLinks"
+          ]
+        },
+        {
+          "id": "aria-required-children",
+          "impact": "critical",
+          "help": "Certain ARIA roles must contain particular children",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-children?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag131",
+            "EN-301-549",
+            "EN-9.1.3.1",
+            "RGAAv4",
+            "RGAA-9.3.1"
+          ],
+          "node_count": 5,
+          "sample_selectors": [
+            ".ag-full-width-container",
+            ".ag-sticky-top-container",
+            ".ag-sticky-top-full-width-container"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "div[comp-id=\"144\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > .text-wrap[data-v-9004b716=\"\"] > .relatedText[data-v-9004b716=\"\"]"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 7,
+          "sample_selectors": [
+            ".ag-floating-filter.ag-header-cell[aria-colindex=\"3\"]",
+            "#ag-110-input",
+            "div[comp-id=\"145\"] > .ag-cell-wrapper[role=\"presentation\"] > .ag-cell-value > div > a"
+          ]
+        }
+      ],
+      "passes_count": 45,
+      "inapplicable_count": 41
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-14T17:48:57.844Z"
+}

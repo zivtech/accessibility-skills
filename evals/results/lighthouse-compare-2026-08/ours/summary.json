@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.1",
+  "generated": "2026-08-14T17:49:20.527Z",
+  "axe_core_version": "4.13.0",
+  "totals": {
+    "urls_scanned": 5,
+    "viewports_per_url": [
+      "1280x800",
+      "320x800"
+    ],
+    "viewport_scans": 10,
+    "measured": 10,
+    "errors": 0,
+    "violation_nodes": 164,
+    "violation_nodes_by_impact": {
+      "critical": 50,
+      "serious": 52,
+      "moderate": 39,
+      "minor": 23,
+      "unknown": 0
+    }
+  },
+  "violations_by_rule": [
+    {
+      "rule_id": "region",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+        "https://www.airnow.gov/about-airnow/"
+      ],
+      "nodes": 29,
+      "page_count": 4
+    },
+    {
+      "rule_id": "image-alt",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 22,
+      "page_count": 1
+    },
+    {
+      "rule_id": "empty-table-header",
+      "impact": "minor",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-table-header?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 18,
+      "page_count": 1
+    },
+    {
+      "rule_id": "link-in-text-block",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/link-in-text-block?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 12,
+      "page_count": 2
+    },
+    {
+      "rule_id": "listitem",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/listitem?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 10,
+      "page_count": 2
+    },
+    {
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+      ],
+      "nodes": 9,
+      "page_count": 2
+    },
+    {
+      "rule_id": "aria-allowed-attr",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-attr?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 8,
+      "page_count": 2
+    },
+    {
+      "rule_id": "aria-required-parent",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-parent?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 8,
+      "page_count": 2
+    },
+    {
+      "rule_id": "target-size",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 8,
+      "page_count": 2
+    },
+    {
+      "rule_id": "button-name",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://fire.airnow.gov/"
+      ],
+      "nodes": 6,
+      "page_count": 2
+    },
+    {
+      "rule_id": "html-has-lang",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+      ],
+      "nodes": 6,
+      "page_count": 3
+    },
+    {
+      "rule_id": "label",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+      "pages": [
+        "https://fire.airnow.gov/"
+      ],
+      "nodes": 6,
+      "page_count": 1
+    },
+    {
+      "rule_id": "landmark-unique",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://www.airnow.gov/about-airnow/"
+      ],
+      "nodes": 4,
+      "page_count": 3
+    },
+    {
+      "rule_id": "meta-viewport",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
+      "pages": [
+        "https://fire.airnow.gov/",
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+      ],
+      "nodes": 4,
+      "page_count": 2
+    },
+    {
+      "rule_id": "label-title-only",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/label-title-only?application=playwright",
+      "pages": [
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+        "https://www.airnow.gov/about-airnow/"
+      ],
+      "nodes": 3,
+      "page_count": 2
+    },
+    {
+      "rule_id": "list",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/list?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 3,
+      "page_count": 2
+    },
+    {
+      "rule_id": "aria-allowed-role",
+      "impact": "minor",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/",
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 2,
+      "page_count": 2
+    },
+    {
+      "rule_id": "meta-viewport-large",
+      "impact": "minor",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport-large?application=playwright",
+      "pages": [
+        "https://www.airnow.gov/about-airnow/"
+      ],
+      "nodes": 2,
+      "page_count": 1
+    },
+    {
+      "rule_id": "page-has-heading-one",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 2,
+      "page_count": 1
+    },
+    {
+      "rule_id": "empty-heading",
+      "impact": "minor",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-heading?application=playwright",
+      "pages": [
+        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    },
+    {
+      "rule_id": "tabindex",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
+      "pages": [
+        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    }
+  ]
+}

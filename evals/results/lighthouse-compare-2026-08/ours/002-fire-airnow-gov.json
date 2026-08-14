@@ -1,0 +1,222 @@
+{
+  "url": "https://fire.airnow.gov/",
+  "started": "2026-08-14T17:48:58.847Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://fire.airnow.gov/",
+      "title": "AirNow Fire and Smoke Map",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT6.a",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.9.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".actionable"
+          ]
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "help": "Form elements must have labels",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+          "tags": [
+            "cat.forms",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.n",
+            "TTv5",
+            "TT5.c",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.1.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(1) > input[type=\"checkbox\"]",
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(2) > input[type=\"checkbox\"]",
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(3) > input[type=\"checkbox\"]"
+          ]
+        },
+        {
+          "id": "meta-viewport",
+          "impact": "moderate",
+          "help": "Zooming and scaling must not be disabled",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag2aa",
+            "wcag144",
+            "EN-301-549",
+            "EN-9.1.4.4",
+            "ACT",
+            "RGAAv4",
+            "RGAA-10.4.2"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 17,
+          "sample_selectors": [
+            ".title-main",
+            "small",
+            ".title-sub"
+          ]
+        }
+      ],
+      "passes_count": 35,
+      "inapplicable_count": 52
+    },
+    "320x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://fire.airnow.gov/",
+      "title": "AirNow Fire and Smoke Map",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "help": "Buttons must have discernible text",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.a",
+            "TTv5",
+            "TT6.a",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.9.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".actionable"
+          ]
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "help": "Form elements must have labels",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+          "tags": [
+            "cat.forms",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.n",
+            "TTv5",
+            "TT5.c",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.1.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(1) > input[type=\"checkbox\"]",
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(2) > input[type=\"checkbox\"]",
+            ".svelte-1ufhqdb.form-switch.form-check:nth-child(3) > input[type=\"checkbox\"]"
+          ]
+        },
+        {
+          "id": "meta-viewport",
+          "impact": "moderate",
+          "help": "Zooming and scaling must not be disabled",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag2aa",
+            "wcag144",
+            "EN-301-549",
+            "EN-9.1.4.4",
+            "ACT",
+            "RGAAv4",
+            "RGAA-10.4.2"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 14,
+          "sample_selectors": [
+            "#geoPromptLabel",
+            ".px-2",
+            ".px-2 > a[href$=\"www.airnow.gov\"]"
+          ]
+        }
+      ],
+      "passes_count": 35,
+      "inapplicable_count": 52
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-14T17:49:01.832Z"
+}

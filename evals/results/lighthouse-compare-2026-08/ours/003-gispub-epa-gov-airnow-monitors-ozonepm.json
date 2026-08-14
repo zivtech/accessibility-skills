@@ -1,0 +1,307 @@
+{
+  "url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+  "started": "2026-08-14T17:49:02.835Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+      "title": "AirNow Interactive Map",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 7,
+          "sample_selectors": [
+            "div[aria-controls=\"layerListPane_pane\"] > .dijitTitlePaneTextNode[data-dojo-attach-point=\"titleNode\"]",
+            "div[aria-controls=\"layerListPane_pane\"] > .dijitTitlePaneTextNode[data-dojo-attach-point=\"titleNode\"] > .subtitle",
+            "div[aria-controls=\"layerListPane2_pane\"] > .dijitTitlePaneTextNode[data-dojo-attach-point=\"titleNode\"]"
+          ]
+        },
+        {
+          "id": "empty-heading",
+          "impact": "minor",
+          "help": "Headings should not be empty",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-heading?application=playwright",
+          "tags": [
+            "cat.name-role-value",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "h2"
+          ]
+        },
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311",
+            "TTv5",
+            "TT11.a",
+            "EN-301-549",
+            "EN-9.3.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-8.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "label-title-only",
+          "impact": "serious",
+          "help": "Form elements should have a visible label",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label-title-only?application=playwright",
+          "tags": [
+            "cat.forms",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#search_input"
+          ]
+        },
+        {
+          "id": "meta-viewport",
+          "impact": "moderate",
+          "help": "Zooming and scaling must not be disabled",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag2aa",
+            "wcag144",
+            "EN-301-549",
+            "EN-9.1.4.4",
+            "ACT",
+            "RGAAv4",
+            "RGAA-10.4.2"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 11,
+          "sample_selectors": [
+            ".leftArea",
+            ".textArea",
+            ".btns"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-allowed-role",
+          "impact": "minor",
+          "help": "ARIA role should be appropriate for the element",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
+          "tags": [
+            "cat.aria",
+            "best-practice"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".dijitArrowButtonInner",
+            ".dijitValidationIcon"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 8,
+          "sample_selectors": [
+            "h1",
+            ".active-map",
+            ".btn-switch[data-id=\"1\"]"
+          ]
+        }
+      ],
+      "passes_count": 39,
+      "inapplicable_count": 49
+    },
+    "320x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+      "title": "AirNow Interactive Map",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+          "tags": [
+            "cat.language",
+            "wcag2a",
+            "wcag311",
+            "TTv5",
+            "TT11.a",
+            "EN-301-549",
+            "EN-9.3.1.1",
+            "ACT",
+            "RGAAv4",
+            "RGAA-8.3.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "meta-viewport",
+          "impact": "moderate",
+          "help": "Zooming and scaling must not be disabled",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag2aa",
+            "wcag144",
+            "EN-301-549",
+            "EN-9.1.4.4",
+            "ACT",
+            "RGAAv4",
+            "RGAA-10.4.2"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 8,
+          "sample_selectors": [
+            ".leftArea",
+            ".btns",
+            "#warning"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-allowed-role",
+          "impact": "minor",
+          "help": "ARIA role should be appropriate for the element",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
+          "tags": [
+            "cat.aria",
+            "best-practice"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".dijitArrowButtonInner",
+            ".dijitValidationIcon"
+          ]
+        },
+        {
+          "id": "bypass",
+          "impact": "serious",
+          "help": "Page must have means to bypass repeated blocks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "wcag2a",
+            "wcag241",
+            "section508",
+            "section508.22.o",
+            "TTv5",
+            "TT9.a",
+            "EN-301-549",
+            "EN-9.2.4.1",
+            "RGAAv4",
+            "RGAA-12.7.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 6,
+          "sample_selectors": [
+            ".active-map",
+            ".btn-switch[data-id=\"1\"]",
+            ".btn-switch[data-id=\"2\"]"
+          ]
+        }
+      ],
+      "passes_count": 29,
+      "inapplicable_count": 58
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-14T17:49:16.660Z"
+}

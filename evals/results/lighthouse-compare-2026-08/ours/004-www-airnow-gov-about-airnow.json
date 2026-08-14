@@ -1,0 +1,200 @@
+{
+  "url": "https://www.airnow.gov/about-airnow/",
+  "started": "2026-08-14T17:49:17.663Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://www.airnow.gov/about-airnow/",
+      "title": "About AirNow | AirNow.gov",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "label-title-only",
+          "impact": "serious",
+          "help": "Form elements should have a visible label",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label-title-only?application=playwright",
+          "tags": [
+            "cat.forms",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#location-input-nav_input"
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#airnow-btn"
+          ]
+        },
+        {
+          "id": "meta-viewport-large",
+          "impact": "minor",
+          "help": "Users should be able to zoom and scale the text up to 500%",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport-large?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".navigation-holder > a[href=\"/\"]",
+            "form[data-dojo-attach-point=\"formNode\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 29,
+          "sample_selectors": [
+            ".curr-cond-label > a[href=\"/\"]",
+            "#location-input-nav_input",
+            "#about-airnow"
+          ]
+        }
+      ],
+      "passes_count": 42,
+      "inapplicable_count": 46
+    },
+    "320x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "https://www.airnow.gov/about-airnow/",
+      "title": "About AirNow | AirNow.gov",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "label-title-only",
+          "impact": "serious",
+          "help": "Form elements should have a visible label",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label-title-only?application=playwright",
+          "tags": [
+            "cat.forms",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#location-input-nav_input"
+          ]
+        },
+        {
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#recursos-en-español-btn"
+          ]
+        },
+        {
+          "id": "meta-viewport-large",
+          "impact": "minor",
+          "help": "Users should be able to zoom and scale the text up to 500%",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport-large?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "meta[name=\"viewport\"]"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            ".navigation-holder > a[href=\"/\"]",
+            "form[data-dojo-attach-point=\"formNode\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 7,
+          "sample_selectors": [
+            "#location-input-nav_input",
+            ".footer-site-text-holder.visible-xs.col-xs-12 > .footer-site-text",
+            ".footer-site-link-holder.visible-xs.col-xs-12 > .footer-site-link.link-group"
+          ]
+        }
+      ],
+      "passes_count": 42,
+      "inapplicable_count": 46
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-14T17:49:20.507Z"
+}
