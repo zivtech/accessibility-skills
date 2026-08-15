@@ -1,0 +1,14 @@
+diff --git a/core/modules/media/tests/src/Kernel/OEmbedIframeControllerTest.php b/core/modules/media/tests/src/Kernel/OEmbedIframeControllerTest.php
+index ff4c09e24d6..d9248a6c1a4 100644
+--- a/core/modules/media/tests/src/Kernel/OEmbedIframeControllerTest.php
++++ b/core/modules/media/tests/src/Kernel/OEmbedIframeControllerTest.php
+@@ -115,6 +115,9 @@ public function testResourcePassedToPreprocess(): void {
+     // media_test_oembed_preprocess_media_oembed_iframe() for YouTube videos.
+     $this->assertStringContainsString('&pasta=rigatoni', $content);
+     $this->assertStringContainsString('test.css', $content);
++    // EVALUATION-ONLY assertion (not part of MR !16491): prove the wrapper
++    // <html> element renders with a populated lang attribute end-to-end.
++    $this->assertStringContainsString('<html lang="en">', $content);
+     $this->assertContains('yo_there', $response->getCacheableMetadata()->getCacheTags());
+     $this->assertStringContainsString('text/html', $response->headers->get('Content-Type'));
+   }
