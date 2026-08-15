@@ -106,7 +106,7 @@ Invoke the `/a11y-test` skill, routing by target kind:
 - **Component announcement/name/reading-order behavior (pre-deploy, no URL)** → virtual-screen-reader assertions in the project's own unit suite or Storybook play functions, alongside the `.spec.js` lane — light-DOM components only (shadow roots are invisible to it), persistent-container pattern for live regions, never fake timers, never as keyboard evidence. See the a11y-test skill's component section.
 - **Live URL + user journey** ("can a keyboard-only or screen-reader user complete X on this page?") → keyboard-a11y-tester: batch crawl for recon, then a driven `serve`/`step` session for interaction evidence. The main session drives the serve/step loop directly — it is a CLI, not an agent, so depth-1 is preserved. Calibration: batch-mode 4.1.3 findings are prompts to drive, never failures.
 
-All lanes produce evidence for Step 7.
+All lanes produce evidence for Step 7 — match each finding's evidence type against the a11y-test Verification evidence contract before treating a fix as verified.
 
 ### Step 6b: Role Audit — Code Mode (optional)
 If user requests role-attributed findings, or findings need to be routed to specific team members:

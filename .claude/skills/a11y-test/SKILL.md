@@ -38,6 +38,20 @@ Do you have a prose description of what to test, but no test script yet?
 
 **CDP keyboard event delivery for `agent-browser` has been verified end-to-end** on both a vanilla JS disclosure widget (WAI-ARIA APG disclosure-faq example: `focus → press Enter → aria-expanded: false → true`) and a React state-driven modal (react.dev DocSearch: `Meta+K` → React global keydown listener → state-mounted searchbox). The MCP keyboard delivery bug does not apply to `agent-browser` because it calls CDP `Input.dispatchKeyEvent` directly rather than through an MCP wrapper.
 
+## Verification evidence contract
+
+**Evidence type must match the failing condition.** A screenshot is never evidence for an interaction-class fix (keyboard operability, focus behavior, or a status-message announcement) — it shows what a sighted mouse user sees, not what a keyboard or screen-reader user experiences. When a fix's evidence doesn't match its defect class, the fix ships labeled **partial**, naming which defect classes still lack matching evidence.
+
+| Defect class | Evidence REQUIRED before "verified" | Mode |
+|---|---|---|
+| Keyboard operability (reachable, operable with Tab/Enter/Space/Escape/arrows) | Real-keyboard Playwright transcript — actual `page.keyboard.press()` calls, never ARIA-attribute inspection alone | `npx playwright test` |
+| Focus order & focus-visible sufficiency | Journey-level focus trace evidence | `keyboard-a11y-tester` |
+| Accessible name/role/state; status-message announcements | Assertion output against actual computed screen-reader output | `virtual-screen-reader` |
+| Machine-detectable semantics, contrast, alt-presence (a rule fires or stops firing) | Re-scan of the touched page(s) after the fix | `baseline-url-scan.mjs` (axe-core violations; `--census`/`--alt-snapshot` for the heuristic classes) |
+| Visual-only classes (layout, spacing, color/swatch correctness) | Screenshot comparison | screenshots (`agent-browser screenshot` / Playwright screenshot) |
+
+This table is what `a11y-critic` Phase 0 checks a remediation's attached evidence against, and what `bug-reporting`'s "Verification evidence" field cites.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
