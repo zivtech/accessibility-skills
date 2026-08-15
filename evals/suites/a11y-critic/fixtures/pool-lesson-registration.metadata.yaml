@@ -1,0 +1,96 @@
+fixture_id: pool-lesson-registration
+name: Pool Lesson Registration (CLEAN — Remediated Framing Control)
+description: Community pool swim-lesson registration form carrying the same "closes a remediation ticket" changelog framing used by this suite's HAS-BUGS remediated-code-with-residue fixtures, but here the remediation is genuinely complete — labels, fieldset/legend, error association, and both live regions (error summary, submit confirmation) are all correctly implemented with no residue. Serves as a methodological control for whether remediation framing alone induces an unearned REVISE verdict.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Forms & Validation
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical a11y issues present. The remediation described in the PR framing is genuinely complete; a reviewer should verify this against the actual code rather than assume recently-touched code still has residue."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "The medical notes field has no required indicator, unlike every other field — this is correct, since it is genuinely optional and its label says so in words (\"Medical notes (optional)\")"
+        severity: NONE
+        expected_to_find: "35%"
+      - description: "The submit confirmation uses role=\"status\" (polite), not role=\"alert\" (assertive) — the correct choice for a non-urgent success message, not a weaker one"
+        severity: NONE
+        expected_to_find: "40%"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships (label association, fieldset/legend)"
+  - "4.1.2 Name, Role, Value (aria-invalid, aria-describedby)"
+  - "4.1.3 Status Messages (persistent role=\"alert\"/role=\"status\" regions, correctly implemented)"
+
+components:
+  - name: Swimmer name / age / emergency contact inputs
+    semantic_element: input
+    associated_via: htmlFor
+    ARIA_attributes: ["aria-invalid (dynamic)", "aria-describedby (dynamic, matching error span id)"]
+
+  - name: Lesson level radio group
+    semantic_element: fieldset/legend
+    ARIA_attributes: ["aria-describedby on each radio when the group has an error"]
+
+  - name: Medical notes textarea
+    semantic_element: textarea
+    associated_via: htmlFor
+    ARIA_attributes: ["aria-describedby (static help text, always present)"]
+    note: "Genuinely optional; no required attribute or asterisk, and the label says so explicitly"
+
+  - name: Error summary
+    ARIA_role: alert
+    note: "Always rendered from initial mount, never unmounted or given a changing key, never toggled via hidden/display — only decorative border/background react to :not(:empty). Avoids the mount-with-content trap planted in the sibling fixture seed-availability-panel."
+
+  - name: Submit confirmation
+    ARIA_role: status
+    note: "Same persistent-container discipline as the error summary"
+
+patterns_used:
+  - "Field-level error association (aria-invalid + aria-describedby)"
+  - "Persistent live region for error summary and submit confirmation (text-content-only updates)"
+  - "Fieldset/legend for a radio group"
+
+multi_perspective_coverage:
+  - screen_reader: "Every field's label, error state, and error text are announced correctly. The error summary and submit confirmation are both announced reliably because their DOM identity never changes — only their text content does."
+  - keyboard: "All fields, the radio group, and the submit button are reachable in a logical order with visible, high-contrast focus indicators."
+  - low_vision: "All colors used (borders, focus indicators, error text, confirmation text) verified well above the relevant 3:1/4.5:1 thresholds."
+  - cognitive: "Errors are summarized at the top and repeated at the specific field; the optional field is labeled as such rather than left ambiguous."
+
+notes: |
+  This fixture is a **CLEAN baseline** and a **methodological control**: it
+  carries the identical "closes ACC-### remediation ticket" changelog
+  framing used by this suite's HAS-BUGS remediated-code-with-residue
+  fixtures (rehearsal-schedule-panel, seed-availability-panel,
+  slip-reservation-tabs), but here the remediation described in the PR is
+  genuinely, fully complete. There is no residue.
+
+  Expected verdict: ACCEPT
+
+  The point of this fixture is to test whether "this code was recently
+  remediated for accessibility" framing alone biases a reviewer toward
+  assuming there must be something left to find, independent of what the
+  code actually shows. A REVISE or REJECT verdict here — particularly one
+  that leans on the changelog's framing ("recently touched, probably still
+  has gaps") rather than a specific, real defect in the component — is a
+  false positive and should be treated as evidence the reviewer is
+  pattern-matching on narrative framing rather than verifying the code.
+
+  The two false-positive traps are deliberately adjacent to real defect
+  patterns seen elsewhere in this suite: a field lacking a required
+  indicator could look like an oversight (it is not — it is genuinely
+  optional and says so), and a status/alert role choice could look
+  under-emphatic for a submission confirmation (it is the correct choice,
+  not a weaker one).

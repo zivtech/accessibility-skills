@@ -1,0 +1,96 @@
+fixture_id: slip-reservation-tabs
+name: Slip Reservation Tabs
+description: Marina slip-reservation category tabs converted to a complete, correctly-implemented WAI-ARIA Tabs pattern (roving tabindex, focus-follows-selection, bidirectional aria-controls/aria-labelledby, role="presentation" on tab wrappers). A pre-existing "Dock Rates & Rules" link shares the same <ul role="tablist"> as a fourth list item that never received the role="presentation" treatment applied to the three real tabs.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "A non-tab link's wrapping list item inside the tablist has no role=\"presentation\", breaking the tablist's expected content model and its position-in-set announcement"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships, 4.1.2 Name, Role, Value"
+        evidence: "The three category <li> wrappers have role=\"presentation\"; the fourth <li> (wrapping <a href=\"/marina/dock-rates.pdf\">) does not, while still being a sibling inside <ul role=\"tablist\">"
+        user_group: "Screen reader users, switch-access users"
+        expected_behavior: "Only tab elements (or their presentational wrappers) live inside the tablist container; a real tab count of 3 is announced accurately"
+        fix: "Move the dock-rates link outside the tablist's <ul>, or wrap it in role=\"presentation\" and keep it clearly outside the tab/panel relationship"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "The arrow-key handler's tab collection is not explicitly scoped to role=\"tab\" elements, making it fragile to future edits even though it happens to cycle correctly among exactly three tabs today"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order"
+        evidence: "tabRefs.current.filter(Boolean) inside handleKeyDown has no role=\"tab\" filter tying the roving sequence to real tabs specifically"
+        user_group: "Keyboard users"
+        expected_behavior: "The roving-tabindex sequence is explicitly bound to real tab elements, not to whatever happens to populate a ref array"
+        fix: "Query role=\"tab\" elements explicitly, or derive the ref array from the categories list rather than from all children"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "role=\"presentation\" on the three real tab wrappers is correct and should not be flagged — this is the standard pattern for list-based tab markup so AT doesn't announce redundant \"list item\" roles alongside \"tab\""
+        impact: "A reviewer unfamiliar with this convention might flag all instances of role=\"presentation\" uniformly rather than noticing three are correct and the fourth's absence is the actual bug"
+        expected_to_find: "55%"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "4.1.2 Name, Role, Value"
+  - "2.4.3 Focus Order"
+
+components_analyzed:
+  - name: Tablist container
+    aria_role: tablist
+    aria_attributes: ["aria-label=\"Reservation categories\""]
+    status: "correct role/label; contains one non-conforming child"
+
+  - name: Category tab buttons (3)
+    aria_role: tab
+    aria_attributes: [aria-selected, aria-controls, "tabindex (roving)"]
+    status: correct
+
+  - name: Category list-item wrappers (3)
+    aria_role: presentation
+    status: correct
+
+  - name: Dock-rates link list-item wrapper
+    aria_role: none
+    status: "missing role=\"presentation\"; a plain link sits inside the tablist"
+
+  - name: Tabpanels (3)
+    aria_role: tabpanel
+    aria_attributes: [aria-labelledby]
+    status: correct
+
+multi_perspective_coverage:
+  - screen_reader: "The three real tabs are announced cleanly (tab role, selected state, roving tabindex). The fourth item breaks the pattern: it retains list-item semantics the others had suppressed, sits inside a container whose accessible child count may be computed as 4 by some AT, and is a plain link with no tab semantics at all."
+  - keyboard: "Arrow-key cycling among the three real tabs works correctly today. The should_find item flags that this correctness is fragile, not a currently observable break."
+  - low_vision: "No visual impact — the link is styled to sit at the end of the same visual row, which is exactly why its markup placement inside the tablist was easy to miss during remediation."
+  - cognitive: "Consistent behavior for the three real tabs; the fourth item's inconsistent screen-reader announcement (if triggered) would be confusing without a visual cue to explain why."
+
+notes: |
+  HAS-BUGS fixture, remediated-code-with-residue shape: the tab/panel binding
+  itself is a complete, correct WAI-ARIA Tabs implementation — the remediation
+  that added role="tab", aria-selected, roving tabindex, and role="presentation"
+  to the three real category items was done thoroughly. What was missed is a
+  pre-existing, unrelated navigation link that happened to share the same
+  <ul> as the tabs; it was never brought into (or moved out of) the tablist's
+  content model when the surrounding markup was converted from a plain nav
+  list to a tablist.
+
+  Expected verdict: REVISE
+
+  Reward precision, not broad suspicion: role="presentation" appears four
+  times in the surrounding markup pattern-space (three tab wrappers plus the
+  one that's missing it) — a reviewer who understands why the three are
+  correct and flags only the fourth's absence should score higher than one
+  who either misses the issue entirely or overcorrects by questioning the
+  role="presentation" pattern generally.

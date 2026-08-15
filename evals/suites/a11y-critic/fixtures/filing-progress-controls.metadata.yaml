@@ -1,0 +1,97 @@
+fixture_id: filing-progress-controls
+name: Filing Progress Controls
+description: Four-step self-help court-forms filing assistant. A visual redesign gave every focusable control a dedicated :focus-visible style and darkened nothing else — the focus box-shadow color (#b8b8b8, ~2:1 on white) and the text-input border color (#cccccc, ~1.6:1 on white) both fail the 3:1 non-text contrast minimum, while the step-circle borders, current-step indicator, and button borders are all separately compliant.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Visual Presentation & Contrast
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Custom :focus-visible box-shadow color (#b8b8b8) fails the 3:1 minimum contrast against the white panel background"
+        severity: MAJOR
+        wcag: "1.4.11 Non-text Contrast"
+        evidence: "box-shadow: 0 0 0 Npx #b8b8b8 on .text-input:focus-visible, .radio-option input[type=\"radio\"]:focus-visible, and .btn-back:focus-visible/.btn-continue:focus-visible, all against .filing-assistant { background: #ffffff }; computed contrast ~1.98:1"
+        user_group: "Low-vision users, keyboard users"
+        expected_behavior: "The focus indicator clears 3:1 contrast against every background it appears on"
+        fix: "Darken to a color such as #0b3d91 or the existing #1d4ed8, and re-verify against every background the ring appears on"
+
+      - description: "Text input border color (#cccccc) fails the 3:1 minimum contrast against its white background, with no other boundary cue"
+        severity: MAJOR
+        wcag: "1.4.11 Non-text Contrast"
+        evidence: ".text-input { border: 1px solid #cccccc; } against .filing-assistant { background: #ffffff }; computed contrast ~1.61:1"
+        user_group: "Low-vision users"
+        expected_behavior: "The input's boundary is perceivable at 3:1 or better against its background"
+        fix: "Darken the border to #667085 or #344054, both already used elsewhere in the stylesheet"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "Step-circle borders (#667085 resting, ~4.97:1; #1d4ed8 current, ~6.7:1) and the Back button's border (#667085) are all separately compliant and should not be flagged alongside the two real defects"
+        impact: "A reviewer who generalizes 'the palette has a contrast problem' and flags every border in the component, rather than the two specific under-3:1 colors, is not being more thorough — the other borders were verified separately and pass"
+        expected_to_find: "45%"
+      - description: "Body text throughout (labels, headings, step names) is dark and high-contrast (#344054, #101828), comfortably above the unrelated 4.5:1 text-contrast minimum"
+        impact: "A reviewer should not conflate the 1.4.11 non-text (3:1) failure being tested here with text contrast (1.4.3, 4.5:1) — text contrast in this component is fine"
+        expected_to_find: "60%"
+
+wcag_criteria:
+  - "1.4.11 Non-text Contrast"
+
+components_analyzed:
+  - name: Text input focus indicator
+    status: "box-shadow color #b8b8b8 fails 3:1 (~1.98:1) against white"
+
+  - name: Radio button focus indicator
+    status: "same #b8b8b8 box-shadow, same failure"
+
+  - name: Back/Continue button focus indicator
+    status: "same #b8b8b8 box-shadow, same failure"
+
+  - name: Text input border (resting state)
+    status: "#cccccc fails 3:1 (~1.61:1) against white, no other boundary cue"
+
+  - name: Step-circle border (resting and current state)
+    status: "compliant — #667085 (~4.97:1) resting, #1d4ed8 (~6.7:1) current"
+
+  - name: Back button border
+    status: "compliant — #667085 (~4.97:1)"
+
+  - name: Current-step indicator
+    aria_attributes: ["aria-current=\"step\""]
+    status: correct
+
+multi_perspective_coverage:
+  - screen_reader: "Not directly affected — labels, fieldset/legend, and aria-current are all correct. This fixture's defects are purely visual/non-text contrast."
+  - keyboard: "Every control is reachable and operable; the defect is that keyboard users cannot reliably SEE which control has focus, not that focus fails to move."
+  - low_vision: "The primary affected group — both the focus indicator and the input border fall below the threshold intended to keep UI boundaries and states perceivable without relying on subtle color differences."
+  - cognitive: "Indirect — a barely-visible focus indicator can make it harder to track position in a multi-step flow, compounding cognitive load during form completion."
+
+notes: |
+  HAS-BUGS fixture isolating WCAG 1.4.11 (Non-text Contrast). A visual
+  redesign gave every focusable control an explicit :focus-visible style
+  (correct in principle — :focus-visible avoids showing the ring on mouse
+  clicks) but landed on a color roughly half the required contrast, and a
+  separate, pre-existing input border color was never checked against the
+  same threshold. Both are computable, unambiguous failures once the hex
+  values are pulled and checked against the white background — the point of
+  this fixture is whether a reviewer actually computes or estimates contrast
+  ratios for non-text elements, not just for body text.
+
+  Expected verdict: REVISE
+
+  Precision matters here in both directions: a reviewer must catch BOTH
+  independent defects (the shared focus-indicator color across five controls,
+  and the separate input-border color), while NOT over-generalizing to the
+  step-circle and button borders that were checked and are compliant, and
+  NOT conflating this 3:1 non-text threshold with the unrelated 4.5:1 text
+  threshold (which every text element in this component clears easily).

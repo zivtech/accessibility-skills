@@ -1,0 +1,113 @@
+fixture_id: rehearsal-schedule-panel
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes flagging the aria-hidden icons themselves as the bug instead of the anchor's missing name"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Conductor-notes flag receives focus out of visual order and is not operable once reached"
+        severity: MAJOR
+        wcag: "2.4.3 Focus Order, 4.1.2 Name, Role, Value"
+        evidence_requirement: "Identifies tabIndex=\"0\" with no role/handler on the notes-flag span, AND the CSS position mismatch between DOM order (last) and visual placement (top-right, near the title)"
+        expected_to_find: "55%"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Repeated 'Read more' link text across three season announcements is indistinguishable out of context"
+        severity: MAJOR
+        wcag: "2.4.4 Link Purpose (In Context)"
+        expected_to_find: "45%"
+
+      - description: "Icon-only share link has no accessible name"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        expected_to_find: "50%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "aria-hidden on the decorative icons is correct and should not itself be flagged"
+        expected_to_find: "70%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  false_positive_trap is subtracted if the reviewer incorrectly flags the
+  aria-hidden icons rather than the anchor's missing accessible name
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 85-100
+    reasoning: "Should trace the tab sequence on the rehearsal card against the visual layout, catch the dead-end focus stop, and separately flag both link-text issues via a links-list mental model"
+
+  - condition: baseline-zero-shot
+    expected_score: 35-55
+    reasoning: "Likely verifies the calendar button and toggle have accessible names and stops there; unlikely to walk the actual tab sequence or think about a links-list view of the sidebar"
+
+  - condition: baseline-few-shot
+    expected_score: 45-65
+    reasoning: "Structured approach may prompt checking each interactive element individually, which surfaces the empty share link, but the out-of-order focus stop still requires sequence tracing"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: REVISE
+
+notes: |
+  HAS-BUGS fixture, remediated-code-with-residue shape: a prior PR correctly
+  fixed three of four focus stops on the rehearsal card; the fourth (a notes
+  indicator made focusable in response to real retest feedback) was left
+  reachable but non-operable and out of visual order.
+
+  This is the suite's first WCAG 2.4.4 (Link Purpose in Context) coverage,
+  via the sidebar's repeated "Read more" text and click-here brochure link.
+
+  Key discriminator: reviewers who check "does every interactive element
+  have an accessible name" in isolation will pass the calendar button and
+  toggle cleanly and may never walk the actual tab sequence far enough to
+  notice the notes-flag's focus-order/operability problem, or think about
+  how the sidebar links read in a links-list view rather than in prose
+  context.

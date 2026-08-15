@@ -1,0 +1,113 @@
+fixture_id: trail-conditions-filter
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes flagging :focus-visible-only styling, non-default compliant colors, or the opacity:0 checkbox technique as bugs"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present in this clean implementation"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: document the CSS ::after checkmark trick for maintainability"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "20%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: ":focus-visible-only styling is correct, not a missing focus indicator"
+        expected_to_find: "55%"
+      - description: "Non-default focus/border colors are computably compliant (~9.4-9.7:1)"
+        expected_to_find: "45%"
+      - description: "opacity:0 native checkbox remains keyboard-operable and AT-exposed"
+        expected_to_find: "50%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  where positive_weights = [must_find, should_find, nice_to_find, evidence_quality, format_compliance]
+  false_positive_trap is subtracted from score if any of the three traps is incorrectly flagged
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 90-100
+    reasoning: "Should recognize the complete, correctly-implemented form and specifically verify (rather than assume) contrast compliance for the non-default color choices and the :focus-visible-only pattern"
+
+  - condition: baseline-zero-shot
+    expected_score: 65-90
+    reasoning: "May note the enhancement but should recognize the implementation is clean; risk of a false positive on the opacity:0 checkbox or the :focus-visible-only pattern if tested only by mouse interaction"
+
+  - condition: baseline-few-shot
+    expected_score: 70-90
+    reasoning: "Similar to zero-shot; a structured contrast-checking step may reduce the risk of assuming non-default colors are non-compliant without computing them"
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
+
+notes: |
+  This CLEAN fixture tests false-positive resistance specifically around
+  WCAG 1.4.11 (Non-text Contrast) — the same criterion planted as a real
+  defect in the sibling HAS-BUGS fixture `filing-progress-controls`. Every
+  color pair here clears 3:1 with a wide margin (~9.4-9.7:1), verified by
+  computed relative luminance, not merely eyeballed as "probably fine."
+
+  The three false-positive traps are calibrated around patterns that
+  superficially resemble bugs to a reviewer working from pattern-matching
+  rather than verification: `:focus-visible`-only styling (tests as "no
+  focus ring" if the reviewer clicks with a mouse instead of tabbing),
+  unconventional focus/border colors (invites an unverified assumption of
+  non-compliance), and `opacity: 0` on a native input (superficially
+  resembles hiding techniques that DO remove elements from the
+  accessibility tree, but does not).
+
+  If a reviewer's output contains CRITICAL/MAJOR findings or a REVISE/REJECT
+  verdict on this fixture, treat that as a signal requiring recalibration —
+  either of the reviewer's judgment or, if reproduced consistently across
+  models, of this rubric — per this suite's CLEAN-fixture discipline.

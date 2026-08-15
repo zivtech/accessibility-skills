@@ -12,26 +12,30 @@ evaluation:
   description: Comprehensive evaluation of a11y-critic skill vs generic accessibility review baselines
   version: "1.0"
   created_at: "2026-03-09"
-  estimated_total_evaluations: 99
+  estimated_total_evaluations: 123  # 41 fixtures × 3 conditions (8 fixtures added 2026-08-14 — remediated-code-with-residue slate)
 
 fixtures:
   directory: ./fixtures
-  count: 33
+  count: 41
   pattern: "*.md"
   metadata_suffix: ".metadata.yaml"
 
   domains:
-    - Interactive Widgets (10 fixtures)
-    - Forms & Validation (6 fixtures)
-    - Dynamic Content & Live Regions (6 fixtures)
-    - Content & Semantic Structure (3 fixtures)
-    - Focus Management & Keyboard (3 fixtures)
+    - Interactive Widgets (11 fixtures)
+    - Forms & Validation (7 fixtures)
+    - Dynamic Content & Live Regions (7 fixtures)
+    - Content & Semantic Structure (4 fixtures)
+    - Focus Management & Keyboard (4 fixtures)
     - Navigation & Wayfinding (3 fixtures)
     - Media & Content (2 fixtures)
+    - Visual Presentation & Contrast (3 fixtures)
+    # Domain added 2026-08-14 for the 1.4.10/1.4.11 non-text-contrast and
+    # reflow fixtures (filing-progress-controls, tool-catalog-layout,
+    # trail-conditions-filter); not present in earlier drafts of this file.
 
   difficulty_distribution:
-    - CLEAN (4 fixtures)
-    - HAS-BUGS (21 fixtures)
+    - CLEAN (6 fixtures)
+    - HAS-BUGS (27 fixtures)
     - FLAWED (5 fixtures)
     - ADVERSARIAL (3 fixtures)
 
@@ -99,9 +103,9 @@ baselines:
       model: claude-opus-4-6
 
 repetitions:
-  n_fixtures: 33
+  n_fixtures: 41
   n_repeats_per_fixture: 3
-  total_evaluations: 99
+  total_evaluations: 123
   randomization: true
 
 statistical_design:
@@ -154,7 +158,7 @@ statistical_design:
     beta: 0.20
     effect_size_delta: 0.5
     n_required: 28
-    n_actual: 33
+    n_actual: 41
 
 subgroup_analysis:
   enabled: true
@@ -167,6 +171,7 @@ subgroup_analysis:
         - Focus Management & Keyboard
         - Navigation & Wayfinding
         - Media & Content
+        - Visual Presentation & Contrast
 
     - difficulty:
         - CLEAN
@@ -270,30 +275,36 @@ reporting:
     - Recommendations
     - Appendix: Detailed Scores
 
-notes:
-  | This evaluation suite measures a11y-critic's effectiveness using:
-  | - 33 realistic fixtures across 7 accessibility domains and 4 difficulty levels
-  | - Objective rubrics with weighted finding categories
-  | - Paired comparison against 2 generic accessibility review baselines
-  | - Wilcoxon signed-rank tests for non-parametric comparison
-  | - Bootstrap confidence intervals and effect size estimates
-  | - Subgroup analysis by domain, difficulty, and pattern type
-  |
-  | The skill is expected to excel at:
-  | 1. Gap Analysis ("What's Missing" section) — finding absent elements, missing associations, missing announcements
-  | 2. Pattern Completeness Detection — identifying incomplete ARIA patterns (e.g., aria-selected but no arrow keys)
-  | 3. Multi-Perspective Investigation — reviewing from screen reader, keyboard, low vision, and cognitive angles
-  | 4. Evidence-Backed Findings — providing file:line references for every CRITICAL/MAJOR finding
-  |
-  | Key differentiators from baselines:
-  | - Structured 10-phase investigation protocol vs ad-hoc review
-  | - Explicit gap analysis phase vs implicit coverage
-  | - Multi-perspective mandatory vs optional
-  | - Severity calibration via Realist Check vs unfiltered flagging
-  | - False positive avoidance via self-audit vs potential over-flagging
-  |
-  | Baselines provide fair comparison points (not strawmen):
-  | - Zero-shot: Simple, direct accessibility review prompt
-  | - Few-shot: Same prompt + structured approach + example
-  |
-  | Pilot run (5 fixtures) validates rubrics and baselines before full eval.
+notes: |
+  This evaluation suite measures a11y-critic's effectiveness using:
+  - 41 realistic fixtures across 8 accessibility domains and 4 difficulty levels
+  - Objective rubrics with weighted finding categories
+  - Paired comparison against 2 generic accessibility review baselines
+  - Wilcoxon signed-rank tests for non-parametric comparison
+  - Bootstrap confidence intervals and effect size estimates
+  - Subgroup analysis by domain, difficulty, and pattern type
+
+  The skill is expected to excel at:
+  1. Gap Analysis ("What's Missing" section) — finding absent elements, missing associations, missing announcements
+  2. Pattern Completeness Detection — identifying incomplete ARIA patterns (e.g., aria-selected but no arrow keys)
+  3. Multi-Perspective Investigation — reviewing from screen reader, keyboard, low vision, and cognitive angles
+  4. Evidence-Backed Findings — providing file:line references for every CRITICAL/MAJOR finding
+
+  Key differentiators from baselines:
+  - Structured 10-phase investigation protocol vs ad-hoc review
+  - Explicit gap analysis phase vs implicit coverage
+  - Multi-perspective mandatory vs optional
+  - Severity calibration via Realist Check vs unfiltered flagging
+  - False positive avoidance via self-audit vs potential over-flagging
+
+  Baselines provide fair comparison points (not strawmen):
+  - Zero-shot: Simple, direct accessibility review prompt
+  - Few-shot: Same prompt + structured approach + example
+
+  Pilot run (5 fixtures) validates rubrics and baselines before full eval.
+
+  # Note (2026-08-14): this notes block was reformatted from a malformed
+  # per-line "| " prefix (invalid YAML — every fixture-count edit before
+  # this date landed in a file that could not actually be parsed by a
+  # standard YAML loader) to a proper block scalar. Fixture/domain counts
+  # updated in this same pass to include the 8 fixtures added 2026-08-14.

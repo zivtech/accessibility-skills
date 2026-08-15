@@ -1,0 +1,109 @@
+fixture_id: filing-progress-controls
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes flagging the compliant step-circle/button borders, or conflating 3:1 non-text contrast with 4.5:1 text contrast"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes, ideally with a computed or estimated contrast ratio"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Focus indicator box-shadow color #b8b8b8 fails 3:1 against white"
+        severity: MAJOR
+        wcag: "1.4.11 Non-text Contrast"
+        evidence_requirement: "Names the specific hex value and either computes or credibly estimates a ratio below 3:1, and identifies that it affects all five focusable controls sharing the rule"
+        expected_to_find: "50%"
+
+      - description: "Text input border color #cccccc fails 3:1 against white"
+        severity: MAJOR
+        wcag: "1.4.11 Non-text Contrast"
+        evidence_requirement: "Names the specific hex value and either computes or credibly estimates a ratio below 3:1, as a defect independent from the focus-indicator finding"
+        expected_to_find: "45%"
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "Step-circle and Back-button borders (#667085, #1d4ed8) are compliant and should not be flagged"
+        expected_to_find: "45%"
+      - description: "Body text contrast (4.5:1 threshold) should not be conflated with the 3:1 non-text threshold being tested"
+        expected_to_find: "60%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  false_positive_trap is subtracted per over-generalized or wrong-threshold flag
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 85-100
+    reasoning: "Should pull the hex values for every bordered/focus-styled element, compute or closely estimate contrast against the stated background, correctly separate the two real failures from the compliant borders, and not confuse the 3:1 and 4.5:1 thresholds"
+
+  - condition: baseline-zero-shot
+    expected_score: 20-40
+    reasoning: "Contrast checks in zero-shot review are typically limited to body text against background; non-text UI component contrast (focus indicators, borders) is a less commonly-applied check"
+
+  - condition: baseline-few-shot
+    expected_score: 35-55
+    reasoning: "A structured prompt may include a general 'check contrast' step, which could catch one of the two defects (most likely the more visually prominent focus indicator) without necessarily computing an exact ratio or catching the second, unrelated input-border instance"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  HAS-BUGS fixture isolating WCAG 1.4.11 (Non-text Contrast): two independent,
+  computable contrast failures (a shared focus-indicator color across five
+  controls, and a separate text-input border color) sit alongside several
+  deliberately-compliant borders (step circles, Back button) and comfortably
+  compliant body text.
+
+  Key discriminator: this fixture specifically tests whether a reviewer
+  applies contrast checking to NON-TEXT UI components (focus rings,
+  borders) — a check zero-shot reviewers very commonly skip, defaulting to
+  checking only body-text-on-background contrast, which is fine here and
+  therefore produces a false "no contrast issues" read.
+
+  The false-positive traps are calibrated to catch over-correction: a
+  reviewer anxious about "the palette" after finding one real defect should
+  not sweep in the compliant step-circle/button borders, and should not
+  treat the (fine) body text contrast as evidence of a broader problem.

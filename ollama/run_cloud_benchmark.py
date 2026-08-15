@@ -126,7 +126,7 @@ GEMINI_TIERS = [
 
 ALL_CRITIC_FIXTURES = [
     "button-skip-link-clean", "interactive-dropdown-clean", "modal-complete-clean",
-    "search-results-dynamic-clean",
+    "search-results-dynamic-clean", "trail-conditions-filter", "pool-lesson-registration",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",
@@ -138,6 +138,9 @@ ALL_CRITIC_FIXTURES = [
     "pagination-no-nav-landmark", "popover-no-focus-management",
     "radio-button-group-no-grouping", "tooltip-no-role-no-association",
     "video-player-missing-captions",
+    "rehearsal-schedule-panel", "seed-availability-panel",
+    "slip-reservation-tabs", "filing-progress-controls",
+    "tool-catalog-layout", "garden-plot-directory",
     "tabs-incomplete-aria-selected", "multistep-form-error-clearing",
     "dashboard-heading-inconsistency", "app-focus-order-illogical",
     "async-form-vague-success",
@@ -185,6 +188,7 @@ PLANNER_FIXTURES = [
     "test-modal",
     "test-multi-page-audit",
     "test-simple-button",
+    "test-standards-subscription-audit",  # 28th fixture, de-hinted WCAG 2.4.5 audit-scope probe (2026-08-14) — no model rows yet
     "visual-animated-transition",
     "visual-dark-mode",
     "visual-data-viz",

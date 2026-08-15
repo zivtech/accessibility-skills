@@ -1,0 +1,106 @@
+fixture_id: rehearsal-schedule-panel
+name: Rehearsal Schedule Panel
+description: Staff-facing orchestra rehearsal schedule with card-based layout. A prior remediation pass correctly fixed the calendar button and section-call-times toggle, but left a conductor-notes flag that is focusable out of visual order and not operable once reached. A sidebar of season announcements adds repeated ambiguous "Read more" link text and one icon-only link with no accessible name.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Focus Management & Keyboard
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Conductor-notes flag receives focus out of visual order and is not operable once reached"
+        severity: MAJOR
+        wcag: "2.4.3 Focus Order, 4.1.2 Name, Role, Value"
+        evidence: "tabIndex=\"0\" on the notes-flag span (last in DOM order) with no role or event handler; CSS position: absolute places it in the top-right corner of the card, visually near the title, while DOM order places it after the calendar button and section-call-times toggle"
+        user_group: "Keyboard users, screen reader users"
+        expected_behavior: "Either the flag is a real, operable control positioned to match its DOM order, or the 'has notes' state is exposed through an existing control instead of a separate focus stop"
+        fix: "Add role=\"button\" + tabIndex=\"0\" + onClick/onKeyDown and move the element earlier in DOM order to match its visual position, or fold the notes indicator into the section-call-times toggle's accessible name and remove tabIndex from the span"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "Repeated 'Read more' link text across three season announcements is indistinguishable out of context"
+        severity: MAJOR
+        wcag: "2.4.4 Link Purpose (In Context), 2.4.9 Link Purpose (Link Only)"
+        evidence: "Three <a>Read more</a> links in .announcement-list, each with a different href but identical visible text"
+        user_group: "Screen reader users navigating by links list, switch-access users"
+        expected_behavior: "Each link's accessible name identifies its destination without requiring the surrounding paragraph to be read first"
+        fix: "aria-label naming the specific announcement, or rewrite the link text itself to be descriptive"
+
+      - description: "Icon-only share link has no accessible name"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value, 2.4.4 Link Purpose (In Context)"
+        evidence: "<a href=\"/staff/schedule/share\"><ShareIcon aria-hidden=\"true\" /></a> with no text content and no aria-label on the anchor"
+        user_group: "Screen reader users"
+        expected_behavior: "The anchor itself carries an accessible name describing its destination/action"
+        fix: "aria-label=\"Share this rehearsal schedule\" on the anchor"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "aria-hidden=\"true\" on the CalendarIcon and ShareIcon SVGs is correct — the icons are decorative and the accessible name comes from the surrounding control (aria-label on the calendar button; the missing anchor label is the actual bug for the share link, not the aria-hidden icon inside it)"
+        impact: "A reviewer who flags aria-hidden on the icons themselves as the problem has misidentified the defect — the icon-hiding pattern is correct; the anchor's missing name is the bug"
+        expected_to_find: "70%"
+
+wcag_criteria:
+  - "2.4.3 Focus Order"
+  - "4.1.2 Name, Role, Value"
+  - "2.4.4 Link Purpose (In Context)"
+  - "2.4.9 Link Purpose (Link Only)"
+
+components_analyzed:
+  - name: Calendar button
+    aria_attributes: ["aria-label (per-rehearsal)"]
+    status: correct
+
+  - name: Section-call-times toggle
+    aria_attributes: ["aria-expanded", "aria-controls"]
+    status: "correct; panel is always rendered with hidden attribute rather than conditionally unmounted"
+
+  - name: Conductor-notes flag
+    aria_attributes: ["tabIndex=\"0\""]
+    status: "focusable but not operable; DOM position does not match visual position"
+
+  - name: Season announcement links
+    aria_attributes: []
+    status: "identical link text across distinct destinations"
+
+  - name: Share icon link
+    aria_attributes: ["aria-hidden on inner icon only"]
+    status: "anchor itself has no accessible name"
+
+multi_perspective_coverage:
+  - screen_reader: "Tabbing through a rehearsal card lands on the notes flag last, with no role or name beyond a title-derived label; activating it does nothing. The links list exposes three identical 'Read more' strings with no way to disambiguate, and the share link is either silent or announced as bare 'link'."
+  - keyboard: "The calendar button and details toggle are fully operable in a sensible order. The notes flag is reachable but functionally dead, and its DOM position lands after content a sighted user would expect it to precede (it renders visually at the top of the card)."
+  - low_vision: "Sighted keyboard users see the focus ring jump to the top-right corner of the card after tabbing through controls lower on the card, which reads as disorienting even without a screen reader."
+  - cognitive: "The 'has notes' flag having no discoverable action (visually or via keyboard) is confusing regardless of access method — it looks informational but is presented as if interactive (focusable)."
+
+notes: |
+  HAS-BUGS fixture demonstrating remediated-code-with-residue: three of the
+  four interactive stops on a rehearsal card were correctly fixed in a prior
+  PR (calendar button, section-call-times toggle, and the panel's persistent
+  hidden-attribute pattern). The fourth — a notes indicator someone made
+  focusable in response to retest feedback ("screen reader users can't tell
+  this rehearsal has notes") — was given tabIndex="0" without a role or
+  handler, and its focus position doesn't match where it visually sits.
+
+  Expected verdict: REVISE
+
+  This is the suite's first fixture with WCAG 2.4.4 (Link Purpose in Context)
+  coverage, via the season-announcements sidebar's repeated "Read more" links
+  and the click-here brochure link. Prior HAS-BUGS fixtures cover ARIA pattern
+  completeness and live-region gaps but not link-text ambiguity.
+
+  Baseline zero-shot reviewers commonly check "does each interactive element
+  have an accessible name" and stop there — the calendar button and details
+  toggle pass that check cleanly, which can create a halo effect that causes
+  the notes-flag bug to be skipped. Finding it requires walking the actual
+  tab sequence against the rendered layout, not just auditing attributes in
+  isolation.

@@ -26,6 +26,16 @@
  * desktop+narrow lineage) scans every URL at each listed viewport. Confirm
  * you're authorized to test third-party sites and check robots.txt/terms;
  * raise --delay (default 500ms) for rate-limited or robots-restricted targets.
+ *
+ * --census enables DOM-census heuristics (empty paragraphs, autocomplete
+ * absence on known-purpose inputs, duplicate ids), reported under a
+ * `census` key on each viewport record — separate from axe violations,
+ * always a detector heuristic, never a conformance verdict. Implementation
+ * lives in the sibling ./census.mjs to keep this file within its line budget.
+ * --alt-snapshot writes alt-snapshot.json: one img/svg[role=img] selector
+ * map per page (src-or-title + alt), captured once per URL. Diff two runs'
+ * alt-snapshot.json files to catch silent alt-text regressions — recipe in
+ * the a11y-test SKILL.md quickstart.
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -33,6 +43,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
+import { collectPageSignals } from './census.mjs';
 
 const DEFAULT_DELAY_MS = 500;
 const DEFAULT_OUT_DIR = './baseline-scan-output';
@@ -43,15 +54,17 @@ const NETWORK_IDLE_TIMEOUT_MS = 8000;
 // This bundle's WCAG 2.2 AA default target (SKILL.md §4 / EPA harness tags).
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 
-const { urls, outDir, delayMs, viewports } = await parseArgs(process.argv.slice(2));
+const { urls, outDir, delayMs, viewports, census, altSnapshot } = await parseArgs(process.argv.slice(2));
 await mkdir(outDir, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const results = [];
+const altSnapshotPages = [];
 try {
   for (const [index, url] of urls.entries()) {
     console.log(`[${index + 1}/${urls.length}] ${url}`);
-    const result = await scanUrl(browser, url, viewports);
+    const result = await scanUrl(browser, url, viewports, { census, altSnapshot });
     results.push(result);
+    if (altSnapshot) altSnapshotPages.push({ url, images: extractAltSnapshot(result) });
     await writeJson(path.join(outDir, `${slug(url, index)}.json`), result);
     if (index < urls.length - 1) await delay(delayMs);
   }
@@ -59,16 +72,29 @@ try {
   await browser.close();
 }
 
-const summary = buildSummary(urls, viewports, results);
+const summary = buildSummary(urls, viewports, results, { census });
 await writeJson(path.join(outDir, 'summary.json'), summary);
+if (altSnapshot) await writeJson(path.join(outDir, 'alt-snapshot.json'), altSnapshotPages);
 console.log(JSON.stringify(summary.totals, null, 2));
 
+// alt-snapshot is page-level (§ Usage above), pulled from the first
+// viewport scanned for the URL rather than duplicated across viewports.
+function extractAltSnapshot(result) {
+  for (const vp of Object.values(result.viewports)) {
+    if (vp.alt_snapshot) return vp.alt_snapshot;
+  }
+  return [];
+}
+
 // ---- per-URL scan (every viewport) ----
-async function scanUrl(browser, url, viewports) {
+async function scanUrl(browser, url, viewports, options = {}) {
   const record = { url, started: new Date().toISOString(), viewports: {} };
-  for (const viewport of viewports) {
+  for (const [index, viewport] of viewports.entries()) {
     console.log(`  viewport ${viewport.key}`);
-    record.viewports[viewport.key] = await scanViewport(browser, url, viewport);
+    // alt-snapshot is captured once per URL (first viewport only); census
+    // runs on every viewport since responsive layouts can change the DOM.
+    const vpOptions = { census: options.census, altSnapshot: options.altSnapshot && index === 0 };
+    record.viewports[viewport.key] = await scanViewport(browser, url, viewport, vpOptions);
   }
   const measured = Object.values(record.viewports).filter((v) => v.status === 'measured').length;
   record.status = measured === viewports.length ? 'measured' : measured > 0 ? 'partial' : 'error';
@@ -76,7 +102,7 @@ async function scanUrl(browser, url, viewports) {
   return record;
 }
 
-async function scanViewport(browser, url, viewport) {
+async function scanViewport(browser, url, viewport, options = {}) {
   const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
   const page = await context.newPage();
   const record = { status: 'started' };
@@ -94,6 +120,13 @@ async function scanViewport(browser, url, viewport) {
     record.incomplete = summarizeRules(axeResults.incomplete);
     record.passes_count = axeResults.passes.length;
     record.inapplicable_count = axeResults.inapplicable.length;
+    if (options.census || options.altSnapshot) {
+      // Detector heuristics only — kept under their own keys, never folded
+      // into axe's violations/incomplete.
+      const signals = await collectPageSignals(page, options);
+      if (signals.census) record.census = signals.census;
+      if (signals.alt_snapshot) record.alt_snapshot = signals.alt_snapshot;
+    }
     record.status = 'measured';
   } catch (error) {
     record.status = 'error';
@@ -117,9 +150,12 @@ function summarizeRules(rules) {
 }
 
 // ---- aggregation (across all viewports of all URLs) ----
-function buildSummary(urls, viewports, results) {
+function buildSummary(urls, viewports, results, options = {}) {
   const impacts = { critical: 0, serious: 0, moderate: 0, minor: 0, unknown: 0 };
   const byRule = new Map();
+  // Detector heuristics, aggregated separately — never merged into the axe
+  // impact/rule tallies above.
+  const censusTotals = { empty_paragraphs: 0, autocomplete_absence: 0, duplicate_ids: 0 };
   let violationNodes = 0;
   let measuredScans = 0;
   let erroredScans = 0;
@@ -141,10 +177,15 @@ function buildSummary(urls, viewports, results) {
         aggregate.nodes += rule.node_count;
         byRule.set(rule.id, aggregate);
       }
+      if (vp.census) {
+        censusTotals.empty_paragraphs += vp.census.empty_paragraphs.count;
+        censusTotals.autocomplete_absence += vp.census.autocomplete_absence.count;
+        censusTotals.duplicate_ids += vp.census.duplicate_ids.count;
+      }
     }
   }
   return {
-    schema_version: '1.1',
+    schema_version: '1.2',
     generated: new Date().toISOString(),
     axe_core_version: axeCoreVersion,
     totals: {
@@ -155,6 +196,7 @@ function buildSummary(urls, viewports, results) {
       errors: erroredScans,
       violation_nodes: violationNodes,
       violation_nodes_by_impact: impacts,
+      ...(options.census ? { census_totals: censusTotals } : {}),
     },
     violations_by_rule: [...byRule.values()]
       .map((item) => ({ ...item, pages: [...item.pages].sort(), page_count: item.pages.size }))
@@ -168,6 +210,8 @@ async function parseArgs(argv) {
   let outDir = DEFAULT_OUT_DIR;
   let delayMs = DEFAULT_DELAY_MS;
   let viewportsArg = DEFAULT_VIEWPORTS;
+  let census = false;
+  let altSnapshot = false;
   const positional = [];
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -175,6 +219,8 @@ async function parseArgs(argv) {
     else if (arg === '--out') outDir = argv[++index];
     else if (arg === '--delay') delayMs = Number(argv[++index]);
     else if (arg === '--viewports') viewportsArg = argv[++index];
+    else if (arg === '--census') census = true;
+    else if (arg === '--alt-snapshot') altSnapshot = true;
     else if (arg.startsWith('--')) throw new Error(`Unknown flag: ${arg}`);
     else positional.push(arg);
   }
@@ -184,7 +230,7 @@ async function parseArgs(argv) {
   const invalid = urls.filter((url) => !/^https?:\/\//.test(url));
   if (invalid.length > 0) throw new Error(`URLs must start with http:// or https://: ${invalid.join(', ')}`);
   if (!Number.isFinite(delayMs) || delayMs < 0) throw new Error(`--delay must be non-negative, got: ${delayMs}`);
-  return { urls, outDir, delayMs, viewports: parseViewports(viewportsArg) };
+  return { urls, outDir, delayMs, viewports: parseViewports(viewportsArg), census, altSnapshot };
 }
 
 function parseViewports(arg) {

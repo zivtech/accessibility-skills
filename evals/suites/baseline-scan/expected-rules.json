@@ -1,0 +1,25 @@
+{
+  "target_page": "synthetic-target.html",
+  "clean_page": "clean-sibling.html",
+  "scan_viewport": "1280x800",
+  "_comment": "Built from an actual run (2026-08-14) against baseline-url-scan.mjs --census, then reproduced by run_rig.sh. Every axe rule id below is a REAL rule verified to fire in that run, not a guess from memory.",
+  "defect_classes": [
+    { "name": "empty link", "detector": "axe", "id": "link-name" },
+    { "name": "image missing alt", "detector": "axe", "id": "image-alt" },
+    { "name": "meaningful inline SVG without title/role (sole content of a button)", "detector": "axe", "id": "button-name" },
+    { "name": "empty heading", "detector": "axe", "id": "empty-heading" },
+    { "name": "heading-level skip (h1 to h3)", "detector": "axe", "id": "heading-order" },
+    { "name": "visually-styled fake list (divs)", "detector": "none", "id": null, "note": "no axe rule inspects visual-only list styling on plain divs; manual/critic review only" },
+    { "name": "layout table without proper semantics (no th/caption/role)", "detector": "none", "id": null, "note": "axe does not flag a headerless table by itself; manual/critic review only" },
+    { "name": "form input missing label", "detector": "axe", "id": "label", "note": "must have NO placeholder either — Chromium's accessible-name computation falls back to placeholder text, which silently satisfies axe's label rule" },
+    { "name": "text contrast failure (inline styles)", "detector": "axe", "id": "color-contrast" },
+    { "name": "nested duplicate same-name landmark (wrapper + inner both role=search, same aria-label)", "detector": "axe", "id": "landmark-unique" },
+    { "name": "tablist containing an un-roled focusable non-tab child", "detector": "axe", "id": "aria-required-children" },
+    { "name": "empty <p> elements (>=2)", "detector": "census", "id": "empty_paragraphs", "min_count": 2 },
+    { "name": "known-purpose inputs missing autocomplete (>=2)", "detector": "census", "id": "autocomplete_absence", "min_count": 2 },
+    { "name": "duplicated id (one id value on >1 element)", "detector": "census", "id": "duplicate_ids", "min_count": 1 }
+  ],
+  "incidental_axe_rules": [
+    { "id": "target-size", "note": "Co-occurs on the empty cart link (the link-name defect): a link with no accessible name and no content also renders with no intrinsic box, so it fails the 24x24 CSS-pixel minimum too. Not independently planted; kept as an expected id since it is real and reproducible on that same element." }
+  ]
+}

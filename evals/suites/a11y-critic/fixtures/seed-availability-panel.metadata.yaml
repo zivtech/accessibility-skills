@@ -1,0 +1,99 @@
+fixture_id: seed-availability-panel
+name: Seed Availability Panel
+description: Seed-catalog variety page with a quantity selector and live availability/cart-confirmation status. role="status" and aria-live="polite" are present and correctly referenced by aria-describedby, but the status container is remounted via a changing key prop on every update (to replay a highlight animation), so ARIA live regions never observe a mutation and nothing is ever announced.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content & Live Regions
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "The status container is torn down and rebuilt on every update (changing key prop), so aria-live never observes a mutation and nothing is announced"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence: "AvailabilityStatus rendered with key={fetchToken} / key={`cart-${cartToken}`}; both tokens incremented on every fetch/add-to-cart specifically to replay a CSS highlight animation, forcing React to unmount and remount the role=\"status\" element with content already inside rather than updating its text"
+        user_group: "Screen reader users"
+        expected_behavior: "Availability changes and cart confirmations are announced without requiring the user to move focus"
+        fix: "Render a single persistently-mounted status container (no changing key) and update only its text content; retrigger the highlight animation via a class toggle instead of a key change"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "No aria-busy or interim announcement during the availability fetch, extending the silence through the whole interaction"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "useEffect calls fetchAvailability with no loading-state text or aria-busy anywhere in the render output"
+        user_group: "Screen reader users"
+        expected_behavior: "Assistive technology has some signal that a check is in progress"
+        fix: "aria-busy=\"true\" on the panel, or brief 'Checking availability…' text inside the persistent status container"
+
+      - description: "The same broken remount pattern is reused for the cart-added confirmation message"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence: "handleAddToCart renders AvailabilityStatus with a separately-incrementing cartToken as its key"
+        user_group: "Screen reader users"
+        expected_behavior: "A fix to the availability message's mount pattern should not leave the cart confirmation silently broken"
+        fix: "Apply the same persistent-container fix at both call sites"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "aria-describedby=\"availability-status\" on the quantity input continues to work correctly after the remount — it only requires a matching id to exist at any given moment, unlike aria-live which requires a persistent node to observe a mutation over time"
+        impact: "A reviewer who claims the aria-describedby association is broken by the same remount would be raising a false positive; only the live announcement is defeated, not the static description a user tabbing to the field would still hear on focus"
+        expected_to_find: "35%"
+
+wcag_criteria:
+  - "4.1.3 Status Messages"
+
+components_analyzed:
+  - name: AvailabilityStatus (shared component)
+    aria_attributes: ["role=\"status\"", "aria-live=\"polite\""]
+    status: "attributes correct in isolation; component is remounted via changing key on every call site"
+
+  - name: Quantity input
+    aria_attributes: ["aria-describedby=\"availability-status\""]
+    status: "correct and unaffected by the remount"
+
+  - name: Add to Cart button
+    aria_attributes: []
+    status: correct
+
+multi_perspective_coverage:
+  - screen_reader: "Changing the quantity or adding to cart produces total silence — the status region exists with correct attributes but is a fresh DOM node every time, so no mutation is ever observed. This is the exact silent-update behavior the cited audit finding was meant to fix."
+  - keyboard: "Fully operable — quantity field and Add to Cart button are both reachable and usable via keyboard. The defect is entirely in the announcement layer, not interaction."
+  - low_vision: "The highlight-fade animation gives sighted users a visual cue that something changed; screen reader users get no equivalent."
+  - cognitive: "Silent state changes are disorienting for any user relying on the page to confirm an action succeeded, not only screen reader users — though the visual highlight partially compensates for sighted users."
+
+notes: |
+  HAS-BUGS fixture, remediated-code-with-residue / mount-with-content shape:
+  role="status" and aria-live="polite" were added exactly where an audit
+  finding said they were needed, but the container they sit on is destroyed
+  and recreated (via a changing `key` prop, added to replay a CSS highlight
+  animation) on every single update — so the live region never observes a
+  mutation and nothing is ever announced. This mirrors real assistive-tech
+  behavior: content that arrives already-populated inside a brand-new DOM
+  node is not the same as a mutation to a persistent node, and only the
+  latter is what ARIA live regions detect.
+
+  Expected verdict: REVISE
+
+  A reviewer who only checks for the presence of role="status"/aria-live
+  attributes will mark this component clean — the attributes are exactly
+  where they should be. Finding the defect requires tracing what the
+  changing `key` prop does to React's mount/unmount behavior, not just
+  auditing which ARIA attributes exist.
+
+  The false_positive_trap is deliberately close to the real bug: both
+  aria-describedby and aria-live depend on element identity in some sense,
+  but only aria-live requires the *same* node to persist across an update.
+  aria-describedby only needs a matching id to exist at read time, which it
+  does even after the remount. Rewarding reviewers who draw this distinction
+  (rather than over-generalizing "the remount breaks everything on this
+  element") is the point of the trap.

@@ -1,0 +1,93 @@
+fixture_id: trail-conditions-filter
+name: Trail Conditions Filter (CLEAN)
+description: Regional trail conservancy's trail-conditions filter form. Custom checkboxes and a region select use strongly compliant (not merely passing) focus-indicator and border contrast, correct fieldset/legend grouping, a properly-labeled disabled-state Apply button, and a visually-hidden-but-still-operable native checkbox pattern. Built as a false-positive-resistance sibling to the filing-progress-controls HAS-BUGS fixture, which fails the same 1.4.11 criterion this one passes with margin.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Visual Presentation & Contrast
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical a11y issues present. Skill should verify and confirm a clean bill of health, including computing or estimating contrast for the focus indicators and borders rather than assuming a non-default color choice is a problem."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the checkmark glyph inside .checkbox-visual is drawn with a CSS ::after border trick; a small comment or shared utility class documenting the pattern could help future contributors avoid accidentally breaking it, but this is a maintainability nicety, not an accessibility gap"
+    severity: ENHANCEMENT
+    evidence: "trail-conditions-filter.md — .checkbox-option input[type=\"checkbox\"]:checked + .checkbox-visual::after"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: ":focus-visible-only styling (no bare :focus rule) is the correct modern pattern, not a missing focus indicator — a reviewer testing only via mouse click and concluding 'no focus style' would be wrong"
+        severity: NONE
+        expected_to_find: "55%"
+      - description: "Non-default focus/border colors (#0b3d91 navy, #3a4750 slate) are not inherently suspicious; both clear 3:1 with a wide margin (~9.7:1 and ~9.4:1 respectively against white) and should be verified computationally, not assumed non-compliant for not being a 'standard' bright blue"
+        severity: NONE
+        expected_to_find: "45%"
+      - description: "The native checkbox input hidden via opacity:0 (not display:none/visibility:hidden/aria-hidden) remains fully keyboard-operable and screen-reader-exposed — this should not be flagged as 'checkbox hidden from screen readers'"
+        severity: NONE
+        expected_to_find: "50%"
+
+wcag_criteria:
+  - "1.4.11 Non-text Contrast (focus indicators and borders, verified compliant)"
+  - "1.3.1 Info and Relationships (fieldset/legend, label association)"
+  - "4.1.2 Name, Role, Value (aria-disabled + aria-describedby on the Apply button)"
+
+components:
+  - name: Difficulty checkboxes
+    semantic_element: "native input[type=\"checkbox\"], visually hidden via opacity:0, still in normal flow and tab order"
+    ARIA_attributes: []
+    note: "Custom .checkbox-visual sibling provides the visible appearance; checked state shown via fill + checkmark glyph, not color alone"
+
+  - name: Region select
+    semantic_element: select
+    associated_via: htmlFor
+
+  - name: Apply Filters button
+    ARIA_attributes: ["aria-disabled (mirrors native disabled)", "aria-describedby=\"apply-help\""]
+    note: "Disabled until at least one difficulty is checked, with visible and programmatically-associated help text explaining why"
+
+patterns_used:
+  - "Fieldset/legend grouping for a checkbox set"
+  - "Visually-hidden-but-operable native form control (opacity:0 + custom visual sibling)"
+  - ":focus-visible for keyboard-only focus rings"
+
+multi_perspective_coverage:
+  - screen_reader: "Fieldset/legend announces the checkbox group's purpose; each checkbox's native checked state is announced normally (the custom visual is aria-hidden and purely decorative); the disabled button's help text is read via aria-describedby."
+  - keyboard: "All controls reachable and operable in a logical order; focus indicators visible on every control via :focus-visible."
+  - low_vision: "Focus indicators and borders both clear 3:1 with a wide margin; checked state uses fill + checkmark, not color alone, so it remains legible under color-vision differences too."
+  - cognitive: "Clear single-purpose grouping (difficulty, then region); the disabled button's help text explains what's needed rather than leaving the disabled state unexplained."
+
+notes: |
+  This fixture is a **CLEAN baseline** built specifically as an over-flagging
+  trap for WCAG 1.4.11 (Non-text Contrast) — the same criterion planted as a
+  real defect in the sibling HAS-BUGS fixture `filing-progress-controls`.
+  Every color pair here was deliberately chosen to clear 3:1 with a wide
+  margin (~9.4-9.7:1), not a narrow pass, so a reviewer who correctly
+  computes or estimates contrast will confirm compliance quickly rather than
+  need to second-guess a borderline value.
+
+  Expected verdict: ACCEPT (or ACCEPT-WITH-RESERVATIONS citing only the
+  enhancement-level nice-to-find item).
+
+  Three specific false-positive traps are the point of this fixture:
+  1. `:focus-visible`-only styling looks like "no `:focus` rule" to a
+     reviewer who only tests via mouse click.
+  2. Unconventional (non-bright-blue) focus/border colors invite an
+     unverified assumption of non-compliance.
+  3. `opacity: 0` on the native checkbox looks similar to hiding techniques
+     that DO remove elements from the accessibility tree (`display: none`,
+     `visibility: hidden`, `aria-hidden`), but does not — the input remains
+     fully operable and exposed to AT.
+
+  If a reviewer's output contains CRITICAL/MAJOR findings, or a REVISE/REJECT
+  verdict, on this fixture, treat that as a signal the reviewer (or, if
+  reproduced consistently across models, the rubric) needs recalibration —
+  per this suite's CLEAN-fixture discipline.

@@ -1,0 +1,120 @@
+fixture_id: seed-availability-panel
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes claiming aria-describedby is broken by the same remount that breaks aria-live — it is not"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Status container remounted via changing key prop defeats aria-live on every update"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "Identifies the key={fetchToken}/key={`cart-${cartToken}`} pattern and explains that it forces unmount/remount rather than a text update, and connects this to why aria-live never fires"
+        expected_to_find: "35%"
+
+  - category: should_find
+    count: 2
+    items:
+      - description: "No announcement during the fetch-in-progress state"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        expected_to_find: "30%"
+
+      - description: "The cart-confirmation message reuses the same broken remount pattern"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        expected_to_find: "40%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "aria-describedby continues to work correctly after the remount; only aria-live is broken"
+        expected_to_find: "35%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  false_positive_trap is subtracted if the reviewer claims aria-describedby
+  is also broken by the remount
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 75-95
+    reasoning: "Should trace what the changing key prop does to React's reconciliation, connect it to why aria-live never observes a mutation, and correctly distinguish this from the still-functional aria-describedby association"
+
+  - condition: baseline-zero-shot
+    expected_score: 15-35
+    reasoning: "role=\"status\" and aria-live=\"polite\" being present at the expected location strongly suggests a clean pass to a reviewer who checks for attribute presence rather than tracing mount behavior"
+
+  - condition: baseline-few-shot
+    expected_score: 25-45
+    reasoning: "A structured checklist may prompt checking 'does the live region actually announce', but tracing the key-prop mechanism specifically requires React reconciliation knowledge the few-shot example is unlikely to supply"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  HAS-BUGS fixture, mount-with-content shape: role="status"/aria-live are
+  present and correctly targeted by aria-describedby, but the container is a
+  fresh DOM node (already populated) on every update because of a changing
+  `key` prop added to replay a CSS animation. ARIA live regions only detect
+  mutations to a persistent node; content that arrives pre-populated inside
+  a brand-new node is never announced. This is the same mechanism documented
+  in this repo's virtual-screen-reader calibration notes as "mount-with-content
+  alerts read silent."
+
+  Key discriminator: baseline reviewers who check for attribute presence
+  (role="status", aria-live="polite") will score this component clean —
+  the attributes are exactly where the audit finding said they should be.
+  Detecting the defect requires tracing the `key` prop's effect on mount
+  identity, not attribute auditing.
+
+  The false-positive trap is calibrated to reward precision: aria-describedby
+  and aria-live both look like they depend on "the element," but only
+  aria-live requires the *same* element to persist across time. A reviewer
+  who over-generalizes and claims the description association is also
+  broken has not understood the actual mechanism and should be penalized,
+  not credited for "finding more."

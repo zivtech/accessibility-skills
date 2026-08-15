@@ -12,11 +12,11 @@ evaluation:
   description: Comprehensive evaluation of a11y-planner skill vs generic planning baselines
   version: "1.0"
   created_at: "2026-03-09"
-  estimated_total_evaluations: 243  # 27 fixtures × 3 conditions × 3 repetitions (fixture #26 added 2026-08-01, #27 added 2026-08-12)
+  estimated_total_evaluations: 252  # 28 fixtures × 3 conditions × 3 repetitions (fixture #26 added 2026-08-01, #27 added 2026-08-12, #28 added 2026-08-14)
 
 fixtures:
   directory: ./fixtures
-  count: 27
+  count: 28
   pattern: "*.md"
   metadata_suffix: ".metadata.yaml"
 
@@ -25,17 +25,18 @@ fixtures:
     - Keyboard Navigation Design (5 fixtures)
     - Screen Reader Experience (5 fixtures)
     - Visual & Cognitive Accessibility (5 fixtures)
-    - Testing & Audit Planning (7 fixtures)
+    - Testing & Audit Planning (8 fixtures)
 
   difficulty_distribution:
     # Corrected 2026-08-01: the original 25-fixture counts here read 11
     # MODERATE / 5 COMPLEX, disagreeing with FIXTURE_INVENTORY.md's per-domain
     # table (10/6, which matches the fixtures). Counts below are the true
-    # 27-fixture distribution including test-hybrid-product-audit (COMPLEX,
-    # 2026-08-01) and test-federal-agency-audit (COMPLEX, 2026-08-12).
+    # 28-fixture distribution including test-hybrid-product-audit (COMPLEX,
+    # 2026-08-01), test-federal-agency-audit (COMPLEX, 2026-08-12), and
+    # test-standards-subscription-audit (COMPLEX, 2026-08-14).
     - TRIVIAL (6 fixtures)
     - MODERATE (10 fixtures)
-    - COMPLEX (8 fixtures)
+    - COMPLEX (9 fixtures)
     - AMBIGUOUS (3 fixtures)
 
   fixture_list:
@@ -188,6 +189,17 @@ fixtures:
       # test IDs in outputs are validated against the manifest by
       # score_planner.py (baseline_508 metadata block). De-hint property
       # enforced by check_dehinted.py; re-run it after any edit.
+
+    - id: test-standards-subscription-audit
+      domain: Testing & Audit Planning
+      difficulty: COMPLEX
+      name: "Standards Subscription Platform Evaluation Plan"
+      # De-hinted WCAG 2.4.5 (Multiple Ways) audit-scope fixture, added
+      # 2026-08-14. A paywalled B2B standards-document subscription platform
+      # where a search ranking behavior plus near-duplicate titling
+      # systematically hides superseded editions from both nominal
+      # findability paths. No model rows yet. De-hint property enforced by
+      # check_dehinted.py; re-run it after any edit.
 
 rubrics:
   directory: ./rubrics

@@ -340,6 +340,10 @@ Rules (they mirror the A11y Evidence Finding Contract's `baseline_test` field):
 * Severity stays impact-based (this skill's scale) and is orthogonal to the baseline outcome.
 * Outside a declared-508 audit, omit the field entirely — a baseline citation on a component-scope report is itself a defect in the report.
 
+### Verification Evidence (when reporting a verified fix)
+
+When a report documents a fix rather than a fresh finding, name the evidence mode that confirmed it and confirm its type matches the defect class per a11y-test's Verification evidence contract — a screenshot alone never verifies a keyboard, focus, or announcement fix.
+
 ---
 
 ## Structured Report Templates

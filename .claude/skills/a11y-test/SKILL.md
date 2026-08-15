@@ -17,7 +17,7 @@ Pick the right execution mode from the routing table before running anything (th
 | Task | Tool | Why |
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
-| Baseline sweep across a list of URLs — machine-readable axe-core evidence per page, no `.spec.js` authoring, not CI-embedded | [`references/baseline-url-scan.mjs`](references/baseline-url-scan.mjs) (in-repo reference script; peer deps `playwright` + `@axe-core/playwright`) | Sequential per-page axe scan + summary JSON for baseline/regression evidence across many pages in one run. Detector output, not a conformance verdict — axe-detectable subset only. See "Baseline URL-list scan" below. |
+| Baseline sweep across a list of URLs — machine-readable axe-core evidence per page, no `.spec.js` authoring, not CI-embedded | [`references/baseline-url-scan.mjs`](references/baseline-url-scan.mjs) (in-repo reference script; peer deps `playwright` + `@axe-core/playwright`) | Sequential per-page axe scan + summary JSON for baseline/regression evidence across many pages in one run. `--census` adds DOM-census heuristics (empty paragraphs, autocomplete-absence, duplicate ids); `--alt-snapshot` writes a diffable per-page alt-text map. Detector output, not a conformance verdict — axe-detectable subset (plus heuristics) only. See "Baseline URL-list scan" below. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
@@ -37,6 +37,20 @@ Do you have a prose description of what to test, but no test script yet?
 ```
 
 **CDP keyboard event delivery for `agent-browser` has been verified end-to-end** on both a vanilla JS disclosure widget (WAI-ARIA APG disclosure-faq example: `focus → press Enter → aria-expanded: false → true`) and a React state-driven modal (react.dev DocSearch: `Meta+K` → React global keydown listener → state-mounted searchbox). The MCP keyboard delivery bug does not apply to `agent-browser` because it calls CDP `Input.dispatchKeyEvent` directly rather than through an MCP wrapper.
+
+## Verification evidence contract
+
+**Evidence type must match the failing condition.** A screenshot is never evidence for an interaction-class fix (keyboard operability, focus behavior, or a status-message announcement) — it shows what a sighted mouse user sees, not what a keyboard or screen-reader user experiences. When a fix's evidence doesn't match its defect class, the fix ships labeled **partial**, naming which defect classes still lack matching evidence.
+
+| Defect class | Evidence REQUIRED before "verified" | Mode |
+|---|---|---|
+| Keyboard operability (reachable, operable with Tab/Enter/Space/Escape/arrows) | Real-keyboard Playwright transcript — actual `page.keyboard.press()` calls, never ARIA-attribute inspection alone | `npx playwright test` |
+| Focus order & focus-visible sufficiency | Journey-level focus trace evidence | `keyboard-a11y-tester` |
+| Accessible name/role/state; status-message announcements | Assertion output against actual computed screen-reader output | `virtual-screen-reader` |
+| Machine-detectable semantics, contrast, alt-presence (a rule fires or stops firing) | Re-scan of the touched page(s) after the fix | `baseline-url-scan.mjs` (axe-core violations; `--census`/`--alt-snapshot` for the heuristic classes) |
+| Visual-only classes (layout, spacing, color/swatch correctness) | Screenshot comparison | screenshots (`agent-browser screenshot` / Playwright screenshot) |
+
+This table is what `a11y-critic` Phase 0 checks a remediation's attached evidence against, and what `bug-reporting`'s "Verification evidence" field cites.
 
 ## Interactive reconnaissance with agent-browser
 
@@ -260,6 +274,11 @@ The artifacts are spoken-phrase logs plus the asserting test file — a11y-criti
 
 **What it is:** a plain Node script depending only on `playwright` and `@axe-core/playwright` — peer dependencies installed in your own project, never in this repo (this bundle stays prompt-only; see this repo's `CLAUDE.md`). It launches one Chromium browser, visits each URL sequentially with a polite delay between requests, scans with axe-core scoped to this bundle's WCAG 2.2 AA default tag set at each configured viewport — default `1280x800,320x800`, matching the EPA harness's desktop+narrow lineage, override with `--viewports WxH[,WxH...]` — and writes a per-URL JSON result keyed by viewport (rule id, impact, node count, up to 3 sample selectors per viewport) plus an aggregated `summary.json` (violation counts by impact, violations by rule across all pages and viewports). It deliberately drops the EPA harness's other engagement-specific extras — full structure inventory, ARIA snapshot, keyboard tab-trace, text-spacing reflow probe, per-node XPath — to stay a focused baseline tool; reach for `agent-browser` or `keyboard-a11y-tester` when you need those.
 
+Two opt-in flags add non-axe signals, implemented in the sibling [references/census.mjs](references/census.mjs):
+
+- **`--census`** — three DOM-census heuristics, reported under a `census` key on every viewport record, always separate from axe's `violations`/`incomplete` and always labeled detector heuristics, never a conformance verdict: empty paragraphs (no text, no element children), autocomplete-absence (inputs whose type/name/label suggest a WCAG 1.3.5 known purpose but carry no `autocomplete` attribute), and duplicate ids (an id used on more than one element).
+- **`--alt-snapshot`** — writes `alt-snapshot.json`: one entry per URL, each a sorted list of every `img`/`svg[role=img]`'s selector, `src_or_title`, and `alt`. Captured once per page (first viewport only — alt text doesn't vary by viewport).
+
 ### Install and run
 
 ```bash
@@ -269,14 +288,27 @@ npx playwright install chromium
 node .claude/skills/a11y-test/references/baseline-url-scan.mjs --urls-file urls.txt --out ./baseline-scan-output
 # or pass URLs directly, with a custom viewport list:
 node .claude/skills/a11y-test/references/baseline-url-scan.mjs --out ./out --viewports 1280x800,320x800 https://example.com https://example.org/page
+# with the DOM-census heuristics and an alt-text snapshot:
+node .claude/skills/a11y-test/references/baseline-url-scan.mjs --out ./out --census --alt-snapshot https://example.com
 ```
 
 `urls.txt`: one absolute `http(s)://` URL per line; blank lines and `#`-prefixed lines are ignored. Raise `--delay` (default 500ms) for rate-limited or robots-restricted targets — confirm you're authorized to test the target and check its robots.txt/terms of service before scanning a third party's production site. Exact-pin `@axe-core/playwright` in your own project's `package.json`, since rule availability is per-axe-core-version — the resolved version is recorded as `axe_core_version` in `summary.json` for exactly this reason.
 
+**Catching silent alt-text regressions:** run with `--alt-snapshot` before and after a change, then diff the two `alt-snapshot.json` files —
+
+```bash
+node references/baseline-url-scan.mjs --out ./before --alt-snapshot https://example.com/page
+# ...make your change...
+node references/baseline-url-scan.mjs --out ./after --alt-snapshot https://example.com/page
+diff before/alt-snapshot.json after/alt-snapshot.json
+```
+
+Any diff line is either an intentional content update or a silent regression — a human confirms which.
+
 ### What this mode IS and IS NOT
 
-- **IS for:** baseline and regression sweeps across many pages in one run; machine-readable evidence (rule id, impact, node count, sample selectors) that can feed a11y-critic Phase 0 or the Optional A11y Evidence Finding Contract (§4 below); trend baselines across repeated runs of the same URL list — rerun and diff `summary.json`.
-- **IS NOT:** keyboard-operability or screen-reader evidence of any kind — it never presses a key or captures an announcement (route those to keyboard-a11y-tester or virtual-screen-reader). Axe-core is a **detector, not a verdict authority** here, same as every other automated lane in this bundle: it covers roughly 30-40% of WCAG 2.2 issue classes (the same axe-detectable-subset ceiling as the §4 in-spec-file scans below), and its rules are heuristics, not the standard itself. **A clean scan is not a conformance claim** — it means axe found nothing in its rule set on the URLs scanned, nothing more. Treat the output as candidate findings for human review.
+- **IS for:** baseline and regression sweeps across many pages in one run; machine-readable evidence (rule id, impact, node count, sample selectors) that can feed a11y-critic Phase 0 or the Optional A11y Evidence Finding Contract (§4 below); trend baselines across repeated runs of the same URL list — rerun and diff `summary.json` (or `alt-snapshot.json` for alt-text specifically).
+- **IS NOT:** keyboard-operability or screen-reader evidence of any kind — it never presses a key or captures an announcement (route those to keyboard-a11y-tester or virtual-screen-reader). Axe-core is a **detector, not a verdict authority** here, same as every other automated lane in this bundle: it covers roughly 30-40% of WCAG 2.2 issue classes (the same axe-detectable-subset ceiling as the §4 in-spec-file scans below), and its rules are heuristics, not the standard itself. **A clean scan is not a conformance claim** — it means axe found nothing in its rule set on the URLs scanned, nothing more. Treat the output as candidate findings for human review. The `--census` checks are heuristics one level below even axe's rules — pattern-matches on markup shape and naming, not accessibility-tree computation — so their false-positive rate is higher by design; triage every `census` hit by hand before filing it.
 
 ### pa11y-ci for sitemap-wide sweeps (routed, not vendored)
 

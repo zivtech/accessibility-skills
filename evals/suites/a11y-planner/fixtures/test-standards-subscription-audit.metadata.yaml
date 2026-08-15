@@ -1,0 +1,229 @@
+fixture_id: test-standards-subscription-audit
+name: Standards Subscription Platform Evaluation Plan
+description: De-hinted audit-scope fixture — a paywalled B2B standards-document
+  subscription platform (Meridian Standards Exchange) has two nominal ways to
+  locate a document (Browse, Search), but a search ranking behavior combined
+  with near-duplicate titling systematically hides superseded editions from
+  both paths. The brief supplies the scenario in client voice with zero WCAG
+  or audit-methodology vocabulary; the plan must bring WCAG 2.4.5 (Multiple
+  Ways) itself, take an explicit conformance position for the affected
+  subset, correctly bound the "process" exception, and propose a vendor/
+  auditor disclosure stance — proposing only component-level UI fixes
+  without ever stating that position is this fixture's central trap.
+language: prose
+framework: N/A (requirements/audit-scope engagement, not a component build)
+difficulty: COMPLEX
+domain: Testing & Audit Planning
+work_type: testing_plan
+risk_level: High
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+# ── De-hinted design (pattern from test-hybrid-product-audit /
+# test-federal-agency-audit) ──
+# The .md is a client-voice brief only. None of the scoring keywords below
+# nor any dehint_forbidden term appears in the fixture text, so a gate hit
+# can only come from knowledge the plan brought itself. Verified against
+# evals/suites/a11y-planner/check_dehinted.py's exact collision logic before
+# this file was written; re-run after ANY edit to the .md or this metadata.
+dehinted: true
+dehint_forbidden:
+  - "WCAG"
+  - "2.4.5"
+  - "Multiple Ways"
+  - "conformance position"
+  - "audit scope"
+  - "sufficient technique"
+  - "VPAT"
+  - "Accessibility Conformance Report"
+  - "ACR"
+  - "process exception"
+  - "Section 508"
+  - "WCAG-EM"
+  - "certif"
+  - "does not conform"
+  - "Partially Supports"
+  - "Does Not Support"
+  - "auditor's engagement"
+
+scenario:
+  feature: An accessibility evaluation of a paywalled B2B standards-document
+    subscription platform, scoped to whether a subscriber can locate any
+    given document (including superseded editions still needed for citing
+    older, still-in-force local ordinances) at least two ways — triggered by
+    a customer renewal requiring a signed conformance statement, an
+    unverified two-ways claim already made to that customer by sales, and an
+    outside auditor about to test independently
+  user_need: An engagement plan the accessibility lead can act on immediately
+    — a stated position on the findability question for the affected
+    document subset, a bounded and honest way to report it, and a stance for
+    correcting the record with both the sales team and the customer's
+    auditor before that auditor finds the gap independently
+  compliance_target: WCAG 2.2 AA (implicit — the client's own conformance
+    statement commitment; not named in the brief)
+  assistive_technologies:
+    - Unspecified by the client — the plan should note that the central
+      question here is findability/information architecture, not a specific
+      AT combination, though a screen-reader-based verification pass over
+      Browse and Search is still warranted
+  scope: The authenticated subscriber catalog and ~14,000 document pages
+    (title/scope-note/purchase-control pages); the public marketing site was
+    evaluated separately and is explicitly out of scope
+  constraints:
+    - 6-week deadline before the renewal signature date
+    - One accessibility lead plus one part-time front-end engineer
+    - An existing weekly automated scan that cannot detect this class of
+      finding (business-logic behavior, not markup)
+    - A sales claim already made to the customer that the plan cannot ignore
+    - A legal team's unconfirmed, unchallenged reading of the document page
+      as merely a step in the purchase flow
+    - The customer's own outside auditor about to test independently, on a
+      timeline the plan does not control
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Names WCAG 2.4.5 Multiple Ways as the governing criterion, unprompted by the brief
+  - Takes an explicit, subset-specific conformance position rather than one blanket site-wide verdict
+  - Correctly bounds the "step in a process" exception to transactional flow steps, not durable resource pages a process happens to gate
+  - Names the actual mechanism (ranking/near-duplicate titling) defeating findability for the affected subset, not a generic "search exists" conclusion
+  - Proposes a concrete, feasible remediation option for the affected subset
+  - Proposes an explicit stance for correcting the sales team's claim and for what to tell the outside auditor, ahead of that auditor's independent test
+  - Does not stop at component-level UI proposals without ever landing on the conformance position — the central trap
+
+expected_findings:
+  must_have:
+    - "Names WCAG 2.4.5 Multiple Ways as the criterion governing whether a subscriber can locate any given standards document"
+    - "States an explicit conformance position for the superseded-edition document subset specifically, with a documented rationale rather than a bare label"
+    - "Evaluates and rejects (or precisely bounds) the reading of the document and purchase pages as merely a step in the purchase flow"
+    - "Identifies that superseded editions are crowded out of visible search matches by near-duplicate current-edition titles"
+    - "Recognizes that Browse and search both existing is not sufficient once a subset is systematically unreachable by either path"
+    - "Proposes a concrete remediation option for the affected subset"
+    - "Proposes an explicit correction or disclosure stance addressed before the outside auditor's independent test"
+    - "States how the finding should be scoped and reported to the outside auditor"
+
+  should_have:
+    - Distinguishes the free-preview page (title, scope note, adoption history) from the paywalled full text — access-gating behind a paywall is not itself a 2.4.5 problem; only whether the page can be located is
+    - Recommends a persistent full document index or site map as an additional, low-risk third way, per WCAG's documented sufficient techniques for this criterion
+    - Considers whether the anonymous (pre-login) catalog view and the authenticated view present two different findability profiles worth checking separately
+    - Treats the Browse exclusion of superseded editions as a legitimate, legal-driven decision not to be reversed wholesale — recommends an additive fix (e.g., a clearly labeled historical-editions section) rather than assuming the original decision was simply wrong
+    - Separates the disclosure timeline ("what we tell the customer now") from the remediation timeline ("when the platform actually changes"), with distinct owners
+    - Names the specific verification case to run — an engineer trying to locate a superseded edition cited in an old municipal ordinance — rather than only a policy-level review
+
+  nice_to_have:
+    - Considers whether the ranking behavior has findability implications beyond the superseded-edition subset (e.g., very common current-topic queries too)
+    - Notes persistent, stable document URLs as a supporting practice for the direct-link pathway remaining reliable regardless of the ranking issue
+    - Flags the search vendor relationship as an external dependency to track separately from the accessibility remediation timeline
+
+false_positive_traps:
+  - Concluding the platform satisfies the findability requirement because both Browse and Search exist, without checking whether they reach the same set of documents
+  - Applying the "step in a process" reasoning to the document/purchase pages wholesale, treating them as exempt from the requirement entirely
+  - Treating the paywall/access-gating itself as the defect being evaluated — the question is whether the page can be located, not whether its full content is free
+  - Repeating or implicitly endorsing the sales team's "two ways" claim to preserve the customer relationship, rather than disclosing the gap
+  - Stopping at component-level UI proposals (pagination controls, a more prominent search box, filter tweaks) without ever stating an explicit conformance position for the affected subset — a plan built entirely from tactical UI fixes has missed the central ask of this engagement regardless of how reasonable those fixes are
+  - Promising the outside auditor a passing result, or recommending that the accessibility lead delay or manage the auditor's test rather than getting ahead of the finding
+  - Recommending Meridian simply delete or unpublish the superseded editions to make the problem disappear, when the brief states they remain legitimately needed and purchasable
+
+multi_perspective_coverage:
+  keyboard: "Both the Browse facets and the search box are fully operable via keyboard; the defect being evaluated is an information-architecture/findability gap, not a keyboard-operability one"
+  screen_reader: "A screen reader user's experience of Browse and Search should be verified directly (are results announced, is the affected subset's absence from both paths reproducible with a screen reader running), not assumed from the underlying business logic alone"
+  low_vision: "Not the central focus of this engagement, but the plan should note that any remediation (e.g., a new historical-editions index) gets the same visual-design review as the rest of the catalog"
+  cognitive: "An engineer working from an old ordinance citation needs a low-friction way to confirm they've found the exact right edition — clear labeling of current vs. superseded status matters as much as findability itself"
+  mobile_touch: "Not centrally implicated by this scenario; note only if the plan chooses to address responsive behavior of Browse/Search on the catalog"
+
+notes: |
+  De-hinted audit-scope fixture, planner suite fixture #28. Patterned on
+  test-hybrid-product-audit and test-federal-agency-audit for SHAPE (client-
+  voice-only brief, dehinted:true + dehint_forbidden, scoring_keywords keyed
+  exactly to expected_findings.must_have, false_positive_traps, multi-
+  perspective coverage) — the CONTENT is a new, narrower probe: a single
+  contested criterion (WCAG 2.4.5 Multiple Ways) for a paywalled B2B resource
+  platform, rather than a full audit-methodology or federal-profile test.
+
+  Design contract:
+  1. The fixture .md is a client-voice brief ONLY. Neither "WCAG" nor "2.4.5"
+     nor "Multiple Ways" nor any audit/VPAT/ACR vocabulary appears in the
+     text — the union of scoring_keywords and dehint_forbidden was checked
+     against the fixture text before this file was finalized (mirroring
+     check_dehinted.py's exact collision logic) and found clean. Re-run
+     check_dehinted.py after any future edit to either file.
+  2. Every must_have item is a knowledge or judgment probe, not an echo
+     probe: the plan can only name 2.4.5, take a subset-specific position,
+     bound the process exception correctly, and propose a disclosure stance
+     by bringing that knowledge itself — AUDIT-SCOPE MODE in the planner
+     protocol is where this is taught, not the brief.
+  3. The central trap, in the spirit of this suite's false-coverage
+     discipline in the sibling audit-scope fixtures: the brief's own
+     Requirement section invites tactical, component-level answers (fix the
+     search box, add pagination) — the correct plan recognizes that no
+     amount of UI polish substitutes for stating where the platform actually
+     stands on the underlying criterion for the specific affected subset.
+
+  Expected discrimination: protocol-following planners (AUDIT-SCOPE MODE)
+  should clear the gate; baseline/zero-shot plans without the protocol are
+  expected to either miss WCAG 2.4.5 by name entirely, offer only component-
+  level fixes with no stated position, or repeat the sales team's "two ways
+  exist, therefore fine" reasoning without checking whether both paths reach
+  the same documents. If baselines saturate this gate, the de-hinting
+  failed — instrument finding, not model achievement.
+
+  Expected verdict: ACCEPT for a protocol-following planner. REVISE or worse
+  for a plan that never states a position for the affected subset, misapplies
+  the process exception wholesale, or recommends deleting the superseded
+  editions to make the finding disappear.
+
+scoring_keywords:
+  "Names WCAG 2.4.5 Multiple Ways as the criterion governing whether a subscriber can locate any given standards document":
+    - "2.4.5"
+    - "Multiple Ways"
+  "States an explicit conformance position for the superseded-edition document subset specifically, with a documented rationale rather than a bare label":
+    - "Partially Supports"
+    - "Does Not Support"
+    - "partial conformance"
+    - "fails 2.4.5"
+    - "does not conform"
+  "Evaluates and rejects (or precisely bounds) the reading of the document and purchase pages as merely a step in the purchase flow":
+    - "process exception"
+    - "not a step in"
+    - "is not itself a process"
+    - "is not a step"
+  "Identifies that superseded editions are crowded out of visible search matches by near-duplicate current-edition titles":
+    - "near-duplicate"
+    - "crowd out"
+    - "crowds out"
+    - "crowded out"
+    - "duplicate title"
+  "Recognizes that Browse and search both existing is not sufficient once a subset is systematically unreachable by either path":
+    - "systematically unreachable"
+    - "neither path"
+    - "both paths fail"
+    - "not reachable by either"
+  "Proposes a concrete remediation option for the affected subset":
+    - "site map"
+    - "sitemap"
+    - "document index"
+    - "full index"
+    - "raise the match"
+    - "exempt authenticated"
+    - "exempt entitled"
+    - "browse facet"
+  "Proposes an explicit correction or disclosure stance addressed before the outside auditor's independent test":
+    - "correct the claim"
+    - "disclos"
+    - "before the auditor"
+    - "get ahead of"
+    - "proactively"
+  "States how the finding should be scoped and reported to the outside auditor":
+    - "bounded finding"
+    - "limited to the"
+    - "remediation commitment"
+    - "scoped to the subset"
+    - "not site-wide"

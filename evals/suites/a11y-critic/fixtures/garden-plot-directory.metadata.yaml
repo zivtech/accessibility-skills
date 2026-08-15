@@ -1,0 +1,96 @@
+fixture_id: garden-plot-directory
+name: Garden Plot Directory
+description: Community garden plot-reservation site where a template-level nav landmark ("Main navigation") was later duplicated by an independently-built JS sticky-header enhancement, producing two identically-named navigation landmarks present simultaneously once a visitor scrolls. A severity-calibration fixture — the finding is easy to detect; what is tested is whether the reviewer rates it proportionally to actual impact (MINOR/advisory) rather than inflating it to CRITICAL/MAJOR.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Content & Semantic Structure
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Two nav landmarks with identical aria-label (\"Main navigation\") exist in the accessibility tree simultaneously once the visitor scrolls past the hero — the JS sticky-header clone duplicates the template nav rather than repositioning it"
+        severity: MINOR
+        severity_calibration_required: true
+        wcag: "1.3.1 Info and Relationships, 4.1.2 Name, Role, Value"
+        evidence: "<SiteNav className=\"site-nav\" /> in the header, and <SiteNav className=\"sticky-nav-clone\" /> rendered by StickyNavClone once window.scrollY > 320 — both use the same shared component's aria-label=\"Main navigation\"; neither is hidden from AT when the other is present"
+        user_group: "Screen reader users navigating by landmark"
+        expected_behavior: "At most one landmark named \"Main navigation\" is exposed to assistive technology at any given time"
+        fix: "Reposition the single existing nav with CSS position: sticky instead of cloning it via JS; if a separate DOM node is unavoidable, hide one copy from the accessibility tree at all times"
+        calibration_instruction: "This finding must be FOUND and rated MINOR or ENHANCEMENT (advisory). All links in both copies remain correctly labeled and fully operable — nothing is blocked and nothing is unreachable, only landmark-navigation efficiency is degraded. Rating this CRITICAL or MAJOR/SERIOUS is a severity-calibration failure and must be scored as such, not credited as a stronger or more thorough finding. Missing the finding entirely is also a failure (a real, if minor, defect goes unreported)."
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "The duplicated nav also produces redundant tab stops in the keyboard sequence once the sticky bar is visible, not only a landmark-navigation issue"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order, 1.3.1 Info and Relationships"
+        evidence: "Neither nav copy's links have tabIndex=\"-1\"; both are part of the normal tab sequence whenever both are present in the DOM"
+        user_group: "Keyboard users"
+        expected_behavior: "No redundant tab stops for the same destination"
+        fix: "Same root fix as the must-find item; tabIndex=\"-1\" on a hidden copy's links as an interim measure"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "<nav aria-label=\"Plot map filters\"> is a second, legitimate navigation landmark with a distinct accessible name and genuinely different purpose — it is not another instance of the duplicate-landmark bug"
+        impact: "A reviewer who treats every additional <nav> element on the page as evidence of the same problem, rather than recognizing that a different accessible name and different purpose is the normal, expected pattern for multiple landmarks per page, has misidentified the defect's actual scope"
+        expected_to_find: "60%"
+
+wcag_criteria:
+  - "1.3.1 Info and Relationships"
+  - "4.1.2 Name, Role, Value"
+  - "2.4.3 Focus Order"
+
+components_analyzed:
+  - name: Header SiteNav
+    aria_role: navigation
+    aria_attributes: ["aria-label=\"Main navigation\""]
+    status: "correct in isolation; becomes a duplicate once the sticky clone mounts"
+
+  - name: StickyNavClone
+    aria_role: navigation
+    aria_attributes: ["aria-label=\"Main navigation\" (inherited from shared SiteNav)"]
+    status: "duplicates the header nav's role, name, and content without hiding the original"
+
+  - name: PlotMapFilters
+    aria_role: navigation
+    aria_attributes: ["aria-label=\"Plot map filters\""]
+    status: "correct — a distinct, legitimately separate landmark; not part of the defect"
+
+multi_perspective_coverage:
+  - screen_reader: "Landmark-based navigation surfaces 'navigation, Main navigation' twice with identical link sets once scrolled past the hero, with no indication which is the 'real' one. All links remain independently reachable and correctly labeled through either copy."
+  - keyboard: "Redundant tab stops for the same four destinations once both copies are present; no functionality is lost, only extra tabbing."
+  - low_vision: "No visual impact — sighted users simply see the sticky bar appear; the duplication is invisible without inspecting the accessibility tree or DOM."
+  - cognitive: "Minimal — the duplication is not visually apparent and does not add visible complexity for sighted users; screen reader users experience mild redundancy, not confusion about how to complete a task."
+
+notes: |
+  HAS-BUGS fixture, severity-calibration shape: a landmark-labeling
+  remediation (PR #77) was correct in isolation, and an independently-built
+  JS enhancement (PR #103, a different contributor, two months later) added
+  a sticky mini-header by cloning the labeled nav rather than repositioning
+  it — a common integration gap between two accessibility-aware changes
+  that were each fine on their own.
+
+  Expected verdict: REVISE, with the finding rated MINOR/advisory
+
+  This fixture is explicitly NOT a detection-difficulty test — the
+  duplicate is trivial to find by inspecting the DOM at a scrolled state.
+  It is a calibration test: does the reviewer's assigned severity match
+  actual user impact (a navigational-efficiency cost with a full
+  workaround, not a blocked task)? A reviewer who finds this and inflates
+  it to CRITICAL ("screen reader users can't navigate the site") has
+  overstated the impact and should score WORSE on the severity-calibration
+  dimension than a reviewer who finds it and rates it MINOR — even though
+  both reviewers "found" the same defect.
+
+  The false-positive trap is calibrated against over-generalization: the
+  separate, distinctly-named "Plot map filters" nav is a normal, correct
+  use of multiple landmarks per page and should not be treated as further
+  evidence of "a landmark problem" on this page.

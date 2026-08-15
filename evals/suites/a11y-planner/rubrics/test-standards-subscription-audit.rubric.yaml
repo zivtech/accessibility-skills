@@ -1,0 +1,201 @@
+fixture_id: test-standards-subscription-audit
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# De-hinted audit-scope fixture (planner suite #28). The fixture text supplies
+# NONE of the graded vocabulary — every item below probes knowledge or
+# judgment the plan must bring itself (AUDIT-SCOPE MODE in the planner
+# protocol teaches the general move: name the contested criterion, take an
+# explicit position, bound exceptions correctly, propose a disclosure
+# stance). The mechanical gate is score_planner.py's any-match keyword check
+# against this fixture's metadata.yaml scoring_keywords — treat the gate as
+# a detector, not a verdict.
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: multiple_ways_position
+    name: "Multiple Ways Conformance Position (central probe)"
+    description: "Does the plan name WCAG 2.4.5 unprompted and take an explicit, subset-specific conformance position with a documented rationale, rather than either a blanket site-wide verdict or no position at all?"
+    weight: 4
+    rule_based_checks:
+      - names_wcag_2_4_5: true
+      - states_subset_specific_position: true
+      - documents_rationale_not_bare_label: true
+    llm_judge_criteria:
+      - "Does the plan draw a clear line between the general catalog (fine) and the superseded-edition subset (the actual problem), or does it treat the whole platform as a single pass/fail unit?"
+      - "Would the accessibility lead, reading this plan, know exactly what to say if asked today whether a subscriber can find any given document at least two ways?"
+      - "FAIL CHECK: does the plan stop at proposing only component-level UI fixes (pagination, a more visible search box, filter tweaks) without ever stating an explicit position on the underlying question? If yes, this dimension scores 0 regardless of how reasonable those fixes are."
+
+  - id: process_exception_discipline
+    name: "Process Exception Discipline"
+    description: "Does the plan correctly evaluate and bound the reading of the document/purchase page as 'a step in the purchase flow,' rather than accepting or ignoring it?"
+    weight: 3
+    rule_based_checks:
+      - addresses_the_process_reading_directly: true
+      - distinguishes_transactional_steps_from_durable_resource_pages: true
+    llm_judge_criteria:
+      - "Does the plan explain WHY a durable, individually-citable document page is not the same thing as a step in a checkout-style flow, rather than just asserting a conclusion?"
+      - "FAIL CHECK: does the plan accept the 'just a step in the purchase flow' reading at face value and treat the document/purchase pages as exempt from the findability question entirely? If yes, this dimension scores 0."
+
+  - id: mechanism_identification
+    name: "Mechanism Identification"
+    description: "Does the plan name the actual mechanism — search ranking behavior interacting with near-duplicate titling — rather than concluding generically that 'search exists, so it's covered'?"
+    weight: 2
+    rule_based_checks:
+      - names_the_ranking_titling_interaction: true
+      - avoids_generic_search_exists_conclusion: true
+
+  - id: remediation_and_disclosure
+    name: "Remediation & Disclosure Stance"
+    description: "Does the plan propose a concrete fix for the affected subset AND a specific stance on correcting the sales team's claim and briefing the outside auditor before that auditor tests independently?"
+    weight: 3
+    rule_based_checks:
+      - proposes_concrete_remediation: true
+      - proposes_correction_stance_for_sales_claim: true
+      - addresses_the_auditor_proactively: true
+      - separates_disclosure_timeline_from_remediation_timeline: true
+    llm_judge_criteria:
+      - "Does the plan give the accessibility lead something specific to SAY to sales and to the auditor, not just an instruction to 'be transparent'?"
+      - "FAIL CHECK: does the plan recommend withholding the finding from the auditor, delaying the auditor's test, or preserving the sales team's claim unmodified to protect the renewal? If yes, this dimension scores 0."
+
+  - id: scoped_reporting
+    name: "Scoped, Bounded Reporting"
+    description: "Does the plan state how the finding should be reported — a bounded finding limited to the affected subset with a remediation commitment — rather than an unqualified pass or an unqualified site-wide fail?"
+    weight: 2
+    rule_based_checks:
+      - reports_a_bounded_finding: true
+      - avoids_unqualified_sitewide_fail: true
+      - avoids_unqualified_pass: true
+
+  - id: wcag_grounding
+    name: "WCAG Grounding"
+    description: "Does the plan ground its reasoning in the actual criterion (2.4.5) rather than adjacent-sounding but different concerns (e.g., pure keyboard/ARIA review of the search box)?"
+    weight: 2
+    rule_based_checks:
+      - cites_2_4_5_correctly: true
+      - does_not_substitute_unrelated_criteria_for_the_central_question: true
+
+  - id: specificity
+    name: "Specificity & Actionability"
+    description: "Executable in 6 weeks by one accessibility lead plus one part-time engineer? Names the verification case (an engineer locating a superseded edition cited in an old ordinance), not only a policy-level review?"
+    weight: 2
+    rule_based_checks:
+      - allocates_the_6_weeks: true
+      - names_the_verification_case: true
+      - assigns_owners: true
+
+  - id: multi_perspective
+    name: "Multi-Perspective Coverage"
+    description: "Screen reader verification of Browse/Search, keyboard operability, and the cognitive load of confirming the correct edition all addressed?"
+    weight: 1
+    rule_based_checks:
+      - addresses_screen_reader_verification: true
+      - addresses_keyboard: true
+      - addresses_cognitive_edition_confirmation: true
+
+  - id: calibration
+    name: "Calibration & Proportionality"
+    description: "Proportional to a COMPLEX audit-scope engagement; avoids the traps: no blanket 'both ways exist so we pass', no wholesale process-exception exemption, no paywall-as-the-defect conflation, no deleting superseded editions to make the finding disappear, no auditor-management/delay recommendation."
+    weight: 1
+    rule_based_checks:
+      - avoids_blanket_pass_claim: true
+      - avoids_wholesale_process_exemption: true
+      - avoids_paywall_conflation: true
+      - avoids_delete_superseded_editions_shortcut: true
+      - avoids_auditor_management_recommendation: true
+
+composite_score_formula: |
+  score = sum(dimension_score × weight) / sum(weights) × 100
+  where each dimension_score is 0-100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: a11y-planner (AUDIT-SCOPE MODE)
+    expected_score: 75-92
+    reasoning: "AUDIT-SCOPE MODE teaches the general moves this fixture probes:
+      name the contested criterion, take an explicit position bounded to the
+      affected subset, evaluate exceptions on their actual terms rather than
+      accepting an offhand reading, and propose a disclosure stance rather
+      than staying silent. What separates 75 from 92 is how concretely the
+      plan separates the disclosure timeline from the remediation timeline
+      and names the specific verification case."
+
+  - condition: baseline-zero-shot
+    expected_score: 15-40
+    reasoning: "With no methodology vocabulary in the brief to echo, the
+      expected baseline behavior is agreeing that 'browse and search both
+      exist, so this is fine,' proposing only component-level UI polish
+      (better pagination, a more visible search box) without ever landing on
+      a position, and not addressing the sales claim or the auditor at all."
+
+  - condition: baseline-few-shot
+    expected_score: 25-50
+    reasoning: "A structured planning example may prompt noticing the
+      superseded-edition subset as worth mentioning, but naming 2.4.5
+      specifically, bounding the process-exception reading, and proposing a
+      disclosure stance for the auditor requires domain knowledge a generic
+      few-shot example is unlikely to supply."
+
+verdict_expectations:
+  a11y-planner: ACCEPT
+  baseline-zero-shot: REVISE or REJECT
+  baseline-few-shot: REVISE
+
+notes: |
+  Companion to test-hybrid-product-audit and test-federal-agency-audit:
+  those two fixtures probe full audit-methodology structure (WCAG-EM
+  sampling discipline; the federal ICT Testing Baseline) de-hinted; this one
+  probes a single contested success criterion — WCAG 2.4.5 Multiple Ways —
+  for a paywalled B2B resource platform, also de-hinted. All three share the
+  client-voice brief discipline and a false-coverage/false-position center of
+  gravity, but this fixture is deliberately narrower in scope than its two
+  siblings: COMPLEX rather than requiring full audit-methodology citation.
+
+  Hard verdict rules (mirror the traps):
+  1. A plan that concludes "browse and search both exist, therefore this
+     criterion is satisfied" without checking whether both paths reach the
+     same documents is REVISE at best.
+  2. A plan that accepts the "step in the purchase flow" reading wholesale,
+     exempting the document/purchase pages from the findability question
+     entirely, is REVISE at best.
+  3. A plan that never states an explicit position for the affected subset —
+     including one built entirely from reasonable-sounding component-level
+     UI fixes — has missed the central ask and cannot be ACCEPT regardless
+     of how complete the rest of the plan is.
+  4. A plan that recommends deleting or unpublishing the superseded editions
+     to make the finding disappear contradicts a stated fact in the brief
+     (they remain legitimately needed and purchasable) and is REVISE at best.
+  5. A plan that recommends withholding the finding from the outside auditor,
+     delaying their test, or leaving the sales team's claim uncorrected is
+     REVISE at best.
+
+  Scoring keyword hazards, named for adjudicators: several items (2.4.5
+  naming, the process-exception bound, the mechanism identification) are
+  reasonably specific and should discriminate cleanly; the remediation and
+  disclosure items are more paraphrase-prone — a plan may propose a sound
+  fix or a sound disclosure stance using none of the listed phrases.
+  Content-adjudicate apparent misses on those items before counting them,
+  consistent with this suite's practice on the other audit-scope fixtures.
