@@ -131,6 +131,7 @@ PLANNER_FIXTURES = [
     "test-modal",
     "test-multi-page-audit",
     "test-simple-button",
+    "test-standards-subscription-audit",  # 28th fixture, de-hinted WCAG 2.4.5 audit-scope probe (2026-08-14) — no model rows yet
     "visual-animated-transition",
     "visual-dark-mode",
     "visual-data-viz",
@@ -207,12 +208,21 @@ HAS_BUGS_FIXTURES = [
     "radio-button-group-no-grouping",
     "tooltip-no-role-no-association",
     "video-player-missing-captions",
+    # Remediated-code-with-residue / weak-class shapes (2026-08-14):
+    "rehearsal-schedule-panel",
+    "seed-availability-panel",
+    "slip-reservation-tabs",
+    "filing-progress-controls",
+    "tool-catalog-layout",
+    "garden-plot-directory",
 ]
 CLEAN_FIXTURES = [
     "button-skip-link-clean",
     "interactive-dropdown-clean",
     "modal-complete-clean",
     "search-results-dynamic-clean",
+    "trail-conditions-filter",
+    "pool-lesson-registration",
 ]
 FLAWED_FIXTURES = [
     "tabs-incomplete-aria-selected",

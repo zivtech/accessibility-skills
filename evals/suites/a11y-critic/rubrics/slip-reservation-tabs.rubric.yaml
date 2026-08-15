@@ -1,0 +1,112 @@
+fixture_id: slip-reservation-tabs
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes flagging role=\"presentation\" on the three real tab wrappers as itself a problem"
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Non-tab link's list item inside the tablist lacks role=\"presentation\", unlike its three sibling tab wrappers"
+        severity: MAJOR
+        wcag: "1.3.1 Info and Relationships, 4.1.2 Name, Role, Value"
+        evidence_requirement: "Identifies the <li> asymmetry (3 with role=\"presentation\", 1 without) and explains the resulting content-model/announcement inconsistency"
+        expected_to_find: "40%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "Arrow-key tab collection is not explicitly scoped to role=\"tab\", making correct-today behavior fragile"
+        severity: MINOR
+        wcag: "2.4.3 Focus Order"
+        expected_to_find: "20%"
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "role=\"presentation\" on the three real tab wrappers is the correct, standard pattern and must not be flagged"
+        expected_to_find: "55%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  false_positive_trap is subtracted if role="presentation" on the real tabs
+  is flagged as a semantics-removal problem
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-95
+    reasoning: "Should check the tablist's full child list against the APG content model (not just the tab/panel attribute pairing), catch the asymmetric role=\"presentation\" use, and correctly credit it as intentional on the three real tabs"
+
+  - condition: baseline-zero-shot
+    expected_score: 30-50
+    reasoning: "Likely verifies tab/panel attributes pairwise (aria-selected, aria-controls, aria-labelledby) and confirms they're all correct, without checking what else lives inside the tablist container"
+
+  - condition: baseline-few-shot
+    expected_score: 40-60
+    reasoning: "A structured checklist may prompt inspecting the tablist's full markup, but recognizing the specific significance of role=\"presentation\" asymmetry requires APG familiarity a generic checklist may not supply"
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT-WITH-RESERVATIONS
+
+notes: |
+  HAS-BUGS fixture, remediated-code-with-residue shape: the tab/panel
+  mechanics are a complete and correct WAI-ARIA Tabs implementation. The
+  defect is structural rather than interactive — a pre-existing navigation
+  link shares the tablist's <ul> and was never given (or excluded from) the
+  role="presentation" treatment the real tab wrappers received.
+
+  Key discriminator: reviewers who verify tab/panel attribute pairs
+  (aria-selected, aria-controls, aria-labelledby) in isolation will find
+  everything correct, because it is. Finding the actual defect requires
+  checking the tablist's complete child list against the pattern's expected
+  content model — a different kind of check than attribute-pair
+  verification.
+
+  The false-positive trap is calibrated against over-correction: a reviewer
+  who is uneasy about role="presentation" in general and flags all four
+  instances (rather than specifically the one that's missing it) has not
+  understood the pattern and should be penalized the same as one who misses
+  the finding outright.

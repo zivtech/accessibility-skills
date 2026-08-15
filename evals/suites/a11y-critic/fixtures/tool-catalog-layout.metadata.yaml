@@ -1,0 +1,92 @@
+fixture_id: tool-catalog-layout
+name: Tool Catalog Layout
+description: Neighborhood tool-share catalog page with a fixed two-column layout (filter sidebar + results grid). The outer container's min-width:1024px, combined with a fixed-width sidebar and a non-wrapping card row, produces two-dimensional scrolling at a 320px viewport with no media queries anywhere to relieve it.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Visual Presentation & Contrast
+work_type: component_review
+provenance: "Defect shape derived from a documented external-retest reject reason; provenance ledger maintained privately."
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Layout cannot reflow to a single column and produces two-dimensional scrolling at a 320px viewport width"
+        severity: MAJOR
+        wcag: "1.4.10 Reflow"
+        evidence: ".tool-catalog-layout { min-width: 1024px; }, .filter-sidebar { width: 280px; }, .tool-grid { flex-wrap: nowrap; }, .tool-card { width: 240px; } — no media queries anywhere in the stylesheet"
+        user_group: "Low-vision users who zoom, mobile users, motor-disabled users for whom two-directional scroll is disproportionately effortful"
+        expected_behavior: "Content reflows to a single column at 320px CSS width without requiring horizontal scroll to read filters or reach tool cards"
+        fix: "Remove the container min-width, let the sidebar and grid reflow/stack at narrow widths, and add the media queries needed to do so"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "All font sizes are fixed px with no relative units, consistent with a layout built without reflow or text-resizing in mind, and reviewers should separately confirm the page's viewport meta tag does not disable pinch-zoom"
+        severity: MAJOR
+        wcag: "1.4.4 Resize Text"
+        evidence: "Every font-size declaration in the stylesheet uses px (13px, 14px, 15px); no rem/em anywhere"
+        user_group: "Low-vision users relying on browser text-resizing"
+        expected_behavior: "Font sizes scale with the user's browser text-size setting"
+        fix: "Convert font-size values to rem"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 1
+    items:
+      - description: "Fixed-pixel thumbnail dimensions (.tool-thumb) are not themselves the defect — explicit image dimensions to prevent layout shift are a recommended practice as long as the surrounding grid can still reflow"
+        impact: "A reviewer who identifies the thumbnail's fixed width/height as the accessibility problem, rather than the non-reflowing container/sidebar/card-row, has misidentified where the failure actually lives"
+        expected_to_find: "40%"
+
+wcag_criteria:
+  - "1.4.10 Reflow"
+  - "1.4.4 Resize Text"
+
+components_analyzed:
+  - name: Outer layout container
+    status: "min-width: 1024px caps how narrow the layout can become regardless of children"
+
+  - name: Filter sidebar
+    status: "fixed width: 280px, no reflow breakpoint"
+
+  - name: Tool grid
+    status: "flex-wrap: nowrap prevents cards from wrapping to a narrower layout"
+
+  - name: Tool card
+    status: "fixed width: 240px"
+
+  - name: Tool thumbnail placeholder
+    status: "fixed pixel dimensions — correct practice on its own, not the reflow defect"
+
+  - name: Reserve button / availability text
+    status: "correct — unavailable state uses text plus disabled state, not color alone"
+
+multi_perspective_coverage:
+  - screen_reader: "Not directly affected — this is a layout/zoom concern, not a semantic one. Landmark structure, fieldset/legend, and text-based availability status are all correct."
+  - keyboard: "Not directly affected — the defect is a layout/viewport concern, not a keyboard-operability one."
+  - low_vision: "The primary affected group — zooming to compensate for small text, or using a narrow-viewport device, forces two-directional scrolling to browse the catalog at all."
+  - cognitive: "Two-directional scrolling to complete a simple browse-and-filter task adds real navigational burden regardless of access method."
+
+notes: |
+  HAS-BUGS fixture isolating WCAG 1.4.10 (Reflow). A `min-width: 1024px` on
+  the outer layout container — added, per the PR description, so the
+  two-column design "never looks cramped" — guarantees horizontal scroll
+  below that width by itself; the fixed-width sidebar and non-wrapping card
+  row reinforce the failure independently. No media query anywhere in the
+  stylesheet relieves any of this at narrow viewports.
+
+  Expected verdict: REVISE
+
+  A tool catalog grid has no inherent need for two-dimensional layout (unlike
+  a data table or map, which 1.4.10 exempts) — the correct fix is for the
+  filter sidebar and card grid to reflow to a single column at narrow
+  widths, not to preserve the two-column layout at all costs.
+
+  The false-positive trap distinguishes "has a fixed pixel dimension"
+  (true of the thumbnail placeholder, and fine) from "prevents the
+  surrounding layout from reflowing" (true of the container/sidebar/card-row
+  widths, and the actual defect). Flagging the former instead of the latter
+  is a specificity failure, not extra thoroughness.

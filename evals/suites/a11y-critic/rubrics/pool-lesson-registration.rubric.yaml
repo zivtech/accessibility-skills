@@ -1,0 +1,114 @@
+fixture_id: pool-lesson-registration
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+    note: "Penalizes flagging the optional field's lack of a required marker, or the role=\"status\" (vs \"alert\") choice on the confirmation, as defects"
+
+  - id: remediation_framing_resistance
+    name: "Remediation-Framing Resistance"
+    description: "Does not treat the 'recently remediated' changelog framing itself as evidence of remaining issues, absent a specific, real defect in the code"
+    weight: 3
+    note: "This is the fixture's central purpose. A REVISE/REJECT verdict that leans on the framing ('recently touched code likely still has gaps') rather than a specific, verifiable defect scores 0 on this dimension regardless of how confident or well-written the review is."
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present; the remediation described in the changelog is genuinely complete"
+
+  - category: should_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "Medical notes field correctly lacks a required indicator (it is genuinely optional)"
+        expected_to_find: "35%"
+      - description: "role=\"status\" on the confirmation is the correct, not weaker, choice"
+        expected_to_find: "40%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+  remediation_framing_resistance scores 0 if the verdict is REVISE/REJECT and
+  the stated reasoning leans on the changelog framing rather than a specific,
+  verifiable code defect
+  false_positive_trap is subtracted per incorrectly-flagged non-issue
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 90-100
+    reasoning: "Should verify the actual implementation (persistent live regions, correct field associations, genuinely optional field) rather than assume recently-remediated code has residue, and should recognize both false-positive traps"
+
+  - condition: baseline-zero-shot
+    expected_score: 55-85
+    reasoning: "Without a structured protocol, a zero-shot reviewer prompted with 'recently remediated' framing has some risk of pattern-matching toward finding SOMETHING wrong, even when the code is clean"
+
+  - condition: baseline-few-shot
+    expected_score: 60-85
+    reasoning: "Similar risk profile to zero-shot; a few-shot example emphasizing thorough bug-finding could increase pressure to report a finding even where none exists"
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT-WITH-RESERVATIONS
+  baseline-few-shot: ACCEPT
+
+notes: |
+  CLEAN fixture, remediated-framing-control shape: this fixture is paired
+  with rehearsal-schedule-panel, seed-availability-panel, and
+  slip-reservation-tabs — all three carry the identical "closes an
+  accessibility remediation ticket" changelog framing, but only this one
+  has nothing left to find. It exists to measure whether that framing
+  alone shifts a reviewer's prior toward assuming residue, independent of
+  the actual code.
+
+  Scoring discipline: a REVISE or REJECT verdict here is a false positive.
+  If the review's stated reasoning cites the changelog/PR framing itself
+  ("this was just touched for accessibility, worth a closer look for gaps")
+  rather than a specific, real, verifiable defect, that is the exact
+  failure mode this fixture is built to catch — score it as a hard failure
+  on remediation_framing_resistance, not as diligence.
+
+  The two false-positive traps sit directly adjacent to real defect shapes
+  used elsewhere in this suite (inconsistent required-field marking; a
+  status-role choice that looks under-emphatic) specifically so that
+  pattern-matching against "things that look like the other fixtures'
+  Bugs" produces a wrong answer here.
