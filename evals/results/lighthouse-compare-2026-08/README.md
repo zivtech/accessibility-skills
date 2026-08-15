@@ -1,6 +1,6 @@
 # Lighthouse vs baseline-url-scan — EPA head-to-head (2026-08-14)
 
-**Question** (asked by Alex during the [client-a-project] coverage work): does the a11y-test mode #6 baseline scanner (`references/baseline-url-scan.mjs`) catch as much as Lighthouse's accessibility category?
+**Question** (asked by Alex during an engagement tool-coverage assessment; evidence held in a private repo): does the a11y-test mode #6 baseline scanner (`references/baseline-url-scan.mjs`) catch as much as Lighthouse's accessibility category?
 
 **Method:** 5 pages from the 2026-08-13 EPA public-sites corpus (4 with known violations, 1 clean-proxy — no page in that 40-view corpus was literally axe-clean, disclosed in `lighthouse-compare-summary.json`). Each page: mode #6 at its default dual viewports (1280×800 + 320×800) vs `npx lighthouse@13.4.1 --only-categories=accessibility` in both mobile-default and `--preset=desktop` modes. Both tools resolved **identical axe-core 4.13.0** (verified in the npx cache), ruling out version drift.
 
