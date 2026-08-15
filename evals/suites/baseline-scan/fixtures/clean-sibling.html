@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Millbrook Public Library District — Catalog Search</title>
+<style>
+  body { font-family: sans-serif; margin: 0; color: #111; }
+  header, main, footer { padding: 1rem; }
+  .skip-link { position: absolute; left: -9999px; }
+  .skip-link:focus { position: static; }
+  header > a, nav a { display: inline-block; padding: 0.5rem 0.4rem; }
+  table.hours { border-collapse: collapse; }
+  table.hours th, table.hours td { border: 1px solid #767676; padding: 0.3em 0.8em; text-align: left; }
+  .tablist-ad { margin: 0.5rem 0; padding: 0.25rem 0.5rem; background: #ffe; display: inline-block; }
+  [role="tab"] { padding: 0.5rem 1rem; min-height: 24px; }
+  .dismiss-btn { min-width: 24px; min-height: 24px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header>
+  <a href="/">Millbrook Public Library District</a>
+  <nav aria-label="Primary">
+    <a href="/catalog">Catalog</a>
+    <a href="/events">Events</a>
+    <a href="/account/cart" aria-label="View cart">Cart</a>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="promo-banner">
+    <p>The Millbrook branch will close early on Friday for staff training.</p>
+    <button type="button" class="dismiss-btn" aria-label="Dismiss notice">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M4 4L20 20M20 4L4 20" stroke="currentColor" stroke-width="2" fill="none"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div role="search" aria-label="Site search">
+    <input type="text" name="q" id="search-input" aria-label="Search catalog">
+    <button type="submit">Search</button>
+  </div>
+
+  <h1>Catalog Search Results</h1>
+
+  <h2>New Arrivals</h2>
+  <p>Recently added titles are listed below.</p>
+
+  <h3>Popular This Month</h3>
+  <ul>
+    <li>Anansi Boys — Neil Gaiman</li>
+    <li>Circe — Madeline Miller</li>
+    <li>Piranesi — Susanna Clarke</li>
+  </ul>
+
+  <img src="cover-piranesi.jpg" width="80" height="120" alt="Piranesi book cover">
+
+  <h2>Library Hours</h2>
+  <table class="hours">
+    <caption>Library hours by day</caption>
+    <tr><th scope="col">Day</th><th scope="col">Hours</th></tr>
+    <tr><td>Monday</td><td>9am-8pm</td></tr>
+    <tr><td>Tuesday</td><td>9am-8pm</td></tr>
+    <tr><td>Sunday</td><td>Closed</td></tr>
+  </table>
+
+  <p style="color:#333333; background-color:#ffffff;">Overdue fines are $0.25 per day, per item.</p>
+
+  <h3>Update Your Patron Profile</h3>
+  <form>
+    <label for="fullname">Full name</label>
+    <input type="text" id="fullname" name="fullname" autocomplete="name">
+
+    <label for="postal">ZIP code</label>
+    <input type="text" id="postal" name="zip" autocomplete="postal-code">
+
+    <label for="phone">Phone number</label>
+    <input type="tel" id="phone" name="phone" autocomplete="tel">
+  </form>
+
+  <h3>Account</h3>
+  <div role="tablist" aria-label="Account sections">
+    <button role="tab" id="tab-loans" aria-selected="true" aria-controls="panel-loans">Loans</button>
+    <button role="tab" id="tab-holds" aria-selected="false" aria-controls="panel-holds">Holds</button>
+  </div>
+  <p class="tablist-ad">Ad: Join Friends of the Library</p>
+  <div role="tabpanel" id="panel-loans" aria-labelledby="tab-loans">
+    <p>You have 3 items checked out.</p>
+    <span id="branch-hours-loans">Main branch</span>
+  </div>
+  <div role="tabpanel" id="panel-holds" aria-labelledby="tab-holds" hidden>
+    <p>You have 1 item on hold.</p>
+    <span id="branch-hours-holds">Eastside branch</span>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; Millbrook Public Library District</p>
+</footer>
+
+</body>
+</html>
