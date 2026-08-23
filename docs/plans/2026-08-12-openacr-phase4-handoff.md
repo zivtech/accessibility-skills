@@ -5,9 +5,23 @@
 > Everything here is executable without this session's context; receipts
 > live in `docs/openacr-reference.md` and `evals/results/acr-reporting-phase{2,3}/`.
 
-## Part 1 — Lane C (ACR drift: YAML N vs YAML N+1)
+## Part 1 — Lane C (ACR drift: YAML N vs YAML N+1) — **EXECUTED 2026-08-13**
 
-Nearly free after Lane A, per the plan. Scope:
+All five items below are done; receipts in
+[`evals/results/acr-reporting-phase4/`](../../evals/results/acr-reporting-phase4/)
+and the suite README. Summary: protocol + Codex mirror landed
+(`check_mirrors.py` clean), fixtures 6/6b built as triplets and verified
+de-hinted (zero trend vocabulary in either input), `lane: c` scorer
+calibrated **10/10** before any row — catching four instrument defects,
+two of which had made checks silently unfailable — and seven rows scored
+and adjudicated by reading: **opus 4/4 must-clean** across both fixtures
+and both draws, baselines FAIL draw-stably on vocabulary carry with the
+judgment intact, qwen3.6:35b PASS with three unscored prose errors. Two
+revisions were folded back and disclosed (one should-tier instrument
+repair; one skill amendment for the self-pair routing rule). Item 5's
+wiring is complete except the remaining open work listed in Part 3.
+
+The original scope, retained as the executed record:
 
 1. **SKILL.md Lane C section** (+ Codex mirror; run `scripts/check_mirrors.py`):
    diff two OpenACR documents at SC/component level; express results in the

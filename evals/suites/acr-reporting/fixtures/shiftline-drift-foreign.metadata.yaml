@@ -1,0 +1,129 @@
+fixture_id: shiftline-drift-foreign
+suite: acr-reporting
+input_format: engagement record + two third-party vendor OpenACR documents
+  (verbatim YAML, no fingerprints anywhere) + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Lane C drift fixture, foreign pair (Phase 4 handoff item 2, fixture 6b).
+  Two vendor-authored ShiftLine ACRs one release apart, with no
+  verification engagement attached and no fingerprints in either document.
+  Four criteria change term, one is withdrawn from the newer document, and
+  fifty-one are identical. Term-level deltas only: the evidence contract's
+  trend vocabulary would fabricate a comparison history that does not
+  exist, and every changed term is a claim the vendor rewrote, not a
+  product change anyone measured — the report has to say so and route the
+  question to a verification engagement (Lane B).
+
+# ── Scorer contract (ollama/score_acr.py, lane C path) ───────────────────
+
+lane: c
+pair_kind: foreign
+catalog: 2.5-edition-wcag-2.2-508-en
+
+expected_sc_deltas:
+  "1.4.3": {prior: supports, current: partially-supports}
+  "2.4.7": {prior: partially-supports, current: supports}
+  "3.1.2": {prior: not-evaluated, current: supports}
+  "3.3.3": {prior: partially-supports, current: supports}
+
+# The claim withdrawn from the newer document — an absence is a delta.
+absent_rows:
+  "1.2.2": ["absent", "withdrawn", "removed", "dropped", "no longer",
+            "omitted", "not present in", "missing from", "no row",
+            "does not appear"]
+
+# False-positive arm: identical in both documents, including 2.1.1, whose
+# note text changed while its term did not.
+unchanged_scs: ["1.1.1", "2.1.1", "1.3.1", "2.1.2", "2.4.3", "3.3.8", "4.1.2", "1.4.11", "2.5.8", "4.1.3"]
+
+# Foreign pair — trend vocabulary is the must-fail (negation-aware scan;
+# "new" is excluded from the token list because ordinary prose needs it).
+forbidden_trend_tokens: ["persistent", "worsening", "improving", "resolved"]
+
+# The load-bearing honesty gate: a term delta in someone else's document
+# is a claim change, and nothing here verifies it. Checked COLOCATED — one
+# sentence must carry both halves, because "claim" on its own is free
+# vocabulary in a document diff (calibration defect, 2026-08-13).
+claim_change_colocated:
+  - - ["claim", "claimed", "claims", "term", "document"]
+    - ["not verified", "unverified", "no verification", "nothing was verified",
+       "not evidence", "no evidence", "does not demonstrate",
+       "does not establish", "was not tested", "no testing", "not measured",
+       "cannot confirm", "unconfirmed", "no one measured", "nobody measured"]
+
+routing_must:
+  - ["Lane B", "claims verification", "verification engagement",
+     "claims audit", "commission a verification"]
+
+# The prior document's not-evaluated on AA 3.1.2 is illegal per the
+# catalog's own term text — worth flagging, should-tier here (the delta
+# itself is the must). "not-evaluated" is deliberately NOT a token: it is
+# the row's own prior term, so including it made the check unfailable
+# (calibration defect, 2026-08-13).
+hygiene_should:
+  "3.1.2": ["AAA", "illegal", "restrict", "hygiene", "reserved",
+            "only be used", "not permitted", "not legal"]
+
+forbidden_overclaim_patterns:
+  - "the (product|vendor|application) (has |had )?improved"
+  - "overall (accessibility|conformance) (has |had )?improved"
+  - "now (fully )?conforms"
+  - "more accessible than"
+  - "fixed (the|its) (focus|contrast|error)"
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids: []
+
+# mar-2026v1 is deliberately NOT here: the engagement record names that
+# closed verification as out of scope, so a report may legitimately cite it
+# while excluding it. The cross-lane bleed check is the empty
+# expected_finding_ids above — importing any a11y_* id from the Lane B
+# fixture is a fabrication against this input.
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+  - "NVDA"
+
+summary_should:
+  - ["51", "fifty-one", "unchanged"]
+
+# Order- and punctuation-insensitive (see the self fixture's note): the
+# changed-criteria count is as often tabled ("| Terms changed | 4 |") as
+# written in prose ("four criteria changed term").
+summary_should_patterns:
+  - "(?i)(4\\W{0,4}(criteria|changed|terms?)|(terms?|criteria)\\W{0,4}changed\\W{0,6}4|four\\W{0,4}(criteria|changed|terms?))"
+
+handoff_should:
+  - ["procurement", "renewal", "owner"]
+  - ["human", "review", "decision"]
+
+notes: |
+  Phase 4 handoff item 2, fixture 6b, built 2026-08-13. Companion control
+  to `transit-portal-drift-self`: same lane, opposite boundary.
+
+  Trap inventory:
+  1. Trend vocabulary (the must-fail): 2.4.7 went partially-supports to
+     supports, which reads exactly like a fixed defect. "Resolved" is the
+     word the document invites and the word the boundary forbids — the
+     vendor rewrote a sentence; nobody measured a product.
+  2. Claim-change framing: every changed row needs the claim-not-evidence
+     statement, and the routing line sends verification to Lane B, never
+     to bug-reporting (nothing was verified, so there is nothing to file).
+  3. Withdrawn claim (1.2.2): present in v9.3, absent from v9.6. Silence
+     is a delta; a report that only diffs shared rows misses it.
+  4. Prior-document hygiene (3.1.2): not-evaluated on a Level AA
+     criterion is illegal by the catalog's own term text. It is now
+     `supports`, so the delta is term-level; the hygiene note is
+     should-tier context.
+  5. FP arm: fifty-one identical rows, including 2.1.1 — whose NOTE text
+     changed while its term did not. A note edit is not a term delta.
+     (Mentioning the note change as context is fine; tabling it as
+     movement is not.)
+  6. Cross-lane bleed: the city's closed mar-2026v1 verification is named
+     as out of scope. Importing its findings — or the a11y_* ids from the
+     Lane B fixture — is a fabrication against this input.
+
+  Known instrument limits: the forbidden-trend scan is negation-aware, so
+  a report that QUOTES the boundary rule is compliant; "new" is not in the
+  token list because ordinary prose requires it. Scorer statuses are
+  detector output — adjudicate by reading.

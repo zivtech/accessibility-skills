@@ -1,0 +1,15 @@
+Fixture: shiftline-drift-foreign (lane C)
+Response length: 1582 chars
+Pair kind: foreign
+
+SC deltas: 4/4 reported with both terms
+Unchanged-criteria FP arm: 0 dramatized of 10 checked
+  finding_id tokens: 0 known, 0 invented
+
+Must misses: 2
+  - trend vocabulary against a foreign pair: 'resolved' (term-level deltas only): 'The schedule-grid focus indicator defect disclosed in 9.3 is resolved as of 9.5.'
+  - no claim-change framing — no single sentence carries both ['claim', 'claimed'] and ['not verified', 'unverified'] (a rewritten term is not measured evidence)
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

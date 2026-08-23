@@ -26,7 +26,7 @@ toolchain validates boilerplate — `openacr validate` accepts a 2-criterion
 fragment and accepts `not-evaluated` on a Level A criterion. The skill's
 gates are the only enforcement layer; this suite is where they are priced.
 
-## Fixtures (6 — Lane A items 1/2/3/5; Lane B items 4/4b)
+## Fixtures (8 — Lane A items 1/2/3/5; Lane B items 4/4b; Lane C items 6/6b)
 
 | # | Fixture | Catalog | Difficulty | What it tests |
 |---|---|---|---|---|
@@ -36,6 +36,8 @@ gates are the only enforcement layer; this suite is where they are priced.
 | 5 | `parks-registration-clean` | 2.5 / WCAG 2.2-508 | CLEAN | Complete-bundle false-positive control: all-passing evidence → complete draft with zero spurious gaps, zero INCOMPLETE machinery, zero a11y_* tokens (no findings exist), the evidenced AAA pass mapped supports, and the out-of-scope 2024 rumor left out |
 | 4 | `shiftline-vendor-acr` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | **Lane B claims audit**: vendor ACR with 3 overstated claims (supports on keyboard + sitewide-contrast failures; NA on uncaptioned videos), 2 understated (fixed defect still declared partial; illegal not-evaluated on AA), 1 unverifiable (commissioner-excluded SSO enclave), and 50 accurate claims — including the vendor's HONEST partially-supports on a still-failing focus indicator, which must come back confirmed (the FP trap). Foreign ACR: trend vocabulary forbidden |
 | 4b | `courseware-vendor-acr-clean` | 2.5 / WCAG 2.2-508 | CLEAN | **Lane B clean control**: fully accurate vendor ACR (honest supports claims on real captioned media) + a verification that found nothing → all 56 claims confirmed, zero invented findings, zero hygiene flags, no vendor-hostile drift |
+| 6 | `transit-portal-drift-self` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | **Lane C drift, self-produced pair**: two RiverCity Metro ACRs one release apart, fingerprints in both. Eight findings exercise all five trend terms (3 resolved, 2 persistent, 1 improving, 1 worsening, 1 new); the two discrimination traps are term-vs-fingerprint (1.3.5 moves up while its finding is still on the ledger → improving, never resolved; 2.4.1 moves down under one fingerprint → worsening, never new); one delta rests on a sample with no prior counterpart (2.4.11 → non-comparable); 50 identical criteria are the FP arm |
+| 6b | `shiftline-drift-foreign` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | **Lane C drift, foreign pair**: two vendor ACRs, no verification and no fingerprints. Term-level deltas only — trend vocabulary is the must-fail, four criteria change term, one claim is withdrawn (1.2.2, absent from the newer document), 51 stay stable, and every change has to be framed as a claim the vendor rewrote rather than a product anyone measured |
 
 Every fixture is a **triplet**: `fixtures/<id>.md` (the engagement record +
 finished evaluation report + finding blocks + catalog frame, sent to the
@@ -132,7 +134,38 @@ completeness, per-row citations, the illegal-claim hygiene flag,
 unverifiable scope reasons, the foreign-ACR trend-vocabulary ban,
 routing-to-bug-reporting, and the same fabrication frames as Lane A.
 Lane B calibration is its own committed harness:
-`evals/results/acr-reporting-phase3/calibrate.py` (5/5 CLEAN pre-rows).
+`evals/results/acr-reporting-phase3/calibrate.py` (6/6 CLEAN pre-rows).
+
+## Lane C scoring (`ollama/score_acr.py`, `lane: c` metadata)
+
+Also a Markdown deliverable — a drift report over two OpenACR documents,
+so no CLI validation applies. Shared by both pair kinds: SC-level term
+deltas where **both** values are compared (word-boundary matched, so
+`partially-supports` never satisfies `supports`), absent-row deltas, and
+the identical-criteria false-positive arm — which only reads table rows
+*keyed* on the criterion, so a prose line listing many criteria and many
+terms cannot trip it.
+
+By pair kind:
+
+- **self** — finding-level trend per `finding_id`, extracted from a table
+  cell that *is* a trend token (prose falls back to the earliest
+  non-negated token on a line naming the finding, because the honest
+  phrasing of the central trap is "improving — the fingerprint persists,
+  not resolved"); the cited **fingerprint value** on each trend row, which
+  is what licenses finding-level trend at all; the non-comparable marking;
+  and the WCAG-EM comparability statement (carried-over / retired / added).
+- **foreign** — the negation-aware trend-vocabulary ban (Lane B's scan,
+  same boundary from the opposite input), the claim-not-evidence framing
+  checked **colocated** in one sentence, and routing to Lane B rather than
+  to `bug-reporting`.
+
+Both kinds carry the anti-overclaim gate (a sample-scope statement plus a
+sentence-local forbidden-pattern scan) and the fabrication frames —
+invented `finding_id`s, invented fingerprints, tokens never in the input.
+Lane C calibration is its own committed harness:
+`evals/results/acr-reporting-phase4/calibrate.py` (10/10 CLEAN pre-rows;
+four instrument defects found and fixed by it before any row).
 
 ## Instrument calibration (2026-08-12, pre-model-rows)
 
@@ -219,6 +252,23 @@ machine-format weakness that failed its Lane A row. Lane B calibration is
 its own committed harness (6/6 CLEAN, incl. the quote-the-rule
 trend-scan probe).
 
+**Lane C rows (Phase 4, 2026-08-13)** — full adjudications, the A/B
+characterization, and the instrument/skill revision log in
+[`evals/results/acr-reporting-phase4/`](../../results/acr-reporting-phase4/):
+skill condition **4/4 must-clean** (f6 + f6b × 2 draws — all eight trends
+right including both term-vs-fingerprint traps, every fingerprint cited,
+the non-comparable delta marked, zero trend vocabulary anywhere in the
+foreign rows, zero fabrications); baselines FAIL draw-stably having
+invented their own trend taxonomy (`Closed / Open and worsening / Open and
+flat / New`) that maps onto the ground truth exactly while matching none
+of the contract's terms — the third consecutive lane where the skill
+carries the machine contract and not the judgment; qwen3.6:35b **PASS at
+every tier**, the suite's first local PASS, with three unscored prose
+errors found by reading (including a self-contradiction about which sample
+was retired) that keep the detector-not-verdict-authority rule intact.
+Lane C calibration is its own committed harness (10/10 CLEAN, having found
+four instrument defects before any row).
+
 Gate-row byproducts, independently reproduced and folded back into the
 skill + reference doc: `validate`/`output` both require `-c` (bare
 `validate -f` accepts nonexistent criteria; bare `output` silently renders
@@ -262,8 +312,10 @@ validation counts for anything.
 
 ## Out of scope (deliberate)
 
-Lane B claims verification (fixtures 4/4b — Phase 3, adjudicated by
-a11y-critic), Lane C drift diffs (Phase 4), acreditor UI automation (the
-editor is a human finish surface; import re-verification is a release-watch
-item, not a per-run eval step), and EN 301 549 non-WCAG clause mapping
-(explicitly out of the promised surface).
+Merging a new audit into an existing hand-maintained ACR (named out
+permanently in the skill's Boundaries), acreditor UI automation (the editor
+is a human finish surface; import re-verification is a release-watch item,
+not a per-run eval step), and EN 301 549 non-WCAG clause mapping
+(explicitly out of the promised surface). All three lanes are now in the
+suite: A (fixtures 1/2/3/5), B (4/4b, adjudicated by a11y-critic), and C
+(6/6b).

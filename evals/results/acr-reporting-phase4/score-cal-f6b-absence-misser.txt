@@ -1,0 +1,15 @@
+Fixture: shiftline-drift-foreign (lane C)
+Response length: 1828 chars
+Pair kind: foreign
+
+SC deltas: 4/4 reported with both terms
+Unchanged-criteria FP arm: 0 dramatized of 10 checked
+  finding_id tokens: 0 known, 1 invented
+
+Must misses: 1
+  - 1.2.2: claim present in the prior document and absent from the current one is not reported as a delta
+Fabrications: 1
+  - invented finding_id: a11y_dashboard_contrast
+Should misses: 0
+
+Status: FAIL

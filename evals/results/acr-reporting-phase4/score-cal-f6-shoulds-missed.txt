@@ -1,0 +1,20 @@
+Fixture: transit-portal-drift-self (lane C)
+Response length: 3340 chars
+Pair kind: self
+
+SC deltas: 6/6 reported with both terms
+Unchanged-criteria FP arm: 0 dramatized of 10 checked
+
+Finding trend: 8/8 as expected
+  finding_id tokens: 8 known, 0 invented
+  fingerprint tokens: 8 known, 0 invented
+
+Must misses: 0
+Fabrications: 0
+Should misses: 4
+  - summary states no count matching /(?i)(3\W{0,4}resolved|resolved\W{0,6}3|three\W{0,4}resolved)/
+  - summary states no count matching /(?i)(1\W{0,4}worsening|worsening\W{0,6}1|one\W{0,4}worsening)/
+  - handoff misses all of ['a11y-critic', 'critic', 'adjudicat']
+  - handoff misses all of ['human', 'owner', 'review']
+
+Status: WARN

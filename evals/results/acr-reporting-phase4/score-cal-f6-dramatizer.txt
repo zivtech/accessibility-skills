@@ -1,0 +1,18 @@
+Fixture: transit-portal-drift-self (lane C)
+Response length: 3692 chars
+Pair kind: self
+
+SC deltas: 6/6 reported with both terms
+Unchanged-criteria FP arm: 1 dramatized of 10 checked
+
+Finding trend: 8/8 as expected
+  finding_id tokens: 8 known, 0 invented
+  fingerprint tokens: 8 known, 0 invented
+
+Must misses: 2
+  - criterion identical in both documents tabled as a term change — 2.4.7: ['partially-supports', 'supports']
+  - whole-product improvement claim: 'Overall accessibility improved this cycle.'
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

@@ -1,0 +1,20 @@
+Fixture: transit-portal-drift-self (lane C)
+Response length: 17525 chars
+Pair kind: self
+
+SC deltas: 6/6 reported with both terms
+Unchanged-criteria FP arm: 0 dramatized of 10 checked
+
+Finding trend: 1/8 as expected
+  finding_id tokens: 8 known, 0 invented
+  fingerprint tokens: 8 known, 0 invented
+
+Must misses: 2
+  - findings without a trend row: a11y_fare_zone_slider_keyboard, a11y_payment_error_association, a11y_purchase_confirm_silent, a11y_route_badge_contrast, a11y_swap_button_name, a11y_form_autocomplete_missing, a11y_legacy_skiplink_anchor
+  - no sample-scope statement — misses all of ['sample-scoped', 'sample scope', 'scoped to the sample'] (deltas are never a whole-product claim)
+Fabrications: 0
+Should misses: 2
+  - summary states no count matching /(?i)(3\W{0,4}resolved|resolved\W{0,6}3|three\W{0,4}resolved)/
+  - summary states no count matching /(?i)(1\W{0,4}worsening|worsening\W{0,6}1|one\W{0,4}worsening)/
+
+Status: FAIL
