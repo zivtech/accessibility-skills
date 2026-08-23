@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Accessibility Skills"
+  short_description: "Apply verified maintenance safeguards in this repo"
+  default_prompt: "Use $maintain-accessibility-skills for safe repository maintenance."

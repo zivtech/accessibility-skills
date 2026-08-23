@@ -55,6 +55,7 @@ The three audit dimensions are orthogonal:
 | a11y-role-audit | role auditor | `/a11y-role-audit` |
 | bug-reporting | reporter | `/bug-reporting` |
 | acr-reporting | ACR serializer | `/acr-reporting` |
+| maintain-accessibility-skills | repository maintainer | `/maintain-accessibility-skills` |
 
 `bug-reporting` is a companion skill (contributed by @mgifford, derived from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide): it converts findings from a11y-test runs or a11y-critic reviews into reproducible bug reports with required fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency). It sits after testing/critique in the lifecycle — findings go in, filable issues come out. Analysis-only; eval lane added 2026-07-17 (`evals/suites/bug-reporting/`: 7 fixtures — axe-core/pa11y/keyboard-a11y-tester/manual-prose inputs plus the declared-508 `axe-button-name-federal` added 2026-08-12 — rule-based scorer `ollama/score_bugreport.py` with recomputed stable-ID, fabrication, and manifest-validated `baseline_test` checks; the FILED baseline value is compared, never mere mention — first declared-508 rows 2026-08-12: qwen3.6:35b filed `5.A-ControlName` correctly but FAILed on its documented value-fidelity classes; the qwen3:32b control filed the wrong-but-valid near neighbor `5.C-ControlState` for a NAME defect, the filed-value check's first live catch). First model rows landed in the July 2026 funnel (`evals/results/new-local-models-2026-07/`): qwen3.6:35b 1 PASS / 1 WARN / 4 FAIL — report structure perfect, every failure is value fidelity (dropped exact selectors, 0 recomputed stable IDs verified, two fabrications), the origin of the never-route-generation-without-a-value-check caveat above; laguna-s 0/6 with fabrications on 5, the funnel's worst data fidelity.
 
@@ -100,6 +101,7 @@ See `.claude/teams/a11y-workflow.md` for full team definition and escalation sig
 
 ## Working In This Repo
 
+- Use `/maintain-accessibility-skills` for tracked-file hygiene gates, history-rewrite verification, mixed-commit surgery, and recovery of commits made on the local default branch.
 - Treat this as a prompt-only repository.
 - Keep skill files installable from the repo root.
 - Preserve the companion relationship between planner, critic, and perspective-audit.

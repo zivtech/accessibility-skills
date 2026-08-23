@@ -6,6 +6,7 @@
 | a11y-critic | critic | `/a11y-critic` | a11y-planner, a11y-test |
 | a11y-test | tester | `/a11y-test` | a11y-critic |
 | perspective-audit | auditor | `/perspective-audit` | a11y-planner, a11y-critic |
+| maintain-accessibility-skills | maintainer | `/maintain-accessibility-skills` | — |
 
 ## Lifecycle
 
@@ -19,7 +20,7 @@ plan → critique plan → [perspective audit] → revise → implement → test
 - `a11y-critic` reviews the plan for gaps (step 2) and the implementation after testing (step 6).
 - `perspective-audit` provides deep review from 7 access perspectives when escalated by the planner or critic (steps 2b and 6b).
 - `a11y-test` runs automated Playwright keyboard tests and axe-core scans (step 5).
-- All four skills are shipped from this repository.
+- All four lifecycle skills are shipped from this repository.
 
 ## Benchmark Team Agents
 
