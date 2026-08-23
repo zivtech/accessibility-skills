@@ -1,6 +1,6 @@
 # New Local Model Benchmark Plan (2026-07-28)
 
-**Status**: EXECUTED 2026-07-28/29 — all eight candidates through the funnel (Priority 1 full, Priority 2 screened; laguna unblocked via the ollama 0.32.5 upgrade). Receipts and adjudications: `evals/results/new-local-models-2026-07/`; summary rows: `ollama/BENCHMARK.md` (July 2026 funnel section); process record: issue #7. Outcome: qwen3.6:35b is the new detector recommendation; the verdict-authority promotion bar failed for every candidate and the same-day incumbent control. Landscape reopen-triggers are monitored by a weekly cloud routine (local-model-watch-weekly).
+**Status**: EXECUTED 2026-07-28/29 — all eight candidates through the funnel (Priority 1 full, Priority 2 screened; laguna unblocked via the ollama 0.32.5 upgrade). Receipts and adjudications: `evals/results/new-local-models-2026-07/`; summary rows: `ollama/BENCHMARK.md` (July 2026 funnel section); process record: issue #7. Outcome: qwen3.6:35b is the new detector recommendation; the verdict-authority promotion bar failed for every candidate and the same-day incumbent control. Landscape reopen-triggers are monitored by a weekly cloud routine (local-model-watch-weekly). **Reopened once, 2026-08-23** (Qwen 3.8 open weights): `qwen3.8:27b` STOP at Stage 1 — `evals/results/new-local-models-2026-08/`.
 **Hardware**: MacBook Pro M5 Max, 128 GB unified memory, ~324 GB free disk.
 **Scope**: analysis-only skills (critic, planner, perspective-audit, bug-reporting) via the
 `ollama/` wrapper. a11y-test is out of scope (not portable by design).

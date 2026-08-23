@@ -353,6 +353,9 @@ CRITIC_CTX = {
     "laguna-xs-2.1": 32768,
     "gpt-oss:120b": 32768,
     "ornith:35b": 32768,
+    # qwen3.8 (thinking-by-default, same lineage/tokenizer class as qwen3.6;
+    # num_predict=1 probe recorded in the 2026-08 funnel README).
+    "qwen3.8:27b": 32768,
 }
 CRITIC_CTX_DEFAULT = 16384
 
@@ -384,12 +387,15 @@ def run_ollama(model, fixture_id, system_prompt):
         headers={"Content-Type": "application/json"},
     )
     response_text = ""
+    thinking_chars = 0  # separate reasoning channel (qwen3.6+/gemma4 on ollama >=0.31)
     final_chunk = {}
     with urllib.request.urlopen(req, timeout=300) as resp:
         for line in resp:
             chunk = json.loads(line)
             if chunk.get("response"):
                 response_text += chunk["response"]
+            if chunk.get("thinking"):
+                thinking_chars += len(chunk["thinking"])
             if chunk.get("done"):
                 final_chunk = chunk
                 break
@@ -405,6 +411,12 @@ def run_ollama(model, fixture_id, system_prompt):
             "fixture_id": fixture_id,
             "elapsed_seconds": round(elapsed, 1),
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            # Hardening (2026-08-23): a thinking model that clips at num_ctx
+            # returns done_reason=length with an empty scored response —
+            # without these two fields the artifact is indistinguishable
+            # from a genuine empty answer (July funnel, finding 2).
+            "done_reason": final_chunk.get("done_reason"),
+            "thinking_chars": thinking_chars,
         },
     }
 
@@ -654,6 +666,7 @@ PERSPECTIVE_CTX = {
     # qwen3.6: thinking-by-default — reasoning tokens share the window (2026-07-28)
     "qwen3.6:27b": 32768,
     "qwen3.6:35b": 32768,
+    "qwen3.8:27b": 32768,
 }
 PERSPECTIVE_CTX_DEFAULT = 16384
 
@@ -685,12 +698,15 @@ def run_perspective(model, fixture_id, system_prompt):
         headers={"Content-Type": "application/json"},
     )
     response_text = ""
+    thinking_chars = 0  # separate reasoning channel (qwen3.6+/gemma4 on ollama >=0.31)
     final_chunk = {}
     with urllib.request.urlopen(req, timeout=300) as resp:
         for line in resp:
             chunk = json.loads(line)
             if chunk.get("response"):
                 response_text += chunk["response"]
+            if chunk.get("thinking"):
+                thinking_chars += len(chunk["thinking"])
             if chunk.get("done"):
                 final_chunk = chunk
                 break
@@ -707,6 +723,8 @@ def run_perspective(model, fixture_id, system_prompt):
             "skill": "perspective-audit",
             "elapsed_seconds": round(elapsed, 1),
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "done_reason": final_chunk.get("done_reason"),
+            "thinking_chars": thinking_chars,
         },
     }
 

@@ -21,6 +21,16 @@ Eight candidates through the staged funnel of `docs/plans/2026-07-28-new-local-m
 
 Cross-cutting findings: the critic prompt sits at the 16K-token boundary for every current-gen tokenizer (per-model `CRITIC_CTX` map added); qwen3.6 emits reasoning in a separate `thinking` field (scored text clean by construction); laguna requires ollama ≥0.32.x; **no local verdict authority exists at ≤128 GB as of July 2026** (Stage-3 confirmed, controlled).
 
+## August 2026 Reopen: Qwen 3.8 (2026-08-23, ollama 0.32.15, dedicated :11435)
+
+First firing of the funnel's reopen-triggers (Qwen 3.8 open weights — 27B only, thinking-by-default, MTP default tag). Full receipts, probes, and the stall re-draw: `evals/results/new-local-models-2026-08/`. Same Stage 0/1 protocol and gates as July; corpus = `feat/verification-evidence-contract` (main + one inert conditional critic-prompt bullet, disclosed).
+
+| Model | Outcome | One-line record |
+|---|---|---|
+| qwen3.8:27b | **stopped (Stage 1, zero-incompletions gate)** | Champion-equal screening detection (**15/15** content-adjudicated, matching qwen3.6:35b; scorer 14/15) and the best 27B CLEAN calibration recorded (1 judged-wrong verdict — the family's stable interactive-dropdown blind spot — vs qwen3.6:27b's 3/4), but **one stochastic "/think stall"** (38.8K thinking chars → clean `stop`, 0-char response; byte-identical re-draw recovered with a zero-finding correct PASS) violates the gate that stopped ornith, plus ADVERSARIAL severity overshoot (REJECT where REVISE is the ceiling) and ~**12 tok/s** on the default MTP tag (draft acceptance 0.61) — ~5× slower than the champion. Detector potential is real; reliability and calibration are not there. Watch: a ≥32B sibling, MTP/termination changes in ollama minors, `draft_num_predict 0` speed probe. |
+
+Cross-cutting: the 3.8 tokenizer is the first current-gen one to fit the critic prompt under 16,384 (15,609 — kept at 32K anyway; thinking shares the window), and the July hardening gap is closed — the streaming runners now record `done_reason` + `thinking_chars`, which is what made the stall classifiable (thought-then-silence at `stop`, not a context clip) instead of a mystery empty file.
+
 ## Baseline Families
 
 This file began as an Ollama benchmark log and now serves as the cross-model benchmark record. Keep Claude, Codex/OpenAI, Gemini, and local models as peer baseline families when result artifacts exist.

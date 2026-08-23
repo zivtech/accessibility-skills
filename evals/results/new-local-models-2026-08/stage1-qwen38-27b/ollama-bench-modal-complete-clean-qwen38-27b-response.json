@@ -1,0 +1,14 @@
+{
+  "response": "",
+  "done": true,
+  "total_duration": 686297697750,
+  "eval_count": 9778,
+  "_benchmark": {
+    "model": "qwen3.8:27b",
+    "fixture_id": "modal-complete-clean",
+    "elapsed_seconds": 686.4,
+    "timestamp": "2026-08-23T16:31:39",
+    "done_reason": "stop",
+    "thinking_chars": 38824
+  }
+}

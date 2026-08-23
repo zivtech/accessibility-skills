@@ -1,0 +1,11 @@
+{
+  "probe": "critic-prompt-token-count",
+  "model": "qwen3.8:27b",
+  "fixture": "form-validation-missing-aria-describedby",
+  "elapsed_s": 43.0,
+  "prompt_eval_count": 15609,
+  "done_reason": "length",
+  "exceeds_16384": false,
+  "critic_ctx_in_runner": 32768,
+  "prompt_chars": 64793
+}
