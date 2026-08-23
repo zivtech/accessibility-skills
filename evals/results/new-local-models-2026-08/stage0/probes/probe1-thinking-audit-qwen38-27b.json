@@ -1,0 +1,12 @@
+{
+  "probe": "thinking-token-audit",
+  "model": "qwen3.8:27b",
+  "elapsed_s": 3.3,
+  "response": "OK",
+  "response_has_inline_think_tag": false,
+  "thinking_field_chars": 105,
+  "thinking_field_head": "The user wants me to reply with the single word \"OK\" and nothing else. This is a straightforward request.",
+  "done_reason": "stop",
+  "eval_count": 28,
+  "prompt_eval_count": 20
+}
