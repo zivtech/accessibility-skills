@@ -130,6 +130,7 @@ PLANNER_FIXTURES = [
     "test-hybrid-product-audit",  # 26th fixture, de-hinted (step 11a, 2026-08-01) — no model rows yet
     "test-modal",
     "test-multi-page-audit",
+    "test-remediation-mode",  # 29th fixture, de-hinted remediation-scope (Tier-2, 2026-09-01) — no model rows yet
     "test-simple-button",
     "test-standards-subscription-audit",  # 28th fixture, de-hinted WCAG 2.4.5 audit-scope probe (2026-08-14) — no model rows yet
     "visual-animated-transition",
