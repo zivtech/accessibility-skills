@@ -223,6 +223,7 @@ CLEAN_FIXTURES = [
     "search-results-dynamic-clean",
     "trail-conditions-filter",
     "pool-lesson-registration",
+    "composite-descendant-clean",  # Tier-2 R-29 (L-017), no model rows yet
 ]
 FLAWED_FIXTURES = [
     "tabs-incomplete-aria-selected",

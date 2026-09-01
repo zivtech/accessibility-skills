@@ -1,0 +1,79 @@
+fixture_id: composite-descendant-clean
+name: Toolbar Composite with Non-Tabbable Descendants (CLEAN Implementation)
+description: A correct WAI-ARIA APG Toolbar with roving tabindex; descendants are reached via arrow keys, not Tab. Tests that the critic does not flag non-tabbable descendants as unreachable.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical a11y issues present. The toolbar is a correct roving-tabindex composite; the skill should confirm a clean bill of health."
+
+  - category: should_find
+    count: 0
+    notes: "No major issues."
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: aria-pressed is hard-coded false; if these were real toggle buttons it should reflect toggle state. As momentary command buttons, aria-pressed could simply be omitted."
+    severity: ENHANCEMENT
+    evidence: "fixture: aria-pressed={false} on every button"
+
+  - category: false_positive_trap
+    count: 1
+    description: "Three of four buttons carry tabindex='-1' (roving tabindex). A reachability check counting only Tab stops sees one stop and concludes the other three buttons are unreachable — they are reached via the toolbar's documented ArrowLeft/ArrowRight/Home/End model."
+    severity: NONE
+    notes: "The core L-017 trap: a non-tabbable descendant reached via a composite widget's documented internal keys is NOT a keyboard-operability failure. A11y-critic must recognize the APG Toolbar pattern and not flag it."
+
+components:
+  - name: Toolbar container
+    ARIA_role: toolbar
+    ARIA_attributes:
+      - aria-label: Text formatting
+    semantic_element: div
+
+  - name: Buttons (bold/italic/underline/link)
+    ARIA_attributes:
+      - tabindex: 0 on active, -1 on others (roving)
+      - aria-pressed: boolean
+    semantic_element: button
+
+patterns_used:
+  - WAI-ARIA: Toolbar Pattern
+  - Focus Management: Roving tabindex (single Tab stop, arrow-key navigation)
+  - Keyboard: ArrowLeft/ArrowRight/Home/End for navigation, Enter/Space to activate
+
+wcag_criteria:
+  - "2.1.1 Keyboard (all buttons reachable and operable via the documented key model)"
+  - "2.4.3 Focus Order (single logical Tab stop; arrow keys move within)"
+  - "4.1.2 Name, Role, Value (role=toolbar, accessible name, button roles)"
+
+multi_perspective_coverage:
+  - screen_reader: "Toolbar announced with its label; each button announces role and name. Arrow-key movement announced as focus changes."
+  - keyboard: "Fully operable: Tab in, arrows to move, Enter/Space to activate, Tab out. Non-tabbable buttons are reachable via arrows — not a trap and not unreachable."
+  - low_vision: "Visible 3px focus outline on the focused button; adequate padding for target size."
+  - cognitive: "One consistent navigation model matching the platform toolbar convention."
+
+notes: |
+  This fixture is a **CLEAN baseline** for the composite-widget focus-owner /
+  descendant contract (L-017). It exists to catch the specific false positive
+  a Tab-stop-counting reachability sweep produces: reporting roving-tabindex
+  descendants as "unreachable."
+
+  Expected verdict: ACCEPT (or ACCEPT-WITH-RESERVATIONS for the aria-pressed
+  enhancement).
+
+  False positive trap: tabindex="-1" on the inactive buttons is correct roving
+  tabindex, not a broken tab order and not a keyboard trap. The descendants are
+  reachable via ArrowLeft/ArrowRight/Home/End per the APG Toolbar pattern.
+
+  Reproduction-first: this fixture lands before the a11y-critic composite-widget
+  clause (R-26) — it is the second reproduction that licenses the single-source
+  L-017 skill edit.
+
+  Benchmark bookkeeping: added 2026-09-01 (Tier-2, R-29). NO model rows yet; do
+  not fold into historical a11y-critic aggregates — it raises the CLEAN-fixture
+  count.

@@ -237,6 +237,7 @@ Copy this protocol into the subagent prompt:
     - Are ARIA values valid? (aria-expanded is "true"/"false", not "yes"/"no"; aria-current is "page"/"step"/"location"/"date"/"time", not "true")
     - Is the pattern COMPLETE or partial? Many implementations do 80% of a pattern (e.g., aria-expanded toggles but focus doesn't restore).
     - For composite widgets (tabs, menus, listboxes), is roving tabindex implemented (tabindex="0" on active item, tabindex="-1" on others)?
+    - A descendant that is not itself in the Tab order but is reachable via the widget's documented arrow/Home/End keys is NOT unreachable. A keyboard-reachability check that counts only Tab stops will wrongly flag correct roving-tabindex widgets (grids, trees, menus, toolbars, listboxes) as broken — verify reachability through the widget's documented key model, not the Tab sequence alone, before reporting a descendant unreachable.
     - For disclosure widgets, does aria-controls reference the correct panel id?
     - For modal dialogs, does the dialog have role="dialog" or role="alertdialog"? Is aria-modal="true"?
     - Common trap: custom components that look accessible (ARIA present) but break screen reader interaction models (missing roving tabindex, aria-expanded not synchronized, controls not referenced).
