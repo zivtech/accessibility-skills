@@ -73,3 +73,7 @@ notes: |
   Reproduction-first: this fixture lands before the a11y-critic composite-widget
   clause (R-26) — it is the second reproduction that licenses the single-source
   L-017 skill edit.
+
+  Benchmark bookkeeping: added 2026-09-01 (Tier-2, R-29). NO model rows yet; do
+  not fold into historical a11y-critic aggregates — it raises the CLEAN-fixture
+  count.
