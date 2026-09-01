@@ -92,6 +92,12 @@ Retest evidence is admissible for the operation it claims only when it survives 
 - **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
 - **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
 
+### PASS partition: rule-tier vs chain-tier
+
+Not every PASS carries the same evidence. A **rule-tier** pass verified the operation-specific predicate the row is about — this exact control, this exact expected result. A **chain-tier** pass rode a generic keyboard-chain success: the page was navigable and nothing obviously broke, with no operation-specific rule behind it. Counting the two together overstates coverage.
+
+Partition passes into the two tiers and make the ratio visible in the evidence artifact itself, not in prose. A completeness claim reporting a single PASS count — without showing how many rested on an operation-specific rule versus a generic chain — has not established what it claims. This is a self-check on our own output quality, not a statement about the product: a chain-tier-heavy PASS set is a signal to go back and add operation-specific predicates, never a reason to report a high pass rate.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
