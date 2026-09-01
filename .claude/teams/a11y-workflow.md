@@ -26,6 +26,10 @@ The orchestrator is a **skill** (not an agent) that runs in the main session. Th
 - keyboard-a11y-tester artifacts (trace/findings/census, > 2K): passed as file paths; critic Phase 0 reads them with its calibration rules. The main session drives the serve/step loop itself (CLI, not an agent) — depth-1 holds.
 - virtual-screen-reader results (spoken-phrase log slices, < 2K): injected directly into the critic prompt with tool version + test file path; critic Phase 0 carries the consumption rules.
 
+### Skill-Improvement Capture
+
+A passive collection surface (a side file nobody is required to populate) is not a mechanism. Capture is wired into the gate exits that already run: every "User revises/implements" or "User fixes" point in the Full Lifecycle below, and every Step-by-Step dispatch's own return, states one line first — a named candidate (source step + recurring gap) or an explicit "none observed." Not a separate ledger to maintain between runs.
+
 ### Escalation Signals (Benchmark-Derived)
 
 These signals trigger promotion to a higher tier (in `--triage` mode) or perspective-audit invocation:
