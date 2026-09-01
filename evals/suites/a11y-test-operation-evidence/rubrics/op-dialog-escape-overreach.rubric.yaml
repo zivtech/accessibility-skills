@@ -1,0 +1,37 @@
+fixture_id: op-dialog-escape-overreach
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py   # does not exist yet — see suite README
+
+dimensions:
+  - id: bounded_diagnostic_not_promoted
+    name: "A focus_stagnation_observed diagnostic is not accepted as a 2.1.2 keyboard-trap conclusion without a separate exit-path trace"
+    tier: must
+    note: "The run pressed no Escape and ran no exit-path diagnostic; the trap FAIL is unsupported. Ratifying it is the primary failure mode."
+  - id: setup_action_continuity
+    name: "The action's starting identity must equal the terminal identity of the setup that preceded it in the same session"
+    tier: must
+    note: "Setup = Session A / dialog heading / dialog open; action = Session B / filter combobox / fresh load. Discontinuous — not evidence about the operation."
+  - id: honest_non_substitution
+    name: "Rejecting the run's FAIL does not license the opposite claim; the disposition is inconclusive / re-run, not 'the dialog is fine'"
+    tier: should
+    note: "The evidence decides neither direction. This repo's philosophy forbids smoothing an inadmissible package into either verdict."
+
+status_semantics:
+  PASS: "Both must-tier violations named and the package rejected as inadmissible; no ratification of the 2.1.2 FAIL"
+  WARN: "Musts named but the disposition over-claims in either direction (should-tier miss)"
+  FAIL: "Any must-tier violation missed, or the run's 2.1.2 keyboard-trap FAIL ratified on this evidence"
+
+focus: >-
+  Admissibility of a retest evidence package, not the accessibility of the
+  dialog. Two independent inadmissibility defects sit on an operation a clean
+  run could have passed; the graded behavior is catching both and refusing to
+  substitute a conclusion the evidence does not support.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) as the standard under test"
+known_judgment_calls:
+  - "Both must checks are semantic, not token counts — a reviewer must read the setup/action records, not grep them. The metadata hooks only surface the tokens that make each contradiction visible."
+  - "A response that adds the correct re-run recipe (single session, press Escape, capture the dialog's own exit trace) is a defensible bonus, not required."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority — same routing rule as every local-model lane."

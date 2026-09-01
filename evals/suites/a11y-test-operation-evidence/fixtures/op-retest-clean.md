@@ -1,0 +1,39 @@
+# Operation-evidence package — OP-CLOSE + OP-EMPTY + OP-OPTION (well-formed)
+
+You are reviewing the evidence package a retest run produced for three planned
+operations. Decide whether the package is admissible as evidence for the claims
+it makes, per the operation-evidence rules. Judge the evidence, not the
+underlying component.
+
+## Evidence package as submitted
+
+**OP-CLOSE — dismiss the Details dialog with Escape (claim: PASS).**
+- One session (`load+settle` ok): opened the Details dialog from the
+  results-table row action; terminal setup focus = the dialog's initial focus
+  (its heading). From that same focus, in the same session, pressed `Escape`.
+  Observed: dialog dismissed, focus returned to the row-action trigger. The
+  action's `before` identity equals the setup's terminal identity.
+- A `focus_stagnation_observed` note from an earlier probe is retained as a
+  **bounded collector observation only** — it is explicitly not offered as a
+  2.1.2 conclusion, and the Escape exit-path trace above is what supports the
+  PASS.
+
+**OP-EMPTY — empty-state announcement (claim: UNTESTED, unchanged).**
+- The no-results state did not occur naturally under the approved input set,
+  and no synthetic induction was used. OP-EMPTY is left **UNTESTED**, with the
+  admissible path recorded: revisit when the state arises under an approved
+  input.
+
+**OP-OPTION — nested option reachable and state exposed (claim: PASS).**
+- The option is a descendant of the filter combobox, a composite. Reached it
+  through the composite's reviewed, separately frozen owner/descendant mapping:
+  `Tab` to the combobox owner, then `ArrowDown` to the option (a real keypress
+  trace is attached). Its `aria-selected` transition was observed *after* the
+  activating key, and the DOM/AX snapshot is retained as supporting context
+  **bound to that keypress** and on the source allowlist — not as standalone
+  reachability proof.
+
+## What the run asserts
+
+OP-CLOSE PASS (exit-path trace), OP-OPTION PASS (composite owner model + bound
+observation), OP-EMPTY remains UNTESTED (no natural occurrence).

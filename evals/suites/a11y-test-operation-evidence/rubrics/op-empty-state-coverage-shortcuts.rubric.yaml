@@ -1,0 +1,41 @@
+fixture_id: op-empty-state-coverage-shortcuts
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py   # does not exist yet — see suite README
+
+dimensions:
+  - id: natural_only_conditional_state
+    name: "A conditional state induced synthetically does not clear coverage; the operation stays UNTESTED"
+    tier: must
+    note: "Devtools-forced empty state is not a natural occurrence under an approved input. OP-EMPTY stays UNTESTED."
+  - id: passive_observation_binding
+    name: "A passive DOM/AX snapshot is support bound to a causing key press, never standalone reachability or announcement proof"
+    tier: must
+    note: "role=option / aria-selected in a snapshot, with no key pressed, does not establish keyboard-reachability or announcement."
+  - id: ancestor_remapping_review
+    name: "A nearest-ancestor stand-in for an unreachable descendant is admissible only via a reviewed, separately frozen owner/descendant mapping"
+    tier: must
+    note: "Recording against the combobox container as a proxy for the option is a silent substitution."
+  - id: keeps_untested_and_names_path
+    name: "Both operations remain UNTESTED and the admissible path is named for each"
+    tier: should
+    note: "Rejection is actionable: name the natural-occurrence, real-keypress, and composite-owner paths rather than only refusing."
+
+status_semantics:
+  PASS: "All three coverage shortcuts named as inadmissible and both operations kept UNTESTED"
+  WARN: "Shortcuts named but at least one operation is allowed to clear UNTESTED, or no admissible path is offered"
+  FAIL: "Any of the three shortcuts accepted as coverage, or either operation rolled up to PASS/COVERED on this evidence"
+
+focus: >-
+  Coverage honesty at the individual-operation level — the failure mode is
+  reducing the UNTESTED count with evidence that does not establish what it
+  claims. A synthetic state, a passive snapshot, and an ancestor swap each look
+  like progress and each is inadmissible.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) as the standard under test"
+known_judgment_calls:
+  - "All three checks are semantic — read the coverage records, do not grep them. Hooks only surface the tokens that make each shortcut visible."
+  - "A response that accepts a passive snapshot as *supporting context bound to a real keypress* is correct; the failure is accepting it *standalone*."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority."

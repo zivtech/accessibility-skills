@@ -62,6 +62,12 @@ A detector PASS means only "no detection fired for this route, state, viewport, 
 
 Related discipline, restated for this boundary: never promote scanner output straight to a WCAG or Section 508 verdict; never treat count-parity between two runs as completeness; never collapse `cantTell` / informational / skipped / blocked / untested into pass or fail — each stays a distinguishable, visible state (see the coverage-ledger vocabulary in `acr-reporting`'s untested gate for the report-side version of the same rule).
 
+### Evidence retention (append-only)
+
+Never overwrite an evidence run. Failed, intermediate, and superseded captures are retained beside the final result under names that state *why* they are not final (for example `-raw-live-capture`, `-script-error`, `-modifier-mismatch`, `-pre-final-adjudication`). The same discipline extends to generated deliverables: every non-final revision is kept beside the final one with an append-only supersession log, and each non-final revision is explicitly marked not client-facing and not a conformance, certification, publication, or acceptance artifact.
+
+Retention is not bookkeeping for its own sake — it is what makes silent errors findable. A numeric error in an otherwise structurally valid generated deliverable — a formula range that under-counts, a mapping that drops rows — passes schema validation and surfaces only when a later revision can be diffed against the one that was wrong. Overwrite the run and that diff is gone.
+
 ## Retest classification
 
 Two clauses that govern when a retest result is trustworthy.
@@ -81,6 +87,22 @@ A retest campaign is not complete when the runner exits — it is complete when 
 - Support a resumption contract: an interrupted campaign continues from its unresolved set on the next run rather than restarting from zero.
 
 This is a contract for the evidence a retest run must produce, not a specification for a particular runner implementation — see `docs/a11y-evaluation-report-contract.md` for the report-level half of the same completeness rule.
+
+### Operation-evidence admissibility
+
+Retest evidence is admissible for the operation it claims only when it survives five rules. These govern the *evidence package* for a single operation — a retest hitting a specific target, a keyboard trace, a passive DOM/AX observation — not the accessibility of the target itself. The `evals/suites/a11y-test-operation-evidence` lane exercises each with a clean control.
+
+- **A bounded diagnostic is not a conclusion.** A `focus_stagnation_observed`-class note — focus not advancing on a keyboard probe — is a bounded collector observation, not a WCAG 2.1.2 keyboard-trap finding. Promoting it to a trap conclusion requires a separate trace that attempts the documented exit (press Escape or the exit keys and show focus cannot leave). Absent that trace the operation stays a collector block; stagnation alone is neither a trap nor a conformance failure.
+- **Setup and action must be continuous.** An action's evidence is admissible only if its starting (`before`) identity equals the terminal identity of the setup that immediately preceded it in the *same session*. A setup in one session and an action from a different starting locus in another do not compose into evidence about the planned operation.
+- **Conditional states are natural-only.** A state that appears only under a condition (an empty result, an error) stays `UNTESTED` until it occurs naturally under an approved input. Inducing it synthetically — editing a response, forcing the state — does not clear coverage; it shows the message renders, not that the state is reachable in use.
+- **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
+- **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
+
+### PASS partition: rule-tier vs chain-tier
+
+Not every PASS carries the same evidence. A **rule-tier** pass verified the operation-specific predicate the row is about — this exact control, this exact expected result. A **chain-tier** pass rode a generic keyboard-chain success: the page was navigable and nothing obviously broke, with no operation-specific rule behind it. Counting the two together overstates coverage.
+
+Partition passes into the two tiers and make the ratio visible in the evidence artifact itself, not in prose. A completeness claim reporting a single PASS count — without showing how many rested on an operation-specific rule versus a generic chain — has not established what it claims. This is a self-check on our own output quality, not a statement about the product: a chain-tier-heavy PASS set is a signal to go back and add operation-specific predicates, never a reason to report a high pass rate.
 
 ## Interactive reconnaissance with agent-browser
 
