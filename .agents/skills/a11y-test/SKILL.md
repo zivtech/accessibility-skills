@@ -62,6 +62,12 @@ A detector PASS means only "no detection fired for this route, state, viewport, 
 
 Related discipline, restated for this boundary: never promote scanner output straight to a WCAG or Section 508 verdict; never treat count-parity between two runs as completeness; never collapse `cantTell` / informational / skipped / blocked / untested into pass or fail — each stays a distinguishable, visible state (see the coverage-ledger vocabulary in `acr-reporting`'s untested gate for the report-side version of the same rule).
 
+### Evidence retention (append-only)
+
+Never overwrite an evidence run. Failed, intermediate, and superseded captures are retained beside the final result under names that state *why* they are not final (for example `-raw-live-capture`, `-script-error`, `-modifier-mismatch`, `-pre-final-adjudication`). The same discipline extends to generated deliverables: every non-final revision is kept beside the final one with an append-only supersession log, and each non-final revision is explicitly marked not client-facing and not a conformance, certification, publication, or acceptance artifact.
+
+Retention is not bookkeeping for its own sake — it is what makes silent errors findable. A numeric error in an otherwise structurally valid generated deliverable — a formula range that under-counts, a mapping that drops rows — passes schema validation and surfaces only when a later revision can be diffed against the one that was wrong. Overwrite the run and that diff is gone.
+
 ## Retest classification
 
 Two clauses that govern when a retest result is trustworthy.
