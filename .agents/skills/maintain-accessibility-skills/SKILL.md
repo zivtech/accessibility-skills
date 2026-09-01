@@ -62,3 +62,16 @@ A work item — a fix closed, an operation retested, a check passed — advances
 3. Run it as the gate the state transition depends on, not as an after-the-fact report; an item that cannot produce the artifacts does not advance.
 
 For remediation specifically, the artifacts are the fix-closure record's fields (`docs/a11y-fix-closure-contract.md`): a "fixed" claim without the class-matched interaction evidence that record requires does not close.
+
+## Bar for promoting an engagement pattern to a skill rule
+
+An observation from one engagement becomes a general skill rule only when it clears every clause below. This bar sits **beside** any capture program's gate/score framework, not instead of it, and the two-reproduction clause is binding.
+
+1. **Two independent reproductions** — the pattern seen on two distinct surfaces, components, or engagements. A single-source claim drives a doc edit at most, never a skill-behavior change, until a fixture reproduces the behavior — the fixture is the second reproduction, so it lands before the skill text.
+2. **Written negative space** — state what the rule does NOT cover with the same specificity as what it does.
+3. **A BUG/CLEAN fixture pair**, or a named manual protocol where a fixture is not possible — the rule must be falsifiable and must leave clean cases unflagged.
+4. **Mirrored skill edits** — every surface (skill, `.agents` mirror, and any embedded agent def) changed in the same commit, with `check_mirrors.py --strict` green.
+5. **Targeted checks run and shown**, not asserted.
+6. **Explicit user approval and a critic acceptance pass** before the rule is called promoted.
+
+Do not let a favorable score override a failed clause: a high generality score is not a substitute for the second reproduction, and a single-source claim never ships skill text on score alone.
