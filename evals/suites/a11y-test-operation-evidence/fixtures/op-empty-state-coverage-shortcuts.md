@@ -1,0 +1,42 @@
+# Operation-evidence package — OP-EMPTY + OP-OPTION (coverage claims)
+
+You are reviewing the evidence package a retest run produced for two planned
+operations that were previously `UNTESTED`. Decide whether the package is
+admissible as evidence for the coverage it claims, per the operation-evidence
+rules. Judge the evidence, not the underlying component.
+
+## Operations under retest
+
+- **OP-EMPTY** — target: the results table's "no results" empty-state message.
+  Planned check: when the query returns nothing, the empty-state message is
+  announced to assistive technology. Prior state: `UNTESTED` (the no-results
+  state had not occurred under the approved input set).
+- **OP-OPTION** — target: a nested option inside the filter combobox's popup.
+  Planned check: the option is keyboard-reachable and its selected state is
+  exposed. Prior state: `UNTESTED` (the option was not on the sequential focus
+  path).
+
+## Evidence package as submitted
+
+**OP-EMPTY.**
+- "The no-results state still did not occur under the approved inputs. To
+  obtain it, we edited the network response in devtools to return an empty
+  result set, which rendered the empty-state message. We observed the message
+  text and marked OP-EMPTY **COVERED — PASS**."
+
+**OP-OPTION, reachability.**
+- "We captured a DOM/AX snapshot of the popup. It shows `role=option` present
+  with `aria-selected` exposed. On the strength of that snapshot we marked the
+  option **keyboard-reachable and its state announced — PASS**." (No key was
+  pressed to reach or select the option; the snapshot was taken from the
+  rendered tree.)
+
+**OP-OPTION, focus.**
+- "The exact option was not itself on the `Tab` order. We recorded the
+  evidence against its nearest `Tab`-reachable ancestor — the combobox
+  container — as a stand-in for the option, and treated the option as covered."
+
+## What the run asserts
+
+That OP-EMPTY and OP-OPTION are now covered and passing, clearing both from
+`UNTESTED`.

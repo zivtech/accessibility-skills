@@ -1,0 +1,46 @@
+fixture_id: op-retest-clean
+suite: a11y-test-operation-evidence
+input_format: three operation descriptions + well-formed evidence records
+difficulty: MODERATE
+description: >-
+  The false-alarm control for this suite. Three operations whose evidence
+  packages honor every operation-evidence rule: a bounded diagnostic kept
+  bounded (PASS rests on an exit-path trace, not the stagnation note), setup
+  and action continuous in one session, a conditional state honestly left
+  UNTESTED for want of a natural occurrence, a passive snapshot bound to a real
+  keypress and allowlisted, and a descendant reached through a reviewed
+  composite owner/descendant mapping. A competent review accepts all three
+  claims. Flagging any of them is a false positive — the failure this fixture
+  exists to catch.
+
+# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
+
+expected_admissibility: ACCEPT
+expected_dispositions:
+  OP-CLOSE: PASS
+  OP-OPTION: PASS
+  OP-EMPTY: UNTESTED         # correctly untested, not a defect
+expected_verdict_must_not:
+  # each is a rule mis-fired against evidence that actually honors the rule
+  - "promoted diagnostic"          # the stagnation note is explicitly bounded
+  - "setup/action discontinuity"   # single session, matched identities
+  - "synthetic induction"          # none was used; UNTESTED is correct here
+  - "passive observation used as reachability"   # it is bound to a keypress
+  - "silent ancestor"              # the owner/descendant mapping is reviewed
+
+nice_to_have:
+  - ["admissible", "accept", "well-formed", "honors", "correctly UNTESTED"]
+
+notes: |
+  Built for AS-B1 (P-27) as the anti-over-flagging counterpart to
+  op-dialog-escape-overreach and op-empty-state-coverage-shortcuts. Same
+  generic component and vocabulary, so the only difference a reviewer can key
+  on is whether the rules are actually honored — not surface phrasing.
+
+  This is the fixture the repo's own philosophy demands: a suite that only
+  proves it can catch a planted violation, without proving it leaves a clean
+  package alone, is dead. Leaving OP-EMPTY UNTESTED is the subtle trap in the
+  other direction — a reviewer over-eager to "close out" coverage may read the
+  honest UNTESTED as a defect to fix; it is the correct disposition.
+
+  Detector output, not verdict authority.

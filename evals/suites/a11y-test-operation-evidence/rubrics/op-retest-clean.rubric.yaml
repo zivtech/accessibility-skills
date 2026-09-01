@@ -1,0 +1,40 @@
+fixture_id: op-retest-clean
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py   # does not exist yet — see suite README
+
+dimensions:
+  - id: no_false_promotion_flag
+    name: "The bounded stagnation note is recognized as bounded; the PASS resting on the exit-path trace is accepted"
+    tier: must
+    note: "Flagging OP-CLOSE as a promoted diagnostic is a false positive — the note is explicitly not the basis for a 2.1.2 claim."
+  - id: no_false_continuity_flag
+    name: "Single-session, identity-matched setup→action is accepted as continuous"
+    tier: must
+  - id: untested_is_not_a_defect
+    name: "OP-EMPTY left UNTESTED for want of a natural occurrence is the correct disposition, not a gap to close"
+    tier: must
+    note: "The over-flag in the other direction: reading an honest UNTESTED as a defect to remediate."
+  - id: bound_passive_and_reviewed_remap_accepted
+    name: "A snapshot bound to a real keypress, and a descendant reached via a reviewed composite owner model, are accepted"
+    tier: must
+    note: "These are the admissible forms of the same observations that op-empty-state-coverage-shortcuts gets wrong."
+
+status_semantics:
+  PASS: "All three claims accepted with correct dispositions (OP-CLOSE/OP-OPTION PASS, OP-EMPTY UNTESTED); no rule mis-fired"
+  WARN: "Correct overall but hedges one disposition without cause"
+  FAIL: "Any rule flagged against evidence that honors it, or the honest UNTESTED treated as a defect"
+
+focus: >-
+  False-alarm resistance. Every rule this suite enforces has an admissible
+  form, and this package is built entirely from admissible forms. The graded
+  behavior is leaving a clean package alone — including recognizing that a
+  correctly-UNTESTED operation is not a defect.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) as the standard under test"
+known_judgment_calls:
+  - "The discriminating signal is whether each rule is honored, not surface phrasing — the vocabulary matches the BUG fixtures on purpose."
+  - "Adding an unprompted improvement suggestion is fine; downgrading a correct disposition without cause is the WARN condition."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority."

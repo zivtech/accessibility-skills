@@ -1,0 +1,66 @@
+fixture_id: op-dialog-escape-overreach
+suite: a11y-test-operation-evidence
+input_format: operation description + setup/action record + diagnostic conclusion + attachments
+difficulty: MODERATE
+description: >-
+  A retest evidence package that makes two admissibility errors at once, on an
+  operation (dismiss a modal with Escape) that a correct run could easily have
+  passed. The package (1) promotes a bounded `focus_stagnation_observed`
+  diagnostic straight into a WCAG 2.1.2 keyboard-trap FAIL without ever
+  pressing Escape or running an exit-path trace, and (2) sources its action
+  from a different session and a different starting locus than the setup it
+  claims to continue. A competent review rejects the package as inadmissible
+  and says why; it does NOT ratify the 2.1.2 FAIL, and it does NOT declare the
+  dialog sound either — the evidence simply does not decide the question.
+
+# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
+# These rules are about the LOGIC of an evidence package, not token presence,
+# so most checks below are adjudication guidance for a reviewer/model-judge
+# until a scorer exists. Pattern hooks are given where a hit is mechanical.
+
+expected_admissibility: REJECT
+expected_verdict_must_not:
+  # ratifying the run's own conclusion is the failure mode to catch
+  - "2.1.2 FAIL confirmed"
+  - "keyboard trap confirmed"
+
+must_catch:                       # every dimension here is a must-tier miss if absent
+  - id: bounded_diagnostic_not_promoted
+    why: >-
+      focus_stagnation_observed is a bounded collector observation. A 2.1.2
+      keyboard-trap conclusion requires a separate trace that actually attempts
+      the exit (press Escape / the documented exit keys and show focus cannot
+      leave). No Escape was pressed and no exit-path diagnostic was run, so the
+      trap conclusion is unsupported.
+    hook_present: ["focus_stagnation_observed", "2.1.2"]     # both appear; the trace does not
+    hook_absent_in_evidence: ["Escape", "exit-path", "exit path"]
+  - id: setup_action_continuity
+    why: >-
+      The setup's terminal focus identity (Session A, dialog heading, dialog
+      open) is not the action's starting identity (Session B, filter combobox,
+      fresh load, dialog not open). An action whose `before` state does not
+      equal the setup's terminal state, in the same session, is not evidence
+      about the planned operation.
+    hook_present: ["Session A", "Session B"]
+
+nice_to_have:
+  # the honest disposition once the package is rejected
+  - ["inconclusive", "inadmissible", "cannot decide", "re-run", "BLOCKED", "not admissible"]
+
+notes: |
+  Built for AS-B1 (P-27, operation-evidence classification), reproduction-first
+  before the R-05 skill text. Generic component (results table + row-action
+  dialog + filter combobox); no engagement identifiers, routes, selectors, or
+  counts.
+
+  The trap this fixture sets for a lazy reviewer: the run's conclusion (2.1.2
+  FAIL) is plausible and even "finds a bug," so a reviewer optimizing for
+  thoroughness ratifies it. The correct move is to reject the *evidence* — a
+  stagnation note is not a trap proof, and a cross-session action is not
+  continuous with its setup — and to refuse to substitute an "it's actually
+  fine" conclusion the evidence equally fails to support.
+
+  Both checks are semantic; the hooks only confirm the tokens that make the
+  contradiction visible (stagnation + 2.1.2 present, Escape/exit-path absent;
+  two different session labels). A future score_operation_evidence.py would
+  formalize them. Detector output, not verdict authority.

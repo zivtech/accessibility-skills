@@ -1,0 +1,67 @@
+fixture_id: op-empty-state-coverage-shortcuts
+suite: a11y-test-operation-evidence
+input_format: two operation descriptions + coverage-claim evidence records
+difficulty: MODERATE
+description: >-
+  A retest package that clears two operations out of UNTESTED using three
+  different coverage shortcuts: it manufactures a conditional state to test it,
+  it treats a passive DOM/AX snapshot as reachability-and-announcement proof,
+  and it silently substitutes a nearest-ancestor container for an unreachable
+  descendant. A competent review rejects all three coverage claims and keeps
+  both operations UNTESTED (with the specific admissible path named), rather
+  than accepting the PASS roll-up.
+
+# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
+# Semantic checks; hooks only surface the tokens that make each shortcut visible.
+
+expected_admissibility: REJECT
+expected_coverage_must_stay: UNTESTED     # both operations remain untested
+expected_verdict_must_not:
+  - "OP-EMPTY COVERED"
+  - "OP-OPTION PASS"
+  - "cleared from UNTESTED"
+
+must_catch:
+  - id: natural_only_conditional_state
+    why: >-
+      The no-results state was induced synthetically (devtools-edited response)
+      rather than occurring naturally under the approved input set. A synthetic
+      induction does not clear coverage; OP-EMPTY stays UNTESTED until the state
+      arises naturally under an approved input.
+    hook_present: ["devtools", "empty result set", "COVERED"]
+  - id: passive_observation_binding
+    why: >-
+      A DOM/AX snapshot showing role=option / aria-selected is a passive
+      observation. It is admissible only as support bound to a causing key
+      press and a source allowlist — never as standalone proof of
+      keyboard-reachability or of announcement. No key was pressed.
+    hook_present: ["snapshot", "keyboard-reachable"]
+    hook_absent_in_evidence: ["press", "keypress", "Enter", "ArrowDown"]
+  - id: ancestor_remapping_review
+    why: >-
+      Recording evidence against the nearest Tab-reachable ancestor as a
+      stand-in for an unreachable descendant is a silent nearest-ancestor
+      substitution. It is admissible only via a reviewed, separately frozen
+      owner/descendant mapping (the composite's documented owner + arrow-key
+      model) — never as an implicit swap.
+    hook_present: ["nearest", "ancestor", "stand-in"]
+
+nice_to_have:
+  # naming the admissible path for each keeps the rejection actionable
+  - ["natural", "approved input", "arrow", "owner/descendant", "composite", "bound to"]
+
+notes: |
+  Built for AS-B1 (P-27), reproduction-first before R-05. Generic component
+  (results table empty state + filter combobox popup option); no engagement
+  identifiers, routes, selectors, or counts.
+
+  Each shortcut is individually plausible and each "adds coverage," which is
+  the bait: a reviewer rewarded for reducing the UNTESTED count accepts them.
+  The correct move keeps both rows UNTESTED and names the admissible path
+  (wait for / trigger the state under an approved input; reach the option via
+  a real key press bound to the observation; map the descendant through the
+  composite's reviewed owner model).
+
+  All three checks are semantic. A future score_operation_evidence.py would
+  formalize them; the hooks only confirm the tokens that make each shortcut
+  visible. Detector output, not verdict authority.
