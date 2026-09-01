@@ -52,6 +52,36 @@ Do you have a prose description of what to test, but no test script yet?
 
 This table is what `a11y-critic` Phase 0 checks a remediation's attached evidence against, and what `bug-reporting`'s "Verification evidence" field cites.
 
+### Detector-lane authority boundary
+
+A detector PASS means only "no detection fired for this route, state, viewport, config, and version" — never a WCAG, Section 508, keyboard, or assistive-technology verdict. Cross-tool agreement on the same target raises triage priority; it never confirms a defect by itself, and an absence of detection is not evidence of conformance.
+
+**An infrastructure limit must never emit a canonical result.** A step-cap watchdog, a timeout, or a crashed collector is an *abort*, not a PASS/FAIL/BLOCKED outcome — record it as what it is (aborted, incomplete, environment-limited) and keep it out of the pass/fail denominator until it is resolved.
+
+**Mandatory cross-check rule:** whenever a run's non-conclusive rate (`BLOCKED`, `cantTell`, or equivalent) approaches saturation for a batch — most of the sampled set landing in a single non-conclusive bucket rather than spread across pass/fail — treat that as a signal about the collector, not about the product, and cross-check the batch against an independent evidence lane (a different tool, a driven session, or manual sampling) before the numbers reach a client-facing report. A near-saturated non-conclusive rate that ships unchecked reads as "almost entirely untestable," which may simply be an ordinary pass/fail distribution obscured by a collector fault.
+
+Related discipline, restated for this boundary: never promote scanner output straight to a WCAG or Section 508 verdict; never treat count-parity between two runs as completeness; never collapse `cantTell` / informational / skipped / blocked / untested into pass or fail — each stays a distinguishable, visible state (see the coverage-ledger vocabulary in `acr-reporting`'s untested gate for the report-side version of the same rule).
+
+## Retest classification
+
+Two clauses that govern when a retest result is trustworthy.
+
+**n = 1 is variance, not a finding.** A single failed reproduction attempt is inconclusive, not a FAIL. A FAIL requires the same miss reproduced across two independent sessions (a different run, same conditions). This mirrors the routing rule already in force elsewhere in this bundle for model-benchmark evaluation: a single-lane result that flips under byte-identical conditions is treated as variance until adjudicated by a second, independent pass — never reported as a conclusion on its own.
+
+**A version or content-marker delta forces a fresh retest.** Frozen evidence has an expiry condition tied to the product, not the evidence: the moment the product's version or a tracked content marker changes, every baseline captured before that change stops being admissible as a claim about *current* conformance — it remains valid history and nothing more. Two rules follow:
+- Capture the version or content marker as a field on the evidence artifact itself, so a stale-baseline check is mechanical rather than remembered.
+- On a detected delta, a fresh retest is mandatory for any row whose claim is about current conformance. "We tested this in a previous cycle" is not, by itself, an outcome — a frozen baseline may never silently stand in for current evidence.
+
+### Campaign completeness contract
+
+A retest campaign is not complete when the runner exits — it is complete when **zero** planned operations remain unresolved. Treat "the suite ran" and "every planned operation has a result" as different claims until proven equal:
+
+- State an explicit zero-unresolved contract as an exit condition: enumerate the planned operation set before the run starts, and the run does not close out until every entry in that set carries a disposition (pass, fail, or one of the non-pass values above — never silently dropped).
+- Provide a recovery path that re-drives specifically the unresolved operations, not the whole batch, when a run exits early.
+- Support a resumption contract: an interrupted campaign continues from its unresolved set on the next run rather than restarting from zero.
+
+This is a contract for the evidence a retest run must produce, not a specification for a particular runner implementation — see `docs/a11y-evaluation-report-contract.md` for the report-level half of the same completeness rule.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
@@ -309,6 +339,14 @@ Any diff line is either an intentional content update or a silent regression —
 
 - **IS for:** baseline and regression sweeps across many pages in one run; machine-readable evidence (rule id, impact, node count, sample selectors) that can feed a11y-critic Phase 0 or the Optional A11y Evidence Finding Contract (§4 below); trend baselines across repeated runs of the same URL list — rerun and diff `summary.json` (or `alt-snapshot.json` for alt-text specifically).
 - **IS NOT:** keyboard-operability or screen-reader evidence of any kind — it never presses a key or captures an announcement (route those to keyboard-a11y-tester or virtual-screen-reader). Axe-core is a **detector, not a verdict authority** here, same as every other automated lane in this bundle: it covers roughly 30-40% of WCAG 2.2 issue classes (the same axe-detectable-subset ceiling as the §4 in-spec-file scans below), and its rules are heuristics, not the standard itself. **A clean scan is not a conformance claim** — it means axe found nothing in its rule set on the URLs scanned, nothing more. Treat the output as candidate findings for human review. The `--census` checks are heuristics one level below even axe's rules — pattern-matches on markup shape and naming, not accessibility-tree computation — so their false-positive rate is higher by design; triage every `census` hit by hand before filing it.
+
+### Collector runtime safety
+
+**Classify challenge/block detection — don't substring-match.** A naive check for words like "challenge" or a CDN vendor's name produces false stops on ordinary page content that happens to mention them. Classify instead: a confirmed HTTP 429, or a strong structural match for a known challenge page (not just a keyword), is what triggers a stop. A weak or ambiguous signal (a marketing paragraph naming a security vendor, a support article about outages) must not halt collection.
+
+**A confirmed block is a global stop, not a per-page skip.** When challenge detection does classify a block, stop the entire run rather than skipping just the affected URL — a block on one page is evidence the whole session or IP is affected, and continuing to hit other pages under the same condition wastes the run and can worsen the block.
+
+**Route-settling for dynamic targets.** A dynamic (SPA/client-routed) page's inventory of interactive targets may only be trusted once the route has settled: at minimum, ≥3 stable samples of the target set, an unchanged final URL, and `document.readyState === 'complete'`. Reading targets before settling risks acting on a transient loading state rather than the real page — this applies to any dynamic-route collection, including interactive reconnaissance with `agent-browser`, not only this script.
 
 ### pa11y-ci for sitemap-wide sweeps (routed, not vendored)
 
