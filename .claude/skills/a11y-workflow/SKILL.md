@@ -38,6 +38,10 @@ Each agent starts with a fresh context window. The main session bridges context 
 - **Test → Critic**: Inject structured test results summary (~500-1000 chars) into the critic prompt alongside source file paths. keyboard-a11y-tester artifacts (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) exceed the inject budget — pass their file paths instead; the critic's Phase 0 knows the format and its calibration rules.
 - **Size budget rule**: Output > 2K chars → write to file, next agent reads. Output ≤ 2K chars → inject into prompt.
 
+## Skill-Improvement Capture (gate-exit discipline)
+
+A passive collection surface (a side file nobody is required to populate) is not a mechanism — engagements that set one up have produced nothing from it. Capture works only when it is a required field of a step that already has to run, not an optional extra step of its own. Every "Return to User" gate exit in Mode 1 (Steps 5 and 9 below) and every single-step dispatch in Mode 2 carries this requirement: **before presenting findings, state one line** — either "No skill-improvement candidate observed this run" or a one-line candidate naming the source step and the recurring gap it points at (a pattern a scout/planner/critic/tester kept re-deriving, a routing table that under- or over-fired, a false positive or false negative worth a fixture). This is not a document to maintain between runs; it is output the gate exit cannot skip.
+
 ## Mode 1 — Full Lifecycle
 
 Invocation: `/a11y-workflow full <target>`
@@ -96,7 +100,7 @@ Agent(subagent_type="a11y-role-auditor", model="opus", prompt="
 ```
 
 ### Step 5: Return to User
-Present the plan + critique + perspective audit + role audit findings. User revises and implements.
+State the skill-improvement-capture line (see above), then present the plan + critique + perspective audit + role audit findings. User revises and implements.
 
 ### Step 6: Test (after implementation)
 Invoke the `/a11y-test` skill, routing by target kind:
@@ -135,13 +139,13 @@ Agent(subagent_type="a11y-critic", model="opus", prompt="
 Same as Step 4 — only if critic flags MEDIUM/HIGH alarms.
 
 ### Step 9: Return to User
-Present implementation critique + perspective audit findings. User fixes and re-tests.
+State the skill-improvement-capture line (see above), then present implementation critique + perspective audit findings. User fixes and re-tests.
 
 ## Mode 2 — Step Dispatcher
 
 Invocation: `/a11y-workflow step <step-name> <target>`
 
-User drives each step manually. The skill spawns the appropriate agent for the requested step.
+User drives each step manually. The skill spawns the appropriate agent for the requested step. Each dispatched step's own return to the user carries the skill-improvement-capture line before its findings — the requirement is per gate exit, not per mode.
 
 | Step Name | Agent | Model | What It Does |
 |-----------|-------|-------|-------------|
