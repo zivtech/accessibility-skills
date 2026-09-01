@@ -52,3 +52,13 @@ Generated or frozen files — receipts, freeze snapshots, hash-bound manifests, 
 3. When a frozen file legitimately changes, re-freeze it from stable sources and update the manifest in the same commit — never hand-edit the frozen artifact in place.
 
 Keep the manifest project-specific: never ship a real project's frozen-path list inside a shared skill bundle — only the `.example` template travels.
+
+## Gate state changes on evidence, not assertions
+
+A work item — a fix closed, an operation retested, a check passed — advances state only when a machine check confirms the *named, cross-referencing artifacts* exist, never on a prose claim that it was verified. The weakest form ("the log says verified") is exactly what a critic pass flags CRITICAL; the strongest form found requires three artifacts that each name the others — a captured file on disk, a structured log containing a required section, and a record entry naming that exact file — with a hard non-zero exit on any miss.
+
+1. State the artifacts a passed item must produce and how they cross-reference (each names the others).
+2. Write the check — roughly twenty lines of shell is enough; it is a precondition gate, not a runtime — confirming each artifact exists and the cross-references resolve, exiting non-zero on any miss.
+3. Run it as the gate the state transition depends on, not as an after-the-fact report; an item that cannot produce the artifacts does not advance.
+
+For remediation specifically, the artifacts are the fix-closure record's fields (`docs/a11y-fix-closure-contract.md`): a "fixed" claim without the class-matched interaction evidence that record requires does not close.
