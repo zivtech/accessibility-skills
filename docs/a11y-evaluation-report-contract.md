@@ -18,6 +18,7 @@ Use it for **audit-scope work only**: conformance evaluations of an existing sit
 | `outcomes` | yes | Per-SC outcomes across the sample set using the EARL vocabulary already documented in `bug-reporting`: `passed` / `failed` / `cantTell` / `inapplicable` / `untested`. At least one example per conformance requirement and per SC not met. The representativeness-check result (did the random sample surface new content types or findings, and what was expanded in response). |
 | `findings` | yes | The `finding_id` list of A11y Evidence Finding Contract blocks backing the outcomes. Severity in those findings stays user-impact-based and **orthogonal** to conformance outcomes. |
 | `coverage_boundary` | yes | Every sample the web measurement stack (Playwright, axe-core, CDP) could not measure — native screens, kiosk hardware, documents — and the manual/AT method that covered it instead. "None" is a valid value; silence is not. |
+| `honest_boundary` | yes | An explicit statement of what this report's result does **not** establish — distinct from `coverage_boundary`'s unmeasured-samples list. Named limits on method, tooling, or generalization that a reader could otherwise over-read into the outcome map: for example, a clean automated scan is not a conformance claim; a `passed` outcome on a sampled instance of a pattern is not a claim about every instance of that pattern elsewhere in the product; this evaluation covers accessibility conformance and does not evaluate usability, performance, or SEO. See "Honest Boundary Requirement" below. |
 | `evaluation_statement` | optional | Only when every non-optional methodology requirement is satisfied and all evaluated samples meet the target level. Includes issue date, guidelines title/version/URI, level, product definition, technologies relied upon, and baseline. Partial-conformance statements name the non-conforming areas and the reason. Sampling-based evaluation alone does not support a WCAG 2 conformance claim for the whole product — statements must not imply one. |
 | `aggregated_score` | discouraged | WCAG-EM cautions that scores can mislead. If the commissioner requires one, document the scoring approach alongside it. |
 | `machine_readable` | optional | EARL export reference and/or OpenACR draft reference, when produced. EARL is the assertion-level evidence export; OpenACR is the ACR-shaped deliverable (via the `acr-reporting` skill — recommended as of 2026-08-12, Phase 2 gate passed; format receipts in [openacr-reference.md](openacr-reference.md)). |
@@ -31,6 +32,12 @@ Conformance outcome and impact severity are different dimensions and both are re
 - A `failed` outcome on 2.1.1 inside a checkout process is CRITICAL because the person cannot buy — not because the checklist says so.
 
 Never derive severity from rule weight, and never collapse per-SC outcomes into a severity ranking. The report carries the outcome map; the findings carry the impact judgments.
+
+## Honest Boundary Requirement
+
+An explicit statement of what a result does **not** establish has independently reappeared across this bundle's own working documents — a harness README, a validation record, a retest package README — each written for a different purpose. A convention that reinvents itself that often wants to be a required section, not an author's habit, so `honest_boundary` is required on every report, not optional prose left to the evaluator's discretion.
+
+This is distinct from `coverage_boundary`, which is scoped to *unmeasured samples* (what the stack could not reach). `honest_boundary` is scoped to *over-reading the result that was produced* — the gap between what the outcome map literally says and what a reader might assume it implies. A short, specific list beats a disclaimer: name the actual limits (method, tooling ceiling, sample-to-population generalization, out-of-scope quality dimensions) rather than writing a generic "no warranty" line that says nothing falsifiable.
 
 ## Example Skeleton
 
@@ -69,6 +76,13 @@ a11y_appform_step3_error_assoc (CRITICAL), a11y_megamenu_esc_trap (MAJOR), ...
 
 ## Coverage Boundary
 None — all samples are web views reachable by the measurement stack.
+
+## Honest Boundary
+This evaluation covers WCAG 2.2 AA conformance only — it does not evaluate
+usability, performance, or SEO. A `passed` outcome on a sampled instance of
+a component is not a claim about every instance of that component; the
+random-sample method is designed to surface counterexamples, not to prove
+their absence. Automated-scan-clean is not a conformance claim.
 ```
 
 ## Federal Annex (declared Section 508 engagements only)
