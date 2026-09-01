@@ -205,6 +205,8 @@ before it is circulated.
 
 Catalogs, schemas, and templates all ship inside the package — reference them from `node_modules/@openacr/openacr/`, never copy them into a repo.
 
+**Cell-level value verification.** Schema and catalog validation confirm shape and that criteria exist — never that the *numbers are right*. A rendered outcome table, a coverage rollup, or a serialized count can be structurally valid and numerically wrong (a miscounted sample tally, a dropped finding, a double-counted row). Before a draft circulates, verify its generated tables cell-by-cell against the completed evaluation report's known totals — sample counts, finding counts, per-criterion tallies — not only that the tables are present. See the report contract's Generated-Deliverable Verification rule.
+
 | The CLI checks | The CLI does NOT check (skill self-checks) |
 |---|---|
 | YAML/schema shape; `author.email` present | A/AA completeness (step 6) |
