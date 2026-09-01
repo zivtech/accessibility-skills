@@ -45,6 +45,10 @@ An explicit statement of what a result does **not** establish has independently 
 
 This is distinct from `coverage_boundary`, which is scoped to *unmeasured samples* (what the stack could not reach). `honest_boundary` is scoped to *over-reading the result that was produced* — the gap between what the outcome map literally says and what a reader might assume it implies. A short, specific list beats a disclaimer: name the actual limits (method, tooling ceiling, sample-to-population generalization, out-of-scope quality dimensions) rather than writing a generic "no warranty" line that says nothing falsifiable.
 
+## Generated-Deliverable Verification
+
+A generated report artifact — a rendered outcome table, an exported workbook, a serialized ACR — can be structurally valid and numerically wrong: a formula range that under-counts, a mapping that drops rows, a rollup that double-counts. Schema and shape validation catch none of it. Every generated deliverable that carries counts or totals is verified cell-by-cell against the known totals in the evidence it aggregates — sample counts, finding counts, per-criterion outcome tallies — before it leaves as a draft. Retaining prior revisions (the append-only retention rule in `a11y-test`) is what makes such an error findable: the wrong number is visible only when a later revision can be diffed against the one that was wrong.
+
 ## Example Skeleton
 
 ```markdown
