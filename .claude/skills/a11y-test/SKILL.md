@@ -62,6 +62,16 @@ A detector PASS means only "no detection fired for this route, state, viewport, 
 
 Related discipline, restated for this boundary: never promote scanner output straight to a WCAG or Section 508 verdict; never treat count-parity between two runs as completeness; never collapse `cantTell` / informational / skipped / blocked / untested into pass or fail — each stays a distinguishable, visible state (see the coverage-ledger vocabulary in `acr-reporting`'s untested gate for the report-side version of the same rule).
 
+## Retest classification
+
+Two clauses that govern when a retest result is trustworthy.
+
+**n = 1 is variance, not a finding.** A single failed reproduction attempt is inconclusive, not a FAIL. A FAIL requires the same miss reproduced across two independent sessions (a different run, same conditions). This mirrors the routing rule already in force elsewhere in this bundle for model-benchmark evaluation: a single-lane result that flips under byte-identical conditions is treated as variance until adjudicated by a second, independent pass — never reported as a conclusion on its own.
+
+**A version or content-marker delta forces a fresh retest.** Frozen evidence has an expiry condition tied to the product, not the evidence: the moment the product's version or a tracked content marker changes, every baseline captured before that change stops being admissible as a claim about *current* conformance — it remains valid history and nothing more. Two rules follow:
+- Capture the version or content marker as a field on the evidence artifact itself, so a stale-baseline check is mechanical rather than remembered.
+- On a detected delta, a fresh retest is mandatory for any row whose claim is about current conformance. "We tested this in a previous cycle" is not, by itself, an outcome — a frozen baseline may never silently stand in for current evidence.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
