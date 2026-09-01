@@ -138,6 +138,30 @@ When the evaluation targeted WCAG 2.2 but the draft uses the 2.4-edition/2.1 cat
 
 ---
 
+## Federal DRAFT discipline (declared-508 multi-deliverable engagements)
+
+When a declared Section 508 engagement produces more than one report artifact, the DRAFT ACR is **one of three separate deliverables** fed by a single completed evaluation report — a Standard Section 508 report, an ICT Testing Baseline report, and this DRAFT OpenACR. They are distinct artifacts; do not copy terms or outcomes between them without applying each format's own mapping rules. (The Revised-508 floor vs WCAG 2.2 AA remediation-layer separation is already stated in the federal profile; this section does not restate it.)
+
+**Non-conflation list — the cross-contaminations to refuse:**
+
+1. A commissioner-facing addendum (a keyboard/operation retest, a focused observation set) is never retitled into a full report. A report requires the completed audit-scope evaluation spine, not a repackaged addendum.
+2. WCAG 2.1/2.2-only outcomes stay out of the 508 (WCAG 2.0 A/AA) adherence terms; they appear only in the remediation layer. Never promote a remediation-layer 2.1/2.2 outcome into an adherence term.
+3. No SC-to-baseline-test fan-out in either direction: one WCAG SC failure does not fail every baseline test that maps to it, and one SC pass does not pass them.
+4. Capability/coverage classification (how many baseline tests the stack is *designed* to cover) is never reported as a product outcome, and the volume of collected evidence does not move a frozen capability figure.
+5. A baseline-test or catalog-criterion ID is cited only after validation against its manifest/catalog — never a guessed or nearest-neighbor ID.
+6. One deliverable references another's rows; it does not restate them (the 508 report references the baseline annex; it does not re-emit it).
+7. Each deliverable consumes only evidence that passed its own contract and scope gate; evidence admissible for one is not automatically admissible for another.
+
+**Draft legibility — `[Demo Purposes Only]`:** in a DRAFT ACR, every displayed role or participant **other than the actual tester** — commissioner, audit owner, product owner, evaluation author/reviewer/approver, any displayed participant name — is labeled `[Demo Purposes Only]`, so no reader mistakes a draft for a signed report. The label:
+
+- applies to **display-name fields only** — never to a format-constrained field (`author.email`, any date, any version). Where such a field has no verified value the draft **blocks** with a named-field gap list; it is never filled with the demo label or a placeholder.
+- never licenses fabricating a person, email, date, version, organization, or approval to satisfy the rule.
+- leaves exactly one non-demo identity: "the tester," the party that actually operated the collection tooling — never applied to a role that did not perform the runs.
+
+This is the display-layer companion to the skill's existing "invent nothing" rule: the untested gate keeps a draft from *containing* claims it has not earned; `[Demo Purposes Only]` keeps it from *looking* like a report that earned them.
+
+---
+
 ## Serialization Procedure
 
 1. **Verify inputs** against the block list. Missing input → stop, emit the named-field gap list.
