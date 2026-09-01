@@ -340,6 +340,14 @@ Any diff line is either an intentional content update or a silent regression —
 - **IS for:** baseline and regression sweeps across many pages in one run; machine-readable evidence (rule id, impact, node count, sample selectors) that can feed a11y-critic Phase 0 or the Optional A11y Evidence Finding Contract (§4 below); trend baselines across repeated runs of the same URL list — rerun and diff `summary.json` (or `alt-snapshot.json` for alt-text specifically).
 - **IS NOT:** keyboard-operability or screen-reader evidence of any kind — it never presses a key or captures an announcement (route those to keyboard-a11y-tester or virtual-screen-reader). Axe-core is a **detector, not a verdict authority** here, same as every other automated lane in this bundle: it covers roughly 30-40% of WCAG 2.2 issue classes (the same axe-detectable-subset ceiling as the §4 in-spec-file scans below), and its rules are heuristics, not the standard itself. **A clean scan is not a conformance claim** — it means axe found nothing in its rule set on the URLs scanned, nothing more. Treat the output as candidate findings for human review. The `--census` checks are heuristics one level below even axe's rules — pattern-matches on markup shape and naming, not accessibility-tree computation — so their false-positive rate is higher by design; triage every `census` hit by hand before filing it.
 
+### Collector runtime safety
+
+**Classify challenge/block detection — don't substring-match.** A naive check for words like "challenge" or a CDN vendor's name produces false stops on ordinary page content that happens to mention them. Classify instead: a confirmed HTTP 429, or a strong structural match for a known challenge page (not just a keyword), is what triggers a stop. A weak or ambiguous signal (a marketing paragraph naming a security vendor, a support article about outages) must not halt collection.
+
+**A confirmed block is a global stop, not a per-page skip.** When challenge detection does classify a block, stop the entire run rather than skipping just the affected URL — a block on one page is evidence the whole session or IP is affected, and continuing to hit other pages under the same condition wastes the run and can worsen the block.
+
+**Route-settling for dynamic targets.** A dynamic (SPA/client-routed) page's inventory of interactive targets may only be trusted once the route has settled: at minimum, ≥3 stable samples of the target set, an unchanged final URL, and `document.readyState === 'complete'`. Reading targets before settling risks acting on a transient loading state rather than the real page — this applies to any dynamic-route collection, including interactive reconnaissance with `agent-browser`, not only this script.
+
 ### pa11y-ci for sitemap-wide sweeps (routed, not vendored)
 
 For a sweep driven by a sitemap rather than a hand-maintained URL list, route to `pa11y-ci` instead of adding sitemap discovery to this script:
