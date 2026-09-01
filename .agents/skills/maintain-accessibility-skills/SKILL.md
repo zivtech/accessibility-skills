@@ -42,3 +42,13 @@ A clean status and empty stash list do not prove a history rewrite was safe.
 4. Check the pull request's remote CI status.
 
 Do not push review-worthy commits directly to the shared default branch. Do not treat local tests as a substitute for the remote gate.
+
+## Guard generated and frozen files
+
+Generated or frozen files — receipts, freeze snapshots, hash-bound manifests, rendered reports — carry a hash or signature that a later hand-edit silently invalidates: the file still looks fine, but the chain it anchored is now a lie. Treat this as a repo trap, not a competence failure — more than one actor hitting the same trap is a property of the repo, and the guard is the warning the repo otherwise lacks.
+
+1. List the project's frozen paths in a manifest (`frozen-files.manifest`), one repo-relative path per line — see `scripts/frozen-files.manifest.example` for the format.
+2. Wire `scripts/check_frozen_files.py --staged` into pre-commit and `--range origin/main` into CI, so an edit to any listed path fails closed before it lands.
+3. When a frozen file legitimately changes, re-freeze it from stable sources and update the manifest in the same commit — never hand-edit the frozen artifact in place.
+
+Keep the manifest project-specific: never ship a real project's frozen-path list inside a shared skill bundle — only the `.example` template travels.
