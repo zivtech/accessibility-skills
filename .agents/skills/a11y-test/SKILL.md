@@ -52,6 +52,16 @@ Do you have a prose description of what to test, but no test script yet?
 
 This table is what `a11y-critic` Phase 0 checks a remediation's attached evidence against, and what `bug-reporting`'s "Verification evidence" field cites.
 
+### Detector-lane authority boundary
+
+A detector PASS means only "no detection fired for this route, state, viewport, config, and version" — never a WCAG, Section 508, keyboard, or assistive-technology verdict. Cross-tool agreement on the same target raises triage priority; it never confirms a defect by itself, and an absence of detection is not evidence of conformance.
+
+**An infrastructure limit must never emit a canonical result.** A step-cap watchdog, a timeout, or a crashed collector is an *abort*, not a PASS/FAIL/BLOCKED outcome — record it as what it is (aborted, incomplete, environment-limited) and keep it out of the pass/fail denominator until it is resolved.
+
+**Mandatory cross-check rule:** whenever a run's non-conclusive rate (`BLOCKED`, `cantTell`, or equivalent) approaches saturation for a batch — most of the sampled set landing in a single non-conclusive bucket rather than spread across pass/fail — treat that as a signal about the collector, not about the product, and cross-check the batch against an independent evidence lane (a different tool, a driven session, or manual sampling) before the numbers reach a client-facing report. A near-saturated non-conclusive rate that ships unchecked reads as "almost entirely untestable," which may simply be an ordinary pass/fail distribution obscured by a collector fault.
+
+Related discipline, restated for this boundary: never promote scanner output straight to a WCAG or Section 508 verdict; never treat count-parity between two runs as completeness; never collapse `cantTell` / informational / skipped / blocked / untested into pass or fail — each stays a distinguishable, visible state (see the coverage-ledger vocabulary in `acr-reporting`'s untested gate for the report-side version of the same rule).
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
