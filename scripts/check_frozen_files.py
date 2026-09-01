@@ -20,13 +20,13 @@ of any shared skill bundle. This repo ships `frozen-files.manifest.example`
 as the format template, never a real project's list.
 
 Usage:
-    python3 scripts/check_frozen_files.py [--manifest PATH] [--staged | --range REV]
+    python3 scripts/check_frozen_files.py [--manifest PATH] [--range REV]
 
     --manifest PATH   Manifest of frozen paths (default: frozen-files.manifest
                       at the repo root). One path per line; blank lines and
                       lines starting with '#' are ignored.
-    --staged          Check staged changes only (default; pre-commit use).
-    --range REV       Check the diff against REV instead (e.g. origin/main).
+    --range REV       Check the diff against REV (e.g. origin/main) instead of
+                      the default staged changes (git diff --cached; pre-commit use).
 
 Exit status: 0 = no frozen path touched; 1 = a frozen path was modified, or
 the manifest is missing/unreadable.
@@ -54,8 +54,8 @@ def load_manifest(path):
     return frozen
 
 
-def changed_files(staged, range_rev):
-    """Return the set of changed repo-relative paths for the requested scope."""
+def changed_files(range_rev):
+    """Return changed repo-relative paths: staged (default) or vs range_rev."""
     if range_rev:
         cmd = ["git", "-C", REPO, "diff", "--name-only", range_rev]
     else:
@@ -67,8 +67,8 @@ def changed_files(staged, range_rev):
 def main():
     parser = argparse.ArgumentParser(description="Guard frozen files against silent edits.")
     parser.add_argument("--manifest", default=DEFAULT_MANIFEST)
-    parser.add_argument("--staged", action="store_true", default=True)
-    parser.add_argument("--range", dest="range_rev", default=None)
+    parser.add_argument("--range", dest="range_rev", default=None,
+                        help="Diff against REV instead of the default staged changes.")
     args = parser.parse_args()
 
     frozen = load_manifest(args.manifest)
@@ -80,7 +80,7 @@ def main():
         print(f"Manifest {args.manifest} lists no frozen paths — nothing to guard.")
         return 0
 
-    touched = changed_files(args.staged, args.range_rev) & frozen
+    touched = changed_files(args.range_rev) & frozen
     if touched:
         print("FROZEN FILE EDIT DETECTED — fail closed. These paths are hash- or")
         print("freeze-bound; a hand-edit silently invalidates their receipt chain:")
