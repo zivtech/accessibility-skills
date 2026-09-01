@@ -94,6 +94,14 @@ Two semantic cautions:
 
 ---
 
+## Claim boundaries (orthogonality mechanism)
+
+The orthogonality cautions above — severity never selects the term, terms come only from outcomes — are made checkable rather than merely asserted by a `claim_boundary` on the adjudication record: an explicit statement of what an entry does and does **not** assert, plus an attachment rule — a remediation entry may attach only to a source-adjudicated criterion still joined to a selected failure. In this skill that means a remediation recommendation never upgrades an adherence term, and an entry that derives one axis from another — inferring a term from a fix having been proposed, or from a finding's severity — is malformed.
+
+This is the acr-side use of the bundle's full orthogonality register in `docs/a11y-orthogonality-register.md`, which enumerates the axis pairs (conformance outcome vs impact severity; remediation entry vs conformance evidence; and others) and the shared `claim_boundary` mechanism.
+
+---
+
 ## Chapter & Component Policy
 
 - **Populate only the `web` component** from our evidence. Omit non-web components (`electronic-docs`, `software`, `authoring-tool`) from criteria entries entirely — schema-legal and verified. The document `notes` state the method's web-only scope.
