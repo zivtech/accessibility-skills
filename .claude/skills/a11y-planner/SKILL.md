@@ -210,6 +210,7 @@ Copy this protocol into the subagent prompt:
     7. What existing code does this modify/extend? (If redesigning an existing component, understand current structure)
     8. What constraints exist? (Browser compatibility, device capabilities, third-party library limitations, design system restrictions)
     9. Is this an audit? If the target is an evaluation of an existing site or digital product (conformance audit, pre-VPAT work, periodic monitoring) rather than a component build, apply AUDIT-SCOPE MODE (WCAG-EM) — see below — on top of the nine phases
+    10. Is this a remediation engagement? If the target is fixing an existing product against known findings (not auditing it, not building a new component), apply REMEDIATION PROFILE — see below — on top of the nine phases: triage each item A/B/C before planning a fix, and gate any regression-gate claim on source access
 
     Phase 2 — Semantic Structure Plan:
     Design the HTML structure and landmark regions:
@@ -696,6 +697,22 @@ Copy this protocol into the subagent prompt:
     Documents/native boundary (REQUIRED sentence): PDFs, Office documents, native software, and hardware in engagement scope are outside the web measurement stack. Documents map to the Electronic Documents baseline — a declared boundary (57 tests), not a capability — and are assigned to manual/AT methods in the EM coverage boundary; never imply stack coverage of them.
 
     Deliverable boundary: the report contract's optional federal annex aggregates per-baseline-test outcomes as evidence FOR whoever authors the Accessibility Conformance Report — it is not an ACR/VPAT and must never be presented as one.
+
+    REMEDIATION PROFILE (fixing an existing product) — applies on top of the nine phases, a sibling to AUDIT-SCOPE MODE:
+
+    Trigger: the target is remediating an existing product against known findings — not auditing it (that is AUDIT-SCOPE MODE) and not building a new component (the default nine phases). Diagnosis assumes the code in front of it is current state; remediation cannot, so the plan is organized around closing findings with class-matched evidence, not around designing new UI.
+
+    Root-cause triage FIRST (a Phase 1 artifact — REQUIRED): before planning any fix, classify each remediation item into one of three histories, because which one it is changes what "fixed" means:
+    - A — already fixed upstream: verify only; the task is to confirm the defect no longer reproduces under the tested condition, not to re-implement.
+    - B — a fix exists on an abandoned or reverted branch: recover it (cherry-pick / re-apply), then verify.
+    - C — never fixed: implement fresh, then verify.
+    An item mis-triaged as C when it is really A ships a redundant change; one mis-triaged as A when it is really C ships nothing and reports success. Plan the triage as an explicit step; never assume current state. Each item's triage, fix approach, and class-matched interaction evidence land in the fix-closure record (docs/a11y-fix-closure-contract.md).
+
+    Source-access reality (a Phase 1 artifact — REQUIRED): remediation verification has a hard ceiling without source access. On a public product with no repository, no build, and no authorized test environment, the honest outcome is black-box retest — "we added a regression test" is NOT an available outcome, and the plan says so rather than approximating it. Crossing into a real regression gate requires the minimum owner handoff (docs/remediation-owner-handoff.md): owners; repo plus commit; build recipe; finding↔component mapping; runnable fixtures; an authorized test environment; existing test locations; a route/state inventory; release-acceptance authority; and a channel to confirm the rest. Until those exist, plan for black-box retest and name the gap; do not plan a regression gate the engagement cannot build.
+
+    Fix evidence matches the defect class (carried into the fix-closure record, aligned with a11y-test's verification evidence contract): a screenshot is never closure for a keyboard, focus, or announcement fix; a contrast or reflow fix needs a computed-style plus 200%/400% zoom assertion, not a screenshot. A "fixed" claim whose evidence does not match the class of the original observation is not closed.
+
+    Composite-widget contract (the planner side of the rule the critic enforces): when planning fixes or new composite widgets (grids, trees, menus, toolbars, listboxes), state the focus-owner/descendant contract — which element owns the Tab stop and which descendants are reached via the widget's documented arrow/Home/End keys. A non-tabbable descendant reached via those keys is correct roving tabindex, not a reachability defect; plan the fix and its verification around the documented key model, not the Tab sequence alone.
 
     OUTPUT FORMAT:
 
