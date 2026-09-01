@@ -1,0 +1,97 @@
+fixture_id: test-remediation-mode
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+# De-hinted fixture (Tier-2, R-25). The fixture text supplies NONE of the
+# graded vocabulary — every methodology check probes REMEDIATION PROFILE
+# knowledge the plan must bring itself. check_dehinted.py enforces the
+# property; re-run it after any fixture edit.
+
+dimensions:
+  - id: completeness
+    name: "Completeness"
+    description: "Are all 9 phases addressed? (Scope, Structure, Interaction, Focus, State, Visual, Content, Testing, Tasks)"
+    weight: 3
+    rule_based_checks:
+      - has_scope_section: true
+      - has_semantic_structure: true
+      - has_interaction_design: true
+      - has_focus_management: true
+      - has_state_communication: true
+      - has_visual_accessibility: true
+      - has_content_accessibility: true
+      - has_testing_strategy: true
+      - has_implementation_tasks: true
+
+  - id: remediation_methodology
+    name: "Remediation Methodology (de-hinted)"
+    description: "Does the plan bring REMEDIATION PROFILE structure unprompted — history classification before fixing, recovery of the unfinished work, closure evidence matched to defect class?"
+    weight: 3
+    rule_based_checks:
+      - classifies_findings_by_history: true
+      - recovers_unfinished_fix: true
+      - verifies_prior_changes_per_finding: true
+      - matches_evidence_to_defect_class: true
+    llm_judge_criteria:
+      - "Does the plan triage each finding into a history (already addressed / started-but-unfinished / never addressed) before planning a fix, or does it treat all forty as fresh implementations?"
+      - "Does it recover the developer's unfinished fix rather than reimplementing it from scratch?"
+      - "Does it verify the prior weekend fixes and theme refresh against the specific findings, rather than assuming they closed anything?"
+      - "Is closure evidence matched to each defect's class (interaction evidence for keyboard/announcement; measured style + zoom for contrast/reflow), not a screenshot?"
+
+  - id: source_access_honesty
+    name: "Source-Access Honesty (central probe)"
+    description: "Does the plan gate recurrence guarantees on code access — honest re-test for the hosted site, a real recurrence guard only for the in-house app where the code, build, fixtures, environment, and release authority exist — or does it endorse the board's blanket 'won't come back'?"
+    weight: 3
+    rule_based_checks:
+      - separates_two_service_ceilings: true
+      - refuses_recurrence_guarantee_without_source: true
+      - conditions_inhouse_guard_on_handoff_essentials: true
+      - constrains_board_confirmation: true
+    llm_judge_criteria:
+      - "Does the plan promise non-recurrence ONLY where the code is in hand, and give the hosted site an honest re-test-against-current-state instead?"
+      - "Does it name that the hosted-builder site's code is not the association's to change, so no durable recurrence guard is possible there?"
+      - "Does it refuse to hand the board a blanket 'fixed and won't come back' line for the service it cannot change the code of?"
+
+  - id: false_positive_avoidance
+    name: "False-Positive / Trap Avoidance"
+    description: "Correctly avoiding the fixture's traps (endorsing blanket non-recurrence, assuming prior fixes closed items, reimplementing the unfinished fix, screenshot-as-closure, equal ceilings, buying tooling)"
+    weight: -2
+    note: "Penalizes falling into any false_positive_trap; the blanket-non-recurrence endorsement is the central one."
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "Recommendations are concrete and tied to the two named services, not generic remediation boilerplate"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-planner plan format contract"
+    weight: 1
+
+status_semantics:
+  PASS: "All must-tier dimensions satisfied; no false-positive trap; ACCEPT verdict"
+  WARN: "Musts satisfied; should/nice gaps or one hedged disposition"
+  FAIL: "Any must-tier miss, or endorsing blanket non-recurrence on the hosted site, or marking items closed on assumed current state"
+
+focus: >-
+  Remediation-mode planning honesty — the plan tests nothing new and designs no
+  new UI; every graded behavior is REMEDIATION PROFILE discipline (triage by
+  history before fixing, gate a recurrence guard on source access, recover
+  rather than reimplement, match closure evidence to the defect class) plus the
+  restraint to refuse a recurrence promise the engagement cannot back.
+expected_status_competent: PASS
+conditions:
+  protocol: "a11y-planner REMEDIATION PROFILE (the skill teaches triage-first, source-access gating, recovery, and evidence-class matching)"
+  baseline: "identical fixture, no protocol — measures what the profile carries; expected to miss the history-classification and source-access-ceiling items and to endorse the board's non-recurrence ask"
+verdict_expectations:
+  protocol-following: ACCEPT
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+known_judgment_calls:
+  - "Any-token keyword checks undercount paraphrase — a plan may gate the guard on 'having the repository and a CI environment' without the exact tokens. Content-adjudicate the source-access and history-classification items before counting a miss, same as the wcag-em-phase3 practice."
+  - "A plan that proposes regression fixtures for the in-house app is a defensible bonus, not required."
+  - "A plan endorsing a blanket 'won't come back' for the hosted site cannot be ACCEPT regardless of gate score — the central probe."
+  - "Scorer statuses are detector output, not verdict authority — same routing rule as every local-model lane."

@@ -1,0 +1,256 @@
+fixture_id: test-remediation-mode
+name: Remediation Engagement Plan
+description: De-hinted remediation-scope fixture — a community association has
+  ~40 findings from an outside review across a hosted-website-builder public
+  site (no source access) and an in-house members area (source available), with
+  informal weekend fixes and a theme refresh already applied and one fix left
+  unfinished on a separate copy. The brief supplies no methodology vocabulary;
+  the plan must bring REMEDIATION PROFILE structure itself. The central trap is
+  promising the board "fixed and won't come back" for the hosted site, where
+  there is no source to gate recurrence on.
+language: mixed
+framework: Hosted website builder (no source) + in-house web app (source available)
+difficulty: COMPLEX
+domain: Remediation Planning
+work_type: remediation_plan
+risk_level: High
+
+# ── De-hinted design (mirrors step 11a of docs/wcag-em-2-adoption-assessment.md) ──
+# The .md is a client-voice brief only — no methodology vocabulary. A plan can
+# hit the gate items only by carrying REMEDIATION PROFILE itself (protocol-taught
+# or training-known), never by echoing the brief. The union of scoring_keywords
+# and dehint_forbidden must never appear in the fixture text — enforced by
+# evals/suites/a11y-planner/check_dehinted.py. Re-run it after any .md edit.
+dehinted: true
+dehint_forbidden:
+  - "triage"
+  - "root cause"
+  - "root-cause"
+  - "cherry-pick"
+  - "cherry pick"
+  - "source access"
+  - "regression gate"
+  - "regression test"
+  - "black-box"
+  - "black box"
+  - "fix-closure"
+  - "closure record"
+  - "defect class"
+  - "roving tabindex"
+  - "composite widget"
+  - "owner handoff"
+  - "verify-only"
+  - "verify only"
+  - "implement fresh"
+  - "computed-style"
+  - "computed style"
+  - "reproduc"
+
+scenario:
+  feature: A remediation engagement closing out ~40 findings from a third-party
+    review across two services with different source-access ceilings, with
+    informal prior fixes of unknown scope already applied
+  user_need: A per-item confirmation the board can rely on, and an honest
+    statement of what "fixed" and "won't recur" can and cannot mean for each of
+    the two services
+  compliance_target: WCAG 2.2 AA
+  assistive_technologies:
+    - Unspecified by the client — the plan carries the per-defect-class evidence
+      requirements itself (keyboard trace, screen-reader announcement,
+      computed-style + zoom) matched to each finding
+  scope: ~40 findings; one hosted-website-builder public site (no code access);
+    one in-house members-area app (code access); prior weekend fixes + a theme
+    refresh of unrecorded scope; one unfinished fix on a separate project copy
+  constraints:
+    - One part-time developer + one coordinating staff member
+    - No budget for new tooling
+    - Hosted website-builder contract runs through next year; the platform is
+      not replaceable now and its code is not editable by the association
+    - Prior fixes were applied without recording which findings they touched
+
+expected_plan_sections:
+  - Scope & Context
+  - Semantic Structure
+  - Interaction Pattern Design
+  - Focus Management
+  - State Communication
+  - Visual Accessibility
+  - Content Accessibility
+  - Testing Strategy
+  - Implementation Tasks
+
+key_evaluation_criteria:
+  - Each finding classified by its history before a fix is planned — already
+    addressed (verify only), started-but-unfinished (recover then verify), or
+    never addressed (implement fresh) — instead of assuming all forty need a
+    fresh fix
+  - The two services separated by remediation ceiling — the hosted site has no
+    code access, so its honest outcome is a re-test against current state, not
+    a guarantee against recurrence; the in-house app can carry a real
+    recurrence guard only if the code, build, fixtures, environment, and
+    release authority are in hand
+  - Prior weekend fixes and the theme refresh verified per finding against the
+    specific defect, not assumed to have closed anything
+  - The unfinished fix recovered from the separate copy and verified, not
+    reimplemented from scratch or ignored
+  - Closure evidence matched to each defect's class (a keyboard/focus/
+    announcement finding needs interaction evidence, not a screenshot; a
+    contrast/reflow finding needs a measured style + zoom check)
+  - The board's "won't come back" request constrained honestly — no
+    non-recurrence promise for the service whose code the association cannot
+    change
+
+expected_findings:
+  must_have:
+    - Classifies each finding by remediation history before planning a fix
+      (already-addressed / started-but-unfinished / never-addressed), rather
+      than treating all forty as fresh implementations
+    - Separates the two services by their remediation ceiling — names that the
+      hosted-builder site's code is not editable by the association and the
+      members area's is
+    - For the hosted site, states the honest ceiling is a re-test against
+      current state and refuses a recurrence guarantee there (no durable guard
+      is possible without the platform's source)
+    - For the in-house app, conditions any recurrence guard on having the
+      code, a build, runnable fixtures, a test environment, and
+      release-acceptance authority — and says so rather than assuming them
+    - Verifies the prior weekend fixes and the theme refresh against each
+      specific finding before marking it closed — does not assume current
+      state closed the items
+    - Recovers the unfinished fix from the separate copy and verifies it,
+      instead of reimplementing it or dropping it
+    - Matches closure evidence to the defect class — interaction evidence for
+      keyboard/focus/announcement findings, a measured style + zoom check for
+      contrast/reflow findings — never a screenshot as closure for an
+      interaction defect
+    - Constrains the board confirmation — states plainly that a permanent
+      no-recurrence promise cannot be made for the service whose code the
+      association cannot change
+
+  should_have:
+    - A per-item record carrying the original observation, the history
+      classification, the fix (or verification), and the class-matched evidence
+    - Prioritizes findings by user impact, not the review's listing order
+    - Retains each finding's original observation to check closure against it
+    - Names which findings, if any, only the platform vendor can fix and routes
+      those to the vendor rather than promising an in-house fix
+    - Feasible for one part-time developer (does not plan equal-depth fresh
+      implementation of all forty)
+
+  nice_to_have:
+    - Proposes a re-check after the website builder ships a platform update,
+      since a vendor change can regress or resolve items outside the
+      association's control
+    - Asks the vendor about a platform-level accessibility roadmap for the
+      items the association cannot reach
+    - Records the verification method reproducibly so a later cycle can repeat it
+    - Suggests capturing the closed items as regression fixtures where the code
+      is in hand, so re-runs are cheap
+
+false_positive_traps:
+  - Endorsing the board's "fixed and won't come back" for the hosted site.
+    There is no code access there, so no durable recurrence guard exists; the
+    honest deliverable is a re-test against current state. A plan that promises
+    non-recurrence for the hosted site has failed the fixture's central probe
+    regardless of other content.
+  - Marking findings closed because "the developer fixed a bunch" and "the
+    theme was refreshed," without verifying which specific findings those
+    changes touched and that each defect is actually gone — assuming current
+    state instead of confirming it.
+  - Planning to reimplement the unfinished fix from scratch instead of
+    recovering the work already on the separate copy.
+  - Closing a keyboard, focus, or announcement finding on a screenshot.
+  - Treating both services as having the same remediation ceiling — planning a
+    recurrence guard for the hosted site as if its code were editable.
+  - Recommending new commercial tooling despite the stated no-budget
+    constraint.
+
+multi_perspective_coverage:
+  keyboard: "Keyboard-operability findings closed with an actual keyboard
+    trace, not a screenshot; members-area flows re-driven after each fix"
+  screen_reader: "Name/role/state and announcement findings closed against
+    actual assistive-technology output; the original reviewer's screen-reader
+    observation reproduced before it is called resolved"
+  low_vision: "Contrast and reflow findings closed with a measured style check
+    and a zoom pass, not a visual glance"
+  cognitive: "Error-recovery and consistency findings re-checked across the
+    flows they touch, not only the single screen cited"
+  mobile_touch: "If any finding is target-size or gesture related, closed
+    against the actual pointer/touch behavior"
+
+notes: |
+  De-hinted remediation fixture, built 2026-09-01 (Tier-2, R-25). It is the
+  companion to the audit-scope de-hinted fixture test-hybrid-product-audit:
+  where that one probes AUDIT-SCOPE MODE, this one probes REMEDIATION PROFILE.
+
+  Design contract:
+  1. The .md is a client-voice brief ONLY — no methodology vocabulary. The
+     union of scoring_keywords and dehint_forbidden must never appear in the
+     fixture text; check_dehinted.py enforces it. The board's "fixed and won't
+     come back" ask is deliberate trap bait, not a scoring keyword.
+  2. Every gate item is a knowledge probe: the plan can only classify findings
+     by history, gate a recurrence guard on code access, recover the
+     unfinished fix, and match evidence to defect class by carrying
+     REMEDIATION PROFILE itself (the planner protocol teaches all of them).
+  3. The central trap is source-access honesty, in the spirit of the CLEAN
+     fixture discipline: the board's request invites the plan to promise
+     non-recurrence everywhere. The correct plan promises it only where the
+     code is in hand and a recurrence guard can actually be built, and gives
+     the hosted site an honest re-test-against-current-state instead.
+
+  Expected discrimination: a REMEDIATION-PROFILE-following planner clears the
+  gate; a baseline plan should MISS the history-classification and
+  source-access-ceiling items and is prone to endorsing the board's
+  non-recurrence promise. If baselines still clear it, the de-hinting failed —
+  treat that as an instrument finding.
+
+  Benchmark bookkeeping: planner fixture #29 (Remediation Planning domain #1).
+  NO model rows yet; do not fold into historical 25/25 or 28-fixture aggregates.
+
+  Expected verdict: ACCEPT for a protocol-following planner. REVISE or worse
+  for a plan that promises non-recurrence on the hosted site or marks items
+  closed on assumed current state.
+
+scoring_keywords:
+  "Classifies each finding by remediation history before planning a fix (already-addressed / started-but-unfinished / never-addressed), rather than treating all forty as fresh implementations":
+    - "classif"
+    - "histor"
+    - "three categories"
+    - "sort each"
+  "Separates the two services by their remediation ceiling — names that the hosted-builder site's code is not editable by the association and the members area's is":
+    - "no code access"
+    - "cannot edit"
+    - "not editable"
+    - "no access to the"
+    - "cannot change the code"
+  "For the hosted site, states the honest ceiling is a re-test against current state and refuses a recurrence guarantee there (no durable guard is possible without the platform's source)":
+    - "re-test"
+    - "retest"
+    - "current state"
+    - "cannot guarantee"
+    - "no guarantee"
+  "For the in-house app, conditions any recurrence guard on having the code, a build, runnable fixtures, a test environment, and release-acceptance authority — and says so rather than assuming them":
+    - "fixtures"
+    - "test environment"
+    - "release"
+    - "in hand"
+  "Verifies the prior weekend fixes and the theme refresh against each specific finding before marking it closed — does not assume current state closed the items":
+    - "verify"
+    - "check each"
+    - "against the specific"
+    - "before marking it closed"
+  "Recovers the unfinished fix from the separate copy and verifies it, instead of reimplementing it or dropping it":
+    - "recover"
+    - "salvage"
+    - "the existing work"
+  "Matches closure evidence to the defect class — interaction evidence for keyboard/focus/announcement findings, a measured style + zoom check for contrast/reflow findings — never a screenshot as closure for an interaction defect":
+    - "keyboard trace"
+    - "announcement"
+    - "zoom"
+    - "computed"
+    - "interaction evidence"
+  "Constrains the board confirmation — states plainly that a permanent no-recurrence promise cannot be made for the service whose code the association cannot change":
+    - "cannot guarantee"
+    - "only where"
+    - "not for the hosted"
+    - "no permanent"
