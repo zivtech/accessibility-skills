@@ -72,6 +72,16 @@ Two clauses that govern when a retest result is trustworthy.
 - Capture the version or content marker as a field on the evidence artifact itself, so a stale-baseline check is mechanical rather than remembered.
 - On a detected delta, a fresh retest is mandatory for any row whose claim is about current conformance. "We tested this in a previous cycle" is not, by itself, an outcome — a frozen baseline may never silently stand in for current evidence.
 
+### Campaign completeness contract
+
+A retest campaign is not complete when the runner exits — it is complete when **zero** planned operations remain unresolved. Treat "the suite ran" and "every planned operation has a result" as different claims until proven equal:
+
+- State an explicit zero-unresolved contract as an exit condition: enumerate the planned operation set before the run starts, and the run does not close out until every entry in that set carries a disposition (pass, fail, or one of the non-pass values above — never silently dropped).
+- Provide a recovery path that re-drives specifically the unresolved operations, not the whole batch, when a run exits early.
+- Support a resumption contract: an interrupted campaign continues from its unresolved set on the next run rather than restarting from zero.
+
+This is a contract for the evidence a retest run must produce, not a specification for a particular runner implementation — see `docs/a11y-evaluation-report-contract.md` for the report-level half of the same completeness rule.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
