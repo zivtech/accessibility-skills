@@ -82,6 +82,16 @@ A retest campaign is not complete when the runner exits — it is complete when 
 
 This is a contract for the evidence a retest run must produce, not a specification for a particular runner implementation — see `docs/a11y-evaluation-report-contract.md` for the report-level half of the same completeness rule.
 
+### Operation-evidence admissibility
+
+Retest evidence is admissible for the operation it claims only when it survives five rules. These govern the *evidence package* for a single operation — a retest hitting a specific target, a keyboard trace, a passive DOM/AX observation — not the accessibility of the target itself. The `evals/suites/a11y-test-operation-evidence` lane exercises each with a clean control.
+
+- **A bounded diagnostic is not a conclusion.** A `focus_stagnation_observed`-class note — focus not advancing on a keyboard probe — is a bounded collector observation, not a WCAG 2.1.2 keyboard-trap finding. Promoting it to a trap conclusion requires a separate trace that attempts the documented exit (press Escape or the exit keys and show focus cannot leave). Absent that trace the operation stays a collector block; stagnation alone is neither a trap nor a conformance failure.
+- **Setup and action must be continuous.** An action's evidence is admissible only if its starting (`before`) identity equals the terminal identity of the setup that immediately preceded it in the *same session*. A setup in one session and an action from a different starting locus in another do not compose into evidence about the planned operation.
+- **Conditional states are natural-only.** A state that appears only under a condition (an empty result, an error) stays `UNTESTED` until it occurs naturally under an approved input. Inducing it synthetically — editing a response, forcing the state — does not clear coverage; it shows the message renders, not that the state is reachable in use.
+- **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
+- **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
+
 ## Interactive reconnaissance with agent-browser
 
 For ad-hoc a11y probing inside a conversational session — before writing a `.spec.js` file, when verifying a single fix, or when exploring the ARIA structure of an unfamiliar component — use `agent-browser`. The snapshot+ref pattern eliminates locator hunting:
