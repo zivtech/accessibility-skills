@@ -139,3 +139,7 @@ Common perspective keys:
 - `cognitive_neurodivergent`
 
 The contract adds traceability. It does not replace the critic or auditor's judgment about severity, ownership, or user impact.
+
+## Honest Boundary Note
+
+A finding's `evidence` field states what was observed; it does not automatically state what that observation does **not** establish, and the two get conflated easily. When a finding's evidence could plausibly be over-read — an automated-rule hit read as a full WCAG verdict, a single reproduction read as a confirmed pattern across the product, a passing scan read as "no accessibility issues" rather than "no issues this rule set detects" — say so in `actual_behavior` or a trailing note, rather than leaving the gap implicit. This is the same discipline the [A11y Evaluation Report Contract](a11y-evaluation-report-contract.md)'s required `honest_boundary` section applies at the report level; at finding granularity it stays a habit the evidence field should make explicit, not a new required field of its own.
