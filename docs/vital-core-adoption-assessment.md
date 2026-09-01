@@ -38,6 +38,8 @@ Direct code reuse remains blocked until a license/provenance decision reconciles
 
 Until that decision exists, v1 only adopts concepts, vocabulary, and benchmark expectations. It does not copy implementation code.
 
+This no-vendored-runtime boundary reaches evidence validation itself, not only scanners: binary-artifact checks such as PNG chunk/CRC structural validation are hand-rolled rather than pulling in an image-processing dependency, and detector-tool integration ships as a prompt-only skill contract rather than vendored code.
+
 ## Accepted V1 Contract Impact
 
 - `a11y-test` may wrap failing keyboard, axe, static-analysis, visual, or manual findings in an optional A11y Evidence Finding Contract.
