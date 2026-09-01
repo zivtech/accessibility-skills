@@ -123,6 +123,9 @@ Two semantic cautions:
 - The handoff message carries the same list with a per-SC reason (not sampled / tooling gap / ran out of scope) so the human can commission the missing testing.
 - **`not-evaluated` on an A/AA criterion is forbidden even though the CLI accepts it** (verified it does; the catalog's own term text restricts it to AAA). Emitting it is a must-fail.
 - A complete draft MUST NOT carry the INCOMPLETE marker — spurious gap entries on complete evidence are the serializer's version of a critic that flags everything.
+- **A non-pass is not one state.** When the per-SC reason distinguishes causes, use the more specific one instead of a generic "not sampled": "no access" (the evaluator was not authorized to reach the content or environment) and "needs a human owner" (the gap can only be closed by someone outside the testing party, not by more automated testing) are common enough to name explicitly, alongside tooling gap and ran out of scope. Distinguishing them tells the human who to route the gap to, not just that a gap exists.
+- **A tool-lane skip is a non-pass, never a silent clean.** When an underlying detector lane reports a skip disposition (a required credential or license was absent, or the tool itself errored) rather than actually running, that SC or sample is `untested` — never rolled up as `passed` because the tool produced no violations. No detection because a tool never ran is not evidence of conformance.
+- **Coverage ledger discipline.** Before a gate closes, every required page-view or sample in scope must have a tracked disposition — the INCOMPLETE marker's SC list is this ledger's visible form for A/AA criteria. Untested, skipped, and blocked entries stay visible in that list rather than silently dropping out of the count; a gate does not close on an assumption that an absent entry means "fine."
 
 ---
 
