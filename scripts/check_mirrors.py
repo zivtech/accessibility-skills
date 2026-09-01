@@ -42,7 +42,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CLAUDE_SKILLS = os.path.join(REPO, ".claude", "skills")
 AGENTS_SKILLS = os.path.join(REPO, ".agents", "skills")
 
-SKILL_NAMES = ["a11y-critic", "a11y-planner", "a11y-test", "perspective-audit", "bug-reporting"]
+SKILL_NAMES = ["a11y-critic", "a11y-planner", "a11y-test", "perspective-audit", "bug-reporting", "acr-reporting"]
 
 # Agent defs that EMBED a condensed copy of the skill protocol (drift-prone:
 # a new SKILL.md section does not propagate on its own). Not covered:
