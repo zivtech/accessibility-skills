@@ -1,0 +1,18 @@
+# Frozen-files manifest — TEMPLATE. Copy to `frozen-files.manifest` (repo root)
+# and list this project's own generated or frozen paths, one per line.
+#
+# A path belongs here when a hand-edit would silently invalidate a hash,
+# signature, freeze snapshot, or receipt chain the file anchors. The guard
+# (scripts/check_frozen_files.py) fails closed when any listed path appears in
+# the diff, so an edit is caught before it lands rather than discovered later.
+#
+# Rules:
+# - Paths are repo-relative, exactly as `git diff --name-only` prints them.
+# - Blank lines and lines starting with '#' are ignored.
+# - This list is project-specific. Never ship a real project's manifest inside
+#   a shared skill bundle — only this .example template travels.
+#
+# Examples (replace with your project's real frozen paths):
+evidence/frozen/example-final-freeze.json
+evidence/receipts/example-run-receipt.json
+reports/generated/example-rollup.csv
