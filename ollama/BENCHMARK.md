@@ -1765,3 +1765,37 @@ media-player (stably wrong) has a stable outcome.
 detector, not a verdict authority. On clean code its verdicts are unstable in both suites;
 detection itself varies draw-to-draw. Use it to surface candidate findings; route severity
 and verdicts through a second opinion.
+
+## Claude subagent calibration lane — a11y-test-operation-evidence (2026-09-02, BLIND)
+
+First rows for the operation-evidence lane, run BEFORE any local-model row so
+the instrument is calibrated on a known-good tier (acr-reporting Phase 2
+precedent). Scorer: `ollama/score_operation_evidence.py` — mechanizes the
+*reporting* of the admissibility judgment via the Structured disposition block
+(`a11y-test/SKILL.md`), never the judgment itself; 34 smoke canaries gate the
+scorer (`scripts/smoke_scorers.sh` cases 20–53), including a flag-every-rule
+over-attribution canary and a parse-failure canary. Draws: opus subagents,
+blind (read-one-file / write-one-file; spawn prompt on record), skill-slice
+condition = exactly what `run_benchmark.py opevidence` sends (4,028-char slice
+of the skill, task prefix, fixture); baseline = same prompt, no system prompt.
+Receipts: `evals/results/opevidence-scorer-2026-09/calibration/`.
+
+| Fixture | Skill slice d1 | Skill slice d2 | Baseline d1 |
+|---|---|---|---|
+| op-dialog-escape-overreach (REJECT, 2 rules) | PASS | PASS | FAIL (structural) |
+| op-empty-state-coverage-shortcuts (REJECT, 3 rules, 2 ops) | PASS | PASS | FAIL (structural) |
+| op-mixed-package-partial (REJECT on one op, PASS preserved on the other) | PASS | PASS | FAIL (structural) |
+| op-retest-clean (ACCEPT, false-alarm control) | PASS | PASS | FAIL (structural) |
+
+- **Gate met: 8/8 must-clean across two draws, no WARN.** Every draw produced
+  the single block the skill-text critic adjudicated as the only defensible
+  one, including `OP-CLOSE: UNTESTED` (not `BLOCKED`) on op-dialog and the
+  per-operation split on op-mixed. Re-scored after the over-attribution check
+  landed: unchanged, zero unexpected rule fires — no opus draw flagged a rule
+  the package did not break.
+- **A/B is draw-stable and structural.** All four baselines fail only for
+  want of the block (0 forbidden-phrase fabrications; prose judgments correct).
+  As in the acr lane: bare opus judges correctly; the slice carries the
+  machine contract (stable rule ids, closed value set, per-operation map).
+- Not measured: local models (qwen3.6:35b row pending at time of writing —
+  detector output when it lands), other hosted families, variance beyond n=2.
