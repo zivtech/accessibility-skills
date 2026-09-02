@@ -211,6 +211,13 @@ cp accessibility-skills/.claude/agents/*.md ~/.claude/agents/
         external-skills-manifest.yaml
     a11y-test/
       SKILL.md
+    a11y-content-judgment/
+      SKILL.md                         # Draft-and-ratify judge for titles/headings/links/images/labels (CANDIDATE)
+      references/
+        content-inventory.mjs          # URL-list content inventory (peer dep: playwright)
+        build-judgment-rows.mjs        # Dedupe + heuristic flags + batches; merge to CSV
+        judgment-rubric.md             # Per-criterion judgment rubric
+        judge-prompt.md                # Per-batch judge prompt
     perspective-audit/
       SKILL.md                         # Escalation-based perspective auditor
       references/
