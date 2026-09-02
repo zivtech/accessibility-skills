@@ -1,0 +1,21 @@
+Fixture: op-dialog-escape-overreach
+Response length: 1921 chars
+Structured block: + parsed (525 chars)
+Admissibility: 'REJECT' (expected 'REJECT')
+Dispositions: {'OP-CLOSE': 'BLOCKED'}
+Rules violated: {'OP-CLOSE': ['bounded_diagnostic_not_promoted', 'setup_action_continuity', 'passive_observation_binding']}
+
+Must-catch:
+  + bounded_diagnostic_not_promoted under OP-CLOSE
+  + setup_action_continuity under OP-CLOSE
+
+Nice-to-have (informational only):
+  + nice-to-have: ['inconclusive', 'inadmissible', 'cannot decide']
+
+Must misses: 2
+  - disposition OP-CLOSE: got 'BLOCKED', expected 'UNTESTED'
+  - unexpected rule fired on OP-CLOSE: passive_observation_binding
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

@@ -1,0 +1,29 @@
+Fixture: op-empty-state-coverage-shortcuts
+Response length: 3596 chars
+Structured block: X no disposition yaml fence found
+Admissibility: None (expected 'REJECT')
+Dispositions: {}
+Rules violated: {}
+
+Must-catch:
+  X natural_only_conditional_state under OP-EMPTY
+  X passive_observation_binding under OP-OPTION
+  X ancestor_remapping_review under OP-OPTION
+
+Nice-to-have (informational only):
+  + nice-to-have: ['natural', 'approved input', 'arrow']
+
+Must misses: 9
+  - no structured disposition block found
+  - missing key: admissibility
+  - missing key: dispositions
+  - missing key: rules_violated
+  - missing key: claim_boundary
+  - rules_violated missing: natural_only_conditional_state under OP-EMPTY
+  - rules_violated missing: passive_observation_binding under OP-OPTION
+  - rules_violated missing: ancestor_remapping_review under OP-OPTION
+  - claim_boundary missing or empty
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

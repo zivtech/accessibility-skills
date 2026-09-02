@@ -1,0 +1,27 @@
+Fixture: op-empty-state-coverage-shortcuts
+Response length: 2685 chars
+Structured block: + parsed (883 chars)
+Admissibility: 'REJECT' (expected 'REJECT')
+Dispositions: {'OP-EMPTY': 'UNTESTED', 'OP-OPTION_reachability': 'UNTESTED', 'OP-OPTION_focus': 'UNTESTED'}
+Rules violated: {'OP-EMPTY': ['natural_only_conditional_state'], 'OP-OPTION_reachability': ['passive_observation_binding'], 'OP-OPTION_focus': ['ancestor_remapping_review']}
+
+Must-catch:
+  + natural_only_conditional_state under OP-EMPTY
+  X passive_observation_binding under OP-OPTION
+  X ancestor_remapping_review under OP-OPTION
+
+Nice-to-have (informational only):
+  + nice-to-have: ['natural', 'approved input', 'arrow']
+
+Must misses: 5
+  - disposition OP-OPTION: missing
+  - rules_violated missing: passive_observation_binding under OP-OPTION
+  - rules_violated missing: ancestor_remapping_review under OP-OPTION
+  - unexpected rule fired on OP-OPTION_reachability: passive_observation_binding
+  - unexpected rule fired on OP-OPTION_focus: ancestor_remapping_review
+Fabrications: 0
+Should misses: 2
+  - claim_boundary does not mention OP-OPTION_reachability
+  - claim_boundary does not mention OP-OPTION_focus
+
+Status: FAIL

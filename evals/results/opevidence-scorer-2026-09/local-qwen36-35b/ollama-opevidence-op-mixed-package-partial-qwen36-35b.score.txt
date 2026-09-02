@@ -1,0 +1,18 @@
+Fixture: op-mixed-package-partial
+Response length: 1840 chars
+Structured block: + parsed (514 chars)
+Admissibility: 'REJECT' (expected 'REJECT')
+Dispositions: {'OP-CLOSE': 'PASS', 'OP-OPTION': 'UNTESTED'}
+Rules violated: {'OP-OPTION': ['passive_observation_binding']}
+
+Must-catch:
+  + passive_observation_binding under OP-OPTION
+
+Nice-to-have (informational only):
+  + nice-to-have: ['per-operation', 'OP-CLOSE PASS', 'attribution']
+
+Must misses: 0
+Fabrications: 0
+Should misses: 0
+
+Status: PASS
