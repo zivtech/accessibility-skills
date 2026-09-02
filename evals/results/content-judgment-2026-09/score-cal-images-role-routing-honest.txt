@@ -3,6 +3,7 @@ Coverage: 23/23 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 4/4 found
 Clean rows (R2): 3/3 unflagged; false alarms: 0
 Calibration rows (R3, informational): 16/16 agree
-Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Discriminating rows (D, flags absent or pointing the wrong way): 0/0 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
 
 Status: PASS

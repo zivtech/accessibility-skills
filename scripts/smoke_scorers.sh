@@ -448,6 +448,10 @@ run_case "cj loses miss (WARN)" "$CJ_SCORER" "cj-loses-miss-response.json" "$CJ_
 run_case "cj quoted span (WARN)" "$CJ_SCORER" "cj-quoted-span-response.json" "$CJ_META" \
     "R5 quoted span(s) absent from the row (1)" "Status: WARN"
 
+# Case 64: cj pattern group not unanimous (WARN, R7) — the gold's two clean rows form one group
+run_case "cj split pattern group (WARN)" "$CJ_SCORER" "cj-split-group-response.json" "$CJ_META" \
+    "R7 pattern_group 'clean-pair' not unanimous" "Status: WARN"
+
 # Case 63: cj truncated response (INCOMPLETE, never PASS)
 run_case "cj truncated (INCOMPLETE)" "$CJ_SCORER" "cj-truncated-response.json" "$CJ_META" \
     "Status: INCOMPLETE"

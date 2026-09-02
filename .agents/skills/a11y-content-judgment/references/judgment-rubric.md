@@ -26,16 +26,23 @@ contains, so someone scanning by headings can find it? Generic headings ("Overvi
 specific. Empty headings are `no`. A heading that is a data value ("24.3") with no noun is `no`. Do
 not judge heading *levels* here; level skips are recorded as a flag for 1.3.1, not for this row.
 For form fields: does the label say what to enter? Placeholder-only labels are `no` because the
-label disappears on input. A wrapping label or `aria-label` that names the field is `yes`.
+label disappears on input. (A field with no programmatic label is also a Level A 3.3.2 failure; the row is
+filed under 2.4.6 here, so a ratified `no` goes to bug-reporting with 3.3.2 cited.) A wrapping label or `aria-label` that names the field is `yes`.
 
 **2.4.4 Link purpose (in context).** From the link text **plus** the captured surrounding block
 (`context`), can the user tell where the link goes or what it does? Judge in context: "Learn more"
-inside a paragraph about ozone forecasts can be `yes` if the paragraph makes the destination
-obvious; the same text in a card grid with five other "Learn more" links is `no` because they are
-indistinguishable when listed. An empty accessible name is always `no`. A name equal to the raw URL
-is `no` unless the URL is a readable domain the user is meant to see. A file link (`file_ext` set)
-whose name does not indicate the format is `no` for a PDF/XLSX/ZIP (the user cannot know it will
-download or open an app) and `unsure` for images. Icon-only links with an alt or aria-label that
+inside a paragraph about ozone forecasts is `yes` when that paragraph names the destination — the
+paragraph is the link's programmatically determined context (H78; likewise a list item H77, a table
+cell with its headers H79, or the heading directly before the link H80). It is `no` only when no such
+context names the destination — five "Learn more" links whose card text sits in sibling blocks the
+link is not part of (F63), or a bare "Learn more" with nothing around it. That is the Level AA
+question. That identical names are indistinguishable when a screen reader lists all links is a
+2.4.9 (AAA) concern: put it in the `fix` or a note for the ratifier, never make it the AA verdict.
+An empty accessible name is always `no`. A name equal to the raw URL is `no` unless the URL is a
+readable domain the user is meant to see. A file link (`file_ext` set) whose name does not indicate
+the format is **not** a 2.4.4 failure — no sufficient technique requires a format cue: leave the
+`file_<ext>_not_indicated` flag to speak, draft `yes` when the purpose is otherwise clear with the
+cue suggested in `fix`, `unsure` when the purpose itself is unclear. Icon-only links with an alt or aria-label that
 names the destination are `yes`; with an alt that names the icon ("arrow", "chevron") are `no`.
 
 **1.1.1 Non-text content.** First decide the image's role from its position: inside a link/button
@@ -66,7 +73,12 @@ both go to `/` and users understand both), or would a user think they are differ
 - Audience-standard shorthand is `yes`. On a specialist product, an abbreviation the audience uses
   daily (a scientific dashboard's assay and pathway abbreviations; an air-quality tool's index name) is a descriptive label at
   Level AA; expansion is a AAA (3.1.4) concern, not this row's. Do not hedge to `unsure` for jargon.
+  You can only apply this rule from the product-and-audience note the orchestrator supplies with the
+  batch — read it first; a row alone does not tell you who the audience is.
 - Judge repeated patterns the same way every time. If a batch holds forty rows of the same
   construct (an ID link beside a name cell), decide the construct once from the rubric and apply it:
   the ID link is `yes` when the row's context names the record, `no` when the row shows only the ID.
+  When `context` is empty on an ID link inside `main`, that is the inventory's capture limit for
+  table cells (the sibling name cell is not captured), not evidence about the page: `unsure`,
+  `needs_human: true`, and say so in the rationale.
   Drifting between `yes`, `no`, and `unsure` on identical rows is the most common first-pass fault.

@@ -1,9 +1,21 @@
 {
  "schema": "judgment-units/v1",
- "built_utc": "2026-09-02T23:31:14.249Z",
- "inventory_sha256": "2da932d230062b1991223fabbd61ed50e7bdf32a2fa4f2b1d6526c9833e4ea77",
+ "built_utc": "2026-09-02T23:51:10.859Z",
+ "inventory_sha256": "4847e17124e2f69e21a19ed89c304c92535e646ad3987c93a36c5087512d0dc5",
  "views_ok": 3,
  "views_skipped": [],
+ "viewport": {
+  "id": "desktop-1440",
+  "width": 1440,
+  "height": 900
+ },
+ "caps": {
+  "headings": 250,
+  "links": 500,
+  "images": 250,
+  "fields": 120,
+  "nav_links": 120
+ },
  "unit_count": 44,
  "units": [
   {

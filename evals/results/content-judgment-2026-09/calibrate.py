@@ -15,6 +15,17 @@ real ollama/score_content_judgment.py:
   silent        the last input row omitted                 -> FAIL (C1)
   inventor      one rationale quoting a 4-word span absent from the row
                                                            -> WARN (R5, should-tier)
+  regression    every must-no rationale stripped of its `loses` phrase
+                                                           -> WARN (R6)
+  split-group   one row of the largest pattern_group dissenting
+                                                           -> R7 fires (WARN; FAIL when the
+                                                              group is must-no, since the
+                                                              dissent is also an R1 miss)
+
+What CLEAN certifies: C1/C2/R1/R2/R5/R6/R7 wiring and metadata
+self-consistency. It does NOT exercise R4 (every fixture's
+`fabricated_tokens` is empty — R4 is covered by the smoke case only) or the
+C3 word cap (honest rationales are truncated to 25 words by construction).
 
 Exit 0 = CLEAN; `--dump` writes score-cal-<fixture>-<case>.txt beside this
 file.
@@ -71,6 +82,27 @@ def mutate(meta, lines, case):
         out.append(json.dumps(o))
     if case == "silent":
         out = out[:-1]
+    if case == "regression":
+        for i, ln in enumerate(out):
+            o = json.loads(ln)
+            if o["judgment"] == "no":
+                o["rationale"] = "Not descriptive enough as written."
+                out[i] = json.dumps(o)
+    if case == "split-group":
+        groups = {}
+        for rid, m in rows.items():
+            if m.get("pattern_group") and not m.get("invalid"):
+                groups.setdefault(m["pattern_group"], []).append(rid)
+        if groups:
+            g = max(groups.values(), key=len)
+            # dissent on one row: the R7 line must fire; when the group is
+            # must-no the dissent is also an R1 miss (FAIL), else WARN
+            for i, ln in enumerate(out):
+                o = json.loads(ln)
+                if o["id"] == g[0]:
+                    o["judgment"] = "unsure" if o["judgment"] != "unsure" else "yes"
+                    o["needs_human"] = o["judgment"] == "unsure"
+                    out[i] = json.dumps(o)
     if case == "inventor":
         o = json.loads(out[0])
         o["rationale"] = 'The page says "quarterly membership renewal portal" but the text hides it.'
@@ -85,7 +117,17 @@ EXPECT = {
     "blind": ("FAIL", ["R1 expected-no row"]),
     "silent": ("FAIL", ["C1 missing output for 1 id"]),
     "inventor": ("WARN", ["R5 quoted span(s) absent from the row (1)"]),
+    "regression": ("WARN", ["R6 no-rationale names none of the row's loses phrases"]),
+    "split-group": ("WARN|FAIL", ["R7 pattern_group"]),
 }
+
+
+def _groups(meta):
+    g = {}
+    for rid, m in meta["rows"].items():
+        if m.get("pattern_group") and not m.get("invalid"):
+            g.setdefault(m["pattern_group"], []).append(rid)
+    return g
 
 
 def score(lines, meta_path):
@@ -112,10 +154,12 @@ def main():
                 continue
             if case in ("flagger",) and not any(m["expected"] == "yes" for m in musts):
                 continue
-            if case == "blind" and not any(m["expected"] == "no" for m in musts):
+            if case in ("blind", "regression") and not any(m["expected"] == "no" for m in musts):
                 continue   # vacuous on the clean control
+            if case == "split-group" and not any(len(v) > 1 for v in _groups(meta).values()):
+                continue   # no multi-row pattern group in this fixture
             out = score(base if case == "honest" else mutate(meta, base, case), meta_path)
-            ok = f"Status: {status}" in out and all(n in out for n in needles)
+            ok = any(f"Status: {st}" in out for st in status.split("|")) and all(n in out for n in needles)
             print(f"{'CLEAN' if ok else 'MISS '} {fid:30} {case:9} expected {status}")
             if not ok:
                 bad += 1

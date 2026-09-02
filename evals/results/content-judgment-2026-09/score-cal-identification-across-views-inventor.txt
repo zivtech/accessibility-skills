@@ -3,7 +3,8 @@ Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 2/2 found
 Clean rows (R2): 1/1 unflagged; false alarms: 0
 Calibration rows (R3, informational): 50/50 agree
-Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 1 hit(s)
+Discriminating rows (D, flags absent or pointing the wrong way): 1/1 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 1 hit(s)
 should miss: R5 quoted span(s) absent from the row (1): HEADING-PA-3208f26d78:“quarterly membership renewal portal”
 
 Status: WARN

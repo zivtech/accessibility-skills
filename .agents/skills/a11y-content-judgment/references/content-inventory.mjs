@@ -76,15 +76,15 @@ function inventory(CAPS) {
     const l = el.closest('header,nav,main,footer,aside,[role=banner],[role=navigation],[role=main],[role=contentinfo],[role=dialog],[role=search],[role=complementary],form');
     if (!l) return null;
     const role = l.getAttribute('role') || l.tagName.toLowerCase();
-    const label = l.getAttribute('aria-label') || (l.getAttribute('aria-labelledby') ? norm(document.getElementById(l.getAttribute('aria-labelledby'))?.textContent) : null);
+    const label = (l.getAttribute('aria-labelledby') ? norm(document.getElementById(l.getAttribute('aria-labelledby'))?.textContent) : null) || l.getAttribute('aria-label');
     return label ? `${role}[${clip(label, 40)}]` : role;
   };
   const labelledBy = (el) => { const lb = el.getAttribute('aria-labelledby'); if (!lb) return ''; return norm(lb.split(/\s+/).map((id) => document.getElementById(id)).filter(Boolean).map((n) => n.textContent).join(' ')); };
   const imgAltIn = (el) => { const i = el.querySelector('img[alt], svg[aria-label], [role=img][aria-label]'); return i ? norm(i.getAttribute('alt') || i.getAttribute('aria-label')) : ''; };
   // Accessible-name approximation. Order follows accname for these cases; not a full computation.
   const accName = (el) => {
-    const al = norm(el.getAttribute('aria-label')); if (al) return { name: al, source: 'aria-label' };
     const lb = labelledBy(el); if (lb) return { name: lb, source: 'aria-labelledby' };
+    const al = norm(el.getAttribute('aria-label')); if (al) return { name: al, source: 'aria-label' };
     const t = norm(el.textContent); if (t) return { name: t, source: 'content' };
     const ia = imgAltIn(el); if (ia) return { name: ia, source: 'img-alt' };
     const ti = norm(el.getAttribute('title')); if (ti) return { name: ti, source: 'title' };

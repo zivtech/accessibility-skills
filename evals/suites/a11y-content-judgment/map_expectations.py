@@ -228,6 +228,9 @@ def main():
         if patch.get("tier") == "must" and meta_rows[rid].get("tier") != "must":
             log.append(f"OVERRIDE-REFUSED {rid}: overrides may not promote a row to must")
             continue
+        if "expected" in patch and meta_rows[rid].get("note") != "incidental" and patch["expected"] != meta_rows[rid].get("expected"):
+            log.append(f"OVERRIDE-REFUSED {rid}: overrides may not change the blind author's expected verdict (only incidental rows take a value)")
+            continue
         meta_rows[rid].update(patch)
         meta_rows[rid]["note"] = f"[maintainer override] {patch.get('note', '')} | was: {meta_rows[rid].get('note', '')}".strip()
         log.append(f"{rid} OVERRIDE {json.dumps(patch, ensure_ascii=False)}")

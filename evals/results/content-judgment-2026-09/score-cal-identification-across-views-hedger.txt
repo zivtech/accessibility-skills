@@ -3,7 +3,8 @@ Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 2/2 found
 Clean rows (R2): 1/1 unflagged; false alarms: 0; over-hedged: 1
 Calibration rows (R3, informational): 50/50 agree
-Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Discriminating rows (D, flags absent or pointing the wrong way): 0/1 right — wrong: IDENT-PA-271f5ae86e(yes->unsure)
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
 should miss: R2 over-hedge: expected-yes row(s) judged unsure (1): IDENT-PA-271f5ae86e
 
 Status: WARN

@@ -5,3 +5,10 @@ rows:
   FIELD-WA-c7f6cc14da:
     reference: G131 (descriptive label; 2.4.6) — the name comes from aria-label (ARIA14, verified as a 4.1.2 technique)
     note: reference label corrected after live verification; verdict unchanged
+  HEADING-WA-e180f996ca:
+    unsure_ok: true
+    note: 'test-critic finding 6: G130 asks that a heading describe topic OR purpose; ''Overview'' above a section
+      that is an overview is borderline — a careful unsure is not a miss. Verdict unchanged (no).'
+  HEADING-WA-29d24d1db5:
+    unsure_ok: true
+    note: test-critic finding 6 (see Overview). Verdict unchanged (no).

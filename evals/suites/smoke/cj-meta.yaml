@@ -91,7 +91,7 @@ rows:
     polarity: sufficient
     clause1_evidence: true
     loses: []
-    pattern_group: null
+    pattern_group: clean-pair
   IDENT-SM-0000000004:
     expected: 'yes'
     tier: calibration
@@ -100,4 +100,4 @@ rows:
     polarity: sufficient
     clause1_evidence: false
     loses: []
-    pattern_group: null
+    pattern_group: clean-pair

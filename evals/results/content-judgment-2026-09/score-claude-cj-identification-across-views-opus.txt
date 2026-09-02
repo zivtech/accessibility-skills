@@ -3,7 +3,8 @@ Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 2/2 found
 Clean rows (R2): 1/1 unflagged; false alarms: 0
 Calibration rows (R3, informational): 42/50 agree — LINK-PA-3c06372ac0(yes->no), LINK-PA-604c564998(yes->no), LINK-PA-6f66f9133e(yes->no), LINK-PA-74380fc2c7(yes->no), LINK-PA-a55ba3b257(yes->no), LINK-PA-fc8c6335f3(yes->no), LINK-PA-feb8f34e8d(yes->no), TITLE-PA-50a20e5225(yes->no)
-Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Discriminating rows (D, flags absent or pointing the wrong way): 1/1 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
 should miss: R6 no-rationale names none of the row's loses phrases on 2 row(s): IDENT-PA-63040493f3, IDENT-PA-9bf8bba533
 
 Status: WARN

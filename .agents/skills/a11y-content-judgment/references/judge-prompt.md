@@ -1,7 +1,9 @@
 # Judge prompt (per batch)
 
 You are drafting accessibility judgments for a named human ratifier on a website accessibility audit.
-Read `judgment-rubric.md` in full first. Then read the batch file. Each line is one JSON unit
+Read `judgment-rubric.md` in full first, then the product-and-audience note the orchestrator supplies
+beside the batch (one paragraph: what the product is and who uses it — the rubric's audience-shorthand
+rule cannot be applied without it). Then read the batch file. Each line is one JSON unit
 captured from a live page: `type` (title | heading | link | image | field | ident), `sc`, `name` (the
 text or accessible name the user receives), `detail`, `href`, `context` (surrounding text block),
 `landmark`, `visible`, `views` (how many pages carry this unit), and `flags` (deterministic

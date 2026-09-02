@@ -1,0 +1,37 @@
+# a11y-critic (opus) verdict on the a11y-content-judgment skill — 2026-09-02, verbatim
+
+**VERDICT: REVISE** — the pipeline, receipt discipline, and negative-space table are unusually good for a v0.1; three rubric rules and one missing sentence would put false failures and false passes into a conformance-adjacent artifact. Mirrors are byte-identical (`diff -rq` clean).
+
+Your three findings: **all three confirmed**, one with a corrected mechanism.
+
+## CRITICAL
+
+**C1. Nothing states that ratified `yes` rows cannot support a criterion.** `SKILL.md:92-99` scopes the inventory to one viewport, nothing activated, caps 250/500/250/120. Those limits live only in `inventory-run.json`; `draft-judgments.json`'s `what_this_is` (`build-judgment-rows.mjs:228`) and the 34 CSV columns (`:218`) carry none of them. The skill says precisely how a `no` reaches an outcome map (`SKILL.md:196-199`) and never says the inverse: an all-`yes` ratified CSV is not evidence for "Supports" on 2.4.4/1.1.1, because everything behind interaction, every other viewport, and everything past the caps was never inventoried. That is the one sentence that stops the artifact being misread in the direction it will actually be misread.
+**Fix:** add a `coverage_basis` line to `draft-judgments.json` (viewport, activation=none, caps hit, views) and one rule to Receipt discipline: *a `yes` row is evidence of no defect in the captured sample only; it never supports a criterion outcome.*
+
+## MAJOR
+
+**M1. Judge gets no product or audience — confirmed.** Batch lines (`build-judgment-rows.mjs:200`) emit `{id,type,sc,name,detail,href,context,landmark,visible,views,flags}`; `judge-prompt.md:5-8` lists exactly those. The rubric's shorthand rule (`judgment-rubric.md:66-68`) says "On a specialist product…" — unusable. Product leaks only via the batch filename (`:199`), which the judge is told to echo, never to read as evidence. This is the mechanism behind the origin run's over-hedging bias (`SKILL.md:258`). **Fix:** add `product` + a one-line `audience` (from a `--audience` inventory arg) to the batch line and to `judge-prompt.md`'s field list.
+
+**M2. Card-grid rule decides 2.4.4 on 2.4.9 grounds — confirmed, and the capture makes it unfixable at the judge.** `judgment-rubric.md:33-35`: five identical "Learn more" links are `no` "because they are indistinguishable when listed" — that is 2.4.9 Link Only (AAA). At 2.4.4 the question is programmatically determined link context; H77 (list item), H78 (paragraph), H79 (cell + headers) and H80 (preceding heading) are sufficient. `blockContext` (`content-inventory.mjs:94-97`) climbs ancestors only, so a card's own `<h3>` — the H80 context — never reaches the row. The skill therefore fails a conforming pattern *and* cannot see the evidence that would clear it. **Fix:** capture `preceding_heading` and `list_item_text` per link; restate the rule as "`no` only when no programmatically determined context (same block, list item, cell + headers, or preceding heading) names the destination — cite F63."
+
+**M3. Table-cell link context — confirmed, mechanism differs.** Not "the cell alone": `blockContext` requires the block's text to exceed the link's by >3 chars (`:96`), so `<td><a>DL-1002</a></td>` skips the `td`, and `tr`/`tbody`/`table` are absent from `BLOCK` (`:93`), so nothing matches. Verified in the frozen fixture — `context:""` on all six rows (`fixtures/link-purpose-cards.md`, `LINK-LI-44b51f4ece`). So `judgment-rubric.md:70-71` ("`yes` when the row's context names the record") is undecidable, and where a wrapping `div` *does* fall within 6 hops the row gets an unattributed blob of the whole table — an invitation to the "rationale asserts unshown fact" fault the calibration record already logs. **Fix:** capture `row_context` (sibling cells) + `header_cells` per H79; the six invalid fixture rows become valid.
+
+**M4. Uncited mandatory `no` at 2.4.4.** `judgment-rubric.md:36-37` makes a PDF/XLSX/ZIP link without a format cue `no`. No 2.4.4 sufficient technique requires format indication (G201 is 3.2.5). The eval lane independently classified these rows calibration-tier "rubric conventions" for exactly this reason. Contested practice is fine; a mandatory `no` with no SC behind it is not, in an artifact feeding an ACR. **Fix:** demote to a flag + `unsure`, or cite the technique.
+
+**M5. Draft/ratify boundary is not enforceable.** The only control on a downstream consumer is `SKILL.md:270` — "acr-reporting … must refuse a CSV whose `ratified_by` is blank." `grep` over `.claude/skills/acr-reporting/SKILL.md` finds no mention of this skill, that CSV, or `ratified_by`. An obligation asserted on a sibling that does not carry it is not a gate. Compounding it: the CSV has no status marker at all (`:218`), and the column that answers "what does this row say?" is named `session_judgment` — which reads as authoritative and is set by the same class of agent that drafted it. **Fix:** emit `status` as the CSV's first column on every row; add the refusal rule to acr-reporting's own text in the same commit; rename to `session_draft_judgment`.
+
+**M6. The calibration record's "Agreement" is model-vs-model, sold as human base rate.** `SKILL.md:252-253`: "the random-row agreement is the base rate a ratifier can expect." The 98.6 % is opus-agrees-with-sonnet (`:258`), not ratifier-agrees-with-draft — the owner's 8 answers never enter the table. **Fix:** rename the column `second_reader_agreement`, delete the base-rate sentence, add a `ratifier_overturn_rate` column to be filled from `ratifications.jsonl`.
+
+## MINOR
+
+- Placeholder-only fields are filed `sc: 2.4.6` (`build-judgment-rows.mjs:132`, `judgment-rubric.md:28-29`); the A-level failure is 3.3.2, which the not-covered list excludes as "3.3.x error handling" (`SKILL.md:68`) — an A criterion with evidence in hand never gets it.
+- `accName` orders `aria-label` before `aria-labelledby` (`content-inventory.mjs:86-87`, mirrored in `SKILL.md:74`); accname spec is the reverse. Disclosed as an approximation, but it changes the `name` the judge judges.
+- `SKILL.md:24` still reads "no eval lane yet"; the prose block list (`:203`-equivalent, "p/li/td/dd/label/section/div") omits `th,dt,figcaption,h1-h6,blockquote,summary,article`.
+- Calibration table mixes denominators: 60/501 overall vs 56/479 across the four named groups; the 22 post-fix rows' 4 overturns are unstated.
+
+**Orthogonality: clean.** No severity, impact, or outcome-term field exists anywhere in the row schema or CSV — the skill structurally cannot write an outcome-map cell. Say so in the promotion record; it is the strongest thing here.
+
+**Promotion bar:** clause 2 (negative space) is the best-executed clause and still has the C1 hole. Clause 1 is met only if the new lane counts as the second reproduction, and it landed after the skill text — that order violation should be recorded, not laundered. Clause 3 is met structurally (clean-control fixture) but unexercised: no model rows exist, so nothing has yet demonstrated the false-alarm half.
+
+**Not checked:** the eval suite's scorer, fixtures, and calibration receipts (reviewed only for corroboration); `client-standards-example-epa.md`; live execution of either script (no playwright peer dep — findings M3/C1 rest on code reading plus the frozen fixture output); `--sample`/`--merge` behaviour under real `ratifications.jsonl`/`spot-checks.jsonl`; 3.2.3 nav-order maths; whether `check_mirrors.py --strict` covers this skill's paths; git history.

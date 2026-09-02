@@ -117,7 +117,7 @@ rows:
   HEADING-WA-29d24d1db5:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: G130
     polarity: failure
     clause1_evidence: true
@@ -127,7 +127,8 @@ rows:
     - elevated sediment following Tuesday's rainfall
     evidence_absent: []
     pattern_group: generic-heading
-    note: Second generic heading; the section body again shows a specific heading was available.
+    note: '[maintainer override] test-critic finding 6 (see Overview). Verdict unchanged (no). | was:
+      test-critic finding 6 (see Overview). Verdict unchanged (no).'
     locator:
       view: reports
       text: Details
@@ -205,7 +206,7 @@ rows:
   HEADING-WA-e180f996ca:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: G130
     polarity: failure
     clause1_evidence: true
@@ -215,8 +216,11 @@ rows:
     - Turbidity readings held steady
     evidence_absent: []
     pattern_group: generic-heading
-    note: Generic heading; the section's own first sentence shows a specific heading was available (e.g.
-      naming the turbidity/chlorine trend).
+    note: '[maintainer override] test-critic finding 6: G130 asks that a heading describe topic OR purpose;
+      ''Overview'' above a section that is an overview is borderline — a careful unsure is not a miss.
+      Verdict unchanged (no). | was: test-critic finding 6: G130 asks that a heading describe topic OR
+      purpose; ''Overview'' above a section that is an overview is borderline — a careful unsure is not
+      a miss. Verdict unchanged (no).'
     locator:
       view: reports
       text: Overview

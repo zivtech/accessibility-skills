@@ -21,7 +21,7 @@ metadata:
 
 # Content Judgment Skill (draft-and-ratify for the judgment criteria)
 
-> **Status: CANDIDATE — promoted 2026-09-02 from one engagement run, no eval lane yet.** Origin: the
+> **Status: CANDIDATE — promoted 2026-09-02 from one engagement run; eval lane added the same day, gate not met as the rubric stood (rubric revised, re-draw pending — `evals/results/content-judgment-2026-09/`).** Origin: the
 > zivtech/a11y-audits (private) EPA interactive-retest engagement, OpenACR lane phase P3 bucket B3,
 > where the owner ruled that "determining these things are actually perfect use cases for using AI
 > to help with a11y tests" and delegated the *drafting* of B3 judgments to the agent while keeping
@@ -71,7 +71,7 @@ rendered page and often AT); 1.4.1 use of color (visual); 3.3.x error handling a
 1.4.5, CAPTCHA (human observation). A request to extend the CSV to any of those is a scoping error.
 
 The skill also does not compute accessible names. `name` in every row is a DOM approximation
-(`aria-label` > `aria-labelledby` > text content > image alt > `title`), recorded as `name_source`.
+(`aria-labelledby` > `aria-label` > text content > image alt > `title`), recorded as `name_source`.
 When the approximation is what makes a row `no`, the ratifier verifies in a browser.
 
 ---
@@ -126,8 +126,11 @@ node references/build-judgment-rows.mjs --build --inventory ./content-inventory 
 
 ### 3. Judge — one subagent per batch, rubric-bound
 
-Give each judge exactly three files: [references/judgment-rubric.md](references/judgment-rubric.md),
-[references/judge-prompt.md](references/judge-prompt.md), and one batch. It writes
+Give each judge exactly four things: [references/judgment-rubric.md](references/judgment-rubric.md),
+[references/judge-prompt.md](references/judge-prompt.md), one batch, and a one-paragraph **product-and-audience
+note** (what the product is, who uses it) — the rubric's audience-shorthand rule cannot be applied
+without it, and the batch line does not carry it (the origin run leaked product only through the
+batch filename, which is the mechanism behind its over-hedging bias). It writes
 `<batch>.judged.jsonl` with, per row: `judgment` (`yes` | `no` | `unsure`), `confidence`,
 `rationale` (≤ 25 words naming what the person experiences), `fix` (≤ 20 words), `needs_human`,
 `drafted_by` (model id). Constraints that matter: native Read/Write only, no nested agents, one
@@ -152,14 +155,16 @@ live page. Write the results to `spot-checks.jsonl` (`{id, spot_check: agree|ove
 the merge renders them in the `spot_check` column and carries the effective value in
 `session_judgment` (the overturned value where one exists, else the draft). `--sample` writes
 `spot-check-sample.jsonl` with exactly that selection (seeded, reproducible). This is the step that
-makes the drafts *the session's* judgment rather than a delegated one. Run it with a stronger tier
+makes the drafts *the session's* draft rather than a delegated one — still a draft. Run it with a stronger tier
 than the first pass where one is available, and have the reader check each rationale against the
 row: on the origin run, first-pass rationales occasionally named chemicals, landmarks, or titles
 that were not in the captured row, with the verdict still correct on what the row did show.
 
-CSV columns: `id, product, type, sc, view_count, views, name, detail, href, context, landmark,
+CSV columns: `status, id, product, type, sc, view_count, views, name, detail, href, context, landmark,
 selector, visible, flags, draft_judgment, confidence, rationale, fix, needs_human, drafted_by,
-spot_check, session_judgment, ratified_by, ratified_judgment, ratifier_note`. The last three are blank on delivery and
+spot_check, session_draft_judgment, ratified_by, ratified_judgment, ratifier_note`. `status` is the
+first column on every row (`DRAFT_NOT_RATIFIED` until a person signs that row) so no consumer can
+read a draft as a verdict; `session_draft_judgment` is named for what it is. The last three are blank on delivery and
 are the only fields a human fills. Rows sort `no` → `unsure` → `yes`, widest fan-out first, so the
 ratifier's first hour lands on the rows that matter.
 
@@ -168,7 +173,12 @@ ratifier's first hour lands on the rows that matter.
 ## Receipt discipline
 
 - `draft-judgments.json` carries `status` (`DRAFT_NOT_RATIFIED` → `PARTIALLY_RATIFIED` →
-  `RATIFIED`), the units file hash, and the rubric filename. It is never an input to an outcome map.
+  `RATIFIED`), the units file hash, the rubric filename, and a `coverage_basis` block (views
+  inventoried, viewport, caps, activation = none). It is never an input to an outcome map.
+- **A `yes` row is evidence of no defect in the captured sample only; it never supports a criterion
+  outcome.** One viewport, nothing activated, capped counts: everything behind interaction, every
+  other viewport, and everything past the caps was never inventoried, so an all-`yes` ratified CSV
+  is not evidence for "Supports" on 2.4.4 or 1.1.1. Only a ratified `no` travels (as a finding).
 - Ratification is a file, not a CSV edit: `ratifications.jsonl` lines of
   `{id, ratified_by, ratified_judgment, ratifier_note, ratified_utc, ruling}`; `--merge` fills the
   ratifier columns from it. A family ruling ("every logo that is a link is named by its destination")
@@ -248,14 +258,16 @@ ratifier's first hour lands on the rows that matter.
 
 ## Calibration record
 
-Filled per run. A run that skips this section has not finished. Read the split, not the average:
-the random-row agreement is the base rate a ratifier can expect on rows nobody flagged; the
-`unsure` and clean-but-`no` rates say where the first pass needs the second reader most, so a
-budget-constrained run should second-read those two groups first and sample the rest.
+Filled per run. A run that skips this section has not finished. Read the split, not the average.
+The agreement column is **second-reader agreement** — one model class reading another's drafts —
+not a human base rate; the ratifier's own overturn rate is a separate column filled from
+`ratifications.jsonl` and was not captured on the origin run. The `unsure` and clean-but-`no`
+rates say where the first pass needs the second reader most, so a budget-constrained run should
+second-read those two groups first and sample the rest.
 
-| Run | Rows | Draft model | Spot-checked | Agreement | Systematic biases observed |
-|---|---|---|---|---|---|
-| 2026-09-02 origin (two federal products, 43 views) | 1,899 drafted (1,847 after the builder fixes) | claude-sonnet-5 | 501 rows (479 before the builder fixes, 22 after): every `unsure`, every flag/draft disagreement, 10 % random; second reader claude-opus-5 on four chunks, the orchestrating session on three | 88.0 % overall (60 overturned); **random rows 98.6 %** (2/146 overturned); flagged-but-`yes` 98.1 % (3/162); **clean-but-`no` 78.1 %** (16/73); **`unsure` 64.3 %** (35/98 settled by the reader, 29 of them to `yes`) | (1) Over-hedging: audience-standard shorthand (HTTr, ADME, IVIVE) and repeated ID-link constructs drafted `unsure`; (2) inconsistency within a batch on identical fact patterns; (3) rationales asserting facts not in the row (a chemical name with empty context, an unrecorded landmark label) with the verdict still right; (4) a few `no` verdicts held to a bar the rubric does not set (an icon alt that names the thing but not what it means). No systematic false-`yes` found. |
+| Run | Rows | Draft model | Spot-checked | Second-reader agreement | Ratifier overturn rate | Systematic biases observed |
+|---|---|---|---|---|---|---|
+| 2026-09-02 origin (two federal products, 43 views) | 1,899 drafted (1,847 after the builder fixes) | claude-sonnet-5 | 501 rows (479 before the builder fixes, 22 after): every `unsure`, every flag/draft disagreement, 10 % random; second reader claude-opus-5 on four chunks, the orchestrating session on three | 88.0 % overall (60/501 overturned: 56 across the four named groups plus 4 among the 22 post-fix rows); **random rows 98.6 %** (2/146 overturned); flagged-but-`yes` 98.1 % (3/162); **clean-but-`no` 78.1 %** (16/73); **`unsure` 64.3 %** (35/98 settled by the reader, 29 of them to `yes`) | not captured (the owner ruled by family; per-row overturns were not recorded) | (1) Over-hedging: audience-standard shorthand (HTTr, ADME, IVIVE) and repeated ID-link constructs drafted `unsure`; (2) inconsistency within a batch on identical fact patterns; (3) rationales asserting facts not in the row (a chemical name with empty context, an unrecorded landmark label) with the verdict still right; (4) a few `no` verdicts held to a bar the rubric does not set (an icon alt that names the thing but not what it means). No systematic false-`yes` found. |
 
 ---
 
@@ -267,4 +279,6 @@ budget-constrained run should second-read those two groups first and sample the 
   (every card grid uses "Learn more"), that pattern goes to the critic as one finding, not 40 rows.
 - **bug-reporting** turns a ratified `no` into a filable issue; the row's `selector`, `href`,
   `views`, and `fix` are the inputs it needs.
-- **acr-reporting** serializes ratified outcomes; it must refuse a CSV whose `ratified_by` is blank.
+- **acr-reporting** serializes ratified outcomes; its own text now carries the refusal rule (a
+  content-judgment CSV row whose `status` is not `RATIFIED` is never an outcome input), and even a
+  ratified `yes` is sample-scoped evidence, not a supports term.

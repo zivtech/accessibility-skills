@@ -34,6 +34,12 @@ RUBRIC-priced (only the rubric arm is told how to judge):
             `loses` phrases, substring, case-insensitive; the phrases are
             blind-authored, so the WARN rate here is uncalibrated)
   R7 should every pattern_group is unanimous
+  D  info   discriminating rows — must rows whose heuristic flags point the
+            wrong way or are absent (an expected-no row with no flag, an
+            expected-yes row with a flag): the only rows a "trust the flag"
+            policy gets wrong, reported as the headline judgment score
+            because every planted defect in the first fixture set carries a
+            flag (test-critic finding 1)
 
 Rows marked `invalid: true` in the metadata (a demonstrated row-evidence
 defect found after the freeze) are excluded from every check and listed.
@@ -171,7 +177,7 @@ def main():
           f" ({len(dup)} duplicated, {len(extra)} extra)")
 
     # per-row checks
-    stats = {"must_no": [0, 0], "deferred": 0, "must_yes": [0, 0], "false_alarm": [],
+    stats = {"must_no": [0, 0], "deferred": 0, "must_yes": [0, 0], "false_alarm": [], "disc": [0, 0], "disc_wrong": [],
              "over_hedge": [], "cal": [0, 0], "cal_mismatch": [], "loses_miss": [],
              "span_hits": [], "token_hits": [], "long_rationale": [], "needs_human_miss": [],
              "fix_on_yes": [], "bad_conf": [], "bad_judgment": [], "no_drafted_by": []}
@@ -202,6 +208,14 @@ def main():
         expected = norm(m.get("expected"))
         tier = norm(m.get("tier") or "must")
         unsure_ok = bool(m.get("unsure_ok"))
+        row_flags = [f for f in ((fixture_rows.get(rid) or {}).get("flags") or []) if not str(f).startswith(("name_from", "h1_count", "level_skip", "no_h1", "new_window", "title_duplicates"))]
+        if tier != "calibration" and ((expected == "no" and not row_flags) or (expected == "yes" and row_flags)):
+            stats["disc"][1] += 1
+            right = (j == expected) or (j == "unsure" and unsure_ok)
+            if right:
+                stats["disc"][0] += 1
+            else:
+                stats["disc_wrong"].append(f"{rid}({expected}->{j})")
         if tier == "calibration":
             stats["cal"][1] += 1
             ok = (j == expected) or (j == "unsure" and unsure_ok)
@@ -278,7 +292,10 @@ def main():
     if stats["cal"][1]:
         print(f"Calibration rows (R3, informational): {stats['cal'][0]}/{stats['cal'][1]} agree"
               + (f" — {', '.join(stats['cal_mismatch'])}" if stats["cal_mismatch"] else ""))
-    print(f"Fabrication (R4 tokens): {len(stats['token_hits'])} hit(s); (R5 quoted spans, {span_tier}-tier): {len(stats['span_hits'])} hit(s)")
+    print(f"Discriminating rows (D, flags absent or pointing the wrong way): {stats['disc'][0]}/{stats['disc'][1]} right"
+          + (f" — wrong: {', '.join(stats['disc_wrong'])}" if stats["disc_wrong"] else ""))
+    r4 = f"{len(stats['token_hits'])} hit(s)" if fab_tokens else "not armed (fixture lists no tokens)"
+    print(f"Fabrication (R4 tokens): {r4}; (R5 quoted spans, {span_tier}-tier): {len(stats['span_hits'])} hit(s)")
     for line in info:
         print(f"Info: {line}")
     for line in must_miss:
