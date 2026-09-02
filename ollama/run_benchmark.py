@@ -11,6 +11,8 @@ Usage:
     python3 ollama/run_benchmark.py acr <model> <fixture-id>                 # ACR-reporting single fixture (skill = system prompt)
     python3 ollama/run_benchmark.py acr-baseline <model> <fixture-id>        # Same fixture, no skill (baseline condition)
     python3 ollama/run_benchmark.py planner-federal <model> <fixture-id>     # Planner + a11y-test crosswalk in-prompt (declared-508 condition)
+    python3 ollama/run_benchmark.py cj <model> <fixture-id>                  # Content-judgment single fixture (judgment rubric = system prompt)
+    python3 ollama/run_benchmark.py cj-baseline <model> <fixture-id>         # Same fixture, no rubric (baseline condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
@@ -111,6 +113,21 @@ OPEVIDENCE_FIXTURES = [
     "op-empty-state-coverage-shortcuts",
     "op-mixed-package-partial",
     "op-retest-clean",
+]
+
+# a11y-content-judgment lane (wave-2 item #1, 2026-09-02). The system prompt
+# is the skill's judge-facing rubric (references/judgment-rubric.md) — the
+# only file the judge step reads in the skill's own pipeline; SKILL.md is the
+# orchestrator's protocol and judge-prompt.md is subagent plumbing. The
+# fixture .md carries the batch rows plus the output contract (keys, one
+# JSON line per row) so the no-rubric baseline is scorable; everything the
+# lane grades — in-context judging, image-role routing, "length alone is
+# never a no", never inventing destination content, one verdict per
+# construct — must come from the rubric.
+CJ_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-content-judgment", "fixtures")
+CJ_RUBRIC_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "a11y-content-judgment", "references", "judgment-rubric.md")
+
+CJ_FIXTURES = [
 ]
 
 OPEVIDENCE_PROMPT_PREFIX = (
@@ -708,6 +725,63 @@ def load_opevidence_system_prompt():
     return content[start:end].strip()
 
 
+def load_cj_system_prompt():
+    with open(CJ_RUBRIC_PATH) as f:
+        return f.read()
+
+
+def run_cj(model, fixture_id, system_prompt, condition="cj"):
+    """Content-judgment lane. condition="baseline" runs the identical fixture
+    with no system prompt to measure what the rubric carries; its output file
+    gets a distinct prefix so rubric-condition globs never count it."""
+    prompt = load_fixture(fixture_id, CJ_FIXTURES_DIR)
+
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        # 40k: a batch of up to ~90 rows plus one JSON line per row back,
+        # with thinking-by-default models sharing the window with reasoning.
+        "options": {"num_ctx": 40960, "temperature": 0.3},
+    }
+    if system_prompt:
+        payload["system"] = system_prompt
+
+    file_prefix = "ollama-cj" if condition == "cj" else "ollama-cj-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"CJ ({condition}) | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1800) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "a11y-content-judgment",
+        "condition": condition,
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
 def run_opevidence(model, fixture_id, system_prompt, condition="opevidence"):
     """Operation-evidence admissibility lane. condition="baseline" runs the
     identical fixture with no system prompt to measure what the skill slice
@@ -1034,6 +1108,22 @@ def main():
         model, fixture_id = sys.argv[2], sys.argv[3]
         validate_fixture_id(fixture_id)
         run_opevidence(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "cj":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py cj <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_cj(model, fixture_id, load_cj_system_prompt())
+
+    elif cmd == "cj-baseline":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py cj-baseline <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_cj(model, fixture_id, "", condition="baseline")
 
     elif cmd == "evalreport-remaining":
         import glob as _eglob
