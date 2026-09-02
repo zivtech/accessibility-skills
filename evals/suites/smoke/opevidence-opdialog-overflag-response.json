@@ -1,0 +1,3 @@
+{
+  "response": "The package promotes a focus_stagnation_observed note into a 2.1.2 conclusion without any exit-path trace, and the action comes from Session B while the setup ran in Session A, so nothing here is evidence about OP-CLOSE.\n\n```yaml\nadmissibility: REJECT\ndispositions: {OP-CLOSE: UNTESTED}\nrules_violated: {OP-CLOSE: [bounded_diagnostic_not_promoted, setup_action_continuity, natural_only_conditional_state, passive_observation_binding, ancestor_remapping_review]}\nclaim_boundary: \"OP-CLOSE: nothing admitted bears on it.\"\n```\n"
+}

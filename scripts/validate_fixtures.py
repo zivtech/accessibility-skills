@@ -147,6 +147,15 @@ def check_registries():
     for fid in sorted(fs_evalreport - rb_evalreport):
         problems.append(f"  run_benchmark.EVALREPORT_FIXTURES: filesystem has {fid} not in list")
 
+    # a11y-test-operation-evidence registry vs filesystem
+    opevidence_dir = os.path.join(SUITES_DIR, "a11y-test-operation-evidence", "fixtures")
+    fs_opevidence = set(fs_fixture_ids(opevidence_dir))
+    rb_opevidence = set(run_benchmark.OPEVIDENCE_FIXTURES)
+    for fid in sorted(rb_opevidence - fs_opevidence):
+        problems.append(f"  run_benchmark.OPEVIDENCE_FIXTURES: {fid} not on filesystem")
+    for fid in sorted(fs_opevidence - rb_opevidence):
+        problems.append(f"  run_benchmark.OPEVIDENCE_FIXTURES: filesystem has {fid} not in list")
+
     # run_cloud_benchmark vs run_benchmark (the two in-code copies)
     for fid in sorted(rcb_critic - rb_critic):
         problems.append(f"  run_cloud_benchmark vs run_benchmark critic: {fid} in cloud only")
@@ -175,7 +184,8 @@ def main():
     # 1. YAML parse: all suites (excluding smoke/)
     total_yaml = 0
     yaml_errors = []
-    for suite in ("a11y-critic", "a11y-planner", "perspectives", "bug-reporting", "evaluation-report"):
+    for suite in ("a11y-critic", "a11y-planner", "perspectives", "bug-reporting",
+                  "evaluation-report", "a11y-test-operation-evidence"):
         suite_path = os.path.join(SUITES_DIR, suite)
         count, errs = yaml_parse_dir(suite_path)
         total_yaml += count
@@ -189,7 +199,8 @@ def main():
 
     # 2. Triplet completeness
     triplet_ok = True
-    for suite in ("a11y-critic", "a11y-planner", "bug-reporting", "evaluation-report"):
+    for suite in ("a11y-critic", "a11y-planner", "bug-reporting", "evaluation-report",
+                  "a11y-test-operation-evidence"):
         fixtures_dir = os.path.join(SUITES_DIR, suite, "fixtures")
         rubrics_dir = os.path.join(SUITES_DIR, suite, "rubrics")
         count, problems = check_triplets(suite, fixtures_dir, rubrics_dir)
@@ -235,7 +246,7 @@ def main():
                 print(p)
             errors.extend(reg_problems)
         else:
-            print("Registries: 8 checks OK")
+            print("Registries: 9 checks OK")
     except Exception as e:
         msg = f"  Registry check failed: {e}"
         print(f"Registries: ERROR")

@@ -96,6 +96,29 @@ ACR_FIXTURES = [
     "parks-registration-clean",
 ]
 
+# a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system
+# prompt is a heading-anchored slice of the a11y-test SKILL.md — the
+# "### Operation-evidence admissibility" section plus its "### Structured
+# disposition block" contract, up to (not including) "### PASS partition".
+# No prompt prefix beyond the task instruction below: the fixture .md carries
+# the operation description + evidence package verbatim, and the five
+# admissibility rules being graded must come from the skill slice, not the
+# task prompt.
+OPEVIDENCE_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-test-operation-evidence", "fixtures")
+
+OPEVIDENCE_FIXTURES = [
+    "op-dialog-escape-overreach",
+    "op-empty-state-coverage-shortcuts",
+    "op-mixed-package-partial",
+    "op-retest-clean",
+]
+
+OPEVIDENCE_PROMPT_PREFIX = (
+    "Review the following operation-evidence package for admissibility under "
+    "the rules in the system prompt. Give your reasoning, then close with the "
+    "structured disposition block.\n\n"
+)
+
 PROMPT_PREFIX = "Review the following React component for accessibility design issues. Execute all phases of the investigation protocol.\n\n"
 PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
 BUGREPORT_PROMPT_PREFIX = (
@@ -660,6 +683,86 @@ def load_acr_skill():
         return f.read()
 
 
+A11Y_TEST_SKILL_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "a11y-test", "SKILL.md")
+OPEVIDENCE_START_ANCHOR = "### Operation-evidence admissibility"
+OPEVIDENCE_END_ANCHOR = "### PASS partition"
+
+
+def load_opevidence_system_prompt():
+    """Heading-anchored slice of a11y-test SKILL.md: the operation-evidence
+    admissibility rules plus the Structured disposition block contract that
+    immediately follows them, stopping before the PASS-partition section
+    (a related but separate concern this lane does not grade). Hard error if
+    either anchor is missing — a silent empty/full-file fallback would score
+    a model against the wrong instrument."""
+    with open(A11Y_TEST_SKILL_PATH) as f:
+        content = f.read()
+    start = content.find(OPEVIDENCE_START_ANCHOR)
+    if start == -1:
+        sys.exit(f"load_opevidence_system_prompt: anchor not found in "
+                  f"{A11Y_TEST_SKILL_PATH}: {OPEVIDENCE_START_ANCHOR!r}")
+    end = content.find(OPEVIDENCE_END_ANCHOR, start)
+    if end == -1:
+        sys.exit(f"load_opevidence_system_prompt: anchor not found in "
+                  f"{A11Y_TEST_SKILL_PATH}: {OPEVIDENCE_END_ANCHOR!r}")
+    return content[start:end].strip()
+
+
+def run_opevidence(model, fixture_id, system_prompt, condition="opevidence"):
+    """Operation-evidence admissibility lane. condition="baseline" runs the
+    identical fixture with no system prompt to measure what the skill slice
+    carries; its output file gets a distinct prefix so the skill-condition
+    glob never counts it."""
+    prompt = OPEVIDENCE_PROMPT_PREFIX + load_fixture(fixture_id, OPEVIDENCE_FIXTURES_DIR)
+
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        # 16384: the operation-evidence skill slice measures ~1.5k tokens and
+        # each fixture's operation description + evidence package ~1k tokens;
+        # the structured disposition block adds little more, but
+        # thinking-by-default models share the window with reasoning tokens.
+        "options": {"num_ctx": 16384, "temperature": 0.3},
+    }
+    if system_prompt:
+        payload["system"] = system_prompt
+
+    file_prefix = "ollama-opevidence" if condition == "opevidence" else "ollama-opevidence-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"OPEVIDENCE ({condition}) | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1200) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "a11y-test",
+        "condition": condition,
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
 PERSPECTIVE_CTX = {
     "qwen3:32b": 32768,
     "llama3.3:70b": 32768,
@@ -915,6 +1018,22 @@ def main():
             sys.exit(1)
         model, fixture_id = sys.argv[2], sys.argv[3]
         run_acr(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "opevidence":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py opevidence <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_opevidence(model, fixture_id, load_opevidence_system_prompt())
+
+    elif cmd == "opevidence-baseline":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py opevidence-baseline <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_opevidence(model, fixture_id, "", condition="baseline")
 
     elif cmd == "evalreport-remaining":
         import glob as _eglob

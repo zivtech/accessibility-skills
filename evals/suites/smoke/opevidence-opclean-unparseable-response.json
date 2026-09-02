@@ -1,0 +1,3 @@
+{
+  "response": "All three packages honor the rules; OP-EMPTY is correctly left untested.\n\n```yaml\nadmissibility: ACCEPT\ndispositions: {OP-CLOSE: PASS, OP-OPTION: PASS, OP-EMPTY: UNTESTED}\nrules_violated: {}\nclaim_boundary: OP-CLOSE: decided by the exit-path trace; OP-OPTION: decided; OP-EMPTY: undecided\n```\n"
+}
