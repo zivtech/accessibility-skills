@@ -6,6 +6,11 @@ Checks:
 2. Triplet completeness: each suite's fixture ids are complete across .md / .metadata.yaml / .rubric.yaml
 3. Registry coverage: hardcoded fixture lists in runner scripts match the filesystem
 
+Suite discovery is filesystem-derived: every directory under evals/suites/ is a
+triplet suite unless listed in NON_TRIPLET_SUITES, and every triplet suite must
+map to a runner registry (REGISTRY_LISTS or the inline critic/perspective/
+planner checks) — omission is opt-out, never opt-in (#25).
+
 Exit 1 if any check fails; exit 0 if all pass.
 
 Run from repo root:
@@ -19,6 +24,36 @@ import yaml
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SUITES_DIR = os.path.join(REPO, "evals", "suites")
 SMOKE_DIR = os.path.join(SUITES_DIR, "smoke")
+
+# Suite directories that are NOT fixture triplets (.md + .metadata.yaml +
+# .rubric.yaml). Everything else under evals/suites/ is validated by default,
+# so a new suite is covered unless someone opts it out here (#25: the old
+# hardcoded tuples silently skipped acr-reporting for three lanes).
+NON_TRIPLET_SUITES = {
+    "baseline-scan",       # rule-list scan rig: fixtures/ but no rubrics
+    "chain",               # multi-stage chain eval, own scorer + targets
+    "smoke",               # scorer smoke responses, not fixtures
+    "webwright-benchmark", # task directories, not triplets
+}
+
+# Triplet suites whose runner registry is a single hardcoded list in
+# ollama/run_benchmark.py. The critic / perspective / planner suites are
+# checked against both runners inline in check_registries().
+REGISTRY_LISTS = {
+    "bug-reporting": "BUGREPORT_FIXTURES",
+    "evaluation-report": "EVALREPORT_FIXTURES",
+    "a11y-test-operation-evidence": "OPEVIDENCE_FIXTURES",
+    "acr-reporting": "ACR_FIXTURES",
+}
+INLINE_REGISTRY_SUITES = {"a11y-critic", "perspectives", "a11y-planner"}
+
+
+def triplet_suites():
+    """Every directory under evals/suites/ except the explicit non-triplet set."""
+    return sorted(
+        d for d in os.listdir(SUITES_DIR)
+        if os.path.isdir(os.path.join(SUITES_DIR, d)) and d not in NON_TRIPLET_SUITES
+    )
 
 
 def yaml_parse_dir(directory, patterns=(".metadata.yaml", ".rubric.yaml")):
@@ -91,6 +126,12 @@ def fs_fixture_ids(fixtures_dir):
     return sorted(f[:-3] for f in os.listdir(fixtures_dir) if f.endswith(".md"))
 
 
+def registry_check_count():
+    """3 critic/perspective/planner runner-vs-fs + 3 cross-runner + one per REGISTRY_LISTS suite."""
+    mapped = [s for s in triplet_suites() if s not in INLINE_REGISTRY_SUITES]
+    return 6 + len(mapped)
+
+
 def check_registries():
     """Compare hardcoded runner fixture lists against filesystem. Returns list of problems."""
     sys.path.insert(0, os.path.join(REPO, "ollama"))
@@ -129,32 +170,24 @@ def check_registries():
     for fid in sorted(fs_planner - rb_planner):
         problems.append(f"  run_benchmark.PLANNER_FIXTURES: filesystem has {fid} not in list")
 
-    # bug-reporting registry vs filesystem
-    bugreport_dir = os.path.join(SUITES_DIR, "bug-reporting", "fixtures")
-    fs_bugreport = set(fs_fixture_ids(bugreport_dir))
-    rb_bugreport = set(run_benchmark.BUGREPORT_FIXTURES)
-    for fid in sorted(rb_bugreport - fs_bugreport):
-        problems.append(f"  run_benchmark.BUGREPORT_FIXTURES: {fid} not on filesystem")
-    for fid in sorted(fs_bugreport - rb_bugreport):
-        problems.append(f"  run_benchmark.BUGREPORT_FIXTURES: filesystem has {fid} not in list")
-
-    # evaluation-report registry vs filesystem
-    evalreport_dir = os.path.join(SUITES_DIR, "evaluation-report", "fixtures")
-    fs_evalreport = set(fs_fixture_ids(evalreport_dir))
-    rb_evalreport = set(run_benchmark.EVALREPORT_FIXTURES)
-    for fid in sorted(rb_evalreport - fs_evalreport):
-        problems.append(f"  run_benchmark.EVALREPORT_FIXTURES: {fid} not on filesystem")
-    for fid in sorted(fs_evalreport - rb_evalreport):
-        problems.append(f"  run_benchmark.EVALREPORT_FIXTURES: filesystem has {fid} not in list")
-
-    # a11y-test-operation-evidence registry vs filesystem
-    opevidence_dir = os.path.join(SUITES_DIR, "a11y-test-operation-evidence", "fixtures")
-    fs_opevidence = set(fs_fixture_ids(opevidence_dir))
-    rb_opevidence = set(run_benchmark.OPEVIDENCE_FIXTURES)
-    for fid in sorted(rb_opevidence - fs_opevidence):
-        problems.append(f"  run_benchmark.OPEVIDENCE_FIXTURES: {fid} not on filesystem")
-    for fid in sorted(fs_opevidence - rb_opevidence):
-        problems.append(f"  run_benchmark.OPEVIDENCE_FIXTURES: filesystem has {fid} not in list")
+    # single-list registries vs filesystem (both directions), one per
+    # REGISTRY_LISTS entry; a triplet suite with no mapping is itself an error
+    for suite in triplet_suites():
+        if suite in INLINE_REGISTRY_SUITES:
+            continue
+        attr = REGISTRY_LISTS.get(suite)
+        if attr is None:
+            problems.append(
+                f"  {suite}: triplet suite has no registry mapping in "
+                "validate_fixtures.REGISTRY_LISTS (add it, or list the suite in NON_TRIPLET_SUITES)"
+            )
+            continue
+        fs_ids = set(fs_fixture_ids(os.path.join(SUITES_DIR, suite, "fixtures")))
+        rb_ids = set(getattr(run_benchmark, attr))
+        for fid in sorted(rb_ids - fs_ids):
+            problems.append(f"  run_benchmark.{attr}: {fid} not on filesystem")
+        for fid in sorted(fs_ids - rb_ids):
+            problems.append(f"  run_benchmark.{attr}: filesystem has {fid} not in list")
 
     # run_cloud_benchmark vs run_benchmark (the two in-code copies)
     for fid in sorted(rcb_critic - rb_critic):
@@ -184,9 +217,10 @@ def main():
     # 1. YAML parse: all suites (excluding smoke/)
     total_yaml = 0
     yaml_errors = []
-    for suite in ("a11y-critic", "a11y-planner", "perspectives", "bug-reporting",
-                  "evaluation-report", "a11y-test-operation-evidence"):
+    for suite in sorted(os.listdir(SUITES_DIR)):
         suite_path = os.path.join(SUITES_DIR, suite)
+        if suite == "smoke" or not os.path.isdir(suite_path):
+            continue
         count, errs = yaml_parse_dir(suite_path)
         total_yaml += count
         yaml_errors.extend(errs)
@@ -199,8 +233,7 @@ def main():
 
     # 2. Triplet completeness
     triplet_ok = True
-    for suite in ("a11y-critic", "a11y-planner", "bug-reporting", "evaluation-report",
-                  "a11y-test-operation-evidence"):
+    for suite in triplet_suites():
         fixtures_dir = os.path.join(SUITES_DIR, suite, "fixtures")
         rubrics_dir = os.path.join(SUITES_DIR, suite, "rubrics")
         count, problems = check_triplets(suite, fixtures_dir, rubrics_dir)
@@ -212,19 +245,6 @@ def main():
             triplet_ok = False
         else:
             print(f"Triplets: {suite} {count} OK")
-
-    # perspectives suite
-    fixtures_dir = os.path.join(SUITES_DIR, "perspectives", "fixtures")
-    rubrics_dir = os.path.join(SUITES_DIR, "perspectives", "rubrics")
-    count, problems = check_triplets("perspectives", fixtures_dir, rubrics_dir)
-    if problems:
-        print(f"Triplets: perspectives {count} OK (ISSUES FOUND)")
-        for p in problems:
-            print(p)
-        errors.extend(problems)
-        triplet_ok = False
-    else:
-        print(f"Triplets: perspectives {count} OK")
 
     # calibration pairs
     calibration_dir = os.path.join(SUITES_DIR, "perspectives", "calibration")
@@ -246,7 +266,7 @@ def main():
                 print(p)
             errors.extend(reg_problems)
         else:
-            print("Registries: 9 checks OK")
+            print(f"Registries: {registry_check_count()} checks OK")
     except Exception as e:
         msg = f"  Registry check failed: {e}"
         print(f"Registries: ERROR")
