@@ -19,6 +19,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r ollama/requirements.txt
+      - name: Client-reference gate self-test (patterns must fire)
+        run: python3 scripts/check_client_refs.py --self-test
       - name: Client-reference scan
         run: python3 scripts/check_client_refs.py
       - name: Compile check

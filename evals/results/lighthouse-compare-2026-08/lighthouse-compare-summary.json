@@ -7,8 +7,8 @@
     "lighthouse_bundled_axe_core": "4.13.0 (confirmed via npx cache node_modules/axe-core/package.json -- IDENTICAL to our scanner and yesterday's audit; axe-version drift is ruled out as a cause of any difference)"
   },
   "urls": {
-    "comptox-home": {
-      "url": "https://comptox.epa.gov/dashboard/",
+    "product-b-home": {
+      "url": "https://product-b.epa.gov/dashboard/",
       "pick_rationale": "C01-home (signal: heaviest violation page yesterday)",
       "http_status_ours": {
         "1280x800": 200,
@@ -69,8 +69,8 @@
       "lighthouse_only": [],
       "lighthouse_manual_audit_count": 10
     },
-    "comptox-search": {
-      "url": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+    "product-b-search": {
+      "url": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
       "pick_rationale": "C02-search-results (signal: image-alt/button-name/tabindex not on C01)",
       "http_status_ours": {
         "1280x800": 200,
@@ -148,7 +148,7 @@
       "lighthouse_manual_audit_count": 10
     },
     "fire-map": {
-      "url": "https://fire.airnow.gov/",
+      "url": "https://fire.product-a.gov/",
       "pick_rationale": "A07-fire-map (signal: standalone map app, label/button-name/meta-viewport)",
       "http_status_ours": {
         "1280x800": 200,
@@ -179,7 +179,7 @@
       "lighthouse_manual_audit_count": 10
     },
     "gispub-map": {
-      "url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+      "url": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
       "pick_rationale": "A06-interactive-map (signal: html-lang/color-contrast, separately-hosted GIS app)",
       "http_status_ours": {
         "1280x800": 200,
@@ -225,8 +225,8 @@
       "lighthouse_only": [],
       "lighthouse_manual_audit_count": 10
     },
-    "airnow-about": {
-      "url": "https://www.airnow.gov/about-airnow/",
+    "product-a-about": {
+      "url": "https://www.product-a.gov/about-product-a/",
       "pick_rationale": "A20-about (false-positive check: best proxy for 'clean' -- no page in the 40-page corpus was literally zero-violation)",
       "http_status_ours": {
         "1280x800": 200,
@@ -269,13 +269,13 @@
   },
   "load_failures": [
     {
-      "url": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+      "url": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
       "tool": "lighthouse",
       "mode": "mobile",
       "error": "ERRORED_DOCUMENT_REQUEST",
       "message": "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Status code: 500)",
       "reproduced": "2/2 (original run + 1 immediate retry, both HTTP 500 ERRORED_DOCUMENT_REQUEST)",
-      "note": "Isolated to this URL x mobile-emulation combination only. comptox-search DESKTOP succeeded (score 0.62); our own scanner succeeded at BOTH viewports incl. narrow 320x800 (HTTP 200). Most-likely-cause evidence: mobile run's emulatedUserAgent is an Android/Mobile Chrome UA (`...Android 11; moto g power...Mobile Safari...`) with throttling (cpuSlowdownMultiplier 4, rttMs 150) while desktop and our scanner both use non-mobile UAs with no throttling -- points at the mobile UA/throttling fingerprint rather than viewport narrowness (our 320px-wide request succeeded fine). Not proven without server-side logs, but reproducible and isolated to this one axis."
+      "note": "Isolated to this URL x mobile-emulation combination only. product-b-search DESKTOP succeeded (score 0.62); our own scanner succeeded at BOTH viewports incl. narrow 320x800 (HTTP 200). Most-likely-cause evidence: mobile run's emulatedUserAgent is an Android/Mobile Chrome UA (`...Android 11; moto g power...Mobile Safari...`) with throttling (cpuSlowdownMultiplier 4, rttMs 150) while desktop and our scanner both use non-mobile UAs with no throttling -- points at the mobile UA/throttling fingerprint rather than viewport narrowness (our 320px-wide request succeeded fine). Not proven without server-side logs, but reproducible and isolated to this one axis."
     }
   ],
   "ours_only_classification_summary": {
@@ -306,10 +306,10 @@
     "genuine_same_audit_detection_gap": []
   },
   "lighthouse_only_hits_total": 0,
-  "bottom_line": "On these 5 EPA pages (2026-08-14), our dual-viewport axe-core baseline scanner was a STRICT SUPERSET of Lighthouse 13.4.1's accessibility category: zero lighthouse-only rule hits across all 5 URLs, so nothing in the emulation/axe-version/tag-set/DOM-timing investigation queue was needed. Axe-core version was identical (4.13.0) on both sides, ruling out version drift as an explanation for anything. Every ours-only rule (region, landmark-unique, label-title-only, meta-viewport-large, empty-table-header, page-has-heading-one, aria-allowed-role, empty-heading) traces cleanly to Lighthouse's own curated ~66-audit accessibility set: 6 rules have NO Lighthouse audit implementation at all (confirmed directly in Lighthouse's default-config.js auditRefs array), and 2 more (aria-allowed-role, empty-heading) DO have a Lighthouse audit that runs the identical axe check and shows the same violating node in its own LHR detail data, but Lighthouse's scoring code hardcodes scoreDisplayMode=informative audits to score=1 regardless of findings, so they can never surface as failing. Zero of the ours-only hits were 320px-narrow-viewport-exclusive and zero were experimental-tag rules -- the entire gap is Lighthouse's own curated-set-and-scoring design, not our tool finding spurious/viewport-specific noise. Caveats: 5 pages, one day, one axe-core version (4.13.0 both sides), Lighthouse 13.4.1 -- this does not generalize to all EPA properties, all Lighthouse/axe-core version pairs, or non-accessibility Lighthouse categories. A genuine reliability finding, independent of rule coverage: Lighthouse's MOBILE-emulation pass on comptox-search failed wholesale (HTTP 500, reproduced 2/2) while desktop and our own scanner (incl. its narrow 320px viewport) succeeded on the identical URL -- so Lighthouse's own robustness, not just its rule coverage, undershot ours on this page.",
+  "bottom_line": "On these 5 EPA pages (2026-08-14), our dual-viewport axe-core baseline scanner was a STRICT SUPERSET of Lighthouse 13.4.1's accessibility category: zero lighthouse-only rule hits across all 5 URLs, so nothing in the emulation/axe-version/tag-set/DOM-timing investigation queue was needed. Axe-core version was identical (4.13.0) on both sides, ruling out version drift as an explanation for anything. Every ours-only rule (region, landmark-unique, label-title-only, meta-viewport-large, empty-table-header, page-has-heading-one, aria-allowed-role, empty-heading) traces cleanly to Lighthouse's own curated ~66-audit accessibility set: 6 rules have NO Lighthouse audit implementation at all (confirmed directly in Lighthouse's default-config.js auditRefs array), and 2 more (aria-allowed-role, empty-heading) DO have a Lighthouse audit that runs the identical axe check and shows the same violating node in its own LHR detail data, but Lighthouse's scoring code hardcodes scoreDisplayMode=informative audits to score=1 regardless of findings, so they can never surface as failing. Zero of the ours-only hits were 320px-narrow-viewport-exclusive and zero were experimental-tag rules -- the entire gap is Lighthouse's own curated-set-and-scoring design, not our tool finding spurious/viewport-specific noise. Caveats: 5 pages, one day, one axe-core version (4.13.0 both sides), Lighthouse 13.4.1 -- this does not generalize to all EPA properties, all Lighthouse/axe-core version pairs, or non-accessibility Lighthouse categories. A genuine reliability finding, independent of rule coverage: Lighthouse's MOBILE-emulation pass on product-b-search failed wholesale (HTTP 500, reproduced 2/2) while desktop and our own scanner (incl. its narrow 320px viewport) succeeded on the identical URL -- so Lighthouse's own robustness, not just its rule coverage, undershot ours on this page.",
   "clean_page_false_positive_check": {
-    "url": "https://www.airnow.gov/about-airnow/",
-    "caveat": "Not literally a zero-violation page -- no page in the entire 40-page 2026-08-13 corpus (comptox or airnow) was axe-clean at either viewport. This is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every airnow.gov content page (region, label-title-only, landmark-unique, meta-viewport-large), with zero page-specific critical/serious defect, and yesterday's representativeness check confirmed it added no new rule categories.",
+    "url": "https://www.product-a.gov/about-product-a/",
+    "caveat": "Not literally a zero-violation page -- no page in the entire 40-page 2026-08-13 corpus (product-b or product-a) was axe-clean at either viewport. This is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every product-a.gov content page (region, label-title-only, landmark-unique, meta-viewport-large), with zero page-specific critical/serious defect, and yesterday's representativeness check confirmed it added no new rule categories.",
     "our_tool": "4 rule hits, all best-practice/shared-chrome tier, 0 critical/serious page-specific",
     "lighthouse": "category score 1.0 (100/100) on BOTH mobile and desktop -- zero failing audits",
     "asymmetry_finding": "Not a false positive from either tool in the sense of a hallucinated violation -- our 4 hits are real axe detections and Lighthouse's 1.0 is an honest reflection of its own narrower rule set. But it IS a 'false clean bill of health' risk: a reader who trusts Lighthouse's 100/100 accessibility score alone would conclude zero issues, when 4 real (if low-severity) axe-detectable issues exist -- because all 4 rule IDs (region, label-title-only, landmark-unique, meta-viewport-large) are in the NO_LIGHTHOUSE_AUDIT_AT_ALL bucket above, not because Lighthouse evaluated and passed them."

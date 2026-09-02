@@ -4,11 +4,11 @@ Versions: our scanner axe-core 4.13.0 (Playwright 1.62.1) | Lighthouse 13.4.1 (b
 
 | URL | both-fire | ours-only | lighthouse-only |
 |---|---|---|---|
-| comptox.epa.gov/dashboard/ (C01, signal) | aria-allowed-attr, aria-required-parent, color-contrast, html-has-lang, link-in-text-block, list, listitem, target-size | aria-allowed-role, landmark-unique, region | (none) |
-| comptox.epa.gov/dashboard/search-results?...caffeine (C02, signal) | aria-allowed-attr, aria-required-parent, button-name, html-has-lang, image-alt, link-in-text-block, list, listitem, tabindex, target-size | aria-allowed-role, empty-table-header, landmark-unique, page-has-heading-one, region | (none) -- NOTE: mobile Lighthouse pass errored wholesale (HTTP 500), see below |
-| fire.airnow.gov/ (A07, signal) | button-name, label, meta-viewport | (none) | (none) |
-| gispub.epa.gov/airnow/?monitors=ozonepm (A06, signal) | color-contrast, html-has-lang, meta-viewport | empty-heading, label-title-only, region | (none) |
-| airnow.gov/about-airnow/ (A20, false-positive check) | (none) | label-title-only, landmark-unique, meta-viewport-large, region | (none) |
+| product-b.epa.gov/dashboard/ (C01, signal) | aria-allowed-attr, aria-required-parent, color-contrast, html-has-lang, link-in-text-block, list, listitem, target-size | aria-allowed-role, landmark-unique, region | (none) |
+| product-b.epa.gov/dashboard/search-results?...caffeine (C02, signal) | aria-allowed-attr, aria-required-parent, button-name, html-has-lang, image-alt, link-in-text-block, list, listitem, tabindex, target-size | aria-allowed-role, empty-table-header, landmark-unique, page-has-heading-one, region | (none) -- NOTE: mobile Lighthouse pass errored wholesale (HTTP 500), see below |
+| fire.product-a.gov/ (A07, signal) | button-name, label, meta-viewport | (none) | (none) |
+| gispub.epa.gov/product-a/?monitors=ozonepm (A06, signal) | color-contrast, html-has-lang, meta-viewport | empty-heading, label-title-only, region | (none) |
+| product-a.gov/about-product-a/ (A20, false-positive check) | (none) | label-title-only, landmark-unique, meta-viewport-large, region | (none) |
 
 Lighthouse-only total across all 5 pages: **0**. Nothing to investigate in the emulation/axe-version/tag-set/DOM-timing queue.
 
@@ -29,11 +29,11 @@ Zero ours-only hits were 320px-narrow-viewport-exclusive (checked per-rule viewp
 
 ## Reliability anomaly (independent of rule coverage)
 
-Lighthouse's **mobile-emulation** pass on comptox-search failed wholesale: `runtimeError: ERRORED_DOCUMENT_REQUEST`, HTTP 500, reproduced 2/2 (original run + one immediate retry). Isolated to this URL x mobile-mode combination only -- comptox-search **desktop** succeeded (category score 0.62), and our own scanner succeeded at **both** viewports on the identical URL, including the narrow 320x800 (HTTP 200). Most-likely-cause evidence: Lighthouse mobile's `emulatedUserAgent` is an Android/Mobile Chrome string (`...Android 11; moto g power...Mobile Safari...`) with throttling (`cpuSlowdownMultiplier: 4`, `rttMs: 150`), while desktop Lighthouse and our scanner both use non-mobile UAs with no throttling -- pointing at the mobile UA/throttling fingerprint rather than viewport width (our 320px-wide request succeeded fine with a non-mobile UA). Not provable without EPA server-side logs, but reproducible and isolated to one axis.
+Lighthouse's **mobile-emulation** pass on product-b-search failed wholesale: `runtimeError: ERRORED_DOCUMENT_REQUEST`, HTTP 500, reproduced 2/2 (original run + one immediate retry). Isolated to this URL x mobile-mode combination only -- product-b-search **desktop** succeeded (category score 0.62), and our own scanner succeeded at **both** viewports on the identical URL, including the narrow 320x800 (HTTP 200). Most-likely-cause evidence: Lighthouse mobile's `emulatedUserAgent` is an Android/Mobile Chrome string (`...Android 11; moto g power...Mobile Safari...`) with throttling (`cpuSlowdownMultiplier: 4`, `rttMs: 150`), while desktop Lighthouse and our scanner both use non-mobile UAs with no throttling -- pointing at the mobile UA/throttling fingerprint rather than viewport width (our 320px-wide request succeeded fine with a non-mobile UA). Not provable without EPA server-side logs, but reproducible and isolated to one axis.
 
-## Clean-page (false-positive) check -- airnow.gov/about-airnow/
+## Clean-page (false-positive) check -- product-a.gov/about-product-a/
 
-Caveat first: **no page in the entire 40-page 2026-08-13 corpus was literally axe-clean** at either viewport (checked exhaustively against both raw per-rule summaries). This page is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every airnow.gov content page, zero page-specific critical/serious defects, and yesterday's representativeness check confirmed it added no new rule categories.
+Caveat first: **no page in the entire 40-page 2026-08-13 corpus was literally axe-clean** at either viewport (checked exhaustively against both raw per-rule summaries). This page is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every product-a.gov content page, zero page-specific critical/serious defects, and yesterday's representativeness check confirmed it added no new rule categories.
 
 - Our tool: 4 hits (region, label-title-only, landmark-unique, meta-viewport-large) -- all in the no-lighthouse-audit bucket above.
 - Lighthouse: category score **1.0 / 100** on both mobile and desktop -- zero failing audits.

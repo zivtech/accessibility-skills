@@ -7,11 +7,11 @@ import os
 WORKDIR = os.path.dirname(os.path.abspath(__file__))
 
 URLS = [
-    ("comptox-home", "https://comptox.epa.gov/dashboard/", "C01-home (signal: heaviest violation page yesterday)"),
-    ("comptox-search", "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine", "C02-search-results (signal: image-alt/button-name/tabindex not on C01)"),
-    ("fire-map", "https://fire.airnow.gov/", "A07-fire-map (signal: standalone map app, label/button-name/meta-viewport)"),
-    ("gispub-map", "https://gispub.epa.gov/airnow/?monitors=ozonepm", "A06-interactive-map (signal: html-lang/color-contrast, separately-hosted GIS app)"),
-    ("airnow-about", "https://www.airnow.gov/about-airnow/", "A20-about (false-positive check: best proxy for 'clean' -- no page in the 40-page corpus was literally zero-violation)"),
+    ("product-b-home", "https://product-b.epa.gov/dashboard/", "C01-home (signal: heaviest violation page yesterday)"),
+    ("product-b-search", "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine", "C02-search-results (signal: image-alt/button-name/tabindex not on C01)"),
+    ("fire-map", "https://fire.product-a.gov/", "A07-fire-map (signal: standalone map app, label/button-name/meta-viewport)"),
+    ("gispub-map", "https://gispub.epa.gov/product-a/?monitors=ozonepm", "A06-interactive-map (signal: html-lang/color-contrast, separately-hosted GIS app)"),
+    ("product-a-about", "https://www.product-a.gov/about-product-a/", "A20-about (false-positive check: best proxy for 'clean' -- no page in the 40-page corpus was literally zero-violation)"),
 ]
 
 def load_ours():
@@ -108,8 +108,8 @@ def main():
             result["load_failures"].append({
                 "url": url, "tool": "lighthouse", "mode": "mobile",
                 "error": m["runtime_error"]["code"], "message": m["runtime_error"]["message"],
-                "reproduced": "2/2 (original run + 1 immediate retry, both HTTP 500 ERRORED_DOCUMENT_REQUEST)" if name == "comptox-search" else "1/1",
-                "note": "Isolated to this URL x mobile-emulation combination only. comptox-search DESKTOP succeeded (score 0.62); our own scanner succeeded at BOTH viewports incl. narrow 320x800 (HTTP 200). Most-likely-cause evidence: mobile run's emulatedUserAgent is an Android/Mobile Chrome UA (`...Android 11; moto g power...Mobile Safari...`) with throttling (cpuSlowdownMultiplier 4, rttMs 150) while desktop and our scanner both use non-mobile UAs with no throttling -- points at the mobile UA/throttling fingerprint rather than viewport narrowness (our 320px-wide request succeeded fine). Not proven without server-side logs, but reproducible and isolated to this one axis.",
+                "reproduced": "2/2 (original run + 1 immediate retry, both HTTP 500 ERRORED_DOCUMENT_REQUEST)" if name == "product-b-search" else "1/1",
+                "note": "Isolated to this URL x mobile-emulation combination only. product-b-search DESKTOP succeeded (score 0.62); our own scanner succeeded at BOTH viewports incl. narrow 320x800 (HTTP 200). Most-likely-cause evidence: mobile run's emulatedUserAgent is an Android/Mobile Chrome UA (`...Android 11; moto g power...Mobile Safari...`) with throttling (cpuSlowdownMultiplier 4, rttMs 150) while desktop and our scanner both use non-mobile UAs with no throttling -- points at the mobile UA/throttling fingerprint rather than viewport narrowness (our 320px-wide request succeeded fine). Not proven without server-side logs, but reproducible and isolated to this one axis.",
             })
 
         lh_failing_union = (m["failing"] if m else set()) | (dsk["failing"] if dsk else set())
@@ -164,13 +164,13 @@ def main():
         "finding spurious/viewport-specific noise. Caveats: 5 pages, one day, one axe-core version (4.13.0 both "
         "sides), Lighthouse 13.4.1 -- this does not generalize to all EPA properties, all Lighthouse/axe-core "
         "version pairs, or non-accessibility Lighthouse categories. A genuine reliability finding, independent of "
-        "rule coverage: Lighthouse's MOBILE-emulation pass on comptox-search failed wholesale (HTTP 500, "
+        "rule coverage: Lighthouse's MOBILE-emulation pass on product-b-search failed wholesale (HTTP 500, "
         "reproduced 2/2) while desktop and our own scanner (incl. its narrow 320px viewport) succeeded on the "
         "identical URL -- so Lighthouse's own robustness, not just its rule coverage, undershot ours on this page."
     )
     result["clean_page_false_positive_check"] = {
-        "url": "https://www.airnow.gov/about-airnow/",
-        "caveat": "Not literally a zero-violation page -- no page in the entire 40-page 2026-08-13 corpus (comptox or airnow) was axe-clean at either viewport. This is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every airnow.gov content page (region, label-title-only, landmark-unique, meta-viewport-large), with zero page-specific critical/serious defect, and yesterday's representativeness check confirmed it added no new rule categories.",
+        "url": "https://www.product-a.gov/about-product-a/",
+        "caveat": "Not literally a zero-violation page -- no page in the entire 40-page 2026-08-13 corpus (product-b or product-a) was axe-clean at either viewport. This is the best available proxy: it trips only the 4 shared-template/best-practice rules present on nearly every product-a.gov content page (region, label-title-only, landmark-unique, meta-viewport-large), with zero page-specific critical/serious defect, and yesterday's representativeness check confirmed it added no new rule categories.",
         "our_tool": "4 rule hits, all best-practice/shared-chrome tier, 0 critical/serious page-specific",
         "lighthouse": "category score 1.0 (100/100) on BOTH mobile and desktop -- zero failing audits",
         "asymmetry_finding": (

@@ -7,11 +7,11 @@ import os
 WORKDIR = os.path.dirname(os.path.abspath(__file__))
 
 URLS = [
-    ("comptox-home", "https://comptox.epa.gov/dashboard/"),
-    ("comptox-search", "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"),
-    ("fire-map", "https://fire.airnow.gov/"),
-    ("gispub-map", "https://gispub.epa.gov/airnow/?monitors=ozonepm"),
-    ("airnow-about", "https://www.airnow.gov/about-airnow/"),
+    ("product-b-home", "https://product-b.epa.gov/dashboard/"),
+    ("product-b-search", "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"),
+    ("fire-map", "https://fire.product-a.gov/"),
+    ("gispub-map", "https://gispub.epa.gov/product-a/?monitors=ozonepm"),
+    ("product-a-about", "https://www.product-a.gov/about-product-a/"),
 ]
 
 def load_ours():
