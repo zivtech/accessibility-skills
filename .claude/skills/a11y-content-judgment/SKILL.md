@@ -187,8 +187,9 @@ ratifier's first hour lands on the rows that matter.
 - A client may publish its own web standards beside WCAG. The origin run applied one such standard
   as a **separate client scope** — see the worked example in
   [references/client-standards-example-epa.md](references/client-standards-example-epa.md) — and the
-  merge accepts a `standards.jsonl` (`{id, <client>_rules, <client>_result, <client>_note}`) that it
-  renders as `client_rules` / `client_result` / `client_note`. That is the whole of what this skill
+  merge accepts a `standards.jsonl` (`{id, <prefix>_rules, <prefix>_result, <prefix>_note}` — any single
+  prefix, read by suffix; the worked example uses `epa_`) that it renders as `client_rules` /
+  `client_result` / `client_note`. That is the whole of what this skill
   provides: the matcher is engagement-specific, this skill does not prescribe a client-standards
   pass, and generalizing the rules to a table is deliberately not done until a second client
   standard exists. Client-scope results never reach the WCAG-scope receipt.
