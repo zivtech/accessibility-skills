@@ -1,0 +1,909 @@
+{
+ "_slimmed_from": "page-1-alfa.json",
+ "_full_file_sha256": "8f428b68af7b4cdafe99fc553cc3e26d6e9a81fbca01dd46f26f9dccbb01c1cc",
+ "_full_file_bytes": 43483,
+ "_note": "passed/inapplicable outcomes dropped to keep the receipt small; counts of every outcome kind are in resultAggregates; the full file hash is recorded for re-run comparison",
+ "outcome_counts": {
+  "passed": 23,
+  "failed": 4,
+  "cantTell": 1,
+  "inapplicable": 68
+ },
+ "resultAggregates": [
+  [
+   "https://alfa.siteimprove.com/rules/sia-r90",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r54",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r66",
+   {
+    "failed": 1,
+    "passed": 2,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r2",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r13",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r35",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r27",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r41",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r85",
+   {
+    "failed": 0,
+    "passed": 2,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r38",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r20",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r46",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r8",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r19",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r76",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r53",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r92",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r78",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r4",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r15",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r33",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r60",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r29",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r1",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r10",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r65",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r22",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r44",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r80",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r74",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r73",
+   {
+    "failed": 2,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r50",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r94",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r17",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r31",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r62",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r48",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r12",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r67",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r86",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r68",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r24",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r42",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r47",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r9",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r18",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r21",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r71",
+   {
+    "failed": 0,
+    "passed": 2,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r110",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r96",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r55",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r91",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r14",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r32",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r61",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r5",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r39",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r26",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r40",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r84",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r23",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r45",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r81",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r116",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r59",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r77",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r113",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r72",
+   {
+    "failed": 0,
+    "passed": 2,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r79",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r93",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r57",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r63",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r49",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r7",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r16",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r30",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r64",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r28",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r11",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r37",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r69",
+   {
+    "failed": 0,
+    "passed": 3,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r25",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r43",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r87",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 1
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r75",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r111",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r70",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r95",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ]
+ ],
+ "outcomes": [
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "cdc1d9c38521850f7eb7427eb2e64cfa",
+    "serializationId": "cdc1d9c38521850f7eb7427eb2e64cfa"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.76:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.3466667,
+            0.4,
+            0.6133333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.3466667
+            },
+            {
+             "type": "percentage",
+             "value": 0.4
+            },
+            {
+             "type": "percentage",
+             "value": 0.6133333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.9333333,
+            0.9333333,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.76
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "8bb427208c506ae571c2c99e7b75ced7",
+    "serializationId": "8bb427208c506ae571c2c99e7b75ced7"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is `normal` which will result in a line height of less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "31f1e5a9b1a16b7a2abac49060c727c8",
+    "serializationId": "31f1e5a9b1a16b7a2abac49060c727c8"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is `normal` which will result in a line height of less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r87"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "document",
+    "internalId": "6f73f29ea6f16b48e0e674558ac565ee",
+    "serializationId": "6f73f29ea6f16b48e0e674558ac565ee"
+   },
+   "diagnostic": {
+    "message": "No extra information"
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "0e6cdc96c9160895ea8f3adab8b46b0e",
+    "serializationId": "0e6cdc96c9160895ea8f3adab8b46b0e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Learn more",
+       "box": {
+        "type": "rectangle",
+        "x": 256,
+        "y": 198.078125,
+        "width": 82,
+        "height": 18
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,948 @@
+{
+ "meta": {
+  "totalRules": 89,
+  "mappedRuleCount": 58,
+  "unmappedRuleCount": 31,
+  "alfaRulesVersion": "0.119.0",
+  "generatedAt": "2026-09-02T13:51:16.808Z"
+ },
+ "map": {
+  "https://alfa.siteimprove.com/rules/sia-r1": [
+   {
+    "criterion": "2.4.2",
+    "title": "Page Titled",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r10": [
+   {
+    "criterion": "1.3.5",
+    "title": "Identify Input Purpose",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r11": [
+   {
+    "criterion": "2.4.4",
+    "title": "Link Purpose (In Context)",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "2.4.9",
+    "title": "Link Purpose (Link Only)",
+    "level_2_2": "AAA"
+   },
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r110": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r111": [
+   {
+    "criterion": "2.5.5",
+    "title": "Target Size (Enhanced)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r113": [
+   {
+    "criterion": "2.5.8",
+    "title": "Target Size (Minimum)",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r116": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r12": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r13": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r14": [
+   {
+    "criterion": "2.5.3",
+    "title": "Label in Name",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r15": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r16": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r17": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r18": [],
+  "https://alfa.siteimprove.com/rules/sia-r19": [],
+  "https://alfa.siteimprove.com/rules/sia-r2": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r20": [],
+  "https://alfa.siteimprove.com/rules/sia-r21": [],
+  "https://alfa.siteimprove.com/rules/sia-r22": [],
+  "https://alfa.siteimprove.com/rules/sia-r23": [],
+  "https://alfa.siteimprove.com/rules/sia-r24": [
+   {
+    "criterion": "1.2.8",
+    "title": "Media Alternative (Prerecorded)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r25": [],
+  "https://alfa.siteimprove.com/rules/sia-r26": [],
+  "https://alfa.siteimprove.com/rules/sia-r27": [
+   {
+    "criterion": "1.2.2",
+    "title": "Captions (Prerecorded)",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r28": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r29": [],
+  "https://alfa.siteimprove.com/rules/sia-r30": [
+   {
+    "criterion": "1.2.1",
+    "title": "Audio-only and Video-only (Prerecorded)",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r31": [],
+  "https://alfa.siteimprove.com/rules/sia-r32": [],
+  "https://alfa.siteimprove.com/rules/sia-r33": [],
+  "https://alfa.siteimprove.com/rules/sia-r35": [
+   {
+    "criterion": "1.2.1",
+    "title": "Audio-only and Video-only (Prerecorded)",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r37": [
+   {
+    "criterion": "1.2.5",
+    "title": "Audio Description (Prerecorded)",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r38": [
+   {
+    "criterion": "1.2.3",
+    "title": "Audio Description or Media Alternative (Prerecorded)",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "1.2.5",
+    "title": "Audio Description (Prerecorded)",
+    "level_2_2": "AA"
+   },
+   {
+    "criterion": "1.2.8",
+    "title": "Media Alternative (Prerecorded)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r39": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r4": [
+   {
+    "criterion": "3.1.1",
+    "title": "Language of Page",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r40": [],
+  "https://alfa.siteimprove.com/rules/sia-r41": [
+   {
+    "criterion": "2.4.9",
+    "title": "Link Purpose (Link Only)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r42": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r43": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r44": [
+   {
+    "criterion": "1.3.4",
+    "title": "Orientation",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r45": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r46": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r47": [
+   {
+    "criterion": "1.4.4",
+    "title": "Resize Text",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r48": [],
+  "https://alfa.siteimprove.com/rules/sia-r49": [],
+  "https://alfa.siteimprove.com/rules/sia-r5": [
+   {
+    "criterion": "3.1.1",
+    "title": "Language of Page",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r50": [
+   {
+    "criterion": "1.4.2",
+    "title": "Audio Control",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r53": [],
+  "https://alfa.siteimprove.com/rules/sia-r54": [],
+  "https://alfa.siteimprove.com/rules/sia-r55": [],
+  "https://alfa.siteimprove.com/rules/sia-r56": [],
+  "https://alfa.siteimprove.com/rules/sia-r57": [],
+  "https://alfa.siteimprove.com/rules/sia-r59": [],
+  "https://alfa.siteimprove.com/rules/sia-r60": [],
+  "https://alfa.siteimprove.com/rules/sia-r61": [],
+  "https://alfa.siteimprove.com/rules/sia-r62": [
+   {
+    "criterion": "1.4.1",
+    "title": "Use of Color",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r63": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r64": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r65": [
+   {
+    "criterion": "2.4.7",
+    "title": "Focus Visible",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r66": [
+   {
+    "criterion": "1.4.6",
+    "title": "Contrast (Enhanced)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r67": [
+   {
+    "criterion": "1.1.1",
+    "title": "Non-text Content",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r68": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r69": [
+   {
+    "criterion": "1.4.3",
+    "title": "Contrast (Minimum)",
+    "level_2_2": "AA"
+   },
+   {
+    "criterion": "1.4.6",
+    "title": "Contrast (Enhanced)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r7": [
+   {
+    "criterion": "3.1.2",
+    "title": "Language of Parts",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r70": [],
+  "https://alfa.siteimprove.com/rules/sia-r71": [
+   {
+    "criterion": "1.4.8",
+    "title": "Visual Presentation",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r72": [],
+  "https://alfa.siteimprove.com/rules/sia-r73": [
+   {
+    "criterion": "1.4.8",
+    "title": "Visual Presentation",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r74": [
+   {
+    "criterion": "1.4.8",
+    "title": "Visual Presentation",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r75": [],
+  "https://alfa.siteimprove.com/rules/sia-r76": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r77": [
+   {
+    "criterion": "1.3.1",
+    "title": "Info and Relationships",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r78": [],
+  "https://alfa.siteimprove.com/rules/sia-r79": [],
+  "https://alfa.siteimprove.com/rules/sia-r8": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r80": [
+   {
+    "criterion": "1.4.8",
+    "title": "Visual Presentation",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r81": [
+   {
+    "criterion": "2.4.4",
+    "title": "Link Purpose (In Context)",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "2.4.9",
+    "title": "Link Purpose (Link Only)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r84": [
+   {
+    "criterion": "2.1.1",
+    "title": "Keyboard",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "2.1.3",
+    "title": "Keyboard (No Exception)",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r85": [],
+  "https://alfa.siteimprove.com/rules/sia-r86": [],
+  "https://alfa.siteimprove.com/rules/sia-r87": [],
+  "https://alfa.siteimprove.com/rules/sia-r9": [
+   {
+    "criterion": "2.2.1",
+    "title": "Timing Adjustable",
+    "level_2_2": "A"
+   },
+   {
+    "criterion": "2.2.4",
+    "title": "Interruptions",
+    "level_2_2": "AAA"
+   },
+   {
+    "criterion": "3.2.5",
+    "title": "Change on Request",
+    "level_2_2": "AAA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r90": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r91": [
+   {
+    "criterion": "1.4.12",
+    "title": "Text Spacing",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r92": [
+   {
+    "criterion": "1.4.12",
+    "title": "Text Spacing",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r93": [
+   {
+    "criterion": "1.4.12",
+    "title": "Text Spacing",
+    "level_2_2": "AA"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r94": [
+   {
+    "criterion": "4.1.2",
+    "title": "Name, Role, Value",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r95": [
+   {
+    "criterion": "2.1.1",
+    "title": "Keyboard",
+    "level_2_2": "A"
+   }
+  ],
+  "https://alfa.siteimprove.com/rules/sia-r96": [
+   {
+    "criterion": "2.2.4",
+    "title": "Interruptions",
+    "level_2_2": "AAA"
+   },
+   {
+    "criterion": "3.2.5",
+    "title": "Change on Request",
+    "level_2_2": "AAA"
+   }
+  ]
+ },
+ "unmapped": [
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r18",
+   "id": "sia-r18",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    },
+    {
+     "type": "version",
+     "version": 2
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r19",
+   "id": "sia-r19",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r20",
+   "id": "sia-r20",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r21",
+   "id": "sia-r21",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r22",
+   "id": "sia-r22",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r23",
+   "id": "sia-r23",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r25",
+   "id": "sia-r25",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r26",
+   "id": "sia-r26",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r29",
+   "id": "sia-r29",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r31",
+   "id": "sia-r31",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r32",
+   "id": "sia-r32",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r33",
+   "id": "sia-r33",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r40",
+   "id": "sia-r40",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r48",
+   "id": "sia-r48",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r49",
+   "id": "sia-r49",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r53",
+   "id": "sia-r53",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r54",
+   "id": "sia-r54",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r55",
+   "id": "sia-r55",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r56",
+   "id": "sia-r56",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r57",
+   "id": "sia-r57",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r59",
+   "id": "sia-r59",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r60",
+   "id": "sia-r60",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r61",
+   "id": "sia-r61",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r70",
+   "id": "sia-r70",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r72",
+   "id": "sia-r72",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r75",
+   "id": "sia-r75",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r78",
+   "id": "sia-r78",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r79",
+   "id": "sia-r79",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r85",
+   "id": "sia-r85",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r86",
+   "id": "sia-r86",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "component"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  },
+  {
+   "uri": "https://alfa.siteimprove.com/rules/sia-r87",
+   "id": "sia-r87",
+   "tags": [
+    {
+     "type": "scope",
+     "scope": "page"
+    },
+    {
+     "type": "stability",
+     "stability": "stable"
+    }
+   ]
+  }
+ ]
+}

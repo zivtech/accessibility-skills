@@ -1,0 +1,2538 @@
+{
+ "page": 6,
+ "url": "https://www.w3.org/WAI/demos/bad/before/survey.html",
+ "engine": "axe-core",
+ "testEngineVersion": "4.13.0",
+ "tags": [
+  "wcag2a",
+  "wcag2aa",
+  "wcag21a",
+  "wcag21aa",
+  "wcag22aa"
+ ],
+ "violations": [
+  {
+   "id": "html-has-lang",
+   "impact": "serious",
+   "tags": [
+    "cat.language",
+    "wcag2a",
+    "wcag311",
+    "TTv5",
+    "TT11.a",
+    "EN-301-549",
+    "EN-9.3.1.1",
+    "ACT",
+    "RGAAv4",
+    "RGAA-8.3.1"
+   ],
+   "description": "Ensure every HTML document has a lang attribute",
+   "help": "<html> element must have a lang attribute",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-lang",
+       "data": {
+        "messageKey": "noLang"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "The <html> element does not have a lang attribute"
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<html>",
+     "target": [
+      "html"
+     ],
+     "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+    }
+   ]
+  },
+  {
+   "id": "image-alt",
+   "impact": "critical",
+   "tags": [
+    "cat.text-alternatives",
+    "wcag2a",
+    "wcag111",
+    "section508",
+    "section508.22.a",
+    "TTv5",
+    "TT7.a",
+    "TT7.b",
+    "EN-301-549",
+    "EN-9.1.1.1",
+    "ACT",
+    "RGAAv4",
+    "RGAA-1.1.1"
+   ],
+   "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+   "help": "Images must have alternative text",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_left_top.gif\" width=\"10px\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_left_top.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_top.gif\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_top.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_right_top.gif\" width=\"10px\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_right_top.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_left.gif\" width=\"10px\">",
+     "target": [
+      "img[src$=\"border_left.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/top_logo_next_end.gif\" width=\"24px\" height=\"86px\">",
+     "target": [
+      "img[src$=\"top_logo_next_end.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/top_weather.gif\" width=\"128px\" height=\"86px\">",
+     "target": [
+      "img[src$=\"top_weather.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/top_logo_next_start.gif\" width=\"22px\" height=\"86px\">",
+     "target": [
+      "img[src$=\"top_logo_next_start.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/mark.gif\" width=\"158px\" height=\"7px\">",
+     "target": [
+      "img[src$=\"mark.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\".img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "td[colspan=\"5\"][background=\"./img/marker2_w.gif\"][width=\"780px\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "td[width=\"155px\"][background=\"./img/marker2_w.gif\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_t.gif\" width=\"1\" height=\"30px\">",
+     "target": [
+      "img[src$=\"marker2_t.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img name=\"nav_home\" src=\"./img/nav_home.gif\" width=\"88\" height=\"27\" hspace=\"15\" border=\"0px\">",
+     "target": [
+      "img[name=\"nav_home\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "tr[height=\"1px\"]:nth-child(3) > td[background=\"./img/marker2_w.gif\"][width=\"154px\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/nav_news.gif\" name=\"nav_news\" width=\"90\" height=\"21\" hspace=\"12\" border=\"0px\">",
+     "target": [
+      "img[src$=\"nav_news.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "tr[height=\"1px\"]:nth-child(5) > td[background=\"./img/marker2_w.gif\"][width=\"154px\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img name=\"nav_facts\" src=\"./img/nav_facts.gif\" width=\"105\" height=\"23\" hspace=\"9\" border=\"0px\">",
+     "target": [
+      "img[name=\"nav_facts\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "tr[height=\"1px\"]:nth-child(7) > td[background=\"./img/marker2_w.gif\"][width=\"154px\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/nav_survey.gif\" name=\"nav_survey\" width=\"107\" height=\"32\" hspace=\"8\" border=\"0px\">",
+     "target": [
+      "img[src$=\"nav_survey.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">",
+     "target": [
+      "tr[height=\"1px\"]:nth-child(9) > td[background=\"./img/marker2_w.gif\"][width=\"154px\"] > img[src$=\"marker2_w.gif\"][width=\"78px\"][height=\"1px\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/blank_5x5.gif\" width=\"20px\" height=\"5px\">",
+     "target": [
+      "img[src$=\"blank_5x5.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_right.gif\" width=\"10px\">",
+     "target": [
+      "img[src$=\"border_right.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_bottom_left.gif\" width=\"10px\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_bottom_left.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_bottom.gif\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_bottom.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "has-alt",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an alt attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<img src=\"./img/border_bottom_right.gif\" width=\"10px\" height=\"10px\">",
+     "target": [
+      "img[src$=\"border_bottom_right.gif\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    }
+   ]
+  },
+  {
+   "id": "label",
+   "impact": "critical",
+   "tags": [
+    "cat.forms",
+    "wcag2a",
+    "wcag412",
+    "section508",
+    "section508.22.n",
+    "TTv5",
+    "TT5.c",
+    "EN-301-549",
+    "EN-9.4.1.2",
+    "ACT",
+    "RGAAv4",
+    "RGAA-11.1.1"
+   ],
+   "description": "Ensure every form element has a label",
+   "help": "Form elements must have labels",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"1\">",
+     "target": [
+      "input[value=\"1\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"2\">",
+     "target": [
+      "input[value=\"2\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"3\">",
+     "target": [
+      "input[value=\"3\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"4\">",
+     "target": [
+      "input[value=\"4\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"5\">",
+     "target": [
+      "input[value=\"5\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input class=\"align\" type=\"radio\" name=\"res\" value=\"6\">",
+     "target": [
+      "input[value=\"6\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"radio\" name=\"t\" value=\"mr\">",
+     "target": [
+      "input[value=\"mr\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"radio\" name=\"t\" value=\"mrs\">",
+     "target": [
+      "input[value=\"mrs\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"text\" name=\"em\" id=\"em\" size=\"20\">",
+     "target": [
+      "#em"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"text\" name=\"n\" id=\"n\" size=\"30\">",
+     "target": [
+      "#n"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "non-empty-placeholder",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no placeholder attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<input type=\"text\" name=\"ev\" id=\"ev\" size=\"20\">",
+     "target": [
+      "#ev"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    }
+   ]
+  },
+  {
+   "id": "link-name",
+   "impact": "serious",
+   "tags": [
+    "cat.name-role-value",
+    "wcag2a",
+    "wcag244",
+    "wcag412",
+    "section508",
+    "section508.22.a",
+    "TTv5",
+    "TT6.a",
+    "EN-301-549",
+    "EN-9.2.4.4",
+    "EN-9.4.1.2",
+    "ACT",
+    "RGAAv4",
+    "RGAA-6.2.1"
+   ],
+   "description": "Ensure links have discernible text",
+   "help": "Links must have discernible text",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/link-name?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "has-visible-text",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element does not have text that is visible to screen readers"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element has no title attribute"
+      }
+     ],
+     "all": [],
+     "none": [
+      {
+       "id": "focusable-no-name",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element is in tab order and does not have accessible text"
+      }
+     ],
+     "impact": "serious",
+     "html": "<a href=\"javascript:location.href='home.html';\" onfocus=\"blur();\"><img name=\"nav_home\" src=\"./img/nav_home.gif\" width=\"88\" height=\"27\" hspace=\"15\" border=\"0px\"></a>",
+     "target": [
+      "#home > a[onfocus=\"blur();\"]"
+     ],
+     "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+    },
+    {
+     "any": [
+      {
+       "id": "has-visible-text",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element does not have text that is visible to screen readers"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element has no title attribute"
+      }
+     ],
+     "all": [],
+     "none": [
+      {
+       "id": "focusable-no-name",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element is in tab order and does not have accessible text"
+      }
+     ],
+     "impact": "serious",
+     "html": "<a href=\"javascript:location.href='news.html';\" onfocus=\"blur();\"><img src=\"./img/nav_news.gif\" name=\"nav_news\" width=\"90\" height=\"21\" hspace=\"12\" border=\"0px\"></a>",
+     "target": [
+      "#news > a[onfocus=\"blur();\"]"
+     ],
+     "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+    },
+    {
+     "any": [
+      {
+       "id": "has-visible-text",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element does not have text that is visible to screen readers"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element has no title attribute"
+      }
+     ],
+     "all": [],
+     "none": [
+      {
+       "id": "focusable-no-name",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element is in tab order and does not have accessible text"
+      }
+     ],
+     "impact": "serious",
+     "html": "<a href=\"javascript:location.href='tickets.html';\" onfocus=\"blur();\"><img name=\"nav_facts\" src=\"./img/nav_facts.gif\" width=\"105\" height=\"23\" hspace=\"9\" border=\"0px\"></a>",
+     "target": [
+      "#tickets > a[onfocus=\"blur();\"]"
+     ],
+     "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+    },
+    {
+     "any": [
+      {
+       "id": "has-visible-text",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element does not have text that is visible to screen readers"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element has no title attribute"
+      }
+     ],
+     "all": [],
+     "none": [
+      {
+       "id": "focusable-no-name",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element is in tab order and does not have accessible text"
+      }
+     ],
+     "impact": "serious",
+     "html": "<a href=\"javascript:location.href='survey.html';\" onfocus=\"blur();\"><img src=\"./img/nav_survey.gif\" name=\"nav_survey\" width=\"107\" height=\"32\" hspace=\"8\" border=\"0px\"></a>",
+     "target": [
+      "#survey > a[onfocus=\"blur();\"]"
+     ],
+     "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+    }
+   ]
+  },
+  {
+   "id": "select-name",
+   "impact": "critical",
+   "tags": [
+    "cat.forms",
+    "wcag2a",
+    "wcag412",
+    "section508",
+    "section508.22.n",
+    "TTv5",
+    "TT5.c",
+    "EN-301-549",
+    "EN-9.4.1.2",
+    "ACT",
+    "RGAAv4",
+    "RGAA-11.1.1"
+   ],
+   "description": "Ensure select element has an accessible name",
+   "help": "Select element must have an accessible name",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/select-name?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<select onchange=\"location.href = this.value;\">",
+     "target": [
+      "select[onchange=\"location.href = this.value;\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    },
+    {
+     "any": [
+      {
+       "id": "implicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an implicit (wrapped) <label>"
+      },
+      {
+       "id": "explicit-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element does not have an explicit <label>"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "critical",
+     "html": "<select name=\"cc\">",
+     "target": [
+      "select[name=\"cc\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    }
+   ]
+  },
+  {
+   "id": "target-size",
+   "impact": "serious",
+   "tags": [
+    "cat.sensory-and-visual-cues",
+    "wcag22aa",
+    "wcag258"
+   ],
+   "description": "Ensure touch targets have sufficient size and space",
+   "help": "All touch targets must be 24px large, or leave sufficient space",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "target-size",
+       "data": {
+        "minSize": 24,
+        "width": 94,
+        "height": 20
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Target has insufficient size (94px by 20px, should be at least 24px by 24px)"
+      },
+      {
+       "id": "target-offset",
+       "data": {
+        "closestOffset": 16,
+        "minOffset": 24
+       },
+       "relatedNodes": [
+        {
+         "html": "<a href=\"../after/reports/survey.html\" class=\"report\"><span class=\"hidden\">Accessible Survey Page </span> Report</a>",
+         "target": [
+          ".accessible > .report[href$=\"survey.html\"]"
+         ]
+        }
+       ],
+       "impact": "serious",
+       "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<a href=\"./reports/survey.html\" class=\"report\"><span class=\"hidden\">Inaccessible Survey Page </span> Report</a>",
+     "target": [
+      ".inaccessible > .report[href$=\"survey.html\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Target has insufficient size (94px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+    },
+    {
+     "any": [
+      {
+       "id": "target-size",
+       "data": {
+        "minSize": 24,
+        "width": 94,
+        "height": 20
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Target has insufficient size (94px by 20px, should be at least 24px by 24px)"
+      },
+      {
+       "id": "target-offset",
+       "data": {
+        "closestOffset": 16,
+        "minOffset": 24
+       },
+       "relatedNodes": [
+        {
+         "html": "<a href=\"./reports/survey.html\" class=\"report\"><span class=\"hidden\">Inaccessible Survey Page </span> Report</a>",
+         "target": [
+          ".inaccessible > .report[href$=\"survey.html\"]"
+         ]
+        }
+       ],
+       "impact": "serious",
+       "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<a href=\"../after/reports/survey.html\" class=\"report\"><span class=\"hidden\">Accessible Survey Page </span> Report</a>",
+     "target": [
+      ".accessible > .report[href$=\"survey.html\"]"
+     ],
+     "failureSummary": "Fix any of the following:\n  Target has insufficient size (94px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16px instead of at least 24px."
+    }
+   ]
+  }
+ ],
+ "incomplete": [
+  {
+   "id": "color-contrast",
+   "impact": "serious",
+   "tags": [
+    "cat.color",
+    "wcag2aa",
+    "wcag143",
+    "TTv5",
+    "TT13.c",
+    "EN-301-549",
+    "EN-9.1.4.3",
+    "ACT",
+    "RGAAv4",
+    "RGAA-3.2.1"
+   ],
+   "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+   "help": "Elements must meet minimum color contrast ratio thresholds",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "color-contrast",
+       "data": {
+        "contrastRatio": 0,
+        "fontSize": "10.8pt (14.4px)",
+        "fontWeight": "bold",
+        "messageKey": "bgImage",
+        "expectedContrastRatio": "4.5:1"
+       },
+       "relatedNodes": [
+        {
+         "html": "<a class=\"page current\"><span class=\"hidden\">Inaccessible </span>Survey Page</a>",
+         "target": [
+          ".page.current"
+         ]
+        }
+       ],
+       "impact": "serious",
+       "message": "Element's background color could not be determined due to a background image"
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<a class=\"page current\"><span class=\"hidden\">Inaccessible </span>Survey Page</a>",
+     "target": [
+      ".page.current"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+    },
+    {
+     "any": [
+      {
+       "id": "color-contrast",
+       "data": {
+        "contrastRatio": 0,
+        "fontSize": "10.8pt (14.4px)",
+        "fontWeight": "normal",
+        "messageKey": "bgImage",
+        "expectedContrastRatio": "4.5:1"
+       },
+       "relatedNodes": [
+        {
+         "html": "<a href=\"./annotated/survey.html\" class=\"annotoggle\">Show <br>Annotations</a>",
+         "target": [
+          ".annotoggle"
+         ]
+        }
+       ],
+       "impact": "serious",
+       "message": "Element's background color could not be determined due to a background image"
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<a href=\"./annotated/survey.html\" class=\"annotoggle\">Show <br>Annotations</a>",
+     "target": [
+      ".annotoggle"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+    }
+   ]
+  }
+ ],
+ "passes_count": 16,
+ "timestamp": "2026-09-02T13:52:57.888Z"
+}

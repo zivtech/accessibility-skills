@@ -1,0 +1,126 @@
+{
+ "page": 2,
+ "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-faq/",
+ "engine": "axe-core",
+ "testEngineVersion": "4.13.0",
+ "tags": [
+  "wcag2a",
+  "wcag2aa",
+  "wcag21a",
+  "wcag21aa",
+  "wcag22aa"
+ ],
+ "violations": [
+  {
+   "id": "frame-title",
+   "impact": "serious",
+   "tags": [
+    "cat.text-alternatives",
+    "wcag2a",
+    "wcag412",
+    "section508",
+    "section508.22.i",
+    "TTv5",
+    "TT12.d",
+    "EN-301-549",
+    "EN-9.4.1.2",
+    "RGAAv4",
+    "RGAA-2.1.1"
+   ],
+   "description": "Ensure <iframe> and <frame> elements have an accessible name",
+   "help": "Frames must have an accessible name",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/frame-title?application=playwright",
+   "nodes": [
+    {
+     "any": [
+      {
+       "id": "non-empty-title",
+       "data": {
+        "messageKey": "noAttr"
+       },
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element has no title attribute"
+      },
+      {
+       "id": "aria-label",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-label attribute does not exist or is empty"
+      },
+      {
+       "id": "aria-labelledby",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+      },
+      {
+       "id": "presentational-role",
+       "data": null,
+       "relatedNodes": [],
+       "impact": "serious",
+       "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      }
+     ],
+     "all": [],
+     "none": [],
+     "impact": "serious",
+     "html": "<iframe class=\"support-levels-disclosure-faq\" src=\"https://aria-at.w3.org/embed/reports/apg/disclosure-faq\" height=\"100\" allow=\"clipboard-write\" style=\"border-style: none; width: 100%; height: 415px;\">\n        </iframe>",
+     "target": [
+      "iframe"
+     ],
+     "failureSummary": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+    }
+   ]
+  }
+ ],
+ "incomplete": [
+  {
+   "id": "aria-valid-attr-value",
+   "impact": "critical",
+   "tags": [
+    "cat.aria",
+    "wcag2a",
+    "wcag412",
+    "EN-301-549",
+    "EN-9.4.1.2",
+    "RGAAv4",
+    "RGAA-7.1.1"
+   ],
+   "description": "Ensure all ARIA attributes have valid values",
+   "help": "ARIA attributes must conform to valid values",
+   "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=playwright",
+   "nodes": [
+    {
+     "any": [],
+     "all": [
+      {
+       "id": "aria-valid-attr-value",
+       "data": {
+        "messageKey": "controlsWithinPopup",
+        "needsReview": "aria-controls=\"id-skip-to-menu\""
+       },
+       "relatedNodes": [],
+       "impact": "critical",
+       "message": "Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"id-skip-to-menu\""
+      }
+     ],
+     "none": [],
+     "impact": "critical",
+     "html": "<button id=\"id-skip-to-button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-label=\"Skip To Content, shortcut Option + 0\" aria-controls=\"id-skip-to-menu\">",
+     "target": [
+      [
+       "skip-to-content",
+       "#id-skip-to-button"
+      ]
+     ],
+     "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"id-skip-to-menu\""
+    }
+   ]
+  }
+ ],
+ "passes_count": 32,
+ "timestamp": "2026-09-02T13:52:40.891Z"
+}

@@ -1,0 +1,29 @@
+{
+ "page": 2,
+ "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-faq/",
+ "engine": "htmlcs (pa11y)",
+ "documentTitle": "Example Disclosure (Show/Hide) for Answers to Frequently Asked Questions | APG | WAI | W3C",
+ "pageUrl": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-faq/",
+ "issues": [
+  {
+   "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H43,H63",
+   "type": "error",
+   "typeCode": 1,
+   "message": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+   "context": "<table aria-labelledby=\"kbd_label\" class=\"def\">\n          <thead>\n            ...</table>",
+   "selector": "#main > div > div > section:nth-child(4) > div > table",
+   "runner": "htmlcs",
+   "runnerExtras": {}
+  },
+  {
+   "code": "WCAG2AA.Principle2.Guideline2_4.2_4_1.H64.1",
+   "type": "error",
+   "typeCode": 1,
+   "message": "Iframe element requires a non-empty title attribute that identifies the frame.",
+   "context": "<iframe class=\"support-levels-disclosure-faq\" src=\"https://aria-at.w3.org/embed/reports/apg/disclosure-faq\" height=\"100\" allow=\"clipboard-write\" style=\"border-style: none; width: 100%; height: 415px;\">\n        </iframe>",
+   "selector": "#at-support > iframe",
+   "runner": "htmlcs",
+   "runnerExtras": {}
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "alfaOnlyRuleIdCount": 2,
+ "alfaOnlyRuleIds": [
+  "sia-r14",
+  "sia-r69"
+ ],
+ "alfaOnlySCsGlobalCount": 2,
+ "alfaOnlySCsGlobal": [
+  "2.5.3",
+  "1.4.3"
+ ],
+ "repByRuleSC": [
+  [
+   "sia-r14::2.5.3",
+   {
+    "page": 2,
+    "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-faq/",
+    "ruleId": "sia-r14",
+    "uri": "https://alfa.siteimprove.com/rules/sia-r14",
+    "sc": "2.5.3",
+    "level": "A",
+    "example": "[element] The visible text content of the element is not included within its accessible name"
+   }
+  ],
+  [
+   "sia-r69::1.4.3",
+   {
+    "page": 4,
+    "url": "https://www.w3.org/WAI/demos/bad/before/news.html",
+    "ruleId": "sia-r69",
+    "uri": "https://alfa.siteimprove.com/rules/sia-r69",
+    "sc": "1.4.3",
+    "level": "AA",
+    "example": "[text] The highest possible contrast of the text is 4.02:1 which is\n        below the required contrast of 4.5:1"
+   }
+  ]
+ ]
+}
