@@ -1,7 +1,7 @@
 # Engagement-tooling promotion handoff
 
 **Date:** 2026-09-02
-**Status:** OPEN — work order for a follow-up agent. No promotion is authorized by this document.
+**Status:** DISPOSED 2026-09-02 — every candidate now carries a disposition with a receipt in `docs/plans/2026-09-02-promotion-candidate-dispositions.md` (receipts: `evals/results/promotion-eval-2026-09/`). This file stays as the catalogue; the dispositions doc is the execution record. No promotion is authorized by either document.
 **Source:** the private `zivtech/a11y-audits` engagement package (2026-08 federal public-sites audit + interactive retest). Exact per-candidate paths and reproduction status live in that repo at
 `…/skills-feedback/promotion-ledger.md` (master register, `PT-*` IDs) and `…/skills-feedback/gotcha-candidates.md` (`GT-*` interaction-rule leads).
 
@@ -14,24 +14,22 @@ The interactive-retest engagement built ~150 harness scripts and contracts. Seve
 ## Hard constraints (do not violate)
 
 1. **No skill edit without the explicit per-candidate user-approval checkpoint.** Approval to *catalogue* candidates is not approval to *promote* one.
-2. **The promotion bar is per-candidate and non-negotiable** (see `.claude/skills/maintain-accessibility-skills/SKILL.md` § promotion bar and the source engagement's accepted-plan Phase 7):
-   - two independent surface/component reproductions (a single engagement is one surface);
-   - a generalized interaction principle **with** an explicit counterexample / negative space;
-   - a proof the skill does not already cover it;
-   - a BUG + CLEAN fixture pair, or a documented manual protocol where automation doesn't fit;
-   - mirrored `.claude` and `.agents` edits with `scripts/check_mirrors.py --strict` green;
-   - targeted lint / mirror / smoke / eval results shown;
-   - an `a11y-critic` review of the rule and its overgeneralization risk.
+2. **The promotion bar is per-candidate and non-negotiable.** The canonical text is `.claude/skills/maintain-accessibility-skills/SKILL.md` § "Bar for promoting an engagement pattern to a skill rule" — **six clauses**, quoted here so this file cannot drift from it:
+   1. **Two independent reproductions** — the pattern seen on two distinct surfaces, components, or engagements. A single-source claim drives a doc edit at most, never a skill-behavior change, until a fixture reproduces the behavior — *the fixture is the second reproduction, so it lands before the skill text.*
+   2. **Written negative space** — what the rule does NOT cover, as specifically as what it does.
+   3. **A BUG/CLEAN fixture pair**, or a named manual protocol where a fixture is not possible.
+   4. **Mirrored skill edits** — every surface in the same commit, `scripts/check_mirrors.py --strict` green.
+   5. **Targeted checks run and shown**, not asserted.
+   6. **Explicit user approval and a critic acceptance pass** before the rule is called promoted.
+
+   The source engagement's accepted-plan Phase 7 adds a **pre-check** applied before clause 1: **proven skill gap** (dedupe against what `main` already carries). An earlier revision of this file quoted "seven clauses" that omitted clause 6's user approval from the bar (it survived only under "Hard constraints" below) and dropped clause 1's ordering rule; corrected 2026-09-02.
 3. **This is a prompt-only repository.** Tier-2/4 candidates that carry runtime (Alfa, WAVE, workbook/ACR builders) are **routed, never vendored** — a pinned dependency + adoption assessment (`docs/*-adoption-assessment.md`), never copied source. See the existing `keyboard-a11y-tester` / `virtual-screen-reader` / `baseline-url-scan` adoption assessments for the pattern.
 4. **Do not import client identifiers** (site names, private URLs, engagement-specific selectors) into this public repo. Generalize; cite the private ledger for evidence.
 5. **A favorable characterization is not a reproduction.** Detector output stays detector output.
 
 ## Recommended order
 
-- **Start with PT-01 and PT-06** — the two genuinely unblocked items. PT-01's rule is already in the suite (only the scorer is missing, no new rule to argue); PT-06 is a generic open-source engine that needs generalization + an adoption assessment, not a second reproduction.
-- **Then PT-09, PT-19, PT-02** — high-value tooling whose rules/skills already exist to attach to.
-- **Tier 3 (PT-10…PT-17) is blocked on a genuinely second engagement.** Do not attempt to manufacture the second reproduction from the same site. Park these until a second audit supplies it.
-- **Tier 4 (PT-18/20/21) are scope calls** — raise the "does this belong in a prompt-only suite?" question with the user before building.
+Superseded by `docs/plans/2026-09-02-promotion-candidate-dispositions.md` § "Recommended order" (2026-09-02). In short: merge the redaction gate (PR #41) → wave 1 = PT-01 (structured disposition block + scorer, option A), PT-02 (custody checksums), PT-03 folded into `baseline-url-scan.mjs`, stacked linearly → wave 2 = GT-05 and GT-07 fixture-first, PT-18, PT-07 (API key permitting), PT-09 after the report contract gains a machine-readable `sample_set` appendix → PT-19 after PT-09's shape. Tier 3 otherwise stays parked on a second reproduction — which, per clause 1, a fixture from a generic component plus a public reference can supply.
 
 ## Candidate catalogue
 
@@ -41,7 +39,7 @@ Tier tags: **T1** reference implementation of a rule already in the suite · **T
 
 - **PT-01 · Operation-evidence scorer** → `a11y-test`.
   JTBD: *when an agent retests one operation, make each PASS/FAIL admissible only with evidence bound to the real action, so a retest is trustworthy rather than a generic keyboard-chain pass.*
-  Work: turn the engagement's `operation-retest/` contracts into the deferred `ollama/score_operation_evidence.py` + BUG/CLEAN fixtures under `evals/suites/`. Rule already in SKILL (PR #34); this is wiring, not a new rule.
+  Work: write `ollama/score_operation_evidence.py` for the three fixtures that already exist under `evals/suites/a11y-test-operation-evidence/` (PR #34 — clause 1 is met for the five rules). The engagement's `operation-retest/` contract (2,256 engagement-shaped lines) does not port. Because a rule-based scorer needs the reviewer to emit a structured disposition block, this is a **skill-text change with its own six-clause bar**, not wiring — user chose that option (A) 2026-09-02. Disposition: PROMOTE-NOW.
 - **PT-02 · Evidence custody & integrity tooling** → `a11y-test` evidence contract.
   JTBD: *hash every artifact append-only and tamper-evident, so evidence can't be silently edited between capture and report.*
   Work: generalize `post-capture-manifest.mjs` / `hash-evidence.mjs` into a reference script + contract text. Boundary already stated in PRs #33/#34.
@@ -59,7 +57,7 @@ Tier tags: **T1** reference implementation of a rule already in the suite · **T
 
 - **PT-06 · Alfa-via-Playwright scan lane** → `a11y-test` (candidate 7th mode). **Strongest candidate.**
   JTBD: *run a second independent ACT-rules engine (Alfa) beside axe with native EARL output, so detections can be cross-checked and rule coverage widened.*
-  Work: pin `@siteimprove/alfa-*` (open source), add a routing-table row + decision-flowchart branch + `docs/alfa-scan-adoption-assessment.md`. Mirror the `baseline-url-scan` promotion exactly. Detector output, never a verdict.
+  Status 2026-09-02: provenance note — the engagement's one run left no retrievable artifacts (its manifest names three files that exist on no branch; anchor `PENDING`); the ledger classes PT-06 as n/a for reproductions, so this is not a bar failure, only a reason the scratch run below is the first receipt. Measured in a scratch project on six public pages against axe-core + HTML_CodeSniffer (already routed via `pa11y-ci`, so "no second engine" was false): **2 Alfa-only A/AA rule classes** against a pre-declared bar of ≥3, both plausible true positives. Disposition: DECLINE as a coverage-widening 7th mode (cross-check confirmed, EARL unmeasured) with named reopen triggers and a negative-result adoption record as their home; receipts in `evals/results/promotion-eval-2026-09/1.1-alfa-overlap/`. If ever built: join `rule.uri` against `@siteimprove/alfa-rules` metadata — `Audit.toJSON()` carries no requirements — and give the assessment an escape-hatch section.
 - **PT-07 · WAVE visible-canary lane** → `a11y-test` detector adapter.
   JTBD: *capture WAVE output with an integrity canary, so client-mandated WAVE evidence can be included without trusting an unverifiable capture.*
   Work: routed adapter with an explicit auth/licensing boundary (WAVE is a commercial WebAIM API). Weaker — may stay engagement-side.
@@ -89,6 +87,7 @@ Full leads with negative-space requirements are in the private `gotcha-candidate
   JTBD: *give a client team a validated spreadsheet, so non-technical owners triage and track fixes in a tool they already use.*
 - **PT-19 · OpenACR interim (INCOMPLETE) draft builder** → `acr-reporting`.
   JTBD: *generate an explicitly-INCOMPLETE OpenACR draft mid-audit that never fabricates SC results, so interim conformance state can ship without over-claiming.* Direct extension of the untested→INCOMPLETE path.
+  Status 2026-09-02: the engagement builder emits the wrong INCOMPLETE stem (`:` where the skill and `score_acr.py` require `— untested A/AA criteria:`; verified against its real output), applies one blanket reason to every untested SC where the skill requires per-SC reasons, and hardcodes author/product/date. Its chapter omission for untested A/AA is CLI-valid (verified). Disposition: DEFER(input-spine refactor).
 - **PT-20 · Client-report build + ingestion contract** → report contract.
   JTBD: *validate an assembled report against a source-revision-checked contract, so the report can't drift from the evidence it cites.*
 - **PT-21 · Contract mutation-canary discipline** → `maintain-accessibility-skills` / evals.
@@ -96,7 +95,7 @@ Full leads with negative-space requirements are in the private `gotcha-candidate
 
 ## How to pick this up
 
-1. Read the private `promotion-ledger.md` / `gotcha-candidates.md` for exact paths, code, and reproduction status.
+1. Read `docs/plans/2026-09-02-promotion-candidate-dispositions.md` first — it carries the disposition, receipt, and blocker per candidate. Then the private `promotion-ledger.md` / `gotcha-candidates.md` for exact paths and code.
 2. Pick one candidate (start PT-01 or PT-06). Confirm the user approves promoting *that* candidate.
 3. Walk the seven-clause promotion bar above. For Tier 1, the rule already exists — you are wiring a scorer/tool and its fixtures. For Tier 2/4, you are pinning a dependency + writing an adoption assessment.
 4. Record progress back in the private ledger's promotion-bar table, and update this file's status line when a candidate lands.
