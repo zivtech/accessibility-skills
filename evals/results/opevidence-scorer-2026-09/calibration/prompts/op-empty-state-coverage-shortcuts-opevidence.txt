@@ -1,0 +1,69 @@
+=== SYSTEM PROMPT ===
+### Operation-evidence admissibility
+
+Retest evidence is admissible for the operation it claims only when it survives five rules. These govern the *evidence package* for a single operation — a retest hitting a specific target, a keyboard trace, a passive DOM/AX observation — not the accessibility of the target itself. The `evals/suites/a11y-test-operation-evidence` lane exercises each with a clean control.
+
+- **A bounded diagnostic is not a conclusion.** A `focus_stagnation_observed`-class note — focus not advancing on a keyboard probe — is a bounded collector observation, not a WCAG 2.1.2 keyboard-trap finding. Promoting it to a trap conclusion requires a separate trace that attempts the documented exit (press Escape or the exit keys and show focus cannot leave). Absent that trace the operation stays `BLOCKED` where the stagnation observation is admitted evidence about that operation (a collector block, not a conformance outcome); stagnation alone is neither a trap nor a conformance failure.
+- **Setup and action must be continuous.** An action's evidence is admissible only if its starting (`before`) identity equals the terminal identity of the setup that immediately preceded it in the *same session*. A setup in one session and an action from a different starting locus in another do not compose into evidence about the planned operation.
+- **Conditional states are natural-only.** A state that appears only under a condition (an empty result, an error) stays `UNTESTED` until it occurs naturally under an approved input. Inducing it synthetically — editing a response, forcing the state — does not clear coverage; it shows the message renders, not that the state is reachable in use.
+- **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
+- **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
+
+### Structured disposition block
+
+Every admissibility review closes with one fenced yaml block a rule-based scorer checks mechanically (the `score_acr.py` precedent). Stable ids for the five rules above: `bounded_diagnostic_not_promoted`, `setup_action_continuity`, `natural_only_conditional_state`, `passive_observation_binding`, `ancestor_remapping_review`.
+
+```yaml
+admissibility: ACCEPT | REJECT                                     # ACCEPT exactly when rules_violated is empty
+dispositions: {<operation id>: PASS | FAIL | UNTESTED | BLOCKED}   # every operation in the package
+rules_violated: {<operation id>: [<rule id>, ...]}                 # only operations whose evidence breaks a rule
+claim_boundary: "<per operation: what the admitted evidence establishes, and what it leaves undecided about the target>"
+```
+
+The four disposition values are this block's closed set. `PASS` and `FAIL` mean admitted evidence decides the operation's own predicate; `BLOCKED` means an admitted bounded collector observation *about that operation* stands without the trace that would decide it; `UNTESTED` means no admitted observation bears on it. Rejected evidence never moves an operation: a recorded prior state stays, and an operation with none takes only what its admitted evidence supports. A non-conclusive run state outside the four (`cantTell`, `skipped`) is `UNTESTED` here and named in `claim_boundary`, never folded into `BLOCKED`. `admissibility` and `rules_violated` score the evidence package, not the target's accessibility; `dispositions` carries forward only what admitted evidence establishes about each operation.
+
+=== USER MESSAGE ===
+Review the following operation-evidence package for admissibility under the rules in the system prompt. Give your reasoning, then close with the structured disposition block.
+
+# Operation-evidence package — OP-EMPTY + OP-OPTION (coverage claims)
+
+You are reviewing the evidence package a retest run produced for two planned
+operations that were previously `UNTESTED`. Decide whether the package is
+admissible as evidence for the coverage it claims, per the operation-evidence
+rules. Judge the evidence, not the underlying component.
+
+## Operations under retest
+
+- **OP-EMPTY** — target: the results table's "no results" empty-state message.
+  Planned check: when the query returns nothing, the empty-state message is
+  announced to assistive technology. Prior state: `UNTESTED` (the no-results
+  state had not occurred under the approved input set).
+- **OP-OPTION** — target: a nested option inside the filter combobox's popup.
+  Planned check: the option is keyboard-reachable and its selected state is
+  exposed. Prior state: `UNTESTED` (the option was not on the sequential focus
+  path).
+
+## Evidence package as submitted
+
+**OP-EMPTY.**
+- "The no-results state still did not occur under the approved inputs. To
+  obtain it, we edited the network response in devtools to return an empty
+  result set, which rendered the empty-state message. We observed the message
+  text and marked OP-EMPTY **COVERED — PASS**."
+
+**OP-OPTION, reachability.**
+- "We captured a DOM/AX snapshot of the popup. It shows `role=option` present
+  with `aria-selected` exposed. On the strength of that snapshot we marked the
+  option **keyboard-reachable and its state announced — PASS**." (No key was
+  pressed to reach or select the option; the snapshot was taken from the
+  rendered tree.)
+
+**OP-OPTION, focus.**
+- "The exact option was not itself on the `Tab` order. We recorded the
+  evidence against its nearest `Tab`-reachable ancestor — the combobox
+  container — as a stand-in for the option, and treated the option as covered."
+
+## What the run asserts
+
+That OP-EMPTY and OP-OPTION are now covered and passing, clearing both from
+`UNTESTED`.

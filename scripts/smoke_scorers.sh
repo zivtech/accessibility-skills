@@ -29,7 +29,6 @@ run_case() {
             echo "$output"
             echo "---------------------"
             failed=1
-            break
         fi
     done
 
@@ -221,6 +220,193 @@ run_case \
     "evalreport-meta.yaml" \
     "assertive conformance claim: 'is WCAG 2.2 AA conformant'" \
     "Status: FAIL"
+
+FIX="evals/suites/a11y-test-operation-evidence/fixtures"
+OD_META="../a11y-test-operation-evidence/fixtures/op-dialog-escape-overreach.metadata.yaml"
+OE_META="../a11y-test-operation-evidence/fixtures/op-empty-state-coverage-shortcuts.metadata.yaml"
+OC_META="../a11y-test-operation-evidence/fixtures/op-retest-clean.metadata.yaml"
+OM_META="../a11y-test-operation-evidence/fixtures/op-mixed-package-partial.metadata.yaml"
+OP_SCORER="ollama/score_operation_evidence.py"
+
+# Case 20: opevidence opdialog gold (PASS)
+run_case "opevidence opdialog gold (PASS)" "$OP_SCORER" \
+    "opevidence-opdialog-gold-response.json" "$OD_META" \
+    "+ bounded_diagnostic_not_promoted under OP-CLOSE" \
+    "+ setup_action_continuity under OP-CLOSE" "Status: PASS"
+
+# Case 21: opevidence opdialog flip-admissibility (FAIL, wrong admissibility)
+run_case "opevidence opdialog flip-admissibility (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-flip-admissibility-response.json" "$OD_META" \
+    "admissibility: got 'ACCEPT', expected 'REJECT'" "Status: FAIL"
+
+# Case 22: opevidence opdialog drop-diagnostic-rule (FAIL, missing rule under OP-CLOSE)
+run_case "opevidence opdialog drop-diagnostic-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-drop-diagnostic-rule-response.json" "$OD_META" \
+    "rules_violated missing: bounded_diagnostic_not_promoted under OP-CLOSE" "Status: FAIL"
+
+# Case 23: opevidence opdialog drop-continuity-rule (FAIL, missing rule under OP-CLOSE)
+run_case "opevidence opdialog drop-continuity-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-drop-continuity-rule-response.json" "$OD_META" \
+    "rules_violated missing: setup_action_continuity under OP-CLOSE" "Status: FAIL"
+
+# Case 24: opevidence opdialog ratify-phrase (FAIL, forbidden verdict phrase)
+run_case "opevidence opdialog ratify-phrase (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-ratify-phrase-response.json" "$OD_META" \
+    "forbidden verdict phrase: '2.1.2 FAIL confirmed'" "Status: FAIL"
+
+# Case 25: opevidence opdialog close-blocked (FAIL, wrong disposition)
+run_case "opevidence opdialog close-blocked (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-close-blocked-response.json" "$OD_META" \
+    "disposition OP-CLOSE: got 'BLOCKED', expected 'UNTESTED'" "Status: FAIL"
+
+# Case 26: opevidence opdialog reject-empty-rules (FAIL, REJECT with empty rules_violated)
+run_case "opevidence opdialog reject-empty-rules (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-reject-empty-rules-response.json" "$OD_META" \
+    "admissibility REJECT but rules_violated is empty" "Status: FAIL"
+
+# Case 27: opevidence opdialog no-block (FAIL, no structured disposition block)
+run_case "opevidence opdialog no-block (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-no-block-response.json" "$OD_META" \
+    "no structured disposition block found" "Status: FAIL"
+
+# Case 28: opevidence opempty gold (PASS)
+run_case "opevidence opempty gold (PASS)" "$OP_SCORER" \
+    "opevidence-opempty-gold-response.json" "$OE_META" \
+    "+ natural_only_conditional_state under OP-EMPTY" \
+    "+ passive_observation_binding under OP-OPTION" \
+    "+ ancestor_remapping_review under OP-OPTION" "Status: PASS"
+
+# Case 29: opevidence opempty flip-admissibility (FAIL)
+run_case "opevidence opempty flip-admissibility (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-flip-admissibility-response.json" "$OE_META" \
+    "admissibility: got 'ACCEPT', expected 'REJECT'" "Status: FAIL"
+
+# Case 30: opevidence opempty drop-natural-rule (FAIL, missing rule under OP-EMPTY)
+run_case "opevidence opempty drop-natural-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-drop-natural-rule-response.json" "$OE_META" \
+    "rules_violated missing: natural_only_conditional_state under OP-EMPTY" "Status: FAIL"
+
+# Case 31: opevidence opempty drop-passive-rule (FAIL, missing rule under OP-OPTION)
+run_case "opevidence opempty drop-passive-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-drop-passive-rule-response.json" "$OE_META" \
+    "rules_violated missing: passive_observation_binding under OP-OPTION" "Status: FAIL"
+
+# Case 32: opevidence opempty drop-ancestor-rule (FAIL, missing rule under OP-OPTION)
+run_case "opevidence opempty drop-ancestor-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-drop-ancestor-rule-response.json" "$OE_META" \
+    "rules_violated missing: ancestor_remapping_review under OP-OPTION" "Status: FAIL"
+
+# Case 33: opevidence opempty op-empty-pass (FAIL, wrong disposition)
+run_case "opevidence opempty op-empty-pass (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-op-empty-pass-response.json" "$OE_META" \
+    "disposition OP-EMPTY: got 'PASS', expected 'UNTESTED'" "Status: FAIL"
+
+# Case 34: opevidence opempty forbidden-phrase (FAIL, forbidden verdict phrase)
+run_case "opevidence opempty forbidden-phrase (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-forbidden-phrase-response.json" "$OE_META" \
+    "forbidden verdict phrase: 'OP-EMPTY COVERED'" "Status: FAIL"
+
+# Case 35: opevidence opempty misattributed-rule (FAIL, rule under wrong operation)
+run_case "opevidence opempty misattributed-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-misattributed-rule-response.json" "$OE_META" \
+    "rules_violated missing: natural_only_conditional_state under OP-EMPTY" \
+    "unexpected rule fired on OP-OPTION: natural_only_conditional_state" "Status: FAIL"
+
+# Case 36: opevidence opclean gold (PASS, false-alarm control)
+run_case "opevidence opclean gold (PASS)" "$OP_SCORER" \
+    "opevidence-opclean-gold-response.json" "$OC_META" \
+    "Rules violated: {}" "Status: PASS"
+
+# Case 37: opevidence opclean invented-rule (FAIL, fabricated rule id)
+run_case "opevidence opclean invented-rule (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-invented-rule-response.json" "$OC_META" \
+    "unknown rule id in rules_violated: evidence_staleness_check" "Status: FAIL"
+
+# Case 38: opevidence opclean downgrade-close (FAIL, wrong disposition)
+run_case "opevidence opclean downgrade-close (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-downgrade-close-response.json" "$OC_META" \
+    "disposition OP-CLOSE: got 'FAIL', expected 'PASS'" "Status: FAIL"
+
+# Case 39: opevidence opclean downgrade-option (FAIL, wrong disposition)
+run_case "opevidence opclean downgrade-option (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-downgrade-option-response.json" "$OC_META" \
+    "disposition OP-OPTION: got 'UNTESTED', expected 'PASS'" "Status: FAIL"
+
+# Case 40: opevidence opclean op-empty-pass (FAIL, wrong disposition)
+run_case "opevidence opclean op-empty-pass (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-op-empty-pass-response.json" "$OC_META" \
+    "disposition OP-EMPTY: got 'PASS', expected 'UNTESTED'" "Status: FAIL"
+
+# Case 41: opevidence opclean false-fire-phrase (FAIL, forbidden verdict phrase)
+run_case "opevidence opclean false-fire-phrase (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-false-fire-phrase-response.json" "$OC_META" \
+    "forbidden verdict phrase: 'promoted diagnostic'" "Status: FAIL"
+
+# Case 42: opevidence opclean accept-with-rules (FAIL, ACCEPT with non-empty rules_violated)
+run_case "opevidence opclean accept-with-rules (FAIL)" "$OP_SCORER" \
+    "opevidence-opclean-accept-with-rules-response.json" "$OC_META" \
+    "admissibility ACCEPT but rules_violated is not empty" "Status: FAIL"
+
+# Case 43: opevidence opmixed gold (PASS, per-operation attribution)
+run_case "opevidence opmixed gold (PASS)" "$OP_SCORER" \
+    "opevidence-opmixed-gold-response.json" "$OM_META" \
+    "+ passive_observation_binding under OP-OPTION" "Status: PASS"
+
+# Case 44: opevidence opmixed rollback-close (FAIL, wrong disposition)
+run_case "opevidence opmixed rollback-close (FAIL)" "$OP_SCORER" \
+    "opevidence-opmixed-rollback-close-response.json" "$OM_META" \
+    "disposition OP-CLOSE: got 'UNTESTED', expected 'PASS'" "Status: FAIL"
+
+# Case 45: opevidence opmixed accept (FAIL, wrong admissibility)
+run_case "opevidence opmixed accept (FAIL)" "$OP_SCORER" \
+    "opevidence-opmixed-accept-response.json" "$OM_META" \
+    "admissibility: got 'ACCEPT', expected 'REJECT'" "Status: FAIL"
+
+# Case 46: opevidence opmixed option-pass (FAIL, wrong disposition)
+run_case "opevidence opmixed option-pass (FAIL)" "$OP_SCORER" \
+    "opevidence-opmixed-option-pass-response.json" "$OM_META" \
+    "disposition OP-OPTION: got 'PASS', expected 'UNTESTED'" "Status: FAIL"
+
+# Case 47: opevidence opmixed rule-on-close (FAIL, rule false-fired on admissible operation)
+run_case "opevidence opmixed rule-on-close (FAIL)" "$OP_SCORER" \
+    "opevidence-opmixed-rule-on-close-response.json" "$OM_META" \
+    "rule fired on admissible operation OP-CLOSE: setup_action_continuity" "Status: FAIL"
+
+# Case 48: opevidence opmixed boundary-omits-option (WARN, claim_boundary should-miss)
+run_case "opevidence opmixed boundary-omits-option (WARN)" "$OP_SCORER" \
+    "opevidence-opmixed-boundary-omits-option-response.json" "$OM_META" \
+    "claim_boundary does not mention OP-OPTION" "Status: WARN"
+
+# Case 49: opevidence truncated response (unclosed <think>) -> INCOMPLETE, not scored
+run_case \
+    "opevidence truncated response (INCOMPLETE)" \
+    "ollama/score_operation_evidence.py" \
+    "opevidence-opclean-truncated-response.json" \
+    "../a11y-test-operation-evidence/fixtures/op-retest-clean.metadata.yaml" \
+    "Status: INCOMPLETE"
+
+# Case 50: opevidence over-flag — every rule fired on OP-CLOSE must FAIL (flag-everything is dead)
+run_case "opevidence opdialog overflag (FAIL)" "$OP_SCORER" \
+    "opevidence-opdialog-overflag-response.json" "$OD_META" \
+    "unexpected rule fired on OP-CLOSE: natural_only_conditional_state" \
+    "unexpected rule fired on OP-CLOSE: passive_observation_binding" \
+    "unexpected rule fired on OP-CLOSE: ancestor_remapping_review" "Status: FAIL"
+
+# Case 51: opevidence over-flag — every rule on both operations must FAIL
+run_case "opevidence opempty overflag (FAIL)" "$OP_SCORER" \
+    "opevidence-opempty-overflag-response.json" "$OE_META" \
+    "unexpected rule fired on OP-EMPTY: bounded_diagnostic_not_promoted" \
+    "unexpected rule fired on OP-OPTION: natural_only_conditional_state" "Status: FAIL"
+
+# Case 52: opevidence unparseable block (unquoted claim_boundary with colons) -> distinct line, not "no block"
+run_case "opevidence opclean unparseable block (FAIL, distinct line)" "$OP_SCORER" \
+    "opevidence-opclean-unparseable-response.json" "$OC_META" \
+    "disposition block present but not parseable YAML" "Status: FAIL"
+
+# Case 53: opevidence should-tier hook_present path -> WARN, never FAIL
+run_case "opevidence opdialog gold block, hookless prose (WARN)" "$OP_SCORER" \
+    "opevidence-opdialog-no-hooks-response.json" "$OD_META" \
+    "hook not mentioned for bounded_diagnostic_not_promoted" "Status: WARN"
 
 echo
 echo "Results: $pass_count passed, $fail_count failed"

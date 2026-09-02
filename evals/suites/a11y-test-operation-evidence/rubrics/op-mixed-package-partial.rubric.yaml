@@ -1,0 +1,60 @@
+fixture_id: op-mixed-package-partial
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py
+
+dimensions:
+  - id: rejection_attributed_to_op_option
+    name: "The package's REJECT verdict is attributed specifically to OP-OPTION's evidence, not the package as an undifferentiated whole"
+    tier: must
+    note: >-
+      Naming the operation the violation belongs to is the graded behavior —
+      a verdict that rejects "the package" without saying which operation's
+      evidence broke the rule has not demonstrated per-operation attribution.
+  - id: op_close_pass_preserved
+    name: "OP-CLOSE's PASS, earned independently on its own continuous exit-path trace, is preserved and not downgraded"
+    tier: must
+    note: >-
+      Over-rejection trap: rolling OP-CLOSE back to UNTESTED (or any other
+      non-PASS value) "because the package is rejected" is a false fire —
+      OP-CLOSE's evidence honors every rule on its own.
+  - id: no_rule_fired_on_op_close
+    name: "No admissibility rule is listed against OP-CLOSE in rules_violated or equivalent prose"
+    tier: must
+    note: >-
+      The single defensible expected_status_competent block attaches
+      passive_observation_binding to OP-OPTION only. Attaching any rule to
+      OP-CLOSE — even a should-tier hedge — is scored as a false fire, the
+      same contamination this fixture exists to catch.
+  - id: op_option_left_untested_not_fail
+    name: "OP-OPTION's disposition is UNTESTED, not FAIL, and not PASS"
+    tier: must
+    note: >-
+      A passive snapshot with no causing keypress does not establish
+      reachability or announcement in either direction — it is not proof of
+      PASS and it is not proof of FAIL either. UNTESTED is the only
+      disposition the admitted evidence supports; PASS is the under-rejection
+      trap, FAIL is an equally unsupported overcorrection.
+
+status_semantics:
+  PASS: "admissibility REJECT, dispositions exactly {OP-CLOSE: PASS, OP-OPTION: UNTESTED}, rules_violated attaches passive_observation_binding to OP-OPTION only"
+  WARN: "Correct dispositions reached but attribution is muddled (e.g. rejection reasoning not clearly scoped to OP-OPTION) or a should-tier hedge appears against OP-CLOSE"
+  FAIL: "OP-CLOSE downgraded from PASS, any rule fired against OP-CLOSE, OP-OPTION rolled up to PASS, or OP-OPTION mischaracterized as FAIL"
+
+focus: >-
+  Per-operation attribution inside a single mixed evidence package. Every
+  existing fixture in this suite is uniform — all-admissible or
+  all-violating — so none of them can catch a reviewer (or scorer) that
+  treats admissibility as a package-level verdict instead of an
+  operation-level one. This fixture is built so the two failure directions
+  (over-rejection: OP-CLOSE contaminated by OP-OPTION's defect;
+  under-rejection: OP-OPTION laundered through OP-CLOSE's clean evidence) are
+  both live and both scorable straight off the structured disposition block.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) and structured disposition block as the standard under test"
+known_judgment_calls:
+  - "The defensible structured block is {admissibility: REJECT, dispositions: {OP-CLOSE: PASS, OP-OPTION: UNTESTED}, rules_violated: {OP-OPTION: [passive_observation_binding]}} — admissibility is REJECT because at least one operation's evidence fails a rule, even though OP-CLOSE's own evidence is clean. Do not read package-level REJECT as license to downgrade OP-CLOSE."
+  - "A response that separately restates each operation's claim_boundary (what OP-CLOSE's admitted evidence establishes vs. what nothing admitted for OP-OPTION decides) is a defensible bonus, not required for PASS."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority — same routing rule as every local-model lane."

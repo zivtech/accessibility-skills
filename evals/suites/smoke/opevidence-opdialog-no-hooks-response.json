@@ -1,0 +1,3 @@
+{
+  "response": "The evidence does not support the run's conclusion and the action is not continuous with its setup, so the package is rejected.\n\n```yaml\nadmissibility: REJECT\ndispositions: {OP-CLOSE: UNTESTED}\nrules_violated: {OP-CLOSE: [bounded_diagnostic_not_promoted, setup_action_continuity]}\nclaim_boundary: \"OP-CLOSE: nothing admitted bears on it; the dismissal question is undecided.\"\n```\n"
+}

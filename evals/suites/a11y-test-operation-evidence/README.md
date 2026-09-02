@@ -1,6 +1,6 @@
 # a11y-test-operation-evidence eval suite
 
-**Status: fixtures landed; rule-based scorer pending.** This suite measures
+**Status: fixtures + rule-based scorer landed; zero model rows.** This suite measures
 whether an operation-evidence claim (a retest hitting a specific interactive
 target, a keyboard trace, a passive DOM/AX observation) meets the
 evidence-quality rules the `a11y-test` skill states, rather than whether the
@@ -38,6 +38,7 @@ evidence alone, not only that it catches a planted violation):
 | `op-dialog-escape-overreach` | BUG | bounded-diagnostic-not-promoted; setup/action continuity |
 | `op-empty-state-coverage-shortcuts` | BUG | natural-only conditional state; passive-observation binding; ancestor-remapping review |
 | `op-retest-clean` | CLEAN control | all five, in their admissible forms — must not be flagged |
+| `op-mixed-package-partial` | BUG (mixed) | passive-observation binding on one operation; the other operation fully admissible — per-operation attribution |
 
 Each fixture follows this bundle's existing triplet convention, matching
 `evaluation-report` and `a11y-planner`:
@@ -60,14 +61,24 @@ dialog) and carry no engagement identifiers, routes, selectors, or counts.
 The rules here are about the **logic** of an evidence package — whether a
 diagnostic was over-promoted, whether an action is continuous with its setup,
 whether a coverage claim rests on a natural occurrence — not about token
-presence. A naive pattern-matching scorer would be a false instrument for
-them, so `ollama/score_operation_evidence.py` is deliberately **not yet
-written**; each fixture's `metadata.yaml` declares the checks a future scorer
-(or a model-judge) would formalize, with pattern hooks only where a hit is
-mechanical. Until it exists, the fixtures serve as adjudication material read
-directly against the `a11y-test` operation-evidence rules.
+presence. Rule *selection* stays the model's semantic judgment; a naive
+pattern-matching scorer could never make that call. What `a11y-test`
+SKILL.md's Structured disposition block adds is a fenced yaml block every
+review closes with, so *reporting* the judgment already made is mechanical —
+the same split `score_acr.py` uses for the ACR yaml block.
+`ollama/score_operation_evidence.py` checks that block against each fixture's
+`expected_admissibility`, `expected_dispositions`, `must_catch[]`,
+`rules_violated_must_be_empty_for`, and `expected_verdict_must_not`, and fails
+a review that fires any rule outside `must_catch` (over-flagging is a miss,
+not thoroughness); it is
+detector output, not verdict authority — same routing rule as every other
+rule-based scorer in this bundle.
 
-**Reproduce:** no scorer yet — read each `fixtures/<id>.md` against the
-operation-evidence admissibility rules in `a11y-test/SKILL.md` and compare to
-the expectations in the matching `metadata.yaml` / `rubrics/<id>.rubric.yaml`.
-Zero model rows (calibration lane).
+**Reproduce:**
+
+```bash
+python3 ollama/run_benchmark.py opevidence <model> <fixture-id>
+python3 ollama/score_operation_evidence.py <response.json> <metadata.yaml>
+```
+
+Zero model rows as of 2026-09-02 (calibration lane).

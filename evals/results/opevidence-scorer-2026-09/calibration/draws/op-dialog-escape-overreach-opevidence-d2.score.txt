@@ -1,0 +1,19 @@
+Fixture: op-dialog-escape-overreach
+Response length: 5649 chars
+Structured block: + parsed (990 chars)
+Admissibility: 'REJECT' (expected 'REJECT')
+Dispositions: {'OP-CLOSE': 'UNTESTED'}
+Rules violated: {'OP-CLOSE': ['bounded_diagnostic_not_promoted', 'setup_action_continuity']}
+
+Must-catch:
+  + bounded_diagnostic_not_promoted under OP-CLOSE
+  + setup_action_continuity under OP-CLOSE
+
+Nice-to-have (informational only):
+  + nice-to-have: ['inconclusive', 'inadmissible', 'cannot decide']
+
+Must misses: 0
+Fabrications: 0
+Should misses: 0
+
+Status: PASS

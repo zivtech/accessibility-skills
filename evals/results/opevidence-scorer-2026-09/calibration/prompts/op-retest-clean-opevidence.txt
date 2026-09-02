@@ -1,0 +1,66 @@
+=== SYSTEM PROMPT ===
+### Operation-evidence admissibility
+
+Retest evidence is admissible for the operation it claims only when it survives five rules. These govern the *evidence package* for a single operation — a retest hitting a specific target, a keyboard trace, a passive DOM/AX observation — not the accessibility of the target itself. The `evals/suites/a11y-test-operation-evidence` lane exercises each with a clean control.
+
+- **A bounded diagnostic is not a conclusion.** A `focus_stagnation_observed`-class note — focus not advancing on a keyboard probe — is a bounded collector observation, not a WCAG 2.1.2 keyboard-trap finding. Promoting it to a trap conclusion requires a separate trace that attempts the documented exit (press Escape or the exit keys and show focus cannot leave). Absent that trace the operation stays `BLOCKED` where the stagnation observation is admitted evidence about that operation (a collector block, not a conformance outcome); stagnation alone is neither a trap nor a conformance failure.
+- **Setup and action must be continuous.** An action's evidence is admissible only if its starting (`before`) identity equals the terminal identity of the setup that immediately preceded it in the *same session*. A setup in one session and an action from a different starting locus in another do not compose into evidence about the planned operation.
+- **Conditional states are natural-only.** A state that appears only under a condition (an empty result, an error) stays `UNTESTED` until it occurs naturally under an approved input. Inducing it synthetically — editing a response, forcing the state — does not clear coverage; it shows the message renders, not that the state is reachable in use.
+- **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
+- **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
+
+### Structured disposition block
+
+Every admissibility review closes with one fenced yaml block a rule-based scorer checks mechanically (the `score_acr.py` precedent). Stable ids for the five rules above: `bounded_diagnostic_not_promoted`, `setup_action_continuity`, `natural_only_conditional_state`, `passive_observation_binding`, `ancestor_remapping_review`.
+
+```yaml
+admissibility: ACCEPT | REJECT                                     # ACCEPT exactly when rules_violated is empty
+dispositions: {<operation id>: PASS | FAIL | UNTESTED | BLOCKED}   # every operation in the package
+rules_violated: {<operation id>: [<rule id>, ...]}                 # only operations whose evidence breaks a rule
+claim_boundary: "<per operation: what the admitted evidence establishes, and what it leaves undecided about the target>"
+```
+
+The four disposition values are this block's closed set. `PASS` and `FAIL` mean admitted evidence decides the operation's own predicate; `BLOCKED` means an admitted bounded collector observation *about that operation* stands without the trace that would decide it; `UNTESTED` means no admitted observation bears on it. Rejected evidence never moves an operation: a recorded prior state stays, and an operation with none takes only what its admitted evidence supports. A non-conclusive run state outside the four (`cantTell`, `skipped`) is `UNTESTED` here and named in `claim_boundary`, never folded into `BLOCKED`. `admissibility` and `rules_violated` score the evidence package, not the target's accessibility; `dispositions` carries forward only what admitted evidence establishes about each operation.
+
+=== USER MESSAGE ===
+Review the following operation-evidence package for admissibility under the rules in the system prompt. Give your reasoning, then close with the structured disposition block.
+
+# Operation-evidence package — OP-CLOSE + OP-EMPTY + OP-OPTION (well-formed)
+
+You are reviewing the evidence package a retest run produced for three planned
+operations. Decide whether the package is admissible as evidence for the claims
+it makes, per the operation-evidence rules. Judge the evidence, not the
+underlying component.
+
+## Evidence package as submitted
+
+**OP-CLOSE — dismiss the Details dialog with Escape (claim: PASS).**
+- One session (`load+settle` ok): opened the Details dialog from the
+  results-table row action; terminal setup focus = the dialog's initial focus
+  (its heading). From that same focus, in the same session, pressed `Escape`.
+  Observed: dialog dismissed, focus returned to the row-action trigger. The
+  action's `before` identity equals the setup's terminal identity.
+- A `focus_stagnation_observed` note from an earlier probe is retained as a
+  **bounded collector observation only** — it is explicitly not offered as a
+  2.1.2 conclusion, and the Escape exit-path trace above is what supports the
+  PASS.
+
+**OP-EMPTY — empty-state announcement (claim: UNTESTED, unchanged).**
+- The no-results state did not occur naturally under the approved input set,
+  and no synthetic induction was used. OP-EMPTY is left **UNTESTED**, with the
+  admissible path recorded: revisit when the state arises under an approved
+  input.
+
+**OP-OPTION — nested option reachable and state exposed (claim: PASS).**
+- The option is a descendant of the filter combobox, a composite. Reached it
+  through the composite's reviewed, separately frozen owner/descendant mapping:
+  `Tab` to the combobox owner, then `ArrowDown` to the option (a real keypress
+  trace is attached). Its `aria-selected` transition was observed *after* the
+  activating key, and the DOM/AX snapshot is retained as supporting context
+  **bound to that keypress** and on the source allowlist — not as standalone
+  reachability proof.
+
+## What the run asserts
+
+OP-CLOSE PASS (exit-path trace), OP-OPTION PASS (composite owner model + bound
+observation), OP-EMPTY remains UNTESTED (no natural occurrence).

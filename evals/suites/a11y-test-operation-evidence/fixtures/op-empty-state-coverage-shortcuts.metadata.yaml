@@ -11,11 +11,14 @@ description: >-
   both operations UNTESTED (with the specific admissible path named), rather
   than accepting the PASS roll-up.
 
-# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
-# Semantic checks; hooks only surface the tokens that make each shortcut visible.
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
+# Rule selection is the model's semantic judgment; the structured disposition
+# block (a11y-test SKILL.md) makes reporting it mechanical. Hooks are should-tier.
 
 expected_admissibility: REJECT
-expected_coverage_must_stay: UNTESTED     # both operations remain untested
+expected_dispositions:                    # both operations remain untested
+  OP-EMPTY: UNTESTED
+  OP-OPTION: UNTESTED
 expected_verdict_must_not:
   - "OP-EMPTY COVERED"
   - "OP-OPTION PASS"
@@ -23,6 +26,7 @@ expected_verdict_must_not:
 
 must_catch:
   - id: natural_only_conditional_state
+    operation: OP-EMPTY
     why: >-
       The no-results state was induced synthetically (devtools-edited response)
       rather than occurring naturally under the approved input set. A synthetic
@@ -30,6 +34,7 @@ must_catch:
       arises naturally under an approved input.
     hook_present: ["devtools", "empty result set", "COVERED"]
   - id: passive_observation_binding
+    operation: OP-OPTION
     why: >-
       A DOM/AX snapshot showing role=option / aria-selected is a passive
       observation. It is admissible only as support bound to a causing key
@@ -38,6 +43,7 @@ must_catch:
     hook_present: ["snapshot", "keyboard-reachable"]
     hook_absent_in_evidence: ["press", "keypress", "Enter", "ArrowDown"]
   - id: ancestor_remapping_review
+    operation: OP-OPTION
     why: >-
       Recording evidence against the nearest Tab-reachable ancestor as a
       stand-in for an unreachable descendant is a silent nearest-ancestor

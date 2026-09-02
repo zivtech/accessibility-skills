@@ -1,0 +1,3 @@
+{
+  "response": "The run's own conclusion promotes a bounded `focus_stagnation_observed` note straight into a WCAG 2.1.2 keyboard-trap FAIL. No Escape was pressed and no exit-path trace was run, so the trap conclusion is unsupported.\n\nThe action also starts from Session B (the filter combobox, fresh load) while the setup terminated in Session A (the dialog heading, dialog open). An action's starting identity must equal the setup's terminal identity in the same session; this one does not, so it is not evidence about OP-CLOSE.\n\nThe package is inadmissible on both grounds. OP-CLOSE stays UNTESTED \u2014 the stagnation note belongs to a different combobox observation, not to this operation.\n\nThe package is rejected as inadmissible; OP-CLOSE remains UNTESTED."
+}

@@ -13,7 +13,7 @@ description: >-
   claims. Flagging any of them is a false positive — the failure this fixture
   exists to catch.
 
-# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
 
 expected_admissibility: ACCEPT
 expected_dispositions:

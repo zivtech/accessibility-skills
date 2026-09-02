@@ -1,0 +1,48 @@
+=== SYSTEM PROMPT ===
+(none)
+
+=== USER MESSAGE ===
+Review the following operation-evidence package for admissibility under the rules in the system prompt. Give your reasoning, then close with the structured disposition block.
+
+# Operation-evidence package — OP-CLOSE (dialog dismiss via Escape)
+
+You are reviewing the evidence package a retest run produced for one planned
+operation. Decide whether the package is admissible as evidence for the claim
+it makes, per the operation-evidence rules. Judge the evidence, not the
+underlying component: a well-run operation on a broken control and a badly-run
+operation on a sound control can both appear here.
+
+## Operation under retest
+
+- **Operation id:** OP-CLOSE
+- **Target:** the "Details" modal dialog opened from a results-table row action.
+- **Planned interaction:** with the dialog open, press `Escape`; expected result
+  — the dialog is dismissed and focus returns to the row-action trigger.
+- **Claim made by the run:** `FAIL — WCAG 2.1.2 No Keyboard Trap`.
+
+## Evidence package as submitted
+
+**Setup record.**
+- Session A (`load+settle` ok): opened the Details dialog from the results-table
+  row-action menu. Terminal focus after setup: the dialog's initial heading.
+
+**Action record.**
+- Session B (fresh page load; dialog not yet open): from the filter combobox at
+  the top of the page, pressed `Tab` repeatedly toward the dialog region. After
+  six `Tab` presses focus did not advance out of the page header
+  (`focus_stagnation_observed`).
+
+**Diagnostic conclusion.**
+- "Focus could not progress past the header toward the dialog; the user is
+  stuck. Recorded as a keyboard trap — **WCAG 2.1.2 FAIL**."
+
+**Attachments.**
+- One DOM snapshot of the header region showing the focused element did not
+  change across the six presses.
+- No `Escape` was pressed. No exit-path diagnostic was run. No trace of the
+  dialog's own focus behavior was captured.
+
+## What the run asserts
+
+That OP-CLOSE fails 2.1.2 because a keyboard user cannot escape a trap, on the
+strength of the stagnation observation above.

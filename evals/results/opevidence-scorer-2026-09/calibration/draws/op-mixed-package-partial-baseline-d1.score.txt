@@ -1,0 +1,26 @@
+Fixture: op-mixed-package-partial
+Response length: 8847 chars
+Structured block: X no disposition yaml fence found
+Admissibility: None (expected 'REJECT')
+Dispositions: {}
+Rules violated: {}
+
+Must-catch:
+  X passive_observation_binding under OP-OPTION
+
+Nice-to-have (informational only):
+  + nice-to-have: ['per-operation', 'OP-CLOSE PASS', 'attribution']
+
+Must misses: 7
+  - no structured disposition block found
+  - missing key: admissibility
+  - missing key: dispositions
+  - missing key: rules_violated
+  - missing key: claim_boundary
+  - rules_violated missing: passive_observation_binding under OP-OPTION
+  - claim_boundary missing or empty
+Fabrications: 1
+  - forbidden verdict phrase: 'both operations pass'
+Should misses: 0
+
+Status: FAIL
