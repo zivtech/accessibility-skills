@@ -1,9 +1,10 @@
 Parsed: 26 judgment line(s) (1 fence(s), 0 unparseable object line(s))
-Coverage: 26/26 input ids answered (0 duplicated, 0 extra)
+Coverage: 25/25 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 0/0 found
-Clean rows (R2): 8/8 unflagged; false alarms: 0
+Clean rows (R2): 7/7 unflagged; false alarms: 0
 Calibration rows (R3, informational): 18/18 agree
 Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 1 hit(s)
+Info: invalid rows excluded (1): TITLE-CO-a92da72862
 should miss: R5 quoted span(s) absent from the row (1): FIELD-CO-367e158395:“quarterly membership renewal portal”
 
 Status: WARN

@@ -1,0 +1,11 @@
+Parsed: 44 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 38/38 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 7/7 found
+Clean rows (R2): 2/3 unflagged; false alarms: 1 [LINK-LI-33337c9396]
+Calibration rows (R3, informational): 26/28 agree — HEADING-LI-88c0ca1cb8(yes->no), HEADING-LI-ac0072ec23(yes->no)
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Info: invalid rows excluded (6): LINK-LI-44b51f4ece, LINK-LI-59ee6ec8fc, LINK-LI-6299f2f8fa, LINK-LI-a490ae2283, LINK-LI-c51b799ac0, LINK-LI-f72af258ca
+MUST MISS: R2 false alarm: expected-yes row LINK-LI-33337c9396 judged no (H30)
+should miss: R6 no-rationale names none of the row's loses phrases on 7 row(s): LINK-LI-51c84ee852, LINK-LI-901fe7deda, LINK-LI-a9186a85cb, LINK-LI-b2776e14df, LINK-LI-c48980d950, LINK-LI-e9576c5535, LINK-LI-f7259f7b59
+
+Status: FAIL

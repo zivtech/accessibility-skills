@@ -59,7 +59,11 @@ from score_common import normalize_quotes, strip_thinking  # noqa: E402
 JUDGMENTS = ("yes", "no", "unsure")
 CONFIDENCES = ("high", "medium", "low")
 FENCE_RE = re.compile(r"```(?:jsonl?|json)?\s*\n(.*?)```", re.DOTALL)
-QUOTED_RE = re.compile(r"[\"“”‘’']([^\"“”‘’']{3,}?)[\"“”‘’']")
+# Double quotes (straight or curly) and curly single quotes only: a straight
+# apostrophe inside a word ("link's alt … user's") is possessive, not a
+# quote — the first hosted draws fired R5 on exactly that (instrument
+# revision, 2026-09-02, pre-verdict).
+QUOTED_RE = re.compile(r"[\"“”‘’]([^\"“”‘’]{3,}?)[\"“”‘’]")
 WS_RE = re.compile(r"\s+")
 
 

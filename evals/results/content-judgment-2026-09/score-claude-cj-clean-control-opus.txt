@@ -2,7 +2,7 @@ Parsed: 26 judgment line(s) (1 fence(s), 0 unparseable object line(s))
 Coverage: 25/25 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 0/0 found
 Clean rows (R2): 7/7 unflagged; false alarms: 0
-Calibration rows (R3, informational): 18/18 agree
+Calibration rows (R3, informational): 17/18 agree — LINK-CO-26172863dc(yes->no)
 Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
 Info: invalid rows excluded (1): TITLE-CO-a92da72862
 

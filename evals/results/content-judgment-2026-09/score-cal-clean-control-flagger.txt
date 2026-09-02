@@ -1,9 +1,10 @@
 Parsed: 26 judgment line(s) (1 fence(s), 0 unparseable object line(s))
-Coverage: 26/26 input ids answered (0 duplicated, 0 extra)
+Coverage: 25/25 input ids answered (0 duplicated, 0 extra)
 Must-no rows (R1): 0/0 found
-Clean rows (R2): 0/8 unflagged; false alarms: 8 [FIELD-CO-617f5a88b7, HEADING-CO-01c0e1fe88, HEADING-CO-333a24dd3f, IDENT-CO-2c687abd06, IMAGE-CO-3afdf110e0, IMAGE-CO-95ed7d38dd, LINK-CO-d03461d186, TITLE-CO-a92da72862]
+Clean rows (R2): 0/7 unflagged; false alarms: 7 [FIELD-CO-617f5a88b7, HEADING-CO-01c0e1fe88, HEADING-CO-333a24dd3f, IDENT-CO-2c687abd06, IMAGE-CO-3afdf110e0, IMAGE-CO-95ed7d38dd, LINK-CO-d03461d186]
 Calibration rows (R3, informational): 18/18 agree
 Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Info: invalid rows excluded (1): TITLE-CO-a92da72862
 MUST MISS: R2 false alarm: expected-yes row FIELD-CO-617f5a88b7 judged no (H44)
 MUST MISS: R2 false alarm: expected-yes row HEADING-CO-01c0e1fe88 judged no (G130)
 MUST MISS: R2 false alarm: expected-yes row HEADING-CO-333a24dd3f judged no (G130)
@@ -11,6 +12,5 @@ MUST MISS: R2 false alarm: expected-yes row IDENT-CO-2c687abd06 judged no (G197)
 MUST MISS: R2 false alarm: expected-yes row IMAGE-CO-3afdf110e0 judged no (H67)
 MUST MISS: R2 false alarm: expected-yes row IMAGE-CO-95ed7d38dd judged no (G94)
 MUST MISS: R2 false alarm: expected-yes row LINK-CO-d03461d186 judged no (H30)
-MUST MISS: R2 false alarm: expected-yes row TITLE-CO-a92da72862 judged no (G88)
 
 Status: FAIL

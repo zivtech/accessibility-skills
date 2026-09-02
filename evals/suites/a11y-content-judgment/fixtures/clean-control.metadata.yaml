@@ -383,6 +383,12 @@ rows:
     locator:
       view: home
       text: Briarcliff Community Center — Class Schedule
+    invalid: true
+    invalid_reason: 'post-freeze authoring error, found by draw output (both opus draws judged no): the
+      home view (h1 ''Welcome to Briarcliff Community Center'') carries the title ''Briarcliff Community
+      Center — Class Schedule'', which names a different page; the blind author planted it as the ''site
+      + page phrase'' clean title but attached it to the wrong view. The judges are right. Frozen-fixture
+      rule: invalid (excluded + disclosed), never edited, never a model miss.'
   TITLE-CO-ff952e02cd:
     expected: 'yes'
     tier: calibration
