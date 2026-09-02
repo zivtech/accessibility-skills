@@ -48,7 +48,7 @@ Checked when a candidate ledger or this program is next reviewed; recorded here 
 - **(a) Coverage:** ≥5 *independent* defect-bearing surfaces (not pages of one demo template) yield ≥3 Alfa-only A/AA rule classes under the same rule, with ≥1 human-confirmed true positive.
 - **(b) Rule sets change materially** in Alfa (`alfa-rules` major) or in axe-core such that the overlap picture could differ.
 - **(c) An engagement mandates EARL-native output** — measure Alfa's EARL then; it was not measured here.
-- **(d) A maker-published skill, MCP server, or integration appears** that would make this a reuse rather than a build (survey pre-check before any routed instrument: skills.sh, GitHub, npm, the maker's site).
+- **(d) A maker-published skill or MCP server appears** that would make this a reuse rather than a build. Surveyed 2026-09-02 (`evals/results/promotion-eval-2026-09/memos/1.8-maker-skill-survey.md`): the maker's `alfa-playwright` / `alfa-puppeteer` / CLI integrations are actively maintained and are what any future adapter should sit on; no skill or MCP server exists; the one community MCP wraps the paid SaaS API, not the open engine.
 
 ## Escape hatch and dependency risk (if ever adopted)
 
