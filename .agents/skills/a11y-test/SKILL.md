@@ -68,6 +68,8 @@ Never overwrite an evidence run. Failed, intermediate, and superseded captures a
 
 Retention is not bookkeeping for its own sake — it is what makes silent errors findable. A numeric error in an otherwise structurally valid generated deliverable — a formula range that under-counts, a mapping that drops rows — passes schema validation and surfaces only when a later revision can be diffed against the one that was wrong. Overwrite the run and that diff is gone.
 
+`references/hash-evidence.mjs` makes the rule checkable: it writes an append-only `checksums.json` manifest beside an evidence tree and `--verify` lists every modified, missing, or unlisted file, exiting non-zero on drift (modified or missing; unlisted too under `--strict`) — it makes silent edits findable, not impossible.
+
 ## Retest classification
 
 Two clauses that govern when a retest result is trustworthy.
