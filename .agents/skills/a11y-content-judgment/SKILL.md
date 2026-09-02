@@ -220,8 +220,8 @@ ratifier's first hour lands on the rows that matter.
   the same record, on the same page, in `main`, produced 60 rows the first pass judged `yes` and the
   second reader confirmed as the table pattern. The builder skips a destination whose every name
   variant sits on the identical view set inside `main`. On the origin run this took the 3.2.4 rows
-  from 103 to 25, all of which are now real questions (a version string in the nav bar versus
-  "Release Notes" in the footer for one destination, 23 views, is the clearest).
+  from 103 to 25, all of which are now real questions (a version-number link in the header and a
+  "Release Notes" link in the footer for one destination, on nearly every view, is the clearest).
 - **Informational flags must not drive spot-check selection.** `no_h1`, `h1_count_N`,
   `level_skip_*`, `name_from_*`, `title_duplicates_text`, `new_window_not_indicated` describe the
   page, not the row's own judgment; counting them as "flagged" pulled 25 structurally fine titles
@@ -238,8 +238,8 @@ ratifier's first hour lands on the rows that matter.
 - **Application shells (maps, single-page tools) have no shared navigation.** The note says so;
   it is not a finding.
 - **A bare site name as `<title>` on most pages is the single most common 2.4.2 miss** and the
-  `title_shared_by_N_views` flag catches it before any model runs. On the origin run 9 of 24
-  dashboard views shared one title.
+  `title_shared_by_N_views` flag catches it before any model runs. On the origin run most views of
+  one product shared a single bare title.
 - **Grid-heavy pages produce hundreds of near-identical field rows** (column filters). Dedupe on
   type + label + label source keeps them to one row each; the ratifier is not asked 300 times.
 - **Never treat `alt=""` as automatically right or wrong.** The image row records the control it

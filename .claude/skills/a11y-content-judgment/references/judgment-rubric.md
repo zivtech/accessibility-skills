@@ -15,10 +15,10 @@ what the destination page actually contains).
 ## Per criterion
 
 **2.4.2 Page titled.** Does the title identify *this page* and distinguish it from the site's other
-pages? A site name alone ("AirNow.gov") is `no` when the site has more than one page. Site name plus
+pages? A site name alone ("Example.gov") is `no` when the site has more than one page. Site name plus
 a page-specific phrase in either order is `yes`. Titles that differ only by an ID string the user
-cannot interpret are `unsure` unless the ID is the thing the page is about (a chemical DTXSID on a
-chemical detail page is legitimate, but the chemical *name* should be there too).
+cannot interpret are `unsure` unless the ID is the thing the page is about (a record identifier on a
+record detail page is legitimate, but the record *name* should be there too).
 
 **2.4.6 Headings and labels descriptive.** Does the heading tell the reader what the section
 contains, so someone scanning by headings can find it? Generic headings ("Overview", "Details",
@@ -50,7 +50,7 @@ no title, no aria-label, and no aria-hidden is `unsure` (it may be decorative, b
 as "image" or skipped depending on the AT).
 
 **3.2.4 Consistent identification.** For rows of type `ident`: the same destination (`href`) is
-named differently across pages. Are the variants acceptable (a logo "AirNow" and a text link "Home"
+named differently across pages. Are the variants acceptable (a logo named for the site and a text link "Home"
 both go to `/` and users understand both), or would a user think they are different things
 ("Contact" / "Contact Us" is borderline-`yes`; "Resources" / "Help" for the same page is `no`)?
 
@@ -64,7 +64,7 @@ both go to `/` and users understand both), or would a user think they are differ
   not evidence about the page. Say `unsure`, `needs_human: true`.
 - Never invent what a destination page contains. If the judgment hinges on it, `needs_human`.
 - Audience-standard shorthand is `yes`. On a specialist product, an abbreviation the audience uses
-  daily (a toxicology dashboard's HTTr, ADME, IVIVE; a mapping tool's AQI) is a descriptive label at
+  daily (a scientific dashboard's assay and pathway abbreviations; an air-quality tool's index name) is a descriptive label at
   Level AA; expansion is a AAA (3.1.4) concern, not this row's. Do not hedge to `unsure` for jargon.
 - Judge repeated patterns the same way every time. If a batch holds forty rows of the same
   construct (an ID link beside a name cell), decide the construct once from the rubric and apply it:
