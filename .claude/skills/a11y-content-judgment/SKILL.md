@@ -184,17 +184,14 @@ ratifier's first hour lands on the rows that matter.
   fact classes to sign once (missing alt attribute, empty link name, unlabeled field, raw-URL text).
   On the origin run that turned 1,847 rows into 8 questions, 53 rows, and 10 signatures; the owner
   answered the 8 questions in one message.
-- Where the client publishes its own web standards, run a **client-standards pass** after the
-  drafts: verify each rule on the live page, quote it verbatim with URL and last-updated date
-  ([references/client-standards-example-epa.md](references/client-standards-example-epa.md) is the
-  worked example), then fire a rule only on a captured fact (the link text, the href extension, the
-  h1 count, a builder flag, an owner-ratified decorative status). Write `standards.jsonl`
-  (`{id, epa_rules, epa_result, epa_note}` in the example; the merge renders them as
-  `client_rules` / `client_result` / `client_note`). Rows that fail a rule form their own worklist
-  tier, one signature per rule. On the origin run this moved 454 rows from judgment to fact, and
-  surfaced the largest single class in the audit, 186 new-tab links with no warning text, which
-  WCAG AA does not require and the client's standard does. The matcher is engagement-specific;
-  generalizing it to a rules table is not done.
+- A client may publish its own web standards beside WCAG. The origin run applied one such standard
+  as a **separate client scope** — see the worked example in
+  [references/client-standards-example-epa.md](references/client-standards-example-epa.md) — and the
+  merge accepts a `standards.jsonl` (`{id, <client>_rules, <client>_result, <client>_note}`) that it
+  renders as `client_rules` / `client_result` / `client_note`. That is the whole of what this skill
+  provides: the matcher is engagement-specific, this skill does not prescribe a client-standards
+  pass, and generalizing the rules to a table is deliberately not done until a second client
+  standard exists. Client-scope results never reach the WCAG-scope receipt.
 - A ratified row feeds the evaluation report's per-SC outcome map only through a receipt that names
   `ratified_by`, the ratification date, and the row `id`. The report contract's `outcomes` entry cites
   the receipt, not the CSV. `drafted_by` travels with it so nobody later mistakes the draft for the
