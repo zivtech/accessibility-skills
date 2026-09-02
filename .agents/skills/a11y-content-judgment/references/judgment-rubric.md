@@ -38,6 +38,12 @@ context names the destination — five "Learn more" links whose card text sits i
 link is not part of (F63), or a bare "Learn more" with nothing around it. That is the Level AA
 question. That identical names are indistinguishable when a screen reader lists all links is a
 2.4.9 (AAA) concern: put it in the `fix` or a note for the ratifier, never make it the AA verdict.
+The `context` field flattens the nearest enclosing block, so a row cannot show you whether that
+text is the link's own paragraph or a sibling block inside a wrapping card. Operational rule until
+the inventory reports the relationship: the destination must be named **in the same sentence as
+the link text** (or in the link's own accessible name) for `yes`; when it is named only in other
+sentences of the block, say `unsure` with `needs_human: true` and "context boundary not captured"
+in the rationale — never a silent `yes`, and `no` only when nothing in the block names it.
 An empty accessible name is always `no`. A name equal to the raw URL is `no` unless the URL is a
 readable domain the user is meant to see. A file link (`file_ext` set) whose name does not indicate
 the format is **not** a 2.4.4 failure — no sufficient technique requires a format cue: leave the

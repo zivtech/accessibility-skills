@@ -261,7 +261,7 @@ rows:
   LINK-LI-51c84ee852:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
       heading — outside the link''s programmatically determined context; the blind author''s F84 is a
       2.4.9 Link-Only failure)'
@@ -278,10 +278,16 @@ rows:
       as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
       for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
       shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
-      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
-      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
-      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
-      heading would pass 2.4.4 while the rubric still says no.'
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
     locator:
       view: home
       text: Learn more
@@ -373,7 +379,7 @@ rows:
   LINK-LI-901fe7deda:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
       heading — outside the link''s programmatically determined context; the blind author''s F84 is a
       2.4.9 Link-Only failure)'
@@ -390,10 +396,16 @@ rows:
       as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
       for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
       shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
-      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
-      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
-      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
-      heading would pass 2.4.4 while the rubric still says no.'
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
     locator:
       view: home
       text: Learn more
@@ -485,7 +497,7 @@ rows:
   LINK-LI-b2776e14df:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
       heading — outside the link''s programmatically determined context; the blind author''s F84 is a
       2.4.9 Link-Only failure)'
@@ -502,10 +514,16 @@ rows:
       as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
       for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
       shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
-      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
-      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
-      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
-      heading would pass 2.4.4 while the rubric still says no.'
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
     locator:
       view: home
       text: Learn more
@@ -542,7 +560,7 @@ rows:
   LINK-LI-c48980d950:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
       heading — outside the link''s programmatically determined context; the blind author''s F84 is a
       2.4.9 Link-Only failure)'
@@ -559,10 +577,16 @@ rows:
       as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
       for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
       shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
-      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
-      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
-      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
-      heading would pass 2.4.4 while the rubric still says no.'
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
     locator:
       view: home
       text: Learn more
@@ -663,7 +687,7 @@ rows:
   LINK-LI-f7259f7b59:
     expected: 'no'
     tier: must
-    unsure_ok: false
+    unsure_ok: true
     reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
       heading — outside the link''s programmatically determined context; the blind author''s F84 is a
       2.4.9 Link-Only failure)'
@@ -680,10 +704,16 @@ rows:
       as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
       for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
       shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
-      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
-      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
-      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
-      heading would pass 2.4.4 while the rubric still says no.'
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
     locator:
       view: home
       text: Learn more

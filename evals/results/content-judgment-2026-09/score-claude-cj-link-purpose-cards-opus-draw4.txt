@@ -1,8 +1,8 @@
 Parsed: 44 judgment line(s) (1 fence(s), 0 unparseable object line(s))
 Coverage: 38/38 input ids answered (0 duplicated, 0 extra)
-Must-no rows (R1): 3/7 found (1 deferred as unsure_ok)
+Must-no rows (R1): 2/7 found
 Clean rows (R2): 3/3 unflagged; false alarms: 0
-Calibration rows (R3, informational): 26/28 agree — LINK-LI-5deb85f217(no->unsure), LINK-LI-a73c6c9f68(no->unsure)
+Calibration rows (R3, informational): 27/28 agree — LINK-LI-a73c6c9f68(no->yes)
 Discriminating rows (D, flags absent or pointing the wrong way): 2/2 right
 Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
 Info: invalid rows excluded (6): LINK-LI-44b51f4ece, LINK-LI-59ee6ec8fc, LINK-LI-6299f2f8fa, LINK-LI-a490ae2283, LINK-LI-c51b799ac0, LINK-LI-f72af258ca
@@ -10,7 +10,8 @@ MUST MISS: R1 expected-no row LINK-LI-51c84ee852 judged yes (F63 (verified 2.4.4
 MUST MISS: R1 expected-no row LINK-LI-901fe7deda judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
 MUST MISS: R1 expected-no row LINK-LI-b2776e14df judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
 MUST MISS: R1 expected-no row LINK-LI-c48980d950 judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
+MUST MISS: R1 expected-no row LINK-LI-f7259f7b59 judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
+should miss: C3 non-empty fix on a yes on 7 row(s): LINK-LI-33337c9396, LINK-LI-51c84ee852, LINK-LI-901fe7deda, LINK-LI-a73c6c9f68, LINK-LI-b2776e14df, LINK-LI-c48980d950
 should miss: R6 no-rationale names none of the row's loses phrases on 2 row(s): LINK-LI-a9186a85cb, LINK-LI-e9576c5535
-should miss: R7 pattern_group 'card-learnmore' not unanimous: yes=4, unsure=1
 
 Status: FAIL
