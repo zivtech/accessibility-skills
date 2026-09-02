@@ -1,0 +1,17 @@
+Fixture: op-retest-clean
+Response length: 2119 chars
+Structured block: + parsed (588 chars)
+Admissibility: 'ACCEPT' (expected 'ACCEPT')
+Dispositions: {'OP-CLOSE': 'PASS', 'OP-EMPTY': 'UNTESTED', 'OP-OPTION': 'PASS'}
+Rules violated: {}
+
+Must-catch:
+
+Nice-to-have (informational only):
+  - nice-to-have: ['admissible', 'accept', 'well-formed']
+
+Must misses: 0
+Fabrications: 0
+Should misses: 0
+
+Status: PASS

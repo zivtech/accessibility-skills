@@ -1,0 +1,23 @@
+Fixture: op-retest-clean
+Response length: 3189 chars
+Structured block: X no disposition yaml fence found
+Admissibility: None (expected 'ACCEPT')
+Dispositions: {}
+Rules violated: {}
+
+Must-catch:
+
+Nice-to-have (informational only):
+  + nice-to-have: ['admissible', 'accept', 'well-formed']
+
+Must misses: 6
+  - no structured disposition block found
+  - missing key: admissibility
+  - missing key: dispositions
+  - missing key: rules_violated
+  - missing key: claim_boundary
+  - claim_boundary missing or empty
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

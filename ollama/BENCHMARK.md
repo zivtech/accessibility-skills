@@ -1797,5 +1797,21 @@ Receipts: `evals/results/opevidence-scorer-2026-09/calibration/`.
   want of the block (0 forbidden-phrase fabrications; prose judgments correct).
   As in the acr lane: bare opus judges correctly; the slice carries the
   machine contract (stable rule ids, closed value set, per-operation map).
-- Not measured: local models (qwen3.6:35b row pending at time of writing —
-  detector output when it lands), other hosted families, variance beyond n=2.
+- Not measured: other hosted families, variance beyond n=2.
+
+### Ollama — qwen3.6:35b (2026-09-02, one draw per cell, detector output)
+
+| Fixture | Skill slice | Baseline |
+|---|---|---|
+| op-dialog-escape-overreach | FAIL — `OP-CLOSE: BLOCKED` vs `UNTESTED` + one over-fire; rules and admissibility right | FAIL (structural) |
+| op-empty-state-coverage-shortcuts | FAIL — invented operation ids (`OP-OPTION_reachability`/`_focus`) split from the prose sub-headings; rule selection right | FAIL (structural) |
+| op-mixed-package-partial | PASS | FAIL (structural) |
+| op-retest-clean | PASS | FAIL (structural) |
+
+2/4 vs opus 8/8; 0 fabricated rule ids anywhere. Both misses are reporting
+fidelity (exact ids — this model's documented class) and the one boundary case
+the contract had to be revised to decide (BLOCKED vs UNTESTED on rejected
+evidence). Run under heavy Ollama contention (first request timed out at
+1800 s and was redrawn; timings are not model speed). Receipts:
+`evals/results/opevidence-scorer-2026-09/local-qwen36-35b/RESULTS.md`.
+Routing unchanged: detector, not a verdict authority.
