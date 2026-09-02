@@ -1,0 +1,8 @@
+{
+ "page": 1,
+ "url": "https://example.com",
+ "engine": "htmlcs (pa11y)",
+ "documentTitle": "Example Domain",
+ "pageUrl": "https://example.com/",
+ "issues": []
+}

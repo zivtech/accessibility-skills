@@ -1,0 +1,17 @@
+{
+ "page": 1,
+ "url": "https://example.com",
+ "engine": "axe-core",
+ "testEngineVersion": "4.13.0",
+ "tags": [
+  "wcag2a",
+  "wcag2aa",
+  "wcag21a",
+  "wcag21aa",
+  "wcag22aa"
+ ],
+ "violations": [],
+ "incomplete": [],
+ "passes_count": 9,
+ "timestamp": "2026-09-02T13:52:36.851Z"
+}

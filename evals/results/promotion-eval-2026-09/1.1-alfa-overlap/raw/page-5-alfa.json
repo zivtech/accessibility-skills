@@ -1,0 +1,7999 @@
+{
+ "_slimmed_from": "page-5-alfa.json",
+ "_full_file_sha256": "27c33fc8b8ae01a7ec5e28beb3b2ae920a476605ae07eb1ae556c28271cbc698",
+ "_full_file_bytes": 1249259,
+ "_note": "passed/inapplicable outcomes dropped to keep the receipt small; counts of every outcome kind are in resultAggregates; the full file hash is recorded for re-run comparison",
+ "outcome_counts": {
+  "passed": 805,
+  "failed": 71,
+  "cantTell": 7,
+  "inapplicable": 58
+ },
+ "resultAggregates": [
+  [
+   "https://alfa.siteimprove.com/rules/sia-r90",
+   {
+    "failed": 0,
+    "passed": 48,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r54",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r66",
+   {
+    "failed": 10,
+    "passed": 144,
+    "cantTell": 3
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r2",
+   {
+    "failed": 26,
+    "passed": 5,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r13",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r35",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r27",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r41",
+   {
+    "failed": 0,
+    "passed": 5,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r85",
+   {
+    "failed": 0,
+    "passed": 9,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r38",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r20",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r46",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r8",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r19",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r76",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r53",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r92",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r78",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r4",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r15",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r33",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r60",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r29",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r1",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r10",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r65",
+   {
+    "failed": 0,
+    "passed": 46,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r22",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r44",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r80",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r74",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r73",
+   {
+    "failed": 9,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r50",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r94",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r17",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r31",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r62",
+   {
+    "failed": 0,
+    "passed": 23,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r48",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r12",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r67",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r86",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r68",
+   {
+    "failed": 0,
+    "passed": 70,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r24",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r42",
+   {
+    "failed": 0,
+    "passed": 163,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r47",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r9",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r18",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r21",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r71",
+   {
+    "failed": 0,
+    "passed": 9,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r110",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r96",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r55",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r91",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r14",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r32",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r61",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r5",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r39",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r26",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r40",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r84",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r23",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r45",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r81",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r116",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r59",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r77",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r113",
+   {
+    "failed": 2,
+    "passed": 14,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r72",
+   {
+    "failed": 1,
+    "passed": 8,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r79",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r93",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r57",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r63",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r49",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r7",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r16",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r30",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r64",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r28",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r11",
+   {
+    "failed": 4,
+    "passed": 41,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r37",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r69",
+   {
+    "failed": 0,
+    "passed": 149,
+    "cantTell": 3
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r25",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r43",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r87",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 1
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r75",
+   {
+    "failed": 0,
+    "passed": 62,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r111",
+   {
+    "failed": 13,
+    "passed": 3,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r70",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r95",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ]
+ ],
+ "outcomes": [
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "7a38820ad0703ecb575045b48a26af14",
+    "serializationId": "7a38820ad0703ecb575045b48a26af14"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.89:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            1,
+            1,
+            1
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8,
+            0,
+            0
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.89
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "369b26fa0e7ae248c0dc32169ddeee40",
+    "serializationId": "369b26fa0e7ae248c0dc32169ddeee40"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Inaccessible ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "span",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "hidden"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Tickets Page",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "page current"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoright.png"
+         }
+        },
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoleft.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Inaccessible ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "span",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "hidden"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Tickets Page",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "page current"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoright.png"
+         }
+        },
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoleft.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "3c3e6000a1815a444a2479137be4a919",
+    "serializationId": "3c3e6000a1815a444a2479137be4a919"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.89:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            1,
+            1,
+            1
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8,
+            0,
+            0
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.89
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "66e5dba245d65578eec62112dfff9f49",
+    "serializationId": "66e5dba245d65578eec62112dfff9f49"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.41:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            1,
+            1,
+            1
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.2666667,
+            0.4666667,
+            0
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.4666667
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.41
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "a8dbc028e5297e6d09fbac4a01832617",
+    "serializationId": "a8dbc028e5297e6d09fbac4a01832617"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.41:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            1,
+            1,
+            1
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.2666667,
+            0.4666667,
+            0
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.4666667
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.41
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "f7ba69028ba3c69317de88fcdb0803c4",
+    "serializationId": "f7ba69028ba3c69317de88fcdb0803c4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.41:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            1,
+            1,
+            1
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            },
+            {
+             "type": "percentage",
+             "value": 1
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.2666667,
+            0.4666667,
+            0
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.4666667
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.41
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "6b27bece762fbbfaeda53049e57486ed",
+    "serializationId": "6b27bece762fbbfaeda53049e57486ed"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/anno.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "An interposed descendant element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "interposed-descendant",
+      "positionedDescendants": [
+       {
+        "type": "element",
+        "children": [
+         {
+          "type": "text",
+          "data": "Show ",
+          "box": null
+         },
+         {
+          "type": "element",
+          "children": [],
+          "namespace": "http://www.w3.org/1999/xhtml",
+          "prefix": null,
+          "name": "br",
+          "attributes": [],
+          "style": null,
+          "shadow": null,
+          "content": null,
+          "box": null
+         },
+         {
+          "type": "text",
+          "data": "Annotations",
+          "box": null
+         }
+        ],
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "prefix": null,
+        "name": "a",
+        "attributes": [
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "href",
+          "value": "./annotated/tickets.html"
+         },
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "class",
+          "value": "annotoggle"
+         }
+        ],
+        "style": null,
+        "shadow": null,
+        "content": null,
+        "box": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "1d948c4bd165dcd260937bc7e91e03e6",
+    "serializationId": "1d948c4bd165dcd260937bc7e91e03e6"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/anno.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "An interposed descendant element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "interposed-descendant",
+      "positionedDescendants": [
+       {
+        "type": "element",
+        "children": [
+         {
+          "type": "text",
+          "data": "Show ",
+          "box": null
+         },
+         {
+          "type": "element",
+          "children": [],
+          "namespace": "http://www.w3.org/1999/xhtml",
+          "prefix": null,
+          "name": "br",
+          "attributes": [],
+          "style": null,
+          "shadow": null,
+          "content": null,
+          "box": null
+         },
+         {
+          "type": "text",
+          "data": "Annotations",
+          "box": null
+         }
+        ],
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "prefix": null,
+        "name": "a",
+        "attributes": [
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "href",
+          "value": "./annotated/tickets.html"
+         },
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "class",
+          "value": "annotoggle"
+         }
+        ],
+        "style": null,
+        "shadow": null,
+        "content": null,
+        "box": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "6b14279b4a8a83cadfc91367fb7db187",
+    "serializationId": "6b14279b4a8a83cadfc91367fb7db187"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 6.49:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8431373,
+            0.8431373,
+            0.8039216
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8039216
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 6.49
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "4851e8b702c956d0674123cbd4c15063",
+    "serializationId": "4851e8b702c956d0674123cbd4c15063"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 6.49:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8431373,
+            0.8431373,
+            0.8039216
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8039216
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 6.49
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "a0493267a52da7dabcacd8c83cb13b36",
+    "serializationId": "a0493267a52da7dabcacd8c83cb13b36"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 6.49:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8431373,
+            0.8431373,
+            0.8039216
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8039216
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 6.49
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "ae25879d33d4125752d899a03474be7f",
+    "serializationId": "ae25879d33d4125752d899a03474be7f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 6.49:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8431373,
+            0.8431373,
+            0.8039216
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8039216
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 6.49
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "93a309eb4ea346b2ff25a30262131e20",
+    "serializationId": "93a309eb4ea346b2ff25a30262131e20"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 6.49:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0,
+            0.9333333
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.9333333
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8431373,
+            0.8431373,
+            0.8039216
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8431373
+            },
+            {
+             "type": "percentage",
+             "value": 0.8039216
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 6.49
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "0ea6a941f2848fdcf92c18fa4d6297ad",
+    "serializationId": "0ea6a941f2848fdcf92c18fa4d6297ad"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "a52d1d80c03644174b0089cacde0f139",
+    "serializationId": "a52d1d80c03644174b0089cacde0f139"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "e545410cfb6438e868dac5c8bf3c0b0d",
+    "serializationId": "e545410cfb6438e868dac5c8bf3c0b0d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "27f71e5f5d72c066f19a5c970e1fb0b4",
+    "serializationId": "27f71e5f5d72c066f19a5c970e1fb0b4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c12dd5db3d090091a223dcfee58a14bf",
+    "serializationId": "c12dd5db3d090091a223dcfee58a14bf"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "fc990df58062276b7f258a8264fca958",
+    "serializationId": "fc990df58062276b7f258a8264fca958"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "03d1d8b09d1a1543a0f8b6483810ba7c",
+    "serializationId": "03d1d8b09d1a1543a0f8b6483810ba7c"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "d8ab460243ee73f0b3ee3ddcf602a45d",
+    "serializationId": "d8ab460243ee73f0b3ee3ddcf602a45d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "d7e9b7089ae1d67d1cc6e6c699371aec",
+    "serializationId": "d7e9b7089ae1d67d1cc6e6c699371aec"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "000a81aa2e6994c4fb30b39dfe1f8a39",
+    "serializationId": "000a81aa2e6994c4fb30b39dfe1f8a39"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "37609464db1ef33ed51432d99e63949a",
+    "serializationId": "37609464db1ef33ed51432d99e63949a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "6a1d1fec1ae1acc1fbd8848dbb7514ee",
+    "serializationId": "6a1d1fec1ae1acc1fbd8848dbb7514ee"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ccbe73f92d1b98c5f4a19d220defe3b5",
+    "serializationId": "ccbe73f92d1b98c5f4a19d220defe3b5"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "bf79050234ca60542437f91ad6d3f88e",
+    "serializationId": "bf79050234ca60542437f91ad6d3f88e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "dfbeddcd0e8c6ce6fb4560aa490f4ce7",
+    "serializationId": "dfbeddcd0e8c6ce6fb4560aa490f4ce7"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "aa1f0af6cc750424746effa9e2aa9e44",
+    "serializationId": "aa1f0af6cc750424746effa9e2aa9e44"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "e8ae9761bf25992b8cabb3663af8b95c",
+    "serializationId": "e8ae9761bf25992b8cabb3663af8b95c"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "d506ba5a442408621d89b04eb8b3a100",
+    "serializationId": "d506ba5a442408621d89b04eb8b3a100"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ac7c542a0a3cd0cd7c5e2b1c1d377b5a",
+    "serializationId": "ac7c542a0a3cd0cd7c5e2b1c1d377b5a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "09f3c5e63568eeba27d44b18c084d912",
+    "serializationId": "09f3c5e63568eeba27d44b18c084d912"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c83623e9f4ab92ceb1527f527e3986d3",
+    "serializationId": "c83623e9f4ab92ceb1527f527e3986d3"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "73cece41cc510851829592180372748d",
+    "serializationId": "73cece41cc510851829592180372748d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "deccb307af245f932653ec0930a97a0a",
+    "serializationId": "deccb307af245f932653ec0930a97a0a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "73995ec5985a540457292508162754c8",
+    "serializationId": "73995ec5985a540457292508162754c8"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "be0a7de3336df2f81e99aa628f7320c5",
+    "serializationId": "be0a7de3336df2f81e99aa628f7320c5"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r2"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "1338c532a54175cc4dd3d536d4727175",
+    "serializationId": "1338c532a54175cc4dd3d536d4727175"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The image does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r46"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4e99098b5008ae57e0a0fbf32a5e11e2",
+    "serializationId": "4e99098b5008ae57e0a0fbf32a5e11e2"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The header cell is not assigned to any cell"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r8"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "017ff2b3b54c76bbee9d15ff548b8020",
+    "serializationId": "017ff2b3b54c76bbee9d15ff548b8020"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The form field does not have an accessible name",
+       "role": "listbox"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r4"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "0ecd2e647e7517bda9cfabe7a79bfbc7",
+    "serializationId": "0ecd2e647e7517bda9cfabe7a79bfbc7"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The `lang` attribute is either missing, empty, or only whitespace"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r80"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c1f92d82fa568807ea344ea203ff6ef9",
+    "serializationId": "c1f92d82fa568807ea344ea203ff6ef9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height is specified using an absolute unit"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r74"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c1f92d82fa568807ea344ea203ff6ef9",
+    "serializationId": "c1f92d82fa568807ea344ea203ff6ef9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The font size is specified using an absolute unit"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4105e9d560d880ad50a845d02e946052",
+    "serializationId": "4105e9d560d880ad50a845d02e946052"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f96ac104b82de7805467f67dd2a021c0",
+    "serializationId": "f96ac104b82de7805467f67dd2a021c0"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f0581c9dd458da53c714527c06dd30c3",
+    "serializationId": "f0581c9dd458da53c714527c06dd30c3"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "6c2755db11137bd44936b4f8cf37802d",
+    "serializationId": "6c2755db11137bd44936b4f8cf37802d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f557e5c219ed95a37e166786fa76021e",
+    "serializationId": "f557e5c219ed95a37e166786fa76021e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c1f92d82fa568807ea344ea203ff6ef9",
+    "serializationId": "c1f92d82fa568807ea344ea203ff6ef9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "26d74295e172fb95198ed8eb2783c880",
+    "serializationId": "26d74295e172fb95198ed8eb2783c880"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "014d608c2dc73c4b3e2a4dd5746bba3f",
+    "serializationId": "014d608c2dc73c4b3e2a4dd5746bba3f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r73"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ffe0d104c492d50209b48faa00781e8d",
+    "serializationId": "ffe0d104c492d50209b48faa00781e8d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The line height of the paragraph is less than 1.5"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r113"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "8e82cf2a91337a65033e42401911c95d",
+    "serializationId": "8e82cf2a91337a65033e42401911c95d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size and spacing",
+       "name": "Inaccessible Tickets Page Report",
+       "box": {
+        "type": "rectangle",
+        "x": 504.4375,
+        "y": 155.265625,
+        "width": 94,
+        "height": 20
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": false
+        }
+       },
+       "tooCloseNeighbors": [
+        {
+         "type": "element",
+         "internalId": "844842db6555856e4e7655bdc38e1c32",
+         "serializationId": "844842db6555856e4e7655bdc38e1c32"
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r113"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "844842db6555856e4e7655bdc38e1c32",
+    "serializationId": "844842db6555856e4e7655bdc38e1c32"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size and spacing",
+       "name": "Accessible Tickets Page Report",
+       "box": {
+        "type": "rectangle",
+        "x": 504.4375,
+        "y": 175.265625,
+        "width": 94,
+        "height": 20
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": false
+        }
+       },
+       "tooCloseNeighbors": [
+        {
+         "type": "element",
+         "internalId": "8e82cf2a91337a65033e42401911c95d",
+         "serializationId": "8e82cf2a91337a65033e42401911c95d"
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r72"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "c1f92d82fa568807ea344ea203ff6ef9",
+    "serializationId": "c1f92d82fa568807ea344ea203ff6ef9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The text of the paragraph is uppercased"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r11"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "3aae10d398d0e2c1dc6c5beb4ea366e6",
+    "serializationId": "3aae10d398d0e2c1dc6c5beb4ea366e6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The link does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r11"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ef86ad783bf4630e24c4c6f5adaaf8fc",
+    "serializationId": "ef86ad783bf4630e24c4c6f5adaaf8fc"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The link does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r11"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "9bef255ad7baf29514053d8c66c99f9a",
+    "serializationId": "9bef255ad7baf29514053d8c66c99f9a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The link does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r11"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ef32acabd9e69d6fd8a965018eddffa3",
+    "serializationId": "ef32acabd9e69d6fd8a965018eddffa3"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The link does not have an accessible name"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r69"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "369b26fa0e7ae248c0dc32169ddeee40",
+    "serializationId": "369b26fa0e7ae248c0dc32169ddeee40"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Inaccessible ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "span",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "hidden"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Tickets Page",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "page current"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoright.png"
+         }
+        },
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoleft.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Inaccessible ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "span",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "hidden"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Tickets Page",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "page current"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoright.png"
+         }
+        },
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/triangletoleft.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r69"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "6b27bece762fbbfaeda53049e57486ed",
+    "serializationId": "6b27bece762fbbfaeda53049e57486ed"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/anno.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "An interposed descendant element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "interposed-descendant",
+      "positionedDescendants": [
+       {
+        "type": "element",
+        "children": [
+         {
+          "type": "text",
+          "data": "Show ",
+          "box": null
+         },
+         {
+          "type": "element",
+          "children": [],
+          "namespace": "http://www.w3.org/1999/xhtml",
+          "prefix": null,
+          "name": "br",
+          "attributes": [],
+          "style": null,
+          "shadow": null,
+          "content": null,
+          "box": null
+         },
+         {
+          "type": "text",
+          "data": "Annotations",
+          "box": null
+         }
+        ],
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "prefix": null,
+        "name": "a",
+        "attributes": [
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "href",
+          "value": "./annotated/tickets.html"
+         },
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "class",
+          "value": "annotoggle"
+         }
+        ],
+        "style": null,
+        "shadow": null,
+        "content": null,
+        "box": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r69"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "1d948c4bd165dcd260937bc7e91e03e6",
+    "serializationId": "1d948c4bd165dcd260937bc7e91e03e6"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A background-image with a url() was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "background-image",
+      "property": "background-image",
+      "value": {
+       "type": "list",
+       "values": [
+        {
+         "type": "image",
+         "image": {
+          "type": "url",
+          "url": "../img/anno.png"
+         }
+        }
+       ],
+       "separator": ", "
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "Show ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "br",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "Annotations",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "a",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "href",
+         "value": "./annotated/tickets.html"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "annotoggle"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "absolute"
+      }
+     },
+     {
+      "message": "An interposed descendant element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Inaccessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page current"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Inaccessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "./reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "inaccessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n              ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "Accessible:",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "strong",
+             "attributes": [],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": "Tickets Page",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "page"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "element",
+               "children": [
+                {
+                 "type": "text",
+                 "data": "Accessible Tickets Page ",
+                 "box": null
+                }
+               ],
+               "namespace": "http://www.w3.org/1999/xhtml",
+               "prefix": null,
+               "name": "span",
+               "attributes": [
+                {
+                 "type": "attribute",
+                 "namespace": null,
+                 "prefix": null,
+                 "name": "class",
+                 "value": "hidden"
+                }
+               ],
+               "style": null,
+               "shadow": null,
+               "content": null,
+               "box": null
+              },
+              {
+               "type": "text",
+               "data": " Report",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "a",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "href",
+               "value": "../after/reports/tickets.html"
+              },
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "report"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "li",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "accessible"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n            ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "ul",
+         "attributes": [],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "Show ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "br",
+           "attributes": [],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "Annotations",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "a",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "href",
+           "value": "./annotated/tickets.html"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "class",
+           "value": "annotoggle"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "subnav"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "interposed-descendant",
+      "positionedDescendants": [
+       {
+        "type": "element",
+        "children": [
+         {
+          "type": "text",
+          "data": "Show ",
+          "box": null
+         },
+         {
+          "type": "element",
+          "children": [],
+          "namespace": "http://www.w3.org/1999/xhtml",
+          "prefix": null,
+          "name": "br",
+          "attributes": [],
+          "style": null,
+          "shadow": null,
+          "content": null,
+          "box": null
+         },
+         {
+          "type": "text",
+          "data": "Annotations",
+          "box": null
+         }
+        ],
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "prefix": null,
+        "name": "a",
+        "attributes": [
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "href",
+          "value": "./annotated/tickets.html"
+         },
+         {
+          "type": "attribute",
+          "namespace": null,
+          "prefix": null,
+          "name": "class",
+          "value": "annotoggle"
+         }
+        ],
+        "style": null,
+        "shadow": null,
+        "content": null,
+        "box": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r87"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "document",
+    "internalId": "3c267c177c77037d78a9cd13be80322d",
+    "serializationId": "3c267c177c77037d78a9cd13be80322d"
+   },
+   "diagnostic": {
+    "message": "No extra information"
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4bdcd09b57e756e92d6595b4ec390245",
+    "serializationId": "4bdcd09b57e756e92d6595b4ec390245"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Overview",
+       "box": {
+        "type": "rectangle",
+        "x": 10,
+        "y": 116.515625,
+        "width": 86.046875,
+        "height": 35.15625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4d996e1344458ba7949bb7881549d53f",
+    "serializationId": "4d996e1344458ba7949bb7881549d53f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Home",
+       "box": {
+        "type": "rectangle",
+        "x": 105.046875,
+        "y": 116.515625,
+        "width": 81,
+        "height": 35.15625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4417b224e1e791c2ea05e23a4b9979d1",
+    "serializationId": "4417b224e1e791c2ea05e23a4b9979d1"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "News",
+       "box": {
+        "type": "rectangle",
+        "x": 186.046875,
+        "y": 116.515625,
+        "width": 81,
+        "height": 35.15625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "8e82cf2a91337a65033e42401911c95d",
+    "serializationId": "8e82cf2a91337a65033e42401911c95d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Inaccessible Tickets Page Report",
+       "box": {
+        "type": "rectangle",
+        "x": 504.4375,
+        "y": 155.265625,
+        "width": 94,
+        "height": 20
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "a29bbbc0ac1eeccda67cddacabc6ec2f",
+    "serializationId": "a29bbbc0ac1eeccda67cddacabc6ec2f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Accessible Tickets Page",
+       "box": {
+        "type": "rectangle",
+        "x": 379.4375,
+        "y": 175.265625,
+        "width": 125,
+        "height": 20
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "844842db6555856e4e7655bdc38e1c32",
+    "serializationId": "844842db6555856e4e7655bdc38e1c32"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Accessible Tickets Page Report",
+       "box": {
+        "type": "rectangle",
+        "x": 504.4375,
+        "y": 175.265625,
+        "width": 94,
+        "height": 20
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "b8201bb9fd75d441b33040c37e1932ec",
+    "serializationId": "b8201bb9fd75d441b33040c37e1932ec"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Show Annotations",
+       "box": {
+        "type": "rectangle",
+        "x": 599.234375,
+        "y": 155.265625,
+        "width": 144,
+        "height": 41.59375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "89eacba8e8bd2d4c24130b2858827dd0",
+    "serializationId": "89eacba8e8bd2d4c24130b2858827dd0"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Survey",
+       "box": {
+        "type": "rectangle",
+        "x": 338.046875,
+        "y": 116.515625,
+        "width": 81,
+        "height": 35.15625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "3e12ee3a63a3fbe92293e09e4013f639",
+    "serializationId": "3e12ee3a63a3fbe92293e09e4013f639"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Template",
+       "box": {
+        "type": "rectangle",
+        "x": 419.046875,
+        "y": 116.515625,
+        "width": 84.15625,
+        "height": 35.15625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "3aae10d398d0e2c1dc6c5beb4ea366e6",
+    "serializationId": "3aae10d398d0e2c1dc6c5beb4ea366e6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "",
+       "box": {
+        "type": "rectangle",
+        "x": 250,
+        "y": 358.171875,
+        "width": 118,
+        "height": 30
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ef86ad783bf4630e24c4c6f5adaaf8fc",
+    "serializationId": "ef86ad783bf4630e24c4c6f5adaaf8fc"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "",
+       "box": {
+        "type": "rectangle",
+        "x": 250,
+        "y": 396.171875,
+        "width": 114,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "9bef255ad7baf29514053d8c66c99f9a",
+    "serializationId": "9bef255ad7baf29514053d8c66c99f9a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "",
+       "box": {
+        "type": "rectangle",
+        "x": 250,
+        "y": 430.171875,
+        "width": 123,
+        "height": 26
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ef32acabd9e69d6fd8a965018eddffa3",
+    "serializationId": "ef32acabd9e69d6fd8a965018eddffa3"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "",
+       "box": {
+        "type": "rectangle",
+        "x": 250,
+        "y": 460.671875,
+        "width": 123,
+        "height": 35
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r70"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "document",
+    "internalId": "3c267c177c77037d78a9cd13be80322d",
+    "serializationId": "3c267c177c77037d78a9cd13be80322d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The document contains deprecated elements",
+       "errors": [
+        {
+         "type": "element",
+         "internalId": "55ec1288c12a9447cbdb262d9ea489d3",
+         "serializationId": "55ec1288c12a9447cbdb262d9ea489d3"
+        },
+        {
+         "type": "element",
+         "internalId": "371d8f1fad0094322ef5accd92abb79e",
+         "serializationId": "371d8f1fad0094322ef5accd92abb79e"
+        },
+        {
+         "type": "element",
+         "internalId": "3d4da633551bf2ee1afe2cde79b022db",
+         "serializationId": "3d4da633551bf2ee1afe2cde79b022db"
+        },
+        {
+         "type": "element",
+         "internalId": "14db63d1e9d79a6dd48851cc907e42be",
+         "serializationId": "14db63d1e9d79a6dd48851cc907e42be"
+        },
+        {
+         "type": "element",
+         "internalId": "f7327c264a8861c4ff40ef4b1a23b210",
+         "serializationId": "f7327c264a8861c4ff40ef4b1a23b210"
+        },
+        {
+         "type": "element",
+         "internalId": "a74de33f7bed225ea67ecdf649a52953",
+         "serializationId": "a74de33f7bed225ea67ecdf649a52953"
+        },
+        {
+         "type": "element",
+         "internalId": "c74e78bd0b3d996e63ad981ef46d915b",
+         "serializationId": "c74e78bd0b3d996e63ad981ef46d915b"
+        },
+        {
+         "type": "element",
+         "internalId": "ba458bcdf073ba6b49775a225fac145a",
+         "serializationId": "ba458bcdf073ba6b49775a225fac145a"
+        },
+        {
+         "type": "element",
+         "internalId": "fc132ec427421137ce9ad8be93d7fb69",
+         "serializationId": "fc132ec427421137ce9ad8be93d7fb69"
+        },
+        {
+         "type": "element",
+         "internalId": "7a0670b57c82fc345b0f3e0f787c295f",
+         "serializationId": "7a0670b57c82fc345b0f3e0f787c295f"
+        },
+        {
+         "type": "element",
+         "internalId": "be24857c7b08097465e85446768ce971",
+         "serializationId": "be24857c7b08097465e85446768ce971"
+        },
+        {
+         "type": "element",
+         "internalId": "6788174c99be10f28b3339ba373dc424",
+         "serializationId": "6788174c99be10f28b3339ba373dc424"
+        },
+        {
+         "type": "element",
+         "internalId": "4bc56db05fad5ee7d6a68c8322456d01",
+         "serializationId": "4bc56db05fad5ee7d6a68c8322456d01"
+        },
+        {
+         "type": "element",
+         "internalId": "a94ef0fbc0d4c716100e11383617e24f",
+         "serializationId": "a94ef0fbc0d4c716100e11383617e24f"
+        },
+        {
+         "type": "element",
+         "internalId": "a1ade0696a254c2a79807057e8801350",
+         "serializationId": "a1ade0696a254c2a79807057e8801350"
+        },
+        {
+         "type": "element",
+         "internalId": "dc7c60651d92270c57adcda314868451",
+         "serializationId": "dc7c60651d92270c57adcda314868451"
+        },
+        {
+         "type": "element",
+         "internalId": "316c2ba21724c03ea45b3c24205bee51",
+         "serializationId": "316c2ba21724c03ea45b3c24205bee51"
+        },
+        {
+         "type": "element",
+         "internalId": "4cb5a465f6235729274777b04005a3bf",
+         "serializationId": "4cb5a465f6235729274777b04005a3bf"
+        },
+        {
+         "type": "element",
+         "internalId": "b458acbfdd65695f2072acfce2afb34d",
+         "serializationId": "b458acbfdd65695f2072acfce2afb34d"
+        },
+        {
+         "type": "element",
+         "internalId": "e67daf1561b3f82078e2a92a31b96cf8",
+         "serializationId": "e67daf1561b3f82078e2a92a31b96cf8"
+        },
+        {
+         "type": "element",
+         "internalId": "2619b8ece45191f7972d791a33c681ac",
+         "serializationId": "2619b8ece45191f7972d791a33c681ac"
+        },
+        {
+         "type": "element",
+         "internalId": "3770ae3e707722485be03199625aa255",
+         "serializationId": "3770ae3e707722485be03199625aa255"
+        },
+        {
+         "type": "element",
+         "internalId": "9a41a327c5ab33a39f62a6e5244906e6",
+         "serializationId": "9a41a327c5ab33a39f62a6e5244906e6"
+        },
+        {
+         "type": "element",
+         "internalId": "042ef50c412d57794f3f258c384356d0",
+         "serializationId": "042ef50c412d57794f3f258c384356d0"
+        },
+        {
+         "type": "element",
+         "internalId": "2503a97321c3d9a5dc2826c375696661",
+         "serializationId": "2503a97321c3d9a5dc2826c375696661"
+        },
+        {
+         "type": "element",
+         "internalId": "e835a42575957dc8ea287c3e5f25310d",
+         "serializationId": "e835a42575957dc8ea287c3e5f25310d"
+        },
+        {
+         "type": "element",
+         "internalId": "642a63a3ce218f67b21244e87e876cfd",
+         "serializationId": "642a63a3ce218f67b21244e87e876cfd"
+        },
+        {
+         "type": "element",
+         "internalId": "86da1c4d679633574df995f13579d681",
+         "serializationId": "86da1c4d679633574df995f13579d681"
+        },
+        {
+         "type": "element",
+         "internalId": "e3b2868e8628fa2f45b3ba222ae903d5",
+         "serializationId": "e3b2868e8628fa2f45b3ba222ae903d5"
+        },
+        {
+         "type": "element",
+         "internalId": "fbfd12607afced3a2e40ecfe87a47277",
+         "serializationId": "fbfd12607afced3a2e40ecfe87a47277"
+        },
+        {
+         "type": "element",
+         "internalId": "dad8b0e538a59d1f6eb21a660ebead5c",
+         "serializationId": "dad8b0e538a59d1f6eb21a660ebead5c"
+        },
+        {
+         "type": "element",
+         "internalId": "e829414783a862eccac3e627d6bfe0c5",
+         "serializationId": "e829414783a862eccac3e627d6bfe0c5"
+        },
+        {
+         "type": "element",
+         "internalId": "f83a253273936b45f43767e61c4916d4",
+         "serializationId": "f83a253273936b45f43767e61c4916d4"
+        },
+        {
+         "type": "element",
+         "internalId": "4124df0ff9e52b61be430a70bb06dd6d",
+         "serializationId": "4124df0ff9e52b61be430a70bb06dd6d"
+        },
+        {
+         "type": "element",
+         "internalId": "66aa8b7d424aee976a8cfb7b8ce213e2",
+         "serializationId": "66aa8b7d424aee976a8cfb7b8ce213e2"
+        },
+        {
+         "type": "element",
+         "internalId": "2a05eecb9cbc5820dcf3556bb4148ed9",
+         "serializationId": "2a05eecb9cbc5820dcf3556bb4148ed9"
+        },
+        {
+         "type": "element",
+         "internalId": "0b5f819901f635ba7856e91d85d79820",
+         "serializationId": "0b5f819901f635ba7856e91d85d79820"
+        },
+        {
+         "type": "element",
+         "internalId": "5b58a38a9f6dc4be717ac1bffc55721a",
+         "serializationId": "5b58a38a9f6dc4be717ac1bffc55721a"
+        },
+        {
+         "type": "element",
+         "internalId": "1596929beb2362d3610246ef322d2ede",
+         "serializationId": "1596929beb2362d3610246ef322d2ede"
+        },
+        {
+         "type": "element",
+         "internalId": "2620ca0688082ed3a97f220f1c471ed0",
+         "serializationId": "2620ca0688082ed3a97f220f1c471ed0"
+        },
+        {
+         "type": "element",
+         "internalId": "6d95c16a36a69f2f26c48391bfe1f98d",
+         "serializationId": "6d95c16a36a69f2f26c48391bfe1f98d"
+        },
+        {
+         "type": "element",
+         "internalId": "281e79d714993081a8fa955aa552f529",
+         "serializationId": "281e79d714993081a8fa955aa552f529"
+        },
+        {
+         "type": "element",
+         "internalId": "64d799234508b7a0322900d104c1b0bb",
+         "serializationId": "64d799234508b7a0322900d104c1b0bb"
+        },
+        {
+         "type": "element",
+         "internalId": "485644e1fb9c8f4d11910b5fd370e457",
+         "serializationId": "485644e1fb9c8f4d11910b5fd370e457"
+        },
+        {
+         "type": "element",
+         "internalId": "1754af26e77cd0d443b9e92c6df933c0",
+         "serializationId": "1754af26e77cd0d443b9e92c6df933c0"
+        },
+        {
+         "type": "element",
+         "internalId": "f7374b59aec4af9a457e090eba19d751",
+         "serializationId": "f7374b59aec4af9a457e090eba19d751"
+        },
+        {
+         "type": "element",
+         "internalId": "76cb9c92bdaecb509430bc8efa288f1c",
+         "serializationId": "76cb9c92bdaecb509430bc8efa288f1c"
+        },
+        {
+         "type": "element",
+         "internalId": "c2f4112184f3b7013eb5758f3b897e64",
+         "serializationId": "c2f4112184f3b7013eb5758f3b897e64"
+        },
+        {
+         "type": "element",
+         "internalId": "fdb4d434a380207eecdf0cdc90b661b6",
+         "serializationId": "fdb4d434a380207eecdf0cdc90b661b6"
+        },
+        {
+         "type": "element",
+         "internalId": "1765ee04b816681b99df2e9ffce493c6",
+         "serializationId": "1765ee04b816681b99df2e9ffce493c6"
+        },
+        {
+         "type": "element",
+         "internalId": "c0384d647bd7cecbe87a098370656547",
+         "serializationId": "c0384d647bd7cecbe87a098370656547"
+        },
+        {
+         "type": "element",
+         "internalId": "f2cc8ae2c2186dea28299ebe71276260",
+         "serializationId": "f2cc8ae2c2186dea28299ebe71276260"
+        },
+        {
+         "type": "element",
+         "internalId": "d2853800719533a10ef321462cf34716",
+         "serializationId": "d2853800719533a10ef321462cf34716"
+        },
+        {
+         "type": "element",
+         "internalId": "2add284dcb5f1d9ad69ec9411ad072bb",
+         "serializationId": "2add284dcb5f1d9ad69ec9411ad072bb"
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7624 @@
+{
+ "_slimmed_from": "page-2-alfa.json",
+ "_full_file_sha256": "7f358230164e8c190a019f0d5ee9bfcd2a010b0626ffd9fc884e079b0bfee22c",
+ "_full_file_bytes": 2039911,
+ "_note": "passed/inapplicable outcomes dropped to keep the receipt small; counts of every outcome kind are in resultAggregates; the full file hash is recorded for re-run comparison",
+ "outcome_counts": {
+  "passed": 1524,
+  "failed": 88,
+  "cantTell": 2,
+  "inapplicable": 42
+ },
+ "resultAggregates": [
+  [
+   "https://alfa.siteimprove.com/rules/sia-r90",
+   {
+    "failed": 0,
+    "passed": 20,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r54",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r66",
+   {
+    "failed": 44,
+    "passed": 300,
+    "cantTell": 1
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r2",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r35",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r27",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r41",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r85",
+   {
+    "failed": 1,
+    "passed": 8,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r38",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r20",
+   {
+    "failed": 0,
+    "passed": 43,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r46",
+   {
+    "failed": 0,
+    "passed": 11,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r8",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r19",
+   {
+    "failed": 0,
+    "passed": 43,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r76",
+   {
+    "failed": 0,
+    "passed": 11,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r53",
+   {
+    "failed": 0,
+    "passed": 12,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r92",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r78",
+   {
+    "failed": 0,
+    "passed": 13,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r4",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r15",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r33",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r60",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r29",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r1",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r10",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r65",
+   {
+    "failed": 0,
+    "passed": 57,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r22",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r44",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r80",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r74",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r73",
+   {
+    "failed": 0,
+    "passed": 9,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r50",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r94",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r17",
+   {
+    "failed": 0,
+    "passed": 7,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r31",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r62",
+   {
+    "failed": 0,
+    "passed": 7,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r48",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r12",
+   {
+    "failed": 0,
+    "passed": 7,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r67",
+   {
+    "failed": 0,
+    "passed": 5,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r86",
+   {
+    "failed": 0,
+    "passed": 5,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r68",
+   {
+    "failed": 0,
+    "passed": 23,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r24",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r42",
+   {
+    "failed": 0,
+    "passed": 79,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r47",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r9",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r18",
+   {
+    "failed": 0,
+    "passed": 29,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r21",
+   {
+    "failed": 0,
+    "passed": 8,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r71",
+   {
+    "failed": 0,
+    "passed": 9,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r110",
+   {
+    "failed": 0,
+    "passed": 8,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r96",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r55",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r91",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r14",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r32",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r61",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r5",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r39",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r26",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r40",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r84",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r23",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r45",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r81",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r116",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r59",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r77",
+   {
+    "failed": 0,
+    "passed": 8,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r113",
+   {
+    "failed": 0,
+    "passed": 44,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r72",
+   {
+    "failed": 0,
+    "passed": 9,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r79",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r93",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r57",
+   {
+    "failed": 1,
+    "passed": 345,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r63",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r49",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r7",
+   {
+    "failed": 0,
+    "passed": 4,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r16",
+   {
+    "failed": 0,
+    "passed": 6,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r30",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r64",
+   {
+    "failed": 0,
+    "passed": 13,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r28",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r11",
+   {
+    "failed": 0,
+    "passed": 49,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r37",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r69",
+   {
+    "failed": 0,
+    "passed": 253,
+    "cantTell": 1
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r25",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r43",
+   {
+    "failed": 0,
+    "passed": 2,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r87",
+   {
+    "failed": 1,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r75",
+   {
+    "failed": 0,
+    "passed": 64,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r111",
+   {
+    "failed": 39,
+    "passed": 5,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r70",
+   {
+    "failed": 0,
+    "passed": 1,
+    "cantTell": 0
+   }
+  ],
+  [
+   "https://alfa.siteimprove.com/rules/sia-r95",
+   {
+    "failed": 0,
+    "passed": 0,
+    "cantTell": 0
+   }
+  ]
+ ],
+ "outcomes": [
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "fa5f77667e7326b452ecf0afcad0daa2",
+    "serializationId": "fa5f77667e7326b452ecf0afcad0daa2"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "\n    ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Skip To Content (Option+0)",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-text"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Skip To Content",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-medium"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "SkipTo",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-small"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n    ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "button",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "id",
+           "value": "id-skip-to-button"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-haspopup",
+           "value": "menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-expanded",
+           "value": "false"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-label",
+           "value": "Skip To Content, shortcut Option + 0"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-controls",
+           "value": "id-skip-to-menu"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "\n    ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Landmark Regions",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-landmark-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-label",
+             "value": "Landmark Regions"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-landmark-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "overflow"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-landmark-group-label"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Headings",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-heading-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-label",
+             "value": "Headings"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-heading-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "overflow"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-heading-group-label"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Shortcuts: Disabled",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-shortcuts-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "shortcuts-disabled"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-shortcuts-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-shortcuts-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "shortcuts-disabled"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n        ",
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "About SkipTo.js",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "span",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "label"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-about"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "menuitem"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "data-about-info",
+             "value": ""
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "about skip-to-nav skip-to-nesting-level-0 last"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "tabindex",
+             "value": "-1"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n    ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "div",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "id",
+           "value": "id-skip-to-menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "role",
+           "value": "menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-label",
+           "value": "Landmarks and Headings"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "style",
+           "value": "display: none;"
+          }
+         ],
+         "style": [
+          {
+           "name": "display",
+           "value": "none",
+           "important": false
+          }
+         ],
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "\n",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "menu-button popup"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "id",
+         "value": "id-skip-to-ver-5"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "fixed"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "d80ea22cda5a5853c040ab2fda3c4331",
+    "serializationId": "d80ea22cda5a5853c040ab2fda3c4331"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "e64eebafd421a564014b2d3fafc3706b",
+    "serializationId": "e64eebafd421a564014b2d3fafc3706b"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "91476759a7b7f157776340057be1dcff",
+    "serializationId": "91476759a7b7f157776340057be1dcff"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "36bbbc77c8036dce60b51cb745cab3ee",
+    "serializationId": "36bbbc77c8036dce60b51cb745cab3ee"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "b2affab8184c70a8e81ddf025b69c800",
+    "serializationId": "b2affab8184c70a8e81ddf025b69c800"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "3d6f821d268118b85291aacdff52a49f",
+    "serializationId": "3d6f821d268118b85291aacdff52a49f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "c866d9c0abec3f02f49bcc5241cbf43d",
+    "serializationId": "c866d9c0abec3f02f49bcc5241cbf43d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "2a97fa78182639fa1984c548e991cc7b",
+    "serializationId": "2a97fa78182639fa1984c548e991cc7b"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "27365295d03193e8ae319052df8604ac",
+    "serializationId": "27365295d03193e8ae319052df8604ac"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "ecf4a044f08b14bf40d71ee2425e1e13",
+    "serializationId": "ecf4a044f08b14bf40d71ee2425e1e13"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "19b13a2b45961d985b6afbb031fac3f6",
+    "serializationId": "19b13a2b45961d985b6afbb031fac3f6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "5968b79b3ab0d5bb63750ae85f90b7ea",
+    "serializationId": "5968b79b3ab0d5bb63750ae85f90b7ea"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "d4ae85b5b3eaaffeedeeaab85b9f6e91",
+    "serializationId": "d4ae85b5b3eaaffeedeeaab85b9f6e91"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "d148c8e8cf1e3eb02f80551b6ee15dc9",
+    "serializationId": "d148c8e8cf1e3eb02f80551b6ee15dc9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "32dbbf2977d61f5749916338beb836d4",
+    "serializationId": "32dbbf2977d61f5749916338beb836d4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "59c9c5e768fd7dedad5a842db772199b",
+    "serializationId": "59c9c5e768fd7dedad5a842db772199b"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "89c7f0bef31a06e40a4810e866769b15",
+    "serializationId": "89c7f0bef31a06e40a4810e866769b15"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "2ab159d64afa6093cfbe40c3e81a1118",
+    "serializationId": "2ab159d64afa6093cfbe40c3e81a1118"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "292423e57d8841908ff45aa2cea6d2ce",
+    "serializationId": "292423e57d8841908ff45aa2cea6d2ce"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "b317e8a991d2eb2f4cb6203fabde39f4",
+    "serializationId": "b317e8a991d2eb2f4cb6203fabde39f4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "dc31c5fc0c7b5d3182af9e1a7393588c",
+    "serializationId": "dc31c5fc0c7b5d3182af9e1a7393588c"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "00796e790cf3a9050ed47f41d73d3b4f",
+    "serializationId": "00796e790cf3a9050ed47f41d73d3b4f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "25377308bd39dcf3e2bc76d734d7dbaf",
+    "serializationId": "25377308bd39dcf3e2bc76d734d7dbaf"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "d956f0aea2c7f8d0640c2a7feae83375",
+    "serializationId": "d956f0aea2c7f8d0640c2a7feae83375"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "614efee81a0f2de7f2f2e64c879fa0d5",
+    "serializationId": "614efee81a0f2de7f2f2e64c879fa0d5"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "1d2afd0ad6e6727a1bc2aa531fe97b2a",
+    "serializationId": "1d2afd0ad6e6727a1bc2aa531fe97b2a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "b0859c5d5ce9ee208645d09536b3299e",
+    "serializationId": "b0859c5d5ce9ee208645d09536b3299e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "77a3943a11733ebd0a0b347db864fde9",
+    "serializationId": "77a3943a11733ebd0a0b347db864fde9"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "641a477020f7c0227862345698a6d056",
+    "serializationId": "641a477020f7c0227862345698a6d056"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "5a95704f016af75ad398f7bab92bcee7",
+    "serializationId": "5a95704f016af75ad398f7bab92bcee7"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "0268333b8594686c6b2fee48bc36620d",
+    "serializationId": "0268333b8594686c6b2fee48bc36620d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "a6e783827c7055c6ffe20bc43dbcd663",
+    "serializationId": "a6e783827c7055c6ffe20bc43dbcd663"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "93a9a74438f5fd9fd650bb26c9932773",
+    "serializationId": "93a9a74438f5fd9fd650bb26c9932773"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "cd726a02ca7f187fa28863d2a7226886",
+    "serializationId": "cd726a02ca7f187fa28863d2a7226886"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "ee0decfb97d8bf19227ea4f417bb1257",
+    "serializationId": "ee0decfb97d8bf19227ea4f417bb1257"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "79d0fd2d14937a29cf02beddd2788f41",
+    "serializationId": "79d0fd2d14937a29cf02beddd2788f41"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "a1ed59242ed4ce6e93fdb8028cc49b52",
+    "serializationId": "a1ed59242ed4ce6e93fdb8028cc49b52"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "7533391f38565dce5dc951ea820f5c5a",
+    "serializationId": "7533391f38565dce5dc951ea820f5c5a"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "9a9cd753f39b3a2ac8d69d6b562c6c66",
+    "serializationId": "9a9cd753f39b3a2ac8d69d6b562c6c66"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "23e0b62fd5439e9fcad182b8ecbbaf03",
+    "serializationId": "23e0b62fd5439e9fcad182b8ecbbaf03"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "25a796c0a2a1a98504c511ec527863c6",
+    "serializationId": "25a796c0a2a1a98504c511ec527863c6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "073c95ff912fca753fad084c6d70a77e",
+    "serializationId": "073c95ff912fca753fad084c6d70a77e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "c60d26bab1e04cb6d989abd2ccfd0840",
+    "serializationId": "c60d26bab1e04cb6d989abd2ccfd0840"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 5.2:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0,
+            0.4588235,
+            0.4588235
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            },
+            {
+             "type": "percentage",
+             "value": 0.4588235
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 5.2
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r66"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "d75133e4530a89d61afdce34a69b8de4",
+    "serializationId": "d75133e4530a89d61afdce34a69b8de4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The highest possible contrast of the text is 4.67:1 which is\n        below the required contrast of 7:1",
+       "threshold": 7,
+       "pairings": [
+        {
+         "color1": {
+          "name": "foreground",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.8666667,
+            0.0666667,
+            0.2666667
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.8666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.0666667
+            },
+            {
+             "type": "percentage",
+             "value": 0.2666667
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "color2": {
+          "name": "background",
+          "value": {
+           "type": "color",
+           "space": "srgb",
+           "coordinates": [
+            0.972549,
+            0.972549,
+            0.972549
+           ],
+           "sRGB": [
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            },
+            {
+             "type": "percentage",
+             "value": 0.972549
+            }
+           ],
+           "alpha": {
+            "type": "percentage",
+            "value": 1
+           }
+          }
+         },
+         "contrast": 4.67
+        }
+       ]
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r85"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "7c9e5619174404fd52a39d71f4a0d403",
+    "serializationId": "7c9e5619174404fd52a39d71f4a0d403"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The text of the paragraph is all italic"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r14"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "6224fc62f02028b07c71d4cbe6132fbe",
+    "serializationId": "6224fc62f02028b07c71d4cbe6132fbe"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The visible text content of the element is not included within its accessible name",
+       "textContent": "skip to content option0",
+       "name": "skip to content shortcut option 0"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r61"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "document",
+    "internalId": "d6b4352e38b2c30113cb634402e9bdb4",
+    "serializationId": "d6b4352e38b2c30113cb634402e9bdb4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The document does not start with a level 1 heading",
+       "firstHeading": {
+        "type": "element",
+        "internalId": "233ccd74ce6e1549b2d2a3796591a0ce",
+        "serializationId": "233ccd74ce6e1549b2d2a3796591a0ce"
+       },
+       "firstHeadingLevel": 2
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r57"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "bccee3ac4b25ee70ce512a6c170c3953",
+    "serializationId": "bccee3ac4b25ee70ce512a6c170c3953"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The text is not included in a landmark region"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "cantTell",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r69"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "text",
+    "internalId": "fa5f77667e7326b452ecf0afcad0daa2",
+    "serializationId": "fa5f77667e7326b452ecf0afcad0daa2"
+   },
+   "diagnostic": {
+    "message": "Could not fully resolve colors",
+    "errors": [
+     {
+      "message": "A non-statically positioned element was encountered",
+      "element": {
+       "type": "element",
+       "children": [
+        {
+         "type": "text",
+         "data": "\n    ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Skip To Content (Option+0)",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-text"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Skip To Content",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-medium"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "SkipTo",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "span",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "skipto-small"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n    ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "button",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "id",
+           "value": "id-skip-to-button"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-haspopup",
+           "value": "menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-expanded",
+           "value": "false"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-label",
+           "value": "Skip To Content, shortcut Option + 0"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-controls",
+           "value": "id-skip-to-menu"
+          }
+         ],
+         "style": null,
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "\n    ",
+         "box": null
+        },
+        {
+         "type": "element",
+         "children": [
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Landmark Regions",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-landmark-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-label",
+             "value": "Landmark Regions"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-landmark-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "overflow"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-landmark-group-label"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Headings",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-heading-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-label",
+             "value": "Headings"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-heading-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "overflow"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-heading-group-label"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "Shortcuts: Disabled",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-shortcuts-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "shortcuts-disabled"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-shortcuts-group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "group"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "aria-labelledby",
+             "value": "id-skip-to-shortcuts-group-label"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "shortcuts-disabled"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "separator"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n      ",
+           "box": null
+          },
+          {
+           "type": "element",
+           "children": [
+            {
+             "type": "text",
+             "data": "\n        ",
+             "box": null
+            },
+            {
+             "type": "element",
+             "children": [
+              {
+               "type": "text",
+               "data": "About SkipTo.js",
+               "box": null
+              }
+             ],
+             "namespace": "http://www.w3.org/1999/xhtml",
+             "prefix": null,
+             "name": "span",
+             "attributes": [
+              {
+               "type": "attribute",
+               "namespace": null,
+               "prefix": null,
+               "name": "class",
+               "value": "label"
+              }
+             ],
+             "style": null,
+             "shadow": null,
+             "content": null,
+             "box": null
+            },
+            {
+             "type": "text",
+             "data": "\n      ",
+             "box": null
+            }
+           ],
+           "namespace": "http://www.w3.org/1999/xhtml",
+           "prefix": null,
+           "name": "div",
+           "attributes": [
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "id",
+             "value": "id-skip-to-about"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "role",
+             "value": "menuitem"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "data-about-info",
+             "value": ""
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "class",
+             "value": "about skip-to-nav skip-to-nesting-level-0 last"
+            },
+            {
+             "type": "attribute",
+             "namespace": null,
+             "prefix": null,
+             "name": "tabindex",
+             "value": "-1"
+            }
+           ],
+           "style": null,
+           "shadow": null,
+           "content": null,
+           "box": null
+          },
+          {
+           "type": "text",
+           "data": "\n    ",
+           "box": null
+          }
+         ],
+         "namespace": "http://www.w3.org/1999/xhtml",
+         "prefix": null,
+         "name": "div",
+         "attributes": [
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "id",
+           "value": "id-skip-to-menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "role",
+           "value": "menu"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "aria-label",
+           "value": "Landmarks and Headings"
+          },
+          {
+           "type": "attribute",
+           "namespace": null,
+           "prefix": null,
+           "name": "style",
+           "value": "display: none;"
+          }
+         ],
+         "style": [
+          {
+           "name": "display",
+           "value": "none",
+           "important": false
+          }
+         ],
+         "shadow": null,
+         "content": null,
+         "box": null
+        },
+        {
+         "type": "text",
+         "data": "\n",
+         "box": null
+        }
+       ],
+       "namespace": "http://www.w3.org/1999/xhtml",
+       "prefix": null,
+       "name": "div",
+       "attributes": [
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "class",
+         "value": "menu-button popup"
+        },
+        {
+         "type": "attribute",
+         "namespace": null,
+         "prefix": null,
+         "name": "id",
+         "value": "id-skip-to-ver-5"
+        }
+       ],
+       "style": null,
+       "shadow": null,
+       "content": null,
+       "box": null
+      },
+      "type": "layer",
+      "kind": "non-static",
+      "property": "position",
+      "value": {
+       "type": "keyword",
+       "value": "fixed"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r87"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "document",
+    "internalId": "d6b4352e38b2c30113cb634402e9bdb4",
+    "serializationId": "d6b4352e38b2c30113cb634402e9bdb4"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "The first tabbable element in the document is not a semantic link"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "6224fc62f02028b07c71d4cbe6132fbe",
+    "serializationId": "6224fc62f02028b07c71d4cbe6132fbe"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Skip To Content, shortcut Option + 0",
+       "box": {
+        "type": "rectangle",
+        "x": 89.59375,
+        "y": -27,
+        "width": 178.9375,
+        "height": 28
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "756c6b515f81eeb7ba512070c8c980ec",
+    "serializationId": "756c6b515f81eeb7ba512070c8c980ec"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "ARIA Authoring Practices Guide (APG)",
+       "box": {
+        "type": "rectangle",
+        "x": 88,
+        "y": 21.796875,
+        "width": 386.140625,
+        "height": 39
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4fd5083226fcd1d41544aa993e646f03",
+    "serializationId": "4fd5083226fcd1d41544aa993e646f03"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Read This First",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 222.8125,
+        "width": 92.734375,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "52d4b63f6e718d56bff155124e7a0e08",
+    "serializationId": "52d4b63f6e718d56bff155124e7a0e08"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "About This Example",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 255.640625,
+        "width": 126.25,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ad953901b8ba8899486d7004ffb1f7b8",
+    "serializationId": "ad953901b8ba8899486d7004ffb1f7b8"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Example",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 286.390625,
+        "width": 54.625,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "fdbe7897476699652c3bf5ca2712178e",
+    "serializationId": "fdbe7897476699652c3bf5ca2712178e"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Accessibility Features",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 317.140625,
+        "width": 135.359375,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "b6c48b1f740cfbd6e5f59f27d4f74fbf",
+    "serializationId": "b6c48b1f740cfbd6e5f59f27d4f74fbf"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Keyboard Support",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 347.890625,
+        "width": 115.53125,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "b694df1e49c7dec1088153974c12a78d",
+    "serializationId": "b694df1e49c7dec1088153974c12a78d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Role, Property, State, and Tabindex Attributes",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 378.640625,
+        "width": 221.90625,
+        "height": 40.3125
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "d61467e8c54e2472f633dd02fa17d6a8",
+    "serializationId": "d61467e8c54e2472f633dd02fa17d6a8"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Assistive Technology Support",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 425.703125,
+        "width": 185.96875,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "52163817ac21cf0d01ed9415cdace65d",
+    "serializationId": "52163817ac21cf0d01ed9415cdace65d"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "JavaScript and CSS Source Code",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 456.453125,
+        "width": 200.765625,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "4a698f04efef3f18c94dbb270e663032",
+    "serializationId": "4a698f04efef3f18c94dbb270e663032"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "HTML Source Code",
+       "box": {
+        "type": "rectangle",
+        "x": 961,
+        "y": 487.203125,
+        "width": 120.640625,
+        "height": 24
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "61eb772129ed1a1e59e35cf863182e80",
+    "serializationId": "61eb772129ed1a1e59e35cf863182e80"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Example Disclosure (Show/Hide) for an Image Description",
+       "box": {
+        "type": "rectangle",
+        "x": 120,
+        "y": 585.296875,
+        "width": 432.859375,
+        "height": 29
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "7bbf666824a3b969795345a9d14e32c5",
+    "serializationId": "7bbf666824a3b969795345a9d14e32c5"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Example Disclosure Navigation Menu",
+       "box": {
+        "type": "rectangle",
+        "x": 120,
+        "y": 617.296875,
+        "width": 279.453125,
+        "height": 29
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "daafa919f2fb845ce87b1854ce14cdba",
+    "serializationId": "daafa919f2fb845ce87b1854ce14cdba"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Example Disclosure Navigation Menu with Top-Level Links",
+       "box": {
+        "type": "rectangle",
+        "x": 120,
+        "y": 649.296875,
+        "width": 433.65625,
+        "height": 29
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "1c4d98fb0de73bb312db8a6525ad6781",
+    "serializationId": "1c4d98fb0de73bb312db8a6525ad6781"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Disclosure (Show/Hide) Card",
+       "box": {
+        "type": "rectangle",
+        "x": 120,
+        "y": 681.296875,
+        "width": 212.265625,
+        "height": 29
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f4cccda54349f77cd30d6e0cc30fca6b",
+    "serializationId": "f4cccda54349f77cd30d6e0cc30fca6b"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Open In CodePen",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 783.1875,
+        "width": 136.34375,
+        "height": 38.1875
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "afa137b53c409c5bd0aae95b652081db",
+    "serializationId": "afa137b53c409c5bd0aae95b652081db"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "What do I do if I have a permit for an assigned lot, but can't find a space there?",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 942.5625,
+        "width": 686.421875,
+        "height": 32.625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "73cfff51844c5ad501b5dee525a7ab0f",
+    "serializationId": "73cfff51844c5ad501b5dee525a7ab0f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "What do I do if I lose my permit or if my permit is stolen?",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 991.1875,
+        "width": 502.28125,
+        "height": 32.625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "b53631cc02e6bea80e918b19a88770b8",
+    "serializationId": "b53631cc02e6bea80e918b19a88770b8"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Is there free parking on holidays?",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 1039.8125,
+        "width": 309.671875,
+        "height": 32.625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "679cfe603a1259d9ab204707d5e61bca",
+    "serializationId": "679cfe603a1259d9ab204707d5e61bca"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Do all parking facilities have the same enforcement rules?",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 1088.4375,
+        "width": 514.125,
+        "height": 32.625
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "9a6b5d216d97d4ccbcca90df9e439a22",
+    "serializationId": "9a6b5d216d97d4ccbcca90df9e439a22"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Learn how to interpret and use assistive technology support data",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 3036,
+        "width": 488.75,
+        "height": 29
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "e16d8300cf2e95dd48c66e2ae4b8d81f",
+    "serializationId": "e16d8300cf2e95dd48c66e2ae4b8d81f"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Open In CodePen",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 3744.78125,
+        "width": 136.34375,
+        "height": 38.1875
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "a6d4668d6a361744be2d1e5e188c0d10",
+    "serializationId": "a6d4668d6a361744be2d1e5e188c0d10"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "E-mail",
+       "box": {
+        "type": "rectangle",
+        "x": 97,
+        "y": 5601.96875,
+        "width": 351.328125,
+        "height": 38.1875
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f71938f07a8692ceff79b4465313f9fb",
+    "serializationId": "f71938f07a8692ceff79b4465313f9fb"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Fork & Edit on GitHub",
+       "box": {
+        "type": "rectangle",
+        "x": 464.328125,
+        "y": 5601.96875,
+        "width": 351.34375,
+        "height": 38.1875
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "269e7b6c671aaca3e3b5137a99c54672",
+    "serializationId": "269e7b6c671aaca3e3b5137a99c54672"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "New GitHub Issue",
+       "box": {
+        "type": "rectangle",
+        "x": 831.671875,
+        "y": 5601.96875,
+        "width": 351.328125,
+        "height": 38.1875
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "651cf26f4b14ad36de69688e63bb08b7",
+    "serializationId": "651cf26f4b14ad36de69688e63bb08b7"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "View issues related to this example",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 5717.15625,
+        "width": 229.046875,
+        "height": 25
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f171f408f48a704b842812ccd3bf4339",
+    "serializationId": "f171f408f48a704b842812ccd3bf4339"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "W3C Web Accessibility Initiative (WAI)",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 5822.15625,
+        "width": 376.265625,
+        "height": 35
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "660e058e9c93b0afac0be2dcc2069ae6",
+    "serializationId": "660e058e9c93b0afac0be2dcc2069ae6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Get News in Email",
+       "box": {
+        "type": "rectangle",
+        "x": 110,
+        "y": 5902.71875,
+        "width": 118.1875,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "43206b5dd7c6ac43dd2088215ac13090",
+    "serializationId": "43206b5dd7c6ac43dd2088215ac13090"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "LinkedIn",
+       "box": {
+        "type": "rectangle",
+        "x": 280.1875,
+        "y": 5902.71875,
+        "width": 56.96875,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "5c602fccdebfee07572844384f4f87ce",
+    "serializationId": "5c602fccdebfee07572844384f4f87ce"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Mastodon",
+       "box": {
+        "type": "rectangle",
+        "x": 389.15625,
+        "y": 5902.71875,
+        "width": 66.5,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "50adc8df55deb78f1c604f5ac3770f58",
+    "serializationId": "50adc8df55deb78f1c604f5ac3770f58"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "YouTube",
+       "box": {
+        "type": "rectangle",
+        "x": 507.65625,
+        "y": 5902.71875,
+        "width": 56.578125,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "5123a5b6f379feb8d1e7179c753eb5d0",
+    "serializationId": "5123a5b6f379feb8d1e7179c753eb5d0"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Home",
+       "box": {
+        "type": "rectangle",
+        "x": 80,
+        "y": 5954.703125,
+        "width": 39.828125,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "0d7c24f958b06b5beaeb911a37a28b89",
+    "serializationId": "0d7c24f958b06b5beaeb911a37a28b89"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Contact",
+       "box": {
+        "type": "rectangle",
+        "x": 139.828125,
+        "y": 5954.703125,
+        "width": 50.640625,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "2b26cc3271bc85ad530b2bd7007658bf",
+    "serializationId": "2b26cc3271bc85ad530b2bd7007658bf"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Site map",
+       "box": {
+        "type": "rectangle",
+        "x": 210.46875,
+        "y": 5954.703125,
+        "width": 57.421875,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "ba73073e386f15e443f1896826add163",
+    "serializationId": "ba73073e386f15e443f1896826add163"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Support WAI",
+       "box": {
+        "type": "rectangle",
+        "x": 287.890625,
+        "y": 5954.703125,
+        "width": 82.625,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "f5cb087c7fed0fdbf65c496e5c590a19",
+    "serializationId": "f5cb087c7fed0fdbf65c496e5c590a19"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "News",
+       "box": {
+        "type": "rectangle",
+        "x": 390.515625,
+        "y": 5954.703125,
+        "width": 35.953125,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "b1d74dde43a31a0042cb6fa6368191e6",
+    "serializationId": "b1d74dde43a31a0042cb6fa6368191e6"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Accessibility statement",
+       "box": {
+        "type": "rectangle",
+        "x": 446.46875,
+        "y": 5954.703125,
+        "width": 149.78125,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "430fbac2df5b68b27abf0be18f96c832",
+    "serializationId": "430fbac2df5b68b27abf0be18f96c832"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "All Translations",
+       "box": {
+        "type": "rectangle",
+        "x": 616.25,
+        "y": 5954.703125,
+        "width": 99.515625,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "outcome": "failed",
+   "rule": {
+    "uri": "https://alfa.siteimprove.com/rules/sia-r111"
+   },
+   "mode": "automatic",
+   "target": {
+    "type": "element",
+    "internalId": "871c627957c08d1d3c49b9fcc0f50646",
+    "serializationId": "871c627957c08d1d3c49b9fcc0f50646"
+   },
+   "expectations": [
+    [
+     "1",
+     {
+      "type": "err",
+      "error": {
+       "message": "Target has insufficient size",
+       "name": "Resources for roles",
+       "box": {
+        "type": "rectangle",
+        "x": 735.765625,
+        "y": 5954.703125,
+        "width": 125.734375,
+        "height": 43.984375
+       },
+       "condition": {
+        "type": "right",
+        "value": {
+         "size": false,
+         "spacing": true
+        }
+       },
+       "tooCloseNeighbors": []
+      }
+     }
+    ]
+   ]
+  }
+ ]
+}

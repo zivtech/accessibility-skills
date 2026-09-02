@@ -1,0 +1,14 @@
+{
+ "totalFailedRuleIds": 22,
+ "mappedCount": 16,
+ "unmappedCount": 6,
+ "coveragePct": 72.72727272727273,
+ "unmappedRuleIds": [
+  "sia-r85",
+  "sia-r61",
+  "sia-r57",
+  "sia-r87",
+  "sia-r70",
+  "sia-r72"
+ ]
+}
