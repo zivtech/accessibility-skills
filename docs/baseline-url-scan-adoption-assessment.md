@@ -43,6 +43,39 @@ node baseline-url-scan.mjs --out ./out2 https://example.com
 
 Result: both configured viewports (`1280x800`, `320x800`) ran and appear as separate keys in the per-URL JSON, each with its own `violations`/`incomplete`/`axe_core_version`; `summary.json` reports `schema_version: "1.1"`, `axe_core_version: "4.13.0"` at the top level, and `totals.viewport_scans: 2` (1 URL × 2 viewports, both measured, 0 errors). This is a runs-cleanly check, not a detection-accuracy benchmark — no fixture with planted defects and known ground truth was run against this script.
 
+### 2026-09-02: `--resume` + `coverage` block (PT-03)
+
+Smoke-tested from a scratch project (`playwright@1.62.1`, `@axe-core/playwright@4.13.0`, matching the pins above), serving two local static pages (`page1.html`, `page2.html`) via `python3 -m http.server` and a closed port for the unreachable-URL case. Five mutation canaries (memo `evals/results/promotion-eval-2026-09/memos/1.3-memo-pt03.md` §5), each starting from a clean baseline `summary.json`/per-URL JSON produced without `--resume`:
+
+1. **Version check** — edited a cached record's `axe_core_version` to `"9.9.9-mutated"`, reran with `--resume`. Result: that URL rescanned (`resumed` absent, version restored to `4.13.0`); the untouched URL resumed (`skipped_resumed: 1`). PASS.
+2. **Viewport exact-match** — reran with `--viewports 1280x800,320x800` (cache held only `1280x800`) and `--resume`. Result: both URLs rescanned at both viewports (`skipped_resumed: 0`), no silently-missing viewport. PASS.
+3. **Status gate** — set a cached record's `status` to `"error"`, reran with `--resume`. Result: that URL rescanned (`status` back to `"measured"`); `skipped_resumed: 1` counted only the untouched URL. PASS.
+4. **No aborted rate** — scanned one live page plus `http://127.0.0.1:19999/nope.html` (closed port), matching the real Playwright error `page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:19999/nope.html`. Re-run 2026-09-02 against the current code (single-source `buildCoverage` refactor, PT-03 REVISE fixes); current verbatim `coverage`:
+   ```json
+   { "unit": "viewport_scan", "measured": 1, "aborted": { "count": 1, "by_reason": { "navigation": 1 } }, "skipped_resumed": 0 }
+   ```
+   `grep -niE "rate|pct|percent|ratio" summary.json` returned 3 hits, all substring false positives — the timestamp field `generated` and two `moderate` impact labels each contain the letters "rate"; no field computes an actual rate or percentage anywhere in the file. PASS.
+5. **Census mismatch** — cached record had no `census` key (baseline run without `--census`); reran with `--resume --census`. Result: rescanned (`skipped_resumed: 0`), fresh `census` data present per viewport and `census_totals` aggregated in `summary.json`. PASS.
+
+Command shape (canary 1 shown; others swap the mutation and flags):
+```
+node baseline-url-scan.mjs --out ./out --viewports 1280x800 --resume \
+  http://127.0.0.1:8931/page1.html http://127.0.0.1:8931/page2.html
+```
+
+All five PASS. `schema_version` is now `"1.3"`. Local synthetic pages and a loopback closed port — nothing to redact.
+
+6. **Multi-viewport unit** (new) — clean run, 2 local URLs, `--viewports 1280x800,320x800` (4 viewport-scan units), then an unchanged `--resume` rerun. Clean-run `coverage`:
+   ```json
+   { "unit": "viewport_scan", "measured": 4, "aborted": { "count": 0, "by_reason": {} }, "skipped_resumed": 0 }
+   ```
+   Resume-rerun `coverage`:
+   ```json
+   { "unit": "viewport_scan", "measured": 4, "aborted": { "count": 0, "by_reason": {} }, "skipped_resumed": 4 }
+   ```
+   `skipped_resumed: 4` = 2 URLs × 2 viewports, all reused; `measured` stays 4 (resumed scans still count as measured), so the fresh-this-run count is `measured - skipped_resumed = 0` — nothing was actually rescanned. PASS.
+7. **Version provenance** (new) — `resolveAxeCoreVersion()`'s two-step resolution (entry-file-scoped `createRequire`, §"Version provenance" fix) logged directly from a scratch-only copy: `CANARY7_RESOLVED=4.13.0`. A fresh (non-cached) per-URL record scanned in the same run recorded `viewports["1280x800"].axe_core_version: "4.13.0"` — same value, confirming the function resolves what actually ran rather than a stale or wrong package.json. PASS.
+
 ## What This Does Not Claim
 
 - Not a replacement for `.spec.js` codified tests, `agent-browser` reconnaissance, keyboard-a11y-tester journey audits, or virtual-screen-reader component assertions — those remain necessary for the keyboard-operability, screen-reader-announcement, and CI-embedded evidence this mode never produces.
