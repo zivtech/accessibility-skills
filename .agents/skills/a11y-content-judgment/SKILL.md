@@ -167,8 +167,20 @@ ratifier's first hour lands on the rows that matter.
 
 ## Receipt discipline
 
-- `draft-judgments.json` carries `status: DRAFT_NOT_RATIFIED`, the units file hash, and the rubric
-  filename. It is never an input to an outcome map.
+- `draft-judgments.json` carries `status` (`DRAFT_NOT_RATIFIED` → `PARTIALLY_RATIFIED` →
+  `RATIFIED`), the units file hash, and the rubric filename. It is never an input to an outcome map.
+- Ratification is a file, not a CSV edit: `ratifications.jsonl` lines of
+  `{id, ratified_by, ratified_judgment, ratifier_note, ratified_utc, ruling}`; `--merge` fills the
+  ratifier columns from it. A family ruling ("every logo that is a link is named by its destination")
+  is one `ruling` id fanned out over its rows, so the CSV shows which sentence of the owner's decided
+  each row. Rows a ratifier defers or skips carry a note and no `ratified_by`.
+- Hand the ratifier a **worklist**, not the CSV: family decisions first (one answer settles many
+  rows), then the rows that need a look (`unsure`, or a `no` with no fact class behind it), then the
+  fact classes to sign once (missing alt attribute, empty link name, unlabeled field, raw-URL text).
+  On the origin run that turned 1,847 rows into 8 questions, 53 rows, and 10 signatures; the owner
+  answered the 8 questions in one message.
+- Where the client publishes its own web standards (EPA's file-extension-indicator rule, for one),
+  they are a yardstick beside WCAG; cite the standard and its last-updated date in the note.
 - A ratified row feeds the evaluation report's per-SC outcome map only through a receipt that names
   `ratified_by`, the ratification date, and the row `id`. The report contract's `outcomes` entry cites
   the receipt, not the CSV. `drafted_by` travels with it so nobody later mistakes the draft for the
