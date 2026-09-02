@@ -2,7 +2,7 @@ fixture_id: op-empty-state-coverage-shortcuts
 suite: a11y-test-operation-evidence
 rubric_version: "1.0"
 scoring_method: rule_based
-scorer: ollama/score_operation_evidence.py   # does not exist yet — see suite README
+scorer: ollama/score_operation_evidence.py
 
 dimensions:
   - id: natural_only_conditional_state

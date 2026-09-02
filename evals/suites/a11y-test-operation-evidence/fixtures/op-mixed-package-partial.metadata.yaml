@@ -1,0 +1,66 @@
+fixture_id: op-mixed-package-partial
+suite: a11y-test-operation-evidence
+input_format: two operation descriptions + one admissible evidence record + one passive-snapshot-only evidence record
+difficulty: MODERATE
+description: >-
+  A mixed package: two operations, both claimed PASS by the run, where exactly
+  one operation's evidence is admissible and the other's is not. OP-CLOSE is
+  the well-formed shape (single session, continuous setup→action identity, a
+  real Escape keypress, a complete exit-path trace) — its PASS should stand.
+  OP-OPTION offers only a passive DOM/AX snapshot of the popup with no causing
+  keypress, violating passive_observation_binding alone. A competent review
+  attributes the rejection to OP-OPTION specifically, leaves OP-CLOSE's PASS
+  untouched, and does not fire any rule against OP-CLOSE.
+
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
+# Rule selection is the model's semantic judgment; the structured disposition
+# block (a11y-test SKILL.md) makes reporting it mechanical. Hooks are should-tier.
+
+expected_admissibility: REJECT
+expected_dispositions:
+  OP-CLOSE: PASS
+  OP-OPTION: UNTESTED
+rules_violated_must_be_empty_for: [OP-CLOSE]   # any rule attached to OP-CLOSE here is a false fire (must-tier)
+expected_verdict_must_not:
+  - "OP-OPTION PASS"
+  - "both operations pass"
+  - "package accepted"
+  - "OP-CLOSE UNTESTED"
+
+must_catch:
+  - id: passive_observation_binding
+    operation: OP-OPTION
+    why: >-
+      A DOM/AX snapshot showing role=option / aria-selected, taken with no key
+      press, is a passive observation. It is admissible only as support bound
+      to a causing key press and a source allowlist — never as standalone
+      proof of keyboard-reachability or of announcement. No key was pressed to
+      open the popup, navigate to, or select the option.
+    hook_present: ["snapshot", "reachable and its state announced", "PASS"]
+    hook_absent_in_evidence: ["press", "keypress", "Enter", "ArrowDown", "Tab"]
+
+nice_to_have:
+  - ["per-operation", "OP-CLOSE PASS", "attribution", "bound to", "mixed package", "OP-OPTION UNTESTED"]
+
+notes: |
+  Built for AS-B1 (P-27) after the critic gating the structured-disposition
+  contract found a coverage gap: none of the three existing fixtures
+  (op-retest-clean, op-empty-state-coverage-shortcuts, op-dialog-escape-overreach)
+  has a MIXED package — every operation's evidence in those three is either
+  all admissible or all violating. A scorer smoke-tested only on those three
+  could never expose a contract that mishandles per-operation attribution
+  (rolling a clean operation's disposition into a rejected package's overall
+  verdict, or the reverse — laundering a violating operation's claim through
+  an otherwise-clean package). Real campaign packages are mixed by default;
+  this fixture is the first to exercise that shape directly.
+
+  Deliberately single-rule on the violating side (passive_observation_binding
+  only, no ancestor-remapping or synthetic-state shortcut stacked on) so the
+  attribution is unambiguous: there is exactly one broken operation and
+  exactly one rule broken, and the test is whether that stays scoped to
+  OP-OPTION rather than contaminating OP-CLOSE's independently-earned PASS.
+
+  Generic component (results table + row-action dialog + filter combobox); no
+  engagement identifiers, routes, selectors, or counts.
+
+  Detector output, not verdict authority.

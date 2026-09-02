@@ -13,12 +13,14 @@ description: >-
   and says why; it does NOT ratify the 2.1.2 FAIL, and it does NOT declare the
   dialog sound either — the evidence simply does not decide the question.
 
-# ── Scorer contract (ollama/score_operation_evidence.py — does not exist yet) ──
-# These rules are about the LOGIC of an evidence package, not token presence,
-# so most checks below are adjudication guidance for a reviewer/model-judge
-# until a scorer exists. Pattern hooks are given where a hit is mechanical.
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
+# Rule selection is the model's semantic judgment; the structured disposition
+# block (a11y-test SKILL.md) makes reporting it mechanical. Pattern hooks are
+# should-tier prose checks only.
 
 expected_admissibility: REJECT
+expected_dispositions:
+  OP-CLOSE: UNTESTED   # the stagnation note is Session B's, from the combobox — not an observation of OP-CLOSE, so no bounded diagnostic about it survives (BLOCKED would claim one does)
 expected_verdict_must_not:
   # ratifying the run's own conclusion is the failure mode to catch
   - "2.1.2 FAIL confirmed"
@@ -26,6 +28,7 @@ expected_verdict_must_not:
 
 must_catch:                       # every dimension here is a must-tier miss if absent
   - id: bounded_diagnostic_not_promoted
+    operation: OP-CLOSE
     why: >-
       focus_stagnation_observed is a bounded collector observation. A 2.1.2
       keyboard-trap conclusion requires a separate trace that actually attempts
@@ -35,6 +38,7 @@ must_catch:                       # every dimension here is a must-tier miss if 
     hook_present: ["focus_stagnation_observed", "2.1.2"]     # both appear; the trace does not
     hook_absent_in_evidence: ["Escape", "exit-path", "exit path"]
   - id: setup_action_continuity
+    operation: OP-CLOSE
     why: >-
       The setup's terminal focus identity (Session A, dialog heading, dialog
       open) is not the action's starting identity (Session B, filter combobox,

@@ -1,0 +1,42 @@
+# Operation-evidence package — OP-CLOSE + OP-OPTION (mixed package)
+
+You are reviewing the evidence package a retest run produced for two planned
+operations, both claimed PASS by the run. A package is mixed by default —
+decide admissibility for each operation independently; one operation's
+evidence can stand while another's fails in the same package. Judge the
+evidence, not the underlying component.
+
+## Operations under retest
+
+- **OP-CLOSE** — target: the "Details" modal dialog opened from a
+  results-table row action. Planned interaction: with the dialog open, press
+  `Escape`; expected result — the dialog is dismissed and focus returns to the
+  row-action trigger. Claim: PASS.
+- **OP-OPTION** — target: a nested option inside the filter combobox's popup.
+  Planned check: the option is keyboard-reachable and its selected state is
+  exposed to assistive technology. Claim: PASS.
+
+## Evidence package as submitted
+
+**OP-CLOSE.**
+- One session (`load+settle` ok): opened the Details dialog from the
+  results-table row action; terminal setup focus = the dialog's initial focus
+  (its heading). From that same focus, in the same session, pressed `Escape`.
+  Observed: the dialog dismissed and focus returned to the row-action trigger.
+  The action's `before` identity equals the setup's terminal identity — a
+  complete, continuous exit-path trace for this operation.
+
+**OP-OPTION.**
+- "We captured a DOM/AX snapshot of the filter combobox's popup after it
+  opened. It shows `role=option` present with `aria-selected` exposed on the
+  target item. On the strength of that snapshot we marked the option
+  **reachable and its state announced — PASS**."
+- No key was pressed to open the popup, navigate to the option, or select it;
+  the snapshot was taken from the rendered tree with no causing action
+  attached to it.
+
+## What the run asserts
+
+OP-CLOSE PASS (Escape dismisses the dialog, focus returns to the trigger) and
+OP-OPTION PASS (the popup snapshot shows the target option's role and
+selected state), closing out both operations as passing.
