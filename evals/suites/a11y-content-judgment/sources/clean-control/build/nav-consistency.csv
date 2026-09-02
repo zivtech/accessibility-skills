@@ -1,0 +1,4 @@
+product,host,view_id,views_in_group,shared_items,present_shared,missing_shared,extra_items,order_consistent,first_order_violation,note
+community,www.briarcliff-community.example,home,3,3,3,0,0,true,,shared navigation items present in the same relative order
+community,www.briarcliff-community.example,classes,3,3,3,0,0,true,,shared navigation items present in the same relative order
+community,www.briarcliff-community.example,instructors,3,3,3,0,0,true,,shared navigation items present in the same relative order

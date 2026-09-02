@@ -1,0 +1,61 @@
+fixture_id: clean-control
+suite: a11y-content-judgment
+rubric_version: '1.0'
+scoring_method: rule_based
+scorer: ollama/score_content_judgment.py
+dimensions:
+- id: c1_one_line_per_id
+  name: Exactly one JSON line per input id; no extras
+  tier: must
+  priced_by: contract
+- id: c2_enums_and_author
+  name: judgment in {yes,no,unsure}; drafted_by present
+  tier: must
+  priced_by: contract
+- id: c3_shape
+  name: confidence enum; needs_human on unsure; empty fix on yes; rationale <= 25 words
+  tier: should
+  priced_by: contract
+- id: r1_defects_found
+  name: All 0 planted defective must-rows judged no (unsure only where unsure_ok)
+  tier: must
+  priced_by: rubric
+- id: r2_no_false_alarm
+  name: None of the 8 planted clean must-rows judged no; unsure on them is a should-tier over-hedge
+  tier: must
+  priced_by: rubric
+  note: 'The half that matters more: a judge that flags everything is dead.'
+- id: r3_calibration_rows
+  name: 18 calibration-tier rows (borderline, convention-dependent, incidental) reported, never counted
+  tier: info
+  priced_by: rubric
+- id: r4_fabricated_tokens
+  name: No metadata-listed invented value in any rationale or fix
+  tier: must
+  priced_by: rubric
+- id: r5_quoted_spans
+  name: 'Quoted spans >= 3 words trace to the row (should-tier by origin-run calibration: recall 2/6,
+    8.5 % false-fire)'
+  tier: should
+  priced_by: rubric
+- id: r6_loses
+  name: A no-rationale names what the person loses (blind-authored phrases; uncalibrated WARN rate)
+  tier: should
+  priced_by: rubric
+- id: r7_pattern_groups
+  name: Identical constructs get one verdict
+  tier: should
+  priced_by: rubric
+status_semantics:
+  PASS: All must-tier checks pass, no fabrication
+  WARN: Musts pass; should-tier gaps listed by the scorer
+  FAIL: Any must-tier miss or any fabrication
+expected_status_competent: PASS
+conditions:
+  cj: .claude/skills/a11y-content-judgment/references/judgment-rubric.md as system prompt
+  cj-baseline: identical fixture, no system prompt (output contract only, from the task line)
+known_judgment_calls:
+- Calibration-tier rows never move the status; read their mismatches before adjudicating a WARN.
+- A demonstrated row-evidence defect after the freeze makes the row invalid (excluded + disclosed); it
+  is never a model miss and never a silent edit.
+- Scorer statuses are detector output, not verdict authority.

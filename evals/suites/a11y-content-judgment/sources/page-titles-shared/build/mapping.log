@@ -1,0 +1,37 @@
+TITLE-TR-b96dde683e <- home/title/{"text": "Harborline Transit"}
+TITLE-TR-e42367694c <- routes/title/{"text": "Harborline Transit"}
+TITLE-TR-7fe7af5fc1 <- alerts/title/{"text": "Harborline Transit"}
+TITLE-TR-b99f298e06 <- schedules/title/{"text": "Harborline Transit — Bus Schedules"}
+TITLE-TR-2a6cc4be35 <- board/title/{"text": "Harborline Transit Authority Board of Directors Meeting Minutes and Public Comment Archive"}
+TITLE-TR-86e24e0cf2 <- record/title/{"text": "RT-204 — Route 204 Crosstown Limited — Harborline Transit"}
+HEADING-TR-a47b836306 incidental -> calibration yes (heading 'Get around town on Harborline Transit')
+HEADING-TR-c29c834a39 incidental -> calibration yes (heading 'Plan your trip')
+HEADING-TR-1a808ddfc3 incidental -> calibration yes (heading 'Service alerts')
+HEADING-TR-c84f23166c incidental -> calibration yes (heading 'Fares')
+HEADING-TR-1aa42a5fc1 incidental -> calibration yes (heading 'Routes')
+HEADING-TR-a6550e29fb incidental -> calibration yes (heading 'Accessible vehicles')
+HEADING-TR-b752875c1e incidental -> calibration yes (heading 'Bike racks')
+HEADING-TR-dc46e6a286 incidental -> calibration yes (heading 'Service alerts')
+HEADING-TR-45f37a8853 incidental -> calibration yes (heading 'Route 142 detour')
+HEADING-TR-69f6f95dde incidental -> calibration yes (heading 'Route 219 delays')
+HEADING-TR-35dd816191 incidental -> calibration yes (heading 'Holiday schedule')
+HEADING-TR-c5e0aa6521 incidental -> calibration yes (heading 'Bus schedules')
+HEADING-TR-c97713078b incidental -> calibration yes (heading 'Weekday service')
+HEADING-TR-3f0a64b190 incidental -> calibration yes (heading 'Weekend service')
+HEADING-TR-4652fef5e8 incidental -> calibration yes (heading 'Printable timetables')
+HEADING-TR-147880ef45 incidental -> calibration yes (heading 'Board of Directors meeting minutes')
+HEADING-TR-33a9a458d2 incidental -> calibration yes (heading 'Most recent meeting')
+HEADING-TR-dff78f0100 incidental -> calibration yes (heading 'Public comment')
+HEADING-TR-423750c78c incidental -> calibration yes (heading 'Archive')
+HEADING-TR-e8a68c73bd incidental -> calibration yes (heading 'Route 204 — Crosstown Limited')
+HEADING-TR-0d32ae34d2 incidental -> calibration yes (heading 'Stops')
+HEADING-TR-e48a22801c incidental -> calibration yes (heading 'Frequency')
+HEADING-TR-749de2648e incidental -> calibration yes (heading 'Fleet')
+IDENT-TR-59b40ea361 incidental -> calibration yes (ident '"Harborline Transit" (6 views, header) | "Home" (6 views, nav)')
+LINK-TR-359a15bfa1 incidental -> calibration yes (link 'Harborline Transit')
+LINK-TR-eecebd2f6d incidental -> calibration yes (link 'Home')
+LINK-TR-5a56adc91a incidental -> calibration yes (link 'Routes')
+LINK-TR-c264448de2 incidental -> calibration yes (link 'Alerts')
+LINK-TR-54848b7696 incidental -> calibration yes (link 'Schedules')
+LINK-TR-9960a5a469 incidental -> calibration yes (link 'About')
+LINK-TR-c2ac28766f incidental -> calibration yes (link 'Contact')

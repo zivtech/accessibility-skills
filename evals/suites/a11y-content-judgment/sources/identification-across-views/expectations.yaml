@@ -1,0 +1,150 @@
+- view: home
+  type: ident
+  locator:
+    text: "Resources"
+    href: "/help.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G197 / Understanding 3.2.4"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["confidence that the footer 'Help' link goes to the same place as the header 'Resources' link"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "inconsistent-help"
+  note: "Header nav calls this destination 'Resources'; the footer on every page calls the identical destination 'Help'. Inconsistent identification, present site-wide."
+
+- view: home
+  type: ident
+  locator:
+    text: "v2.5"
+    href: "/release-notes.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G197 / Understanding 3.2.4"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["confidence that the footer 'Release notes' link goes to the same place as the header version link"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "inconsistent-version"
+  note: "Header version link and footer 'Release notes' link point to the identical destination but are named differently, site-wide."
+
+- view: home
+  type: ident
+  locator:
+    text: "(logo image) + Home"
+    href: "/"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G197"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Logo image link (alt names the org and 'home') and the footer text link 'Home' both go to / and are both identifiable as the home destination."
+
+- view: home
+  type: ident
+  locator:
+    text: "Contact"
+    href: "/contact.html"
+  expected: "yes"
+  unsure_ok: true
+  tier: calibration
+  reference: "calibration-only (borderline naming variant)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Header 'Contact' and footer 'Contact us' point to the same destination — a minor wording variant a careful reviewer could reasonably call either sufficient or borderline."
+
+- view: trails
+  type: ident
+  locator:
+    text: "TR-101"
+    href: "/trails/tr-101.html"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["Cedar Hollow Loop"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Deterministic layer: the ID cell and the name cell in the same table row both link the same trail record. This is not inconsistent identification — it is the same construct repeated across all six rows in the table."
+
+- view: trailmap
+  type: nav
+  locator:
+    text: "Zoom in"
+    href: "javascript:void(0)"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "map-controls"
+  note: "Deterministic layer: a map-zoom control marked up as a link with no real destination. Not a navigation/identification target and should not be scored as inconsistent identification."
+
+- view: trailmap
+  type: nav
+  locator:
+    text: "Zoom out"
+    href: "javascript:void(0)"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "map-controls"
+  note: "Deterministic layer: paired zoom-out control, same non-destination construct as 'Zoom in'."
+
+- view: detail
+  type: nav
+  locator:
+    text: "Overview"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G61"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Deterministic layer: this trail-detail page keeps the primary nav in the same relative order as every other page and adds a second, trail-specific sub-navigation (Overview / Photos / Conditions) alongside it."
+
+- view: home
+  type: nav
+  locator:
+    text: "Home, Trails, Trail Map, Contact, Resources, v2.5"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G61"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Deterministic layer: the primary navigation holds the same relative item order on every captured page; the contact page omits the redundant 'Contact' item but does not reorder the rest."

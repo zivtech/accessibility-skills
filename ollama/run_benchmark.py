@@ -128,6 +128,12 @@ CJ_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-content-
 CJ_RUBRIC_PATH = os.path.join(BASE_DIR, "..", ".claude", "skills", "a11y-content-judgment", "references", "judgment-rubric.md")
 
 CJ_FIXTURES = [
+    "page-titles-shared",
+    "link-purpose-cards",
+    "images-role-routing",
+    "headings-fields-labels",
+    "identification-across-views",
+    "clean-control",
 ]
 
 OPEVIDENCE_PROMPT_PREFIX = (

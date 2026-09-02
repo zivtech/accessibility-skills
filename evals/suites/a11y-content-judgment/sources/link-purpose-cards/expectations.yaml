@@ -1,0 +1,305 @@
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/programs/storytime.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F84"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which program this leads to", "a way to tell this card apart from the other four"]
+  evidence_contains: []
+  evidence_absent: ["Story Time"]
+  pattern_group: "card-learnmore"
+  note: "First of five identical card-grid 'Learn more' links; the card names no destination."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/programs/bookclub.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F84"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which program this leads to", "a way to tell this card apart from the other four"]
+  evidence_contains: []
+  evidence_absent: ["Book Club"]
+  pattern_group: "card-learnmore"
+  note: "Second card in the same grid, same non-specific link text."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/programs/coding.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F84"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which program this leads to", "a way to tell this card apart from the other four"]
+  evidence_contains: []
+  evidence_absent: ["Coding"]
+  pattern_group: "card-learnmore"
+  note: "Third card in the same grid, same non-specific link text."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/programs/jobhelp.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F84"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which program this leads to", "a way to tell this card apart from the other four"]
+  evidence_contains: []
+  evidence_absent: ["Job Search"]
+  pattern_group: "card-learnmore"
+  note: "Fourth card in the same grid, same non-specific link text."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/programs/genealogy.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F84"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which program this leads to", "a way to tell this card apart from the other four"]
+  evidence_contains: []
+  evidence_absent: ["Genealogy"]
+  pattern_group: "card-learnmore"
+  note: "Fifth card in the same grid, same non-specific link text — five identical links total on this page."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "/summer-reading.html"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F63"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["what they are signing up for from the link's own context"]
+  evidence_contains: []
+  evidence_absent: ["Summer Reading"]
+  pattern_group: null
+  note: "The words 'Summer Reading Challenge' that would disambiguate this link sit in an unrelated aside elsewhere on the page, not near the link."
+
+- view: resources
+  type: link
+  locator:
+    text: "https://www.driftwood-library.example/hours"
+    href: "/hours"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "calibration-only (Understanding 2.4.4)"
+  polarity: failure
+  clause1_evidence: false
+  loses: ["a readable description of where the link goes"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Link text is the raw URL itself rather than a description of the destination."
+
+- view: resources
+  type: link
+  locator:
+    text: "(no visible text; icon alt: arrow)"
+    href: "/catalog?page=1"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F89"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["what the link does, not just what the icon looks like"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Icon-only link; the alt text names the icon's appearance ('arrow') instead of its function."
+
+- view: resources
+  type: link
+  locator:
+    text: "Board meeting minutes"
+    href: "/files/minutes-2026-06.pdf"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "calibration-only (Understanding 2.4.4)"
+  polarity: failure
+  clause1_evidence: false
+  loses: ["advance notice that opening this leads to a PDF download"]
+  evidence_contains: []
+  evidence_absent: ["PDF"]
+  pattern_group: null
+  note: "Links straight to a .pdf file with no indication of file format in the link text or immediate context."
+
+- view: home
+  type: link
+  locator:
+    text: "Learn more"
+    href: "not applicable — same-sentence link, no href disambiguation needed"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H30"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: ["maker space"]
+  evidence_absent: []
+  pattern_group: null
+  note: "The same sentence that contains the link names the destination: 'Learn more about the maker space'."
+
+- view: resources
+  type: link
+  locator:
+    text: "(no visible text; aria-label: Renew your library card)"
+    href: "/renew.html"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "ARIA8"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Icon-only link with an aria-label naming the destination action directly."
+
+- view: resources
+  type: link
+  locator:
+    text: "Annual report (PDF, 2 MB)"
+    href: "/files/annual-report-2026.pdf"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H30"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Link text names the document, the format, and the file size."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1001"
+    href: "/records/dl-1001"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["The Tide Table"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "ID-column link; the record's name link sits in the same table row, so the destination is identifiable in context."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1002"
+    href: "/records/dl-1002"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["Harbor Lights"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Same repeated ID+name row construct, second record."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1003"
+    href: "/records/dl-1003"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["Northbound"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Same repeated ID+name row construct, third record."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1004"
+    href: "/records/dl-1004"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["A Season of Salt"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Same repeated ID+name row construct, fourth record."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1005"
+    href: "/records/dl-1005"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["Driftwood and Dune"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Same repeated ID+name row construct, fifth record."
+
+- view: records
+  type: link
+  locator:
+    text: "DL-1006"
+    href: "/records/dl-1006"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (repeated construct)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: ["The Long Ferry"]
+  evidence_absent: []
+  pattern_group: "id-links"
+  note: "Same repeated ID+name row construct, sixth and last record — this construct should not be scored as ambiguous link text."

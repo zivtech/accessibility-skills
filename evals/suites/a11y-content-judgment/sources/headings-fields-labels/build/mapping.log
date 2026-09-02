@@ -1,0 +1,19 @@
+FIELD-WA-851a4e854b <- intake/field/{"text": "Enter sample ID"}
+FIELD-WA-452339d1be <- intake/field/{"text": "Collection date"}
+FIELD-WA-7e6f8a75d0 <- intake/field/{"text": "TCLI"}
+FIELD-WA-c7f6cc14da <- intake/field/{"text": "Search past submissions"}
+HEADING-WA-e180f996ca <- reports/heading/{"text": "Overview"}
+HEADING-WA-29d24d1db5 <- reports/heading/{"text": "Details"}
+HEADING-WA-c67484fbba <- reports/heading/{"text": "(empty heading element)"}
+HEADING-WA-bc179b1620 <- reports/heading/{"text": "24.3"}
+HEADING-WA-001086e629 <- reports/heading/{"text": "Compliance and Reporting Obligations Under the Regional Watershed Monitoring Agreement"}
+FIELD-WA-ae1a2e68cc incidental -> calibration yes (field 'Field notes')
+HEADING-WA-aa218aa0e0 incidental -> calibration yes (heading 'Submit a sample')
+HEADING-WA-a6eba7ca21 incidental -> calibration yes (heading 'Look up a past submission')
+HEADING-WA-55e1c33b47 incidental -> calibration yes (heading 'Sample report NB-3391')
+LINK-WA-fc188a29f8 incidental -> calibration yes (link 'Northbridge Water Quality Lab')
+LINK-WA-bd8454d80f incidental -> calibration yes (link 'Submit a Sample')
+LINK-WA-fd0eb2e84f incidental -> calibration yes (link 'Reports')
+LINK-WA-04b70e124f incidental -> calibration yes (link 'Contact')
+TITLE-WA-2aefe37679 incidental -> calibration yes (title 'Northbridge Water Quality Lab — Sample Submission')
+TITLE-WA-85b3d95b62 incidental -> calibration yes (title 'Northbridge Water Quality Lab — Reports')

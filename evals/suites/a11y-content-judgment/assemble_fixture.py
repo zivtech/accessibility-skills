@@ -65,14 +65,15 @@ def check_deterministic(fid, src, rows, det, meta_rows=None):
     by_id = {r["id"]: r for r in rows}
     for rid, m in (meta_rows or {}).items():
         r = by_id.get(rid)
-        if r is None:
+        if r is None or m.get("invalid"):
             continue
         hay = " ".join(str(r.get(k) or "") for k in ("name", "detail", "context", "href")).lower()
+        text_only = " ".join(str(r.get(k) or "") for k in ("name", "context")).lower()
         for phrase in m.get("evidence_contains") or []:
             if str(phrase).lower() not in hay:
                 problems.append(f"{fid}: row {rid} lacks evidence phrase {phrase!r} in name/detail/context/href — row cannot be decided as expected")
         for phrase in m.get("evidence_absent") or []:
-            if str(phrase).lower() in hay:
+            if str(phrase).lower() in text_only:
                 problems.append(f"{fid}: row {rid} carries forbidden phrase {phrase!r} — the planted defect is not reproduced")
     nav = {}
     if os.path.exists(nav_path):

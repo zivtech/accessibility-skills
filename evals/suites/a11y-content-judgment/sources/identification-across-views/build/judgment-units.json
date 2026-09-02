@@ -1,0 +1,1106 @@
+{
+ "schema": "judgment-units/v1",
+ "built_utc": "2026-09-02T23:26:33.281Z",
+ "inventory_sha256": "86958124cf04da2e3a7cd0c380420d4401499f0c6a84a7b8a8d0e1ea6cf68050",
+ "views_ok": 5,
+ "views_skipped": [],
+ "unit_count": 53,
+ "units": [
+  {
+   "id": "TITLE-PA-50a20e5225",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "parks",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Alderbrook Parks & Trails",
+   "detail": "h1: Get outside at Alderbrook",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/index.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-PA-4e3f9d7c66",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Alderbrook Parks & Trails — Trail Directory",
+   "detail": "h1: Trail directory",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-PA-90dd976f94",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Alderbrook Parks & Trails — Trail Map",
+   "detail": "h1: Interactive trail map",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trailmap.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-PA-38aefa63c2",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "TR-104 — Ironwood Summit — Alderbrook Parks & Trails",
+   "detail": "h1: Ironwood Summit",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-PA-77d024d6eb",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "parks",
+   "views": [
+    "contact"
+   ],
+   "view_count": 1,
+   "name": "Alderbrook Parks & Trails — Contact",
+   "detail": "h1: Contact us",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-3208f26d78",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Get outside at Alderbrook",
+   "detail": "h1",
+   "context": "Alderbrook Parks & Trails maintains eighteen miles of hiking trails across six trailheads, from easy loop walks to a full-day ridge crossing.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-8d77cc07ae",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Plan a hike",
+   "detail": "h2",
+   "context": "Browse the trail directory for distance, difficulty, and current conditions, or open the interactive map to see everything at once.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-7ed683ff7f",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Before you go",
+   "detail": "h2",
+   "context": "Cell coverage is spotty past the second overlook. Download a trail map in advance and tell someone your planned route.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-42403d7e83",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Trail directory",
+   "detail": "h1",
+   "context": "Select a trail's identifier or its name to see the full listing, including distance, elevation gain, and current conditions.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-d138bf7bd4",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Interactive trail map",
+   "detail": "h1",
+   "context": "Pan and zoom the map to explore trailheads, parking, and water access points across the park network.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-9f1306458b",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Map controls",
+   "detail": "h2",
+   "context": "Zoom in Zoom out",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-47731bd583",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Legend",
+   "detail": "h2",
+   "context": "Solid lines mark maintained trails. Dashed lines mark seasonal routes that may be closed after heavy rain.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-ff8c25b563",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Ironwood Summit",
+   "detail": "h1",
+   "context": "A strenuous six-mile out-and-back climbing eleven hundred feet to the highest point in the park network.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-481df822bf",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Distance and elevation",
+   "detail": "h2",
+   "context": "6.2 miles round trip, 1,100 feet of elevation gain, typically three to four hours.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-320a52514f",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Trailhead",
+   "detail": "h2",
+   "context": "Park at the Ironwood trailhead lot off Summit Road. The lot fills early on weekends.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-ee21697269",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Current conditions",
+   "detail": "h2",
+   "context": "Dry and clear as of this week. The final quarter mile is exposed rock scrambling.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-b1be108746",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "contact"
+   ],
+   "view_count": 1,
+   "name": "Contact us",
+   "detail": "h1",
+   "context": "Questions about trail conditions, permits, or volunteering can reach the park office directly.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-493646990b",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "contact"
+   ],
+   "view_count": 1,
+   "name": "Park office",
+   "detail": "h2",
+   "context": "Open daily from eight in the morning until five in the evening. Closed on major holidays.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-PA-b206560c42",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "parks",
+   "views": [
+    "contact"
+   ],
+   "view_count": 1,
+   "name": "Report a trail issue",
+   "detail": "h2",
+   "context": "Downed trees, washed-out sections, or missing signage can be reported from the trail map page.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-9c7af66d09",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Alderbrook Parks & Trails home",
+   "detail": "img-alt; icon-only alt=\"Alderbrook Parks & Trails home\"",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-12cdd101e8",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "home",
+    "trails",
+    "trails",
+    "trailmap",
+    "trailmap",
+    "detail",
+    "detail",
+    "contact",
+    "contact"
+   ],
+   "view_count": 10,
+   "name": "Home",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-4031af4bf8",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Trails",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-8d2aacbb55",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Trail Map",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(3)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trailmap.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-ccfd4305bb",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail"
+   ],
+   "view_count": 4,
+   "name": "Contact",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(4)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-88e460ebc9",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Resources",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(5)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/help.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-74380fc2c7",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "v2.5",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(6)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/release-notes.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-e68d0a4181",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Contact us",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-ab705f9767",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Help",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(3)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/help.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-c43d22b54c",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Release notes",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(4)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/release-notes.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-a55ba3b257",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-101",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(1) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-101.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-15191f0ff9",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Cedar Hollow Loop",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-101.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-fc8c6335f3",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-102",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-102.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-3120b4161c",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Overlook Ridge",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-102.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-604c564998",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-103",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(3) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-103.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-547e311311",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Willow Creek Path",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-103.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-6f66f9133e",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-104",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(4) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-1ea41c8805",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Ironwood Summit",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(4) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-3c06372ac0",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-105",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(5) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-105.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-772eded81a",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Marsh View Boardwalk",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(5) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-105.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-feb8f34e8d",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "TR-106",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(6) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-106.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-1f4b1e5c84",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trails"
+   ],
+   "view_count": 1,
+   "name": "Falcon Point",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(6) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-106.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-ea787a5eda",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Zoom in",
+   "detail": "content; external",
+   "context": "Zoom in Zoom out",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div > a:nth-of-type(1)",
+   "visible": true,
+   "href": "javascript:void(0)",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-a24f36129b",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Zoom out",
+   "detail": "content; external",
+   "context": "Zoom in Zoom out",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div > a:nth-of-type(2)",
+   "visible": true,
+   "href": "javascript:void(0)",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-85d750fd33",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Overview",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Trail sections]",
+   "selector": "html > body > header > nav:nth-of-type(2) > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-f2e1cc8f11",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Photos",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Trail sections]",
+   "selector": "html > body > header > nav:nth-of-type(2) > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104-photos.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-PA-397431ce4a",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "parks",
+   "views": [
+    "detail"
+   ],
+   "view_count": 1,
+   "name": "Conditions",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Trail sections]",
+   "selector": "html > body > header > nav:nth-of-type(2) > a:nth-of-type(3)",
+   "visible": true,
+   "href": "https://www.alderbrook-parks.example/trails/tr-104-conditions.html",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-PA-8c4080ec57",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "Alderbrook Parks & Trails home",
+   "detail": "img 226x18; role:functional; in a \"Alderbrook Parks & Trails home\"; src logo.png",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a > img",
+   "visible": true,
+   "href": "/images/logo.png",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-PA-f198d0af7f",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "parks",
+   "views": [
+    "trailmap"
+   ],
+   "view_count": 1,
+   "name": "Overview map of Alderbrook's six trailheads and connecting trails",
+   "detail": "img 440x18; role:informative?; src park-overview.png",
+   "context": "Map controls Zoom in Zoom out",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > img",
+   "visible": true,
+   "href": "/maps/park-overview.png",
+   "flags": []
+  },
+  {
+   "id": "IDENT-PA-271f5ae86e",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "\"Alderbrook Parks & Trails home\" (5 views, header) | \"Home\" (5 views, nav[Primary])",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.alderbrook-parks.example",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  },
+  {
+   "id": "IDENT-PA-5286b4c19f",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "\"Contact\" (4 views, nav[Primary]) | \"Contact us\" (5 views, footer)",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.alderbrook-parks.example/contact.html",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  },
+  {
+   "id": "IDENT-PA-9bf8bba533",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "\"Resources\" (5 views, nav[Primary]) | \"Help\" (5 views, footer)",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.alderbrook-parks.example/help.html",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  },
+  {
+   "id": "IDENT-PA-63040493f3",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "parks",
+   "views": [
+    "home",
+    "trails",
+    "trailmap",
+    "detail",
+    "contact"
+   ],
+   "view_count": 5,
+   "name": "\"v2.5\" (5 views, nav[Primary]) | \"Release notes\" (5 views, footer)",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.alderbrook-parks.example/release-notes.html",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  },
+  {
+   "id": "IDENT-PA-7ea2b84427",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "parks",
+   "views": [
+    "trails",
+    "detail"
+   ],
+   "view_count": 2,
+   "name": "\"TR-104\" (1 views, main) | \"Ironwood Summit\" (1 views, main) | \"Overview\" (1 views, nav[Trail sections])",
+   "detail": "3 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.alderbrook-parks.example/trails/tr-104.html",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  }
+ ],
+ "nav_consistency": [
+  {
+   "product": "parks",
+   "host": "www.alderbrook-parks.example",
+   "view_id": "home",
+   "views_in_group": 5,
+   "shared_items": 6,
+   "present_shared": 6,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "parks",
+   "host": "www.alderbrook-parks.example",
+   "view_id": "trails",
+   "views_in_group": 5,
+   "shared_items": 6,
+   "present_shared": 6,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "parks",
+   "host": "www.alderbrook-parks.example",
+   "view_id": "trailmap",
+   "views_in_group": 5,
+   "shared_items": 6,
+   "present_shared": 6,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "parks",
+   "host": "www.alderbrook-parks.example",
+   "view_id": "detail",
+   "views_in_group": 5,
+   "shared_items": 6,
+   "present_shared": 6,
+   "missing_shared": 0,
+   "extra_items": 3,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "parks",
+   "host": "www.alderbrook-parks.example",
+   "view_id": "contact",
+   "views_in_group": 5,
+   "shared_items": 6,
+   "present_shared": 5,
+   "missing_shared": 1,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "same relative order; 1 shared item(s) absent on this view (informational)"
+  }
+ ]
+}

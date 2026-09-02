@@ -1,0 +1,4 @@
+product,host,view_id,views_in_group,shared_items,present_shared,missing_shared,extra_items,order_consistent,first_order_violation,note
+library,www.driftwood-library.example,home,3,3,3,0,0,true,,shared navigation items present in the same relative order
+library,www.driftwood-library.example,resources,3,3,3,0,0,true,,shared navigation items present in the same relative order
+library,www.driftwood-library.example,records,3,3,3,0,0,true,,shared navigation items present in the same relative order

@@ -1,0 +1,5 @@
+home,parks,/index.html
+trails,parks,/trails.html
+trailmap,parks,/trailmap.html
+detail,parks,/trails/tr-104.html
+contact,parks,/contact.html

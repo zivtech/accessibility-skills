@@ -31,8 +31,12 @@ PW_DIR="${PW_DIR:-/tmp/cj-pw}"
 PORT=8765
 ORIGIN_SERVED="http://127.0.0.1:$PORT"
 test -d "$PW_DIR/node_modules/playwright" || { echo "playwright not found in $PW_DIR (see header)"; exit 2; }
-# unit ids hash the served host:port — a taken port would silently re-id every row
-if lsof -nP -iTCP:$PORT -sTCP:LISTEN >/dev/null 2>&1; then echo "port $PORT is in use; ids would change — stop that process first"; exit 2; fi
+# unit ids hash the served host:port — a taken port would silently re-id every
+# row, and a stale server from the previous fixture would serve the WRONG
+# directory (404 pages inventory as "Error response"; caught 2026-09-02).
+port_free() { ! lsof -nP -iTCP:$PORT -sTCP:LISTEN >/dev/null 2>&1; }
+wait_port_free() { for _ in $(seq 1 30); do port_free && return 0; sleep 0.2; done; return 1; }
+port_free || { echo "port $PORT is in use; ids would change — stop that process first"; exit 2; }
 
 ids=("$@")
 if [ ${#ids[@]} -eq 0 ]; then
@@ -47,17 +51,28 @@ for id in "${ids[@]}"; do
   work="$(mktemp -d)"
   # absolute view list for the served site
   awk -F, -v o="$ORIGIN_SERVED" '/^#/||NF<3{next}{printf "%s,%s,%s%s%s\n",$1,$2,o,$3,(NF>3?","$4:"")}' "$src/views.txt" > "$work/views.txt"
-  ( cd "$src" && python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 & echo $! > "$work/server.pid" )
+  wait_port_free || { echo "$id: port $PORT still busy"; fail=1; continue; }
+  ( cd "$src" && exec python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 ) &
+  echo $! > "$work/server.pid"
   sleep 0.7
+  # every view must come back 200 from THIS fixture's directory
+  bad_views=0
+  while IFS=, read -r vid prod url rest; do
+    code=$(curl -s -o /dev/null -w '%{http_code}' "$url"); [ "$code" = "200" ] || { echo "$id: $vid -> HTTP $code for $url"; bad_views=1; }
+  done < "$work/views.txt"
+  [ "$bad_views" = 0 ] || { kill "$(cat "$work/server.pid")" 2>/dev/null; wait_port_free; fail=1; continue; }
   ( cd "$PW_DIR" \
     && node "$REF/content-inventory.mjs" --urls-file "$work/views.txt" --out "$work/inv" --settle 300 --no-screenshots >"$work/inventory.log" 2>&1 \
     && node "$REF/build-judgment-rows.mjs" --build --inventory "$work/inv" >"$work/build.log" 2>&1 \
     && node "$REF/build-judgment-rows.mjs" --merge --inventory "$work/inv" >"$work/merge.log" 2>&1 ) || { echo "$id: pipeline failed"; cat "$work"/*.log; kill "$(cat "$work/server.pid")"; fail=1; continue; }
   kill "$(cat "$work/server.pid")" 2>/dev/null || true
+  wait_port_free || { echo "$id: server did not release port $PORT"; fail=1; continue; }
+  grep -q '"title": "Error response"' "$work/inv/inventory-run.json" && { echo "$id: a view inventoried as an HTTP error page"; fail=1; continue; }
   mkdir -p "$src/build"
   host="${origin#*://}"
   sed -e "s#$ORIGIN_SERVED#$origin#g" -e "s#127\.0\.0\.1:$PORT#$host#g" "$work/inv/nav-consistency.csv" > "$src/build/nav-consistency.csv"
   cat "$work"/inv/batches/*.jsonl | sed -e "s#$ORIGIN_SERVED#$origin#g" -e "s#127\.0\.0\.1:$PORT#$host#g" > "$src/build/rows.jsonl"
+  sed -e "s#$ORIGIN_SERVED#$origin#g" -e "s#127\.0\.0\.1:$PORT#$host#g" "$work/inv/judgment-units.json" > "$src/build/judgment-units.json"
   grep -h '"nav_error"' "$work/inv/inventory-run.json" | grep -v '"nav_error": null' && { echo "$id: navigation error in inventory (environment, not product)"; fail=1; }
   python3 "$SUITE/assemble_fixture.py" "$id" || fail=1
 done

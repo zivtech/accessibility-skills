@@ -1,0 +1,95 @@
+- view: home
+  type: title
+  locator:
+    text: "Harborline Transit"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F25"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which page this is", "confirmation the trip they wanted loaded", "a way to tell tabs apart"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "bare-site-title"
+  note: "Title is only the site name, identical on every page — F25 (page title identifies site but not page)."
+
+- view: routes
+  type: title
+  locator:
+    text: "Harborline Transit"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F25"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which page this is", "same title as the home page", "a way to tell tabs apart"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "bare-site-title"
+  note: "Same bare site-name title as home and alerts pages — F25."
+
+- view: alerts
+  type: title
+  locator:
+    text: "Harborline Transit"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F25"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["which page this is", "same title as the home page", "a way to tell tabs apart"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: "bare-site-title"
+  note: "Third page sharing the identical bare site-name title — F25, third occurrence of the pattern."
+
+- view: schedules
+  type: title
+  locator:
+    text: "Harborline Transit — Bus Schedules"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G88"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Site name plus a page-specific phrase — sufficient per G88."
+
+- view: board
+  type: title
+  locator:
+    text: "Harborline Transit Authority Board of Directors Meeting Minutes and Public Comment Archive"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (length)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Long formal institutional title — length alone is never a defect; it still identifies the page distinctly."
+
+- view: record
+  type: title
+  locator:
+    text: "RT-204 — Route 204 Crosstown Limited — Harborline Transit"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G88"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Record-detail title pattern: record id, record name, site name — clearly identifies this specific record."

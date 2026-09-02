@@ -1,0 +1,34 @@
+rows:
+  IMAGE-LI-e4d6e5fc60:
+    expected: 'no'
+    tier: calibration
+    unsure_ok: false
+    reference: F89 (image-row twin of the planted icon-only link whose alt names the icon)
+    polarity: failure
+    clause1_evidence: false
+    loses:
+    - names the icon
+    - arrow
+    - where it goes
+    - destination
+    note: Image twin of the planted F89 link row; calibration tier so the element is counted once.
+  LINK-LI-5deb85f217:
+    tier: calibration
+    clause1_evidence: false
+    note: 'Raw-URL link text: the rubric itself allows a readable domain the user is meant to see, so the verdict
+      is convention-dependent; calibration tier.'
+  LINK-LI-a73c6c9f68:
+    tier: calibration
+    clause1_evidence: false
+    note: 'PDF link without a format cue: the rubric''s convention, not a WCAG failure technique (same ruling as
+      clean-control''s schedule link); calibration tier.'
+invalid:
+  LINK-LI-f72af258ca: 'capture limit: the inventory''s link context is the nearest text block (td), which for an
+    ID-only cell is empty; the record name in the sibling cell never reaches the row, so the rubric''s paired-column
+    rule is undecidable from the row. Skill follow-up filed for the critic pass (context for td links should be
+    the tr).'
+  LINK-LI-44b51f4ece: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-59ee6ec8fc: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-6299f2f8fa: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-c51b799ac0: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-a490ae2283: capture limit (see LINK-LI-f72af258ca)

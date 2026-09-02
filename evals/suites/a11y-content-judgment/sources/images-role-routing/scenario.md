@@ -1,0 +1,1 @@
+Northfield Health Monitor is a companion web dashboard for a home wellness wearable, used by everyday members to check their daily readings and longer trends. The audience is the general public, including older adults managing chronic conditions who are not comfortable with technical jargon. Two pages were captured: a daily dashboard and a thirty-day trends page.
