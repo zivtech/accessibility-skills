@@ -174,6 +174,11 @@ ratifier's first hour lands on the rows that matter.
   ratifier columns from it. A family ruling ("every logo that is a link is named by its destination")
   is one `ruling` id fanned out over its rows, so the CSV shows which sentence of the owner's decided
   each row. Rows a ratifier defers or skips carry a note and no `ratified_by`.
+- A client-standard ruling is a **separate scope**: `{..., scope: "client", ratified_client_result,
+  ruling: "<rule id>"}` renders as `client_ratified_*` columns and leaves the WCAG judgment column
+  alone. A page title that is fine under 2.4.2 can sit on a page with three h1s that fails the
+  client's one-h1 rule; the two verdicts must not overwrite each other, and the receipt that reaches
+  an outcome map cites only the WCAG-scope one.
 - Hand the ratifier a **worklist**, not the CSV: family decisions first (one answer settles many
   rows), then the rows that need a look (`unsure`, or a `no` with no fact class behind it), then the
   fact classes to sign once (missing alt attribute, empty link name, unlabeled field, raw-URL text).
