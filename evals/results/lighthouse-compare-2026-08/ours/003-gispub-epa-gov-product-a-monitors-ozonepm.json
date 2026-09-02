@@ -1,12 +1,12 @@
 {
-  "url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+  "url": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
   "started": "2026-08-14T17:49:02.835Z",
   "viewports": {
     "1280x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-      "title": "AirNow Interactive Map",
+      "final_url": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+      "title": "product-a Interactive Map",
       "axe_core_version": "4.13.0",
       "violations": [
         {
@@ -169,8 +169,8 @@
     "320x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-      "title": "AirNow Interactive Map",
+      "final_url": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+      "title": "product-a Interactive Map",
       "axe_core_version": "4.13.0",
       "violations": [
         {

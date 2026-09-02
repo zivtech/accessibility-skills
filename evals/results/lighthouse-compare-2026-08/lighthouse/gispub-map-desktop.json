@@ -1,9 +1,9 @@
 {
   "lighthouseVersion": "13.4.1",
-  "requestedUrl": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-  "mainDocumentUrl": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-  "finalDisplayedUrl": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-  "finalUrl": "https://gispub.epa.gov/airnow/?monitors=ozonepm",
+  "requestedUrl": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+  "mainDocumentUrl": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+  "finalDisplayedUrl": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+  "finalUrl": "https://gispub.epa.gov/product-a/?monitors=ozonepm",
   "fetchTime": "2026-08-14T17:52:58.615Z",
   "gatherMode": "navigation",
   "runWarnings": [],

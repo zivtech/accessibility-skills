@@ -1,9 +1,9 @@
 {
   "lighthouseVersion": "13.4.1",
-  "requestedUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "mainDocumentUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "finalDisplayedUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "finalUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "requestedUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "mainDocumentUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "finalDisplayedUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "finalUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
   "fetchTime": "2026-08-14T17:51:24.925Z",
   "gatherMode": "navigation",
   "runtimeError": {

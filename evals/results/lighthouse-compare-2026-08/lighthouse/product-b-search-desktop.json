@@ -1,9 +1,9 @@
 {
   "lighthouseVersion": "13.4.1",
-  "requestedUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "mainDocumentUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "finalDisplayedUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-  "finalUrl": "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "requestedUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "mainDocumentUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "finalDisplayedUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+  "finalUrl": "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
   "fetchTime": "2026-08-14T17:51:51.206Z",
   "gatherMode": "navigation",
   "runWarnings": [],
@@ -161,7 +161,7 @@
               "type": "node",
               "lhId": "1-4-UL",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL",
-              "selector": "div.pl-0 > nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks",
+              "selector": "div.pl-0 > nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -879,7 +879,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -898,7 +898,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -917,7 +917,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -936,7 +936,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -955,7 +955,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -993,7 +993,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1012,7 +1012,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1031,7 +1031,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1050,7 +1050,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1069,7 +1069,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1088,7 +1088,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1107,7 +1107,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1126,7 +1126,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1145,7 +1145,7 @@
                 "width": 88,
                 "height": 95
               },
-              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://comptox.epa.gov/ctx-api/chemical/file/image/search/by-dtxsid/DTXSI…\" class=\"image\">",
+              "snippet": "<img data-v-9004b716=\"\" height=\"95\" src=\"https://product-b.epa.gov/product-b-api/chemical/file/image/search/by-chem-id/DTXSI…\" class=\"image\">",
               "nodeLabel": "div.text-wrap > div > div.image > img.image",
               "explanation": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -1357,7 +1357,7 @@
                 "width": 82,
                 "height": 20
               },
-              "snippet": "<a href=\"https://www.epa.gov/comptox-tools/forms/contact-us-about-comptox-tools\" data-v-24800751=\"\">",
+              "snippet": "<a href=\"https://www.epa.gov/product-b-tools/forms/contact-us-about-product-b-tools\" data-v-24800751=\"\">",
               "nodeLabel": "Contact Us",
               "explanation": "Fix any of the following:\n  The link has insufficient color contrast of 1.79:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0000ff, surrounding text: #212529)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
             },
@@ -1428,7 +1428,7 @@
               "type": "node",
               "lhId": "1-27-UL",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,1,UL",
-              "selector": "div.pl-0 > nav#comptox-nav-bar > nav#navbarSupportedContent > ul.default-color",
+              "selector": "div.pl-0 > nav#product-b-nav-bar > nav#navbarSupportedContent > ul.default-color",
               "boundingRect": {
                 "top": 180,
                 "bottom": 206,
@@ -1449,7 +1449,7 @@
                     "type": "node",
                     "lhId": "1-28-BUTTON",
                     "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,1,UL,0,BUTTON",
-                    "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.default-color > button.commentsBtn",
+                    "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.default-color > button.commentsBtn",
                     "boundingRect": {
                       "top": 180,
                       "bottom": 206,
@@ -1470,7 +1470,7 @@
               "type": "node",
               "lhId": "1-29-UL",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,2,UL",
-              "selector": "div.pl-0 > nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbar-nav",
+              "selector": "div.pl-0 > nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbar-nav",
               "boundingRect": {
                 "top": 177,
                 "bottom": 209,
@@ -1491,7 +1491,7 @@
                     "type": "node",
                     "lhId": "1-30-DIV",
                     "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,2,UL,0,DIV",
-                    "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbar-nav > div.input-group",
+                    "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbar-nav > div.input-group",
                     "boundingRect": {
                       "top": 177,
                       "bottom": 209,
@@ -1548,7 +1548,7 @@
               "type": "node",
               "lhId": "1-31-LI",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL,0,LI",
-              "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.default-color",
+              "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.default-color",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -1567,7 +1567,7 @@
               "type": "node",
               "lhId": "1-32-LI",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL,1,LI",
-              "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
+              "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -1586,7 +1586,7 @@
               "type": "node",
               "lhId": "1-33-LI",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL,2,LI",
-              "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
+              "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -1605,7 +1605,7 @@
               "type": "node",
               "lhId": "1-34-LI",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL,3,LI",
-              "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
+              "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -1624,7 +1624,7 @@
               "type": "node",
               "lhId": "1-35-LI",
               "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,DIV,2,DIV,0,NAV,3,NAV,0,UL,4,LI",
-              "selector": "nav#comptox-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
+              "selector": "nav#product-b-nav-bar > nav#navbarSupportedContent > ul.navbarLinks > li.nav-item",
               "boundingRect": {
                 "top": 173,
                 "bottom": 213,
@@ -2718,7 +2718,7 @@
     {
       "name": "epa.gov",
       "origins": [
-        "https://comptox.epa.gov",
+        "https://product-b.epa.gov",
         "https://www.epa.gov",
         "https://ccte-app-monitoring.epa.gov"
       ],

@@ -1,12 +1,12 @@
 {
-  "url": "https://comptox.epa.gov/dashboard/",
+  "url": "https://product-b.epa.gov/dashboard/",
   "started": "2026-08-14T17:48:09.789Z",
   "viewports": {
     "1280x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://comptox.epa.gov/dashboard/",
-      "title": "CompTox Chemicals Dashboard",
+      "final_url": "https://product-b.epa.gov/dashboard/",
+      "title": "product-b dashboard",
       "axe_core_version": "4.13.0",
       "violations": [
         {
@@ -120,7 +120,7 @@
           ],
           "node_count": 1,
           "sample_selectors": [
-            "#comptox-nav-bar"
+            "#product-b-nav-bar"
           ]
         },
         {
@@ -253,8 +253,8 @@
     "320x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://comptox.epa.gov/dashboard/",
-      "title": "CompTox Chemicals Dashboard",
+      "final_url": "https://product-b.epa.gov/dashboard/",
+      "title": "product-b dashboard",
       "axe_core_version": "4.13.0",
       "violations": [
         {

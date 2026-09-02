@@ -1,9 +1,9 @@
 {
   "lighthouseVersion": "13.4.1",
-  "requestedUrl": "https://fire.airnow.gov/",
-  "mainDocumentUrl": "https://fire.airnow.gov/",
-  "finalDisplayedUrl": "https://fire.airnow.gov/",
-  "finalUrl": "https://fire.airnow.gov/",
+  "requestedUrl": "https://fire.product-a.gov/",
+  "mainDocumentUrl": "https://fire.product-a.gov/",
+  "finalDisplayedUrl": "https://fire.product-a.gov/",
+  "finalUrl": "https://fire.product-a.gov/",
   "fetchTime": "2026-08-14T17:52:19.614Z",
   "gatherMode": "navigation",
   "runWarnings": [],
@@ -1596,9 +1596,9 @@
   "stackPacks": [],
   "entities": [
     {
-      "name": "airnow.gov",
+      "name": "product-a.gov",
       "origins": [
-        "https://fire.airnow.gov"
+        "https://fire.product-a.gov"
       ],
       "isFirstParty": true,
       "isUnrecognized": true

@@ -26,10 +26,10 @@
       "impact": "moderate",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-        "https://www.airnow.gov/about-airnow/"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+        "https://www.product-a.gov/about-product-a/"
       ],
       "nodes": 29,
       "page_count": 4
@@ -39,7 +39,7 @@
       "impact": "critical",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/image-alt?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 22,
       "page_count": 1
@@ -49,7 +49,7 @@
       "impact": "minor",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-table-header?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 18,
       "page_count": 1
@@ -59,8 +59,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/link-in-text-block?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 12,
       "page_count": 2
@@ -70,8 +70,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/listitem?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 10,
       "page_count": 2
@@ -81,8 +81,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+        "https://product-b.epa.gov/dashboard/",
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm"
       ],
       "nodes": 9,
       "page_count": 2
@@ -92,8 +92,8 @@
       "impact": "critical",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-attr?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 8,
       "page_count": 2
@@ -103,8 +103,8 @@
       "impact": "critical",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-required-parent?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 8,
       "page_count": 2
@@ -114,8 +114,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 8,
       "page_count": 2
@@ -125,8 +125,8 @@
       "impact": "critical",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/button-name?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-        "https://fire.airnow.gov/"
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://fire.product-a.gov/"
       ],
       "nodes": 6,
       "page_count": 2
@@ -136,9 +136,9 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm"
       ],
       "nodes": 6,
       "page_count": 3
@@ -148,7 +148,7 @@
       "impact": "critical",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
       "pages": [
-        "https://fire.airnow.gov/"
+        "https://fire.product-a.gov/"
       ],
       "nodes": 6,
       "page_count": 1
@@ -158,9 +158,9 @@
       "impact": "moderate",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
-        "https://www.airnow.gov/about-airnow/"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine",
+        "https://www.product-a.gov/about-product-a/"
       ],
       "nodes": 4,
       "page_count": 3
@@ -170,8 +170,8 @@
       "impact": "moderate",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport?application=playwright",
       "pages": [
-        "https://fire.airnow.gov/",
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+        "https://fire.product-a.gov/",
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm"
       ],
       "nodes": 4,
       "page_count": 2
@@ -181,8 +181,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/label-title-only?application=playwright",
       "pages": [
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm",
-        "https://www.airnow.gov/about-airnow/"
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm",
+        "https://www.product-a.gov/about-product-a/"
       ],
       "nodes": 3,
       "page_count": 2
@@ -192,8 +192,8 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/list?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 3,
       "page_count": 2
@@ -203,8 +203,8 @@
       "impact": "minor",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/",
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/",
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 2,
       "page_count": 2
@@ -214,7 +214,7 @@
       "impact": "minor",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/meta-viewport-large?application=playwright",
       "pages": [
-        "https://www.airnow.gov/about-airnow/"
+        "https://www.product-a.gov/about-product-a/"
       ],
       "nodes": 2,
       "page_count": 1
@@ -224,7 +224,7 @@
       "impact": "moderate",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 2,
       "page_count": 1
@@ -234,7 +234,7 @@
       "impact": "minor",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/empty-heading?application=playwright",
       "pages": [
-        "https://gispub.epa.gov/airnow/?monitors=ozonepm"
+        "https://gispub.epa.gov/product-a/?monitors=ozonepm"
       ],
       "nodes": 1,
       "page_count": 1
@@ -244,7 +244,7 @@
       "impact": "serious",
       "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
       "pages": [
-        "https://comptox.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
+        "https://product-b.epa.gov/dashboard/search-results?input_type=synonym_substring&inputs=caffeine"
       ],
       "nodes": 1,
       "page_count": 1

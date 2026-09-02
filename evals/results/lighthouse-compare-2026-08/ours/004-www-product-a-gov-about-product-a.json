@@ -1,12 +1,12 @@
 {
-  "url": "https://www.airnow.gov/about-airnow/",
+  "url": "https://www.product-a.gov/about-product-a/",
   "started": "2026-08-14T17:49:17.663Z",
   "viewports": {
     "1280x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://www.airnow.gov/about-airnow/",
-      "title": "About AirNow | AirNow.gov",
+      "final_url": "https://www.product-a.gov/about-product-a/",
+      "title": "About product-a | product-a.gov",
       "axe_core_version": "4.13.0",
       "violations": [
         {
@@ -34,7 +34,7 @@
           ],
           "node_count": 1,
           "sample_selectors": [
-            "#airnow-btn"
+            "#product-a-btn"
           ]
         },
         {
@@ -91,7 +91,7 @@
           "sample_selectors": [
             ".curr-cond-label > a[href=\"/\"]",
             "#location-input-nav_input",
-            "#about-airnow"
+            "#about-product-a"
           ]
         }
       ],
@@ -101,8 +101,8 @@
     "320x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://www.airnow.gov/about-airnow/",
-      "title": "About AirNow | AirNow.gov",
+      "final_url": "https://www.product-a.gov/about-product-a/",
+      "title": "About product-a | product-a.gov",
       "axe_core_version": "4.13.0",
       "violations": [
         {

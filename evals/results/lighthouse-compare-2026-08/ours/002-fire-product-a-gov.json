@@ -1,12 +1,12 @@
 {
-  "url": "https://fire.airnow.gov/",
+  "url": "https://fire.product-a.gov/",
   "started": "2026-08-14T17:48:58.847Z",
   "viewports": {
     "1280x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://fire.airnow.gov/",
-      "title": "AirNow Fire and Smoke Map",
+      "final_url": "https://fire.product-a.gov/",
+      "title": "product-a product-a map",
       "axe_core_version": "4.13.0",
       "violations": [
         {
@@ -112,8 +112,8 @@
     "320x800": {
       "status": "measured",
       "http_status": 200,
-      "final_url": "https://fire.airnow.gov/",
-      "title": "AirNow Fire and Smoke Map",
+      "final_url": "https://fire.product-a.gov/",
+      "title": "product-a product-a map",
       "axe_core_version": "4.13.0",
       "violations": [
         {
@@ -209,7 +209,7 @@
           "sample_selectors": [
             "#geoPromptLabel",
             ".px-2",
-            ".px-2 > a[href$=\"www.airnow.gov\"]"
+            ".px-2 > a[href$=\"www.product-a.gov\"]"
           ]
         }
       ],
