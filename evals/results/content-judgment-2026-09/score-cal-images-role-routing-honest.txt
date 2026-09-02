@@ -1,0 +1,8 @@
+Parsed: 23 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 23/23 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 4/4 found
+Clean rows (R2): 3/3 unflagged; false alarms: 0
+Calibration rows (R3, informational): 16/16 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+
+Status: PASS

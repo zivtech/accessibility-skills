@@ -1,7 +1,7 @@
 {
  "schema": "judgment-units/v1",
- "built_utc": "2026-09-02T23:26:41.241Z",
- "inventory_sha256": "6c73691005bf40e4898ed8c80d3b29c412ea9aaaaf5039aa23c19c7f8202e194",
+ "built_utc": "2026-09-02T23:31:14.249Z",
+ "inventory_sha256": "2da932d230062b1991223fabbd61ed50e7bdf32a2fa4f2b1d6526c9833e4ea77",
  "views_ok": 3,
  "views_skipped": [],
  "unit_count": 44,

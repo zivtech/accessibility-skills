@@ -1,0 +1,10 @@
+Parsed: 37 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 37/37 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 3/3 found
+Clean rows (R2): 0/2 unflagged; false alarms: 2 [TITLE-TR-86e24e0cf2, TITLE-TR-b99f298e06]
+Calibration rows (R3, informational): 32/32 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R2 false alarm: expected-yes row TITLE-TR-86e24e0cf2 judged no (G88)
+MUST MISS: R2 false alarm: expected-yes row TITLE-TR-b99f298e06 judged no (G88)
+
+Status: FAIL

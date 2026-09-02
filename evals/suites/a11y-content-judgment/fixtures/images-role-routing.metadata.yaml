@@ -168,7 +168,8 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F89
+    reference: 'F89 (verified: a 2.4.4/2.4.9/4.1.2 failure — the linked image is the link''s only content
+      and has no name; the skill files the image row under 1.1.1)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -176,8 +177,8 @@ rows:
     evidence_contains: []
     evidence_absent: []
     pattern_group: null
-    note: The home icon is the only content of the header link and carries alt="", so the link has no
-      accessible name.
+    note: '[maintainer override] reference label annotated after live verification; verdict unchanged
+      | was: reference label annotated after live verification; verdict unchanged'
     locator:
       view: dashboard
       text: (no alt; functional image inside a link)

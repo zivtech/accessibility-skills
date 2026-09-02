@@ -22,6 +22,41 @@ rows:
     clause1_evidence: false
     note: 'PDF link without a format cue: the rubric''s convention, not a WCAG failure technique (same ruling as
       clean-control''s schedule link); calibration tier.'
+  LINK-LI-b2776e14df:
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no heading —
+      outside the link''s programmatically determined context; the blind author''s F84 is a 2.4.9 Link-Only failure)'
+    note: 'reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric
+      finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no.'
+  LINK-LI-c48980d950:
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no heading —
+      outside the link''s programmatically determined context; the blind author''s F84 is a 2.4.9 Link-Only failure)'
+    note: 'reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric
+      finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no.'
+  LINK-LI-f7259f7b59:
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no heading —
+      outside the link''s programmatically determined context; the blind author''s F84 is a 2.4.9 Link-Only failure)'
+    note: 'reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric
+      finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no.'
+  LINK-LI-901fe7deda:
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no heading —
+      outside the link''s programmatically determined context; the blind author''s F84 is a 2.4.9 Link-Only failure)'
+    note: 'reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric
+      finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no.'
+  LINK-LI-51c84ee852:
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no heading —
+      outside the link''s programmatically determined context; the blind author''s F84 is a 2.4.9 Link-Only failure)'
+    note: 'reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric
+      finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no.'
 invalid:
   LINK-LI-f72af258ca: 'capture limit: the inventory''s link context is the nearest text block (td), which for an
     ID-only cell is empty; the record name in the sibling cell never reaches the row, so the rubric''s paired-column

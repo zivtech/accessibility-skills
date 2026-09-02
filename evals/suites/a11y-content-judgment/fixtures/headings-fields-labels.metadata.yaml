@@ -24,14 +24,15 @@ rows:
     expected: 'yes'
     tier: must
     unsure_ok: false
-    reference: H44
+    reference: G131 + H44 (H44 verified as 1.1.1/1.3.1/3.3.2/4.1.2; descriptiveness is G131)
     polarity: sufficient
     clause1_evidence: true
     loses: []
     evidence_contains: []
     evidence_absent: []
     pattern_group: null
-    note: Field has a wrapping-associated <label for> pair with visible, descriptive text.
+    note: '[maintainer override] reference label corrected after live verification; verdict unchanged
+      | was: reference label corrected after live verification; verdict unchanged'
     locator:
       view: intake
       text: Collection date
@@ -85,14 +86,16 @@ rows:
     expected: 'yes'
     tier: must
     unsure_ok: false
-    reference: ARIA14
+    reference: G131 (descriptive label; 2.4.6) — the name comes from aria-label (ARIA14, verified as a
+      4.1.2 technique)
     polarity: sufficient
     clause1_evidence: true
     loses: []
     evidence_contains: []
     evidence_absent: []
     pattern_group: null
-    note: Search field has no visible label but carries an aria-label naming its purpose.
+    note: '[maintainer override] reference label corrected after live verification; verdict unchanged
+      | was: reference label corrected after live verification; verdict unchanged'
     locator:
       view: intake
       text: Search past submissions

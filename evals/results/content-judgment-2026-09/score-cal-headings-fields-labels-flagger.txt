@@ -1,0 +1,10 @@
+Parsed: 19 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 19/19 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 5/5 found
+Clean rows (R2): 0/2 unflagged; false alarms: 2 [FIELD-WA-452339d1be, FIELD-WA-c7f6cc14da]
+Calibration rows (R3, informational): 12/12 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R2 false alarm: expected-yes row FIELD-WA-452339d1be judged no (G131 + H44 (H44 verified as 1.1.1/1.3.1/3.3.2/4.1.2; descriptiveness is G131))
+MUST MISS: R2 false alarm: expected-yes row FIELD-WA-c7f6cc14da judged no (G131 (descriptive label; 2.4.6) — the name comes from aria-label (ARIA14, verified as a 4.1.2 technique))
+
+Status: FAIL

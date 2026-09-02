@@ -1,0 +1,9 @@
+Parsed: 44 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 38/38 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 7/7 found
+Clean rows (R2): 3/3 unflagged; false alarms: 0
+Calibration rows (R3, informational): 28/28 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+Info: invalid rows excluded (6): LINK-LI-44b51f4ece, LINK-LI-59ee6ec8fc, LINK-LI-6299f2f8fa, LINK-LI-a490ae2283, LINK-LI-c51b799ac0, LINK-LI-f72af258ca
+
+Status: PASS

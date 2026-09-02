@@ -1,0 +1,7 @@
+rows:
+  FIELD-WA-452339d1be:
+    reference: G131 + H44 (H44 verified as 1.1.1/1.3.1/3.3.2/4.1.2; descriptiveness is G131)
+    note: reference label corrected after live verification; verdict unchanged
+  FIELD-WA-c7f6cc14da:
+    reference: G131 (descriptive label; 2.4.6) — the name comes from aria-label (ARIA14, verified as a 4.1.2 technique)
+    note: reference label corrected after live verification; verdict unchanged

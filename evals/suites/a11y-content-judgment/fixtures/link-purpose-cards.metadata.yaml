@@ -262,7 +262,9 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F84
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -272,8 +274,14 @@ rows:
     evidence_absent:
     - Genealogy
     pattern_group: card-learnmore
-    note: Fifth card in the same grid, same non-specific link text — five identical links total on this
-      page.
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
+      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
+      heading would pass 2.4.4 while the rubric still says no.'
     locator:
       view: home
       text: Learn more
@@ -366,7 +374,9 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F84
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -376,7 +386,14 @@ rows:
     evidence_absent:
     - Job Search
     pattern_group: card-learnmore
-    note: Fourth card in the same grid, same non-specific link text.
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
+      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
+      heading would pass 2.4.4 while the rubric still says no.'
     locator:
       view: home
       text: Learn more
@@ -469,7 +486,9 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F84
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -479,7 +498,14 @@ rows:
     evidence_absent:
     - Story Time
     pattern_group: card-learnmore
-    note: First of five identical card-grid 'Learn more' links; the card names no destination.
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
+      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
+      heading would pass 2.4.4 while the rubric still says no.'
     locator:
       view: home
       text: Learn more
@@ -517,7 +543,9 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F84
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -527,7 +555,14 @@ rows:
     evidence_absent:
     - Book Club
     pattern_group: card-learnmore
-    note: Second card in the same grid, same non-specific link text.
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
+      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
+      heading would pass 2.4.4 while the rubric still says no.'
     locator:
       view: home
       text: Learn more
@@ -629,7 +664,9 @@ rows:
     expected: 'no'
     tier: must
     unsure_ok: false
-    reference: F84
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
     polarity: failure
     clause1_evidence: true
     loses:
@@ -639,7 +676,14 @@ rows:
     evidence_absent:
     - Coding
     pattern_group: card-learnmore
-    note: Third card in the same grid, same non-specific link text.
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      was: reference corrected after live technique verification; verdict and tier as authored (must/no).
+      Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable
+      when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a
+      heading would pass 2.4.4 while the rubric still says no.'
     locator:
       view: home
       text: Learn more

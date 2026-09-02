@@ -1,0 +1,10 @@
+Parsed: 53 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 0/2 found
+Clean rows (R2): 1/1 unflagged; false alarms: 0
+Calibration rows (R3, informational): 50/50 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R1 expected-no row IDENT-PA-63040493f3 judged yes (G197 / Understanding 3.2.4)
+MUST MISS: R1 expected-no row IDENT-PA-9bf8bba533 judged yes (G197 / Understanding 3.2.4)
+
+Status: FAIL

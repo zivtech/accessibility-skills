@@ -1,0 +1,12 @@
+Parsed: 23 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 23/23 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 0/4 found
+Clean rows (R2): 3/3 unflagged; false alarms: 0
+Calibration rows (R3, informational): 16/16 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R1 expected-no row IMAGE-HE-6b3ae0d95c judged yes (F89 (verified: a 2.4.4/2.4.9/4.1.2 failure — the linked image is the link's only content and has no name; the skill files the image row under 1.1.1))
+MUST MISS: R1 expected-no row IMAGE-HE-6c04cd305c judged yes (F65)
+MUST MISS: R1 expected-no row IMAGE-HE-8b21f8062f judged yes (F30)
+MUST MISS: R1 expected-no row IMAGE-HE-e521df0769 judged yes (F30)
+
+Status: FAIL

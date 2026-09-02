@@ -1,0 +1,9 @@
+Parsed: 26 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 26/26 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 0/0 found
+Clean rows (R2): 8/8 unflagged; false alarms: 0; over-hedged: 8
+Calibration rows (R3, informational): 18/18 agree
+Fabrication (R4 tokens): 0 hit(s); (R5 quoted spans, should-tier): 0 hit(s)
+should miss: R2 over-hedge: expected-yes row(s) judged unsure (8): FIELD-CO-617f5a88b7, HEADING-CO-01c0e1fe88, HEADING-CO-333a24dd3f, IDENT-CO-2c687abd06, IMAGE-CO-3afdf110e0, IMAGE-CO-95ed7d38dd, LINK-CO-d03461d186, TITLE-CO-a92da72862
+
+Status: WARN
