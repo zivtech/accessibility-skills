@@ -133,11 +133,11 @@ sample_set:
         url: "https://portal.example.gov/detail/9"
         states: [default]
 
+  no_processes_reason: null      # set only when complete_processes is empty
   complete_processes:
     - id: proc-01
       represents: "benefits application"
       starting_point: "https://portal.example.gov/apply"
-      no_processes_reason: null
       default_sequence:
         - sample: str-02
           action: "open /apply from the header 'Apply' link"
@@ -170,9 +170,9 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 3. **Random sizing.** `count(random.items) >= ceil(0.10 * count(structured))`, counting per item 6. The exception is `random.exhausted: true` with a non-empty `exhausted_reason`: WCAG-EM directs a replacement pick on collision and says that if no new views exist the step is complete, so a small product with a valid sample set must not fail here. *(Two parts of this are shape decisions, not the methodology. WCAG-EM says the number "**is** 10% of the structured sample set" and the verified reference records no minimum in either version — so both the rounding rule and reading it as a floor rather than an exact count are choices made here. `ceil` forces one random sample onto any non-empty structured set, which is a defensible reading and still a reading.)*
 4. **Disjointness.** `random.items` and `structured` share no `id` and no locator value.
 5. **Documented method.** `random.method` is non-empty. WCAG-EM requires the method be *documented*, not seed-reproducible.
-6. **Alternate versions.** An `alternate_of` entry names an existing `id` and is excluded from the counts in items 3 and 4 — WCAG-EM: alternate versions "are not considered to be separate samples".
+6. **Alternate versions.** An `alternate_of` entry names an existing `id` and is excluded from the counts in items 3 and 4. Note what this item does *not* catch: relabelling a genuine structured sample as an alternate shrinks the item-3 denominator, and item 6 cannot see it — the referent exists and the exclusion only makes the floor easier to clear. That vector is caught by item 1's prohibition on `covers` for alternates, which is the sole thing standing between it and a smaller random sample. Relaxing item 1 reopens it — WCAG-EM: alternate versions "are not considered to be separate samples".
 7. **State coverage.** Every sample lists at least one state.
-8. **Complete processes.** Each entry has a `starting_point`, a non-empty `default_sequence`, and either a `branch_sequences` entry or a non-empty `no_branches_reason`. Every sequence step carries an `action`: WCAG-EM requires recording the actions needed to move sample-to-sample, because "in most cases the web address (URL) will not be sufficient to identify the sample in a complete process". A product with no multi-step process carries `no_processes_reason` and an empty list — WCAG 2 conformance requirement 3 binds only where a page is part of a process, so a static informational product must be able to say so without falsely declaring `sampling_skipped`.
+8. **Complete processes.** Each entry has a `starting_point`, a non-empty `default_sequence`, and either a `branch_sequences` entry or a non-empty `no_branches_reason`. Every sequence step carries an `action`: WCAG-EM requires recording the actions needed to move sample-to-sample, because "in most cases the web address (URL) will not be sufficient to identify the sample in a complete process". A product with no multi-step process carries a non-empty `no_processes_reason` at `sample_set` level — a sibling of `complete_processes`, not a child of a process, since an empty list has no entry to hold it — and an empty list — WCAG 2 conformance requirement 3 binds only where a page is part of a process, so a static informational product must be able to say so without falsely declaring `sampling_skipped`.
 9. **Referential integrity, and re-evaluation comparability.** Every `sample` in a `default_sequence` or `branch_sequence`, every `rejoins`, and every id in `carried_from.retained` and `carried_from.replaced` names an entry that exists. A `carried_from` block present with an empty `retained` also fails. The trigger is the block's presence, not "this is a re-evaluation" — the sample set cannot know it is a re-run, and writing the rule the other way would have smuggled an undecidable condition in under a decidable heading. WCAG-EM's re-evaluation guidance keeps a sub-set of the prior sample precisely so results stay comparable, and a re-run that retains nothing has quietly become a new evaluation wearing a prior report's name. Without this a process can be traceable in form and dangling in fact, which defeats the one thing item 8 exists to guarantee — and makes this contract's Completeness rule uncomputable, since a sample-by-SC matrix cannot be built over ids that do not resolve.
 10. **Skipped sampling.** `sampling_skipped: true` waives items 3, 4, and 5 and permits an empty `random`. It waives nothing else: the whole product becomes the selected sample set, so every view still needs identity, coverage, states, and its processes. That every view is *actually* enumerated is not confirmable from the block — it would take a crawl of the product — so a checker verifies the shape of what is claimed and never the claim itself. Recorded rather than fixed, because there is no fix at this layer. `sampling_skipped: true` alongside a non-empty `random.items` is a contradiction.
 11. **Freeze.** `status: frozen` requires `frozen_at`, `frozen_by`, `revision`, and `evidence_revision`. *(Shape decision. WCAG-EM says nothing about freezing a sample set; the source memo classified the draft/freeze mechanism as generic and its status vocabulary as engagement-shaped, and this bundle has one instance of it.)*
@@ -191,7 +191,7 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 
 Still non-normative, and this is the part most likely to be read on its own: the table below is what a validator *would* check if one were sanctioned, not a suite anything runs today. Nothing in this bundle executes it.
 
-Single-field mutations a checker should reject, with the input each needs — some items need more than the block, which is the point of listing the input at all. Several items carry more than one mutation; the table is the count.
+Mutations a checker should reject, with the input each needs — some items need more than the block, which is the point of listing the input at all. Several items carry more than one mutation; the table is the count.
 
 | Item | Mutation | Input needed |
 |---|---|---|
@@ -200,6 +200,8 @@ Single-field mutations a checker should reject, with the input each needs — so
 | 1 | Duplicate an `id` across two entries | block |
 | 1 | Give one sample both `url` and `path_description` | block |
 | 1 | Put `covers` on a random item | block |
+| 1 | Put `covers` on an entry carrying `alternate_of` | block |
+| 1 | Relabel a real structured sample as `alternate_of` another, keeping its `covers` (the item-3 denominator vector) | block |
 | 1 | Remove every locator from one sample, leaving `id` and `represents` | block |
 | 2 | Name a list as absent with a blank reason | block |
 | 2 | Remove every entry covering `essential_functionality`, with no stated reason | block |
@@ -209,13 +211,12 @@ Single-field mutations a checker should reject, with the input each needs — so
 | 4 | Copy a structured `url` into `random.items` | block |
 | 5 | Set `random.method` to an empty string | block |
 | 6 | Point `alternate_of` at an id that does not exist | block |
-| 6 | Relabel a real structured sample as `alternate_of` another, shrinking the item-3 denominator | block |
 | 7 | Delete `states` from one structured entry | block |
 | 8 | Delete `action` from one default-sequence step | block |
 | 8 | Delete `branch_sequences` leaving `no_branches_reason: null` | block |
 | 8 | Empty `complete_processes` with `no_processes_reason: null` and `sampling_skipped: false` | block |
 | 9 | Change a `default_sequence` sample ref to a nonexistent id | block |
-| 9 | Empty `carried_from.retained` on a re-evaluation | block |
+| 9 | Empty `carried_from.retained` with the block present | block |
 | 10 | Set `sampling_skipped: true` while `random.items` is non-empty | block |
 | 10 | `sampling_skipped: true` with a sample missing `states` | block |
 | 11 | Set `status: frozen` and delete `evidence_revision` | block |
