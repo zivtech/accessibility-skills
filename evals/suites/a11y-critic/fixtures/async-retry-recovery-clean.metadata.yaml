@@ -1,0 +1,82 @@
+fixture_id: async-retry-recovery-clean
+name: Async Request Failure and Recovery Announced Correctly (CLEAN)
+description: Account activity panel whose loading, failure, recovery and empty-result states are all announced through persistent live regions, with politeness matched to urgency and focus preserved across state changes.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Dynamic Content & Live Regions
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Every state transition in the async lifecycle is announced, and the announcement mechanism survives the transitions."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the success message reports a count ('Loaded 8 transactions.') but not the period it covers; naming the range would give more context on first hearing"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Status region
+    aria_role: status
+    aria_attributes:
+      - aria-live: "polite"
+      - aria-atomic: "true"
+    status: "Correct — persistent across all states (line 37), so loading, success and empty messages written into it are announced"
+
+  - name: Alert region
+    aria_role: alert
+    status: "Correct — persistent (line 54) and assertive, matching an actionable request failure; a sibling of the status region rather than a replacement, so the recovery message still has a place to land"
+
+  - name: Panel body
+    aria_attributes:
+      - aria-busy: "true while the request is in flight (line 33)"
+    status: "Correct"
+
+  - name: Retry button
+    semantic_element: button
+    status: "Correct — real <button>, stays mounted in every state so focus is never destroyed, and has a visible :focus-visible indicator"
+
+  - name: Spinner
+    aria_attributes:
+      - aria-hidden: "true"
+    status: "Correct — decorative CSS animation; the adjacent text inside the same live region carries the message. prefers-reduced-motion disables the animation"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (loading, failure, recovery and empty results all announced)"
+  - "2.4.3 Focus Order (retry control persists across state changes)"
+
+multi_perspective_coverage:
+  - screen_reader: "Hears 'Loading activity…', then the failure assertively, then on a successful retry 'Loaded 8 transactions.' — so the failure, the retry outcome, and an empty result set are each spoken. The regions outlive the states that write to them, which is what makes the announcements reliable."
+  - keyboard: "Fully operable. The Retry button is reachable by Tab, activates on Enter and Space, never unmounts, and has a visible focus indicator."
+  - low_vision: "Error text and status text meet contrast. The spinner animation respects prefers-reduced-motion."
+  - cognitive: "Each state says what happened and, on failure, which control fixes it. The empty case is stated rather than shown as a blank panel."
+
+notes: |
+  This is the **CLEAN baseline** for async status messages, and the pair member
+  of async-retry-error-unannounced.
+
+  Expected verdict: ACCEPT
+
+  Three constructs here are correct but read like defects to a reviewer scanning
+  for patterns rather than reasoning about announcement timing, and are the
+  false-positive traps the rubric scores:
+  1. Two live-region containers that are empty in most states. This is the
+     persistent-container pattern and it is the reason the announcements work —
+     a region that mounts with its message already inside is frequently not
+     spoken at all.
+  2. Two different politeness levels in one component (assertive for the
+     failure, polite for the result count). That is politeness matched to
+     urgency, not an inconsistency.
+  3. aria-hidden="true" on the spinner, which is a decorative animation whose
+     message is carried by the adjacent text in the same region.
+
+  The empty-result branch is part of the correct implementation here so that a
+  reviewer cannot legitimately flag a missing zero-state. It is deliberately not
+  a scored assertion in either fixture of this pair — empty-state coverage is a
+  separate, thinner gap that belongs to search-results-dynamic-clean and the
+  perspectives suite, not to this pair.

@@ -1,0 +1,120 @@
+fixture_id: async-retry-recovery-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present. Every state in the async lifecycle is announced, and the announcement mechanism outlives the states that write to it."
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the success message reports a count but not the period it covers; naming the range would give more context on first hearing"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 4
+    items:
+      - description: "The status and alert containers are empty in most states — this is the persistent-container pattern, not dead markup"
+        impact: "Lines 37 and 54 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
+        expected_to_find: "65%"
+
+      - description: "Two politeness levels in one component is correct, not inconsistent"
+        impact: "role='alert' (assertive) on an actionable request failure and role='status' (polite) on a routine result count is politeness matched to urgency. Flagging 'inconsistent live-region politeness' or 'the results should be assertive too' misreads when assertive is appropriate."
+        expected_to_find: "70%"
+
+      - description: "aria-hidden='true' on the decorative spinner is correct"
+        impact: "Line 40's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
+        expected_to_find: "70%"
+
+      - description: "The empty-result branch is handled — flagging a missing zero-state is a false alarm"
+        impact: "Line 47 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
+        expected_to_find: "60%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should recognise the persistent-container pattern and the deliberate politeness split, and return ACCEPT. The empty-container trap is the one most likely to catch a reviewer who checks for attribute presence rather than announcement timing."
+  - condition: baseline-zero-shot
+    expected_score: 40-70
+    reasoning: "At real risk on traps 1 and 2 — empty live-region containers and mixed politeness levels both look like defects without the timing argument."
+  - condition: baseline-few-shot
+    expected_score: 50-75
+    reasoning: "A correct dynamic-content example reduces the mixed-politeness false alarm but does not usually convey why a live region must pre-exist its message."
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  Provenance: GT-07 (ledger PT-16), CLEAN member of the pair with
+  async-retry-error-unannounced. Independent public reference: WCAG 4.1.3
+  Status Messages and its techniques (ARIA19, ARIA22, ARIA23, G199).
+
+  Under promotion-bar clause 3 this half is what makes the rule falsifiable:
+  the BUG fixture alone would reward a reviewer who flags every async component,
+  and this one penalises exactly that.
+
+  Negative space — what a clean verdict here does NOT certify: this fixture is
+  not evidence about aria-busy coverage, success-message wording, client-side
+  validation error clearing, or keyboard operability beyond the retry control
+  staying mounted. It certifies one thing: that failure, recovery and empty
+  results are announced, and that a reviewer does not flag the mechanism that
+  makes that work.
+
+  A CSS `:empty { display: none }` rule on the two live regions was removed from
+  the fixture during authoring. A region that is display:none at the moment text
+  is injected may not be announced by some assistive technology, so a reviewer
+  flagging it would have been correct — it would have been an unplanted defect
+  scored as a false positive, the failure mode that put two real defects into
+  modal-complete-clean before the 2026-07-16 revision.

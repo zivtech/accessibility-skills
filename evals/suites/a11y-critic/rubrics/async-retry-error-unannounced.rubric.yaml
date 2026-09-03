@@ -1,0 +1,125 @@
+fixture_id: async-retry-error-unannounced
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Async request failure is not announced — error branch has no role='alert' or live region"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "file:line reference to the error branch (lines 41-45) lacking role='alert'/aria-live; credit is stronger when the review contrasts it with the correct loading region at lines 34-39"
+        expected_to_find: "75%"
+
+      - description: "Recovery after a successful retry is silent — no announcement that the error cleared or that data arrived"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages"
+        evidence_requirement: "file:line reference to the results list (lines 47-57) mounting with no announcement, and/or the observation that the only live region (lines 34-39) has unmounted by that point"
+        expected_to_find: "45%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the error text does not name a retry affordance by its label, so a user who hears the message has to hunt for the 'Retry' button"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "25%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: "The loading branch is already a correct live region — flagging it is a false alarm"
+        impact: "Lines 34-39 carry role='status', aria-live='polite' and aria-atomic='true'. A review that reports 'loading state is not announced' has pattern-matched the component type instead of reading the branch, and has also missed both real defects, which live on the other two branches."
+        expected_to_find: "80%"
+
+      - description: "aria-busy on the panel body is present and correct — flagging it as missing is a false alarm"
+        impact: "Line 33 sets aria-busy={status === 'loading'} on .panel-body. This fixture deliberately does not repeat the aria-busy defect that loading-state-missing-aria-busy already covers."
+        expected_to_find: "75%"
+
+      - description: "aria-hidden='true' on the decorative spinner is correct — flagging it is a false alarm"
+        impact: "Line 36's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
+        expected_to_find: "70%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should trace the state machine, find the unannounced failure, and reach the recovery defect. The recovery item is the discriminator — it requires reasoning about which live region is still mounted at the moment the results render."
+  - condition: baseline-zero-shot
+    expected_score: 35-60
+    reasoning: "Likely finds the missing role='alert' on the error branch. Likely misses the recovery defect, and is the condition most at risk of the loading-region false alarm."
+  - condition: baseline-few-shot
+    expected_score: 45-70
+    reasoning: "A dynamic-content example raises the chance of checking every branch for a live region, but the recovery defect is about live-region lifetime rather than presence, which few-shot prompting does not usually surface."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Provenance: GT-07 (ledger PT-16). Independent public reference: WCAG 4.1.3
+  Status Messages and its techniques (ARIA19, ARIA22, ARIA23, G199) — this
+  fixture is the second reproduction under promotion-bar clause 1, and no
+  skill text ships on this pattern until it exists.
+
+  Scope of what this fixture does NOT test, stated so the pair is not read as
+  covering more than it does: it does not test aria-busy (covered by
+  loading-state-missing-aria-busy), success-message wording (async-form-vague-success),
+  client-side validation error clearing (multistep-form-error-clearing), or
+  empty result sets (present but uncredited in search-results-dynamic-clean).
+  It tests exactly two things: whether a failed async request is announced, and
+  whether the transition back out of the failure state is announced.
+
+  The recovery item carries a deliberately low expected_to_find (45%). It is the
+  half of the pattern that engagement evidence showed being missed most often,
+  and a fixture whose second item everyone finds would not discriminate.
+
+  The three false-positive traps exist because the happy path here is correct.
+  Without them, a reviewer could score well by reporting "this async component
+  needs live regions" without ever reading which branch has one.

@@ -1,0 +1,59 @@
+fixture_id: async-retry-error-unannounced
+name: Async Request Failure and Recovery Are Never Announced
+description: Account activity panel whose loading state is announced correctly but whose request-failure and successful-retry states are not, so a screen reader user learns neither that the request failed nor that it later succeeded.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Dynamic Content & Live Regions
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Async request failure is not announced (no alert or live region on the error branch)"
+        severity: CRITICAL
+        wcag: "4.1.3 Status Messages (an error that does not receive focus must be presented as a status message)"
+        evidence: "Lines 41-45: the error branch renders a bare <p className='error-text'> with no role='alert', no aria-live, and no live-region ancestor — while the loading branch at lines 34-39 is a correct role='status' region"
+        user_group: "Screen reader users"
+        expected_behavior: "The failure message should be announced without moving focus, via a persistent role='alert' container"
+        fix: "Render the failure text into a role='alert' container that is present in the DOM in every state, rather than mounting a bare <p> at failure time"
+
+      - description: "Recovery after a successful retry is silent — neither the cleared error nor the arriving data is announced"
+        severity: MAJOR
+        wcag: "4.1.3 Status Messages (the outcome of a user-initiated retry is a status change that must be announced)"
+        evidence: "Lines 47-57: the results list mounts with no announcement, and the component's only live region (lines 34-39) has unmounted by the time it renders"
+        user_group: "Screen reader users"
+        expected_behavior: "A successful retry should announce both that the failure is resolved and what arrived (e.g. 'Loaded 8 transactions.')"
+        fix: "Keep a persistent role='status' region mounted across all three states and write the outcome into it"
+
+wcag_criteria:
+  - "4.1.3 Status Messages (request failure and recovery are status changes that must be announced)"
+
+multi_perspective_coverage:
+  - screen_reader: "Hears 'Loading activity…', then silence. The failure is never announced, so there is no reason to look for the Retry button. If the button is found and pressed, the successful outcome is also never announced — the user cannot tell whether pressing it did anything."
+  - keyboard: "Not affected. The Retry button is a real <button> in the panel header and stays mounted through every state transition, so focus is never destroyed by the state change."
+  - low_vision: "Functional. The error text meets contrast and the state change is visible."
+  - cognitive: "Partially affected — the error text names a cause and an action, but a user who has looked away during the retry gets no confirmation that it worked."
+
+notes: |
+  This is a **HAS-BUGS** fixture testing status-message coverage on the *failure*
+  and *recovery* paths of an async request, which is the residual gap left by the
+  suite's existing dynamic-content fixtures.
+
+  Expected verdict: REVISE
+
+  Deliberately NOT tested here, because the suite already covers it elsewhere:
+  - loading-state announcement and aria-busy (loading-state-missing-aria-busy)
+  - vague success wording (async-form-vague-success)
+  - client-side validation error clearing (multistep-form-error-clearing) — that
+    fixture's clearing trigger is a field onChange inside a synchronous validate(),
+    with no request, no retry and no success announcement, so it is a different
+    interaction that shares only the phrase "error clearing"
+  - empty result sets (present but uncredited in search-results-dynamic-clean)
+
+  The fixture is deliberately hard in one specific way: the happy path is
+  instrumented correctly (aria-busy on the body, role="status" on the loading
+  branch), so a reviewer who pattern-matches for "async component missing
+  aria-live" will report it clean. Both defects are only reachable by tracing the
+  state machine into `error` and back out of it.

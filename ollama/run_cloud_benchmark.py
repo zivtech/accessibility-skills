@@ -128,6 +128,8 @@ ALL_CRITIC_FIXTURES = [
     "button-skip-link-clean", "interactive-dropdown-clean", "modal-complete-clean",
     "search-results-dynamic-clean", "trail-conditions-filter", "pool-lesson-registration",
     "composite-descendant-clean",  # Tier-2 R-29 (L-017), no model rows yet
+    # GT-07 (PT-16) async failure/recovery status messages (2026-09-03):
+    "async-retry-recovery-clean", "async-retry-error-unannounced",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",
