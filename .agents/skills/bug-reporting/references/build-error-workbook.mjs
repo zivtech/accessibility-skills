@@ -12,7 +12,9 @@
  * defect and the build refuses (exit 2). Keys outside the schema are not
  * serialized — they are counted and listed on the Read Me sheet so a dropped
  * field is visible, never silent. `finding_id` (the evidence-finding
- * contract's identifier) is the one documented pass-through beyond the schema.
+ * contract's identifier) is the one column beyond the schema. Two values are
+ * normalized and nothing else is altered: `severity` is lower-cased and a
+ * `wcag_sc` of "n/a" is written as "N/A"; the Read Me discloses this.
  *
  * Peer dependency — install in YOUR project, never in this repository:
  *   npm install exceljs@4.4.0        (MIT; exact-pin it)
@@ -29,15 +31,19 @@
  *               as a defined table with a header row; then three owner-fillable
  *               triage columns (Owner, Remediation status, Notes).
  *   Summary   — live COUNTIF formulas over the Findings rows (by severity,
- *               by WCAG SC, by remediation status), each with a cached result.
+ *               by WCAG SC, by remediation status), each with a cached result,
+ *               under a boundary line saying these are counts of findings,
+ *               not conformance outcomes.
  *
  * --verify reads the workbook back and checks, cell by cell, that the finding
- * columns equal the input's serialization; that every Summary formula spans
- * exactly the data rows and its cached finding-count results match a
- * recomputation from the input; that no cell holds an Excel error string; and
- * that the Read Me SHA-256 is this input's. Triage columns are excluded by
- * design — they belong to the receiving team — so --verify still proves the
- * finding data after a client has filled them in.
+ * columns equal the input's serialization; that the Findings defined table is
+ * present and spans exactly the data rows; that every Summary cell sits at its
+ * expected position with the expected label and formula and, for finding
+ * counts, the expected cached result; that no cell on any sheet holds an Excel
+ * error string; and that every Read Me field derivable from the input (all but
+ * title, product, timestamp, and file-name rows) matches it, SHA-256 included.
+ * Triage columns are excluded by design — they belong to the receiving team —
+ * so --verify still proves the finding data after a client has filled them in.
  *
  * Exit codes:
  *   0  build wrote the workbook, or --verify found no drift
@@ -87,6 +93,16 @@ const TRIAGE_NOTE =
   'Owner, Remediation status, and Notes are blank for the receiving team. ' +
   'Remediation status is a workflow state. It is not verification: a fix is ' +
   'closed by the auditor from class-matched retest evidence, not by this cell.';
+const STATUS_PROMPT =
+  "Your team's workflow state. Not verification: a fix is closed by the " +
+  'auditor from class-matched retest evidence, not by this cell.';
+const SUMMARY_BOUNDARY =
+  'Counts of filed findings. Severity is impact on people, not a conformance ' +
+  'outcome, and a count by success criterion is not a criterion result.';
+const NORMALIZATION_NOTE =
+  'severity lower-cased; a wcag_sc of "n/a" written as "N/A"; nothing else altered.';
+const SUMMARY_FIRST_ROW = 3;
+const README_UNVERIFIED = new Set(['Title', 'Product', 'Generated (UTC)', 'Source file', 'Verify']);
 
 // Column order is part of the contract: --verify compares by position.
 const COLUMNS = [
@@ -104,7 +120,7 @@ const COLUMNS = [
   { key: 'tool', header: 'Tool', width: 14 },
   { key: 'url', header: 'URL', width: 40 },
   { key: 'screen_type', header: 'Screen', width: 9 },
-  { key: 'color_mode', header: 'Colour mode', width: 11 },
+  { key: 'color_mode', header: 'Color mode', width: 11 },
   { key: 'xpath', header: 'XPath (simplified)', width: 36 },
   { key: 'xpath_full', header: 'XPath (full)', width: 36 },
   { key: 'html_snippet', header: 'HTML snippet', width: 48 },
@@ -273,8 +289,8 @@ async function loadInput(inPath) {
 function loadExcel() {
   try {
     return createRequire(import.meta.url)('exceljs');
-  } catch {
-    throw new UsageError(`exceljs is not installed in this project. Run: npm install ${PEER_DEP}`);
+  } catch (err) {
+    throw new UsageError(`exceljs could not be loaded (${err.message}). Install it in this project: npm install ${PEER_DEP}`);
   }
 }
 
@@ -303,6 +319,7 @@ function readmeRows(input, opts, counts) {
     ['Findings', input.issues.length],
     ['Stable instance IDs supplied', `${counts.stableIds} of ${input.issues.length}`],
     ['Input keys not serialized', ignored],
+    ['Normalization', NORMALIZATION_NOTE],
     ['Claim boundary', CLAIM_BOUNDARY],
     ['Triage columns', TRIAGE_NOTE],
     ['Verify', `node build-error-workbook.mjs --verify <this file> --in ${input.name}`],
@@ -312,18 +329,20 @@ function readmeRows(input, opts, counts) {
 function buildReadme(wb, input, opts, counts) {
   const ws = wb.addWorksheet(SHEETS.readme);
   ws.columns = [{ width: 30 }, { width: 100 }];
+  const rows = readmeRows(input, opts, counts);
   ws.addTable({
     name: 'ReadMeTable',
     ref: 'A1',
     headerRow: true,
     style: { theme: 'TableStyleLight1', showRowStripes: false },
     columns: [{ name: 'Field' }, { name: 'Value' }],
-    rows: readmeRows(input, opts, counts),
+    rows,
   });
   ws.eachRow((row) => {
     row.alignment = { wrapText: true, vertical: 'top' };
   });
-  ws.getCell('B7').numFmt = '@';
+  const shaRow = rows.findIndex(([field]) => field === 'Source SHA-256') + 2;
+  ws.getCell(`B${shaRow}`).numFmt = '@';
   ws.views = [{ state: 'frozen', ySplit: 1 }];
 }
 
@@ -360,6 +379,9 @@ function buildFindings(wb, issues) {
       type: 'list',
       allowBlank: true,
       formulae: [`"${REMEDIATION_STATES.join(',')}"`],
+      showInputMessage: true,
+      promptTitle: 'Remediation status',
+      prompt: STATUS_PROMPT,
       showErrorMessage: true,
       errorTitle: 'Remediation status',
       error: `Choose one of: ${REMEDIATION_STATES.join(', ')}`,
@@ -404,25 +426,44 @@ function summaryBlocks(issues) {
   ];
 }
 
+// Row-by-row layout of the Summary sheet. Build writes it; verify reads it
+// back by position, so a swapped or moved cell is drift even when the
+// formula/result pair still exists somewhere on the sheet.
+function summaryLayout(issues) {
+  const cells = [];
+  let row = SUMMARY_FIRST_ROW;
+  for (const block of summaryBlocks(issues)) {
+    cells.push({ row, kind: 'title', label: block.title });
+    row += 1;
+    for (const [label, formula, result] of block.rows) {
+      cells.push({ row, kind: 'formula', label, formula, result, live: Boolean(block.live) });
+      row += 1;
+    }
+    row += 1;
+  }
+  return cells;
+}
+
 function buildSummary(wb, issues) {
   const ws = wb.addWorksheet(SHEETS.summary);
   ws.columns = [{ width: 44 }, { width: 12 }];
-  let r = 1;
-  for (const block of summaryBlocks(issues)) {
-    ws.getCell(`A${r}`).value = block.title;
-    ws.getCell(`A${r}`).font = { bold: true };
-    ws.getCell(`B${r}`).value = 'Count';
-    ws.getCell(`B${r}`).font = { bold: true };
-    r += 1;
-    for (const [label, formula, result] of block.rows) {
-      ws.getCell(`A${r}`).value = label;
-      ws.getCell(`A${r}`).numFmt = '@';
-      ws.getCell(`B${r}`).value = { formula, result };
-      r += 1;
+  ws.getCell('A1').value = SUMMARY_BOUNDARY;
+  ws.getCell('A1').alignment = { wrapText: true, vertical: 'top' };
+  ws.getRow(1).height = 45;
+  for (const cell of summaryLayout(issues)) {
+    const a = ws.getCell(`A${cell.row}`);
+    const b = ws.getCell(`B${cell.row}`);
+    a.value = cell.label;
+    if (cell.kind === 'title') {
+      a.font = { bold: true };
+      b.value = 'Count';
+      b.font = { bold: true };
+    } else {
+      a.numFmt = '@';
+      b.value = { formula: cell.formula, result: cell.result };
     }
-    r += 1;
   }
-  ws.views = [{ state: 'frozen', ySplit: 0 }];
+  ws.views = [{ state: 'frozen', ySplit: 1 }];
 }
 
 async function build(args) {
@@ -435,6 +476,9 @@ async function build(args) {
   const wb = new ExcelJS.Workbook();
   wb.creator = GENERATOR;
   wb.created = new Date();
+  wb.title = args.product ? `${args.title} — ${args.product}` : args.title;
+  wb.subject = 'Accessibility findings for triage';
+  wb.description = CLAIM_BOUNDARY;
   buildReadme(wb, input, args, counts);
   buildFindings(wb, input.issues);
   buildSummary(wb, input.issues);
@@ -493,70 +537,102 @@ function verifyFindings(ws, issues, drift) {
   });
 }
 
-function verifySummary(ws, issues, drift) {
-  const expectedLast = issues.length + 1;
-  const expectedResults = new Map();
-  for (const block of summaryBlocks(issues)) {
-    for (const [label, formula, result] of block.rows) {
-      expectedResults.set(formula, { label, result, live: Boolean(block.live) });
-    }
+function describeFormulaDrift(got, cell, expectedLast) {
+  const ends = [...got.matchAll(/\$([A-Z]+)\$2:\$\1\$(\d+)/g)].map((m) => Number(m[2]));
+  const wrongEnd = ends.find((end) => end !== expectedLast);
+  if (wrongEnd !== undefined) return `range ends at row ${wrongEnd}, data ends at row ${expectedLast}`;
+  return `formula "${got}" expected "${cell.formula}"`;
+}
+
+function verifySummaryCell(ws, cell, expectedLast, drift) {
+  const where = `Summary!B${cell.row} ("${cell.label}")`;
+  const label = cellText(ws.getCell(`A${cell.row}`));
+  if (String(label) !== cell.label) drift.push(`Summary!A${cell.row}: "${label}" expected "${cell.label}"`);
+  const v = ws.getCell(`B${cell.row}`).value;
+  if (cell.kind === 'title') {
+    if (String(cellText(ws.getCell(`B${cell.row}`))) !== 'Count') drift.push(`${where}: expected the "Count" header`);
+    return 0;
   }
+  if (!v || typeof v !== 'object' || !('formula' in v)) {
+    drift.push(`${where}: expected a formula, found "${String(cellText(ws.getCell(`B${cell.row}`))).slice(0, 40)}"`);
+    return 0;
+  }
+  if (v.formula !== cell.formula) drift.push(`${where}: ${describeFormulaDrift(v.formula, cell, expectedLast)}`);
+  else if (!cell.live && Number(v.result) !== cell.result) drift.push(`${where}: cached result ${v.result}, recomputed ${cell.result}`);
+  return 1;
+}
+
+function verifySummary(ws, issues, drift) {
+  if (String(cellText(ws.getCell('A1'))) !== SUMMARY_BOUNDARY) drift.push('Summary!A1: boundary line missing or altered');
+  const layout = summaryLayout(issues);
+  const expectedLast = issues.length + 1;
   let formulas = 0;
+  for (const cell of layout) formulas += verifySummaryCell(ws, cell, expectedLast, drift);
+  const expectedRows = new Set(layout.map((c) => c.row));
   ws.eachRow((row, n) => {
     const v = row.getCell(2).value;
-    if (!v || typeof v !== 'object' || !('formula' in v)) return;
-    formulas += 1;
-    const label = cellText(row.getCell(1));
-    const rangeEnds = [...v.formula.matchAll(/\$([A-Z]+)\$2:\$\1\$(\d+)/g)].map((m) => Number(m[2]));
-    if (rangeEnds.length === 0) drift.push(`Summary!B${n} ("${label}"): formula has no $X$2:$X$n range`);
-    for (const end of rangeEnds) {
-      if (end !== expectedLast) drift.push(`Summary!B${n} ("${label}"): range ends at row ${end}, data ends at row ${expectedLast}`);
+    if (v && typeof v === 'object' && 'formula' in v && !expectedRows.has(n)) {
+      drift.push(`Summary!B${n}: unexpected formula ${v.formula}`);
     }
-    const exp = expectedResults.get(v.formula);
-    if (!exp) {
-      drift.push(`Summary!B${n} ("${label}"): formula not among the ${expectedResults.size} expected: ${v.formula}`);
-    } else if (!exp.live && Number(v.result) !== exp.result) {
-      drift.push(`Summary!B${n} ("${label}"): cached result ${v.result}, recomputed ${exp.result}`);
-    }
-    expectedResults.delete(v.formula);
   });
-  for (const [formula, exp] of expectedResults) {
-    drift.push(`Summary: expected formula for "${exp.label}" is missing: ${formula}`);
-  }
   return formulas;
 }
 
-function verifyErrorsAndReadme(wb, input, drift) {
-  wb.eachSheet((ws) => {
-    ws.eachRow((row, n) => {
-      row.eachCell((cell, c) => {
-        const v = cellText(cell);
-        const text = typeof v === 'object' ? String(v.result ?? '') : String(v);
-        if (FORMULA_ERROR_RE.test(text)) drift.push(`${ws.name}!${columnLetter(c)}${n}: Excel error value "${text}"`);
-      });
-    });
+function errorStringAt(ws, row, n, drift) {
+  row.eachCell((cell, c) => {
+    const v = cellText(cell);
+    const text = typeof v === 'object' ? String(v.result ?? '') : String(v);
+    if (FORMULA_ERROR_RE.test(text)) drift.push(`${ws.name}!${columnLetter(c)}${n}: Excel error value "${text}"`);
   });
-  const readme = wb.getWorksheet(SHEETS.readme);
-  const fields = new Map();
-  readme.eachRow((row) => fields.set(String(cellText(row.getCell(1))), String(cellText(row.getCell(2)))));
-  if (fields.get('Source SHA-256') !== input.sha) {
-    drift.push(`Read Me: Source SHA-256 ${fields.get('Source SHA-256') ?? '(absent)'} is not this input's ${input.sha}`);
+}
+
+function scanErrorStrings(wb, drift) {
+  wb.eachSheet((ws) => ws.eachRow((row, n) => errorStringAt(ws, row, n, drift)));
+}
+
+function verifyTable(ws, issues, drift) {
+  let table;
+  try {
+    table = ws.getTable(TABLE_NAME);
+  } catch (err) {
+    drift.push(`Findings: defined table "${TABLE_NAME}" could not be read (${err.message})`);
+    return;
   }
-  if (fields.get('Findings') !== String(input.issues.length)) {
-    drift.push(`Read Me: Findings ${fields.get('Findings') ?? '(absent)'} expected ${input.issues.length}`);
+  const ref = table?.table?.tableRef;
+  if (!ref) {
+    drift.push(`Findings: defined table "${TABLE_NAME}" is missing`);
+    return;
   }
-  if (fields.get('Generator') !== GENERATOR) {
-    drift.push(`Read Me: Generator "${fields.get('Generator') ?? '(absent)'}" expected "${GENERATOR}"`);
-  }
+  const expectedRef = `A1:${columnLetter(COLUMNS.length + TRIAGE_COLUMNS.length)}${issues.length + 1}`;
+  if (ref !== expectedRef) drift.push(`Findings: table "${TABLE_NAME}" spans ${ref}, expected ${expectedRef}`);
+}
+
+function verifyReadme(ws, input, counts, drift) {
+  const expected = readmeRows(input, { title: '', product: '' }, counts);
+  expected.forEach(([field, value], i) => {
+    const r = i + 2;
+    const gotField = String(cellText(ws.getCell(`A${r}`)));
+    if (gotField !== field) {
+      drift.push(`Read Me!A${r}: "${gotField}" expected "${field}"`);
+      return;
+    }
+    if (README_UNVERIFIED.has(field)) return;
+    const got = String(cellText(ws.getCell(`B${r}`)));
+    if (got !== String(value)) drift.push(`Read Me: ${field} "${got.slice(0, 60)}" expected "${String(value).slice(0, 60)}"`);
+  });
 }
 
 async function verify(args) {
   const input = await loadInput(args.in);
+  const counts = validateIssues(input.issues);
+  if (counts.errors.length) {
+    throw new UsageError(`refusing to verify against invalid input: ${counts.errors.length} invalid row(s)\n  ${counts.errors.slice(0, MAX_LISTED).join('\n  ')}`);
+  }
   const ExcelJS = loadExcel();
   try {
     await stat(args.verify);
-  } catch {
-    throw new UsageError(`cannot read --verify ${args.verify}`);
+  } catch (err) {
+    throw new UsageError(`cannot read --verify ${args.verify}: ${err.message}`);
   }
   const wb = new ExcelJS.Workbook();
   await wb.xlsx.readFile(args.verify);
@@ -567,8 +643,10 @@ async function verify(args) {
   let formulas = 0;
   if (drift.length === 0) {
     verifyFindings(wb.getWorksheet(SHEETS.findings), input.issues, drift);
+    verifyTable(wb.getWorksheet(SHEETS.findings), input.issues, drift);
     formulas = verifySummary(wb.getWorksheet(SHEETS.summary), input.issues, drift);
-    verifyErrorsAndReadme(wb, input, drift);
+    scanErrorStrings(wb, drift);
+    verifyReadme(wb.getWorksheet(SHEETS.readme), input, counts, drift);
   }
   const report = { file: args.verify, input: input.name, findings: input.issues.length, formulas, drift };
   if (args.json) {
