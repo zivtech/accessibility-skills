@@ -14,7 +14,7 @@ Use it for **audit-scope work only**: conformance evaluations of an existing sit
 | `accessibility_support_baseline` | yes | The explicit OS + browser + assistive technology combinations evaluated against. If tools were added mid-evaluation, the extended baseline — as evaluated, not as originally planned. |
 | `additional_requirements` | when agreed | Report template (e.g., VPAT edition), issue granularity, user involvement, or other commissioner requirements. |
 | `technologies_relied_upon` | yes | Technologies relied upon for conformance (HTML, CSS, JS, WAI-ARIA, PDF...). Optional: common views, essential functionality, sample-type variety, other relevant samples from exploration. |
-| `sample_set` | yes | Three parts, each with rationale: structured samples (what each represents — template, functionality, technology, shared component); random samples **and the selection method**; complete processes with their default and branch sequences. State coverage per sample. If sampling was skipped because the whole product was evaluated, say so. |
+| `sample_set` | yes | Three parts, each with rationale: structured samples (what each represents — template, functionality, technology, shared component); random samples **and the selection method**; complete processes with their default and branch sequences. State coverage per sample. If sampling was skipped because the whole product was evaluated, say so. Machine-readable shape and its validity rules: [a11y-sample-set-shape.md](a11y-sample-set-shape.md). |
 | `outcomes` | yes | Per-SC outcomes across the sample set using the EARL vocabulary already documented in `bug-reporting`: `passed` / `failed` / `cantTell` / `inapplicable` / `untested`. At least one example per conformance requirement and per SC not met. The representativeness-check result (did the random sample surface new content types or findings, and what was expanded in response). Every planned sample-by-SC unit carries a disposition before the report closes — see "Completeness" below. |
 | `findings` | yes | The `finding_id` list of A11y Evidence Finding Contract blocks backing the outcomes. Severity in those findings stays user-impact-based and **orthogonal** to conformance outcomes. |
 | `coverage_boundary` | yes | Every sample the web measurement stack (Playwright, axe-core, CDP) could not measure — native screens, kiosk hardware, documents — and the manual/AT method that covered it instead. "None" is a valid value; silence is not. |
@@ -48,6 +48,18 @@ This is distinct from `coverage_boundary`, which is scoped to *unmeasured sample
 ## Generated-Deliverable Verification
 
 A generated report artifact — a rendered outcome table, an exported workbook, a serialized ACR — can be structurally valid and numerically wrong: a formula range that under-counts, a mapping that drops rows, a rollup that double-counts. Schema and shape validation catch none of it. Every generated deliverable that carries counts or totals is verified cell-by-cell against the known totals in the evidence it aggregates — sample counts, finding counts, per-criterion outcome tallies — before it leaves as a draft. Retaining prior revisions (the append-only retention rule in `a11y-test`) is what makes such an error findable: the wrong number is visible only when a later revision can be diffed against the one that was wrong.
+
+## Machine-Readable Sample Set
+
+The `sample_set` row above says in prose what the section must contain. [a11y-sample-set-shape.md](a11y-sample-set-shape.md) gives it a machine-readable shape, eleven validity rules, and one mutation canary per rule. Prose stays authoritative: the shape is a serialization of this contract, not a second contract, and where the two ever disagree this document wins.
+
+Three consequences bind here rather than in the shape document:
+
+- **Field placement is settled.** The representativeness-check outcome is an `outcomes` field, the browser/OS/AT matrix is `accessibility_support_baseline`, and unmeasurable samples are `coverage_boundary`. None of the three moves into `sample_set` when a report is serialized. `sample_set` records only the *consequence* of the representativeness check — the structured entries added in response, and the revision at which they were added.
+- **Source-revision binding.** A frozen sample set names the evidence revision it was built from and carries a revision number that increments on any post-freeze change. A generated deliverable cites the revision it aggregated. This is the half of Generated-Deliverable Verification that cell-by-cell total-checking cannot reach: two sides can agree on every number and still describe different sample sets.
+- **Non-URL samples are first-class.** Native screens, kiosk interfaces, and documents are identified by path description or screenshot reference, never forced into a URL field. A sample identified that way usually owes a `coverage_boundary` row naming the manual or AT method that covered it — usually, not always, so the two are checked separately.
+
+No validator ships with this contract. The shape is the precondition for one, and the repo stays prompt-only.
 
 ## Example Skeleton
 
