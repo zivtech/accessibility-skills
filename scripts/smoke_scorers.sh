@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke tests for the three scorer scripts.
+# Smoke tests for the scorer scripts.
 # Run from repo root: bash scripts/smoke_scorers.sh
 # Exits 1 on any failed assertion; prints scorer output on failure.
 set -euo pipefail
@@ -407,6 +407,54 @@ run_case "opevidence opclean unparseable block (FAIL, distinct line)" "$OP_SCORE
 run_case "opevidence opdialog gold block, hookless prose (WARN)" "$OP_SCORER" \
     "opevidence-opdialog-no-hooks-response.json" "$OD_META" \
     "hook not mentioned for bounded_diagnostic_not_promoted" "Status: WARN"
+
+# ── a11y-content-judgment scorer (wave-2 item #1, 2026-09-02) ──────────────
+CJ_SCORER="ollama/score_content_judgment.py"
+CJ_META="cj-meta.yaml"
+
+# Case 54: cj gold (PASS)
+run_case "cj gold (PASS)" "$CJ_SCORER" "cj-gold-response.json" "$CJ_META" \
+    "Must-no rows (R1): 2/2 found" "false alarms: 0" "Status: PASS"
+
+# Case 55: cj expected-no judged yes (FAIL, R1)
+run_case "cj missed-no (FAIL)" "$CJ_SCORER" "cj-missed-no-response.json" "$CJ_META" \
+    "R1 expected-no row TITLE-SM-0000000001 judged yes" "Status: FAIL"
+
+# Case 56: cj expected-yes judged no (FAIL, R2 false alarm)
+run_case "cj false-alarm (FAIL)" "$CJ_SCORER" "cj-false-alarm-response.json" "$CJ_META" \
+    "R2 false alarm: expected-yes row LINK-SM-0000000003 judged no" "Status: FAIL"
+
+# Case 57: cj metadata-listed fabricated token (FAIL, R4)
+run_case "cj fabricated token (FAIL)" "$CJ_SCORER" "cj-fabricated-token-response.json" "$CJ_META" \
+    "R4 fabricated token(s) in rationale/fix: LINK-SM-0000000002:Downtown Branch" "Status: FAIL"
+
+# Case 58: cj one input id unanswered (FAIL, C1)
+run_case "cj missing line (FAIL)" "$CJ_SCORER" "cj-missing-line-response.json" "$CJ_META" \
+    "C1 missing output for 1 id(s): IDENT-SM-0000000004" "Status: FAIL"
+
+# Case 59: cj judgment outside the enum (FAIL, C2)
+run_case "cj bad enum (FAIL)" "$CJ_SCORER" "cj-bad-enum-response.json" "$CJ_META" \
+    "C2 judgment outside {yes,no,unsure}" "Status: FAIL"
+
+# Case 60: cj expected-yes judged unsure -> over-hedge is should-tier (WARN)
+run_case "cj over-hedge (WARN)" "$CJ_SCORER" "cj-over-hedge-response.json" "$CJ_META" \
+    "R2 over-hedge: expected-yes row(s) judged unsure (1)" "Status: WARN"
+
+# Case 61: cj no-rationale without a loses phrase (WARN, R6)
+run_case "cj loses miss (WARN)" "$CJ_SCORER" "cj-loses-miss-response.json" "$CJ_META" \
+    "R6 no-rationale names none of the row's loses phrases" "Status: WARN"
+
+# Case 62: cj quoted span absent from the row -> should-tier by calibration (WARN, R5)
+run_case "cj quoted span (WARN)" "$CJ_SCORER" "cj-quoted-span-response.json" "$CJ_META" \
+    "R5 quoted span(s) absent from the row (1)" "Status: WARN"
+
+# Case 64: cj pattern group not unanimous (WARN, R7) — the gold's two clean rows form one group
+run_case "cj split pattern group (WARN)" "$CJ_SCORER" "cj-split-group-response.json" "$CJ_META" \
+    "R7 pattern_group 'clean-pair' not unanimous" "Status: WARN"
+
+# Case 63: cj truncated response (INCOMPLETE, never PASS)
+run_case "cj truncated (INCOMPLETE)" "$CJ_SCORER" "cj-truncated-response.json" "$CJ_META" \
+    "Status: INCOMPLETE"
 
 echo
 echo "Results: $pass_count passed, $fail_count failed"

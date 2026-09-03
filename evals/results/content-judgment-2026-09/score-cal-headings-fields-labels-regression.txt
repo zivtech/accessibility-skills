@@ -1,0 +1,10 @@
+Parsed: 19 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 19/19 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 5/5 found
+Clean rows (R2): 2/2 unflagged; false alarms: 0
+Calibration rows (R3, informational): 12/12 agree
+Discriminating rows (D, flags absent or pointing the wrong way): 0/0 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+should miss: R6 no-rationale names none of the row's loses phrases on 5 row(s): FIELD-WA-851a4e854b, HEADING-WA-29d24d1db5, HEADING-WA-bc179b1620, HEADING-WA-c67484fbba, HEADING-WA-e180f996ca
+
+Status: WARN

@@ -1,0 +1,7 @@
+product,host,view_id,views_in_group,shared_items,present_shared,missing_shared,extra_items,order_consistent,first_order_violation,note
+transit,www.harborline-transit.example,home,6,4,4,0,0,true,,shared navigation items present in the same relative order
+transit,www.harborline-transit.example,routes,6,4,4,0,0,true,,shared navigation items present in the same relative order
+transit,www.harborline-transit.example,alerts,6,4,4,0,0,true,,shared navigation items present in the same relative order
+transit,www.harborline-transit.example,schedules,6,4,4,0,0,true,,shared navigation items present in the same relative order
+transit,www.harborline-transit.example,board,6,4,4,0,0,true,,shared navigation items present in the same relative order
+transit,www.harborline-transit.example,record,6,4,4,0,0,true,,shared navigation items present in the same relative order

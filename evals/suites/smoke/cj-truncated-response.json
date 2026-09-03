@@ -1,0 +1,4 @@
+{
+ "response": "```jsonl\n{\"id\": \"TITLE-SM-0000000001\", \"judgment\": \"no\", \"confidence\": \"high\", \"rationale\": \"Three pages share this title, so a screen reader user cannot tell which page is open.\", \"fix\": \"Harborline Transit \\u2014 Route 12 timetable\", \"needs_human\": false, \"drafted_by\": \"smoke-model\"}\n",
+ "done_reason": "length"
+}

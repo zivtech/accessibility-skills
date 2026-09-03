@@ -1,0 +1,143 @@
+- view: intake
+  type: field
+  locator:
+    text: "Enter sample ID"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "H44/G131 sufficient side absent (Understanding 2.4.6)"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["the field's identity once they start typing and the placeholder disappears"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Field is labelled only by its placeholder text; there is no associated <label>. Not F68 — this is a 2.4.6 labelling-quality gap, not a programmatic-association failure."
+
+- view: intake
+  type: field
+  locator:
+    text: "Collection date"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H44"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Field has a wrapping-associated <label for> pair with visible, descriptive text."
+
+- view: intake
+  type: field
+  locator:
+    text: "TCLI"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (audience shorthand)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Label is the lab's own internal shorthand for its composite reading, defined in scenario.md; audience-standard on this specialist intake form for certified technicians."
+
+- view: intake
+  type: field
+  locator:
+    text: "Search past submissions"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "ARIA14"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Search field has no visible label but carries an aria-label naming its purpose."
+
+- view: reports
+  type: heading
+  locator:
+    text: "Overview"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["a way to preview what this section covers without reading the whole paragraph"]
+  evidence_contains: ["Turbidity readings held steady"]
+  evidence_absent: []
+  pattern_group: "generic-heading"
+  note: "Generic heading; the section's own first sentence shows a specific heading was available (e.g. naming the turbidity/chlorine trend)."
+
+- view: reports
+  type: heading
+  locator:
+    text: "Details"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["a way to preview what this section covers without reading the whole paragraph"]
+  evidence_contains: ["elevated sediment following Tuesday's rainfall"]
+  evidence_absent: []
+  pattern_group: "generic-heading"
+  note: "Second generic heading; the section body again shows a specific heading was available."
+
+- view: reports
+  type: heading
+  locator:
+    text: "(empty heading element)"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["any label at all for this section in the page outline"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "An <h2></h2> with no text content at all."
+
+- view: reports
+  type: heading
+  locator:
+    text: "24.3"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["what this section is actually about, beyond a bare section number"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Heading text is only a number, with no descriptive words."
+
+- view: reports
+  type: heading
+  locator:
+    text: "Compliance and Reporting Obligations Under the Regional Watershed Monitoring Agreement"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (length)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Long formal heading — length alone is never a defect; it still describes the section specifically."

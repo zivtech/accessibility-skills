@@ -1,0 +1,6 @@
+home,transit,/index.html
+routes,transit,/routes.html
+alerts,transit,/alerts.html
+schedules,transit,/schedules.html
+board,transit,/board.html
+record,transit,/records/rt-204.html

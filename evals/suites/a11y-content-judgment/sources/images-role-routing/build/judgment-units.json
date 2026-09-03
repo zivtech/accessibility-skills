@@ -1,0 +1,480 @@
+{
+ "schema": "judgment-units/v1",
+ "built_utc": "2026-09-02T23:51:06.840Z",
+ "inventory_sha256": "e07637eaf92af3bff8ed61ebd371123cdf120a697755f0767475514fe8609f69",
+ "views_ok": 2,
+ "views_skipped": [],
+ "viewport": {
+  "id": "desktop-1440",
+  "width": 1440,
+  "height": 900
+ },
+ "caps": {
+  "headings": 250,
+  "links": 500,
+  "images": 250,
+  "fields": 120,
+  "nav_links": 120
+ },
+ "unit_count": 23,
+ "units": [
+  {
+   "id": "TITLE-HE-d47648247f",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Northfield Health Monitor — Today",
+   "detail": "h1: Today's summary",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.northfield-healthmonitor.example/dashboard.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-HE-516192346d",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "Northfield Health Monitor — Trends",
+   "detail": "h1: Thirty-day trends",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.northfield-healthmonitor.example/trends.html",
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-aa72915d8c",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Today's summary",
+   "detail": "h1",
+   "context": "Your device Paired and syncing normally. Battery last checked this morning.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-8fa20fc6bd",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Your device",
+   "detail": "h2",
+   "context": "Paired and syncing normally. Battery last checked this morning.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-a0ef4e53f8",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Vitality Index",
+   "detail": "h2",
+   "context": "Your Vitality Index blends sleep, activity, and resting heart rate into a single daily number between zero and one hundred.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-0f8df2d6d4",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Today's reading",
+   "detail": "h2",
+   "context": "",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-fe58389cc8",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Status",
+   "detail": "h2",
+   "context": "All systems normal",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(4) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-7709847ca1",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Recent activity screenshot",
+   "detail": "h2",
+   "context": "A snapshot of yesterday's walk, captured automatically from your phone.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(5) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-a78eaf7d41",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "Thirty-day trends",
+   "detail": "h1",
+   "context": "Longer patterns often say more than any single day's number.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-53d57fbb68",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "Vitality Index over time",
+   "detail": "h2",
+   "context": "Vitality Index rose from 38 to 42 over the last 30 days, driven mainly by improved sleep consistency.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-29ebc32566",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "What moved the needle",
+   "detail": "h2",
+   "context": "Sleep consistency improved the most, followed by a small increase in daily steps. Resting heart rate held steady.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-HE-49e62f41c5",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "Sharing with a caregiver",
+   "detail": "h2",
+   "context": "You can share a read-only link to this page with a family member or caregiver from the settings menu.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "LINK-HE-92d4a96b2f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "healthapp",
+   "views": [
+    "dashboard",
+    "trends"
+   ],
+   "view_count": 2,
+   "name": "",
+   "detail": "none; icon-only alt=\"\"",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a",
+   "visible": false,
+   "href": "https://www.northfield-healthmonitor.example/",
+   "flags": [
+    "link_empty_name",
+    "icon_only_link_weak_alt"
+   ]
+  },
+  {
+   "id": "LINK-HE-e500b02151",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "healthapp",
+   "views": [
+    "dashboard",
+    "trends"
+   ],
+   "view_count": 2,
+   "name": "Today",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.northfield-healthmonitor.example/dashboard.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-HE-f511578a2b",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "healthapp",
+   "views": [
+    "dashboard",
+    "trends"
+   ],
+   "view_count": 2,
+   "name": "Trends",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.northfield-healthmonitor.example/trends.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-HE-755c745db2",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "healthapp",
+   "views": [
+    "dashboard",
+    "trends"
+   ],
+   "view_count": 2,
+   "name": "Support",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a",
+   "visible": true,
+   "href": "https://www.northfield-healthmonitor.example/support.html",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-HE-6b3ae0d95c",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard",
+    "trends"
+   ],
+   "view_count": 2,
+   "name": "(alt=\"\")",
+   "detail": "img 0x0; role:functional; in a \"\"; src home.svg",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a > img",
+   "visible": false,
+   "href": "/icons/home.svg",
+   "flags": [
+    "functional_image_no_name"
+   ]
+  },
+  {
+   "id": "IMAGE-HE-e521df0769",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "IMG_4021.jpg",
+   "detail": "img 112x18; role:informative?; src device.jpg",
+   "context": "Your device Paired and syncing normally. Battery last checked this morning.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > img",
+   "visible": true,
+   "href": "/photos/device.jpg",
+   "flags": [
+    "alt_is_filename"
+   ]
+  },
+  {
+   "id": "IMAGE-HE-8b21f8062f",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "gauge",
+   "detail": "img 54x18; role:informative?; src vitality-gauge.png",
+   "context": "Vitality Index Your Vitality Index blends sleep, activity, and resting heart rate into a single daily number between zero and one hundred.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > img",
+   "visible": true,
+   "href": "/charts/vitality-gauge.png",
+   "flags": [
+    "complex_image_short_alt"
+   ]
+  },
+  {
+   "id": "IMAGE-HE-3874bb13ba",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "Vitality Index 42, Good",
+   "detail": "img 168x18; role:informative?; src vitality-today.png",
+   "context": "Today's reading",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > img",
+   "visible": true,
+   "href": "/charts/vitality-today.png",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-HE-8290c606ac",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "(alt=\"\")",
+   "detail": "img 0x0; role:decorative-declared; src check.svg",
+   "context": "All systems normal",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(4) > p > img",
+   "visible": false,
+   "href": "/icons/check.svg",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-HE-6c04cd305c",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "dashboard"
+   ],
+   "view_count": 1,
+   "name": "(no alt attribute)",
+   "detail": "img 16x16; role:informative?; src screenshot.jpg",
+   "context": "Recent activity screenshot A snapshot of yesterday's walk, captured automatically from your phone.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(5) > img",
+   "visible": true,
+   "href": "/photos/screenshot.jpg",
+   "flags": [
+    "img_missing_alt_attr"
+   ]
+  },
+  {
+   "id": "IMAGE-HE-81bb016fc0",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "healthapp",
+   "views": [
+    "trends"
+   ],
+   "view_count": 1,
+   "name": "Vitality Index trend, last 30 days",
+   "detail": "img 225x18; role:informative?; figcaption \"Vitality Index rose from 38 to 42 over the last 30 days, driven mainly by improved sleep consistency.\"; src vitality-trend.png",
+   "context": "Vitality Index over time Vitality Index rose from 38 to 42 over the last 30 days, driven mainly by improved sleep consistency.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > figure > img",
+   "visible": true,
+   "href": "/charts/vitality-trend.png",
+   "flags": []
+  }
+ ],
+ "nav_consistency": [
+  {
+   "product": "healthapp",
+   "host": "www.northfield-healthmonitor.example",
+   "view_id": "dashboard",
+   "views_in_group": 2,
+   "shared_items": 2,
+   "present_shared": 2,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "healthapp",
+   "host": "www.northfield-healthmonitor.example",
+   "view_id": "trends",
+   "views_in_group": 2,
+   "shared_items": 2,
+   "present_shared": 2,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  }
+ ]
+}

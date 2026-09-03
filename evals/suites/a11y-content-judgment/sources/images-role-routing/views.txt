@@ -1,0 +1,2 @@
+dashboard,healthapp,/dashboard.html
+trends,healthapp,/trends.html

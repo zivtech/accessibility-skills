@@ -1,0 +1,3 @@
+product,host,view_id,views_in_group,shared_items,present_shared,missing_shared,extra_items,order_consistent,first_order_violation,note
+healthapp,www.northfield-healthmonitor.example,dashboard,2,2,2,0,0,true,,shared navigation items present in the same relative order
+healthapp,www.northfield-healthmonitor.example,trends,2,2,2,0,0,true,,shared navigation items present in the same relative order

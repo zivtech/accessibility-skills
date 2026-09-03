@@ -1,0 +1,29 @@
+TITLE-CO-a92da72862 <- home/title/{"text": "Briarcliff Community Center — Class Schedule"}
+TITLE-CO-ff952e02cd <- classes/title/{"text": "Briarcliff Community Center Department of Recreation and Lifelong Learning Fall Session Course Catalog"}
+HEADING-CO-5342aa957e <- instructors/heading/{"text": "Certified Studio Kiln Operation and Safety Compliance Requirements for Instructional Staff"}
+HEADING-CO-01c0e1fe88 <- classes/heading/{"text": "Register for Fall Pottery Class"}
+HEADING-CO-333a24dd3f <- classes/heading/{"text": "Youth Swim Lessons: Ages 6-10"}
+LINK-CO-d03461d186 <- home/link/{"text": "Read more", "href": "not applicable — same-sentence link"}
+LINK-CO-26172863dc <- classes/link/{"text": "View the fall class schedule", "href": "/files/fall-schedule.pdf"}
+IMAGE-CO-95ed7d38dd <- home/image/{"text": "Renovated pottery studio with six new wheel stations"}
+IMAGE-CO-3afdf110e0 <- home/image/{"text": "(alt empty, decorative, beside text label)"}
+IDENT-CO-2c687abd06 <- home/ident/{"text": "(logo image) + Home", "href": "/"}
+deterministic: nav order consistent on home
+FIELD-CO-617f5a88b7 <- instructors/field/{"text": "Instructor ID"}
+FIELD-CO-367e158395 <- instructors/field/{"text": "SKC-2 Level"}
+HEADING-CO-6952395793 incidental -> calibration yes (heading 'Welcome to Briarcliff Community Center')
+HEADING-CO-5a41d9eca2 incidental -> calibration yes (heading 'New Studio Now Open')
+HEADING-CO-e78ec7135c incidental -> calibration yes (heading 'Getting here')
+HEADING-CO-432b03f5e8 incidental -> calibration yes (heading 'Fall class catalog')
+HEADING-CO-a71c39affe incidental -> calibration yes (heading 'Full schedule')
+HEADING-CO-43cffb6185 incidental -> calibration yes (heading 'Instructor requirements')
+HEADING-CO-b7dd32d005 incidental -> calibration yes (heading 'Submit your renewal')
+IMAGE-CO-9bf32183b0 incidental -> calibration yes (image 'Briarcliff Community Center home')
+LINK-CO-362f81eadd incidental -> calibration yes (link 'Briarcliff Community Center home')
+LINK-CO-6c6213add6 incidental -> calibration yes (link 'Home')
+LINK-CO-7e389940fd incidental -> calibration yes (link 'Classes')
+LINK-CO-aaf075f5ef incidental -> calibration yes (link 'Instructors')
+LINK-CO-b2b5d6a703 incidental -> calibration yes (link 'Contact us')
+TITLE-CO-489de8946e incidental -> calibration yes (title 'Briarcliff Community Center — Instructor Requirements')
+LINK-CO-26172863dc OVERRIDE {"tier": "calibration", "clause1_evidence": false, "reference": "calibration-only (file-format indication is the rubric's convention, not a WCAG failure technique)", "note": "Blind author marked a PDF link without a format cue as clean (H30); the rubric rules it no. Convention-dependent -> calibration tier, never counted."}
+TITLE-CO-a92da72862 INVALID (maintainer override): post-freeze authoring error, found by draw output (both opus draws judged no): the home view (h1 'Welcome to Briarcliff Community Center') carries the title 'Briarcliff Community Center — Class Schedule', which names a different page; the blind author planted it as the 'site + page phrase' clean title but attached it to the wrong view. The judges are right. Frozen-fixture rule: invalid (excluded + disclosed), never edited, never a model miss.

@@ -1,0 +1,903 @@
+{
+ "schema": "judgment-units/v1",
+ "built_utc": "2026-09-02T23:56:56.943Z",
+ "inventory_sha256": "bc41b2427ef84a1c3409d44e69e1e9de899e54115b6a57d936464d679e0d9921",
+ "views_ok": 3,
+ "views_skipped": [],
+ "viewport": {
+  "id": "desktop-1440",
+  "width": 1440,
+  "height": 900
+ },
+ "caps": {
+  "headings": 250,
+  "links": 500,
+  "images": 250,
+  "fields": 120,
+  "nav_links": 120
+ },
+ "unit_count": 44,
+ "units": [
+  {
+   "id": "TITLE-LI-f6b475f45a",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Driftwood Public Library — Programs",
+   "detail": "h1: Upcoming programs",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/index.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-LI-a9b1aa854a",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Driftwood Public Library — Resources",
+   "detail": "h1: Resources",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/resources.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-LI-ef1b76836b",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "Driftwood Public Library — Records",
+   "detail": "h1: Recently added records",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records.html",
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-c78ed2f1ab",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Upcoming programs",
+   "detail": "h1",
+   "context": "Sign up at the front desk or by phone. Space is limited for most sessions.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-88c0ca1cb8",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "This month's spotlight",
+   "detail": "h2",
+   "context": "Registration opens soon, and seats always go fast, so mark your calendar now.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-ac0072ec23",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "New at the library",
+   "detail": "h2",
+   "context": "Curious about our new maker space? Learn more about the maker space and its 3D printers, laser cutter, and sewing machines, open to anyone with a library card.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-7019766049",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Resources",
+   "detail": "h1",
+   "context": "Public documents, forms, and reports are posted here as they become available.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-ae1bbca539",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Branch hours",
+   "detail": "h2",
+   "context": "Full seasonal hours for every branch are posted at https://www.driftwood-library.example/hours.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-839d21f5de",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Board records",
+   "detail": "h2",
+   "context": "The most recent meeting summary is below. Board meeting minutes",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-f385fe6043",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Catalog results",
+   "detail": "h2",
+   "context": "Browsing the catalog by subject returns twenty results per page.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-LI-45486892a2",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "Recently added records",
+   "detail": "h1",
+   "context": "The six most recently cataloged items are listed below. Select an item's identifier or its title to view the full record.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-d39dd0523e",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Driftwood Public Library",
+   "detail": "content",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-4b2a1e26a0",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Home",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-be83aa2dde",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Resources",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/resources.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-a5377f828b",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Records",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(3)",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-b2776e14df",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "A fun, hands-on session for our youngest visitors and their caregivers, with songs and a short craft. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/programs/storytime.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-c48980d950",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "Bring a favorite title to swap and chat with other readers over coffee and light snacks. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/programs/bookclub.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-f7259f7b59",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "An evening of hands-on projects for older kids who want to build something and take it home. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div:nth-of-type(3) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/programs/coding.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-901fe7deda",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "Get one-on-one support putting together an application and polishing a resume before your next interview. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div:nth-of-type(4) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/programs/jobhelp.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-51c84ee852",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "Bring what you've found so far and get pointers on tracing a family line back further than the last census. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > div:nth-of-type(5) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/programs/genealogy.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-e9576c5535",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "This month's spotlight Registration opens soon, and seats always go fast, so mark your calendar now. Learn more",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/summer-reading.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-33337c9396",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Learn more",
+   "detail": "content",
+   "context": "Curious about our new maker space? Learn more about the maker space and its 3D printers, laser cutter, and sewing machines, open to anyone with a library card.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > p > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/maker-space.html",
+   "flags": [
+    "link_generic_text",
+    "same_name_different_hrefs_in_page"
+   ]
+  },
+  {
+   "id": "LINK-LI-0e7a0eb79f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Hours",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/hours.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-6f4f5ec14f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "Contact",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-5deb85f217",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "https://www.driftwood-library.example/hours",
+   "detail": "content; external",
+   "context": "Full seasonal hours for every branch are posted at https://www.driftwood-library.example/hours.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > p > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/hours",
+   "flags": [
+    "link_name_is_url"
+   ]
+  },
+  {
+   "id": "LINK-LI-a73c6c9f68",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Board meeting minutes",
+   "detail": "content; file pdf",
+   "context": "The most recent meeting summary is below. Board meeting minutes",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > p:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/files/minutes-2026-06.pdf",
+   "flags": [
+    "file_pdf_not_indicated"
+   ]
+  },
+  {
+   "id": "LINK-LI-bf0598ad93",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Annual report (PDF, 2 MB)",
+   "detail": "content; file pdf",
+   "context": "A longer document with financial detail is also available: Annual report (PDF, 2 MB)",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > p:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/files/annual-report-2026.pdf",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-a9186a85cb",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "arrow",
+   "detail": "img-alt; icon-only alt=\"arrow\"",
+   "context": "Next page of results",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > p:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/catalog?page=1",
+   "flags": [
+    "icon_only_link_weak_alt"
+   ]
+  },
+  {
+   "id": "LINK-LI-dcd46c10cc",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "Renew your library card",
+   "detail": "aria-label; icon-only alt=\"\"",
+   "context": "Renew items from your account.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > p:nth-of-type(3) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/renew.html",
+   "flags": [
+    "icon_only_link_weak_alt"
+   ]
+  },
+  {
+   "id": "LINK-LI-f72af258ca",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1001",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(1) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1001",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-4159a4dc43",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "The Tide Table",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1001",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-44b51f4ece",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1002",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1002",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-1e70aec2b2",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "Harbor Lights",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1002",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-59ee6ec8fc",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1003",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(3) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1003",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-a4e54bd27b",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "Northbound",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1003",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-6299f2f8fa",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1004",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(4) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1004",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-5cdeb97b58",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "A Season of Salt",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(4) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1004",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-c51b799ac0",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1005",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(5) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1005",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-e152e2486b",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "Driftwood and Dune",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(5) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1005",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-a490ae2283",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "DL-1006",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(6) > td:nth-of-type(1) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1006",
+   "flags": []
+  },
+  {
+   "id": "LINK-LI-e7445a5044",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "library",
+   "views": [
+    "records"
+   ],
+   "view_count": 1,
+   "name": "The Long Ferry",
+   "detail": "content",
+   "context": "",
+   "landmark": "main",
+   "selector": "main > table > tbody > tr:nth-of-type(6) > td:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.driftwood-library.example/records/dl-1006",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-LI-e4d6e5fc60",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "arrow",
+   "detail": "img 53x18; role:functional; in a \"arrow\"; src arrow.svg",
+   "context": "Next page of results",
+   "landmark": "main",
+   "selector": "body > main > section:nth-of-type(3) > p:nth-of-type(2) > a > img",
+   "visible": true,
+   "href": "/icons/arrow.svg",
+   "flags": [
+    "alt_generic",
+    "alt_is_filename"
+   ]
+  },
+  {
+   "id": "IMAGE-LI-21d92bc9e2",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "library",
+   "views": [
+    "resources"
+   ],
+   "view_count": 1,
+   "name": "(alt=\"\")",
+   "detail": "img 0x0; role:functional; in a \"Renew your library card\"; src renew.svg",
+   "context": "Renew items from your account.",
+   "landmark": "main",
+   "selector": "body > main > section:nth-of-type(3) > p:nth-of-type(3) > a > img",
+   "visible": false,
+   "href": "/icons/renew.svg",
+   "flags": []
+  },
+  {
+   "id": "IDENT-LI-eb768aa9e7",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "library",
+   "views": [
+    "home",
+    "resources",
+    "records"
+   ],
+   "view_count": 3,
+   "name": "\"Driftwood Public Library\" (3 views, header) | \"Home\" (3 views, nav)",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.driftwood-library.example",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  }
+ ],
+ "nav_consistency": [
+  {
+   "product": "library",
+   "host": "www.driftwood-library.example",
+   "view_id": "home",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "library",
+   "host": "www.driftwood-library.example",
+   "view_id": "resources",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "library",
+   "host": "www.driftwood-library.example",
+   "view_id": "records",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  }
+ ]
+}

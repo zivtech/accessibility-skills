@@ -1,0 +1,103 @@
+fixture_id: cj-smoke
+suite: a11y-content-judgment
+input_format: content-judgment batch rows
+difficulty: SMOKE
+description: 'Synthetic smoke metadata for score_content_judgment.py: two must-no
+  rows, one must-yes row, one calibration row, one fabricated token.'
+fabricated_tokens:
+- Downtown Branch
+fabrication_quoted_span_tier: should
+input_rows:
+- id: TITLE-SM-0000000001
+  type: title
+  sc: 2.4.2
+  name: Harborline Transit
+  detail: 'h1: Route 12 timetable'
+  href: https://www.harborline-transit.example/routes/12.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags:
+  - title_shared_by_3_views
+- id: LINK-SM-0000000002
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.harborline-transit.example/fares.html
+  context: Fares and passes. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-SM-0000000003
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.harborline-transit.example/accessible-travel.html
+  context: Our accessible travel guide explains lifts, ramps and priority seating
+    on every route. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+- id: IDENT-SM-0000000004
+  type: ident
+  sc: 3.2.4
+  name: '"Contact" (3 views, nav[Primary]) | "Contact us" (3 views, nav[Footer])'
+  detail: 2 names for one destination
+  href: www.harborline-transit.example/contact.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 3
+  flags:
+  - same_href_multiple_names
+rows:
+  TITLE-SM-0000000001:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: F25
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which page
+    - tell pages apart
+    - same title
+    pattern_group: null
+  LINK-SM-0000000002:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: F84
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - where it goes
+    - indistinguishable
+    - which link
+    pattern_group: null
+  LINK-SM-0000000003:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: H30
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    pattern_group: clean-pair
+  IDENT-SM-0000000004:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: calibration-only (borderline)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    pattern_group: clean-pair

@@ -1,0 +1,6 @@
+product,host,view_id,views_in_group,shared_items,present_shared,missing_shared,extra_items,order_consistent,first_order_violation,note
+parks,www.alderbrook-parks.example,home,5,6,6,0,0,true,,shared navigation items present in the same relative order
+parks,www.alderbrook-parks.example,trails,5,6,6,0,0,true,,shared navigation items present in the same relative order
+parks,www.alderbrook-parks.example,trailmap,5,6,6,0,0,true,,shared navigation items present in the same relative order
+parks,www.alderbrook-parks.example,detail,5,6,6,0,3,true,,shared navigation items present in the same relative order
+parks,www.alderbrook-parks.example,contact,5,6,5,1,0,true,,same relative order; 1 shared item(s) absent on this view (informational)

@@ -1,0 +1,527 @@
+fixture_id: headings-fields-labels
+suite: a11y-content-judgment
+input_format: content-judgment batch rows (the skill's own inventory + builder output over blind-authored
+  HTML) + product/audience note
+difficulty: PLANTED
+description: 'Northbridge Water Quality Lab runs an internal portal where certified lab technicians submit
+  water samples for analysis and read back the resulting reports. The audience is specialist staff already
+  trained on the lab''s internal shorthand, including "TCLI" (Turbidity-Chlorine Load Index), the lab''s
+  own composite reading of turbidity and residual chlorine levels. Two pages were captured: the sample
+  submission form and a report page.'
+fabricated_tokens: []
+fabrication_quoted_span_tier: should
+deterministic:
+  row_counts:
+    field: 5
+    heading: 8
+    link: 4
+    title: 2
+  absent_ident_hrefs: []
+  absent_link_hrefs: []
+  nav_consistency: {}
+rows:
+  FIELD-WA-452339d1be:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: G131 + H44 (H44 verified as 1.1.1/1.3.1/3.3.2/4.1.2; descriptiveness is G131)
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: '[maintainer override] reference label corrected after live verification; verdict unchanged
+      | was: reference label corrected after live verification; verdict unchanged'
+    locator:
+      view: intake
+      text: Collection date
+  FIELD-WA-7e6f8a75d0:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (audience shorthand)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Label is the lab's own internal shorthand for its composite reading, defined in scenario.md;
+      audience-standard on this specialist intake form for certified technicians.
+    locator:
+      view: intake
+      text: TCLI
+  FIELD-WA-851a4e854b:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: H44/G131 sufficient side absent (Understanding 2.4.6)
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - the field's identity once they start typing and the placeholder disappears
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Field is labelled only by its placeholder text; there is no associated <label>. Not F68 — this
+      is a 2.4.6 labelling-quality gap, not a programmatic-association failure.
+    locator:
+      view: intake
+      text: Enter sample ID
+  FIELD-WA-ae1a2e68cc:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  FIELD-WA-c7f6cc14da:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: G131 (descriptive label; 2.4.6) — the name comes from aria-label (ARIA14, verified as a
+      4.1.2 technique)
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: '[maintainer override] reference label corrected after live verification; verdict unchanged
+      | was: reference label corrected after live verification; verdict unchanged'
+    locator:
+      view: intake
+      text: Search past submissions
+  HEADING-WA-001086e629:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (length)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Long formal heading — length alone is never a defect; it still describes the section specifically.
+    locator:
+      view: reports
+      text: Compliance and Reporting Obligations Under the Regional Watershed Monitoring Agreement
+  HEADING-WA-29d24d1db5:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: G130
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - a way to preview what this section covers without reading the whole paragraph
+    evidence_contains:
+    - elevated sediment following Tuesday's rainfall
+    evidence_absent: []
+    pattern_group: generic-heading
+    note: '[maintainer override] test-critic finding 6 (see Overview). Verdict unchanged (no). | was:
+      test-critic finding 6 (see Overview). Verdict unchanged (no).'
+    locator:
+      view: reports
+      text: Details
+  HEADING-WA-55e1c33b47:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-WA-a6eba7ca21:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-WA-aa218aa0e0:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-WA-bc179b1620:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: G130
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - what this section is actually about, beyond a bare section number
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Heading text is only a number, with no descriptive words.
+    locator:
+      view: reports
+      text: '24.3'
+  HEADING-WA-c67484fbba:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: G130
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - any label at all for this section in the page outline
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: An <h2></h2> with no text content at all.
+    locator:
+      view: reports
+      text: (empty heading element)
+  HEADING-WA-e180f996ca:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: G130
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - a way to preview what this section covers without reading the whole paragraph
+    evidence_contains:
+    - Turbidity readings held steady
+    evidence_absent: []
+    pattern_group: generic-heading
+    note: '[maintainer override] test-critic finding 6: G130 asks that a heading describe topic OR purpose;
+      ''Overview'' above a section that is an overview is borderline — a careful unsure is not a miss.
+      Verdict unchanged (no). | was: test-critic finding 6: G130 asks that a heading describe topic OR
+      purpose; ''Overview'' above a section that is an overview is borderline — a careful unsure is not
+      a miss. Verdict unchanged (no).'
+    locator:
+      view: reports
+      text: Overview
+  LINK-WA-04b70e124f:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-WA-bd8454d80f:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-WA-fc188a29f8:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-WA-fd0eb2e84f:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  TITLE-WA-2aefe37679:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  TITLE-WA-85b3d95b62:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+input_rows:
+- id: FIELD-WA-851a4e854b
+  type: field
+  sc: 2.4.6
+  name: (no label; placeholder-only)
+  detail: text; label from placeholder-only; placeholder "Enter sample ID"
+  href: null
+  context: ''
+  landmark: form
+  visible: true
+  views: 1
+  flags:
+  - field_unlabeled_placeholder-only
+- id: FIELD-WA-452339d1be
+  type: field
+  sc: 2.4.6
+  name: Collection date
+  detail: date; label from label[for]
+  href: null
+  context: ''
+  landmark: form
+  visible: true
+  views: 1
+  flags: []
+- id: FIELD-WA-7e6f8a75d0
+  type: field
+  sc: 2.4.6
+  name: TCLI
+  detail: number; label from label[for]
+  href: null
+  context: ''
+  landmark: form
+  visible: true
+  views: 1
+  flags: []
+- id: FIELD-WA-ae1a2e68cc
+  type: field
+  sc: 2.4.6
+  name: Field notes
+  detail: textarea; label from label[for]
+  href: null
+  context: ''
+  landmark: form
+  visible: true
+  views: 1
+  flags: []
+- id: FIELD-WA-c7f6cc14da
+  type: field
+  sc: 2.4.6
+  name: Search past submissions
+  detail: search; label from aria-label
+  href: null
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-WA-aa218aa0e0
+  type: heading
+  sc: 2.4.6
+  name: Submit a sample
+  detail: h1
+  href: null
+  context: Complete the form below for each sample collected during today's rounds. Submissions are reviewed
+    within one business day.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-WA-a6eba7ca21
+  type: heading
+  sc: 2.4.6
+  name: Look up a past submission
+  detail: h2
+  href: null
+  context: Search
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-WA-55e1c33b47
+  type: heading
+  sc: 2.4.6
+  name: Sample report NB-3391
+  detail: h1
+  href: null
+  context: Overview Turbidity readings held steady this week while residual chlorine dipped slightly below
+    the usual weekday range.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-WA-e180f996ca
+  type: heading
+  sc: 2.4.6
+  name: Overview
+  detail: h2
+  href: null
+  context: Turbidity readings held steady this week while residual chlorine dipped slightly below the
+    usual weekday range.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - heading_generic
+- id: HEADING-WA-29d24d1db5
+  type: heading
+  sc: 2.4.6
+  name: Details
+  detail: h2
+  href: null
+  context: The intake line near the north reservoir showed a two-hour window of elevated sediment following
+    Tuesday's rainfall.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - heading_generic
+- id: HEADING-WA-c67484fbba
+  type: heading
+  sc: 2.4.6
+  name: ''
+  detail: h2
+  href: null
+  context: Full trend charts for the quarter are attached as a separate download for technicians who want
+    the underlying readings.
+  landmark: main
+  visible: false
+  views: 1
+  flags:
+  - heading_empty
+  - name_from_none
+- id: HEADING-WA-bc179b1620
+  type: heading
+  sc: 2.4.6
+  name: '24.3'
+  detail: h2
+  href: null
+  context: Any reading outside the posted range should be flagged to the shift lead before the sample
+    is logged as complete.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - heading_numeric_only
+- id: HEADING-WA-001086e629
+  type: heading
+  sc: 2.4.6
+  name: Compliance and Reporting Obligations Under the Regional Watershed Monitoring Agreement
+  detail: h2
+  href: null
+  context: This section summarizes the lab's ongoing obligations to the regional watershed authority under
+    the current multi-year monitoring agreement.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-WA-fc188a29f8
+  type: link
+  sc: 2.4.4
+  name: Northbridge Water Quality Lab
+  detail: content
+  href: https://www.northbridge-waterlab.example/
+  context: ''
+  landmark: header
+  visible: true
+  views: 2
+  flags: []
+- id: LINK-WA-bd8454d80f
+  type: link
+  sc: 2.4.4
+  name: Submit a Sample
+  detail: content
+  href: https://www.northbridge-waterlab.example/intake.html
+  context: ''
+  landmark: nav
+  visible: true
+  views: 2
+  flags: []
+- id: LINK-WA-fd0eb2e84f
+  type: link
+  sc: 2.4.4
+  name: Reports
+  detail: content
+  href: https://www.northbridge-waterlab.example/reports.html
+  context: ''
+  landmark: nav
+  visible: true
+  views: 2
+  flags: []
+- id: LINK-WA-04b70e124f
+  type: link
+  sc: 2.4.4
+  name: Contact
+  detail: content
+  href: https://www.northbridge-waterlab.example/contact.html
+  context: ''
+  landmark: footer
+  visible: true
+  views: 2
+  flags: []
+- id: TITLE-WA-2aefe37679
+  type: title
+  sc: 2.4.2
+  name: Northbridge Water Quality Lab — Sample Submission
+  detail: 'h1: Submit a sample'
+  href: https://www.northbridge-waterlab.example/intake.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags: []
+- id: TITLE-WA-85b3d95b62
+  type: title
+  sc: 2.4.2
+  name: Northbridge Water Quality Lab — Reports
+  detail: 'h1: Sample report NB-3391'
+  href: https://www.northbridge-waterlab.example/reports.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags: []

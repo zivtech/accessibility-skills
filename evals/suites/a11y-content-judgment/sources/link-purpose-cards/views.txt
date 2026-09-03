@@ -1,0 +1,3 @@
+home,library,/index.html
+resources,library,/resources.html
+records,library,/records.html

@@ -1,0 +1,10 @@
+Parsed: 52 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 52/53 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 2/2 found
+Clean rows (R2): 1/1 unflagged; false alarms: 0
+Calibration rows (R3, informational): 49/49 agree
+Discriminating rows (D, flags absent or pointing the wrong way): 1/1 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: C1 missing output for 1 id(s): TITLE-PA-90dd976f94
+
+Status: FAIL

@@ -1,0 +1,3 @@
+home,community,/index.html
+classes,community,/classes.html
+instructors,community,/instructors.html

@@ -1,0 +1,25 @@
+IMAGE-HE-e521df0769 <- dashboard/image/{"text": "IMG_4021.jpg"}
+IMAGE-HE-6c04cd305c <- dashboard/image/{"text": "(no alt attribute)"}
+IMAGE-HE-6b3ae0d95c <- dashboard/image/{"text": "(no alt; functional image inside a link)", "href": "/"}
+IMAGE-HE-8b21f8062f <- dashboard/image/{"text": "gauge"}
+IMAGE-HE-8290c606ac <- dashboard/image/{"text": "(alt empty, decorative, beside text label)"}
+IMAGE-HE-3874bb13ba <- dashboard/image/{"text": "Vitality Index 42, Good"}
+IMAGE-HE-81bb016fc0 <- trends/image/{"text": "Vitality Index trend, last 30 days"}
+HEADING-HE-aa72915d8c incidental -> calibration yes (heading "Today's summary")
+HEADING-HE-8fa20fc6bd incidental -> calibration yes (heading 'Your device')
+HEADING-HE-a0ef4e53f8 incidental -> calibration yes (heading 'Vitality Index')
+HEADING-HE-0f8df2d6d4 incidental -> calibration yes (heading "Today's reading")
+HEADING-HE-fe58389cc8 incidental -> calibration yes (heading 'Status')
+HEADING-HE-7709847ca1 incidental -> calibration yes (heading 'Recent activity screenshot')
+HEADING-HE-a78eaf7d41 incidental -> calibration yes (heading 'Thirty-day trends')
+HEADING-HE-53d57fbb68 incidental -> calibration yes (heading 'Vitality Index over time')
+HEADING-HE-29ebc32566 incidental -> calibration yes (heading 'What moved the needle')
+HEADING-HE-49e62f41c5 incidental -> calibration yes (heading 'Sharing with a caregiver')
+LINK-HE-92d4a96b2f incidental -> calibration yes (link '')
+LINK-HE-e500b02151 incidental -> calibration yes (link 'Today')
+LINK-HE-f511578a2b incidental -> calibration yes (link 'Trends')
+LINK-HE-755c745db2 incidental -> calibration yes (link 'Support')
+TITLE-HE-d47648247f incidental -> calibration yes (title 'Northfield Health Monitor — Today')
+TITLE-HE-516192346d incidental -> calibration yes (title 'Northfield Health Monitor — Trends')
+LINK-HE-92d4a96b2f OVERRIDE {"expected": "no", "tier": "calibration", "unsure_ok": false, "reference": "F89 (link-row twin of the planted functional image with alt=\"\")", "polarity": "failure", "clause1_evidence": false, "loses": ["no name", "cannot tell", "where it goes", "empty"], "note": "The builder emits the planted F89 element twice: as an image row (planted, must) and as a link row with an empty name. Same defect, so the link twin carries no; calibration tier so one element is never counted twice."}
+IMAGE-HE-6b3ae0d95c OVERRIDE {"reference": "F89 (verified: a 2.4.4/2.4.9/4.1.2 failure — the linked image is the link's only content and has no name; the skill files the image row under 1.1.1)", "note": "reference label annotated after live verification; verdict unchanged"}

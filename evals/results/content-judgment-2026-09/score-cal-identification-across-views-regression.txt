@@ -1,0 +1,10 @@
+Parsed: 53 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 2/2 found
+Clean rows (R2): 1/1 unflagged; false alarms: 0
+Calibration rows (R3, informational): 50/50 agree
+Discriminating rows (D, flags absent or pointing the wrong way): 1/1 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+should miss: R6 no-rationale names none of the row's loses phrases on 2 row(s): IDENT-PA-63040493f3, IDENT-PA-9bf8bba533
+
+Status: WARN

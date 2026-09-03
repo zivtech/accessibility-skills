@@ -25,6 +25,7 @@ Additional companion skills:
 
 - **Accessibility Bug Reporting** (`bug-reporting`): converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency)
 - **ACR Reporting** (`acr-reporting`): serializes a finished audit-scope evaluation into a draft Accessibility Conformance Report in GSA's OpenACR format — validated/rendered via the routed pinned `@openacr/openacr` CLI, finished and signed by a human (Phase 2 gate passed 2026-08-12; receipts in `evals/results/acr-reporting-phase2/`)
+- **Content Judgment** (`a11y-content-judgment`, candidate): draft-and-ratify pipeline for the judgment-shaped criteria a scanner cannot decide — are titles, headings, labels, link text in context, and image alternatives useful for the person (2.4.2, 2.4.6, 2.4.4, 1.1.1), and is identification consistent across pages (3.2.4; 3.2.3 deterministic). The agent drafts per-row `yes | no | unsure` with a rationale; a named human ratifies; nothing is a criterion outcome until `ratified_by` is filled. Eval lane + first rows 2026-09-02 (`evals/suites/a11y-content-judgment/`); gate not met as the rubric stands — see `docs/content-judgment-adoption-assessment.md`.
 
 ## Why this bundle exists
 
@@ -150,6 +151,7 @@ plan → [generate test scripts] → critique plan → [perspective audit] → r
 - `/perspective-audit` — Perspective Audit: deep review from escalated disability/situational access perspectives
 - `/bug-reporting` — Accessibility Bug Reporting: produce reproducible bug reports from test or review findings
 - `/acr-reporting` — ACR Reporting: serialize a finished audit-scope evaluation into a draft OpenACR Accessibility Conformance Report for human sign-off
+- `/a11y-content-judgment` — Content Judgment (candidate): inventory the judgment-shaped elements of a URL list, draft per-row judgments for a human ratifier, never flip an outcome cell
 
 ## Evidence Contract and Vital-Core Boundary
 
@@ -211,6 +213,13 @@ cp accessibility-skills/.claude/agents/*.md ~/.claude/agents/
         external-skills-manifest.yaml
     a11y-test/
       SKILL.md
+    a11y-content-judgment/
+      SKILL.md                         # Draft-and-ratify judge for titles/headings/links/images/labels (CANDIDATE)
+      references/
+        content-inventory.mjs          # URL-list content inventory (peer dep: playwright)
+        build-judgment-rows.mjs        # Dedupe + heuristic flags + batches; merge to CSV
+        judgment-rubric.md             # Per-criterion judgment rubric
+        judge-prompt.md                # Per-batch judge prompt
     perspective-audit/
       SKILL.md                         # Escalation-based perspective auditor
       references/

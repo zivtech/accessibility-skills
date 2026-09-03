@@ -44,6 +44,7 @@ REGISTRY_LISTS = {
     "evaluation-report": "EVALREPORT_FIXTURES",
     "a11y-test-operation-evidence": "OPEVIDENCE_FIXTURES",
     "acr-reporting": "ACR_FIXTURES",
+    "a11y-content-judgment": "CJ_FIXTURES",
 }
 INLINE_REGISTRY_SUITES = {"a11y-critic", "perspectives", "a11y-planner"}
 

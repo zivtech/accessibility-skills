@@ -1,0 +1,210 @@
+- view: home
+  type: title
+  locator:
+    text: "Briarcliff Community Center — Class Schedule"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G88"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Site name plus a page-specific phrase, distinct from the other two page titles."
+
+- view: classes
+  type: title
+  locator:
+    text: "Briarcliff Community Center Department of Recreation and Lifelong Learning Fall Session Course Catalog"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (length)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Long formal institutional title — length alone is never a defect."
+
+- view: instructors
+  type: heading
+  locator:
+    text: "Certified Studio Kiln Operation and Safety Compliance Requirements for Instructional Staff"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (length)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Long formal heading — length alone is never a defect; it still describes the section specifically."
+
+- view: classes
+  type: heading
+  locator:
+    text: "Register for Fall Pottery Class"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Descriptive heading naming the specific class and action."
+
+- view: classes
+  type: heading
+  locator:
+    text: "Youth Swim Lessons: Ages 6-10"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G130"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Descriptive heading naming the program and age range."
+
+- view: home
+  type: link
+  locator:
+    text: "Read more"
+    href: "not applicable — same-sentence link"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H30"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: ["pottery studio expansion"]
+  evidence_absent: []
+  pattern_group: null
+  note: "The same sentence containing the link names the destination: 'Read more about the pottery studio expansion'."
+
+- view: classes
+  type: link
+  locator:
+    text: "View the fall class schedule"
+    href: "/files/fall-schedule.pdf"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H30"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Link text alone clearly describes the destination and purpose."
+
+- view: home
+  type: image
+  locator:
+    text: "Renovated pottery studio with six new wheel stations"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G94"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Informative photo with alt text that conveys the actual content, not just a generic label."
+
+- view: home
+  type: image
+  locator:
+    text: "(alt empty, decorative, beside text label)"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H67"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: ["New Studio Now Open"]
+  evidence_absent: []
+  pattern_group: null
+  note: "Decorative sparkle icon with alt=\"\" sits beside a text label already stating the same message."
+
+- view: home
+  type: ident
+  locator:
+    text: "(logo image) + Home"
+    href: "/"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G197"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Logo image link (alt names the org and 'home') and a text 'Home' link both go to / and are identifiable as the same destination."
+
+- view: home
+  type: nav
+  locator:
+    text: "Home, Classes, Instructors"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G61"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Primary navigation appears in the same relative order on all three pages."
+
+- view: instructors
+  type: field
+  locator:
+    text: "Instructor ID"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H44"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Field has a wrapping-associated <label for> pair with visible, descriptive text."
+
+- view: instructors
+  type: field
+  locator:
+    text: "SKC-2 Level"
+  expected: "yes"
+  unsure_ok: false
+  tier: calibration
+  reference: "calibration-only (audience shorthand)"
+  polarity: sufficient
+  clause1_evidence: false
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Label uses the studio's own certification shorthand, defined in scenario.md; audience-standard for the certified instructors this page is written for."

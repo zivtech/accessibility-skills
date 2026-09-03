@@ -1,0 +1,112 @@
+- view: dashboard
+  type: image
+  locator:
+    text: "IMG_4021.jpg"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F30"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["any description of what the photo shows"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Alt text is a camera-generated filename, not a description of the device photo."
+
+- view: dashboard
+  type: image
+  locator:
+    text: "(no alt attribute)"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F65"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["any description of the walk screenshot at all"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "img element has no alt attribute whatsoever, not even an empty one."
+
+- view: dashboard
+  type: image
+  locator:
+    text: "(no alt; functional image inside a link)"
+    href: "/"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F89"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["what the link does — the home icon link has no accessible name at all"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "The home icon is the only content of the header link and carries alt=\"\", so the link has no accessible name."
+
+- view: dashboard
+  type: image
+  locator:
+    text: "gauge"
+  expected: "no"
+  unsure_ok: false
+  tier: must
+  reference: "F30"
+  polarity: failure
+  clause1_evidence: true
+  loses: ["the actual reading — only that a gauge-shaped graphic is present"]
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Informative gauge image; alt names the graphic's appearance ('gauge') rather than the Vitality Index reading it shows."
+
+- view: dashboard
+  type: image
+  locator:
+    text: "(alt empty, decorative, beside text label)"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "H67"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: ["All systems normal"]
+  evidence_absent: []
+  pattern_group: null
+  note: "Decorative checkmark icon with alt=\"\" sits beside a text label that already states the same status."
+
+- view: dashboard
+  type: image
+  locator:
+    text: "Vitality Index 42, Good"
+  expected: "yes"
+  unsure_ok: false
+  tier: must
+  reference: "G94"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: []
+  evidence_absent: []
+  pattern_group: null
+  note: "Informative image whose alt text conveys the actual data (index value and category)."
+
+- view: trends
+  type: image
+  locator:
+    text: "Vitality Index trend, last 30 days"
+  expected: "yes"
+  unsure_ok: true
+  tier: must
+  reference: "G95"
+  polarity: sufficient
+  clause1_evidence: true
+  loses: []
+  evidence_contains: ["rose from 38 to 42"]
+  evidence_absent: []
+  pattern_group: null
+  note: "Complex chart with a short alt plus an adjacent figcaption carrying the actual data — a careful reviewer may want to confirm the figcaption is programmatically associated, hence unsure_ok."

@@ -1,0 +1,554 @@
+{
+ "schema": "judgment-units/v1",
+ "built_utc": "2026-09-02T23:50:52.142Z",
+ "inventory_sha256": "3fabdc3c8b5cd38d6a9665a1148999c78da083b845ee8826f658301738fc6c7a",
+ "views_ok": 3,
+ "views_skipped": [],
+ "viewport": {
+  "id": "desktop-1440",
+  "width": 1440,
+  "height": 900
+ },
+ "caps": {
+  "headings": 250,
+  "links": 500,
+  "images": 250,
+  "fields": 120,
+  "nav_links": 120
+ },
+ "unit_count": 26,
+ "units": [
+  {
+   "id": "TITLE-CO-a92da72862",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Briarcliff Community Center — Class Schedule",
+   "detail": "h1: Welcome to Briarcliff Community Center",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/index.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-CO-ff952e02cd",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "Briarcliff Community Center Department of Recreation and Lifelong Learning Fall Session Course Catalog",
+   "detail": "h1: Fall class catalog",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/classes.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-CO-489de8946e",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "Briarcliff Community Center — Instructor Requirements",
+   "detail": "h1: Instructor requirements",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/instructors.html",
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-6952395793",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Welcome to Briarcliff Community Center",
+   "detail": "h1",
+   "context": "Browse this fall's classes, studio hours, and youth programs, or drop by the front desk with questions any weekday morning.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-5a41d9eca2",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "New Studio Now Open",
+   "detail": "h2",
+   "context": "New Studio Now Open",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-e78ec7135c",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Getting here",
+   "detail": "h2",
+   "context": "The center is a short walk from the Elm Street bus stop, with free parking behind the building.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-432b03f5e8",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "Fall class catalog",
+   "detail": "h1",
+   "context": "Registration opens two weeks before each session and closes once a class fills.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-01c0e1fe88",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "Register for Fall Pottery Class",
+   "detail": "h2",
+   "context": "Six Tuesday evenings covering wheel-throwing basics. All materials and one glaze firing are included.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-333a24dd3f",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "Youth Swim Lessons: Ages 6-10",
+   "detail": "h2",
+   "context": "Small groups of six children per instructor, held Saturday mornings at the indoor pool.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-a71c39affe",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "Full schedule",
+   "detail": "h2",
+   "context": "View the fall class schedule",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-43cffb6185",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "Instructor requirements",
+   "detail": "h1",
+   "context": "This page is for certified studio instructors renewing their kiln clearance for the coming season.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-5342aa957e",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "Certified Studio Kiln Operation and Safety Compliance Requirements for Instructional Staff",
+   "detail": "h2",
+   "context": "Every instructor leading a firing must hold a current clearance on file with the studio manager before the first class of the term.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-CO-b7dd32d005",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "Submit your renewal",
+   "detail": "h2",
+   "context": "Instructor ID SKC-2 Level Submit renewal",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-362f81eadd",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "Briarcliff Community Center home",
+   "detail": "img-alt; icon-only alt=\"Briarcliff Community Center home\"",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-6c6213add6",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home",
+    "home",
+    "classes",
+    "classes",
+    "instructors",
+    "instructors"
+   ],
+   "view_count": 6,
+   "name": "Home",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-7e389940fd",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "Classes",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/classes.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-aaf075f5ef",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "Instructors",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav[Primary]",
+   "selector": "html > body > header > nav > a:nth-of-type(3)",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/instructors.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-d03461d186",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Read more",
+   "detail": "content",
+   "context": "Curious what changed? Read more about the pottery studio expansion and its new kiln room, open for open-studio hours starting this month.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > p:nth-of-type(2) > a",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/studio-expansion.html",
+   "flags": [
+    "link_generic_text"
+   ]
+  },
+  {
+   "id": "LINK-CO-b2b5d6a703",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "Contact us",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-CO-26172863dc",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "community",
+   "views": [
+    "classes"
+   ],
+   "view_count": 1,
+   "name": "View the fall class schedule",
+   "detail": "content; file pdf",
+   "context": "Full schedule View the fall class schedule",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > p > a",
+   "visible": true,
+   "href": "https://www.briarcliff-community.example/files/fall-schedule.pdf",
+   "flags": [
+    "file_pdf_not_indicated"
+   ]
+  },
+  {
+   "id": "IMAGE-CO-9bf32183b0",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "Briarcliff Community Center home",
+   "detail": "img 242x18; role:functional; in a \"Briarcliff Community Center home\"; src logo.png",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a > img",
+   "visible": true,
+   "href": "/images/logo.png",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-CO-3afdf110e0",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "(alt=\"\")",
+   "detail": "img 0x0; role:decorative-declared; src sparkle.svg",
+   "context": "New Studio Now Open",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > p:nth-of-type(1) > img",
+   "visible": false,
+   "href": "/icons/sparkle.svg",
+   "flags": []
+  },
+  {
+   "id": "IMAGE-CO-95ed7d38dd",
+   "type": "image",
+   "sc": "1.1.1",
+   "product": "community",
+   "views": [
+    "home"
+   ],
+   "view_count": 1,
+   "name": "Renovated pottery studio with six new wheel stations",
+   "detail": "img 358x18; role:informative?; src studio.jpg",
+   "context": "New Studio Now Open New Studio Now Open Curious what changed? Read more about the pottery studio expansion and its new kiln room, open for open-studio hours starting this month.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > img",
+   "visible": true,
+   "href": "/photos/studio.jpg",
+   "flags": []
+  },
+  {
+   "id": "FIELD-CO-617f5a88b7",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "Instructor ID",
+   "detail": "text; label from label[for]",
+   "context": "",
+   "landmark": "form",
+   "selector": "#instructor-id",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "FIELD-CO-367e158395",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "community",
+   "views": [
+    "instructors"
+   ],
+   "view_count": 1,
+   "name": "SKC-2 Level",
+   "detail": "text; label from label[for]",
+   "context": "",
+   "landmark": "form",
+   "selector": "#skc2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "IDENT-CO-2c687abd06",
+   "type": "ident",
+   "sc": "3.2.4",
+   "product": "community",
+   "views": [
+    "home",
+    "classes",
+    "instructors"
+   ],
+   "view_count": 3,
+   "name": "\"Briarcliff Community Center home\" (3 views, header) | \"Home\" (3 views, nav[Primary])",
+   "detail": "2 names for one destination",
+   "context": "",
+   "landmark": null,
+   "selector": null,
+   "visible": true,
+   "href": "www.briarcliff-community.example",
+   "flags": [
+    "same_href_multiple_names"
+   ]
+  }
+ ],
+ "nav_consistency": [
+  {
+   "product": "community",
+   "host": "www.briarcliff-community.example",
+   "view_id": "home",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "community",
+   "host": "www.briarcliff-community.example",
+   "view_id": "classes",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "community",
+   "host": "www.briarcliff-community.example",
+   "view_id": "instructors",
+   "views_in_group": 3,
+   "shared_items": 3,
+   "present_shared": 3,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  }
+ ]
+}

@@ -1,0 +1,1297 @@
+fixture_id: link-purpose-cards
+suite: a11y-content-judgment
+input_format: content-judgment batch rows (the skill's own inventory + builder output over blind-authored
+  HTML) + product/audience note
+difficulty: PLANTED
+description: 'Driftwood Public Library''s website lets patrons of all ages browse programs, download public
+  documents, and look up catalog records from home or on a library computer. The audience is the general
+  public, from young families signing up for story time to adults researching genealogy or filing job
+  applications. Three pages were captured: the home page, a resources page, and a records listing page.'
+fabricated_tokens: []
+fabrication_quoted_span_tier: should
+deterministic:
+  row_counts:
+    heading: 8
+    ident: 1
+    image: 2
+    link: 30
+    title: 3
+  absent_ident_hrefs: []
+  absent_link_hrefs: []
+  nav_consistency: {}
+rows:
+  HEADING-LI-45486892a2:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-7019766049:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-839d21f5de:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-88c0ca1cb8:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-ac0072ec23:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-ae1bbca539:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-c78ed2f1ab:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  HEADING-LI-f385fe6043:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  IDENT-LI-eb768aa9e7:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  IMAGE-LI-21d92bc9e2:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  IMAGE-LI-e4d6e5fc60:
+    expected: 'no'
+    tier: calibration
+    unsure_ok: false
+    reference: F89 (image-row twin of the planted icon-only link whose alt names the icon)
+    polarity: failure
+    clause1_evidence: false
+    loses:
+    - names the icon
+    - arrow
+    - where it goes
+    - destination
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: '[maintainer override] Image twin of the planted F89 link row; calibration tier so the element
+      is counted once. | was: Image twin of the planted F89 link row; calibration tier so the element
+      is counted once.'
+    locator: {}
+  LINK-LI-0e7a0eb79f:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-1e70aec2b2:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-33337c9396:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: H30
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    evidence_contains:
+    - maker space
+    evidence_absent: []
+    pattern_group: null
+    note: 'The same sentence that contains the link names the destination: ''Learn more about the maker
+      space''.'
+    locator:
+      view: home
+      text: Learn more
+      href: not applicable — same-sentence link, no href disambiguation needed
+  LINK-LI-4159a4dc43:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-44b51f4ece:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - Harbor Lights
+    evidence_absent: []
+    pattern_group: id-links
+    note: Same repeated ID+name row construct, second record.
+    locator:
+      view: records
+      text: DL-1002
+      href: /records/dl-1002
+    invalid: true
+    invalid_reason: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-4b2a1e26a0:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-51c84ee852:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which program this leads to
+    - a way to tell this card apart from the other four
+    evidence_contains: []
+    evidence_absent:
+    - Genealogy
+    pattern_group: card-learnmore
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
+    locator:
+      view: home
+      text: Learn more
+      href: /programs/genealogy.html
+  LINK-LI-59ee6ec8fc:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - Northbound
+    evidence_absent: []
+    pattern_group: id-links
+    note: Same repeated ID+name row construct, third record.
+    locator:
+      view: records
+      text: DL-1003
+      href: /records/dl-1003
+    invalid: true
+    invalid_reason: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-5cdeb97b58:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-5deb85f217:
+    expected: 'no'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (Understanding 2.4.4)
+    polarity: failure
+    clause1_evidence: false
+    loses:
+    - a readable description of where the link goes
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: '[maintainer override] Raw-URL link text: the rubric itself allows a readable domain the user
+      is meant to see, so the verdict is convention-dependent; calibration tier. | was: Raw-URL link text:
+      the rubric itself allows a readable domain the user is meant to see, so the verdict is convention-dependent;
+      calibration tier.'
+    locator:
+      view: resources
+      text: https://www.driftwood-library.example/hours
+      href: /hours
+  LINK-LI-6299f2f8fa:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - A Season of Salt
+    evidence_absent: []
+    pattern_group: id-links
+    note: Same repeated ID+name row construct, fourth record.
+    locator:
+      view: records
+      text: DL-1004
+      href: /records/dl-1004
+    invalid: true
+    invalid_reason: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-6f4f5ec14f:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-901fe7deda:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which program this leads to
+    - a way to tell this card apart from the other four
+    evidence_contains: []
+    evidence_absent:
+    - Job Search
+    pattern_group: card-learnmore
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
+    locator:
+      view: home
+      text: Learn more
+      href: /programs/jobhelp.html
+  LINK-LI-a490ae2283:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - The Long Ferry
+    evidence_absent: []
+    pattern_group: id-links
+    note: Same repeated ID+name row construct, sixth and last record — this construct should not be scored
+      as ambiguous link text.
+    locator:
+      view: records
+      text: DL-1006
+      href: /records/dl-1006
+    invalid: true
+    invalid_reason: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-a4e54bd27b:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-a5377f828b:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-a73c6c9f68:
+    expected: 'no'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (Understanding 2.4.4)
+    polarity: failure
+    clause1_evidence: false
+    loses:
+    - advance notice that opening this leads to a PDF download
+    evidence_contains: []
+    evidence_absent:
+    - PDF
+    pattern_group: null
+    note: '[maintainer override] PDF link without a format cue: the rubric''s convention, not a WCAG failure
+      technique (same ruling as clean-control''s schedule link); calibration tier. | was: PDF link without
+      a format cue: the rubric''s convention, not a WCAG failure technique (same ruling as clean-control''s
+      schedule link); calibration tier.'
+    locator:
+      view: resources
+      text: Board meeting minutes
+      href: /files/minutes-2026-06.pdf
+  LINK-LI-a9186a85cb:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: F89
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - what the link does, not just what the icon looks like
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Icon-only link; the alt text names the icon's appearance ('arrow') instead of its function.
+    locator:
+      view: resources
+      text: '(no visible text; icon alt: arrow)'
+      href: /catalog?page=1
+  LINK-LI-b2776e14df:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which program this leads to
+    - a way to tell this card apart from the other four
+    evidence_contains: []
+    evidence_absent:
+    - Story Time
+    pattern_group: card-learnmore
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
+    locator:
+      view: home
+      text: Learn more
+      href: /programs/storytime.html
+  LINK-LI-be83aa2dde:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-bf0598ad93:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: H30
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Link text names the document, the format, and the file size.
+    locator:
+      view: resources
+      text: Annual report (PDF, 2 MB)
+      href: /files/annual-report-2026.pdf
+  LINK-LI-c48980d950:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which program this leads to
+    - a way to tell this card apart from the other four
+    evidence_contains: []
+    evidence_absent:
+    - Book Club
+    pattern_group: card-learnmore
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
+    locator:
+      view: home
+      text: Learn more
+      href: /programs/bookclub.html
+  LINK-LI-c51b799ac0:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - Driftwood and Dune
+    evidence_absent: []
+    pattern_group: id-links
+    note: Same repeated ID+name row construct, fifth record.
+    locator:
+      view: records
+      text: DL-1005
+      href: /records/dl-1005
+    invalid: true
+    invalid_reason: capture limit (see LINK-LI-f72af258ca)
+  LINK-LI-d39dd0523e:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-dcd46c10cc:
+    expected: 'yes'
+    tier: must
+    unsure_ok: false
+    reference: ARIA8
+    polarity: sufficient
+    clause1_evidence: true
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: Icon-only link with an aria-label naming the destination action directly.
+    locator:
+      view: resources
+      text: '(no visible text; aria-label: Renew your library card)'
+      href: /renew.html
+  LINK-LI-e152e2486b:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-e7445a5044:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  LINK-LI-e9576c5535:
+    expected: 'no'
+    tier: must
+    unsure_ok: false
+    reference: F63
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - what they are signing up for from the link's own context
+    evidence_contains: []
+    evidence_absent:
+    - Summer Reading
+    pattern_group: null
+    note: The words 'Summer Reading Challenge' that would disambiguate this link sit in an unrelated aside
+      elsewhere on the page, not near the link.
+    locator:
+      view: home
+      text: Learn more
+      href: /summer-reading.html
+  LINK-LI-f7259f7b59:
+    expected: 'no'
+    tier: must
+    unsure_ok: true
+    reference: 'F63 (verified 2.4.4 failure: the card''s text is a sibling <p> inside a <div> with no
+      heading — outside the link''s programmatically determined context; the blind author''s F84 is a
+      2.4.9 Link-Only failure)'
+    polarity: failure
+    clause1_evidence: true
+    loses:
+    - which program this leads to
+    - a way to tell this card apart from the other four
+    evidence_contains: []
+    evidence_absent:
+    - Coding
+    pattern_group: card-learnmore
+    note: '[maintainer override] reference corrected after live technique verification; verdict and tier
+      as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict
+      for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link
+      shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. |
+      rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text;
+      v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as
+      the invalid td rows), not the model''s failure; expected stays no. | was: reference corrected after
+      live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic
+      pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed);
+      at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would
+      pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because
+      the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok
+      reflects the capture limit (same class as the invalid td rows), not the model''s failure; expected
+      stays no.'
+    locator:
+      view: home
+      text: Learn more
+      href: /programs/coding.html
+  LINK-LI-f72af258ca:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: false
+    reference: calibration-only (repeated construct)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains:
+    - The Tide Table
+    evidence_absent: []
+    pattern_group: id-links
+    note: ID-column link; the record's name link sits in the same table row, so the destination is identifiable
+      in context.
+    locator:
+      view: records
+      text: DL-1001
+      href: /records/dl-1001
+    invalid: true
+    invalid_reason: 'capture limit: the inventory''s link context is the nearest text block (td), which
+      for an ID-only cell is empty; the record name in the sibling cell never reaches the row, so the
+      rubric''s paired-column rule is undecidable from the row. Skill follow-up filed for the critic pass
+      (context for td links should be the tr).'
+  TITLE-LI-a9b1aa854a:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  TITLE-LI-ef1b76836b:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+  TITLE-LI-f6b475f45a:
+    expected: 'yes'
+    tier: calibration
+    unsure_ok: true
+    reference: incidental (unplanted element; blind author did not list it)
+    polarity: sufficient
+    clause1_evidence: false
+    loses: []
+    evidence_contains: []
+    evidence_absent: []
+    pattern_group: null
+    note: incidental
+    locator: {}
+input_rows:
+- id: HEADING-LI-c78ed2f1ab
+  type: heading
+  sc: 2.4.6
+  name: Upcoming programs
+  detail: h1
+  href: null
+  context: Sign up at the front desk or by phone. Space is limited for most sessions.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-88c0ca1cb8
+  type: heading
+  sc: 2.4.6
+  name: This month's spotlight
+  detail: h2
+  href: null
+  context: Registration opens soon, and seats always go fast, so mark your calendar now.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-ac0072ec23
+  type: heading
+  sc: 2.4.6
+  name: New at the library
+  detail: h2
+  href: null
+  context: Curious about our new maker space? Learn more about the maker space and its 3D printers, laser
+    cutter, and sewing machines, open to anyone with a library card.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-7019766049
+  type: heading
+  sc: 2.4.6
+  name: Resources
+  detail: h1
+  href: null
+  context: Public documents, forms, and reports are posted here as they become available.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-ae1bbca539
+  type: heading
+  sc: 2.4.6
+  name: Branch hours
+  detail: h2
+  href: null
+  context: Full seasonal hours for every branch are posted at https://www.driftwood-library.example/hours.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-839d21f5de
+  type: heading
+  sc: 2.4.6
+  name: Board records
+  detail: h2
+  href: null
+  context: The most recent meeting summary is below. Board meeting minutes
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-f385fe6043
+  type: heading
+  sc: 2.4.6
+  name: Catalog results
+  detail: h2
+  href: null
+  context: Browsing the catalog by subject returns twenty results per page.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: HEADING-LI-45486892a2
+  type: heading
+  sc: 2.4.6
+  name: Recently added records
+  detail: h1
+  href: null
+  context: The six most recently cataloged items are listed below. Select an item's identifier or its
+    title to view the full record.
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: IDENT-LI-eb768aa9e7
+  type: ident
+  sc: 3.2.4
+  name: '"Driftwood Public Library" (3 views, header) | "Home" (3 views, nav)'
+  detail: 2 names for one destination
+  href: www.driftwood-library.example
+  context: ''
+  landmark: null
+  visible: true
+  views: 3
+  flags:
+  - same_href_multiple_names
+- id: IMAGE-LI-e4d6e5fc60
+  type: image
+  sc: 1.1.1
+  name: arrow
+  detail: img 53x18; role:functional; in a "arrow"; src arrow.svg
+  href: /icons/arrow.svg
+  context: Next page of results
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - alt_generic
+  - alt_is_filename
+- id: IMAGE-LI-21d92bc9e2
+  type: image
+  sc: 1.1.1
+  name: (alt="")
+  detail: img 0x0; role:functional; in a "Renew your library card"; src renew.svg
+  href: /icons/renew.svg
+  context: Renew items from your account.
+  landmark: main
+  visible: false
+  views: 1
+  flags: []
+- id: LINK-LI-d39dd0523e
+  type: link
+  sc: 2.4.4
+  name: Driftwood Public Library
+  detail: content
+  href: https://www.driftwood-library.example/
+  context: ''
+  landmark: header
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-4b2a1e26a0
+  type: link
+  sc: 2.4.4
+  name: Home
+  detail: content
+  href: https://www.driftwood-library.example/
+  context: ''
+  landmark: nav
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-be83aa2dde
+  type: link
+  sc: 2.4.4
+  name: Resources
+  detail: content
+  href: https://www.driftwood-library.example/resources.html
+  context: ''
+  landmark: nav
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-a5377f828b
+  type: link
+  sc: 2.4.4
+  name: Records
+  detail: content
+  href: https://www.driftwood-library.example/records.html
+  context: ''
+  landmark: nav
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-b2776e14df
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/programs/storytime.html
+  context: A fun, hands-on session for our youngest visitors and their caregivers, with songs and a short
+    craft. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-c48980d950
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/programs/bookclub.html
+  context: Bring a favorite title to swap and chat with other readers over coffee and light snacks. Learn
+    more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-f7259f7b59
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/programs/coding.html
+  context: An evening of hands-on projects for older kids who want to build something and take it home.
+    Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-901fe7deda
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/programs/jobhelp.html
+  context: Get one-on-one support putting together an application and polishing a resume before your next
+    interview. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-51c84ee852
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/programs/genealogy.html
+  context: Bring what you've found so far and get pointers on tracing a family line back further than
+    the last census. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-e9576c5535
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/summer-reading.html
+  context: This month's spotlight Registration opens soon, and seats always go fast, so mark your calendar
+    now. Learn more
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-33337c9396
+  type: link
+  sc: 2.4.4
+  name: Learn more
+  detail: content
+  href: https://www.driftwood-library.example/maker-space.html
+  context: Curious about our new maker space? Learn more about the maker space and its 3D printers, laser
+    cutter, and sewing machines, open to anyone with a library card.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_generic_text
+  - same_name_different_hrefs_in_page
+- id: LINK-LI-0e7a0eb79f
+  type: link
+  sc: 2.4.4
+  name: Hours
+  detail: content
+  href: https://www.driftwood-library.example/hours.html
+  context: ''
+  landmark: footer
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-6f4f5ec14f
+  type: link
+  sc: 2.4.4
+  name: Contact
+  detail: content
+  href: https://www.driftwood-library.example/contact.html
+  context: ''
+  landmark: footer
+  visible: true
+  views: 3
+  flags: []
+- id: LINK-LI-5deb85f217
+  type: link
+  sc: 2.4.4
+  name: https://www.driftwood-library.example/hours
+  detail: content; external
+  href: https://www.driftwood-library.example/hours
+  context: Full seasonal hours for every branch are posted at https://www.driftwood-library.example/hours.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - link_name_is_url
+- id: LINK-LI-a73c6c9f68
+  type: link
+  sc: 2.4.4
+  name: Board meeting minutes
+  detail: content; file pdf
+  href: https://www.driftwood-library.example/files/minutes-2026-06.pdf
+  context: The most recent meeting summary is below. Board meeting minutes
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - file_pdf_not_indicated
+- id: LINK-LI-bf0598ad93
+  type: link
+  sc: 2.4.4
+  name: Annual report (PDF, 2 MB)
+  detail: content; file pdf
+  href: https://www.driftwood-library.example/files/annual-report-2026.pdf
+  context: 'A longer document with financial detail is also available: Annual report (PDF, 2 MB)'
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-a9186a85cb
+  type: link
+  sc: 2.4.4
+  name: arrow
+  detail: img-alt; icon-only alt="arrow"
+  href: https://www.driftwood-library.example/catalog?page=1
+  context: Next page of results
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - icon_only_link_weak_alt
+- id: LINK-LI-dcd46c10cc
+  type: link
+  sc: 2.4.4
+  name: Renew your library card
+  detail: aria-label; icon-only alt=""
+  href: https://www.driftwood-library.example/renew.html
+  context: Renew items from your account.
+  landmark: main
+  visible: true
+  views: 1
+  flags:
+  - icon_only_link_weak_alt
+- id: LINK-LI-f72af258ca
+  type: link
+  sc: 2.4.4
+  name: DL-1001
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1001
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-4159a4dc43
+  type: link
+  sc: 2.4.4
+  name: The Tide Table
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1001
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-44b51f4ece
+  type: link
+  sc: 2.4.4
+  name: DL-1002
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1002
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-1e70aec2b2
+  type: link
+  sc: 2.4.4
+  name: Harbor Lights
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1002
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-59ee6ec8fc
+  type: link
+  sc: 2.4.4
+  name: DL-1003
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1003
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-a4e54bd27b
+  type: link
+  sc: 2.4.4
+  name: Northbound
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1003
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-6299f2f8fa
+  type: link
+  sc: 2.4.4
+  name: DL-1004
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1004
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-5cdeb97b58
+  type: link
+  sc: 2.4.4
+  name: A Season of Salt
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1004
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-c51b799ac0
+  type: link
+  sc: 2.4.4
+  name: DL-1005
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1005
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-e152e2486b
+  type: link
+  sc: 2.4.4
+  name: Driftwood and Dune
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1005
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-a490ae2283
+  type: link
+  sc: 2.4.4
+  name: DL-1006
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1006
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: LINK-LI-e7445a5044
+  type: link
+  sc: 2.4.4
+  name: The Long Ferry
+  detail: content
+  href: https://www.driftwood-library.example/records/dl-1006
+  context: ''
+  landmark: main
+  visible: true
+  views: 1
+  flags: []
+- id: TITLE-LI-f6b475f45a
+  type: title
+  sc: 2.4.2
+  name: Driftwood Public Library — Programs
+  detail: 'h1: Upcoming programs'
+  href: https://www.driftwood-library.example/index.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags: []
+- id: TITLE-LI-a9b1aa854a
+  type: title
+  sc: 2.4.2
+  name: Driftwood Public Library — Resources
+  detail: 'h1: Resources'
+  href: https://www.driftwood-library.example/resources.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags: []
+- id: TITLE-LI-ef1b76836b
+  type: title
+  sc: 2.4.2
+  name: Driftwood Public Library — Records
+  detail: 'h1: Recently added records'
+  href: https://www.driftwood-library.example/records.html
+  context: ''
+  landmark: null
+  visible: true
+  views: 1
+  flags: []

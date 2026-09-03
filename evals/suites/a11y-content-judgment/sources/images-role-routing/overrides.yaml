@@ -1,0 +1,20 @@
+rows:
+  LINK-HE-92d4a96b2f:
+    expected: 'no'
+    tier: calibration
+    unsure_ok: false
+    reference: F89 (link-row twin of the planted functional image with alt="")
+    polarity: failure
+    clause1_evidence: false
+    loses:
+    - no name
+    - cannot tell
+    - where it goes
+    - empty
+    note: 'The builder emits the planted F89 element twice: as an image row (planted, must) and as a link row with
+      an empty name. Same defect, so the link twin carries no; calibration tier so one element is never counted
+      twice.'
+  IMAGE-HE-6b3ae0d95c:
+    reference: 'F89 (verified: a 2.4.4/2.4.9/4.1.2 failure — the linked image is the link''s only content and has
+      no name; the skill files the image row under 1.1.1)'
+    note: reference label annotated after live verification; verdict unchanged

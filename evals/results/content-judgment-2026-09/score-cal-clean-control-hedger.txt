@@ -1,0 +1,11 @@
+Parsed: 26 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 25/25 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 0/0 found
+Clean rows (R2): 7/7 unflagged; false alarms: 0; over-hedged: 7
+Calibration rows (R3, informational): 18/18 agree
+Discriminating rows (D, flags absent or pointing the wrong way): 0/2 right — wrong: IDENT-CO-2c687abd06(yes->unsure), LINK-CO-d03461d186(yes->unsure)
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+Info: invalid rows excluded (1): TITLE-CO-a92da72862
+should miss: R2 over-hedge: expected-yes row(s) judged unsure (7): FIELD-CO-617f5a88b7, HEADING-CO-01c0e1fe88, HEADING-CO-333a24dd3f, IDENT-CO-2c687abd06, IMAGE-CO-3afdf110e0, IMAGE-CO-95ed7d38dd, LINK-CO-d03461d186
+
+Status: WARN

@@ -1,0 +1,58 @@
+LINK-LI-b2776e14df <- home/link/{"text": "Learn more", "href": "/programs/storytime.html"}
+LINK-LI-c48980d950 <- home/link/{"text": "Learn more", "href": "/programs/bookclub.html"}
+LINK-LI-f7259f7b59 <- home/link/{"text": "Learn more", "href": "/programs/coding.html"}
+LINK-LI-901fe7deda <- home/link/{"text": "Learn more", "href": "/programs/jobhelp.html"}
+LINK-LI-51c84ee852 <- home/link/{"text": "Learn more", "href": "/programs/genealogy.html"}
+LINK-LI-e9576c5535 <- home/link/{"text": "Learn more", "href": "/summer-reading.html"}
+LINK-LI-5deb85f217 <- resources/link/{"text": "https://www.driftwood-library.example/hours", "href": "/hours"}
+LINK-LI-a9186a85cb <- resources/link/{"text": "(no visible text; icon alt: arrow)", "href": "/catalog?page=1"}
+LINK-LI-a73c6c9f68 <- resources/link/{"text": "Board meeting minutes", "href": "/files/minutes-2026-06.pdf"}
+LINK-LI-33337c9396 <- home/link/{"text": "Learn more", "href": "not applicable — same-sentence link, no href disambiguation needed"}
+LINK-LI-dcd46c10cc <- resources/link/{"text": "(no visible text; aria-label: Renew your library card)", "href": "/renew.html"}
+LINK-LI-bf0598ad93 <- resources/link/{"text": "Annual report (PDF, 2 MB)", "href": "/files/annual-report-2026.pdf"}
+LINK-LI-f72af258ca <- records/link/{"text": "DL-1001", "href": "/records/dl-1001"}
+LINK-LI-44b51f4ece <- records/link/{"text": "DL-1002", "href": "/records/dl-1002"}
+LINK-LI-59ee6ec8fc <- records/link/{"text": "DL-1003", "href": "/records/dl-1003"}
+LINK-LI-6299f2f8fa <- records/link/{"text": "DL-1004", "href": "/records/dl-1004"}
+LINK-LI-c51b799ac0 <- records/link/{"text": "DL-1005", "href": "/records/dl-1005"}
+LINK-LI-a490ae2283 <- records/link/{"text": "DL-1006", "href": "/records/dl-1006"}
+HEADING-LI-c78ed2f1ab incidental -> calibration yes (heading 'Upcoming programs')
+HEADING-LI-88c0ca1cb8 incidental -> calibration yes (heading "This month's spotlight")
+HEADING-LI-ac0072ec23 incidental -> calibration yes (heading 'New at the library')
+HEADING-LI-7019766049 incidental -> calibration yes (heading 'Resources')
+HEADING-LI-ae1bbca539 incidental -> calibration yes (heading 'Branch hours')
+HEADING-LI-839d21f5de incidental -> calibration yes (heading 'Board records')
+HEADING-LI-f385fe6043 incidental -> calibration yes (heading 'Catalog results')
+HEADING-LI-45486892a2 incidental -> calibration yes (heading 'Recently added records')
+IDENT-LI-eb768aa9e7 incidental -> calibration yes (ident '"Driftwood Public Library" (3 views, header) | "Home" (3 views, nav)')
+IMAGE-LI-e4d6e5fc60 incidental -> calibration yes (image 'arrow')
+IMAGE-LI-21d92bc9e2 incidental -> calibration yes (image '(alt="")')
+LINK-LI-d39dd0523e incidental -> calibration yes (link 'Driftwood Public Library')
+LINK-LI-4b2a1e26a0 incidental -> calibration yes (link 'Home')
+LINK-LI-be83aa2dde incidental -> calibration yes (link 'Resources')
+LINK-LI-a5377f828b incidental -> calibration yes (link 'Records')
+LINK-LI-0e7a0eb79f incidental -> calibration yes (link 'Hours')
+LINK-LI-6f4f5ec14f incidental -> calibration yes (link 'Contact')
+LINK-LI-4159a4dc43 incidental -> calibration yes (link 'The Tide Table')
+LINK-LI-1e70aec2b2 incidental -> calibration yes (link 'Harbor Lights')
+LINK-LI-a4e54bd27b incidental -> calibration yes (link 'Northbound')
+LINK-LI-5cdeb97b58 incidental -> calibration yes (link 'A Season of Salt')
+LINK-LI-e152e2486b incidental -> calibration yes (link 'Driftwood and Dune')
+LINK-LI-e7445a5044 incidental -> calibration yes (link 'The Long Ferry')
+TITLE-LI-f6b475f45a incidental -> calibration yes (title 'Driftwood Public Library — Programs')
+TITLE-LI-a9b1aa854a incidental -> calibration yes (title 'Driftwood Public Library — Resources')
+TITLE-LI-ef1b76836b incidental -> calibration yes (title 'Driftwood Public Library — Records')
+IMAGE-LI-e4d6e5fc60 OVERRIDE {"expected": "no", "tier": "calibration", "unsure_ok": false, "reference": "F89 (image-row twin of the planted icon-only link whose alt names the icon)", "polarity": "failure", "clause1_evidence": false, "loses": ["names the icon", "arrow", "where it goes", "destination"], "note": "Image twin of the planted F89 link row; calibration tier so the element is counted once."}
+LINK-LI-5deb85f217 OVERRIDE {"tier": "calibration", "clause1_evidence": false, "note": "Raw-URL link text: the rubric itself allows a readable domain the user is meant to see, so the verdict is convention-dependent; calibration tier."}
+LINK-LI-a73c6c9f68 OVERRIDE {"tier": "calibration", "clause1_evidence": false, "note": "PDF link without a format cue: the rubric's convention, not a WCAG failure technique (same ruling as clean-control's schedule link); calibration tier."}
+LINK-LI-b2776e14df OVERRIDE {"reference": "F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure)", "note": "reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as the invalid td rows), not the model's failure; expected stays no.", "unsure_ok": true}
+LINK-LI-c48980d950 OVERRIDE {"reference": "F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure)", "note": "reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as the invalid td rows), not the model's failure; expected stays no.", "unsure_ok": true}
+LINK-LI-f7259f7b59 OVERRIDE {"reference": "F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure)", "note": "reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as the invalid td rows), not the model's failure; expected stays no.", "unsure_ok": true}
+LINK-LI-901fe7deda OVERRIDE {"reference": "F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure)", "note": "reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as the invalid td rows), not the model's failure; expected stays no.", "unsure_ok": true}
+LINK-LI-51c84ee852 OVERRIDE {"reference": "F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure)", "note": "reference corrected after live technique verification; verdict and tier as authored (must/no). Rubric finding for the critic pass: its card-grid rule reaches this verdict for the AAA reason (indistinguishable when listed); at AA the ground is F63, so a card whose link shares the paragraph or sits under a heading would pass 2.4.4 while the rubric still says no. | rubric v0.2 re-draws (both) judged these yes because the flattened context carries the card text; v0.3 routes other-sentence context to unsure. unsure_ok reflects the capture limit (same class as the invalid td rows), not the model's failure; expected stays no.", "unsure_ok": true}
+LINK-LI-f72af258ca INVALID (maintainer override): capture limit: the inventory's link context is the nearest text block (td), which for an ID-only cell is empty; the record name in the sibling cell never reaches the row, so the rubric's paired-column rule is undecidable from the row. Skill follow-up filed for the critic pass (context for td links should be the tr).
+LINK-LI-44b51f4ece INVALID (maintainer override): capture limit (see LINK-LI-f72af258ca)
+LINK-LI-59ee6ec8fc INVALID (maintainer override): capture limit (see LINK-LI-f72af258ca)
+LINK-LI-6299f2f8fa INVALID (maintainer override): capture limit (see LINK-LI-f72af258ca)
+LINK-LI-c51b799ac0 INVALID (maintainer override): capture limit (see LINK-LI-f72af258ca)
+LINK-LI-a490ae2283 INVALID (maintainer override): capture limit (see LINK-LI-f72af258ca)

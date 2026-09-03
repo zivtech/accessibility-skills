@@ -1,0 +1,12 @@
+Parsed: 23 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 23/23 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 4/4 found
+Clean rows (R2): 0/3 unflagged; false alarms: 3 [IMAGE-HE-3874bb13ba, IMAGE-HE-81bb016fc0, IMAGE-HE-8290c606ac]
+Calibration rows (R3, informational): 16/16 agree
+Discriminating rows (D, flags absent or pointing the wrong way): 0/0 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R2 false alarm: expected-yes row IMAGE-HE-3874bb13ba judged no (G94)
+MUST MISS: R2 false alarm: expected-yes row IMAGE-HE-81bb016fc0 judged no (G95)
+MUST MISS: R2 false alarm: expected-yes row IMAGE-HE-8290c606ac judged no (H67)
+
+Status: FAIL

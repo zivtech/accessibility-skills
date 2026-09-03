@@ -1815,3 +1815,31 @@ evidence). Run under heavy Ollama contention (first request timed out at
 1800 s and was redrawn; timings are not model speed). Receipts:
 `evals/results/opevidence-scorer-2026-09/local-qwen36-35b/RESULTS.md`.
 Routing unchanged: detector, not a verdict authority.
+
+## a11y-content-judgment lane — first rows (2026-09-02)
+
+Lane: `evals/suites/a11y-content-judgment/` (6 blind-authored fixtures run
+through the skill's own inventory + builder; 40 must rows: 21 planted
+defective / 19 planted clean; 156 calibration rows reported never counted;
+7 invalid). Scorer `ollama/score_content_judgment.py`; conditions `cj`
+(judgment rubric = system prompt) and `cj-baseline`. Full receipts and
+adjudications: `evals/results/content-judgment-2026-09/README.md`.
+
+| Row | Condition | Status | Must-no found | False alarms | Note |
+|---|---|---|---|---|---|
+| opus × 2 draws, 5 fixtures (titles, images, headings/fields, identification, clean control) | cj | WARN/WARN ×4, PASS/PASS ×1 | 14/14 both draws | 0 | WARNs are the uncalibrated R6 `loses` check |
+| opus × 2 draws, link-purpose-cards | cj | **FAIL/FAIL** | 7/7 both draws | **1** (same row both draws) | the in-sentence "Learn more" — a rubric rule reasoning from 2.4.9 at an AA target; rubric REVISE item |
+| opus × 2 draws, link-purpose-cards | baseline | FAIL/FAIL | 2/7 | 0 | bare opus judges all five card-grid F63 rows yes/unsure — the rubric carries that detection |
+| opus × 2 draws, images-role-routing | baseline | WARN/WARN | 4/4 | 0 | bare opus already routes image roles correctly; the rubric adds nothing measurable here |
+| qwen3.6:35b, link-purpose-cards | cj | FAIL | 1/7 | 0 | detector row: judged every "Learn more" yes, ignoring the rubric's grid rule — routing rule unchanged (hosted tier drafts; local pre-sorts only) |
+
+Reading (rubric v0.1): every planted defective row was found in every
+hosted rubric draw; the one false alarm is draw-stable and attributable to
+the rubric, not to a judge or a fixture (WCAG 2.4.4 accepts same-sentence
+context). Re-draws after the critic fold: v0.2 (AA context rule) 2/7 found,
+0 false alarms — undecidable from the flattened context; **v0.3**
+(same-sentence proxy, other-sentence context → `unsure` for the human):
+draw 5 7/7 found (5 deferred), 0 false alarms, draw 6 WARN. The rows
+the rubric gets right are the clause-1 evidence for F25, F30, F65, F89,
+F63, G130/G131 absence, and G197; full-decidability needs the context
+capture follow-up.

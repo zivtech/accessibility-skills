@@ -1,0 +1,407 @@
+{
+ "schema": "judgment-units/v1",
+ "built_utc": "2026-09-02T23:50:56.600Z",
+ "inventory_sha256": "7ee635ae97ea59a6427cd686807f6aa09858ddbc5d72adf61607314d326647e6",
+ "views_ok": 2,
+ "views_skipped": [],
+ "viewport": {
+  "id": "desktop-1440",
+  "width": 1440,
+  "height": 900
+ },
+ "caps": {
+  "headings": 250,
+  "links": 500,
+  "images": 250,
+  "fields": 120,
+  "nav_links": 120
+ },
+ "unit_count": 19,
+ "units": [
+  {
+   "id": "TITLE-WA-2aefe37679",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Northbridge Water Quality Lab — Sample Submission",
+   "detail": "h1: Submit a sample",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/intake.html",
+   "flags": []
+  },
+  {
+   "id": "TITLE-WA-85b3d95b62",
+   "type": "title",
+   "sc": "2.4.2",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "Northbridge Water Quality Lab — Reports",
+   "detail": "h1: Sample report NB-3391",
+   "context": "",
+   "landmark": null,
+   "selector": "title",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/reports.html",
+   "flags": []
+  },
+  {
+   "id": "HEADING-WA-aa218aa0e0",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Submit a sample",
+   "detail": "h1",
+   "context": "Complete the form below for each sample collected during today's rounds. Submissions are reviewed within one business day.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-WA-a6eba7ca21",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Look up a past submission",
+   "detail": "h2",
+   "context": "Search",
+   "landmark": "main",
+   "selector": "html > body > main > section > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-WA-55e1c33b47",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "Sample report NB-3391",
+   "detail": "h1",
+   "context": "Overview Turbidity readings held steady this week while residual chlorine dipped slightly below the usual weekday range.",
+   "landmark": "main",
+   "selector": "html > body > main > h1",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "HEADING-WA-e180f996ca",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "Overview",
+   "detail": "h2",
+   "context": "Turbidity readings held steady this week while residual chlorine dipped slightly below the usual weekday range.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(1) > h2",
+   "visible": true,
+   "href": null,
+   "flags": [
+    "heading_generic"
+   ]
+  },
+  {
+   "id": "HEADING-WA-29d24d1db5",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "Details",
+   "detail": "h2",
+   "context": "The intake line near the north reservoir showed a two-hour window of elevated sediment following Tuesday's rainfall.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(2) > h2",
+   "visible": true,
+   "href": null,
+   "flags": [
+    "heading_generic"
+   ]
+  },
+  {
+   "id": "HEADING-WA-c67484fbba",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "",
+   "detail": "h2",
+   "context": "Full trend charts for the quarter are attached as a separate download for technicians who want the underlying readings.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(3) > h2",
+   "visible": false,
+   "href": null,
+   "flags": [
+    "heading_empty",
+    "name_from_none"
+   ]
+  },
+  {
+   "id": "HEADING-WA-bc179b1620",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "24.3",
+   "detail": "h2",
+   "context": "Any reading outside the posted range should be flagged to the shift lead before the sample is logged as complete.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(4) > h2",
+   "visible": true,
+   "href": null,
+   "flags": [
+    "heading_numeric_only"
+   ]
+  },
+  {
+   "id": "HEADING-WA-001086e629",
+   "type": "heading",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "reports"
+   ],
+   "view_count": 1,
+   "name": "Compliance and Reporting Obligations Under the Regional Watershed Monitoring Agreement",
+   "detail": "h2",
+   "context": "This section summarizes the lab's ongoing obligations to the regional watershed authority under the current multi-year monitoring agreement.",
+   "landmark": "main",
+   "selector": "html > body > main > section:nth-of-type(5) > h2",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "LINK-WA-fc188a29f8",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "waterlab",
+   "views": [
+    "intake",
+    "reports"
+   ],
+   "view_count": 2,
+   "name": "Northbridge Water Quality Lab",
+   "detail": "content",
+   "context": "",
+   "landmark": "header",
+   "selector": "html > body > header > a",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/",
+   "flags": []
+  },
+  {
+   "id": "LINK-WA-bd8454d80f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "waterlab",
+   "views": [
+    "intake",
+    "reports"
+   ],
+   "view_count": 2,
+   "name": "Submit a Sample",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(1)",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/intake.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-WA-fd0eb2e84f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "waterlab",
+   "views": [
+    "intake",
+    "reports"
+   ],
+   "view_count": 2,
+   "name": "Reports",
+   "detail": "content",
+   "context": "",
+   "landmark": "nav",
+   "selector": "html > body > header > nav > a:nth-of-type(2)",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/reports.html",
+   "flags": []
+  },
+  {
+   "id": "LINK-WA-04b70e124f",
+   "type": "link",
+   "sc": "2.4.4",
+   "product": "waterlab",
+   "views": [
+    "intake",
+    "reports"
+   ],
+   "view_count": 2,
+   "name": "Contact",
+   "detail": "content",
+   "context": "",
+   "landmark": "footer",
+   "selector": "html > body > footer > a",
+   "visible": true,
+   "href": "https://www.northbridge-waterlab.example/contact.html",
+   "flags": []
+  },
+  {
+   "id": "FIELD-WA-851a4e854b",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "(no label; placeholder-only)",
+   "detail": "text; label from placeholder-only; placeholder \"Enter sample ID\"",
+   "context": "",
+   "landmark": "form",
+   "selector": "html > body > main > form > p:nth-of-type(1) > input",
+   "visible": true,
+   "href": null,
+   "flags": [
+    "field_unlabeled_placeholder-only"
+   ]
+  },
+  {
+   "id": "FIELD-WA-452339d1be",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Collection date",
+   "detail": "date; label from label[for]",
+   "context": "",
+   "landmark": "form",
+   "selector": "#collected",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "FIELD-WA-7e6f8a75d0",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "TCLI",
+   "detail": "number; label from label[for]",
+   "context": "",
+   "landmark": "form",
+   "selector": "#tcli",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "FIELD-WA-ae1a2e68cc",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Field notes",
+   "detail": "textarea; label from label[for]",
+   "context": "",
+   "landmark": "form",
+   "selector": "#notes",
+   "visible": true,
+   "href": null,
+   "flags": []
+  },
+  {
+   "id": "FIELD-WA-c7f6cc14da",
+   "type": "field",
+   "sc": "2.4.6",
+   "product": "waterlab",
+   "views": [
+    "intake"
+   ],
+   "view_count": 1,
+   "name": "Search past submissions",
+   "detail": "search; label from aria-label",
+   "context": "",
+   "landmark": "main",
+   "selector": "html > body > main > section > p > input",
+   "visible": true,
+   "href": null,
+   "flags": []
+  }
+ ],
+ "nav_consistency": [
+  {
+   "product": "waterlab",
+   "host": "www.northbridge-waterlab.example",
+   "view_id": "intake",
+   "views_in_group": 2,
+   "shared_items": 2,
+   "present_shared": 2,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  },
+  {
+   "product": "waterlab",
+   "host": "www.northbridge-waterlab.example",
+   "view_id": "reports",
+   "views_in_group": 2,
+   "shared_items": 2,
+   "present_shared": 2,
+   "missing_shared": 0,
+   "extra_items": 0,
+   "order_consistent": true,
+   "first_order_violation": null,
+   "note": "shared navigation items present in the same relative order"
+  }
+ ]
+}
