@@ -67,7 +67,7 @@ Adopting the baseline must not erode these:
 | ACR/VPAT production (incl. GSA OpenACR format) | defer; declare boundary now | A real federal engagement's deliverable pressure lands on the Accessibility Conformance Report first. The federal annex is evidence aggregation *feeding* whoever authors the ACR — it is not an ACR and must not be mistaken for one. Watch OpenACR; adopt deliberately if ever. |
 | Eval lane: de-hinted federal audit fixture + baseline-ID fidelity checks in the bug-reporting scorer | adopt (Phase 3, costed separately) | Fabrication-of-exact-IDs is a documented local-model failure class; instrument it before routing any generation. |
 | Electronic Documents baseline | defer; declare boundary now | Web-only measurement stack; PDF/Office testing is a capability we do not have and must say so. |
-| ANDI (SSA bookmarklet TT relies on) via agent-browser injection | defer (watch, validation-gated) | Plausible reconnaissance lane; unvalidated. No adoption without a verified spike, per house tool discipline. |
+| ANDI (SSA bookmarklet TT relies on) via agent-browser injection | defer (watch, validation-gated) | Plausible reconnaissance lane; unvalidated. No adoption without a verified spike, per house tool discipline. Spike specified 2026-09-03 with kill criteria — see Phase 4a below; **specified is not run**, and the defer stands until it is. |
 | Software / hardware baselines | watch | Planned upstream, unpublished. |
 | Trusted Tester certification claims or TT-course simulation | **reject** | Certification is a DHS credential held by humans. Outputs may be "baseline-aware" and TT-reproducible in form; they are never "Trusted Tester certified." |
 | Self-declaring the bundle "baseline-aligned/conformant" | **reject wording** | Alignment recognition is an external review (`DevelopTestProcess` framing). We say "designed to cover baseline tests X–Y; gaps: Z" — the crosswalk's honest output — never a conformance badge. |
@@ -111,7 +111,38 @@ Each phase is a single revertible commit; SKILL.md edits mirror to `.agents/skil
 
 ### Phase 4 — Watch items
 
-12. Software/hardware baselines publish → assess. ANDI spike validated → reconsider the defer. TT course/version churn (v5.1.3 as of April 2024) → refresh reference. Upstream repo activity (repo push 2026-08-09 on a working branch; `main` `_baselines/` content last changed 2026-02-05 — this is a *live* standard) → the push-triggered recheck in Phase 0. Three upstream working branches already signal churn: `keng-nextversion-3x` (a 3.x successor in flight), `keng-porfolio-reorg` (site reorg — URL anchors at risk; the archive snapshots are the hedge), `kengdoj-BaselinetoACT` (upstream ACT mapping that would supersede the Phase 0 hand classification — by design, see step 3).
+12. Software/hardware baselines publish → assess. ANDI spike validated → reconsider the defer (the spike is specified in Phase 4a as of 2026-09-03; unrun). TT course/version churn (v5.1.3 as of April 2024) → refresh reference. Upstream repo activity (repo push 2026-08-09 on a working branch; `main` `_baselines/` content last changed 2026-02-05 — this is a *live* standard) → the push-triggered recheck in Phase 0. Three upstream working branches already signal churn: `keng-nextversion-3x` (a 3.x successor in flight), `keng-porfolio-reorg` (site reorg — URL anchors at risk; the archive snapshots are the hedge), `kengdoj-BaselinetoACT` (upstream ACT mapping that would supersede the Phase 0 hand classification — by design, see step 3).
+
+### Phase 4a — The ANDI spike (specified 2026-09-03; not yet run)
+
+The defer above has sat on "unvalidated" since 2026-08-12 without saying what validation would look like, which makes it un-actionable and lets the item drift indefinitely. This specifies the probe so the defer can actually resolve in one direction or the other. Following the house pattern: a time-boxed probe with kill criteria, **not** a full assessment — a full assessment is what happens *if* the probe passes.
+
+**What ANDI is.** A bookmarklet from SSA's Accessible Solutions Branch ([install](https://www.ssa.gov/accessibility/andi/help/install.html), [source](https://github.com/SSAgov/ANDI), open source) that inspects accessible names, descriptions, roles, states, and structural relationships in a live page. It is the tool the DHS Trusted Tester process is taught and conducted with, which is why federal reviewers ask for it by name.
+
+**The hypothesis worth testing.** Not "is ANDI good" — it is, for humans. The question is narrower and it is the only one that would change anything here: *does injecting ANDI and reading its output produce evidence this stack cannot already produce, on baseline tests currently marked not-covered or partial in the [crosswalk](../.claude/skills/a11y-test/references/ict-baseline-crosswalk.yaml)?*
+
+**Time box:** half a day. If it runs long, that is itself a result — the routing cost exceeds the evidence value.
+
+**Method.**
+1. Pick 3 baseline tests from the crosswalk's not-covered/partial rows where ANDI's inspection surface plausibly applies, and 1 covered row as a control.
+2. Inject ANDI into a page under test via Playwright, and capture its output programmatically rather than by screenshot.
+3. For each of the 4, produce the same evidence with the modes already routed here (axe-core, keyboard-a11y-tester, virtual-screen-reader, `page.accessibility.snapshot()`).
+4. Diff. The deliverable is the delta, not a demo.
+
+**Kill criteria — any one of these ends it as a defer, permanently or until a named trigger fires:**
+- **No delta.** Every not-covered/partial row ANDI addresses is already producible by a routed mode. This is the likeliest outcome and the most valuable one to have on the record.
+- **Output is not machine-readable without scraping rendered DOM.** ANDI is built to be read by a person. If the only way to get its results is parsing its own injected UI, the evidence is fragile against any upstream change and the maintenance cost lands on us.
+- **The delta is judgment, not data.** If what ANDI adds is *a human reading its output and deciding*, then automating the injection produces another data dump and the detector-not-a-verdict-authority rule applies unchanged. That is not a reason to adopt; it is a reason the manual protocol stays where it is.
+- **Licence or distribution blocks routing.** Confirm before, not after.
+
+**Pass criterion (all three, not any):** a machine-readable delta, on at least one currently not-covered baseline row, that no routed mode produces. Anything less leaves the defer standing.
+
+**What passing would earn:** a full adoption assessment, on the standard form. Not adoption.
+
+**Prior on the outcome, stated up front so the probe cannot be graded generously after the fact:** the crosswalk's not-covered rows are not-covered mostly because they need human or real-AT judgment, not because they need a better inspector. The expected result is *no delta*, and recording that clearly is worth the half day — it converts a standing "we should probably look at ANDI" into a closed question with a reopen trigger.
+
+**Correlated-dependency note.** ANDI and YANKI are the same SSA branch. Adopting both is one bet, not two — the same reasoning already applied to `@guidepup/guidepup` and virtual-screen-reader sharing a maintainer. YANKI's technique is documented in `a11y-test` (attribute-removal differential diagnosis) with no dependency routed, which is the shape to prefer here too if the ANDI probe ever passes.
+
 
 ## Risks & Uncertainty
 

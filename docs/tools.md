@@ -50,6 +50,7 @@ This is the half that gets skipped, and skipping it is how a clean scan becomes 
 | Can a keyboard-only or screen-reader user complete this task on a live URL? | `keyboard-a11y-tester` |
 | What does a screen reader announce for this component, pre-deploy? | `@guidepup/virtual-screen-reader` |
 | What is the ARIA structure here — and did my fix work? | `agent-browser` (snapshot + ref pattern) |
+| Is this attribute actually *why* the experience is broken? | Attribute-removal differential diagnosis — see `a11y-test` |
 | Did this page change visually? | Playwright screenshots or BackstopJS |
 | Can I get a test script from this prose spec? | `/webwright:run` |
 
@@ -61,6 +62,8 @@ No tool in the table above closes the gap. The [ICT Testing Baseline crosswalk](
 
 The 13 not-covered rows are the deliverable, not the residue: they name exactly what has to go to manual testing and real assistive technology. An investigation that reports only automated results has not done those 13.
 
+ANDI sits in this gap too, and is deferred rather than adopted — see the decision table below. Note that ANDI and YANKI are the same SSA branch, so adopting both would be one bet rather than two, exactly as noted for `@guidepup/guidepup` and virtual-screen-reader sharing a maintainer.
+
 Real-AT automation (`@guidepup/guidepup`, driving actual VoiceOver or NVDA) is **deliberately deferred**, not overlooked. It needs macOS/Windows runners, and it shares a maintainer with virtual-screen-reader — so it is a correlated fallback, not risk diversification. The documented capability floor if that engine ever dies is the manual AT protocol, which is why the manual protocol stays a shipping gate rather than a legacy section.
 
 ## Evaluated and not adopted
@@ -71,6 +74,8 @@ Recorded so a future reader can tell a decision from an omission.
 |---|---|
 | [Siteimprove Alfa](alfa-scan-adoption-assessment.md) | Negative result. Measured, written up, not adopted; reopen triggers recorded |
 | Lighthouse accessibility audits | Measured head-to-head against `baseline-url-scan.mjs` on identical axe-core 4.13.0: **zero Lighthouse-only findings, our mode a strict superset on every page.** It also scored a page 100 while that page carried 4 real axe findings its 66-audit set omits — a false-clean hazard if the score is trusted alone |
+| [ANDI](https://www.ssa.gov/accessibility/andi/help/install.html) (SSA, [source](https://github.com/SSAgov/ANDI)) | **Deferred, validation-gated.** The inspector the DHS Trusted Tester process is taught with, so federal reviewers ask for it by name. Not adopted on reputation: the probe that would resolve the defer — with kill criteria and a stated prior of *no delta* — is specified in the [ICT baseline assessment](ict-testing-baseline-adoption-assessment.md), Phase 4a, and has not been run |
+| [YANKI](https://www.ssa.gov/accessibility/yanki/yanki.html) (SSA, [source](https://github.com/SSAgov/YANKI)) | **Technique adopted, dependency not routed.** Attribute-removal differential diagnosis is now documented in `a11y-test` with YANKI credited. The bookmarklet is a convenience wrapper for testers without a scripting environment; in a scripted lane the removal is one line, and scripting it makes the before/after pair capturable as evidence |
 | Playwright MCP for keyboard events | Rejected — silently drops key presses |
 | Vital-Core scanner runtime | Reporting discipline adopted, [runtime rejected](vital-core-adoption-assessment.md) |
 

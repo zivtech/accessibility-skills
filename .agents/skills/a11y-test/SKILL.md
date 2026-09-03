@@ -139,6 +139,45 @@ Key flags: `--profile Default` (reuse the user's Chrome login state for authenti
 
 **When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
 
+## Attribute-removal differential diagnosis
+
+A finding usually names a **cause**: "the `aria-label` is overriding better visible text", "`tabindex="0"` on the wrapper is why tab order is wrong". A snapshot proves the attribute exists. It does not prove the attribute is *why*. Differential diagnosis closes that gap: remove the suspect attribute, re-observe under identical conditions, and see whether the experience actually improves.
+
+Technique credited to SSA's [YANKI](https://www.ssa.gov/accessibility/yanki/yanki.html) bookmarklet (Accessible Solutions Branch — same team as ANDI), which does exactly this for human testers. The bookmarklet itself is not routed here: in a scripted lane the removal is one line, and scripting it means the before/after pair is *capturable as evidence* rather than something you saw once.
+
+```js
+// Playwright. Baseline first — never mutate before you have captured the baseline.
+const before = await page.accessibility.snapshot();
+
+await page.evaluate(() =>
+  document.querySelectorAll('[aria-label]').forEach(el => el.removeAttribute('aria-label'))
+);
+
+const after = await page.accessibility.snapshot();
+// The diff is the evidence. Attach both halves, not the conclusion.
+```
+
+What each removal tests, and what a positive result means:
+
+| Remove | If the result improves, the finding is |
+|---|---|
+| `aria-label` / `aria-labelledby` | the accessible name is overriding better visible text (2.5.3, 4.1.2) |
+| `role` | an applied role is fighting the element's native semantics |
+| `tabindex` > 0 | the author-imposed order is why focus order is illogical (2.4.3) |
+| `tabindex="-1"` on an interactive control | the control is being held out of the tab order (2.1.1) |
+| `tabindex="0"` on a non-interactive element | tab-order noise, not a real stop |
+| `aria-hidden` | content is hidden from assistive technology that should not be |
+
+Rules:
+
+- **It is a diagnostic, never a fix and never a conformance result.** "Removing X made it better" is evidence about a cause. The remediation is still a design decision, and stripping the attribute in production is almost never it.
+- **Baseline before you mutate, and re-observe under identical conditions** — same viewport, same route, same focus starting point. A differential taken across two different states measures nothing.
+- **Capture both halves.** A before/after pair is admissible under the verification evidence contract; "I removed it and it looked better" is not.
+- **Run it in a scratch tab, never a page the user is working in.** The DOM mutation is real.
+- **A worse result is also a result.** If removal degrades the experience, the hypothesis is falsified — record that, do not quietly re-run with a different attribute until something confirms the finding you already wrote.
+
+**Not yet verified:** the `agent-browser` equivalent of the `page.evaluate` step. The Playwright form above is the verified route; anyone wiring the agent-browser lane should confirm its own subcommand against `--help` first rather than assuming one exists.
+
 ## Test script generation with Webwright
 
 **When to use:** You have a prose a11y requirement (from the planner or a ticket) and need a runnable test script, without hand-writing it.
