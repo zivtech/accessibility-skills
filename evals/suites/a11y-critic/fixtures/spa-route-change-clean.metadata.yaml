@@ -1,0 +1,96 @@
+fixture_id: spa-route-change-clean
+name: Client-Side Route Change With Title and Focus Handled (CLEAN)
+description: The same React Router portal shell with the route-change lifecycle handled — a pathname-keyed effect sets a per-section document title and moves focus to the view heading, exempting the initial render and separating scroll from focus.
+language: jsx
+framework: React (React Router)
+difficulty: CLEAN
+domain: Navigation & Focus Management
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Both halves of the route-change contract — the title that identifies the view and the focus that lands in it — are handled, and the edge cases around them (initial render, scroll interaction, DOM commit timing) are handled deliberately."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: focus lands on the heading, so the user hears the section name but not that a navigation completed; some implementations add the word 'page' or the site name to the focused heading's accessible name for that context"
+    severity: ENHANCEMENT
+
+  - category: false_positive_trap
+    count: 4
+    items:
+      - description: "Skipping the focus move on the initial render is correct, not a gap"
+        impact: "Lines 34-37 return early on first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. Flagging 'focus is not managed on first load' inverts the reason for the guard."
+
+      - description: "tabIndex={-1} on the <h1> is the correct mechanism, not tabindex misuse"
+        impact: "Line 71 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
+
+      - description: "There is no aria-live route announcer, and that is a choice rather than an omission"
+        impact: "Moving focus to the heading announces it. Adding a live region as well makes most screen readers say the view name twice. Flagging 'route changes are not announced' ignores that focus movement is the announcement here."
+
+      - description: "preventScroll: true is correct because the component scrolls the window itself"
+        impact: "Line 39 scrolls to the top and line 40 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
+
+components_analyzed:
+  - name: Title effect
+    status: "Correct — pathname-derived title from the same SECTIONS list that renders the nav (lines 24-28), so nav label and title cannot drift"
+
+  - name: Focus effect
+    status: "Correct — pathname-keyed, exempt on first render, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 33-43)"
+
+  - name: View heading
+    semantic_element: h1
+    aria_attributes: ["tabIndex={-1}"]
+    status: "Correct — one heading in the shell rather than one per view, which keeps the focus target stable across routes and gives it a visible focus indicator (lines 71-73, 161-167)"
+
+  - name: Section nav
+    semantic_element: nav
+    aria_attributes: ["aria-label='Account sections'", "aria-current='page'"]
+    status: "Correct"
+
+  - name: Main landmark
+    semantic_element: main
+    status: "Correct — the skip-link target, and the heading and outlet both live inside it"
+
+wcag_criteria:
+  - "2.4.2 Page Titled (each route sets a title naming the section and the site)"
+  - "2.4.3 Focus Order (focus follows the view replacement into the new content)"
+  - "2.4.7 Focus Visible (the programmatic focus target keeps a visible indicator)"
+
+multi_perspective_coverage:
+  - screen_reader: "On each navigation the heading is focused and announced, so the user learns that the view changed and which one arrived; checking the page title (Insert+T / VO+F2) names the section rather than the site alone."
+  - keyboard: "Focus lands at the top of the new content, so the next Tab reaches the first control in the view instead of the remaining nav links. Every focusable element, including the programmatically focused heading, has a visible indicator."
+  - low_vision: "The window is scrolled to the top before focus moves, so a magnifier user's viewport follows the focused heading to the start of the new view rather than jumping to an arbitrary offset."
+  - cognitive: "Tab labels and history entries name the section, so returning to a view or telling two open tabs apart is possible."
+
+notes: |
+  This is the **CLEAN baseline** for client-side route changes, and the pair
+  member of spa-route-change-unannounced.
+
+  Expected verdict: ACCEPT
+
+  Provenance: GT-05 (ledger PT-14), promotion wave 2, fixture-first.
+  Independent public reference: WCAG 2.4.3 Focus Order and 2.4.2 Page Titled.
+  Under promotion-bar clause 3 this half is what makes the rule falsifiable —
+  the BUG fixture alone would reward a reviewer who flags every routed SPA.
+
+  Negative space — what a clean verdict here does NOT certify: this fixture is
+  not evidence about route-level loading or error announcement, in-page anchor
+  focus, back/forward focus restoration, scroll restoration on back navigation,
+  or whether tabs or nav is the right pattern for routed content. It certifies
+  one thing: that a client-side view replacement updates the document title and
+  moves focus into the new view, and that a reviewer does not flag the
+  mechanisms that make that work.
+
+  Two constructs were deliberately avoided during authoring because they would
+  have been unplanted defects rather than clean design. An `outline: none` on
+  the focused heading — common in real code, since some teams dislike a ring on
+  a programmatic target — would have been legitimately flaggable, so the
+  heading keeps its indicator. A visually-hidden `role="status"` route
+  announcer alongside the focus move would have produced a duplicate
+  announcement, so the fixture uses focus movement alone and the rubric scores
+  the absence of a live region as a trap rather than a gap.

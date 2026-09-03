@@ -1,0 +1,123 @@
+fixture_id: spa-route-change-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present. The route-change lifecycle sets a per-view document title and moves focus into the new view, and the edge cases around that — initial render, scroll interaction, DOM commit timing — are handled deliberately."
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the focused heading announces the section name but not that a navigation completed; some implementations extend the focused heading's accessible name for that context"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "25%"
+
+  - category: false_positive_trap
+    count: 4
+    items:
+      - description: "The initial-render exemption is correct — flagging 'focus is not managed on first load' is a false alarm"
+        impact: "Lines 34-37 return early on the first render. On a document load the browser has already placed focus at the start of the document; moving it to the heading would carry the user past the skip link and the nav before they had the chance to use either. A reviewer who reports the guard as a gap has inverted its purpose."
+        expected_to_find: "60%"
+
+      - description: "tabIndex={-1} on the <h1> is the mechanism, not a tabindex misuse"
+        impact: "Line 71 makes the heading a programmatic focus target without putting it in the Tab order. Flagging 'tabindex on a non-interactive element' or 'headings should not be focusable' would remove the only thing that lets focus land in the new view. This is the trap most likely to catch a reviewer applying a tabindex rule without asking what the element is for."
+        expected_to_find: "65%"
+
+      - description: "The absence of an aria-live route announcer is a choice, not an omission"
+        impact: "Focus movement to the heading is the announcement. Adding a live region as well makes most screen readers speak the view name twice. Flagging 'route changes are not announced to screen readers' treats a live region as the only valid mechanism and would introduce a duplicate announcement."
+        expected_to_find: "55%"
+
+      - description: "preventScroll: true is correct because the component scrolls the window itself"
+        impact: "Line 39 scrolls to the top and line 40 then focuses with preventScroll, so the app decides the scroll position rather than the browser's scroll-into-view heuristic. Flagging 'preventScroll means the user never sees the heading' has read line 40 without line 39."
+        expected_to_find: "60%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should recognise focus-to-heading as the standard route-change pattern and return ACCEPT. The live-region trap is the one most likely to catch a reviewer who equates 'announced' with 'aria-live' rather than asking what the user actually hears."
+  - condition: baseline-zero-shot
+    expected_score: 35-70
+    reasoning: "At real risk on the tabindex and live-region traps — a focusable heading and a routed view with no aria-live both look like defects to a rule-matching read."
+  - condition: baseline-few-shot
+    expected_score: 45-75
+    reasoning: "A focus-management example reduces the tabindex false alarm but does not usually convey that focus movement and a live region are alternatives rather than a pair."
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  Provenance: GT-05 (ledger PT-14), CLEAN member of the pair with
+  spa-route-change-unannounced. Independent public reference: WCAG 2.4.3 Focus
+  Order and 2.4.2 Page Titled.
+
+  Under promotion-bar clause 3 this half is what makes the rule falsifiable: the
+  BUG fixture alone would reward a reviewer who flags every routed SPA, and this
+  one penalises exactly that.
+
+  Negative space — what a clean verdict here does NOT certify: this fixture is
+  not evidence about route-level loading or error announcement, in-page anchor
+  focus, back/forward focus or scroll restoration, or whether tabs or nav is the
+  right pattern for routed content. It certifies that a client-side view
+  replacement updates the title and moves focus into the new view, and that a
+  reviewer does not flag the mechanisms that make that work.
+
+  Two constructs were kept out of the fixture during authoring because they
+  would have been unplanted defects rather than clean design, the failure mode
+  that put two real defects into modal-complete-clean before its 2026-07-16
+  revision. An `outline: none` on the focused heading is common in real code and
+  would have been legitimately flaggable, so the heading keeps a visible
+  indicator (lines 161-167). A visually-hidden role="status" route announcer
+  beside the focus move would produce a duplicate announcement, so the fixture
+  uses focus movement alone — and its absence is scored here as a trap rather
+  than as a gap.

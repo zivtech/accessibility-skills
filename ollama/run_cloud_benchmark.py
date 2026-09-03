@@ -134,6 +134,8 @@ ALL_CRITIC_FIXTURES = [
     "map-controls-clean", "pseudo-link-map-controls",
     # GT-11 paired id/name columns are not a 3.2.4 case (2026-09-03):
     "paired-id-name-columns-clean", "row-action-inconsistent-labels",
+    # GT-05 (PT-14) SPA route-change focus + title (2026-09-03):
+    "spa-route-change-clean", "spa-route-change-unannounced",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",

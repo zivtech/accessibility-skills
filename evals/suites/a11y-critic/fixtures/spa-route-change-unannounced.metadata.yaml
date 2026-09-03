@@ -1,0 +1,98 @@
+fixture_id: spa-route-change-unannounced
+name: Client-Side Route Change Leaves Focus and Title Behind
+description: React Router portal shell whose section links swap the contents of <main> without moving focus into the new view and without ever changing the document title. Markup in every individual view is correct.
+language: jsx
+framework: React (React Router)
+difficulty: HAS-BUGS
+domain: Navigation & Focus Management
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "Focus is left on the activated nav link after the route view is replaced"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order"
+        evidence: "Lines 42-79: PortalShell uses pathname only for aria-current — no ref, no pathname-keyed effect, and no tabIndex={-1} focus target in any view (lines 8-34)"
+        user_group: "Screen reader users; keyboard-only users"
+        why_it_matters: "A client-side transition does not reset focus the way a document load does. The user hears the link name, then nothing; the content on screen has changed and their focus position has not. The skip link (lines 47-49) sits before the nav, so from a focused nav link it is only reachable by shift-Tab."
+
+      - description: "The document title never changes between sections"
+        severity: MAJOR
+        wcag: "2.4.2 Page Titled"
+        evidence: "Lines 85-96: a single static <title> in index.html; lines 42-79 contain no document.title assignment"
+        user_group: "Screen reader users; users relying on tab and history labels; users with cognitive disabilities"
+        why_it_matters: "The title is what a screen reader announces on window switch and what NVDA Insert+T / VoiceOver VO+F2 report. Three views that produce three URLs and three headings produce one title, so history entries, bookmarks and tab labels cannot be told apart."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the two defects share one fix site — a single pathname-keyed effect can set the title and move focus, and deriving the title from the SECTIONS list rather than a second hardcoded string keeps them from drifting"
+    severity: ENHANCEMENT
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: "The nav is correct — real <a href> links in a labelled <nav> with aria-current='page'"
+        impact: "Lines 53-67 render NavLink (an <a href>) inside <nav aria-label='Account sections'>, with aria-current set on the active path. Flagging 'buttons should be links', 'nav is unlabelled' or 'no current-page indication' reports a defect that is not there and misses both real ones."
+
+      - description: "Each view has a correct single <h1> inside the <main> landmark"
+        impact: "Lines 8-34 each render one <h1>, and line 70 wraps the outlet in <main id='main-content'>. The defect is not that a heading is missing; it is that nothing sends focus to the heading that exists. A review that reports 'no heading for the new view' has read the markup and not the transition."
+
+      - description: "The skip link exists and is correctly implemented"
+        impact: "Lines 47-49 plus the off-screen/:focus CSS are a working skip link. Flagging it as missing is wrong. The finding it supports is narrower and specific: because it precedes the nav, it does not help a user whose focus was left on a nav link."
+
+components_analyzed:
+  - name: Portal shell
+    semantic_element: div
+    status: "Defective — no focus management and no title update on route change (lines 42-79)"
+
+  - name: Section nav
+    semantic_element: nav
+    aria_attributes: ["aria-label='Account sections'", "aria-current='page' on the active link"]
+    status: "Correct"
+
+  - name: Main landmark
+    semantic_element: main
+    status: "Correct — single <main id='main-content'>, the skip-link target"
+
+  - name: Route views
+    semantic_element: section
+    status: "Correct in isolation — one <h1> each; none is a focus target"
+
+  - name: Document title
+    status: "Defective — set once in index.html (line 90) and never updated"
+
+wcag_criteria:
+  - "2.4.3 Focus Order (focus position after a client-side view replacement)"
+  - "2.4.2 Page Titled (each client-side view needs a title that describes it)"
+
+multi_perspective_coverage:
+  - screen_reader: "Hears the link name on activation and then nothing. No title change, no heading, no announcement — the only way to learn that the view changed is to start reading from the current position, which is inside the header."
+  - keyboard: "Operable but disorienting: focus stays in the nav while the content below has been replaced, so reaching the new content means Tabbing through the remaining nav links, or shift-Tabbing back to a skip link that precedes the nav."
+  - low_vision: "A screen-magnifier user viewing the nav region sees no change; the replaced content is outside the magnified viewport and nothing directs attention to it."
+  - cognitive: "Identical tab and history labels for every section make it hard to return to a view or to tell open tabs apart."
+
+notes: |
+  Provenance: GT-05 (ledger PT-14), promotion wave 2, fixture-first. Independent
+  public reference: WCAG 2.4.3 Focus Order and 2.4.2 Page Titled, plus the
+  keyboard-a11y-tester journey coverage this repo already routes to for
+  route-level evidence. The fixture is the second reproduction under
+  promotion-bar clause 1; no skill text ships on this pattern here.
+
+  Dedupe: a11y-critic/SKILL.md already carries the SPA route-change *focus*
+  rule in Phase 4, but no fixture in any suite exercised it, and the *title*
+  half has no skill text at all (0 hits for 2.4.2 / document.title / "Page
+  Titled" in the critic skill against a 3-hit 2.4.3 control). The nearest
+  neighbour, tabbed-nav-vs-tab-pattern, is about whether tabs or nav is the
+  right pattern for routed content; its expected findings are 4.1.2 and 1.3.1
+  and it scores nothing about what happens after the transition.
+
+  Scope of what this fixture does NOT test: route-level loading, error or
+  recovery announcement (async-retry-error-unannounced), in-page anchor focus,
+  back/forward restoration, and the tabs-vs-nav pattern question. It tests two
+  things — where focus is after a client-side view replacement, and whether the
+  title identifies the view.
