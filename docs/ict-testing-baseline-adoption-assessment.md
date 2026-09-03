@@ -119,7 +119,19 @@ The defer above has sat on "unvalidated" since 2026-08-12 without saying what va
 
 **What ANDI is.** A bookmarklet from SSA's Accessible Solutions Branch ([install](https://www.ssa.gov/accessibility/andi/help/install.html), [source](https://github.com/SSAgov/ANDI), open source) that inspects accessible names, descriptions, roles, states, and structural relationships in a live page. It is the tool the DHS Trusted Tester process is taught and conducted with, which is why federal reviewers ask for it by name.
 
-**The hypothesis worth testing.** Not "is ANDI good" — it is, for humans. The question is narrower and it is the only one that would change anything here: *does injecting ANDI and reading its output produce evidence this stack cannot already produce, on baseline tests currently marked not-covered or partial in the [crosswalk](../.claude/skills/a11y-test/references/ict-baseline-crosswalk.yaml)?*
+**There are two ANDI questions, and they have different answers. Keep them apart.**
+
+**Q1 — ANDI as an automated evidence producer.** *Does injecting ANDI and scraping its output produce evidence this stack cannot already produce, on baseline tests currently marked not-covered or partial in the [crosswalk](../.claude/skills/a11y-test/references/ict-baseline-crosswalk.yaml)?* This is what the probe below tests, and the expected answer is no.
+
+**Q2 — ANDI as the instrument in a guided human verification pass.** Raised 2026-09-03 and **not** answered by the probe below. A VPAT/ACR chain structurally requires human verification: `acr-reporting` emits a draft a person signs, `a11y-content-judgment` refuses any row without a name in `ratified_by`, and the [fix-closure contract](a11y-fix-closure-contract.md) states what must be true at closure. At the *fixed* stage especially, somebody has to walk the pages and confirm the fix on the real thing.
+
+Q2 inverts one of the kill criteria below, and the inversion is the point. "The delta is judgment, not data" disqualifies ANDI as an automated lane — and at a verification stage judgment *is* the deliverable, so the same property becomes the fit. ANDI is also the inspector federal reviewers already know by name, which matters when the artifact is a conformance claim somebody has to defend.
+
+**But Q2's gap is a missing stage, not a missing tool.** This bundle has no guided-verification surface. The fix-closure contract says *what must hold* at closure without saying *how a person establishes it*, and nothing in the lifecycle walks a human through per-page confirmation. Adopting ANDI before that stage exists would be a tool in search of a workflow. Sequencing: **define the verification stage first** — what a person confirms per finding, in what order, recorded how, ratified by whom, following the draft-then-ratify shape `a11y-content-judgment` already establishes — **then ask which instrument helps them do it.** ANDI is a strong candidate for that slot; it is not a substitute for specifying it.
+
+Q2 is unscoped work, recorded here so it does not evaporate. It neither gates nor is gated by the Q1 probe.
+
+**The Q1 probe, specified.**
 
 **Time box:** half a day. If it runs long, that is itself a result — the routing cost exceeds the evidence value.
 
@@ -139,7 +151,7 @@ The defer above has sat on "unvalidated" since 2026-08-12 without saying what va
 
 **What passing would earn:** a full adoption assessment, on the standard form. Not adoption.
 
-**Prior on the outcome, stated up front so the probe cannot be graded generously after the fact:** the crosswalk's not-covered rows are not-covered mostly because they need human or real-AT judgment, not because they need a better inspector. The expected result is *no delta*, and recording that clearly is worth the half day — it converts a standing "we should probably look at ANDI" into a closed question with a reopen trigger.
+**Prior on the Q1 outcome, stated up front so the probe cannot be graded generously after the fact:** the crosswalk's not-covered rows are not-covered mostly because they need human or real-AT judgment, not because they need a better inspector. The expected result is *no delta* — an argument against Q1 and, read carefully, an argument *for* taking Q2 seriously. Recording it clearly is worth the half day — it converts a standing "we should probably look at ANDI" into a closed question with a reopen trigger.
 
 **Correlated-dependency note.** ANDI and YANKI are the same SSA branch. Adopting both is one bet, not two — the same reasoning already applied to `@guidepup/guidepup` and virtual-screen-reader sharing a maintainer. YANKI's technique is documented in `a11y-test` (attribute-removal differential diagnosis) with no dependency routed, which is the shape to prefer here too if the ANDI probe ever passes.
 
