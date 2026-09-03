@@ -1,4 +1,4 @@
-# Fixture: Client-Side Route Change With Title and Focus Handled (CLEAN)
+# Fixture: Account Portal with Client-Side Routing
 
 ## Component Code
 

@@ -1,4 +1,4 @@
-# Fixture: Async Request Failure and Recovery Announced Correctly (CLEAN)
+# Fixture: Account Activity Panel with Retry
 
 ## Component Code
 

@@ -1,4 +1,4 @@
-# Fixture: Paired Case ID and Case Name Links to the Same Record (CLEAN)
+# Fixture: Cases Table with ID and Name Columns
 
 ## Component Code
 

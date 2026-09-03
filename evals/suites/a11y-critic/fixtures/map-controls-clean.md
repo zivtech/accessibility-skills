@@ -1,4 +1,4 @@
-# Fixture: Map Zoom and Reset Controls Are Real Buttons (CLEAN)
+# Fixture: Watershed Map Panel with Zoom Controls
 
 ## Component Code
 
