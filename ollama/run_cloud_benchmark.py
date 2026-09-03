@@ -132,6 +132,8 @@ ALL_CRITIC_FIXTURES = [
     "async-retry-recovery-clean", "async-retry-error-unannounced",
     # GT-09 pseudo-href controls are F42 role defects, not 3.2.4 (2026-09-03):
     "map-controls-clean", "pseudo-link-map-controls",
+    # GT-11 paired id/name columns are not a 3.2.4 case (2026-09-03):
+    "paired-id-name-columns-clean", "row-action-inconsistent-labels",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",

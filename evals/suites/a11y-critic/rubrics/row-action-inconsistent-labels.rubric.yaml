@@ -1,0 +1,125 @@
+fixture_id: row-action-inconsistent-labels
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "The same row action (edit) is labelled three different ways across rows: 'Edit', 'Modify', 'Change details'"
+        severity: MAJOR
+        wcag: "3.2.4 Consistent Identification"
+        evidence_requirement: "file:line reference to line 38 (`{c.actionLabel}` inside the per-row edit link) showing the label varies while the destination pattern (`/cases/${c.id}/edit`) and function do not; credit is stronger when the review explicitly separates this from the Case ID/Case Name pairing in the same rows"
+        expected_to_find: "60%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 2
+    items:
+      - description: "The Case ID/Case Name paired links in THIS fixture are still not a 3.2.4 case — the fixture contains both the real violation and the false-alarm shape, and a reviewer must separate them"
+        impact: "Lines 30 and 33 (`/cases/4471`) share a destination with different accessible names ('4471' vs. 'Ridgeway Pumping Station'), exactly like the CLEAN sibling. They remain two different functions — id-lookup and name-lookup — not one function labelled two ways, so they are not part of the 3.2.4 finding. A reviewer who flags this pairing here (in addition to, or instead of, the real Actions-column defect) has applied 'same destination, different name' as the test instead of 'same functionality,' and this is what proves the exception used to accept the CLEAN sibling stays narrow rather than blinding the reviewer to the genuine violation two columns over. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
+        expected_to_find: "78%"
+
+      - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose failure"
+        impact: "Line 30's link text is just the case number, disambiguated by the 'Case ID' column header a screen reader announces alongside it in table-navigation mode — same reasoning as the CLEAN sibling. Flagging it here is an independent false alarm, unrelated to the real Actions-column defect."
+        expected_to_find: "50%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 75-100
+    reasoning: "Should find the inconsistent action labels, cite line 38, and correctly decline to flag the paired id/name links in the same rows even though they share the same surface shape (same destination, different name). Trap 1 is the discriminator: it is what proves the reviewer applied 'same functionality,' not 'same destination,' as the test."
+  - condition: baseline-zero-shot
+    expected_score: 25-55
+    reasoning: "Likely to either miss the Actions-column defect (three plausible-sounding labels can each look fine read one row at a time) or, if a same-destination heuristic is in play, misfire on the Case ID/Case Name pair as well — the trap most at risk of failing alongside the must-find."
+  - condition: baseline-few-shot
+    expected_score: 35-65
+    reasoning: "A same-page-example primes checking whether repeated controls are labelled consistently, which helps find the real defect, but does not by itself supply the 'same functionality' scoping needed to avoid trap 1."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Provenance: GT-11. Independent public reference: WCAG Understanding SC 3.2.4
+  Consistent Identification ("same functionality"). BUG member of the pair
+  with paired-id-name-columns-clean.
+
+  This half exists because a lazily-worded exception — "links to the same
+  record with different names are fine" — would pass the CLEAN fixture while
+  blinding the reviewer to this real violation. Putting the correct
+  id/name-column pairing and the genuine action-label inconsistency in the
+  same component forces a reviewer to apply the actual WCAG Understanding
+  test (same functionality, not same destination) rather than a shortcut rule
+  in either direction. A CLEAN-only fixture could prove silence on the
+  false-alarm shape; only this fixture can prove the exception has not been
+  overgeneralized.
+
+  Negative space — what a REVISE verdict here does NOT certify: this fixture
+  is not evidence about scope-attribute coverage (present and correct here,
+  same as the CLEAN sibling, and not scored), about caption choice, or about
+  any accessible-name pattern besides the Actions column. It tests exactly
+  one thing: whether a reviewer can find a real 3.2.4 violation without
+  either missing it (pattern-matching "row links usually vary, that's fine")
+  or over-firing on the adjacent, correct id/name pairing.
+
+  Severity: MAJOR, not CRITICAL. The control is not hidden, non-operable, or
+  silent — every row's link is present, reachable, and reaches the correct
+  destination, so no user is blocked from editing any given case. The harm is
+  to predictability and learnability: a user cannot form a stable rule for
+  "the edit control" and must re-read each row's label individually, which is
+  a real but recoverable burden, not a total barrier. That places it with the
+  suite's other structural/consistency AA defects (compare
+  data-table-missing-scope's MAJOR scope-attribute findings) rather than with
+  CRITICAL findings reserved for content that is never exposed to assistive
+  technology at all (compare async-retry-error-unannounced's CRITICAL
+  unannounced-failure finding, where the user gets no signal whatsoever).

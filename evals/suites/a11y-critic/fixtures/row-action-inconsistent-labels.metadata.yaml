@@ -1,0 +1,49 @@
+fixture_id: row-action-inconsistent-labels
+name: Row Action Link Labelled Differently on Every Row
+description: Maintenance-cases table whose per-row edit link points at the same per-record edit affordance on every row but is labelled "Edit" / "Modify" / "Change details" across rows — a genuine SC 3.2.4 Consistent Identification violation sitting beside the correct paired Case ID/Case Name links, which share a destination for a different, legitimate reason.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Content & Semantic Structure
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "The same row action (edit) is labelled three different ways across rows: 'Edit', 'Modify', 'Change details'"
+        severity: MAJOR
+        wcag: "3.2.4 Consistent Identification (components with the same functionality must be identified consistently)"
+        evidence: "Line 38: `{c.actionLabel}` renders a different accessible name per row inside `<a href={`/cases/${c.id}/edit`}>`, even though every row's link performs the identical edit function"
+        user_group: "Screen reader users; also cognitive/low-vision users who rely on recognizing a control by its label rather than re-reading the row each time"
+        expected_behavior: "The edit link's accessible name should be the same string on every row (e.g. always 'Edit'), optionally with a visually-hidden per-row suffix for disambiguation"
+        fix: "Replace the per-row actionLabel field with a fixed label, e.g. always render 'Edit' with a visually-hidden ', {name}' suffix, and remove actionLabel from the data"
+
+wcag_criteria:
+  - "3.2.4 Consistent Identification (the same edit function must be identified consistently across rows)"
+
+multi_perspective_coverage:
+  - screen_reader: "Tabbing through the Actions column, or browsing a links/forms list, produces three unrelated-sounding announcements — 'Edit', 'Modify', 'Change details' — for what is the same control repeated three times. A user who has learned that 'Edit' opens the edit form has no way to know 'Modify' and 'Change details' do the same thing."
+  - keyboard: "Operable — each action link is reachable and activatable — but not predictable; a keyboard user scanning link text to decide where to go cannot learn a stable label for 'the edit control.'"
+  - low_vision: "Visually the links look identical (same style, same column position), so the inconsistency is audible/DOM-level, not a rendering problem."
+  - cognitive: "Directly affected — this is a learnability failure. A user cannot form a stable rule ('the Actions link always says Edit') and must re-read every row's label individually."
+
+notes: |
+  This is a **HAS-BUGS** fixture testing SC 3.2.4 Consistent Identification,
+  and the pair member of paired-id-name-columns-clean.
+
+  Expected verdict: REVISE
+
+  Provenance: GT-11. Deliberately built beside the false-alarm shape it must
+  not be confused with: this table's Case ID and Case Name links (present in
+  every row, same as the CLEAN sibling) still share a destination with
+  different names, and that pairing is still correct here — see the
+  false-positive traps in the rubric. The one planted defect is a different
+  pair sharing a destination, where the two occurrences really are the same
+  function (editing the record), not two functions.
+
+  Deliberately NOT tested here, because the CLEAN sibling already covers it:
+  the Case ID/Case Name pairing's correctness on its own. This fixture's
+  purpose is narrower — proving that the exception for that pairing does not
+  generalize into "never flag same-destination links," by putting a real
+  3.2.4 violation in the same component.
