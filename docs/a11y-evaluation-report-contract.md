@@ -189,6 +189,8 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 
 ### Mutation canaries
 
+Still non-normative, and this is the part most likely to be read on its own: the table below is what a validator *would* check if one were sanctioned, not a suite anything runs today. Nothing in this bundle executes it.
+
 Single-field mutations a checker should reject, with the input each needs — some items need more than the block, which is the point of listing the input at all. Several items carry more than one mutation; the table is the count.
 
 | Item | Mutation | Input needed |
@@ -243,6 +245,8 @@ The source engagement's validator enforces considerably more. These stay there, 
 ## Appendix B — `ratified_receipt` Serialization (non-normative example)
 
 **Non-normative example; no validator enforces this until a second instance exists.** Same standing as Appendix A, and the same reason for saying so.
+
+To be explicit, because two appendices sitting together invite the inference: **Appendix B is not Appendix A's second instance.** They are different patterns from the same single engagement, and each needs a second independent instance of *itself* before a validator is licensed for it. Two example blocks are two single-source examples, not one satisfied gate.
 
 Where Appendix A shapes what was sampled, this shapes how an agent-drafted judgment becomes a human-ratified one before it may enter the outcome map. The generic mechanism is: a status, a named human ratifier, pinned sources, cells **re-derived from source rather than trusted from the receipt**, denominator membership, a no-drift check, and a closed set of outcomes a draft may propose. The rubric and the family list in the originating engagement are engagement-shaped and are not part of the pattern.
 
