@@ -42,7 +42,7 @@ components_analyzed:
     status: "Correct — links to the same href as the Case ID link (line 32) but is a distinct affordance (scan-by-name vs. scan-by-id), so a different accessible name is expected, not an inconsistency"
 
   - name: Links, focus state
-    status: "Correct — .cases-table a:focus-visible (lines 94-97) gives every link, including both links in a row, a visible outline on keyboard focus"
+    status: "Correct — .cases-table a:focus-visible (lines 97-100) gives every link, including both links in a row, a visible outline on keyboard focus"
 
 wcag_criteria:
   - "3.2.4 Consistent Identification (paired id/name links are different functionalities, not one function labelled two ways)"

@@ -87,7 +87,7 @@ export default MaintenanceCasesTable;
 }
 
 .cases-table tbody tr:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;  /* #f0f0f0 puts the link colour at 4.4998:1, under the 4.5 floor */
 }
 
 .cases-table a {
