@@ -43,6 +43,24 @@ plan → [role audit] → critique plan → [perspective audit] → revise → i
 
 The critic serves at **two** checkpoints, not one: before code is written, and after tests pass. Bracketed steps run on escalation — the planner or critic flags a perspective at MEDIUM or HIGH and the audit follows. Start with `/a11y-workflow` if you want the sequence driven for you.
 
+## Tools
+
+Every investigation runs on the same routed stack — pinned, called, never vendored:
+
+| | |
+|---|---|
+| **Playwright** `1.62.1` | Real keyboard events via CDP. The substrate everything else stands on |
+| **axe-core** `4.13.0` | Machine-decidable violations, via `@axe-core/playwright` |
+| **keyboard-a11y-tester** `0.5.0` | Journey audits of a live URL, with focus-indicator measurement |
+| **@guidepup/virtual-screen-reader** `0.32.1` | Component announcements and reading order, pre-deploy |
+| **pa11y-ci** · **eslint-plugin-jsx-a11y** · **BackstopJS** | Sitemap sweeps, static analysis, visual regression |
+| **agent-browser** · **Webwright** | Interactive recon; test-script generation |
+| **@openacr/openacr** `0.3.8` · **exceljs** `4.4.0` | Conformance-report draft; triage workbook |
+
+The boundary matters more than the list. axe-core covers roughly **30–40% of WCAG issue classes** and is never keyboard or screen-reader evidence; virtual-screen-reader's interactions are synthetic, so it is never keyboard-operability evidence; every automated lane is a detector, not a verdict authority. The ICT Baseline crosswalk puts a number on the gap — of 62 federal web tests, **13 are not covered by any tool here** and have to go to manual and real-AT testing.
+
+Full inventory, per-tool blind spots, routing table, and what was evaluated and rejected: [docs/tools.md](docs/tools.md).
+
 ## Where things live
 
 | Path | What |

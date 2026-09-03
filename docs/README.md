@@ -8,6 +8,7 @@ Start here. The root [README](../README.md) is the landing page; this is the map
 |---|---|
 | [skills.md](skills.md) | What each of the twelve skills does, and when to reach for it |
 | [evaluation.md](evaluation.md) | How the eval suites work, the blind protocol, how to add a fixture, how to read a benchmark number |
+| [tools.md](tools.md) | The toolkit every investigation runs on, what each tool cannot tell you, and what was evaluated and rejected |
 | [standards-and-contracts.md](standards-and-contracts.md) | What this targets (WCAG 2.2 AA, Section 508), the output contracts, and the adoption boundaries |
 
 ## Contracts

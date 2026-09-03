@@ -41,7 +41,7 @@ The measurement layer. Produces the evidence the critic reviews. Six execution m
 
 Two boundaries worth stating plainly. A clean axe-core scan is not conformance: it covers roughly 30–40% of WCAG issue classes and is never keyboard or screen-reader evidence. And virtual-screen-reader's interactions are synthetic, so it is never keyboard-operability evidence.
 
-Adoption boundaries and cross-validation records: [baseline-url-scan](baseline-url-scan-adoption-assessment.md), [keyboard-a11y-tester](keyboard-a11y-tester-adoption-assessment.md), [virtual-screen-reader](virtual-screen-reader-adoption-assessment.md).
+Full tool inventory with pins and blind spots: [tools.md](tools.md). Adoption boundaries and cross-validation records: [baseline-url-scan](baseline-url-scan-adoption-assessment.md), [keyboard-a11y-tester](keyboard-a11y-tester-adoption-assessment.md), [virtual-screen-reader](virtual-screen-reader-adoption-assessment.md).
 
 ### `perspective-audit` — who is blocked?
 
