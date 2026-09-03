@@ -1,0 +1,322 @@
+# Fixture title manifest — what the H1 gives away before the blind cut line
+#
+# The blind protocol (ollama/run_benchmark.py:strip_answer_key) hides the answer
+# key by cutting at `## Accessibility Issues`. Line 1 of every fixture is above
+# that cut, so the H1 reaches the model in every prompt-based lane.
+#
+# This file makes each title's leak status an explicit, reviewable declaration
+# instead of an unexamined convention. `ollama/test_blind_prompts.py` fails CI
+# when a fixture has no row here, or when its H1 no longer matches `title` — so
+# a new fixture cannot land a defect-naming title silently, and an existing one
+# cannot drift.
+#
+#   class: neutral        — names the component/context only
+#          names-defect   — states or strongly implies the planted defect
+#          asserts-feature — asserts the accessibility feature under test is present
+#                            (the CLEAN-side mirror of names-defect)
+#
+# `neutral_title` is the neutralised variant used by the title-hint measurement
+# (issue #51 step 2). Each one is derived by DELETING the defect/feature clause
+# from the existing title — never by adding information that would need the
+# fixture body to verify.
+#
+# Every non-neutral row is a disclosed residual, not an accepted design: the
+# measurement decides whether they get applied to the corpus. See issue #51.
+
+version: 1
+suites:
+  a11y-critic:
+    fixtures:
+      accordion-no-region-role:
+        title: "Fixture: Accordion Without Region Role on Expanded Content"
+        class: names-defect
+        neutral_title: "Fixture: Accordion with Expandable Content"
+      app-focus-order-illogical:
+        title: "Fixture: App Layout with Illogical Focus Order"
+        class: names-defect
+        neutral_title: "Fixture: App Layout"
+      async-form-vague-success:
+        title: "Fixture: Async Form with Vague Success Announcement"
+        class: names-defect
+        neutral_title: "Fixture: Async Form"
+      async-retry-error-unannounced:
+        title: "Fixture: Async Request Failure and Recovery Are Never Announced"
+        class: names-defect
+        neutral_title: "Fixture: Account Activity Panel with Retry"
+      async-retry-recovery-clean:
+        title: "Fixture: Account Activity Panel with Retry"
+        class: neutral
+      breadcrumb-navigation-no-nav-landmark:
+        title: "Fixture: Breadcrumb Navigation Without nav Landmark"
+        class: names-defect
+        neutral_title: "Fixture: Breadcrumb Navigation"
+      button-skip-link-clean:
+        title: "Fixture: Navigation with Skip Link"
+        class: asserts-feature
+        neutral_title: "Fixture: Site Navigation Header"
+      checkbox-group-no-fieldset:
+        title: "Fixture: Checkbox Group Without Fieldset and Legend"
+        class: names-defect
+        neutral_title: "Fixture: Checkbox Group"
+      combobox-autocomplete-no-listbox-role:
+        title: "Fixture: Combobox with Missing Listbox Role"
+        class: names-defect
+        neutral_title: "Fixture: Combobox with Autocomplete"
+      composite-descendant-clean:
+        title: "Fixture: Toolbar Composite with Non-Tabbable Descendants"
+        class: asserts-feature
+        neutral_title: "Fixture: Toolbar Composite"
+      dashboard-heading-inconsistency:
+        title: "Fixture: Analytics Dashboard with Structural Inconsistencies"
+        class: names-defect
+        neutral_title: "Fixture: Analytics Dashboard"
+      data-table-missing-scope:
+        title: "Fixture: Data Table Missing Scope Attributes"
+        class: names-defect
+        neutral_title: "Fixture: Data Table"
+      expandable-section-no-button:
+        title: "Fixture: Expandable Section Using Div Instead of Button"
+        class: names-defect
+        neutral_title: "Fixture: Expandable Section"
+      file-input-no-labels:
+        title: "Fixture: File Input Without Proper Label and Error Messages"
+        class: names-defect
+        neutral_title: "Fixture: File Input with Error Messages"
+      filing-progress-controls:
+        title: "Fixture: Filing Progress Controls"
+        class: neutral
+      form-field-vs-summary-errors:
+        title: "Fixture: Registration Form with Dual Error Announcement Pattern"
+        class: names-defect
+        neutral_title: "Fixture: Registration Form"
+      form-validation-missing-aria-describedby:
+        title: "Fixture: Form with Validation Errors Not Associated with Fields"
+        class: names-defect
+        neutral_title: "Fixture: Registration Form with Validation"
+      garden-plot-directory:
+        title: "Fixture: Garden Plot Directory"
+        class: neutral
+      heading-hierarchy-skipped:
+        title: "Fixture: Blog Post with Skipped Heading Levels"
+        class: names-defect
+        neutral_title: "Fixture: Blog Post"
+      image-carousel-no-region:
+        title: "Fixture: Image Carousel Without Region and Live Region"
+        class: names-defect
+        neutral_title: "Fixture: Image Carousel"
+      infinite-scroll-no-announcement:
+        title: "Fixture: Infinite Scroll Without Loading Announcements"
+        class: names-defect
+        neutral_title: "Fixture: Infinite Scroll"
+      interactive-dropdown-clean:
+        title: "Fixture: Interactive Dropdown Component"
+        class: neutral
+      interactive-dropdown-focus-bug:
+        title: "Fixture: Custom Dropdown with Focus Restoration Bug"
+        class: names-defect
+        neutral_title: "Fixture: Custom Dropdown"
+      loading-state-missing-aria-busy:
+        title: "Fixture: Loading State Without aria-busy or Announcement"
+        class: names-defect
+        neutral_title: "Fixture: Loading State"
+      map-controls-clean:
+        title: "Fixture: Watershed Map Panel with Zoom Controls"
+        class: neutral
+      megamenu-no-structure:
+        title: "Fixture: Mega Menu Without Proper Structure and Navigation"
+        class: names-defect
+        neutral_title: "Fixture: Mega Menu"
+      modal-complete-clean:
+        title: "Fixture: Modal Dialog Component"
+        class: neutral
+      multistep-form-error-clearing:
+        title: "Fixture: Multi-Step Form Wizard with Error Clearing Gaps"
+        class: names-defect
+        neutral_title: "Fixture: Multi-Step Form Wizard"
+      pagination-no-nav-landmark:
+        title: "Fixture: Pagination Controls Without nav Landmark"
+        class: names-defect
+        neutral_title: "Fixture: Pagination Controls"
+      paired-id-name-columns-clean:
+        title: "Fixture: Cases Table with ID and Name Columns"
+        class: neutral
+      pool-lesson-registration:
+        title: "Fixture: Pool Lesson Registration"
+        class: neutral
+      popover-no-focus-management:
+        title: "Fixture: Popover Without Focus Management"
+        class: names-defect
+        neutral_title: "Fixture: Popover"
+      pseudo-link-map-controls:
+        title: "Fixture: Map Zoom and Reset Controls Are Anchors Posing as Buttons"
+        class: names-defect
+        neutral_title: "Fixture: Map Zoom and Reset Controls"
+      radio-button-group-no-grouping:
+        title: "Fixture: Radio Button Group Without Semantic Grouping"
+        class: names-defect
+        neutral_title: "Fixture: Radio Button Group"
+      rehearsal-schedule-panel:
+        title: "Fixture: Rehearsal Schedule Panel"
+        class: neutral
+      row-action-inconsistent-labels:
+        title: "Fixture: Row Action Link Labelled Differently on Every Row"
+        class: names-defect
+        neutral_title: "Fixture: Row Action Links"
+      search-focus-stays-in-input:
+        title: "Fixture: Search with Focus Retained in Input During Live Results"
+        class: names-defect
+        neutral_title: "Fixture: Search with Live Results"
+      search-results-dynamic-clean:
+        title: "Fixture: Search Results with Live Region"
+        class: asserts-feature
+        neutral_title: "Fixture: Search Results Panel"
+      seed-availability-panel:
+        title: "Fixture: Seed Availability Panel"
+        class: neutral
+      slip-reservation-tabs:
+        title: "Fixture: Slip Reservation Tabs"
+        class: neutral
+      spa-route-change-clean:
+        title: "Fixture: Account Portal with Client-Side Routing"
+        class: neutral
+      spa-route-change-unannounced:
+        title: "Fixture: Client-Side Route Change Leaves Focus and Title Behind"
+        class: names-defect
+        neutral_title: "Fixture: Client-Side Route Change"
+      tabbed-nav-vs-tab-pattern:
+        title: "Fixture: Tabbed Navigation Using Tab Pattern for Page-Level Routes"
+        class: names-defect
+        neutral_title: "Fixture: Tabbed Navigation for Page-Level Routes"
+      tabs-incomplete-aria-selected:
+        title: "Fixture: Tabs with Incomplete Selection and Panel Binding"
+        class: names-defect
+        neutral_title: "Fixture: Tabs with Panel Binding"
+      tabs-missing-arrow-nav:
+        title: "Fixture: Tabs Component Missing Arrow Key Navigation"
+        class: names-defect
+        neutral_title: "Fixture: Tabs Component"
+      toast-notification-no-role:
+        title: "Fixture: Toast Notification Without Alert Role"
+        class: names-defect
+        neutral_title: "Fixture: Toast Notification"
+      tool-catalog-layout:
+        title: "Fixture: Tool Catalog Layout"
+        class: neutral
+      tooltip-no-role-no-association:
+        title: "Fixture: Tooltip Missing Role and Focus Association"
+        class: names-defect
+        neutral_title: "Fixture: Tooltip"
+      trail-conditions-filter:
+        title: "Fixture: Trail Conditions Filter"
+        class: neutral
+      video-player-missing-captions:
+        title: "Fixture: Video Player Without Caption Control"
+        class: names-defect
+        neutral_title: "Fixture: Video Player"
+  perspectives:
+    fixtures:
+      animated-onboarding-flow:
+        title: "Fixture: Animated Onboarding Wizard With Unguarded Transitions"
+        class: names-defect
+        neutral_title: "Fixture: Animated Onboarding Wizard"
+      article-page-clean:
+        title: "Fixture: Article Page"
+        class: neutral
+      autocomplete-fast-timeout:
+        title: "Fixture: Address Autocomplete With Fast Timeout and Double-Action Enter"
+        class: names-defect
+        neutral_title: "Fixture: Address Autocomplete"
+      chat-cognitive-load:
+        title: "Fixture: Chat Interface With Cognitive Load Issues"
+        class: names-defect
+        neutral_title: "Fixture: Chat Interface"
+      checkout-form-broken-errors:
+        title: "Fixture: Multi-Step Checkout Form With Broken Error Association"
+        class: names-defect
+        neutral_title: "Fixture: Multi-Step Checkout Form"
+      color-only-status-indicators:
+        title: "Fixture: Project Dashboard With Color-Only Status Indicators"
+        class: names-defect
+        neutral_title: "Fixture: Project Dashboard"
+      custom-select-combobox:
+        title: "Fixture: Custom Select Combobox Without Keyboard Navigation"
+        class: names-defect
+        neutral_title: "Fixture: Custom Select Combobox"
+      dashboard-text-labels:
+        title: "Fixture: Analytics Dashboard With Text Status Labels"
+        class: asserts-feature
+        neutral_title: "Fixture: Analytics Dashboard"
+      data-table-sortable-columns:
+        title: "Fixture: Data Table With Sortable Columns and Broken ARIA Sort"
+        class: names-defect
+        neutral_title: "Fixture: Data Table With Sortable Columns"
+      data-viz-color-encoding:
+        title: "Fixture: Data Visualization With Color-Only Series Encoding"
+        class: names-defect
+        neutral_title: "Fixture: Data Visualization"
+      dense-admin-jargon:
+        title: "Fixture: Dense Admin Settings Panel With Jargon"
+        class: names-defect
+        neutral_title: "Fixture: Admin Settings Panel"
+      hover-reveal-navigation:
+        title: "Fixture: Mega-Menu Navigation With Hover-Only Submenus"
+        class: names-defect
+        neutral_title: "Fixture: Mega-Menu Navigation"
+      image-gallery-small-targets:
+        title: "Fixture: Image Gallery With Undersized Touch Targets"
+        class: names-defect
+        neutral_title: "Fixture: Image Gallery"
+      infinite-scroll-cognitive:
+        title: "Fixture: Infinite Scroll Feed With Cognitive Navigation Breakdown"
+        class: names-defect
+        neutral_title: "Fixture: Infinite Scroll Feed"
+      login-form-clean:
+        title: "Fixture: Login Form"
+        class: neutral
+      map-interface-zoom:
+        title: "Fixture: Interactive Map With Mouse-Only Navigation"
+        class: names-defect
+        neutral_title: "Fixture: Interactive Map"
+      media-player-captions:
+        title: "Fixture: Media Player With Caption Support"
+        class: asserts-feature
+        neutral_title: "Fixture: Media Player"
+      modal-broken-focus-trap:
+        title: "Fixture: Modal Dialog With Broken Focus Trap"
+        class: names-defect
+        neutral_title: "Fixture: Modal Dialog"
+      multi-column-pricing:
+        title: "Fixture: Multi-Column Pricing Comparison Table"
+        class: neutral
+      nav-menu-landmarks:
+        title: "Fixture: Navigation Menu With Landmarks"
+        class: asserts-feature
+        neutral_title: "Fixture: Navigation Menu"
+      podcast-audio-only:
+        title: "Fixture: Podcast Player Without Transcripts"
+        class: names-defect
+        neutral_title: "Fixture: Podcast Player"
+      product-carousel-autoplay:
+        title: "Fixture: Product Carousel With Autoplay Animation"
+        class: names-defect
+        neutral_title: "Fixture: Product Carousel"
+      search-results-dynamic-update:
+        title: "Fixture: Search Results With No Live Region Announcements"
+        class: names-defect
+        neutral_title: "Fixture: Search Results"
+      tab-panel-arrow-keys:
+        title: "Fixture: Tab Panel Without Arrow Key Navigation"
+        class: names-defect
+        neutral_title: "Fixture: Tab Panel"
+      video-tutorial-no-captions:
+        title: "Fixture: Video Tutorial Page Without Captions"
+        class: names-defect
+        neutral_title: "Fixture: Video Tutorial Page"
+  a11y-test-recipe:
+    fixtures:
+      dialog-dismiss-recipe-clean:
+        title: "Fixture: Delete-Report Dialog — Keyboard Dismiss Recipe"
+        class: neutral
+      dialog-dismiss-recipe:
+        title: "Fixture: Delete-Report Dialog — Keyboard Dismiss Recipe"
+        class: neutral

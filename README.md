@@ -314,6 +314,9 @@ Scoring for alarm levels: exact match = 1.0, within +/-1 level = 0.5, off by 2 l
 2. Or add the spec to `generate_fixtures.py` and run it to generate metadata + rubric
 3. Use snake_case for perspective keys in metadata: `magnification_reflow`, `environmental_contrast`, `vestibular_motion`, `auditory_access`, `keyboard_motor`, `screen_reader_semantic`, `cognitive_neurodivergent`
 4. Document planted bugs only in the fixture's `## Accessibility Issues` answer-key section below the blind cut line — never as inline comments in the code blocks (the CI guard `ollama/test_blind_prompts.py` fails any composed prompt that leaks `BUG` hints)
+   - The cut-line heading is exactly `## Accessibility Issues` — no parenthetical. Annotate below it (`_Answer key: planted defects._`), not in the heading: the guard rejects any other spelling, and a loose one is how six variants accumulated before 2026-09-03 (issue #51)
+   - Every `## ` heading in the fixture must be declared in `VISIBLE_HEADINGS` or `EVAL_SIDE_HEADINGS` in `ollama/test_blind_prompts.py`. Adding a new leak now takes an explicit edit there rather than an omission nobody sees
+   - Add a row to `evals/fixture-title-manifest.yaml` classifying the fixture's H1 (`neutral` / `names-defect` / `asserts-feature`). Line 1 is above the cut, so the title reaches the model in every lane
 5. CLEAN fixtures must have zero real bugs and 3+ false positive traps
 6. Regression fixtures must include `regression_fixture: true` and `non_inferiority_test` in metadata/rubric
 
