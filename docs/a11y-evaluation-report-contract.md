@@ -173,14 +173,15 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 6. **Alternate versions.** An `alternate_of` entry names an existing `id` and is excluded from the counts in items 3 and 4 — WCAG-EM: alternate versions "are not considered to be separate samples".
 7. **State coverage.** Every sample lists at least one state.
 8. **Complete processes.** Each entry has a `starting_point`, a non-empty `default_sequence`, and either a `branch_sequences` entry or a non-empty `no_branches_reason`. Every sequence step carries an `action`: WCAG-EM requires recording the actions needed to move sample-to-sample, because "in most cases the web address (URL) will not be sufficient to identify the sample in a complete process". A product with no multi-step process carries `no_processes_reason` and an empty list — WCAG 2 conformance requirement 3 binds only where a page is part of a process, so a static informational product must be able to say so without falsely declaring `sampling_skipped`.
-9. **Referential integrity.** Every `sample` in a `default_sequence` or `branch_sequence`, every `rejoins`, and every id in `carried_from.retained` and `carried_from.replaced` names an entry that exists. Without this a process can be traceable in form and dangling in fact, which defeats the one thing item 8 exists to guarantee — and makes this contract's Completeness rule uncomputable, since a sample-by-SC matrix cannot be built over ids that do not resolve.
+9. **Referential integrity, and re-evaluation comparability.** Every `sample` in a `default_sequence` or `branch_sequence`, every `rejoins`, and every id in `carried_from.retained` and `carried_from.replaced` names an entry that exists. A `carried_from` block with an empty `retained` also fails: WCAG-EM's re-evaluation guidance keeps a sub-set of the prior sample precisely so results stay comparable, and a re-run that retains nothing has quietly become a new evaluation wearing a prior report's name. Without this a process can be traceable in form and dangling in fact, which defeats the one thing item 8 exists to guarantee — and makes this contract's Completeness rule uncomputable, since a sample-by-SC matrix cannot be built over ids that do not resolve.
 10. **Skipped sampling.** `sampling_skipped: true` waives items 3, 4, and 5 and permits an empty `random`. It waives nothing else: the whole product becomes the selected sample set, so every view still needs identity, coverage, states, and its processes. `sampling_skipped: true` alongside a non-empty `random.items` is a contradiction.
 11. **Freeze.** `status: frozen` requires `frozen_at`, `frozen_by`, `revision`, and `evidence_revision`. *(Shape decision. WCAG-EM says nothing about freezing a sample set; the source memo classified the draft/freeze mechanism as generic and its status vocabulary as engagement-shaped, and this bundle has one instance of it.)*
-12. **Draft sets are not citable.** A report aggregates a `frozen` sample set. A `status: draft` set may exist and may be validated, but a report citing one is making a claim its own sample set does not yet support. *(Shape decision, from the same memo's generic draft-cannot-expose-frozen-claims mechanism.)*
 
-**Needs the whole report, not just this block:**
+**Partly or wholly outside this block — each item says which half is decidable here:**
 
-13. **Representativeness consequence.** When `outcomes.representativeness_check` records `surfaced_new`, at least one `structured` entry carries `added_by: representativeness_check` with an `added_at_revision` greater than the revision at which the check ran. WCAG-EM 4.3 requires going back to Step 3 and repeating "until the structured sample set is adequately representative". A checker handed only `sample_set` must report this **not evaluated**, never pass — a rule that silently passes when its input is absent is worse than no rule.
+12. **Draft sets are not citable.** A `status: draft` set may exist and may be serialized; what it may not do is back a shipped report, which is a claim its own sample set does not yet support. Nothing in the block decides this — `status` alone is not a violation — so it is an obligation on the report, not a property of the sample set. *(Shape decision, from the same memo's generic draft-cannot-expose-frozen-claims mechanism.)*
+
+13. **Representativeness consequence.** An entry carrying `added_by: representativeness_check` also carries an `added_at_revision` no greater than the set's `revision`. That much is decidable here. The other half is not: WCAG-EM 4.3 requires that when the random sample surfaces new content types the evaluator goes back to Step 3 and repeats "until the structured sample set is adequately representative", so a report recording a surfaced-new result against a sample set with no such entry is describing a step it did not finish. This contract states the representativeness result as prose in `outcomes` and defines no field for it, and no field anywhere records the revision at which the check ran — so the cross-section agreement is a **reader's obligation, not a checker's**, and this example deliberately does not invent the field names that would make it look otherwise. Inventing them is how a non-normative example quietly becomes a schema that something downstream keys on.
 
 **Needs a prior revision and the deliverable that cites it:**
 
@@ -204,9 +205,11 @@ Single-field mutations a checker should reject, with the input each needs — it
 | 8 | Delete `action` from one default-sequence step | block |
 | 9 | Change a `default_sequence` sample ref to a nonexistent id | block |
 | 10 | Set `sampling_skipped: true` while `random.items` is non-empty | block |
+| 9 | Empty `carried_from.retained` on a re-evaluation | block |
 | 11 | Set `status: frozen` and delete `frozen_by` | block |
+| 11 | Set `status: frozen` and delete `evidence_revision` | block |
 | 12 | Cite a `status: draft` set from a report | block + report |
-| 13 | Record `surfaced_new` with no entry carrying `added_by` | block + report |
+| 13 | An entry carrying `added_by` with no `added_at_revision` | block |
 | 14 | Change a structured entry without incrementing `revision` | two revisions |
 
 Negative controls matter as much: the example above validates clean, and so does a variant with `sampling_skipped: true`, an empty `random`, and its `complete_processes` intact. A checker that rejects everything proves as little as one that accepts everything.
