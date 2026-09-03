@@ -130,6 +130,8 @@ ALL_CRITIC_FIXTURES = [
     "composite-descendant-clean",  # Tier-2 R-29 (L-017), no model rows yet
     # GT-07 (PT-16) async failure/recovery status messages (2026-09-03):
     "async-retry-recovery-clean", "async-retry-error-unannounced",
+    # GT-09 pseudo-href controls are F42 role defects, not 3.2.4 (2026-09-03):
+    "map-controls-clean", "pseudo-link-map-controls",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",

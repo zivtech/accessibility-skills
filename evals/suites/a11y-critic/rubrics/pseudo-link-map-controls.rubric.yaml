@@ -1,0 +1,127 @@
+fixture_id: pseudo-link-map-controls
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Zoom in / Zoom out / Reset view are anchors used as buttons — role 'link' announces navigation that never happens (F42)"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to the three <a href='javascript:void(0)'> controls (lines 26-36); credit is stronger when the review names F42 and/or explains the links-list consequence for screen reader users"
+        expected_to_find: "70%"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "The same three anchors respond to Enter but not Space, breaking the button interaction model"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value"
+        evidence_requirement: "file:line reference to the same anchors (lines 26-36) with the specific claim that Space does not activate them; credit is reduced if the review mislabels this a 2.1.1 Keyboard failure, since Enter does operate all three"
+        expected_to_find: "35%"
+
+  - category: nice_to_find
+    count: 0
+
+  - category: false_positive_trap
+    count: 4
+    items:
+      - description: "The three shared-pseudo-href controls are NOT an SC 3.2.4 Consistent Identification case — a pseudo-href is not a destination"
+        impact: "Lines 26-36 share the identical non-destination href 'javascript:void(0)'. 'Same href, different accessible names' carries consistent-identification information only when the href is a real destination; here it is not one at all. A review that raises 3.2.4 against these three controls has treated the pseudo-href as if it pointed somewhere, and has misidentified the defect as a naming-consistency problem rather than a role problem."
+        expected_to_find: "75%"
+
+      - description: "Grouping the three pseudo-hrefs as 'the same destination' for SC 2.4.4 Link Purpose (In Context) analysis is the same error"
+        impact: "The link-purpose question (does the link's accessible name make its destination clear in context) does not arise for a control that is not a link. A review that analyzes these three controls under 2.4.4 has accepted the role's false premise — that they navigate somewhere — instead of identifying that the role itself is the bug."
+        expected_to_find: "60%"
+
+      - description: "The genuine 'Open full report' anchor is implemented correctly — flagging it is a false alarm"
+        impact: "Lines 38-43: a real href to '/reports/watershed-2026', target=\"_blank\", and a visually-hidden '(opens in a new tab)' disclosure. This is the correct pattern the fixture uses to contrast against the three pseudo-links. A review that flags this anchor (for opening in a new tab, for the hidden text, or for any other reason) has not distinguished a real destination from a fake one."
+        expected_to_find: "55%"
+
+      - description: "The map canvas has a text alternative — flagging it as an inaccessible map is a false alarm"
+        impact: "Line 18 is an empty mount point for a third-party map library, and lines 20-24 give the same boundary data as a linked data table. The equivalent is present, so a 1.1.1 finding against the canvas has missed it. This trap exists because a map with no equivalent WOULD be a real defect, and the fixture must not reward flagging one that has it."
+        expected_to_find: "50%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should identify the F42 role defect with the links-list consequence, separately note the Space-key gap without overclaiming 2.1.1, and hold the line that the shared pseudo-href is not a 3.2.4 or 2.4.4 finding."
+  - condition: baseline-zero-shot
+    expected_score: 30-55
+    reasoning: "Likely to notice something is off about three identical hrefs and reach for a naming-consistency or link-purpose citation instead of the role defect — the condition most exposed to all three traps."
+  - condition: baseline-few-shot
+    expected_score: 40-65
+    reasoning: "An interactive-widget example raises the chance of checking control roles directly, but the shared-pseudo-href surface pattern still invites a consistent-identification false alarm without prompting for the F42 framing."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Provenance: GT-09. Independent public reference: WCAG F42 (failure of
+  1.3.1/4.1.2 due to using an anchor as a control) and Understanding SC 3.2.4
+  Consistent Identification.
+
+  Under promotion-bar clause 3, this fixture's real deliverable is the
+  false-positive traps, not the F42 finding itself: F42 is a well-known
+  pattern that most reviewers already check for, but a shared, identical,
+  non-functional href is exactly the surface shape that invites a
+  consistent-identification or link-purpose citation from a reviewer who
+  has stopped reasoning about what the href actually points to. A review
+  that catches the role defect but also raises 3.2.4 or 2.4.4 against the
+  same three controls has found the right symptom for the wrong reason.
+
+  Negative space — what a REVISE verdict here does NOT certify: this
+  fixture does not test focus order, focus-visible styling (both are
+  present and correct but unscored), color contrast, or any property of
+  the map canvas itself, which is an inert placeholder in this fixture.
+  It also does not certify general judgment about SC 3.2.4 or 2.4.4 beyond
+  this specific pseudo-href shape — a real case of three links sharing one
+  genuine destination with different accessible names would still be a
+  legitimate 3.2.4/2.4.4 question elsewhere.

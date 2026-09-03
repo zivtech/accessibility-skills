@@ -1,0 +1,59 @@
+fixture_id: pseudo-link-map-controls
+name: Map Zoom and Reset Controls Are Anchors Posing as Buttons
+description: A map panel whose Zoom in / Zoom out / Reset view controls are anchors sharing an identical javascript:void(0) pseudo-href instead of buttons, so their role announces navigation that never happens and they lose Space-key activation, alongside one genuine anchor that is implemented correctly.
+language: jsx
+framework: React
+difficulty: HAS-BUGS
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 1
+    items:
+      - description: "Zoom in / Zoom out / Reset view are anchors used as buttons — role 'link' communicates navigation that does not occur (F42)"
+        severity: CRITICAL
+        wcag: "4.1.2 Name, Role, Value (F42: anchor used as a control announces role 'link', communicating navigation that does not occur)"
+        evidence: "Lines 26-36: three <a href='javascript:void(0)' onClick={...}> elements in .map-controls, all sharing the identical pseudo-href"
+        user_group: "Screen reader users"
+        expected_behavior: "An element that performs an in-page action and never navigates should expose role button, not link"
+        fix: "Replace all three anchors with <button type=\"button\">, keep the existing onClick handlers and visible text, and drop href entirely"
+
+  - category: should_find
+    count: 1
+    items:
+      - description: "The same three anchors respond to Enter but not Space, so a user applying the button interaction model finds them inert"
+        severity: MAJOR
+        wcag: "4.1.2 Name, Role, Value (the control's role communicates the wrong interaction model — not a 2.1.1 Keyboard failure, since Enter does operate all three)"
+        evidence: "Lines 26-36: same three anchors; no role=\"button\", so Space is never wired to the click handlers"
+        user_group: "Keyboard users applying the button interaction model"
+        expected_behavior: "A control that performs an action rather than navigating should activate on both Enter and Space"
+        fix: "Converting the three anchors to real <button type=\"button\"> elements (the same fix as the role defect) restores native Space activation"
+
+wcag_criteria:
+  - "4.1.2 Name, Role, Value (F42: anchor used as a control)"
+
+multi_perspective_coverage:
+  - screen_reader: "Pulling up the page's links list surfaces 'Zoom in, link', 'Zoom out, link', 'Reset view, link' alongside the one genuine destination, with no way to tell from role alone that three of the four are not links."
+  - keyboard: "Tab reaches all three controls and Enter activates them, but Space — the activation key a user expects for a button-like in-page action — does nothing."
+  - low_vision: "Not affected. The controls are visually styled and positioned like buttons and behave correctly on click."
+  - cognitive: "The controls look like a button group and perform momentary actions, so a user who has learned 'Space activates buttons' has no visual cue that this group is the exception."
+
+notes: |
+  This is a **HAS-BUGS** fixture testing WCAG 4.1.2 / F42 (anchor used as a
+  button) alongside its keyboard-activation consequence, paired with a CLEAN
+  sibling (map-controls-clean) that rebuilds the same panel with real buttons.
+
+  Expected verdict: REVISE
+
+  The fixture deliberately includes one genuine anchor ("Open full report",
+  a real destination opened in a new tab with a visually-hidden disclosure)
+  so a reviewer must distinguish "anchor used correctly" from "anchor used
+  as a button" within the same component, rather than treating every anchor
+  in the file as either all-suspect or all-fine.
+
+  The rubric (not this metadata file) additionally scores three false-positive
+  traps: raising SC 3.2.4 Consistent Identification or SC 2.4.4 Link Purpose
+  against the three shared-pseudo-href controls, and flagging the genuine
+  "Open full report" anchor as a problem. See
+  pseudo-link-map-controls.rubric.yaml.

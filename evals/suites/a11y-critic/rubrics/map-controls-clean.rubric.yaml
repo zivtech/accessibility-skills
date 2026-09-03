@@ -1,0 +1,117 @@
+fixture_id: map-controls-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present. All three in-page actions are real buttons with the correct role, and the one link on the panel is a real, correctly-disclosed link."
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the three map actions have no role='group' with an accessible group label; grouping is not required since each has its own accessible name, but would help a screen reader user recognize them as a related set"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "25%"
+
+  - category: false_positive_trap
+    count: 4
+    items:
+      - description: "aria-pressed is NOT required on Zoom in / Zoom out / Reset view — they are momentary actions, not toggles"
+        impact: "Lines 28-41 are three plain <button type=\"button\"> elements with no on/off state to reflect. Demanding aria-pressed treats a momentary action like a toggle button and is a false alarm."
+        expected_to_find: "65%"
+
+      - description: "The genuine anchor with target=\"_blank\" plus visually-hidden new-tab disclosure is correct"
+        impact: "Lines 43-48: a real href, target=\"_blank\", rel=\"noopener noreferrer\", and a visually-hidden '(opens in a new tab)' span. Flagging this anchor for opening in a new tab, for the hidden text, or for any other reason misreads a correctly disclosed pattern."
+        expected_to_find: "55%"
+
+      - description: "The map canvas has a text alternative — flagging it as an inaccessible map is a false alarm"
+        impact: "Line 20 is an empty mount point for a third-party map library, and lines 22-26 give the same boundary data as a linked data table. The equivalent is present, so a 1.1.1 finding against the canvas has missed it."
+        expected_to_find: "50%"
+
+      - description: "Three buttons in one control group with distinct visible labels raise no SC 3.2.4 Consistent Identification question"
+        impact: "There is no shared destination and no inconsistent naming among Zoom in / Zoom out / Reset view — each is a distinct action with its own label. A reviewer who raises 3.2.4 here has carried the question over from the companion BUG fixture's pseudo-href pattern, where it also does not apply, rather than reasoning about this component on its own terms."
+        expected_to_find: "45%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should recognize that momentary actions don't need aria-pressed, confirm the anchor's new-tab disclosure is correct, and not import a 3.2.4 concern that has no shared destination to analyze, returning ACCEPT."
+  - condition: baseline-zero-shot
+    expected_score: 35-60
+    reasoning: "At risk on the aria-pressed trap in particular — three prominent buttons with no pressed state read as an omission to a reviewer checking for attribute presence rather than reasoning about toggle vs. momentary semantics."
+  - condition: baseline-few-shot
+    expected_score: 45-70
+    reasoning: "A correct interactive-widget example reduces the aria-pressed false alarm somewhat, but does not by itself convey why three distinctly-labeled buttons raise no consistent-identification question."
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  Provenance: GT-09. Independent public reference: WCAG F42 (failure of
+  1.3.1/2.1.1 due to using an anchor as a control) and Understanding SC 3.2.4.
+  This fixture is the CLEAN member of the pair with pseudo-link-map-controls,
+  which plants the F42 defect this component avoids by using real buttons.
+
+  Under promotion-bar clause 3, this half is what makes the rule falsifiable:
+  the BUG fixture alone would reward a reviewer who flags every anchor-styled
+  control as F42, and this one penalises exactly that by presenting real
+  buttons that must not be flagged, alongside a genuine link that must not be
+  mistaken for a "consistent identification" problem.
+
+  Negative space — what an ACCEPT verdict here does NOT certify: this
+  fixture is not evidence about focus order, the real content of the map
+  canvas once a third-party library mounts into it, keyboard shortcuts for
+  zoom levels, color contrast beyond the values shown, or general judgment
+  about SC 3.2.4 or 2.4.4 in cases involving an actual shared destination —
+  it certifies only that these three specific buttons and this one specific
+  link are each implemented with the correct role for what they do.
