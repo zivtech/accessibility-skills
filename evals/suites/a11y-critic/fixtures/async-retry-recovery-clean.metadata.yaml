@@ -26,25 +26,26 @@ components_analyzed:
     aria_attributes:
       - aria-live: "polite"
       - aria-atomic: "true"
-    status: "Correct — persistent across all states (line 68), so loading, success and empty messages written into it are announced"
+    status: "Correct — persistent across all states (line 22), so the loading, success and empty messages written into it are announced"
 
   - name: Alert region
     aria_role: alert
-    status: "Correct — persistent (line 85) and assertive, matching an actionable request failure; a sibling of the status region rather than a replacement, so the recovery message still has a place to land"
-
-  - name: Panel body
-    aria_attributes:
-      - aria-busy: "true on the results list while the request is in flight (line 91), deliberately not on the live regions' ancestor"
-    status: "Correct"
+    status: "Correct — persistent (line 40) and assertive, matching an actionable failure; a sibling of the status region rather than a replacement, so the recovery message still has a place to land"
 
   - name: Retry button
     semantic_element: button
-    status: "Correct — real <button>, stays mounted in every state so focus is never destroyed, and has a visible :focus-visible indicator"
+    status: "Correct — real <button> in the header (line 13), outside the region that swaps, so it never unmounts and focus is never destroyed; visible :focus-visible indicator"
+
+  - name: Transactions list
+    semantic_element: ul
+    aria_attributes:
+      - role: "list, restoring the implicit role that list-style: none strips in WebKit (line 47)"
+    status: "Correct"
 
   - name: Spinner
     aria_attributes:
       - aria-hidden: "true"
-    status: "Correct — decorative CSS animation; the adjacent text inside the same live region carries the message. prefers-reduced-motion disables the animation"
+    status: "Correct — decorative CSS animation (line 25); the adjacent text inside the same live region carries the message, and prefers-reduced-motion disables it"
 
 wcag_criteria:
   - "4.1.3 Status Messages (loading, failure, recovery and empty results all announced)"
@@ -80,3 +81,12 @@ notes: |
   a scored assertion in either fixture of this pair — empty-state coverage is a
   separate, thinner gap that belongs to search-results-dynamic-clean and the
   perspectives suite, not to this pair.
+
+  Narrowed 2026-09-03 to sibling scale (220 -> 135 lines). The component is
+  presentational now: status, transactions and onRetry are props, and the
+  request lifecycle belongs to the parent. Every MAJOR that three rounds of
+  blind draws found in this fixture came from that lifecycle — a stale-response
+  race, a silent repeat Retry press, an aria-busy placement that could withhold
+  the message being written — and none of it is what the fixture measures.
+  The announcement mechanism, which is what it measures, was never the thing
+  that broke.
