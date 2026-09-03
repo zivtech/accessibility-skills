@@ -140,7 +140,7 @@ export default WatershedMapPanel;
 
 ## Expected Behavior
 
-- On load, the panel shows the watershed boundary map with three actions above the map: **Zoom in**, **Zoom out**, **Reset view**.
+- On load, the panel shows the watershed boundary map, followed by three actions below it: **Zoom in**, **Zoom out**, **Reset view**. Visual order matches DOM order; no CSS reorders them.
 - Pressing any of the three actions — by mouse click, Enter, or Space — updates the map's zoom/pan state in place; none of them navigates the browser anywhere or changes the URL.
 - **Open full report** opens the underlying watershed report PDF in a new tab, leaving the map panel open in the original tab.
 

@@ -55,7 +55,7 @@ expected_findings:
     count: 5
     items:
       - description: "The status and alert containers are empty in most states — this is the persistent-container pattern, not dead markup"
-        impact: "Lines 37 and 54 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
+        impact: "Lines 49 and 66 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
         expected_to_find: "65%"
 
       - description: "Two politeness levels in one component is correct, not inconsistent"
@@ -63,11 +63,11 @@ expected_findings:
         expected_to_find: "70%"
 
       - description: "aria-hidden='true' on the decorative spinner is correct"
-        impact: "Line 40's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
+        impact: "Line 52's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
         expected_to_find: "70%"
 
       - description: "The empty-result branch is handled — flagging a missing zero-state is a false alarm"
-        impact: "Line 47 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
+        impact: "Line 59 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
         expected_to_find: "60%"
 
       - description: "role='list' on the transactions list is the WebKit counter-measure, not redundant ARIA"
@@ -131,3 +131,19 @@ notes: |
   "persistent live regions" claim overreached: the panel mounts in its loading
   state, so the initial message is the one the invariant cannot cover. The
   fixture prose now says so.
+
+  Revision 2026-09-03b: three independent draws (two skill-condition, one
+  baseline) reported that `load` had no stale-request guard — two Retry presses
+  or an accountId change mid-flight could let a slow failure resolve after a
+  fast success and interrupt assertively over transactions the user had just
+  been told about. The skill draws held it at MAJOR, which in a CLEAN fixture is
+  an unplanted defect by the standard this lane applies. A request-sequence
+  token and an effect cleanup now discard superseded resolutions.
+
+  Still open and deliberately not fixed, because three draws disagreed about
+  whether it bites: `aria-busy` sits on `.panel-body`, an ancestor of both live
+  regions, so an AT that honours ancestor busy state may defer the loading
+  message. Two draws called it MINOR, one called it correct. The states that
+  matter — failure and recovery — both commit with aria-busy false, so the
+  exposure is limited to in-progress feedback. Recorded here rather than
+  patched, so the next draw can settle it.

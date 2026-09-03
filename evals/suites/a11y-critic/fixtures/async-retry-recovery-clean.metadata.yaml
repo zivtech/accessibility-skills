@@ -26,15 +26,15 @@ components_analyzed:
     aria_attributes:
       - aria-live: "polite"
       - aria-atomic: "true"
-    status: "Correct — persistent across all states (line 37), so loading, success and empty messages written into it are announced"
+    status: "Correct — persistent across all states (line 49), so loading, success and empty messages written into it are announced"
 
   - name: Alert region
     aria_role: alert
-    status: "Correct — persistent (line 54) and assertive, matching an actionable request failure; a sibling of the status region rather than a replacement, so the recovery message still has a place to land"
+    status: "Correct — persistent (line 66) and assertive, matching an actionable request failure; a sibling of the status region rather than a replacement, so the recovery message still has a place to land"
 
   - name: Panel body
     aria_attributes:
-      - aria-busy: "true while the request is in flight (line 33)"
+      - aria-busy: "true while the request is in flight (line 45)"
     status: "Correct"
 
   - name: Retry button

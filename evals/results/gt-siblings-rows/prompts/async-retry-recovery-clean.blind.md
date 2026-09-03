@@ -6,20 +6,32 @@
 const AccountActivityPanel = ({ accountId }) => {
   const [status, setStatus] = useState('loading'); // 'loading' | 'error' | 'ready'
   const [transactions, setTransactions] = useState([]);
+  // A superseded request must never reach the live regions. Without this, two
+  // Retry presses (or an accountId change mid-flight) can let a slow failure
+  // resolve after a fast success and interrupt assertively with "we couldn't
+  // load your activity" over transactions the user was just told about.
+  const requestId = useRef(0);
 
   const load = useCallback(async () => {
+    const id = ++requestId.current;
     setStatus('loading');
     try {
       const res = await fetch(`/api/accounts/${accountId}/activity`);
       if (!res.ok) throw new Error('Request failed');
-      setTransactions(await res.json());
+      const data = await res.json();
+      if (id !== requestId.current) return;
+      setTransactions(data);
       setStatus('ready');
     } catch (err) {
+      if (id !== requestId.current) return;
       setStatus('error');
     }
   }, [accountId]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+    return () => { requestId.current += 1; };
+  }, [load]);
 
   return (
     <section className="activity-panel" aria-labelledby="activity-heading">
