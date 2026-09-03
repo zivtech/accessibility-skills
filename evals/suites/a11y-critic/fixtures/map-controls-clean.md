@@ -153,6 +153,12 @@ export default WatershedMapPanel;
 5. **Genuine anchor implemented correctly** — `Open full report` is a real `<a href="/reports/watershed-2026">` with a real destination, `target="_blank"`, `rel="noopener noreferrer"`, and a visually-hidden "(opens in a new tab)" disclosure so the new-tab behavior is announced rather than silently sprung on the user.
 6. **Visible focus indicators** — every interactive element (`.map-control`, the data-table link, and the report anchor) has a `:focus-visible` outline.
 
+## Accessibility Issues (None Planted — CLEAN Baseline)
+
+None. This fixture is a CLEAN baseline with no planted defects. Everything from
+this heading down is ground-truth material and is stripped from model prompts by
+the blind protocol (`ANSWER_KEY_RE` in the runners).
+
 ## Difficulty Level
 
 **CLEAN** — Baseline for false-positive avoidance on the "control vs. link" distinction. Three constructs here read like defects to a reviewer applying a rule mechanically rather than reasoning about what each control actually does: the absence of `aria-pressed` on three prominent buttons, and the presence of three same-group buttons with distinct labels that a reviewer primed by a companion BUG fixture might still reflexively check against SC 3.2.4.

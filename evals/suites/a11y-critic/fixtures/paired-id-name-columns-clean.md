@@ -113,6 +113,12 @@ export default MaintenanceCasesTable;
 4. **Focus is visible** — `.cases-table a:focus-visible` gives every link, including both links in a row, a visible outline on keyboard focus.
 5. **Two links per row are two intents, not duplication** — the ID link serves a user scanning by case number; the Name link serves a user scanning by site name. Neither is redundant with the other, so collapsing them into a single link would remove a legitimate way of finding the row.
 
+## Accessibility Issues (None Planted — CLEAN Baseline)
+
+None. This fixture is a CLEAN baseline with no planted defects. Everything from
+this heading down is ground-truth material and is stripped from model prompts by
+the blind protocol (`ANSWER_KEY_RE` in the runners).
+
 ## Difficulty Level
 
 **CLEAN** — Baseline for false-positive avoidance on SC 3.2.4 Consistent Identification. Two links in every row correctly share a destination while carrying different accessible names, which is exactly the shape a naive "same href, different name → inconsistent" check flags. Reading WCAG Understanding 3.2.4 correctly — same *functionality*, not same *destination* — is what keeps a reviewer from raising it here, and is what this fixture exists to test.

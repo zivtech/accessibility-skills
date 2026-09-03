@@ -178,6 +178,12 @@ export default AccountActivityPanel;
 6. **Focus preserved across state changes** — the Retry control never unmounts, and has a visible `:focus-visible` indicator.
 7. **Decorative spinner hidden** — `aria-hidden="true"`, with the adjacent text inside the same region carrying the message; `prefers-reduced-motion` disables the animation.
 
+## Accessibility Issues (None Planted — CLEAN Baseline)
+
+None. This fixture is a CLEAN baseline with no planted defects. Everything from
+this heading down is ground-truth material and is stripped from model prompts by
+the blind protocol (`ANSWER_KEY_RE` in the runners).
+
 ## Difficulty Level
 
 **CLEAN** — Baseline for false-positive avoidance on async status messages. The two mostly-empty live-region containers, the two different politeness levels in one component, and the `aria-hidden` spinner are each a correct decision that reads like a defect to a reviewer scanning for patterns rather than reasoning about announcement timing.
