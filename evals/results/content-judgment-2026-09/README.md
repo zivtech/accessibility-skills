@@ -14,8 +14,9 @@ every adjudication.
 | `blind-author-brief.md`, `blind-author-provenance.md` | the exact spawn text the fixture author (sonnet) received, and its own statement of what it did and did not open |
 | `technique-verification.md` | every cited W3C technique id fetched live (haiku) — three reference labels corrected before any draw |
 | `r5-quoted-span-calibration.md` | the quoted-span fabrication check measured on the origin engagement's 530 spot-checked rows (counts only) → should-tier |
-| `calibrate.py`, `score-cal-*.txt` | 35 synthetic cases derived from the frozen metadata, all CLEAN before the first model row |
-| `claude-cj-*-response.json`, `score-claude-cj-*.txt` | 12 rubric-condition opus draws (6 fixtures × 2) and 4 baselines (fixtures 2, 3 × 2), packaged verbatim |
+| `calibrate.py`, `score-cal-*.txt` | synthetic cases derived from the frozen metadata — 35 CLEAN before the first model row, 43 after the test-critic fold (regression + split-group cases) |
+| `claude-cj-*-response.json`, `score-claude-cj-*.txt` | opus draws packaged verbatim: 12 rubric-v0.1 (6 fixtures × 2), 4 re-draws on link-purpose-cards (v0.2 ×2, v0.3 ×2), baselines on fixtures 2 and 3 (×2) and 5 (×3) |
+| `critic-a11y-critic-verdict.md`, `critic-test-critic-verdict.md` | both critic verdicts verbatim (opus) |
 | `ollama-cj-link-purpose-cards-qwen36-35b-response.json`, `score-cj-…qwen36-35b.txt` | the one local detector row (exact command in `_benchmark`) |
 
 ## Method (hosted rows)
@@ -32,7 +33,7 @@ the parent plan, disclosed: the qwen row was run with
 agent, and the `BENCHMARK.md` section was written by the orchestrating
 session rather than `bench-reporter`.
 
-## Rows (17) — final instrument
+## Rows (first round, rubric v0.1) — 17
 
 | Fixture | Condition | Draw 1 | Draw 2 | Must-no found | False alarms |
 |---|---|---|---|---|---|
@@ -97,23 +98,43 @@ observed in 2 of 2 draws on the sixth.
   all — with zero false alarms: consistent with the repo-wide routing rule
   (detector, never the `drafted_by` of record).
 
-## Gate reading
+## Rubric rounds on link-purpose-cards (the fixture that gates)
 
-The lane's own bar for "clause 1 satisfied for the classes with a public
-reference": hosted tier must-clean on all fixtures, stable across 2 draws.
-**Not met as the rubric stands** — one draw-stable false alarm, on a row
-whose verdict WCAG 2.4.4 settles the other way. This is a rubric REVISE
-item (filed with the `a11y-critic` pass), not a fixture or scorer item;
-the rows the rubric gets right are the clause-1 evidence for the classes
-they cover (F25, F30, F65, F89, F63, G130/G131 absence, G197). Nothing
-here changes the skill's routing: drafts remain detector output behind a
-mandatory human ratification.
+| Rubric | Draws | Must-no found | False alarms | Discriminating rows | Reading |
+|---|---|---|---|---|---|
+| v0.1 (origin text: card grid `no` "because indistinguishable when listed") | 1, 2 | 7/7, 7/7 | **1, 1** (in-sentence "Learn more") | 2/2, 2/2 | detects the grid for the 2.4.9 reason and false-alarms a conforming link for the same reason |
+| v0.2 (AA rule: `no` only when no programmatically determined context names the destination; AAA listing → ratifier note) | 3, 4 | 2/7, 2/7 | 0, 0 | 2/2, 1/1 | WCAG-correct but **undecidable from the row**: the flattened `context` carries the card text and cannot show it is a sibling block, so both draws passed the grid; draw 3 also emitted one malformed JSON line (C1) |
+| v0.3 (same-sentence proxy: destination in the link's own sentence → `yes`; other-sentence context → `unsure`, needs_human, "context boundary not captured"; `no` only when nothing names it) | 5, WARN | 7/7 (5 deferred as `unsure`), 7/7 (5 deferred) | 0, 0 | 2/2, 2/2 | decidable from current rows: the grid goes to the human instead of to a silent `yes` or a WCAG-unsupported `no`; the in-sentence link stays `yes` |
+
+The v0.2 → v0.3 step is the measured form of the skill critic's M2 second
+half ("the capture makes it unfixable at the judge"): text alone cannot
+apply the AA rule until the inventory reports the block relationship; the
+proxy is the honest interim. The five grid rows carry `unsure_ok` for that
+capture limit (same class as the six invalid td rows), expected `no`
+unchanged. Baselines on identification-across-views (bare opus, 3 draws
+after an inter-draw disagreement): "Resources"/"Help" found in 1 of 3 and
+hedged to `unsure` in 2 of 3; the rubric arm found it in both draws — the
+rubric carries the 3.2.4 different-names call. All rows: `score-claude-*.txt`.
+
+## Gate reading (after the fold)
+
+Rubric v0.3 on the gating fixture: must-clean on draw 5 (7/7 found with 5
+deferred, 0 false alarms) and must-clean (7/7 (5 deferred) found, 0 false alarms). Every other fixture: must-clean in
+both draws (v0.1 text unchanged for those classes; the v0.2/v0.3 edits touch
+only link-context and file-cue rules). Per the pre-committed language: no
+false alarm observed in 2 draws on any must row under v0.3 — which bounds
+the per-row false-alarm rate only at roughly ≤ 15 % (95 %, non-independent
+rows). The rubric fold is text-level; the capture changes it needs to
+become fully decidable (preceding heading, list item, table row) and the
+batch-line product/audience fields are the follow-up PR, after which the
+lane re-draws with the six invalid rows made valid.
 
 ## Instrument revisions (pre-verdict, each with its trigger)
 
 | Revision | Trigger | Effect |
 |---|---|---|
-| R5 quote regex: straight apostrophes inside words are not quote delimiters | first hosted draws fired R5 on "link's alt … user's" | four rows WARN → PASS/WARN-on-R6-only; smoke 63/63 and calibration 35/35 re-run CLEAN, all rows re-scored |
+| R5 quote regex: straight apostrophes inside words are not quote delimiters | first hosted draws fired R5 on "link's alt … user's" | four rows WARN → PASS/WARN-on-R6-only; smoke and calibration re-run CLEAN, all rows re-scored |
+| D discriminating-row score; R4 "not armed" line; C3 fix-on-yes exempts file links; calibrate regression + split-group cases (43); smoke R7 case (64) | test-critic REVISE; rubric v0.3's file-cue rule | reporting only — no status moved except the file-link C3 line on v0.3 draws |
 | Technique references: F84 → F63 on the card grid; ARIA14/H44 → G131-based labels; F89's own criteria annotated | live technique verification | reference labels only; no verdict or tier moved |
 
 ## Not claimed

@@ -1833,9 +1833,13 @@ adjudications: `evals/results/content-judgment-2026-09/README.md`.
 | opus × 2 draws, images-role-routing | baseline | WARN/WARN | 4/4 | 0 | bare opus already routes image roles correctly; the rubric adds nothing measurable here |
 | qwen3.6:35b, link-purpose-cards | cj | FAIL | 1/7 | 0 | detector row: judged every "Learn more" yes, ignoring the rubric's grid rule — routing rule unchanged (hosted tier drafts; local pre-sorts only) |
 
-Reading: every planted defective row was found in every hosted rubric
-draw; the one false alarm is draw-stable and attributable to the rubric,
-not to a judge or a fixture (WCAG 2.4.4 accepts same-sentence context).
-Gate for the classes with a public reference: **not met as the rubric
-stands**; the rows the rubric gets right are the clause-1 evidence for
-F25, F30, F65, F89, F63, G130/G131 absence, and G197.
+Reading (rubric v0.1): every planted defective row was found in every
+hosted rubric draw; the one false alarm is draw-stable and attributable to
+the rubric, not to a judge or a fixture (WCAG 2.4.4 accepts same-sentence
+context). Re-draws after the critic fold: v0.2 (AA context rule) 2/7 found,
+0 false alarms — undecidable from the flattened context; **v0.3**
+(same-sentence proxy, other-sentence context → `unsure` for the human):
+draw 5 7/7 found (5 deferred), 0 false alarms, draw 6 WARN. The rows
+the rubric gets right are the clause-1 evidence for F25, F30, F65, F89,
+F63, G130/G131 absence, and G197; full-decidability needs the context
+capture follow-up.

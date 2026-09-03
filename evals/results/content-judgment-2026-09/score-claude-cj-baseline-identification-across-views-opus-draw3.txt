@@ -1,0 +1,11 @@
+Parsed: 53 judgment line(s) (1 fence(s), 0 unparseable object line(s))
+Coverage: 53/53 input ids answered (0 duplicated, 0 extra)
+Must-no rows (R1): 1/2 found
+Clean rows (R2): 1/1 unflagged; false alarms: 0
+Calibration rows (R3, informational): 48/50 agree — IMAGE-PA-f198d0af7f(yes->no), LINK-PA-74380fc2c7(yes->no)
+Discriminating rows (D, flags absent or pointing the wrong way): 1/1 right
+Fabrication (R4 tokens): not armed (fixture lists no tokens); (R5 quoted spans, should-tier): 0 hit(s)
+MUST MISS: R1 expected-no row IDENT-PA-9bf8bba533 judged unsure (G197 / Understanding 3.2.4)
+should miss: R6 no-rationale names none of the row's loses phrases on 1 row(s): IDENT-PA-63040493f3
+
+Status: FAIL

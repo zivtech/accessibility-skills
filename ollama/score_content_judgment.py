@@ -200,7 +200,8 @@ def main():
             stats["bad_conf"].append(rid)
         if j == "unsure" and obj.get("needs_human") is not True:
             stats["needs_human_miss"].append(rid)
-        if j == "yes" and fix.strip():
+        if j == "yes" and fix.strip() and not any(str(f).startswith("file_") for f in ((fixture_rows.get(rid) or {}).get("flags") or [])):
+            # rubric v0.3 asks for the format cue in `fix` on a yes for file links
             stats["fix_on_yes"].append(rid)
         if word_count(rationale) > 25:
             stats["long_rationale"].append(rid)

@@ -11,7 +11,7 @@ MUST MISS: R1 expected-no row LINK-LI-901fe7deda judged yes (F63 (verified 2.4.4
 MUST MISS: R1 expected-no row LINK-LI-b2776e14df judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
 MUST MISS: R1 expected-no row LINK-LI-c48980d950 judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
 MUST MISS: R1 expected-no row LINK-LI-f7259f7b59 judged yes (F63 (verified 2.4.4 failure: the card's text is a sibling <p> inside a <div> with no heading — outside the link's programmatically determined context; the blind author's F84 is a 2.4.9 Link-Only failure))
-should miss: C3 non-empty fix on a yes on 7 row(s): LINK-LI-33337c9396, LINK-LI-51c84ee852, LINK-LI-901fe7deda, LINK-LI-a73c6c9f68, LINK-LI-b2776e14df, LINK-LI-c48980d950
+should miss: C3 non-empty fix on a yes on 6 row(s): LINK-LI-33337c9396, LINK-LI-51c84ee852, LINK-LI-901fe7deda, LINK-LI-b2776e14df, LINK-LI-c48980d950, LINK-LI-f7259f7b59
 should miss: R6 no-rationale names none of the row's loses phrases on 2 row(s): LINK-LI-a9186a85cb, LINK-LI-e9576c5535
 
 Status: FAIL
