@@ -25,37 +25,34 @@ expected_findings:
         note: "No success criterion maps to this. It is a cognitive-access regression against browser-native behaviour, and a reviewer who raises it is being thorough rather than wrong — which is why it is scored here rather than left as an unlisted surface."
 
   - category: false_positive_trap
-    count: 6
+    count: 5
     items:
       - description: "Skipping the focus move on the initial render is correct, not a gap"
-        impact: "Lines 47-48 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
+        impact: "Lines 46-47 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
 
       - description: "tabIndex={-1} on the <h1> is the correct mechanism, not tabindex misuse"
-        impact: "Line 27 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
+        impact: "Line 26 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
 
       - description: "There is no aria-live route announcer, and that is a choice rather than an omission"
         impact: "Moving focus to the heading announces it. Adding a live region as well makes most screen readers say the view name twice. Flagging 'route changes are not announced' ignores that focus movement is the announcement here."
 
-      - description: "role='list' on the delisted <ul> elements is the WebKit counter-measure, not redundant ARIA"
-        impact: "list-style: none makes WebKit drop the list role from the accessibility tree, so a VoiceOver user loses 'list, N items' — on the account list that count is the information. Flagging 'redundant ARIA role on a <ul>' applies the do-not-duplicate-native-semantics rule to the one case where the stylesheet has already removed those semantics."
-
       - description: "Two tabIndex={-1} targets coexist deliberately"
-        impact: "<main> (line 81) is the skip-link destination; the <h1> rendered by ViewHeading (line 27) is the route-change focus target. Neither is in the Tab order and each serves a different mechanism. Flagging one as unnecessary breaks whichever is removed."
+        impact: "<main> (line 77) is the skip-link destination; the <h1> rendered by ViewHeading (line 26) is the route-change focus target. Neither is in the Tab order and each serves a different mechanism. Flagging one as unnecessary breaks whichever is removed."
 
       - description: "preventScroll: true is correct because the component scrolls the window itself"
-        impact: "Line 50 scrolls to the top and line 51 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
+        impact: "Line 49 scrolls to the top and line 50 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
 
 components_analyzed:
   - name: Title effect
-    status: "Correct — ViewHeading (lines 21-31) renders the heading and sets the title from the same string, so the two cannot disagree and no second matcher against the pathname can desync from React Router's own"
+    status: "Correct — ViewHeading (lines 20-30) renders the heading and sets the title from the same string, so the two cannot disagree and no second matcher against the pathname can desync from React Router's own"
 
   - name: Focus effect
-    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 42-54). There is no root redirect, which would fire a second render with a changed pathname and move focus on cold entry"
+    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 41-53). There is no root redirect, which would fire a second render with a changed pathname and move focus on cold entry"
 
   - name: View heading
     semantic_element: h1
     aria_attributes: ["tabIndex={-1}"]
-    status: "Correct — rendered by each view through ViewHeading, found by the shell inside its own <main> rather than threaded through as a ref, and given a visible focus indicator (lines 26-30, 193-199)"
+    status: "Correct — rendered by each view through ViewHeading, found by the shell inside its own <main> rather than threaded through as a ref, and given a visible focus indicator (lines 26-28, 144-150)"
 
   - name: Section nav
     semantic_element: nav
@@ -64,7 +61,7 @@ components_analyzed:
 
   - name: Main landmark
     semantic_element: main
-    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 81), and the element the shell queries for the new view's heading"
+    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 77), and the element the shell queries for the new view's heading"
 
 wcag_criteria:
   - "2.4.2 Page Titled (each route sets a title naming the section and the site)"
@@ -156,3 +153,19 @@ notes: |
   screen, so nothing changed. The two ACCEPT draws are against revision 4,
   which differs from this revision only by the absence of that additive rule;
   they were not re-run for it.
+
+  Revision 6 (2026-09-03) — narrowed to sibling scale, on the user's call after
+  the revision-5 write-up. 282 lines -> 182, against async-retry-recovery-clean
+  at 189 and map-controls-clean at 164. Removed: the whole index.html block,
+  the layout and list CSS, the third section, and the account/statement content
+  — every one of which had generated a legitimate finding in some round without
+  bearing on the route-change mechanism this fixture measures. The `role="list"`
+  trap goes with the `list-style: none` rule that motivated it, so the trap
+  count is 5 rather than 6.
+
+  The BUG half is deliberately NOT narrowed with it: its second planted defect
+  is the static <title>, and index.html is that defect's evidence. The pair is
+  therefore no longer byte-parallel. That is acceptable because scoring is
+  per-fixture — the CLEAN half's job under clause 3 is to penalise
+  over-flagging on the same interaction pattern, not to be the same file with
+  the effects deleted.

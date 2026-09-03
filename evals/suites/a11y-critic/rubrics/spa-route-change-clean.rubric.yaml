@@ -56,30 +56,26 @@ expected_findings:
         expected_to_find: "40%"
 
   - category: false_positive_trap
-    count: 6
+    count: 5
     items:
       - description: "The initial-render exemption is correct — flagging 'focus is not managed on first load' is a false alarm"
-        impact: "Lines 47-48 return early while the pathname is unchanged, which is the first render. On a document load the browser has already placed focus at the start of the document; moving it to the heading would carry the user past the skip link and the nav before they had the chance to use either. The guard compares the previous pathname rather than flipping a boolean, because React repeats mount effects in StrictMode development builds and a boolean would already be false on the repeat. A reviewer who reports the guard as a gap has inverted its purpose; a reviewer who reports that a boolean guard would be StrictMode-unsafe is describing a defect this fixture does not have."
+        impact: "Lines 46-47 return early while the pathname is unchanged, which is the first render. On a document load the browser has already placed focus at the start of the document; moving it to the heading would carry the user past the skip link and the nav before they had the chance to use either. The guard compares the previous pathname rather than flipping a boolean, because React repeats mount effects in StrictMode development builds and a boolean would already be false on the repeat. A reviewer who reports the guard as a gap has inverted its purpose; a reviewer who reports that a boolean guard would be StrictMode-unsafe is describing a defect this fixture does not have."
         expected_to_find: "60%"
 
       - description: "tabIndex={-1} on the <h1> is the mechanism, not a tabindex misuse"
-        impact: "Line 27 makes the heading a programmatic focus target without putting it in the Tab order. Flagging 'tabindex on a non-interactive element' or 'headings should not be focusable' would remove the only thing that lets focus land in the new view. This is the trap most likely to catch a reviewer applying a tabindex rule without asking what the element is for."
+        impact: "Line 26 makes the heading a programmatic focus target without putting it in the Tab order. Flagging 'tabindex on a non-interactive element' or 'headings should not be focusable' would remove the only thing that lets focus land in the new view. This is the trap most likely to catch a reviewer applying a tabindex rule without asking what the element is for."
         expected_to_find: "65%"
 
       - description: "The absence of an aria-live route announcer is a choice, not an omission"
         impact: "Focus movement to the heading is the announcement. Adding a live region as well makes most screen readers speak the view name twice. Flagging 'route changes are not announced to screen readers' treats a live region as the only valid mechanism and would introduce a duplicate announcement."
         expected_to_find: "55%"
 
-      - description: "role='list' on the delisted <ul> elements is the WebKit counter-measure, not redundant ARIA"
-        impact: "The nav, account and statement lists set list-style: none, and WebKit drops the list role from the accessibility tree when it does — a VoiceOver user loses 'list, 3 items', which on the account list is the information. Flagging 'redundant ARIA role on a <ul>' applies the do-not-duplicate-native-semantics rule to the one case where the native semantics have already been removed by the stylesheet."
-        expected_to_find: "50%"
-
       - description: "preventScroll: true is correct because the component scrolls the window itself"
-        impact: "Line 50 scrolls to the top and line 51 then focuses with preventScroll, so the app decides the scroll position rather than the browser's scroll-into-view heuristic. Flagging 'preventScroll means the user never sees the heading' has read line 51 without line 50."
+        impact: "Line 49 scrolls to the top and line 50 then focuses with preventScroll, so the app decides the scroll position rather than the browser's scroll-into-view heuristic. Flagging 'preventScroll means the user never sees the heading' has read line 50 without line 49."
         expected_to_find: "60%"
 
       - description: "Two tabIndex={-1} targets coexist deliberately and serve different mechanisms"
-        impact: "<main> (line 81) is the skip-link destination, so a fragment jump lands focus inside the landmark; the <h1> rendered by ViewHeading is the route-change focus target, so a navigation lands focus on the name of what arrived. Neither is in the Tab order and neither is redundant. Flagging 'two focus targets, one of these is unnecessary' would break whichever of the two mechanisms is removed."
+        impact: "<main> (line 77) is the skip-link destination, so a fragment jump lands focus inside the landmark; the <h1> rendered by ViewHeading is the route-change focus target, so a navigation lands focus on the name of what arrived. Neither is in the Tab order and neither is redundant. Flagging 'two focus targets, one of these is unnecessary' would break whichever of the two mechanisms is removed."
         expected_to_find: "45%"
 
 composite_score_formula: |
@@ -129,7 +125,7 @@ notes: |
   that put two real defects into modal-complete-clean before its 2026-07-16
   revision. An `outline: none` on the focused heading is common in real code and
   would have been legitimately flaggable, so the heading keeps a visible
-  indicator (lines 193-199). A visually-hidden role="status" route announcer
+  indicator (lines 144-150). A visually-hidden role="status" route announcer
   beside the focus move would produce a duplicate announcement, so the fixture
   uses focus movement alone — and its absence is scored here as a trap rather
   than as a gap.
@@ -175,3 +171,9 @@ notes: |
   Revision 5 (2026-09-03): `.portal-main:focus-visible` added, the one item
   both skill draws raised. Additive CSS only; the ACCEPT draws are against
   revision 4 and were not re-run for it.
+
+  Revision 6 (2026-09-03): narrowed to sibling scale (282 -> 182 lines) on the
+  user's call. The index.html block, the layout and list CSS, the third section
+  and the account/statement content are gone — each had produced a legitimate
+  finding in some round without bearing on the mechanism under test. The
+  role="list" trap is removed with the rule that motivated it: 5 traps, not 6.
