@@ -926,6 +926,8 @@ For audit-scope runs (conformance audits, pre-VPAT work), extend template sampli
 7. **Complete processes:** multi-view journeys (checkout, multi-step applications, auth) are tested end-to-end, never as isolated pages — include every view in the process (the default sequence plus completion-critical branches) and route them to keyboard-a11y-tester driven sessions (see "Goal-driven journey audits" above); per-page scans do not count as process evidence
 8. **State coverage:** each sampled page is evaluated in its states (default, loading, error, expanded — the Multi-Page Scanning list above); name the state coverage in the sampling documentation
 
+When the sampling documentation is serialized rather than written as prose, Appendix A of `docs/a11y-evaluation-report-contract.md` shows one way to shape it — a non-normative example, not a schema. Two parts of it are worth carrying even when you write prose: record the actions a complete process needs (a URL alone does not identify a sample inside a process), and identify kiosk, native, and document samples by path description and/or screenshot, since they have no URL.
+
 ### Output Format
 Report axe-core results alongside keyboard and visual regression results:
 ```
