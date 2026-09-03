@@ -55,11 +55,11 @@ expected_findings:
     count: 4
     items:
       - description: "The initial-render exemption is correct — flagging 'focus is not managed on first load' is a false alarm"
-        impact: "Lines 34-37 return early on the first render. On a document load the browser has already placed focus at the start of the document; moving it to the heading would carry the user past the skip link and the nav before they had the chance to use either. A reviewer who reports the guard as a gap has inverted its purpose."
+        impact: "Lines 39-40 return early while the pathname is unchanged, which is the first render. On a document load the browser has already placed focus at the start of the document; moving it to the heading would carry the user past the skip link and the nav before they had the chance to use either. The guard compares the previous pathname rather than flipping a boolean, because React repeats mount effects in StrictMode development builds and a boolean would already be false on the repeat. A reviewer who reports the guard as a gap has inverted its purpose; a reviewer who reports that a boolean guard would be StrictMode-unsafe is describing a defect this fixture does not have."
         expected_to_find: "60%"
 
       - description: "tabIndex={-1} on the <h1> is the mechanism, not a tabindex misuse"
-        impact: "Line 71 makes the heading a programmatic focus target without putting it in the Tab order. Flagging 'tabindex on a non-interactive element' or 'headings should not be focusable' would remove the only thing that lets focus land in the new view. This is the trap most likely to catch a reviewer applying a tabindex rule without asking what the element is for."
+        impact: "Line 74 makes the heading a programmatic focus target without putting it in the Tab order. Flagging 'tabindex on a non-interactive element' or 'headings should not be focusable' would remove the only thing that lets focus land in the new view. This is the trap most likely to catch a reviewer applying a tabindex rule without asking what the element is for."
         expected_to_find: "65%"
 
       - description: "The absence of an aria-live route announcer is a choice, not an omission"
@@ -67,7 +67,7 @@ expected_findings:
         expected_to_find: "55%"
 
       - description: "preventScroll: true is correct because the component scrolls the window itself"
-        impact: "Line 39 scrolls to the top and line 40 then focuses with preventScroll, so the app decides the scroll position rather than the browser's scroll-into-view heuristic. Flagging 'preventScroll means the user never sees the heading' has read line 40 without line 39."
+        impact: "Line 42 scrolls to the top and line 43 then focuses with preventScroll, so the app decides the scroll position rather than the browser's scroll-into-view heuristic. Flagging 'preventScroll means the user never sees the heading' has read line 43 without line 42."
         expected_to_find: "60%"
 
 composite_score_formula: |
@@ -117,7 +117,24 @@ notes: |
   that put two real defects into modal-complete-clean before its 2026-07-16
   revision. An `outline: none` on the focused heading is common in real code and
   would have been legitimately flaggable, so the heading keeps a visible
-  indicator (lines 161-167). A visually-hidden role="status" route announcer
+  indicator (lines 174-180). A visually-hidden role="status" route announcer
   beside the focus move would produce a duplicate announcement, so the fixture
   uses focus movement alone — and its absence is scored here as a trap rather
   than as a gap.
+
+  Revision 2 (2026-09-03) — the reason this half exists, demonstrated. Four
+  blind draws against revision 1 (two under the a11y-critic protocol, two bare
+  baselines) all returned an ACCEPT-shaped verdict and all four traps held: the
+  a11y-critic draw predicted seven usual route-change defects before reading
+  and found none of them present. But the same draw held a MAJOR on a
+  non-wrapping header flex row (1.4.10 Reflow, ~408px minimum against a 320px
+  threshold) — an unplanted defect, which is the modal-complete-clean failure
+  mode this fixture is supposed to be immune to. Three further unplanted
+  defects came out of the same draws: a hand-computed aria-current overriding
+  NavLink's own, links to sub-routes no <Route> matched with no index or
+  catch-all route, and a <main> that was not focusable as the skip-link target.
+  A fifth finding hit the trap itself: the boolean first-render guard was
+  defeated by React StrictMode's repeated mount effect, so trap 1 described
+  behaviour the fixture did not actually have. All five are repaired, and the
+  revision-1 draws are kept as authoring receipts in
+  evals/results/gt05-spa-route-change/.

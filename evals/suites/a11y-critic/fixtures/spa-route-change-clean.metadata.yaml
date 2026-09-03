@@ -24,37 +24,37 @@ expected_findings:
     count: 4
     items:
       - description: "Skipping the focus move on the initial render is correct, not a gap"
-        impact: "Lines 34-37 return early on first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. Flagging 'focus is not managed on first load' inverts the reason for the guard."
+        impact: "Lines 39-40 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
 
       - description: "tabIndex={-1} on the <h1> is the correct mechanism, not tabindex misuse"
-        impact: "Line 71 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
+        impact: "Line 74 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
 
       - description: "There is no aria-live route announcer, and that is a choice rather than an omission"
         impact: "Moving focus to the heading announces it. Adding a live region as well makes most screen readers say the view name twice. Flagging 'route changes are not announced' ignores that focus movement is the announcement here."
 
       - description: "preventScroll: true is correct because the component scrolls the window itself"
-        impact: "Line 39 scrolls to the top and line 40 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
+        impact: "Line 42 scrolls to the top and line 43 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
 
 components_analyzed:
   - name: Title effect
-    status: "Correct — pathname-derived title from the same SECTIONS list that renders the nav (lines 24-28), so nav label and title cannot drift"
+    status: "Correct — pathname-derived title from the same SECTIONS list that renders the nav (lines 29-33), including a title for the unmatched-URL branch, so nav label and title cannot drift"
 
   - name: Focus effect
-    status: "Correct — pathname-keyed, exempt on first render, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 33-43)"
+    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 35-46)"
 
   - name: View heading
     semantic_element: h1
     aria_attributes: ["tabIndex={-1}"]
-    status: "Correct — one heading in the shell rather than one per view, which keeps the focus target stable across routes and gives it a visible focus indicator (lines 71-73, 161-167)"
+    status: "Correct — one heading in the shell rather than one per view, which keeps the focus target stable across routes and gives it a visible focus indicator (lines 74-76, 174-180)"
 
   - name: Section nav
     semantic_element: nav
-    aria_attributes: ["aria-label='Account sections'", "aria-current='page'"]
-    status: "Correct"
+    aria_attributes: ["aria-label='Account sections'", "aria-current='page' supplied by NavLink"]
+    status: "Correct — NavLink owns the current-page state and the end prop keeps its match exact, so there is one source of truth rather than a hand-computed second one"
 
   - name: Main landmark
     semantic_element: main
-    status: "Correct — the skip-link target, and the heading and outlet both live inside it"
+    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 73), with the heading and outlet both inside it"
 
 wcag_criteria:
   - "2.4.2 Page Titled (each route sets a title naming the section and the site)"
@@ -94,3 +94,15 @@ notes: |
   announcer alongside the focus move would have produced a duplicate
   announcement, so the fixture uses focus movement alone and the rubric scores
   the absence of a live region as a trap rather than a gap.
+
+  Revision 2 (2026-09-03) repaired four unplanted defects that four blind
+  reviewer draws found in revision 1: a non-wrapping header flex row (1.4.10 —
+  the a11y-critic draw held this at MAJOR against this fixture, which is
+  exactly the unplanted-defect failure this half exists to avoid), a
+  hand-computed aria-current prop overriding NavLink's own, content links to
+  sub-routes no <Route> matched with no index or catch-all route, and a <main>
+  that was not focusable as the skip-link target. A fifth finding repaired the
+  first-render guard itself: the boolean it used was defeated by React
+  StrictMode's repeated mount effect, so the fixture did not do what its own
+  trap said it did. The revision-1 draws are kept as authoring receipts in
+  evals/results/gt05-spa-route-change/.
