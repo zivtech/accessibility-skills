@@ -52,7 +52,7 @@ expected_findings:
     expected_to_find: "30%"
 
   - category: false_positive_trap
-    count: 4
+    count: 5
     items:
       - description: "The status and alert containers are empty in most states — this is the persistent-container pattern, not dead markup"
         impact: "Lines 37 and 54 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
@@ -69,6 +69,10 @@ expected_findings:
       - description: "The empty-result branch is handled — flagging a missing zero-state is a false alarm"
         impact: "Line 47 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
         expected_to_find: "60%"
+
+      - description: "role='list' on the transactions list is the WebKit counter-measure, not redundant ARIA"
+        impact: "list-style: none makes WebKit drop the implicit list role, so a VoiceOver user loses 'list, N items'. Added 2026-09-03 after both blind draws flagged its absence as a MINOR 1.3.1 defect — it was an unplanted defect in a CLEAN fixture, which is the failure this half exists to avoid. Flagging the attribute as redundant duplication of native semantics misses that the stylesheet has already removed them."
+        expected_to_find: "50%"
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -118,3 +122,12 @@ notes: |
   flagging it would have been correct — it would have been an unplanted defect
   scored as a false positive, the failure mode that put two real defects into
   modal-complete-clean before the 2026-07-16 revision.
+
+  Revision 2026-09-03, from the first blind draws ever taken against this
+  fixture: both conditions returned ACCEPT and every existing trap held, but
+  both independently flagged `list-style: none` without `role="list"` (1.3.1,
+  MINOR) — an unplanted defect in the CLEAN half. It is fixed in the fixture
+  and the construct is now a trap. Both draws also showed that the
+  "persistent live regions" claim overreached: the panel mounts in its loading
+  state, so the initial message is the one the invariant cannot cover. The
+  fixture prose now says so.

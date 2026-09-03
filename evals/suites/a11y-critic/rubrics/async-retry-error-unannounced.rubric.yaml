@@ -56,16 +56,20 @@ expected_findings:
     count: 0
 
   - category: nice_to_find
-    count: 1
-    description: "Optional: the error text does not name a retry affordance by its label, so a user who hears the message has to hunt for the 'Retry' button"
-    impact: "Enhancement suggestion (ENHANCEMENT severity)"
-    expected_to_find: "25%"
+    count: 2
+    items:
+      - description: "Optional: the error text does not name a retry affordance by its label, so a user who hears the message has to hunt for the 'Retry' button"
+        impact: "Enhancement suggestion (ENHANCEMENT severity)"
+        expected_to_find: "25%"
+      - description: "Optional: status is initialised to 'loading' (line 7), so the live region enters the DOM with its message already inside it on first mount and is frequently not spoken — the loading announcement the component appears to make does not reliably fire either"
+        impact: "Enhancement suggestion. This is a correct observation about the same mount-timing principle the CLEAN pair member is built on, and it is scored so that a reviewer who reaches it is credited rather than caught by the narrowed trap above."
+        expected_to_find: "35%"
 
   - category: false_positive_trap
     count: 3
     items:
-      - description: "The loading branch is already a correct live region — flagging it is a false alarm"
-        impact: "Lines 34-39 carry role='status', aria-live='polite' and aria-atomic='true'. A review that reports 'loading state is not announced' has pattern-matched the component type instead of reading the branch, and has also missed both real defects, which live on the other two branches."
+      - description: "The loading branch has a correctly-formed live region — reporting it as MISSING is a false alarm"
+        impact: "Lines 34-39 carry role='status', aria-live='polite' and aria-atomic='true'. A review that reports 'this component has no live region' or 'the loading state needs one added' has pattern-matched the component type instead of reading the branch, and has also missed both real defects, which live on the other two branches. NARROWED 2026-09-03: this trap does NOT cover the separate, correct observation that the region is mounted already-populated on first render (status is initialised to 'loading' at line 7) and therefore may not be spoken at all — that is scored as a nice_to_find below, not penalised here. Three independent draws reached it, and the earlier wording would have scored every one of them -2 for being right."
         expected_to_find: "80%"
 
       - description: "aria-busy on the panel body is present and correct — flagging it as missing is a false alarm"

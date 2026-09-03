@@ -46,10 +46,14 @@ expected_findings:
     impact: "No major issues"
 
   - category: nice_to_find
-    count: 1
-    description: "Optional: the Case Name link's accessible name doesn't indicate it resolves to the same record as the Case ID link in the same row; a visually-hidden suffix would let a screen reader user confirm both links lead to the same case"
-    impact: "Enhancement suggestion (ENHANCEMENT severity)"
-    expected_to_find: "25%"
+    count: 2
+    items:
+      - description: "Optional: the Case Name link's accessible name doesn't indicate it resolves to the same record as the Case ID link in the same row; a visually-hidden suffix would let a screen reader user confirm both links lead to the same case"
+        impact: "Enhancement suggestion (ENHANCEMENT severity)"
+        expected_to_find: "25%"
+      - description: "Optional: the table container sets padding and a border but no overflow-x, so at a 320px viewport the table's own overflow escapes to the page instead of being contained in a scrollable region"
+        impact: "Enhancement suggestion. 1.4.10 Reflow exempts data tables, so this is robustness rather than conformance — and a scrollable region would itself need tabindex=0 and an accessible name to satisfy 2.1.1, which is the step most implementations skip. Scored because the first blind draw reached it and the reasoning is correct."
+        expected_to_find: "30%"
 
   - category: false_positive_trap
     count: 3
@@ -115,3 +119,12 @@ notes: |
   certifies exactly one thing: that a same-destination, different-name link
   pair, where the two links are genuinely different functions, is not a 3.2.4
   finding.
+
+  Note added 2026-09-03 from the first blind draws: the skill-condition draw
+  observed that this fixture's stated reason for 2.4.4 being satisfied is
+  weaker than the real one. The bare "4471" link text is acceptable not
+  because of how a given screen reader behaves, but because 2.4.4's own
+  definition of programmatically determined link context explicitly admits
+  "a table header cell for a cell that contains the link" — a normative basis
+  rather than a behavioural assumption. 2.4.9 (AAA) does fail, and correctly
+  so; this fixture targets AA.
