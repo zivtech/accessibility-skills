@@ -21,31 +21,37 @@ expected_findings:
     severity: ENHANCEMENT
 
   - category: false_positive_trap
-    count: 4
+    count: 6
     items:
       - description: "Skipping the focus move on the initial render is correct, not a gap"
-        impact: "Lines 39-40 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
+        impact: "Lines 47-48 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
 
       - description: "tabIndex={-1} on the <h1> is the correct mechanism, not tabindex misuse"
-        impact: "Line 74 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
+        impact: "Line 27 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
 
       - description: "There is no aria-live route announcer, and that is a choice rather than an omission"
         impact: "Moving focus to the heading announces it. Adding a live region as well makes most screen readers say the view name twice. Flagging 'route changes are not announced' ignores that focus movement is the announcement here."
 
+      - description: "role='list' on the delisted <ul> elements is the WebKit counter-measure, not redundant ARIA"
+        impact: "list-style: none makes WebKit drop the list role from the accessibility tree, so a VoiceOver user loses 'list, N items' — on the account list that count is the information. Flagging 'redundant ARIA role on a <ul>' applies the do-not-duplicate-native-semantics rule to the one case where the stylesheet has already removed those semantics."
+
+      - description: "Two tabIndex={-1} targets coexist deliberately"
+        impact: "<main> (line 81) is the skip-link destination; the <h1> rendered by ViewHeading (line 27) is the route-change focus target. Neither is in the Tab order and each serves a different mechanism. Flagging one as unnecessary breaks whichever is removed."
+
       - description: "preventScroll: true is correct because the component scrolls the window itself"
-        impact: "Line 42 scrolls to the top and line 43 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
+        impact: "Line 50 scrolls to the top and line 51 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
 
 components_analyzed:
   - name: Title effect
-    status: "Correct — pathname-derived title from the same SECTIONS list that renders the nav (lines 29-33), including a title for the unmatched-URL branch, so nav label and title cannot drift"
+    status: "Correct — ViewHeading (lines 21-31) renders the heading and sets the title from the same string, so the two cannot disagree and no second matcher against the pathname can desync from React Router's own"
 
   - name: Focus effect
-    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 35-46)"
+    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 42-54). There is no root redirect, which would fire a second render with a changed pathname and move focus on cold entry"
 
   - name: View heading
     semantic_element: h1
     aria_attributes: ["tabIndex={-1}"]
-    status: "Correct — one heading in the shell rather than one per view, which keeps the focus target stable across routes and gives it a visible focus indicator (lines 74-76, 174-180)"
+    status: "Correct — rendered by each view through ViewHeading, found by the shell inside its own <main> rather than threaded through as a ref, and given a visible focus indicator (lines 26-30, 193-199)"
 
   - name: Section nav
     semantic_element: nav
@@ -54,7 +60,7 @@ components_analyzed:
 
   - name: Main landmark
     semantic_element: main
-    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 73), with the heading and outlet both inside it"
+    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 81), and the element the shell queries for the new view's heading"
 
 wcag_criteria:
   - "2.4.2 Page Titled (each route sets a title naming the section and the site)"
@@ -106,3 +112,17 @@ notes: |
   StrictMode's repeated mount effect, so the fixture did not do what its own
   trap said it did. The revision-1 draws are kept as authoring receipts in
   evals/results/gt05-spa-route-change/.
+
+  Revision 3 (2026-09-03) — the revision-2 repairs introduced two defects of
+  their own, both found by a blind baseline draw against revision 2 and both
+  rated MAJOR. (1) The index redirect added in revision 2 fires a second render
+  with a changed pathname, so the previous-path guard read cold entry at "/" as
+  a navigation and moved focus — the exact harm the guard exists to prevent, on
+  the most common entry point. (2) `SECTIONS.find(s => s.path === pathname)`
+  matched by exact string while React Router ignores trailing slashes and
+  matches case-insensitively, so `/accounts/` rendered the accounts view under
+  a "Page not found" heading and title, inverting both orientation signals this
+  design depends on. Both classes are removed rather than patched: the title
+  and heading now come from the view that rendered (ViewHeading), and "/" is an
+  index route rather than a redirect. The lesson is recorded in the results
+  README — a repair round is a new authoring round, and needs its own draw.
