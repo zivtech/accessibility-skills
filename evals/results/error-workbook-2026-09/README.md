@@ -4,20 +4,22 @@ Mutation-canary battery for `.claude/skills/bug-reporting/references/build-error
 
 ## Files
 
-- `canaries.md` — the receipt, verbatim, from a sonnet subagent run in a scratch project (`node v24.19.0`, `exceljs@4.4.0`); each section carries the mutation script, the exact command, the verbatim output, and the exit code. The only edit is the canonical script path rewritten to `<repo>/`. The coordinating session re-ran C4 and C6 live and reproduced both.
+- `canaries-rev2.md` — **current.** The receipt for the committed script (SHA-256 `2550ab11…`, commit `07dd471`, after the critic fold): 29 canary rows across 21 sections, verbatim, from a sonnet subagent run in a scratch project (`node v24.19.0`, `exceljs@4.4.0`). The coordinating session re-ran C14 and C18 live and reproduced both.
+- `canaries.md` — rev 1, kept for the record: the same battery's first 21 rows against the pre-fold script (SHA-256 `f31d7bc2…`, commit `ab93c01`). It is the receipt the harsh-critic gated; its Summary cells sit two rows higher than rev 2's.
+- `critic-rounds.md` — both critic verdicts verbatim (a11y-critic ACCEPT with 2 MAJOR placement fixes; harsh-critic REVISE with 1 MAJOR) and the fold table. The MAJOR — `--verify` matching Summary cells by content, so a row swap passed clean — is why rev 2 exists.
 - `findings.json` — the five-row synthetic input (example.com URLs; no engagement data).
 
-## Results
+## Results (rev 2, current)
 
 | Canary | Expected exit | Actual exit | Result | Note |
 |---|---|---|---|---|
 | C1 clean round trip | 0 | 0 | PASS | rebuild + verify both clean |
-| C2 delete Findings row 4 | 1 | 1 | PASS | row-count mismatch + 37 per-cell diffs |
+| C2 delete Findings row 4 | 1 | 1 | PASS | row-count mismatch + per-cell diffs |
 | C3 Findings!F3 → "low" | 1 | 1 | PASS | names `Findings!F3 (severity)` |
-| C4 Summary formula `$F$6` → `$F$5` | 1 | 1 | PASS | "range ends at row 5, data ends at row 6" |
+| C4 Summary formula `$F$6` → `$F$5` (now B4) | 1 | 1 | PASS | "range ends at row 5, data ends at row 6" |
 | C5 Findings!AF3 → `#REF!` | 1 | 1 | PASS | "Excel error value" reported |
 | C6 fill all triage columns (relaxation) | 0 | 0 | PASS | triage columns excluded by design |
-| C7 verify against a different input | 1 | 1 | PASS | `E2` diff and Read Me SHA-256 mismatch both present |
+| C7 verify against a different input | 1 | 1 | PASS | `E2` diff + Read Me SHA-256 + Source bytes drift |
 | C8a duplicate `instance_id` | 2 | 2 | PASS | names row 3, first seen row 1 |
 | C8b `xpath` deleted | 2 | 2 | PASS | names row 2, field xpath |
 | C8c severity "blocker" | 2 | 2 | PASS | names row 1, field severity |
@@ -32,6 +34,16 @@ Mutation-canary battery for `.claude/skills/bug-reporting/references/build-error
 | C11 Summary sheet removed | 1 | 1 | PASS | `missing sheet "Summary"` |
 | C12 Read Me Findings → 4 | 1 | 1 | PASS | "Read Me: Findings 4 expected 5" |
 | C13 status dropdown validation present | read-back | — | PASS | `AE2` list formula contains "Not Started" |
+| C14 Summary rows swapped (labels + formulas) | 1 | 1 | PASS | names A4/B4/A5/B5 — the harsh-critic MAJOR |
+| C15 Summary formulas swapped, labels kept | 1 | 1 | PASS | names B4 and B5 |
+| C16 Read Me "Stable instance IDs" → "5 of 5" | 1 | 1 | PASS | names the field |
+| C17 Summary!A1 boundary line altered | 1 | 1 | PASS | "boundary line missing or altered" |
+| C18 `FindingsTable` removed | 1 | 1 | PASS | "defined table … is missing" |
+| C19 verify with an invalid input | 2 | 2 | PASS | "refusing to verify against invalid input" |
+| C20 status-cell input message present | read-back | — | PASS | `showInputMessage` true, prompt carries the boundary |
+| C21 workbook title property | read-back | — | PASS | "Accessibility findings — Example storefront" |
+
+Rev 1 (pre-fold script) scored 21/21 on C1–C13; C14–C21 did not exist then, and C14/C15 would have passed clean against that script — which is the defect the harsh-critic found.
 
 ## Reproduce
 
@@ -45,8 +57,8 @@ node build-error-workbook.mjs --in findings.json --out findings.xlsx --product "
 node build-error-workbook.mjs --verify findings.xlsx --in findings.json    # expect exit 0
 ```
 
-Mutation scripts for C2–C7 and C11–C12 are reproduced in `canaries.md`; each loads `findings.xlsx` with exceljs, applies one change, saves to a new file, and runs `--verify` on it.
+Mutation scripts for every mutating canary are reproduced in `canaries-rev2.md`; each loads `findings.xlsx` with exceljs, applies one change, saves to a new file, and runs `--verify` on it.
 
 ## Not covered
 
-No spreadsheet application rendered or recalculated these workbooks; cached formula results are checked, evaluation is not. No screen-reader pass over the workbook. Five rows only.
+No spreadsheet application rendered or recalculated these workbooks; cached formula results are checked, evaluation is not. No screen-reader pass over the workbook. Five rows only. A table whose *span* (not presence) is wrong was not mutated — exceljs exposes no API to resize a read-back table — so that branch of `verifyTable` is exercised only by the C2 row deletion, where the table ref and the row count disagree together.
