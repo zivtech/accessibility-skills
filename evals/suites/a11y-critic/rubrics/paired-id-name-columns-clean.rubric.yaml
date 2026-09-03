@@ -1,0 +1,130 @@
+fixture_id: paired-id-name-columns-clean
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 0
+    impact: "No critical a11y issues present. Table markup is correct and the paired id/name links are two distinct, correctly-labelled functions."
+
+  - category: should_find
+    count: 0
+    impact: "No major issues"
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Optional: the Case Name link's accessible name doesn't indicate it resolves to the same record as the Case ID link in the same row; a visually-hidden suffix would let a screen reader user confirm both links lead to the same case"
+        impact: "Enhancement suggestion (ENHANCEMENT severity)"
+        expected_to_find: "25%"
+      - description: "Optional: the table container sets padding and a border but no overflow-x, so at a 320px viewport the table's own overflow escapes to the page instead of being contained in a scrollable region"
+        impact: "Enhancement suggestion. 1.4.10 Reflow exempts data tables, so this is robustness rather than conformance — and a scrollable region would itself need tabindex=0 and an accessible name to satisfy 2.1.1, which is the step most implementations skip. Scored because the first blind draw reached it and the reasoning is correct."
+        expected_to_find: "30%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: "The Case ID/Case Name paired links sharing a destination with different accessible names are NOT an SC 3.2.4 Consistent Identification failure"
+        impact: "Lines 29 and 32 (`/cases/4471`) are the same href with different accessible names ('4471' vs. 'Ridgeway Pumping Station'). WCAG Understanding scopes 3.2.4 to components with the SAME FUNCTIONALITY. An identifier link and a name link are distinct affordances for the same record — one lets a user scan by case number, the other by site name — each correctly labelled for what it is. Raising 3.2.4 here is the false alarm this fixture exists to catch; in one engagement this exact exception collapsed candidate 3.2.4 rows from 103 to 25. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
+        expected_to_find: "82%"
+
+      - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose (In Context) failure"
+        impact: "Line 29's link text is just the case number. Link purpose is determined in context: the programmatically-associated column header 'Case ID' (line 19) plus the row/header pairing a screen reader announces in table-navigation mode supply it. Flagging a bare-number link name here without accounting for the header context misreads how link purpose is evaluated in a data table."
+        expected_to_find: "58%"
+
+      - description: "Repeating the same destination twice in one row is NOT redundant-link bloat to be flagged"
+        impact: "The Case ID link (line 29) and Case Name link (line 32) both go to /cases/4471, but they serve different user intents — scan by id vs. scan by name — so collapsing them into one link would remove a legitimate way of finding the row. Flagging this as duplicate/redundant links treats destination sameness as the test instead of functional sameness."
+        expected_to_find: "45%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 80-100
+    reasoning: "Should apply the 'same functionality' scope from WCAG Understanding 3.2.4, recognize the id/name links as distinct affordances, and return ACCEPT. The central trap (item 1) is the discriminator — a reviewer who pattern-matches 'same href, different name' without reading the functionality question will fail it."
+  - condition: baseline-zero-shot
+    expected_score: 25-55
+    reasoning: "At real risk on the central trap — 'same destination, different accessible name' is a common naive SC 3.2.4 heuristic, and this fixture is built to be exactly that shape without being a violation."
+  - condition: baseline-few-shot
+    expected_score: 35-65
+    reasoning: "A correct data-table example reduces false alarms on scope attributes and captions, but few-shot prompting does not usually convey the 'same functionality' scoping test for 3.2.4 unless that exact exception was in the examples."
+
+verdict_expectations:
+  harsh-critic: ACCEPT
+  baseline-zero-shot: ACCEPT
+  baseline-few-shot: ACCEPT
+
+notes: |
+  Provenance: GT-11. Independent public reference: WCAG Understanding SC 3.2.4
+  Consistent Identification ("same functionality").
+
+  Under promotion-bar clause 3 this half is what makes the rule falsifiable in
+  one direction: a reviewer who has learned "never flag two links to the same
+  place" would pass this fixture for the wrong reason. It is the BUG sibling,
+  row-action-inconsistent-labels, that catches that wrong reason — a
+  CLEAN-only fixture would only prove the critic can stay silent on this
+  specific false-alarm shape; it could not detect an exception worded so
+  loosely that it also suppresses a genuine 3.2.4 finding (the same edit
+  control labelled three different ways across rows in the BUG fixture). Only
+  the pair together tests the actual rule: same *functionality*, not same
+  *destination*.
+
+  Negative space — what an ACCEPT verdict here does NOT certify: this fixture
+  is not evidence about scope-attribute coverage on tables generally
+  (data-table-missing-scope already covers a missing-scope defect on a
+  different table), about caption vs. aria-label choice beyond the caption
+  used here, or about row-level action controls — this table has none. It
+  certifies exactly one thing: that a same-destination, different-name link
+  pair, where the two links are genuinely different functions, is not a 3.2.4
+  finding.
+
+  Note added 2026-09-03 from the first blind draws: the skill-condition draw
+  observed that this fixture's stated reason for 2.4.4 being satisfied is
+  weaker than the real one. The bare "4471" link text is acceptable not
+  because of how a given screen reader behaves, but because 2.4.4's own
+  definition of programmatically determined link context explicitly admits
+  "a table header cell for a cell that contains the link" — a normative basis
+  rather than a behavioural assumption. 2.4.9 (AAA) does fail, and correctly
+  so; this fixture targets AA.

@@ -262,6 +262,14 @@ HAS_BUGS_FIXTURES = [
     "filing-progress-controls",
     "tool-catalog-layout",
     "garden-plot-directory",
+    # GT-07 (PT-16) async failure/recovery status messages (2026-09-03):
+    "async-retry-error-unannounced",
+    # GT-09 pseudo-href controls are F42 role defects, not 3.2.4 (2026-09-03):
+    "pseudo-link-map-controls",
+    # GT-11 paired id/name columns are not a 3.2.4 case (2026-09-03):
+    "row-action-inconsistent-labels",
+    # GT-05 (PT-14) SPA route-change focus + title (2026-09-03):
+    "spa-route-change-unannounced",
 ]
 CLEAN_FIXTURES = [
     "button-skip-link-clean",
@@ -271,6 +279,10 @@ CLEAN_FIXTURES = [
     "trail-conditions-filter",
     "pool-lesson-registration",
     "composite-descendant-clean",  # Tier-2 R-29 (L-017), no model rows yet
+    "async-retry-recovery-clean",  # GT-07 (PT-16) pair member, no model rows yet
+    "map-controls-clean",  # GT-09 pair member, no model rows yet
+    "paired-id-name-columns-clean",  # GT-11 pair member, no model rows yet
+    "spa-route-change-clean",  # GT-05 (PT-14) pair member, no model rows yet
 ]
 FLAWED_FIXTURES = [
     "tabs-incomplete-aria-selected",

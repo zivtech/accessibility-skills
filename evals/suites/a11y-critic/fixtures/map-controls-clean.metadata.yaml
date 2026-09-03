@@ -1,0 +1,73 @@
+fixture_id: map-controls-clean
+name: Map Zoom and Reset Controls Are Real Buttons (CLEAN)
+description: Watershed map panel whose Zoom in / Zoom out / Reset view controls are real buttons with decorative icons and text accessible names, alongside a correctly-implemented genuine anchor to the full report. The CLEAN pair member of pseudo-link-map-controls.
+language: jsx
+framework: React
+difficulty: CLEAN
+domain: Interactive Widgets
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Zoom in, Zoom out, and Reset view are real buttons with role button, and the one genuine anchor is a real destination correctly disclosed as opening in a new tab."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: the three map actions are visually grouped in a control bar but are not wrapped in a role='group' with an accessible group label (e.g. 'Map view controls'); grouping is not required since each button already has its own accessible name, but would let a screen reader user recognize the three as a related set when navigating by landmarks or groups"
+    severity: ENHANCEMENT
+
+components_analyzed:
+  - name: Zoom in / Zoom out / Reset view buttons
+    semantic_element: button
+    aria_attributes:
+      - "no aria-pressed (correct — momentary actions, not toggles)"
+    status: "Correct — real <button type=\"button\"> elements (lines 28-41), role button, accessible name from visible text, decorative icon is aria-hidden"
+
+  - name: Zoom/Reset icons
+    aria_attributes:
+      - aria-hidden: "true"
+    status: "Correct — decorative glyphs (lines 30, 34, 38); each button's own visible text carries the accessible name"
+
+  - name: Open full report anchor
+    semantic_element: a
+    status: "Correct — real href to a real destination (lines 43-48), target=\"_blank\" disclosed via visually-hidden text, rel=\"noopener noreferrer\""
+
+  - name: Map canvas
+    status: "Correct — empty third-party mount point (line 20) whose boundary data is available to everyone through the data-table link at lines 22-26; the map's text alternative is a peer route to the same information, not a fallback"
+
+wcag_criteria:
+  - "4.1.2 Name, Role, Value (all controls expose the correct role for what they do)"
+
+multi_perspective_coverage:
+  - screen_reader: "Pulling up the links list surfaces exactly one link, 'Open full report,' with its new-tab behavior disclosed. The three map actions surface as buttons, not links, so no false destination is implied."
+  - keyboard: "All three buttons and the anchor are reachable by Tab and activate on both Enter and Space (buttons) or Enter (anchor, as expected for a real link)."
+  - low_vision: "Every interactive element has a visible :focus-visible outline. Icons are purely decorative and do not carry information not already present as text."
+  - cognitive: "Each control's label matches its action exactly; there is no icon-only control requiring inference."
+
+notes: |
+  This is the **CLEAN baseline** for the "control vs. link" distinction, and
+  the pair member of pseudo-link-map-controls.
+
+  Expected verdict: ACCEPT
+
+  Two constructs here are correct but could be misread as defects by a
+  reviewer applying a rule mechanically, and are the false-positive traps
+  the rubric scores:
+  1. No aria-pressed on the three buttons — they are momentary actions, not
+     toggles, so aria-pressed does not apply.
+  2. Three same-group buttons with distinct visible labels raise no SC 3.2.4
+     Consistent Identification question — there is no shared destination or
+     inconsistent naming to evaluate, and a reviewer who was primed by the
+     companion BUG fixture's pseudo-href pattern could carry that question
+     over here even though it does not apply to real buttons.
+
+  Negative space — what an ACCEPT verdict here does NOT certify: this
+  fixture does not test focus order, the map canvas's actual content once a
+  real mapping library mounts into it, keyboard shortcuts for zoom levels,
+  or color contrast beyond the values shown. It certifies one thing: that
+  the three in-page actions expose the correct role and interaction model,
+  and that the one real link is a real link, correctly disclosed.

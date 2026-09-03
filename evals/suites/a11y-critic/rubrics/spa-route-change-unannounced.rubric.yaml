@@ -1,0 +1,163 @@
+fixture_id: spa-route-change-unannounced
+rubric_version: "1.0"
+scoring_method: hybrid
+hybrid_weights:
+  rule_based: 0.7
+  llm_judge: 0.3
+
+dimensions:
+  - id: must_find
+    name: "Must-Find Issues"
+    description: "Critical issues a competent reviewer should find"
+    weight: 3
+
+  - id: should_find
+    name: "Should-Find Issues"
+    description: "Major issues a skilled reviewer would find"
+    weight: 2
+
+  - id: nice_to_find
+    name: "Nice-to-Find Issues"
+    description: "Subtle gaps or optimizations"
+    weight: 1
+
+  - id: false_positive_trap
+    name: "False Positive Avoidance"
+    description: "Correctly avoiding flagging non-issues"
+    weight: -2
+
+  - id: evidence_quality
+    name: "Evidence Quality"
+    description: "CRITICAL/MAJOR findings backed by file:line or quotes"
+    weight: 1
+
+  - id: format_compliance
+    name: "Format Compliance"
+    description: "Output matches a11y-critic format contract"
+    weight: 1
+
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "pathname-keyed useEffect focus-restoration absent-entirely — focus is left on the activated nav link after the route view is replaced"
+        severity: CRITICAL
+        wcag: "2.4.3 Focus Order (conventional filing criterion; see notes on citation honesty)"
+        evidence_requirement: "file:line reference to the shell (lines 55-90) showing that it never observes the route, and/or to <main> at line 80 showing that a tabIndex={-1} focus target exists and is never used; credit is stronger when the review states that a client-side transition does not reset focus the way a document load does. Filing the item under 4.1.3 instead of 2.4.3, or arguing the SC fit rather than asserting it, still counts as finding it"
+        expected_to_find: "70%"
+
+      - description: "document.title never-updated across-routes static-index-title — one <title> in index.html serves all three routes"
+        severity: MAJOR
+        wcag: "2.4.2 Page Titled"
+        evidence_requirement: "file:line reference to the static <title> in index.html (lines 96-107) and/or the absence of any document.title assignment in the shell (lines 55-90)"
+        expected_to_find: "30%"
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 1
+    description: "Optional: both defects share one fix site — a single pathname-keyed effect sets the title and moves focus, with the title derived from the SECTIONS list rather than a second hardcoded string"
+    impact: "Enhancement suggestion (ENHANCEMENT severity)"
+    expected_to_find: "20%"
+
+  - category: false_positive_trap
+    count: 3
+    items:
+      - description: "The nav is correct — flagging link semantics or missing current-page state is a false alarm"
+        impact: "Lines 60-74 render NavLink (an <a href>) inside <nav aria-label='Account sections'>. NavLink supplies aria-current='page' itself and the end prop keeps its match exact, so current-page state has a single source. A review that reports 'these should be links, not buttons', 'the nav is unlabelled', or 'no indication of the current section' has flagged what the fixture got right and, in every observed case of this shape, has also missed both real defects."
+        expected_to_find: "75%"
+
+      - description: "Each view has a correct single <h1> inside <main> — flagging a missing heading or landmark is a false alarm"
+        impact: "Lines 8-47 each render one <h1>; line 80 is <main id='main-content' tabIndex={-1}>. The defect is neither an absent heading nor an absent focus target — both exist — it is that nothing sends focus to either. 'The new view has no heading' is the characteristic misread of this fixture: it reports on the markup of a view instead of on the transition between views."
+        expected_to_find: "70%"
+
+      - description: "The skip link is present and correctly implemented — flagging it as missing is a false alarm"
+        impact: "Lines 57-59 plus the off-screen and :focus CSS are a working skip link, and its target at line 80 is focusable. The legitimate observation about it is narrower: because it precedes the nav in the DOM, it is not reachable by forward Tab from a focused nav link, which is why it does not mitigate the focus defect. Reporting 'no skip link' or 'the skip-link target is not focusable' is wrong; reporting 'the skip link does not help here, because…' is the correct use of it."
+        expected_to_find: "65%"
+
+composite_score_formula: |
+  score = sum(found_items * weight) / sum(all_positive_weights) * 100
+
+scoring_thresholds:
+  excellent: 90-100
+  good: 75-89
+  adequate: 60-74
+  weak: 40-59
+  poor: 0-39
+
+expected_reviewer_performance:
+  - condition: harsh-critic
+    expected_score: 75-100
+    reasoning: "The focus item is directly covered by the skill's Phase 4 SPA route-change line, so a skilled reviewer should reach it. The title item is the discriminator: it has no counterpart in the skill text, and finding it requires treating a client-side view as a page rather than as a component render."
+  - condition: baseline-zero-shot
+    expected_score: 25-55
+    reasoning: "Most likely to review the markup of the views, which is clean, and to land on one or more of the three traps. Focus-after-transition and title-after-transition are both invisible to a per-render read."
+  - condition: baseline-few-shot
+    expected_score: 35-65
+    reasoning: "A focus-management example raises the chance of asking where focus goes after navigation. Few-shot prompting rarely surfaces the document title, which is not part of any component's markup."
+
+verdict_expectations:
+  harsh-critic: REVISE
+  baseline-zero-shot: REVISE
+  baseline-few-shot: REVISE
+
+notes: |
+  Provenance: GT-05 (ledger PT-14), promotion wave 2, fixture-first. Independent
+  public reference: WCAG 2.4.3 Focus Order and 2.4.2 Page Titled. The fixture is
+  the second reproduction under promotion-bar clause 1; no skill text ships on
+  this pattern in the same change.
+
+  Dedupe result that set the two items: a11y-critic/SKILL.md Phase 4 already
+  carries the SPA route-change focus rule, and no fixture in any suite exercised
+  it; the critic skill carries no title rule (0 hits for 2.4.2, document.title
+  and "Page Titled", against a 3-hit 2.4.3 positive control). So item 1 is a
+  rule the suite could not previously test, and item 2 is a rule the skill this
+  fixture scores does not state. CORRECTED 2026-09-03 after the gate review:
+  the first wording said the title half had "no skill text at all", which is
+  false bundle-wide — perspective-audit/references/perspectives.md:161 and
+  a11y-test/SKILL.md:726-728 both carry it, and the PT-14 disposition row said
+  so. Both were verified directly when the correction was made.
+
+  The title item carries a deliberately low expected_to_find (30%). A view
+  replacement does not look like a page load to a reviewer reading components,
+  and the string that identifies the page lives in a file most component reviews
+  never open — which is exactly why it is in the fixture.
+
+  The three traps exist because every individual view here is correct. Without
+  them a reviewer could score by reporting "this SPA needs semantic navigation
+  and headings" without ever asking what happens between two renders.
+
+  Scope of what this fixture does NOT test: route-level loading, error or
+  recovery announcement (async-retry-error-unannounced), in-page anchor focus,
+  back/forward focus or scroll restoration, and the tabs-vs-nav pattern question
+  (tabbed-nav-vs-tab-pattern).
+
+  Citation honesty on must_find 1: 2.4.3 is where auditors file this defect,
+  not a criterion it literally violates — 2.4.3 does not forbid leaving focus
+  in place, and 4.1.3 Status Messages is written for changes the user did not
+  initiate. The substantive authority is WAI's SPA guidance. must_find 2
+  (2.4.2) is the uncontested half, which is part of why the two are paired.
+
+  Revision 2 (2026-09-03): four blind draws against revision 1 found four
+  unplanted defects present in both members of the pair (non-wrapping header
+  flex row, a hand-computed aria-current overriding NavLink's, sub-route links
+  with no matching route and no index or catch-all, and a non-focusable
+  skip-link target). All four are repaired; the revision-1 draws are kept as
+  authoring receipts in evals/results/gt05-spa-route-change/. Every draw found
+  both planted defects in revision 1, so the repairs did not remove the signal
+  the fixture is for.
+
+  Why the two must_find descriptions read as term lists. score_output.py has no
+  explicit-keyword field: for a description matching none of its hardcoded
+  branches it calls score_common.fallback_keywords, which takes the first four
+  words, keeps those longer than three characters, and scores the item FOUND if
+  ANY of them appears anywhere in the review. The first wording here opened
+  "Focus is left on..." and "The document title never...", yielding ['focus',
+  'left'] and ['document','title','never'] — the gate reviewer proved with a
+  synthetic review that a critic finding NEITHER planted defect and reporting
+  all three traps scored 1/2 = 50% = PASS, credited off the sentence "visible
+  focus indicators are present, which is good". The first four words of each
+  description are therefore load-bearing scoring tokens, not prose. Do not
+  rewrite them for readability without re-running the canaries in
+  evals/results/gt05-spa-route-change/canaries.py.

@@ -128,6 +128,14 @@ ALL_CRITIC_FIXTURES = [
     "button-skip-link-clean", "interactive-dropdown-clean", "modal-complete-clean",
     "search-results-dynamic-clean", "trail-conditions-filter", "pool-lesson-registration",
     "composite-descendant-clean",  # Tier-2 R-29 (L-017), no model rows yet
+    # GT-07 (PT-16) async failure/recovery status messages (2026-09-03):
+    "async-retry-recovery-clean", "async-retry-error-unannounced",
+    # GT-09 pseudo-href controls are F42 role defects, not 3.2.4 (2026-09-03):
+    "map-controls-clean", "pseudo-link-map-controls",
+    # GT-11 paired id/name columns are not a 3.2.4 case (2026-09-03):
+    "paired-id-name-columns-clean", "row-action-inconsistent-labels",
+    # GT-05 (PT-14) SPA route-change focus + title (2026-09-03):
+    "spa-route-change-clean", "spa-route-change-unannounced",
     "form-validation-missing-aria-describedby", "tabs-missing-arrow-nav",
     "toast-notification-no-role", "accordion-no-region-role",
     "breadcrumb-navigation-no-nav-landmark", "checkbox-group-no-fieldset",

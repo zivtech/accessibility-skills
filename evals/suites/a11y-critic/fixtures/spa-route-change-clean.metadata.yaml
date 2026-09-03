@@ -1,0 +1,174 @@
+fixture_id: spa-route-change-clean
+name: Client-Side Route Change With Title and Focus Handled (CLEAN)
+description: The same React Router portal shell with the route-change lifecycle handled — a pathname-keyed effect sets a per-section document title and moves focus to the view heading, exempting the initial render and separating scroll from focus.
+language: jsx
+framework: React (React Router)
+difficulty: CLEAN
+domain: Navigation & Focus Management
+work_type: component_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No critical issues. Both halves of the route-change contract — the title that identifies the view and the focus that lands in it — are handled, and the edge cases around them (initial render, scroll interaction, DOM commit timing) are handled deliberately."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 3
+    items:
+      - description: "Optional: focus lands on the heading, so the user hears the section name but not that a navigation completed; some implementations add the word 'page' or the site name to the focused heading's accessible name for that context"
+        severity: ENHANCEMENT
+      - description: "Optional: the heading query has no fallback — mainRef.current?.querySelector('h1')?.focus() fails silently if a future route renders its heading after a fetch or behind React.lazy, leaving focus on the nav link; `?? mainRef.current` would land focus in the landmark instead"
+        severity: ENHANCEMENT
+        note: "Not a live defect — all three views render a heading synchronously through ViewHeading. Scored because the revision-6 skill draw reached it and a reviewer who raises it is reasoning about the mechanism rather than pattern-matching."
+      - description: "Back and forward are treated as forward navigations — the effect keys on pathname alone, so a POP restores neither scroll position nor focus the way the browser natively would; reading useNavigationType() and skipping the scroll reset on POP is the usual refinement"
+        severity: ENHANCEMENT
+        note: "No success criterion maps to this. It is a cognitive-access regression against browser-native behaviour, and a reviewer who raises it is being thorough rather than wrong — which is why it is scored here rather than left as an unlisted surface."
+
+  - category: false_positive_trap
+    count: 5
+    items:
+      - description: "Skipping the focus move on the initial render is correct, not a gap"
+        impact: "Lines 46-47 return early while the pathname is unchanged, which covers the first render. On a full document load the browser has already put focus at the start of the document; moving it into the heading would take the user past the skip link and the nav before they have seen either. The guard compares paths rather than flipping a boolean precisely so that React's repeated mount effect in StrictMode cannot defeat it. Flagging 'focus is not managed on first load' inverts the reason for the guard."
+
+      - description: "tabIndex={-1} on the <h1> is the correct mechanism, not tabindex misuse"
+        impact: "Line 26 makes the heading a programmatic focus target without adding it to the Tab order. Flagging 'tabindex on a non-interactive element' or 'heading should not be focusable' removes the only thing that lets focus land in the new view."
+
+      - description: "There is no aria-live route announcer, and that is a choice rather than an omission"
+        impact: "Moving focus to the heading announces it. Adding a live region as well makes most screen readers say the view name twice. Flagging 'route changes are not announced' ignores that focus movement is the announcement here."
+
+      - description: "Two tabIndex={-1} targets coexist deliberately"
+        impact: "<main> (line 77) is the skip-link destination; the <h1> rendered by ViewHeading (line 26) is the route-change focus target. Neither is in the Tab order and each serves a different mechanism. Flagging one as unnecessary breaks whichever is removed."
+
+      - description: "preventScroll: true is correct because the component scrolls the window itself"
+        impact: "Line 49 scrolls to the top and line 50 then focuses with preventScroll, so scroll position is decided by the app rather than by the browser's scroll-into-view heuristic. Flagging 'preventScroll hides the heading from the user' misses the explicit scrollTo on the line above."
+
+components_analyzed:
+  - name: Title effect
+    status: "Correct — ViewHeading (lines 20-30) renders the heading and sets the title from the same string, so the two cannot disagree and no second matcher against the pathname can desync from React Router's own"
+
+  - name: Focus effect
+    status: "Correct — pathname-keyed, exempt on first render via a previous-pathname ref that survives StrictMode's repeated mount effect, deferred to a requestAnimationFrame callback so the new route's DOM has committed, and cleaned up with cancelAnimationFrame (lines 41-53). There is no root redirect, which would fire a second render with a changed pathname and move focus on cold entry"
+
+  - name: View heading
+    semantic_element: h1
+    aria_attributes: ["tabIndex={-1}"]
+    status: "Correct — rendered by each view through ViewHeading, found by the shell inside its own <main> rather than threaded through as a ref, and given a visible focus indicator (lines 26-28, 144-150)"
+
+  - name: Section nav
+    semantic_element: nav
+    aria_attributes: ["aria-label='Account sections'", "aria-current='page' supplied by NavLink"]
+    status: "Correct — NavLink owns the current-page state and the end prop keeps its match exact, so there is one source of truth rather than a hand-computed second one"
+
+  - name: Main landmark
+    semantic_element: main
+    status: "Correct — the skip-link target, focusable via tabIndex={-1} (line 77), and the element the shell queries for the new view's heading"
+
+wcag_criteria:
+  - "2.4.2 Page Titled (each route sets a title naming the section and the site)"
+  - "2.4.3 Focus Order (focus follows the view replacement into the new content)"
+  - "2.4.7 Focus Visible (the programmatic focus target keeps a visible indicator)"
+
+multi_perspective_coverage:
+  - screen_reader: "On each navigation the heading is focused and announced, so the user learns that the view changed and which one arrived; checking the page title (Insert+T / VO+F2) names the section rather than the site alone."
+  - keyboard: "Focus lands at the top of the new content, so the next Tab reaches the first control in the view instead of the remaining nav links. Every focusable element, including the programmatically focused heading, has a visible indicator."
+  - low_vision: "The window is scrolled to the top before focus moves, so a magnifier user's viewport follows the focused heading to the start of the new view rather than jumping to an arbitrary offset."
+  - cognitive: "Tab labels and history entries name the section, so returning to a view or telling two open tabs apart is possible."
+
+notes: |
+  This is the **CLEAN baseline** for client-side route changes, and the pair
+  member of spa-route-change-unannounced.
+
+  Expected verdict: ACCEPT
+
+  Provenance: GT-05 (ledger PT-14), promotion wave 2, fixture-first.
+  Independent public reference: WCAG 2.4.3 Focus Order and 2.4.2 Page Titled.
+  Under promotion-bar clause 3 this half is what makes the rule falsifiable —
+  the BUG fixture alone would reward a reviewer who flags every routed SPA.
+
+  Negative space — what a clean verdict here does NOT certify: this fixture is
+  not evidence about route-level loading or error announcement, in-page anchor
+  focus, back/forward focus restoration, scroll restoration on back navigation,
+  or whether tabs or nav is the right pattern for routed content. It certifies
+  one thing: that a client-side view replacement updates the document title and
+  moves focus into the new view, and that a reviewer does not flag the
+  mechanisms that make that work.
+
+  Two constructs were deliberately avoided during authoring because they would
+  have been unplanted defects rather than clean design. An `outline: none` on
+  the focused heading — common in real code, since some teams dislike a ring on
+  a programmatic target — would have been legitimately flaggable, so the
+  heading keeps its indicator. A visually-hidden `role="status"` route
+  announcer alongside the focus move would have produced a duplicate
+  announcement, so the fixture uses focus movement alone and the rubric scores
+  the absence of a live region as a trap rather than a gap.
+
+  Revision 2 (2026-09-03) repaired four unplanted defects that four blind
+  reviewer draws found in revision 1: a non-wrapping header flex row (1.4.10 —
+  the a11y-critic draw held this at MAJOR against this fixture, which is
+  exactly the unplanted-defect failure this half exists to avoid), a
+  hand-computed aria-current prop overriding NavLink's own, content links to
+  sub-routes no <Route> matched with no index or catch-all route, and a <main>
+  that was not focusable as the skip-link target. A fifth finding repaired the
+  first-render guard itself: the boolean it used was defeated by React
+  StrictMode's repeated mount effect, so the fixture did not do what its own
+  trap said it did. The revision-1 draws are kept as authoring receipts in
+  evals/results/gt05-spa-route-change/.
+
+  Revision 3 (2026-09-03) — the revision-2 repairs introduced two defects of
+  their own, both found by a blind baseline draw against revision 2 and both
+  rated MAJOR. (1) The index redirect added in revision 2 fires a second render
+  with a changed pathname, so the previous-path guard read cold entry at "/" as
+  a navigation and moved focus — the exact harm the guard exists to prevent, on
+  the most common entry point. (2) `SECTIONS.find(s => s.path === pathname)`
+  matched by exact string while React Router ignores trailing slashes and
+  matches case-insensitively, so `/accounts/` rendered the accounts view under
+  a "Page not found" heading and title, inverting both orientation signals this
+  design depends on. Both classes are removed rather than patched: the title
+  and heading now come from the view that rendered (ViewHeading), and "/" is an
+  index route rather than a redirect. The lesson is recorded in the results
+  README — a repair round is a new authoring round, and needs its own draw.
+
+  Revision 4 (2026-09-03): revision 3's index route — "/" rendering the
+  accounts view — left `NavLink ... end` inactive at "/", so the site's most
+  common cold entry showed a section that no nav item claimed as current
+  (found by the revision-3 baseline draw, rated MAJOR on impact, 2.4.8 at AAA
+  on citation). The index route is removed: the portal is mounted at
+  /accounts, and "/" falls to the catch-all not-found view, which owns its own
+  heading and title — so the nav and the rendered view can no longer disagree.
+  A viewport meta tag was added to both halves after two draws flagged its
+  absence (1.4.10 / 1.4.4).
+
+  Known residual, deliberately not chased: with `end`, NavLink compares
+  pathnames literally, so a trailing-slash URL (/accounts/) renders the
+  accounts view without marking the nav item current. That is 2.4.8 at AAA,
+  is normalised by most hosts before it reaches the router, and chasing it
+  would add another route-table surface — the class of change that introduced
+  a fresh defect in each of revisions 2 and 3.
+
+  Revision 5 (2026-09-03): `.portal-main:focus-visible` added — the only item
+  both revision-3 and revision-4 skill draws raised, and the one place the
+  fixture's own stated principle (keep the indicator on a programmatic target
+  so a keyboard user can see where focus landed) was not carried through. A
+  successful skip-link activation was otherwise invisible: <main> is already on
+  screen, so nothing changed. The two ACCEPT draws are against revision 4,
+  which differs from this revision only by the absence of that additive rule;
+  they were not re-run for it.
+
+  Revision 6 (2026-09-03) — narrowed to sibling scale, on the user's call after
+  the revision-5 write-up. 282 lines -> 182, against async-retry-recovery-clean
+  at 189 and map-controls-clean at 164. Removed: the whole index.html block,
+  the layout and list CSS, the third section, and the account/statement content
+  — every one of which had generated a legitimate finding in some round without
+  bearing on the route-change mechanism this fixture measures. The `role="list"`
+  trap goes with the `list-style: none` rule that motivated it, so the trap
+  count is 5 rather than 6.
+
+  The BUG half is deliberately NOT narrowed with it: its second planted defect
+  is the static <title>, and index.html is that defect's evidence. The pair is
+  therefore no longer byte-parallel. That is acceptable because scoring is
+  per-fixture — the CLEAN half's job under clause 3 is to penalise
+  over-flagging on the same interaction pattern, not to be the same file with
+  the effects deleted.
