@@ -108,6 +108,7 @@ known_judgment_calls:
   - "The task prefix offers ACCEPT or REVISE. ACCEPT carrying ENHANCEMENT-only items (Escape/Shift+Tab coverage, getByText consistency, the dismissed-vs-deleted assertion) is the expected verdict; ACCEPT-WITH-RESERVATIONS, if a model emits it unprompted, is scored as correct."
   - "A REVISE whose only issue is a coverage gap (e.g. 'the recipe should also press Escape') has mis-tiered scope as defect; adjudicate as a false alarm on verdict, not on content."
   - "A review that prefers `flushSync`, a layout-effect cleanup, or the slice's React-16 `setTimeout(0)` wrap over the passive cleanup at :58-60 is stating a preference, not a defect — provided it does not claim the passive cleanup fails. The `setTimeout(0)` note self-scopes to React 16; the fixture is 18.3."
+  - "Escape after a backdrop click: the Escape handler is bound to the dialog element, and the backdrop is not focusable, so a mouse click on the backdrop moves focus to <body> and Escape is inert until Tab re-enters the dialog. Raised as MINOR by a rev3 BUG-baseline draw; a mixed-input edge outside the keyboard route the recipe covers. Raising it as MINOR/ENHANCEMENT is credited; a REVISE resting on it alone is mis-tiered. Open item: `onMouseDown={e => e.preventDefault()}` on the backdrop, or a document-level Escape listener, in a future revision."
   - "Scorer statuses are detector output, not verdict authority. The traps are adjudicated by hand in the results README."
 
 notes: |

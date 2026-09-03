@@ -15,18 +15,21 @@ with the explicit-keyword fields added for this lane.
 
 ## Headline
 
-| Cell | rev1 (`cbd2f41`) | rev2 (`df05648`) |
-|---|---|---|
-| BUG · recipe-skill | died (API 529) | **REVISE, PASS** — must 1/1, should 1/1 |
-| BUG · baseline | died (API 529) | **REVISE, PASS** — must 1/1, should 1/1 |
-| CLEAN · recipe-skill | died (API 529) | **ACCEPT, PASS** — 0 findings above ENHANCEMENT |
-| CLEAN · baseline | **REVISE — correctly**: found the unplanted defect | **ACCEPT, PASS** — 2 MINOR, 3 ENHANCEMENT |
-| bench-reviewer gate | REVISE (2 CRITICAL, 4 MAJOR, 6 MINOR) | see below |
+| Cell | rev1 (`cbd2f41`) | rev2 (`df05648`) | rev3 (`18ba1e8`) |
+|---|---|---|---|
+| BUG · recipe-skill | died (API 529) | **REVISE, PASS** — must 1/1, should 1/1 | **REVISE, PASS** — 1/1, 1/1 |
+| BUG · baseline | died (API 529) | **REVISE, PASS** — must 1/1, should 1/1 | **REVISE, PASS** — 1/1, 1/1 (retry; first died 529) |
+| CLEAN · recipe-skill | died (API 529) | **ACCEPT, PASS** — 0 findings above ENHANCEMENT | **ACCEPT, PASS** — zero findings (retry; first died 529) |
+| CLEAN · baseline | **REVISE — correctly**: found the unplanted defect | **ACCEPT, PASS** — 2 MINOR, 3 ENHANCEMENT | **ACCEPT, PASS** — 6 MINOR, 9 ENHANCEMENT |
+| bench-reviewer gate | REVISE (2 CRITICAL, 4 MAJOR, 6 MINOR) | REVISE, narrow (1 CRITICAL, 1 MAJOR, 4 MINOR); focus-return repair verified | see below (retry; first died 529) |
 
-Every rev2 BUG draw withdrew the filed 2.1.1 FAIL and named the role/name
-remedy; neither blamed the component. Every rev2 CLEAN draw ACCEPTed and
-declined every declared trap. One opus draw per cell on one day — the same
-caveat as the sibling wave: not a calibration, not a local-model row.
+Eight for eight across rev2 and rev3: every BUG draw withdrew the filed 2.1.1
+FAIL and named the role/name remedy, none blamed the component; every CLEAN
+draw ACCEPTed and declined every declared trap. The rev3 draws are against a
+fixture that differs from rev2 only in two operation-id comments and one
+Expected Behavior bullet, so they are near-replicates — the closest thing to a
+second draw per cell this lane has. Still one opus draw per cell per revision
+on one day: not a calibration, not a local-model row.
 
 ## The A/B
 
@@ -48,7 +51,7 @@ CLEAN half's seven traps establish what the sentence must not say: `:has-text()`
 on a text-bearing element is correct, and a reviewer who has learned the rule
 must not apply it as lint.
 
-## What the measurement found in the instrument (rev1 → rev2)
+## What the measurement found in the instrument (rev1 → rev2 → rev3)
 
 The rev1 pair shipped with a **real defect in the byte-identical component**,
 caught before any row was published — by the blind CLEAN baseline draw
@@ -96,10 +99,26 @@ gate (`bench-reviewer-gate-opus-rev1.md`, C-1):
    disabled inputs; a garbled trap-2 sentence; a canary citation off by
    five lines.
 
-The wave's rule held again: **a repair round is a new authoring round.** Every
-rev2 citation in both metadata files, both rubrics, the answer key and the
-canaries was re-derived from the rev2 line map and spot-checked, and the gate
-was re-run on rev2 rather than trusted from rev1.
+The rev2 gate (`bench-reviewer-gate-opus-rev2.md`) then verified the
+focus-return repair correct on all four dismissal routes with the React commit
+order spelled out — and found two more, both folded into rev3:
+
+7. **The withdrawal token group was still too wide.** "The dialog does not
+   support keyboard access to its close control" is the *modal* phrasing of a
+   ratifying review, and it earned the bare token `does not support`; "not
+   spurious" earned `spurious` by polarity inversion. rev3 keeps only
+   finding-directed forms and adds a four-word negation window to the
+   scorer's explicit-keyword matcher. Canaries carry the gate's P1a/b/c; 13/13.
+8. **The PASS rows' operation ids had no provenance** — `OP-CLOSE-REACH` and
+   `OP-CLOSE-DISMISS` appeared in `findings.json` and nowhere else, so a CLEAN
+   reviewer who said "these ids are unverifiable" was scored a false alarm.
+   rev3 declares them as comments above the assertions they scope.
+
+The wave's rule held three times: **a repair round is a new authoring round.**
+Every citation in both metadata files, both rubrics, the answer key and the
+canaries was re-derived from each revision's line map and spot-checked, and
+the gate and all four cells were re-drawn on rev3 rather than trusted from
+rev2.
 
 ## Trap adjudication (rev2, by hand)
 
@@ -120,23 +139,40 @@ user impact" (M3) — the repo's orthogonality rule applied to the harness's
 own row — and "the 500 ms assertion timeout is arbitrary" (N3), both
 reasonable on the BUG half's defective artifact.
 
-## Scores (rev2, `score_output.py` against the rev2 rubrics)
+## Scores (`score_output.py` against the rev3 rubrics; rev2 rows re-scored under rev3 unchanged)
 
 ```
 claude-recipe-skill-bug-opus-rev2    Verdict REVISE  must 1/1  should 1/1  PASS
 claude-baseline-bug-opus-rev2        Verdict REVISE  must 1/1  should 1/1  PASS
 claude-recipe-skill-clean-opus-rev2  Verdict ACCEPT  structured findings 0  PASS
 claude-baseline-clean-opus-rev2      Verdict ACCEPT  structured findings 0  PASS
+claude-recipe-skill-bug-opus-rev3    Verdict REVISE  must 1/1  should 1/1  PASS
+claude-baseline-bug-opus-rev3        Verdict REVISE  must 1/1  should 1/1  PASS
+claude-recipe-skill-clean-opus-rev3  Verdict ACCEPT  structured findings 0  PASS
+claude-baseline-clean-opus-rev3      Verdict ACCEPT  structured findings 0  PASS
 ```
 
+Hand adjudication of rev3 line citations subtracts 2 (prompt offset).
+
 ## Open items carried out of this measurement
+
+- **Escape after a backdrop click** (rev3 BUG-baseline draw, MINOR #10): the
+  Escape handler is on the dialog element and the backdrop is not focusable,
+  so a mouse click on the backdrop moves focus to `<body>` and Escape is inert
+  until Tab re-enters. A mixed-input edge outside the recipe's keyboard route;
+  none of four CLEAN draws raised it. Declared as a judgment call in the CLEAN
+  rubric rather than repaired here, because a component change is a fourth
+  authoring round (four draws + gate) for a MINOR outside scope. One-line fix
+  when a revision is next opened: `onMouseDown={e => e.preventDefault()}` on
+  the backdrop, or a document-level Escape listener.
 
 - **`claim_boundary` names a viewport the rows do not record** (CLEAN baseline
   rev2, MINOR 1). The a11y-test evidence contract should say which fields a
   boundary may reference — the fix is on the contract side, not this fixture.
-- **Three rev1 draws and the first gate died on API 529 with no partial
-  output** (transcripts checked before re-dispatch). Recorded so the cell
-  table is honest about what rev1 measured: one draw and one gate.
+- **API 529s:** three rev1 draws and the rev1 gate; the rev3 gate, BUG
+  baseline and CLEAN skill on first attempt. Each transcript was checked for
+  partial output before re-dispatch (none had any). Recorded so the cell table
+  is honest about what each revision measured.
 - The BUG halves' `selector` field carries the recipe's locator, not the
   failing element's stable selector (both BUG draws, M2/M7). True of the
   artifact by design — it is the defective run — but the bug-reporting skill's
@@ -147,12 +183,15 @@ claude-baseline-clean-opus-rev2      Verdict ACCEPT  structured findings 0  PASS
 
 ```
 bench-reviewer-gate-opus-rev1.md          gate on cbd2f41 — REVISE (C-1 focus return, C-2 scorer, M-1..M-4, m-1..m-6)
-bench-reviewer-gate-opus-rev2.md          gate on df05648 (added when it lands)
+bench-reviewer-gate-opus-rev2.md          gate on df05648 — REVISE narrow (C-1 tokens/polarity, M-1 op-id provenance); repair verified
+bench-reviewer-gate-opus-rev3.md          gate on 18ba1e8 (added when it lands)
+claude-recipe-skill-bug-opus-rev3.md      claude-baseline-bug-opus-rev3.md
+claude-recipe-skill-clean-opus-rev3.md    claude-baseline-clean-opus-rev3.md
 claude-baseline-clean-opus-rev1.md        the draw that found the rev1 defect (REVISE, correctly)
 claude-recipe-skill-bug-opus-rev2.md      claude-baseline-bug-opus-rev2.md
 claude-recipe-skill-clean-opus-rev2.md    claude-baseline-clean-opus-rev2.md
-canaries.py                               scorer discrimination, 9 cases incl. the gate's probes A–E (exit 0 = CLEAN)
-prompts/                                  exactly what each draw read: *.blind.md (rev2) + system-recipe-slice.md
+canaries.py                               scorer discrimination, 13 cases incl. the gates' probes A–E, P1a–c, P7 (exit 0 = CLEAN)
+prompts/                                  exactly what each draw read: *.blind.md (rev3; prompt line = fixture line + 2) + system-recipe-slice.md
 ```
 
 Draw protocol: `general-purpose` opus subagents, one per cell; the skill
