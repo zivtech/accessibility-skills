@@ -1,0 +1,20 @@
+[
+  {"instance_id":"EX-a3f1b2c4","pattern_id":"EX-f7e3a1b2","screen_type":"desktop","color_mode":"light",
+   "url":"https://example.com/products","xpath":"//main/img[1]","xpath_full":"/html/body/main/section[2]/img[1]",
+   "html_snippet":"<img src=\"hero.png\">","wcag_sc":"1.1.1","wcag_level":"A","rule_id":"image-alt","act_rule_id":"23a2a8",
+   "tool":"axe-core 4.13.0","severity":"critical","frequency":{"instances_on_page":1,"pages_affected":3,"total_pages_scanned":12},
+   "summary":"Hero image has no text alternative","description":"Screen reader users hear only the file name.",
+   "impact":["screen reader users","braille display users"],"environment":{"browser":"Chromium 138","os":"macOS 26","screen_reader":"VoiceOver","zoom_level":"100%"},
+   "suggested_fix":"Add alt text that names the product shown.","steps_to_reproduce":["Open /products","Tab to the hero image with VoiceOver on"]},
+  {"instance_id":"EX-0badc0de","pattern_id":"EX-f7e3a1b2","url":"https://example.com/products?page=2","xpath":"//main/img[1]",
+   "html_snippet":"<img src=\"hero2.png\">","wcag_sc":"1.1.1","wcag_level":"A","rule_id":"image-alt","tool":"axe-core 4.13.0",
+   "severity":"critical","frequency":{"instances_on_page":1,"pages_affected":3,"total_pages_scanned":12},"summary":"Hero image has no text alternative (page 2)"},
+  {"instance_id":"EX-11223344","url":"https://example.com/checkout","xpath":"//form/button[2]","html_snippet":"<button class=\"icon\"><svg/></button>",
+   "wcag_sc":"4.1.2","wcag_level":"A","rule_id":"button-name","baseline_test":"5.A-ControlName","tool":"axe-core 4.13.0","severity":"high",
+   "summary":"Icon-only button has no accessible name","contract_severity":"MAJOR","sample_id":"S-07"},
+  {"finding_id":"a11y_focus_not_visible_nav","url":"https://example.com/","xpath":"//nav/a[3]","html_snippet":"<a href=\"/about\">About</a>",
+   "wcag_sc":"2.4.7","wcag_level":"AA","rule_id":"N/A","tool":"manual keyboard test","severity":"medium",
+   "summary":"Focus indicator not visible on nav links","description":"outline: none with no replacement.","steps_to_reproduce":["Load the home page","Press Tab three times"]},
+  {"url":"https://example.com/faq","xpath":"//details[1]/summary","html_snippet":"<summary>How do I…</summary>","wcag_sc":"N/A","rule_id":"best-practice: region",
+   "tool":"axe-core 4.13.0 (best-practice)","severity":"low","summary":"Content outside landmarks"}
+]
