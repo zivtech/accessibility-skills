@@ -46,11 +46,14 @@ expected_findings:
     impact: "No major issues"
 
   - category: nice_to_find
-    count: 2
+    count: 3
     items:
       - description: "Optional: the focused heading announces the section name but not that a navigation completed; some implementations extend the focused heading's accessible name for that context"
         impact: "Enhancement suggestion (ENHANCEMENT severity)"
         expected_to_find: "25%"
+      - description: "Optional: the heading query has no fallback for a route whose <h1> is not yet rendered (data fetch, React.lazy); `?? mainRef.current` would land focus in the landmark"
+        impact: "Enhancement suggestion (ENHANCEMENT severity). Not a live defect in this fixture; scored because the revision-6 skill draw reached it."
+        expected_to_find: "30%"
       - description: "Optional: back/forward are treated as forward navigations — no useNavigationType() check, so a POP resets scroll and moves focus where the browser would have restored both"
         impact: "Enhancement suggestion (ENHANCEMENT severity). No SC maps to it; both revision-4 draws reached it, so it is scored rather than left as unlisted surface a reviewer could be penalised for noticing."
         expected_to_find: "40%"

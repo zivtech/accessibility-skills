@@ -16,10 +16,13 @@ expected_findings:
     count: 0
 
   - category: nice_to_find
-    count: 2
+    count: 3
     items:
       - description: "Optional: focus lands on the heading, so the user hears the section name but not that a navigation completed; some implementations add the word 'page' or the site name to the focused heading's accessible name for that context"
         severity: ENHANCEMENT
+      - description: "Optional: the heading query has no fallback — mainRef.current?.querySelector('h1')?.focus() fails silently if a future route renders its heading after a fetch or behind React.lazy, leaving focus on the nav link; `?? mainRef.current` would land focus in the landmark instead"
+        severity: ENHANCEMENT
+        note: "Not a live defect — all three views render a heading synchronously through ViewHeading. Scored because the revision-6 skill draw reached it and a reviewer who raises it is reasoning about the mechanism rather than pattern-matching."
       - description: "Back and forward are treated as forward navigations — the effect keys on pathname alone, so a POP restores neither scroll position nor focus the way the browser natively would; reading useNavigationType() and skipping the scroll reset on POP is the usual refinement"
         severity: ENHANCEMENT
         note: "No success criterion maps to this. It is a cognitive-access regression against browser-native behaviour, and a reviewer who raises it is being thorough rather than wrong — which is why it is scored here rather than left as an unlisted surface."

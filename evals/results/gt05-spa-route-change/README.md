@@ -89,11 +89,19 @@ instrument. Neither alone would have been enough.
 | 2 | BUG | REVISE | REVISE | 2/2 both |
 | 2 | CLEAN | REVISE | REVISE | both traced the redirect defect revision 2 introduced |
 | 3 | CLEAN | ACCEPT-with-reservations | REVISE | baseline found the index-route defect revision 3 introduced |
-| 4 | CLEAN | **ACCEPT** | **ACCEPT** | 6/6 and 5/5 pre-committed predictions refuted; no CRITICAL, no MAJOR |
+| 4 | CLEAN | **ACCEPT** | **ACCEPT** | 6/6 pre-committed predictions refuted; no CRITICAL, no MAJOR |
+| 6 | CLEAN (narrowed) | **ACCEPT** | **ACCEPT** | 7/7 predictions refuted; baseline reports **zero** defects at any severity |
 
 The BUG half has been stable since revision 2 and is not re-drawn after it: all
 four BUG draws found both planted defects and returned REVISE. The CLEAN half
-took four revisions to reach a clean ACCEPT from both conditions.
+took four revisions to reach a clean ACCEPT from both conditions, and was then
+narrowed to sibling scale (revision 6, 282 lines -> 182) and re-drawn — a
+rewrite that size is a new authoring round. The narrowed fixture is the
+cleanest result in the lane: the baseline draw reports zero defects at any
+severity, where every earlier CLEAN revision drew at least a MINOR.
+
+Revision 5 is not separately drawn: it added one CSS rule to revision 4, and
+revision 6 supersedes it.
 
 **What the A/B says.** On the BUG fixture the two conditions agree — both find
 both defects, so this pair does not discriminate skill-condition from baseline
@@ -120,11 +128,22 @@ responsive CSS — and each of those surfaces generated a legitimate finding. Th
 sibling CLEAN fixtures are single components, and none of them has needed a
 repair round.
 
-**Recommendation, for the user rather than done here:** narrow the CLEAN half to
-the route-change mechanism at the scale of its siblings. The current fixture is
-defensible as it stands — two ACCEPT verdicts, all six traps held — but its
-surface area is why it took four rounds, and the same surface is what a future
-maintainer will have to keep clean.
+**This recommendation was taken (revision 6).** The CLEAN half is now 182 lines
+against async-retry-recovery-clean's 189 and map-controls-clean's 164. What was
+removed — the index.html block, the layout and list CSS, the third section, the
+account and statement content — is exactly the surface that had generated every
+unplanted finding: the viewport meta, the non-wrapping header, list-style
+stripping the list role, the skip link's containing block, the sub-route links.
+None of it bore on whether a client-side view replacement updates the title and
+moves focus. The re-draw came back with zero defects from the baseline and no
+CRITICAL or MAJOR from the skill condition, which is the empirical case for
+keeping CLEAN fixtures at component scale rather than application scale.
+
+The BUG half was deliberately not narrowed: index.html is the evidence for its
+static-title defect. The pair is no longer byte-parallel, which is stated in
+the metadata — scoring is per-fixture, and the CLEAN half's job under clause 3
+is to penalise over-flagging on the same interaction pattern, not to be the
+same file with the effects deleted.
 
 **The rule this lane earned:** a repair round is a new authoring round. A CLEAN
 fixture is clean as of its last draw and no earlier, and a repair that is not
@@ -142,9 +161,26 @@ re-drawn is a claim, not a result.
   browser would have restored both. No SC maps to it. Both revision-4 draws
   reached it, so it is scored as a `nice_to_find` rather than left as unlisted
   surface a reviewer could be penalised for noticing.
-- **`.portal-main:focus-visible`** was added in revision 5, after both skill
-  draws raised it. It is additive CSS; the two ACCEPT draws are against
-  revision 4 and were not re-run for it.
+- **`main:focus-visible`** was added in revision 5 after both skill draws raised
+  it, and survives the narrowing.
+- **The site root renders "Page not found."** There is deliberately no index
+  route and no root redirect — a redirect steals focus on cold entry
+  (revision 2's defect) and an index route leaves the entry URL with no current
+  nav item (revision 3's). Both revision-6 draws noted the wayfinding cost as
+  an ENHANCEMENT with no SC attached.
+- **No fallback if the queried heading is absent.** Not a live defect — all
+  three views render their heading synchronously — but a future route behind a
+  fetch or `React.lazy` would leave focus on the nav link. Scored as a
+  `nice_to_find` rather than fixed, so a reviewer who reaches it is credited.
+
+## Sibling fix shipped alongside
+
+The gate's wave-wide finding — `ANSWER_KEY_RE` anchors on a heading CLEAN
+fixtures have no reason to carry — was fixed for GT-07, GT-09 and GT-11 in
+`5eb7330`, measured before and after: all three stripped 0 lines before, and
+now strip their Difficulty sections with no trap markers surviving. No model
+row had been drawn against any of them, so nothing already published rested on
+the leak.
 
 ## Reproduce
 
