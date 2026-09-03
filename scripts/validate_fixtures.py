@@ -45,6 +45,7 @@ REGISTRY_LISTS = {
     "a11y-test-operation-evidence": "OPEVIDENCE_FIXTURES",
     "acr-reporting": "ACR_FIXTURES",
     "a11y-content-judgment": "CJ_FIXTURES",
+    "a11y-test-recipe": "RECIPE_FIXTURES",
 }
 INLINE_REGISTRY_SUITES = {"a11y-critic", "perspectives", "a11y-planner"}
 

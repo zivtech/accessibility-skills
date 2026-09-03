@@ -49,6 +49,23 @@ run_case \
     "Must-find issues: 2/2" \
     "Status: PASS"
 
+# Case 1b: critic explicit keywords (keywords_all + keywords_any; keywords alone)
+run_case \
+    "critic explicit keywords (both items hit, PASS)" \
+    "ollama/score_output.py" \
+    "critic-keywords-hit-response.json" \
+    "critic-keywords.metadata.yaml" \
+    "Must-find issues: 2/2" \
+    "Status: PASS"
+
+run_case \
+    "critic explicit keywords (has-text without semantics/remedy, no trace: 0/2, FAIL)" \
+    "ollama/score_output.py" \
+    "critic-keywords-partial-response.json" \
+    "critic-keywords.metadata.yaml" \
+    "Must-find issues: 0/2" \
+    "Status: FAIL"
+
 # Case 2: critic CLEAN
 run_case \
     "critic CLEAN (verdict correct, PASS)" \

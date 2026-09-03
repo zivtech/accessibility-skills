@@ -92,6 +92,62 @@ def check_finding(text: str, finding: dict) -> dict:
     description = finding.get("description", "")
     wcag = finding.get("wcag", "")
 
+    # Explicit scoring tokens (2026-09-03, GT-16 lane). A rubric item may
+    # declare its own keywords instead of relying on the description branches
+    # below or on the first-four-words fallback, which is polarity-blind.
+    # `keywords_all`: every entry must match; an entry that is itself a list
+    # is an any-of group, so a conjunction of disjunctions ("names the
+    # semantics" AND "names the remedy" AND "withdraws the finding") is one
+    # must-find item and cannot be half-earned under the 0.4 abort threshold.
+    # `keywords` (alias `keywords_any`): any one must match. Both may be
+    # combined. Rubrics carrying neither field score exactly as before.
+    explicit_any = finding.get("keywords") or finding.get("keywords_any") or []
+    explicit_all = finding.get("keywords_all") or []
+    if explicit_any or explicit_all:
+        from score_common import normalize_quotes
+        norm_text = normalize_quotes(text.lower())
+
+        # Polarity: for a group declared `{any: [...], polarity: true}`, an
+        # occurrence preceded (within four words) by a negation is not a match
+        # — "not a false positive", "does not contradict", "not spurious" must
+        # not earn a withdrawal token (GT-16 gate rev2 C-1). Plain list groups
+        # are matched without the window: descriptive groups ("has no text
+        # content", "does not match the accessible name") are negated in the
+        # natural register of a CORRECT review (gate rev3 M-1). The window reads
+        # backwards only; tokens that carry their own negation must not be
+        # shipped in a polarity group.
+        # Attachment stops at punctuation: "not sound; withdraw it" and
+        # "does not support it, so retract" are withdrawals, not negations of
+        # the withdrawal verb (gate rev3 M-1 probes N5/N6).
+        neg = r"\b(?:not|no|never|neither|nor|isn'?t|aren'?t|wasn'?t|doesn'?t|don'?t|didn'?t|cannot|can'?t|without|hardly|rather than)\b[ \t]+(?:[\w'\u2019-]+[ \t]+){0,3}$"
+
+        def token_ok(tok):
+            tok = normalize_quotes(str(tok).lower())
+            for m in re.finditer(re.escape(tok), norm_text):
+                if not re.search(neg, norm_text[max(0, m.start() - 60):m.start()]):
+                    return True
+            return False
+
+        def group_ok(entry):
+            if isinstance(entry, dict):
+                options = entry.get("any") or []
+                match = token_ok if entry.get("polarity") else (lambda k: normalize_quotes(str(k).lower()) in norm_text)
+            else:
+                options = entry if isinstance(entry, (list, tuple)) else [entry]
+                match = lambda k: normalize_quotes(str(k).lower()) in norm_text
+            return any(match(k) for k in options)
+
+        any_ok = not explicit_any or group_ok(list(explicit_any))
+        all_ok = all(group_ok(e) for e in explicit_all)
+        wcag_number = re.search(r"(\d+\.\d+\.\d+)", wcag) if wcag else None
+        flat = [k for e in explicit_all for k in (e.get("any") or [] if isinstance(e, dict) else (e if isinstance(e, (list, tuple)) else [e]))]
+        return {
+            "description": description,
+            "found": any_ok and all_ok,
+            "wcag_cited": bool(wcag_number and wcag_number.group(1) in text),
+            "keywords_checked": [*flat, *explicit_any],
+        }
+
     keywords = []
     if "aria-describedby" in description.lower():
         keywords = ["aria-describedby", "describedby"]
