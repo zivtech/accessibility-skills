@@ -13,6 +13,8 @@ Usage:
     python3 ollama/run_benchmark.py planner-federal <model> <fixture-id>     # Planner + a11y-test crosswalk in-prompt (declared-508 condition)
     python3 ollama/run_benchmark.py cj <model> <fixture-id>                  # Content-judgment single fixture (judgment rubric = system prompt)
     python3 ollama/run_benchmark.py cj-baseline <model> <fixture-id>         # Same fixture, no rubric (baseline condition)
+    python3 ollama/run_benchmark.py titlehint <model> <fixture-id> <titled|neutral> <draw>  # H1 leak A/B (issue #51)
+    python3 ollama/run_benchmark.py featurehint <model> <fixture-id> <withfeatures|nofeatures> <draw>  # features-section leak A/B (issue #51)
     python3 ollama/run_benchmark.py recipe <model> <fixture-id>              # a11y-test recipe review (a11y-test slice = system prompt)
     python3 ollama/run_benchmark.py recipe-baseline <model> <fixture-id>     # Same fixture, no slice (baseline condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
@@ -454,8 +456,9 @@ CRITIC_CTX = {
 CRITIC_CTX_DEFAULT = 16384
 
 
-def run_ollama(model, fixture_id, system_prompt):
-    fixture_content = load_fixture(fixture_id)
+def run_ollama(model, fixture_id, system_prompt, content_override=None,
+               out_path_override=None, extra_meta=None):
+    fixture_content = content_override or load_fixture(fixture_id)
     prompt = PROMPT_PREFIX + fixture_content
 
     payload = {
@@ -467,7 +470,9 @@ def run_ollama(model, fixture_id, system_prompt):
     }
 
     model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"ollama-bench-{fixture_id}-{model_tag}-response.json")
+    out_path = out_path_override or os.path.join(
+        RESULTS_DIR, f"ollama-bench-{fixture_id}-{model_tag}-response.json"
+    )
 
     print(f"\n{'='*60}")
     print(f"Model: {model} | Fixture: {fixture_id}")
@@ -513,12 +518,145 @@ def run_ollama(model, fixture_id, system_prompt):
             "thinking_chars": thinking_chars,
         },
     }
+    if extra_meta:
+        data["_benchmark"].update(extra_meta)
 
     write_json_atomic(out_path, data)
 
     resp_len = len(response_text)
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
     return out_path
+
+
+
+# ---------------------------------------------------------------------------
+# Title-hint measurement lane (issue #51 step 2, 2026-09-03).
+#
+# Line 1 of every fixture is above the blind cut line, so the H1 reaches the
+# model in every prompt-based lane, and 52 of 77 corpus titles name the defect
+# they plant. This lane draws the same fixture under its real title and under
+# the neutralised title declared in evals/fixture-title-manifest.yaml, so the
+# question "how much of our must-find rate is the title?" gets a number
+# instead of an argument. Nothing else about the prompt differs — the swap is
+# a single line, verified byte-for-byte by tools/diff below the H1.
+#
+# The neutralised title is NOT proposed as the corpus default here. This lane
+# measures whether adopting it would be worth the re-draw it costs.
+# ---------------------------------------------------------------------------
+
+TITLE_MANIFEST_PATH = os.path.join(
+    BASE_DIR, "..", "evals", "fixture-title-manifest.yaml"
+)
+
+
+def load_title_manifest():
+    import yaml
+
+    with open(TITLE_MANIFEST_PATH) as f:
+        return yaml.safe_load(f)["suites"]
+
+
+def load_fixture_titled(fixture_id, condition, suite="a11y-critic", fixtures_dir=None):
+    """Blind fixture content with the H1 either left alone ('titled') or
+    replaced by the manifest's neutral_title ('neutral')."""
+    content = load_fixture(fixture_id, fixtures_dir or FIXTURES_DIR)
+    row = load_title_manifest()[suite]["fixtures"][fixture_id]
+    lines = content.split("\n")
+    if lines[0] != "# " + row["title"]:
+        sys.exit(
+            f"load_fixture_titled: {fixture_id} H1 {lines[0]!r} does not match the "
+            f"manifest; run ollama/test_blind_prompts.py"
+        )
+    if condition == "titled":
+        return content
+    if condition != "neutral":
+        sys.exit(f"load_fixture_titled: unknown condition {condition!r}")
+    neutral = row.get("neutral_title")
+    if not neutral:
+        sys.exit(
+            f"load_fixture_titled: {fixture_id} is class {row['class']!r} with no "
+            f"neutral_title — nothing to neutralise"
+        )
+    lines[0] = "# " + neutral
+    return "\n".join(lines)
+
+
+def run_titlehint(model, fixture_id, condition, draw, system_prompt):
+    content = load_fixture_titled(fixture_id, condition)
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(
+        RESULTS_DIR,
+        f"ollama-titlehint-{condition}-{fixture_id}-{model_tag}-d{draw}-response.json",
+    )
+    print(f"\nTITLE-HINT ({condition}, draw {draw}) | {model} | {fixture_id}")
+    print(f"  H1: {content.splitlines()[0]}")
+    return run_ollama(
+        model, fixture_id, system_prompt,
+        content_override=content, out_path_override=out_path,
+        extra_meta={"lane": "titlehint", "condition": condition, "draw": draw},
+    )
+
+
+
+# ---------------------------------------------------------------------------
+# Features-section measurement lane (issue #51 leak class 2, 2026-09-03).
+#
+# 45 of 50 critic fixtures show the model an `## Accessibility Features
+# Present` section above the blind cut line. The title names the defect; this
+# names the non-defects. Together they bracket the answer.
+#
+# Issue #51 argues those items are the scored false_positive_trap entries, so
+# the trap dimension measures "don't flag what you were told is fine" rather
+# than "don't flag correct code". Measured 2026-09-03: `false_positive_trap`
+# is declared in all 50 rubrics and read by no scorer — as are `llm_judge`,
+# `hybrid_weights` and `scoring_method`. There is no trap metric. So this lane
+# measures the consequence directly instead: on the 11 CLEAN fixtures, whose
+# expected verdict is ACCEPT, does removing the features section flip the
+# verdict or raise spurious findings? That is the "don't flag correct code"
+# claim the CLEAN halves exist to establish, stated as something scorable.
+#
+# The section is realistic content — a developer handing over a component
+# really would say what they handled. This lane measures what it is worth,
+# not whether it is plausible.
+# ---------------------------------------------------------------------------
+
+FEATURES_SECTION_RE = re.compile(
+    r"^## Accessibility Features (?:Present|Implemented)[ \t]*$.*?(?=^## |\Z)",
+    re.MULTILINE | re.DOTALL,
+)
+
+
+def load_fixture_features(fixture_id, condition, fixtures_dir=None):
+    """Blind fixture content with the features section kept ('withfeatures')
+    or removed ('nofeatures'). Nothing else differs."""
+    content = load_fixture(fixture_id, fixtures_dir or FIXTURES_DIR)
+    if condition == "withfeatures":
+        return content
+    if condition != "nofeatures":
+        sys.exit(f"load_fixture_features: unknown condition {condition!r}")
+    stripped, n = FEATURES_SECTION_RE.subn("", content)
+    if n != 1:
+        sys.exit(
+            f"load_fixture_features: {fixture_id} has {n} features sections, "
+            f"expected exactly 1 — nothing to remove"
+        )
+    return re.sub(r"\n{3,}", "\n\n", stripped).rstrip() + "\n"
+
+
+def run_featurehint(model, fixture_id, condition, draw, system_prompt):
+    content = load_fixture_features(fixture_id, condition)
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(
+        RESULTS_DIR,
+        f"ollama-featurehint-{condition}-{fixture_id}-{model_tag}-d{draw}-response.json",
+    )
+    print(f"\nFEATURE-HINT ({condition}, draw {draw}) | {model} | {fixture_id}")
+    print(f"  prompt chars: {len(content)}")
+    return run_ollama(
+        model, fixture_id, system_prompt,
+        content_override=content, out_path_override=out_path,
+        extra_meta={"lane": "featurehint", "condition": condition, "draw": draw},
+    )
 
 
 def load_planner_system_prompt():
@@ -1236,6 +1374,24 @@ def main():
         model, fixture_id = sys.argv[2], sys.argv[3]
         validate_fixture_id(fixture_id)
         run_opevidence(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "titlehint":
+        if len(sys.argv) < 6:
+            print("Usage: run_benchmark.py titlehint <model> <fixture-id> "
+                  "<titled|neutral> <draw>")
+            sys.exit(1)
+        model, fixture_id, condition, draw = sys.argv[2:6]
+        validate_fixture_id(fixture_id)
+        run_titlehint(model, fixture_id, condition, draw, load_system_prompt())
+
+    elif cmd == "featurehint":
+        if len(sys.argv) < 6:
+            print("Usage: run_benchmark.py featurehint <model> <fixture-id> "
+                  "<withfeatures|nofeatures> <draw>")
+            sys.exit(1)
+        model, fixture_id, condition, draw = sys.argv[2:6]
+        validate_fixture_id(fixture_id)
+        run_featurehint(model, fixture_id, condition, draw, load_system_prompt())
 
     elif cmd == "recipe":
         if len(sys.argv) < 4:
