@@ -167,7 +167,7 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 
 1. **Identity and classification.** Every entry has a unique `id` and a non-empty `represents`. Every `structured` entry that is not an alternate version also carries at least one `covers` value; random items do not, because the random sample is drawn precisely *without* regard to the classification, and alternates inherit their parent's. A sample carries at least one locator; `url` and the non-URL locators (`path_description`, `screenshot_ref`) are mutually exclusive as *kinds*, but a non-URL sample may carry both — WCAG-EM identifies such samples "with unique screenshots and/or descriptions of the path", so forbidding the pair would forbid what the methodology recommends. A `complete_processes` entry is not a sample and needs no locator; it has a `starting_point`.
 2. **Step 2 coverage.** The `covers` values across `structured` span all five WCAG-EM Step 2 lists — common views, essential functionality, page-type variety, technologies relied upon, other relevant pages — or a named list carries an explicit reason for absence. Without this a structured sample can be arbitrary and still pass every other check, which would make the shape weaker than the sampling discipline in `a11y-test` and `a11y-planner` that it serializes.
-3. **Random sizing.** `count(random.items) >= ceil(0.10 * count(structured))`, counting per item 6. The exception is `random.exhausted: true` with a non-empty `exhausted_reason`: WCAG-EM directs a replacement pick on collision and says that if no new views exist the step is complete, so a small product with a valid sample set must not fail here.
+3. **Random sizing.** `count(random.items) >= ceil(0.10 * count(structured))`, counting per item 6. The exception is `random.exhausted: true` with a non-empty `exhausted_reason`: WCAG-EM directs a replacement pick on collision and says that if no new views exist the step is complete, so a small product with a valid sample set must not fail here. *(Two parts of this are shape decisions, not the methodology. WCAG-EM says the number "**is** 10% of the structured sample set" and the verified reference records no minimum in either version — so both the rounding rule and reading it as a floor rather than an exact count are choices made here. `ceil` forces one random sample onto any non-empty structured set, which is a defensible reading and still a reading.)*
 4. **Disjointness.** `random.items` and `structured` share no `id` and no locator value.
 5. **Documented method.** `random.method` is non-empty. WCAG-EM requires the method be *documented*, not seed-reproducible.
 6. **Alternate versions.** An `alternate_of` entry names an existing `id` and is excluded from the counts in items 3 and 4 — WCAG-EM: alternate versions "are not considered to be separate samples".
@@ -189,27 +189,34 @@ Descriptive, not a CLI contract. Each item names the input it needs, because the
 
 ### Mutation canaries
 
-Single-field mutations a checker should reject, with the input each needs — items 12, 13 and 14 cannot be exercised against a single `sample_set` block, which is the point of listing the input at all. Items 1 and 8 carry two mutations each.
+Single-field mutations a checker should reject, with the input each needs — some items need more than the block, which is the point of listing the input at all. Several items carry more than one mutation; the table is the count.
 
 | Item | Mutation | Input needed |
 |---|---|---|
 | 1 | Blank `structured[0].represents` | block |
+| 1 | Delete `covers` from a `structured` entry that is not an alternate | block |
+| 1 | Duplicate an `id` across two entries | block |
 | 1 | Give one sample both `url` and `path_description` | block |
+| 1 | Remove every locator from one sample, leaving `id` and `represents` | block |
 | 2 | Remove every entry covering `essential_functionality`, with no stated reason | block |
 | 3 | Drop `random.items` to one below the 10% floor with `exhausted: false` | block |
+| 3 | Set `exhausted: true` with an empty `exhausted_reason` | block |
 | 4 | Copy a structured `url` into `random.items` | block |
 | 5 | Set `random.method` to an empty string | block |
 | 6 | Point `alternate_of` at an id that does not exist | block |
+| 6 | Relabel a real structured sample as `alternate_of` another, shrinking the item-3 denominator | block |
 | 7 | Delete `states` from one structured entry | block |
-| 8 | Delete `branch_sequences` leaving `no_branches_reason: null` | block |
 | 8 | Delete `action` from one default-sequence step | block |
+| 8 | Delete `branch_sequences` leaving `no_branches_reason: null` | block |
+| 8 | Empty `complete_processes` with `no_processes_reason: null` and `sampling_skipped: false` | block |
 | 9 | Change a `default_sequence` sample ref to a nonexistent id | block |
-| 10 | Set `sampling_skipped: true` while `random.items` is non-empty | block |
 | 9 | Empty `carried_from.retained` on a re-evaluation | block |
-| 11 | Set `status: frozen` and delete `frozen_by` | block |
+| 10 | Set `sampling_skipped: true` while `random.items` is non-empty | block |
 | 11 | Set `status: frozen` and delete `evidence_revision` | block |
+| 11 | Set `status: frozen` and delete `frozen_by` | block |
 | 12 | Cite a `status: draft` set from a report | block + report |
 | 13 | An entry carrying `added_by` with no `added_at_revision` | block |
+| 13 | Set `added_at_revision` greater than the set's `revision` | block |
 | 14 | Change a structured entry without incrementing `revision` | two revisions |
 
 Negative controls matter as much: the example above validates clean, and so does a variant with `sampling_skipped: true`, an empty `random`, and its `complete_processes` intact. A checker that rejects everything proves as little as one that accepts everything.
