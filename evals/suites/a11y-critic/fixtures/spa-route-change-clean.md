@@ -129,7 +129,6 @@ const NotFoundView = () => (
 const PortalRoutes = () => (
   <Routes>
     <Route element={<PortalShell />}>
-      <Route index element={<AccountsView />} />
       <Route path="/accounts" element={<AccountsView />} />
       <Route path="/transfers" element={<TransfersView />} />
       <Route path="/statements" element={<StatementsView />} />
@@ -147,6 +146,7 @@ export default PortalRoutes;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ridgeline Credit Union</title>
   </head>
   <body>
@@ -254,7 +254,7 @@ export default PortalRoutes;
 - Each view sets the document title from its own heading text, so the browser tab, the back-history menu, and the screen reader's page-title command all name the view that actually rendered.
 - On every client-side navigation *after the first render*, focus moves to the heading of the new view, which announces it and puts the next Tab inside the new content.
 - The first page load leaves focus where the browser put it, whichever URL it lands on.
-- `/` renders the accounts view; any unmatched URL renders the not-found view, which has its own heading and its own title.
+- The portal is mounted at `/accounts`. `/` and any other unmatched URL render the not-found view, which has its own heading and its own title — so no URL produces a view that the nav claims is a different section.
 - `NavLink` marks the active section `aria-current="page"`.
 
 ## Accessibility Features Present
@@ -269,7 +269,7 @@ export default PortalRoutes;
 
 5. **The heading has a visible focus indicator** (`:193-199`) — it is a programmatic focus target rather than a keyboard-reachable one, but the indicator is kept so that a sighted user who navigated by keyboard can see where focus landed.
 
-6. **The route table has no dead ends** (`:129-139`) — `/` renders the accounts view through an index route rather than a redirect, and a catch-all renders a not-found view that carries a real heading and a real title, so no URL produces an empty document or a stale title.
+6. **The route table has no dead ends and no disagreements** (`:129-138`) — every route renders a view that owns its heading and title, and a catch-all covers everything else, so no URL yields an empty document or a stale title. There is deliberately no index route and no root redirect: a redirect fires a second render that reads as a navigation and steals focus on cold entry, and an index route rendering a section at `/` would leave `NavLink ... end` inactive there, putting a section on screen that no nav item claims.
 
 ## Accessibility Issues (None Planted — CLEAN Baseline)
 

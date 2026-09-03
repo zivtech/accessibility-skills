@@ -161,3 +161,9 @@ notes: |
   the heading and the title, and "/" is an index route rather than a redirect.
   Recorded because it is the general lesson of this lane: a repair round is a
   new authoring round, and a CLEAN fixture is only clean as of its last draw.
+
+  Revision 4 (2026-09-03): index route removed after the revision-3 baseline
+  draw found that "/" rendered the accounts view with no nav item marked
+  current; viewport meta added to both halves. Residual, stated rather than
+  fixed: a trailing-slash URL renders the right view without a current-page
+  mark (2.4.8, AAA, host-normalised in practice).

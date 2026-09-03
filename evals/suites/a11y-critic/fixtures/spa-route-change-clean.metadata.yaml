@@ -126,3 +126,20 @@ notes: |
   and heading now come from the view that rendered (ViewHeading), and "/" is an
   index route rather than a redirect. The lesson is recorded in the results
   README — a repair round is a new authoring round, and needs its own draw.
+
+  Revision 4 (2026-09-03): revision 3's index route — "/" rendering the
+  accounts view — left `NavLink ... end` inactive at "/", so the site's most
+  common cold entry showed a section that no nav item claimed as current
+  (found by the revision-3 baseline draw, rated MAJOR on impact, 2.4.8 at AAA
+  on citation). The index route is removed: the portal is mounted at
+  /accounts, and "/" falls to the catch-all not-found view, which owns its own
+  heading and title — so the nav and the rendered view can no longer disagree.
+  A viewport meta tag was added to both halves after two draws flagged its
+  absence (1.4.10 / 1.4.4).
+
+  Known residual, deliberately not chased: with `end`, NavLink compares
+  pathnames literally, so a trailing-slash URL (/accounts/) renders the
+  accounts view without marking the nav item current. That is 2.4.8 at AAA,
+  is normalised by most hosts before it reaches the router, and chasing it
+  would add another route-table surface — the class of change that introduced
+  a fresh defect in each of revisions 2 and 3.
