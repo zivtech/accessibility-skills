@@ -11,7 +11,7 @@ expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "Zoom in / Zoom out / Reset view are anchors used as buttons — role 'link' communicates navigation that does not occur (F42)"
+      - description: "anchor-as-button pseudo-href map-controls navigation-that-never-happens — the three zoom controls are <a href='#'> elements performing in-page actions (F42)"
         severity: CRITICAL
         wcag: "4.1.2 Name, Role, Value (F42: anchor used as a control announces role 'link', communicating navigation that does not occur)"
         evidence: "Lines 26-36: three <a href='javascript:void(0)' onClick={...}> elements in .map-controls, all sharing the identical pseudo-href"
@@ -57,3 +57,13 @@ notes: |
   against the three shared-pseudo-href controls, and flagging the genuine
   "Open full report" anchor as a problem. See
   pseudo-link-map-controls.rubric.yaml.
+
+  Scoring note (2026-09-03): the first four words of each must_find description
+  are load-bearing. score_output.py has no explicit-keyword field — a
+  description matching none of its hardcoded branches falls through to
+  score_common.fallback_keywords, which keeps the first four words over three
+  characters and marks the item FOUND if ANY appears anywhere in the review.
+  The earlier wording here yielded keyword sets weak enough that a review
+  finding NEITHER planted defect and reporting only this fixture's declared
+  traps scored a PASS. Do not rewrite these openings for readability without
+  re-running evals/results/gt-siblings-rows/canaries.py.

@@ -11,7 +11,7 @@ expected_findings:
   - category: must_find
     count: 2
     items:
-      - description: "Async request failure is not announced (no alert or live region on the error branch)"
+      - description: "error-branch alert-container absent-entirely, failure-silent — the failed request mounts a bare paragraph with nothing assertive around it"
         severity: CRITICAL
         wcag: "4.1.3 Status Messages (an error that does not receive focus must be presented as a status message)"
         evidence: "Lines 41-45: the error branch renders a bare <p className='error-text'> with no role='alert', no aria-live, and no live-region ancestor — while the loading branch at lines 34-39 is a correct role='status' region"
@@ -19,7 +19,7 @@ expected_findings:
         expected_behavior: "The failure message should be announced without moving focus, via a persistent role='alert' container"
         fix: "Render the failure text into a role='alert' container that is present in the DOM in every state, rather than mounting a bare <p> at failure time"
 
-      - description: "Recovery after a successful retry is silent — neither the cleared error nor the arriving data is announced"
+      - description: "recovery-transition unspoken, results-mount-silent retry-outcome-lost — a successful retry swaps the error text for a plain list"
         severity: MAJOR
         wcag: "4.1.3 Status Messages (the outcome of a user-initiated retry is a status change that must be announced)"
         evidence: "Lines 47-57: the results list mounts with no announcement, and the component's only live region (lines 34-39) has unmounted by the time it renders"
@@ -57,3 +57,13 @@ notes: |
   branch), so a reviewer who pattern-matches for "async component missing
   aria-live" will report it clean. Both defects are only reachable by tracing the
   state machine into `error` and back out of it.
+
+  Scoring note (2026-09-03): the first four words of each must_find description
+  are load-bearing. score_output.py has no explicit-keyword field — a
+  description matching none of its hardcoded branches falls through to
+  score_common.fallback_keywords, which keeps the first four words over three
+  characters and marks the item FOUND if ANY appears anywhere in the review.
+  The earlier wording here yielded keyword sets weak enough that a review
+  finding NEITHER planted defect and reporting only this fixture's declared
+  traps scored a PASS. Do not rewrite these openings for readability without
+  re-running evals/results/gt-siblings-rows/canaries.py.

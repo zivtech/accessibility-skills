@@ -11,7 +11,7 @@ expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "The same row action (edit) is labelled three different ways across rows: 'Edit', 'Modify', 'Change details'"
+      - description: "per-row edit-control label-varies-by-row Edit/Modify/Change-details — one operation carries three different accessible names down the table"
         severity: MAJOR
         wcag: "3.2.4 Consistent Identification (components with the same functionality must be identified consistently)"
         evidence: "Line 38: `{c.actionLabel}` renders a different accessible name per row inside `<a href={`/cases/${c.id}/edit`}>`, even though every row's link performs the identical edit function"
@@ -47,3 +47,13 @@ notes: |
   purpose is narrower — proving that the exception for that pairing does not
   generalize into "never flag same-destination links," by putting a real
   3.2.4 violation in the same component.
+
+  Scoring note (2026-09-03): the first four words of each must_find description
+  are load-bearing. score_output.py has no explicit-keyword field — a
+  description matching none of its hardcoded branches falls through to
+  score_common.fallback_keywords, which keeps the first four words over three
+  characters and marks the item FOUND if ANY appears anywhere in the review.
+  The earlier wording here yielded keyword sets weak enough that a review
+  finding NEITHER planted defect and reporting only this fixture's declared
+  traps scored a PASS. Do not rewrite these openings for readability without
+  re-running evals/results/gt-siblings-rows/canaries.py.

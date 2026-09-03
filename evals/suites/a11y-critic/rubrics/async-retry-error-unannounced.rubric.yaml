@@ -40,13 +40,13 @@ expected_findings:
   - category: must_find
     count: 2
     items:
-      - description: "Async request failure is not announced — error branch has no role='alert' or live region"
+      - description: "error-branch alert-container absent-entirely, failure-silent — the failed request mounts a bare paragraph with nothing assertive around it"
         severity: CRITICAL
         wcag: "4.1.3 Status Messages"
         evidence_requirement: "file:line reference to the error branch (lines 41-45) lacking role='alert'/aria-live; credit is stronger when the review contrasts it with the correct loading region at lines 34-39"
         expected_to_find: "75%"
 
-      - description: "Recovery after a successful retry is silent — no announcement that the error cleared or that data arrived"
+      - description: "recovery-transition unspoken, results-mount-silent retry-outcome-lost — a successful retry swaps the error text for a plain list"
         severity: MAJOR
         wcag: "4.1.3 Status Messages"
         evidence_requirement: "file:line reference to the results list (lines 47-57) mounting with no announcement, and/or the observation that the only live region (lines 34-39) has unmounted by that point"

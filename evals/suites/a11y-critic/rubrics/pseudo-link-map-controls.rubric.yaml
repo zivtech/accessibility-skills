@@ -40,7 +40,7 @@ expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "Zoom in / Zoom out / Reset view are anchors used as buttons — role 'link' announces navigation that never happens (F42)"
+      - description: "anchor-as-button pseudo-href map-controls navigation-that-never-happens — the three zoom controls are <a href='#'> elements performing in-page actions (F42)"
         severity: CRITICAL
         wcag: "4.1.2 Name, Role, Value"
         evidence_requirement: "file:line reference to the three <a href='javascript:void(0)'> controls (lines 26-36); credit is stronger when the review names F42 and/or explains the links-list consequence for screen reader users"

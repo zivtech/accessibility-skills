@@ -40,7 +40,7 @@ expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "The same row action (edit) is labelled three different ways across rows: 'Edit', 'Modify', 'Change details'"
+      - description: "per-row edit-control label-varies-by-row Edit/Modify/Change-details — one operation carries three different accessible names down the table"
         severity: MAJOR
         wcag: "3.2.4 Consistent Identification"
         evidence_requirement: "file:line reference to line 38 (`{c.actionLabel}` inside the per-row edit link) showing the label varies while the destination pattern (`/cases/${c.id}/edit`) and function do not; credit is stronger when the review explicitly separates this from the Case ID/Case Name pairing in the same rows"
