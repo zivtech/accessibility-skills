@@ -55,7 +55,7 @@ expected_findings:
     count: 5
     items:
       - description: "The status and alert containers are empty in most states — this is the persistent-container pattern, not dead markup"
-        impact: "Lines 49 and 66 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
+        impact: "Lines 68 and 85 keep both live regions mounted in every state so text written into them is announced. A region that mounts with its message already inside is frequently not spoken at all. Flagging 'empty divs' or 'live region with no content' inverts the reason the component works."
         expected_to_find: "65%"
 
       - description: "Two politeness levels in one component is correct, not inconsistent"
@@ -63,11 +63,11 @@ expected_findings:
         expected_to_find: "70%"
 
       - description: "aria-hidden='true' on the decorative spinner is correct"
-        impact: "Line 52's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
+        impact: "Line 71's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
         expected_to_find: "70%"
 
       - description: "The empty-result branch is handled — flagging a missing zero-state is a false alarm"
-        impact: "Line 59 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
+        impact: "Line 78 announces 'No activity in this period.' when a successful response is empty. Flagging 'no empty state' means the reviewer read only the non-empty path."
         expected_to_find: "60%"
 
       - description: "role='list' on the transactions list is the WebKit counter-measure, not redundant ARIA"
