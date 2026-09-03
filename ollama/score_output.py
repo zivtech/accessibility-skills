@@ -107,13 +107,19 @@ def check_finding(text: str, finding: dict) -> dict:
         from score_common import normalize_quotes
         norm_text = normalize_quotes(text.lower())
 
-        # Polarity: an occurrence preceded (within four words) by a negation
-        # is not a match — "not a false positive", "does not contradict",
-        # "not spurious" must not earn a withdrawal token (GT-16 gate rev2,
-        # C-1). Substring matching cannot see negation, so this is the one
-        # place it looks. Tokens that carry their own negation ("cannot be
-        # filed") are matched on the text before them, not inside them.
-        neg = r"\b(?:not|no|never|neither|nor|isn'?t|aren'?t|wasn'?t|doesn'?t|don'?t|didn'?t|cannot|can'?t|without|hardly|rather than)\b\W+(?:\w+\W+){0,3}$"
+        # Polarity: for a group declared `{any: [...], polarity: true}`, an
+        # occurrence preceded (within four words) by a negation is not a match
+        # — "not a false positive", "does not contradict", "not spurious" must
+        # not earn a withdrawal token (GT-16 gate rev2 C-1). Plain list groups
+        # are matched without the window: descriptive groups ("has no text
+        # content", "does not match the accessible name") are negated in the
+        # natural register of a CORRECT review (gate rev3 M-1). The window reads
+        # backwards only; tokens that carry their own negation must not be
+        # shipped in a polarity group.
+        # Attachment stops at punctuation: "not sound; withdraw it" and
+        # "does not support it, so retract" are withdrawals, not negations of
+        # the withdrawal verb (gate rev3 M-1 probes N5/N6).
+        neg = r"\b(?:not|no|never|neither|nor|isn'?t|aren'?t|wasn'?t|doesn'?t|don'?t|didn'?t|cannot|can'?t|without|hardly|rather than)\b[ \t]+(?:[\w'\u2019-]+[ \t]+){0,3}$"
 
         def token_ok(tok):
             tok = normalize_quotes(str(tok).lower())
@@ -123,13 +129,18 @@ def check_finding(text: str, finding: dict) -> dict:
             return False
 
         def group_ok(entry):
-            options = entry if isinstance(entry, (list, tuple)) else [entry]
-            return any(token_ok(k) for k in options)
+            if isinstance(entry, dict):
+                options = entry.get("any") or []
+                match = token_ok if entry.get("polarity") else (lambda k: normalize_quotes(str(k).lower()) in norm_text)
+            else:
+                options = entry if isinstance(entry, (list, tuple)) else [entry]
+                match = lambda k: normalize_quotes(str(k).lower()) in norm_text
+            return any(match(k) for k in options)
 
         any_ok = not explicit_any or group_ok(list(explicit_any))
         all_ok = all(group_ok(e) for e in explicit_all)
         wcag_number = re.search(r"(\d+\.\d+\.\d+)", wcag) if wcag else None
-        flat = [k for e in explicit_all for k in (e if isinstance(e, (list, tuple)) else [e])]
+        flat = [k for e in explicit_all for k in (e.get("any") or [] if isinstance(e, dict) else (e if isinstance(e, (list, tuple)) else [e]))]
         return {
             "description": description,
             "found": any_ok and all_ok,

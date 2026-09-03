@@ -74,9 +74,13 @@ notes: |
   prefix offers only ACCEPT and REVISE; the scorer also accepts
   ACCEPT-WITH-RESERVATIONS if a model emits it unprompted.
 
-  The component is byte-identical to the BUG half's, so any component
-  finding a reviewer raises here is a false alarm — the BUG half's traps
-  1-4 recur here as traps 1, 2, 5, 6 — and the recipe adds three more: a
+  The component is byte-identical to the BUG half's. Component findings
+  on the declared traps are false alarms — the BUG half's traps 1-4 recur
+  here as traps 1, 2, 5, 6 — with one declared exception that is NOT a
+  trap: Escape is inert after a mouse click inside the dialog's
+  non-focusable areas or on the backdrop (handler bound to the dialog
+  element), a mixed-input gap outside the recipe's keyboard route, listed
+  under known_judgment_calls and left open. The recipe adds three more traps: a
   `:has-text()` that is correct because its target is text-bearing, an
   `exact: true` that is correct because it is deliberate, and PASS rows
   that are correct because they say what they do and do not claim.

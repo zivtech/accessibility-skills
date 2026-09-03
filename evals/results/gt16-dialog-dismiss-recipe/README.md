@@ -21,7 +21,7 @@ with the explicit-keyword fields added for this lane.
 | BUG · baseline | died (API 529) | **REVISE, PASS** — must 1/1, should 1/1 | **REVISE, PASS** — 1/1, 1/1 (retry; first died 529) |
 | CLEAN · recipe-skill | died (API 529) | **ACCEPT, PASS** — 0 findings above ENHANCEMENT | **ACCEPT, PASS** — zero findings (retry; first died 529) |
 | CLEAN · baseline | **REVISE — correctly**: found the unplanted defect | **ACCEPT, PASS** — 2 MINOR, 3 ENHANCEMENT | **ACCEPT, PASS** — 6 MINOR, 9 ENHANCEMENT |
-| bench-reviewer gate | REVISE (2 CRITICAL, 4 MAJOR, 6 MINOR) | REVISE, narrow (1 CRITICAL, 1 MAJOR, 4 MINOR); focus-return repair verified | see below (retry; first died 529) |
+| bench-reviewer gate | REVISE (2 CRITICAL, 4 MAJOR, 6 MINOR) | REVISE, narrow (1 CRITICAL, 1 MAJOR, 4 MINOR); focus-return repair verified | REVISE, scorer-only (1 CRITICAL, 1 MAJOR, 5 MINOR); fixture craft, citations, parity, blind protocol all clean (third attempt; two died 529) |
 
 Eight for eight across rev2 and rev3: every BUG draw withdrew the filed 2.1.1
 FAIL and named the role/name remedy, none blamed the component; every CLEAN
@@ -114,6 +114,27 @@ order spelled out — and found two more, both folded into rev3:
    reviewer who said "these ids are unverifiable" was scored a false alarm.
    rev3 declares them as comments above the assertions they scope.
 
+The rev3 gate (`bench-reviewer-gate-opus-rev3.md`) found the fixtures clean
+and the scorer still leaky — folded as rubric 1.3 without touching the
+fixtures, so the rev3 rows stand and were re-scored, not re-drawn:
+
+9. **Three of the ten rev3 replacement tokens re-opened the hole** —
+   `does not exist` and `not in the component` are self-negating (the window
+   is blind to them) and `false positive` is bidirectional ("ruled out a
+   false positive"). Removed; `contradict`/`refute` kept only in withdrawal
+   forms ("contradicted by", "refutes the").
+10. **The negation window gated the wrong groups.** Applied to the
+    descriptive groups it discarded correct reviews — "does not match the
+    accessible name" is how a right diagnosis is phrased — and it read a
+    negation across a clause break ("not sound; withdraw it") as negating the
+    withdrawal. Now a `polarity: true` flag on the withdrawal group only, and
+    attachment stops at punctuation. Every gate probe (R1–R3, N1, G2, N5, N6)
+    is a canary; 20/20.
+11. The CLEAN half's "no component finding is anything but a false alarm"
+    claim overstated: the backdrop-click Escape gap (also reachable by
+    clicking the dialog's own heading or paragraph, per the gate) is real,
+    declared, and open — the docs now say so.
+
 The wave's rule held three times: **a repair round is a new authoring round.**
 Every citation in both metadata files, both rubrics, the answer key and the
 canaries was re-derived from each revision's line map and spot-checked, and
@@ -139,7 +160,7 @@ user impact" (M3) — the repo's orthogonality rule applied to the harness's
 own row — and "the 500 ms assertion timeout is arbitrary" (N3), both
 reasonable on the BUG half's defective artifact.
 
-## Scores (`score_output.py` against the rev3 rubrics; rev2 rows re-scored under rev3 unchanged)
+## Scores (`score_output.py` against rubric 1.3; all eight rows re-scored after each rubric revision, unchanged)
 
 ```
 claude-recipe-skill-bug-opus-rev2    Verdict REVISE  must 1/1  should 1/1  PASS
@@ -184,13 +205,13 @@ Hand adjudication of rev3 line citations subtracts 2 (prompt offset).
 ```
 bench-reviewer-gate-opus-rev1.md          gate on cbd2f41 — REVISE (C-1 focus return, C-2 scorer, M-1..M-4, m-1..m-6)
 bench-reviewer-gate-opus-rev2.md          gate on df05648 — REVISE narrow (C-1 tokens/polarity, M-1 op-id provenance); repair verified
-bench-reviewer-gate-opus-rev3.md          gate on 18ba1e8 (added when it lands)
+bench-reviewer-gate-opus-rev3.md          gate on 18ba1e8/0827f86 — REVISE scorer-only (C-1 tokens, M-1 window scope); folded as rubric 1.3
 claude-recipe-skill-bug-opus-rev3.md      claude-baseline-bug-opus-rev3.md
 claude-recipe-skill-clean-opus-rev3.md    claude-baseline-clean-opus-rev3.md
 claude-baseline-clean-opus-rev1.md        the draw that found the rev1 defect (REVISE, correctly)
 claude-recipe-skill-bug-opus-rev2.md      claude-baseline-bug-opus-rev2.md
 claude-recipe-skill-clean-opus-rev2.md    claude-baseline-clean-opus-rev2.md
-canaries.py                               scorer discrimination, 13 cases incl. the gates' probes A–E, P1a–c, P7 (exit 0 = CLEAN)
+canaries.py                               scorer discrimination, 20 cases incl. every gate probe A–E, P1a–c, P7, R1–3, N1, G2, N5, N6 (exit 0 = CLEAN)
 prompts/                                  exactly what each draw read: *.blind.md (rev3; prompt line = fixture line + 2) + system-recipe-slice.md
 ```
 

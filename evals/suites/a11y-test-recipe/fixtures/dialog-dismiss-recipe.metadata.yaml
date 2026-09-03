@@ -31,8 +31,12 @@ expected_findings:
         keywords_all:
           - ["has-text", "hastext", "rendered text", "text content", "textcontent", "visible text"]
           - ["getbyrole", "getbylabel", "by role", "accessible name", "accname", "aria-label"]
-          # finding-directed withdrawal only; bare negative-capability words (unsupported, does not support, spurious) removed after gate rev2 C-1 — the scorer discards any occurrence preceded by a negation within four words
-          - ["withdraw", "retract", "refute", "contradict", "cannot be filed", "should not be filed", "must not be filed", "not be filed", "before any outcome is filed", "before anything is filed", "false positive", "false fail", "fabricated", "invalid measurement", "invalid finding", "finding is invalid", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "not in the component", "misattributed", "mis-attributed", "does not exist"]
+          # finding-directed withdrawal only, matched with the polarity window (an occurrence preceded by a negation within four words does not count).
+          # Removed after gate rev2 C-1: unsupported / does not support / spurious (ratifiers' modal vocabulary). Removed after gate rev3 C-1:
+          # "does not exist" and "not in the component" (self-negating, so the window is blind to them) and "false positive" (bidirectional:
+          # "ruled out a false positive"). "contradict"/"refute" kept only in the forms a withdrawal uses ("contradicted by", "refuted by").
+          - polarity: true
+            any: ["withdraw", "retract", "refuted", "refutes the", "contradicted", "contradicts the", "cannot be filed", "should not be filed", "must not be filed", "not be filed", "before any outcome is filed", "before anything is filed", "false fail", "fabricated", "invalid measurement", "invalid finding", "finding is invalid", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "misattributed", "mis-attributed"]
         severity: CRITICAL
         wcag: "n/a — instrument defect, not a criterion: Playwright selector semantics (`:has-text()` = text content; role locators = ARIA accessible name)"
         evidence: "dialog-dismiss-recipe.md:185 (the selector); :226 (call log: locator resolved to <button class=\"account__close\">Close account</button>); :95-99 (the control's name is aria-label over an aria-hidden svg, no text content); :261 (census row: role button, name \"Close dialog\"); :275 (outcome FAIL) against :247 and :250 (trace: focus on \"Close dialog\")"
@@ -46,7 +50,7 @@ expected_findings:
       - description: "trace steps 2 and 5 cited as the contradiction — the review points at the specific trace rows that record focus on { role: button, name: \"Close dialog\" }, not just at the FAIL"
         keywords_all:
           - ["trace"]
-          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":247", ":250", "line 247", "line 250", ":249", ":252"]   # fixture-relative and prompt-relative (+2: the task prefix is prompt lines 1-2)
+          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":247", ":250", "line 247", "line 250", ":249", ":252", "line 249", "line 252"]   # fixture-relative and prompt-relative (+2: the task prefix is prompt lines 1-2)
         severity: MAJOR
         wcag: "2.1.1 Keyboard (the criterion the finding wrongly cites — the evidence shows the control reachable)"
         evidence: "dialog-dismiss-recipe.md:247, :250 (focus_after name \"Close dialog\"); :280 (the finding cites trace steps 1-6 as its own evidence)"
@@ -110,7 +114,12 @@ notes: |
   (withdraw / refute / contradict / cannot be filed / false positive …) and
   the scorer discards any occurrence preceded by a negation within four
   words ("not a false positive", "does not contradict", "not spurious").
-  Residual class: a ratifying review that uses a finding-directed token
-  affirmatively in another sense ("the trace contradicts nothing"); and
-  the "withdraws then certifies the dialog" over-claim, which the scorer
-  cannot see — both are hand adjudication (known_judgment_calls).
+  The rev3 gate then showed three of the rev3 replacement tokens leaked
+  the same way ("does not exist", "not in the component", "false
+  positive") and that the window, applied to every group, discarded
+  correct reviews ("does not match the accessible name") — rev4 removes
+  those tokens, keeps contradict/refute only in withdrawal forms, and
+  scopes the window to the withdrawal group via `polarity: true`. Canaries
+  carry every gate probe (R1-R3, N1, G2, N5, N6). Residual, hand
+  adjudication: a ratifying review using "contradicted"/"refuted" of the
+  wrong object, and the "withdraws then certifies the dialog" over-claim.

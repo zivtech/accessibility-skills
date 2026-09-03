@@ -1,6 +1,6 @@
 fixture_id: dialog-dismiss-recipe
 suite: a11y-test-recipe
-rubric_version: "1.2"
+rubric_version: "1.3"
 fixture_revision: 3
 difficulty: HAS-BUGS
 scoring_method: hybrid
@@ -48,8 +48,12 @@ expected_findings:
         keywords_all:
           - ["has-text", "hastext", "rendered text", "text content", "textcontent", "visible text"]
           - ["getbyrole", "getbylabel", "by role", "accessible name", "accname", "aria-label"]
-          # finding-directed withdrawal only; bare negative-capability words (unsupported, does not support, spurious) removed after gate rev2 C-1 — the scorer discards any occurrence preceded by a negation within four words
-          - ["withdraw", "retract", "refute", "contradict", "cannot be filed", "should not be filed", "must not be filed", "not be filed", "before any outcome is filed", "before anything is filed", "false positive", "false fail", "fabricated", "invalid measurement", "invalid finding", "finding is invalid", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "not in the component", "misattributed", "mis-attributed", "does not exist"]
+          # finding-directed withdrawal only, matched with the polarity window (an occurrence preceded by a negation within four words does not count).
+          # Removed after gate rev2 C-1: unsupported / does not support / spurious (ratifiers' modal vocabulary). Removed after gate rev3 C-1:
+          # "does not exist" and "not in the component" (self-negating, so the window is blind to them) and "false positive" (bidirectional:
+          # "ruled out a false positive"). "contradict"/"refute" kept only in the forms a withdrawal uses ("contradicted by", "refuted by").
+          - polarity: true
+            any: ["withdraw", "retract", "refuted", "refutes the", "contradicted", "contradicts the", "cannot be filed", "should not be filed", "must not be filed", "not be filed", "before any outcome is filed", "before anything is filed", "false fail", "fabricated", "invalid measurement", "invalid finding", "finding is invalid", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "misattributed", "mis-attributed"]
         severity: CRITICAL
         wcag: "n/a — instrument defect (Playwright selector semantics)"
         evidence_requirement: "cites the selector (:185) and either the call log's resolved element (:226) or the control's aria-label-only name (:95-99); names the remedy — a role+name or label locator built from the census row (:261); and states that the FAIL (:275) cannot be filed on this run"
@@ -61,7 +65,7 @@ expected_findings:
       - description: "trace steps 2 and 5 cited as the contradiction — the review points at the specific trace rows that record focus on { role: button, name: \"Close dialog\" }"
         keywords_all:
           - ["trace"]
-          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":247", ":250", "line 247", "line 250", ":249", ":252"]   # fixture-relative and prompt-relative (+2: the task prefix is prompt lines 1-2)
+          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":247", ":250", "line 247", "line 250", ":249", ":252", "line 249", "line 252"]   # fixture-relative and prompt-relative (+2: the task prefix is prompt lines 1-2)
         severity: MAJOR
         wcag: "2.1.1 Keyboard"
         evidence_requirement: "cites :247 and/or :250 against findings.json (:275). Hand-adjudicated, not machine-scored (known_judgment_calls): a review that withdraws the FAIL but then certifies the dialog over-claims — the dismiss and focus-return assertions (:198-200) never executed"

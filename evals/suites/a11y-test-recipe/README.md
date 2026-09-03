@@ -1,7 +1,7 @@
 # a11y-test-recipe eval suite
 
 **Status: one BUG/CLEAN pair + runner lane landed 2026-09-03 (GT-16, wave 2,
-fixture-first), revision 3 after two gate rounds; rows in
+fixture-first), fixture revision 3, rubric 1.3 after three gate rounds; rows in
 `evals/results/gt16-dialog-dismiss-recipe/`.**
 
 This suite measures a **test-instrument judgment**: given a keyboard test
@@ -17,9 +17,13 @@ gated, not assumed: revision 1 of the pair shipped a real focus-return defect
 (focus restored inside the handler while the page root was still `inert`) that
 a blind baseline draw and the bench-reviewer gate both caught; revision 2
 restores focus from the dialog's effect cleanup, after the commit that removes
-`inert`. The defects, where planted, are in the recipe or in the outcome it
-filed. A review that blames the component has found the right symptom for the
-wrong reason, and the rubrics score that as a false alarm.
+`inert`. One component gap is declared and left open rather than trapped:
+Escape is inert after a mouse click on a non-focusable area (the handler is
+bound to the dialog element) — a mixed-input edge outside the keyboard route
+the recipes cover, raised as MINOR by one draw, credited when raised at that
+tier. The defects, where planted, are in the recipe or in the outcome it
+filed. A review that blames the component on a declared trap has found the
+right symptom for the wrong reason, and the rubrics score that as a false alarm.
 
 ## Why this lane exists (GT-16)
 
@@ -99,14 +103,17 @@ the FAIL with a getByRole "nit", or one that scopes the selector to the dialog
 and lets the FAIL stand, scores 0/1; a correct review that never types the
 literal `has-text` scores 1/1. Proof, including the gate's own probes:
 `evals/results/gt16-dialog-dismiss-recipe/canaries.py`. The withdrawal group
-holds only finding-directed forms (the rev2 gate showed "the dialog does not
-support keyboard access" — a ratifying review's modal phrasing — earned the
-bare token `does not support`), and the scorer discards any occurrence
-preceded by a negation within four words ("not a false positive", "does not
-contradict"). Residual classes, hand-adjudicated: a ratifying review using a
-finding-directed token affirmatively in another sense, and a correct review
-that then certifies the dialog. Blind prompts sit +2 lines from the fixtures
-(the task prefix); rubric line tokens carry both offsets.
+is a `polarity: true` group: finding-directed forms only, and an occurrence
+preceded by a negation within four words does not count. Two gate rounds
+shaped it — rev2 removed ratifiers' modal vocabulary ("does not support",
+"spurious"); rev3 removed self-negating and bidirectional tokens the window
+cannot see ("does not exist", "not in the component", "false positive") and
+confined the window to this group, because the descriptive groups are negated
+in a *correct* review's natural register ("has no text content", "does not
+match the accessible name"). Residual, hand-adjudicated: "contradicted" /
+"refuted" of the wrong object, and a correct review that then certifies the
+dialog. Blind prompts sit +2 lines from the fixtures (the task prefix); rubric
+line tokens carry both offsets.
 
 False-positive traps are adjudicated by hand in the results README, as in the
 other GT pairs. Scorer statuses are detector output, not verdict authority.
@@ -114,8 +121,8 @@ other GT pairs. Scorer statuses are detector output, not verdict authority.
 ## What this suite is NOT
 
 - Not a component review — the a11y-critic suite does that; the component here
-  is gated correct (rev2, after a repair round) and any component finding is a
-  false alarm.
+  is gated (three bench-reviewer rounds) with one declared open edge, and a
+  component finding on a declared trap is a false alarm.
 - Not the operation-evidence admissibility lane — those five rules are a closed
   set in SKILL.md and their scorer rejects unknown rule ids; this lane grades a
   judgment that lane cannot express without a sixth rule, which is exactly the

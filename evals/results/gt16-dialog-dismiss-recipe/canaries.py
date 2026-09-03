@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scorer-discrimination canaries for the GT-16 pair (a11y-test-recipe), rev2.
+"""Scorer-discrimination canaries for the GT-16 pair (a11y-test-recipe), fixture rev3 / rubric 1.3.
 
 The BUG rubric is the first to use score_output.py's explicit `keywords_all`
 field with any-of groups (2026-09-03). The first-four-words fallback is
@@ -26,6 +26,13 @@ which rev1 scored wrongly — see bench-reviewer-gate-opus-rev1.md, C-2):
     P1b ratifies: "unsupported in older AT"                 must 0/1 -> FAIL   (rev2: PASS)
     P1c ratifies: "confirmed genuine, not spurious"          must 0/1 -> FAIL   (rev2: PASS — polarity inversion)
     P7  correct diagnosis, then certifies the dialog         PASS by design — the over-claim is hand-adjudicated; the scorer cannot see it
+    R1  ratifies: "a keyboard route … does not exist"        must 0/1 -> FAIL   (rubric 1.2: PASS — gate rev3 C-1)
+    R2  ratifies: "not in the component's focus trap"        must 0/1 -> FAIL   (rubric 1.2: PASS)
+    R3  ratifies: "ruled out a false positive"               must 0/1 -> FAIL   (rubric 1.2: PASS)
+    N1  ratifies: "the trace contradicts nothing"            must 0/1 -> FAIL   (rubric 1.2: PASS)
+    G2  correct: "does not match the accessible name"        must 1/1 -> PASS   (rubric 1.2: FAIL — window gated group 2)
+    N5  correct: "is not sound; withdraw it"                 must 1/1 -> PASS   (rubric 1.2: FAIL)
+    N6  correct: "does not support it, so retract"           must 1/1 -> PASS   (rubric 1.2: FAIL)
 
 Line numbers inside the review texts are fixture-relative; a model reading
 prompts/*.blind.md sees every line +2 (the task prefix is prompt lines 1-2).
@@ -53,7 +60,7 @@ CASES = [
   MAJOR (2.4.3): initial focus should land on the heading, not Cancel (:56-57).
   MINOR: the page has two controls named Close — the account section's Close
   account button (:32-34) should be renamed to avoid the collision.
-  MINOR: six Tab presses is an arbitrary bound (:189)."""),
+  MINOR: six Tab presses is an arbitrary bound (:190)."""),
  (BUG, "A-wrong-diagnosis", "FAIL", "Must-find issues: 0/1", None,
   """VERDICT: REVISE
   MAJOR: `button:has-text("Close")` (:185) matches on text content anywhere in
@@ -118,6 +125,43 @@ CASES = [
   Close account. Use getByRole from the census row (:261). The filed FAIL (:275)
   is refuted by the trace (:247, :250) and must be withdrawn. The dialog PASSES
   2.1.1 and can be certified conformant on this evidence."""),
+ (BUG, "R1-ratifies-does-not-exist", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): a keyboard route to the close control does not exist —
+  `button:has-text("Close")` (:185) never received focus, and the aria-label (:95)
+  does not make the button reachable. Ratify the filed FAIL and add the button to
+  the focus trap."""),
+ (BUG, "R2-ratifies-not-in-component", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): the close button is not in the component's focus trap, which is
+  why `button:has-text("Close")` (:185) was never focused; the aria-label (:95) is
+  irrelevant to reachability. The filed FAIL is correct as recorded."""),
+ (BUG, "R3-ratifies-ruled-out-false-positive", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): I considered whether this was a false positive and ruled that
+  out — `button:has-text("Close")` (:185) is the right control and it never got
+  focus despite its aria-label (:95). The FAIL stands; fix the component."""),
+ (BUG, "N1-ratifies-contradicts-nothing", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): the trace contradicts nothing here — `button:has-text("Close")`
+  (:185) was never focused and the aria-label (:95) does not change that. The 2.1.1
+  FAIL stands as filed."""),
+ (BUG, "G2-correct-does-not-match-name", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: the selector at :185 does not match the accessible name of the control
+  under test — has-text reads rendered text, and the button (:95-99) has none. The
+  call log (:226) proves it resolved to "Close account". The filed FAIL (:275) is an
+  instrument artifact and must be withdrawn; re-run with a role+name locator."""),
+ (BUG, "N5-correct-not-sound-withdraw", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: `button:has-text("Close")` (:185) matches text content; the control's
+  name is aria-label (:95). Rebuild the locator from the census row (:261) with
+  getByRole. The filed 2.1.1 FAIL is not sound; withdraw it and re-run."""),
+ (BUG, "N6-correct-does-not-support-retract", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: has-text (:185) cannot see the aria-label name (:95); the call log
+  (:226) shows the wrong element. Use getByRole from the census (:261). The trace
+  does not support it, so retract the finding and re-run."""),
  (CLEAN, "correct-accept", "PASS", "Verdict correct: YES", None,
   """VERDICT: ACCEPT
   The selector for the control under test is role+name with exact matching (:187),
