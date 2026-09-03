@@ -191,7 +191,9 @@ export default ToolCatalogGrid;
 ✓ Unavailable tools show text ("Currently checked out"), not only a color change, and their Reserve button is properly disabled
 ✓ Category count in the results heading updates as the filter changes
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: The layout cannot reflow to a single column and produces two-dimensional scrolling at a 320px viewport width.** `.tool-catalog-layout` sets `min-width: 1024px`, and its two children add further rigidity: `.filter-sidebar` is a fixed `width: 280px`, and `.tool-grid` uses `flex-wrap: nowrap` with each `.tool-card` fixed at `width: 240px`. There is no media query anywhere in this stylesheet that changes any of these values. At a 320px-wide viewport (the standard WCAG 1.4.10 reflow test width), the page requires horizontal scrolling to read the filter panel and to reach tool cards beyond the first one, in addition to the page's normal vertical scroll through the tool list — genuine two-dimensional scrolling to browse a catalog that has no inherent need for a fixed two-dimensional layout (unlike, say, a data table or a map).
    - Evidence: `tool-catalog-layout.md` — `.tool-catalog-layout { min-width: 1024px; }`, `.filter-sidebar { width: 280px; }`, `.tool-grid { flex-wrap: nowrap; }`, `.tool-card { width: 240px; }`; no media queries present anywhere in the stylesheet

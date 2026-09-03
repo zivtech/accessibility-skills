@@ -301,7 +301,9 @@ export default SubscribePage;
 - `triggerRef` is attached to the trigger button
 - Submit and Cancel buttons are real `<button>` elements with correct `type` attributes
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Focus is not moved to the modal on open** — No `useEffect` runs on mount to move focus inside the modal container. When the modal opens, keyboard focus remains on the "Subscribe Now" trigger, leaving users stranded outside the modal content.
    - Evidence: `SubscribeModal` component has no `useEffect` and no `useRef` for focus management; no `autoFocus` on any element

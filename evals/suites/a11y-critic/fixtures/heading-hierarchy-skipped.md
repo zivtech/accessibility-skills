@@ -94,7 +94,9 @@ export default BlogPost;
 ✓ Semantic heading elements
 ✓ No headings for visual styling only
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Heading hierarchy skips levels (h1 → h3)** — Screen reader users relying on heading navigation (heading arrow keys) encounter unexpected jumps. Per WCAG 1.3.1, heading hierarchy should be logical and hierarchical.
    - Evidence: `heading-hierarchy-skipped.md:8-10` (h1 followed directly by h3, skipping h2)

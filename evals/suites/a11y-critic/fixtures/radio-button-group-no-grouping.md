@@ -43,7 +43,9 @@ export default BuggyRadioGroup;
 ✓ Label associated with each radio
 ✓ htmlFor properly used
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <fieldset> to group related radio buttons** — Screen reader announces each radio as individual element. The name attribute groups them for form submission but not semantically. Per HTML semantics, radio groups should use <fieldset> for programmatic grouping.
    - Evidence: `radio-button-group-no-grouping.md:9-12` (div wrapper, not fieldset)

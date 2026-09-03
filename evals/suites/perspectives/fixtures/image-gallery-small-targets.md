@@ -177,7 +177,9 @@ export default ImageGallery;
 - Focus-visible outlines on all interactive elements
 - Prev/next buttons properly labeled and disabled at boundaries
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Thumbnails 32x32px with 2px gap — WCAG 2.5.8 (Target Size, Minimum)**
    Each thumbnail button is 32x32px with only 2px gap between adjacent targets. While 32px exceeds the 24px minimum, the 2px spacing means effective hit areas overlap for users with motor impairments.

@@ -51,7 +51,9 @@ export default BuggyPopover;
 ✓ Close button visible
 ✓ Click handler for opening/closing
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Focus not moved to popover** — When popover opens, focus remains on trigger button. Keyboard user doesn't know popover has opened or where to navigate. Per modal pattern, focus should move to popover after opening.
    - Evidence: `popover-no-focus-management.md:8-10` (openPopover has no focus movement)

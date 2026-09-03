@@ -298,7 +298,9 @@ export default PoolLessonRegistration;
 ✓ Name and phone fields use autoComplete hints (name, tel)
 ✓ Focus indicators are visible and use dark, high-contrast colors across every focusable control
 
-## Accessibility Issues (None Planted — Clean Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 No accessibility bugs are planted in this fixture. Everything from this
 heading down is eval metadata kept below the blind cut line (runners strip

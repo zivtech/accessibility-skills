@@ -317,7 +317,9 @@ export default PricingTable;
 - "Most popular" badge has `aria-label="Most popular"` — text content is not hidden
 - `pricing-table-wrapper` has `overflow-x: auto` for horizontal scroll on small viewports
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Feature availability indicated by color only** — Feature cells render a green `✓` (available) or red `✕` (unavailable) where the distinction is entirely color-dependent. Both icons are `aria-hidden="true"` with no visually-hidden text alternative. In grayscale, deuteranopia, or protanopia, the check and X render as similar-weight marks. WCAG 1.4.1 (Use of Color) prohibits using color as the only means of conveying information.
    - Evidence: `FeatureCell` component renders `<span aria-hidden="true">{value ? '✓' : '✕'}</span>` with color class only; no visually-hidden text in the cell; no `aria-label` on the `<td>`

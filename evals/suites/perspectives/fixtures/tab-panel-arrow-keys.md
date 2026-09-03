@@ -124,7 +124,9 @@ export default TabPanel;
 - Heading structure (h2 for section title)
 - Content shows/hides correctly on tab change
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No Arrow Left/Right navigation — WCAG 2.1.1 (Keyboard) + APG Tabs Pattern**
    Only Tab key and click switch panels. The APG tabs pattern requires ArrowLeft/ArrowRight to move focus between tabs within the tablist, with Tab moving into the panel content.

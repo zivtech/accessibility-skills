@@ -254,7 +254,9 @@ export default FilingProgressNav;
 ✓ Step navigation uses ordered-list semantics with an aria-label identifying its purpose
 ✓ The current step carries aria-current="step" so screen reader users learn which step is active, not only sighted users via the blue circle
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: The custom focus indicator's box-shadow color fails the 3:1 minimum contrast against its adjacent background.** Every `:focus-visible` rule in this stylesheet uses `box-shadow: 0 0 0 Npx #b8b8b8` against a white (`#ffffff`) panel background. Computing relative luminance for `#b8b8b8` (≈0.479) against white (1.0) gives a contrast ratio of roughly 2:1 — well below the 3:1 minimum WCAG 1.4.11 requires for a UI component's focus state. This affects every text input, both radio buttons, and both Back/Continue buttons; the entire step-nav has no compliant keyboard focus indicator anywhere.
    - Evidence: `filing-progress-controls.md` — `.text-input:focus-visible`, `.radio-option input[type="radio"]:focus-visible`, and `.btn-back:focus-visible, .btn-continue:focus-visible` all use `#b8b8b8` against `.filing-assistant { background: #ffffff }`

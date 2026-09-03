@@ -175,7 +175,9 @@ export default ProductCarousel;
 ✓ Semantic heading (`h2`) on product name
 ✓ Decorative dot indicators are `aria-hidden`
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No pause/stop control for auto-advancing content — WCAG 2.2.2 (Pause, Stop, Hide)**
    Auto-advance fires every 3 seconds with no mechanism to pause, stop, or hide the motion. WCAG 2.2.2 requires that moving content lasting more than 5 seconds can be paused. Users with vestibular disorders, cognitive disabilities, and attention difficulties are directly harmed by content they cannot stop.

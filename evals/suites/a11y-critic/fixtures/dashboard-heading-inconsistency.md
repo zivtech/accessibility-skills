@@ -266,7 +266,9 @@ export default AnalyticsDashboard;
 ✓ `<th>` used for both column headers and row headers in tables
 ✓ Ordered list for navigation links
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Heading hierarchy inconsistent — h1 → h3 (skipping h2) in some cards, h2 in others** — The page has an `<h1>` for the dashboard title. Two metric cards use `<h3>` (Total Users, Bounce Rate), skipping h2. Two other metric cards use `<h2>` (Active Sessions, Avg. Session Duration). One table card uses `<h3>` (Traffic by Source), the other uses `<h2>` (Top Pages). The CSS styles h2 and h3 identically (same font-size, weight, color, text-transform), so visually they look consistent — but the heading tree is broken.
    - Evidence: `dashboard-heading-inconsistency.md:25` (h3 "Total Users"), `dashboard-heading-inconsistency.md:31` (h2 "Active Sessions"), `dashboard-heading-inconsistency.md:37` (h3 "Bounce Rate"), `dashboard-heading-inconsistency.md:43` (h2 "Avg. Session Duration"), `dashboard-heading-inconsistency.md:51` (h3 "Traffic by Source"), `dashboard-heading-inconsistency.md:86` (h2 "Top Pages")

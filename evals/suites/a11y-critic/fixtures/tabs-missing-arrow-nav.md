@@ -139,7 +139,9 @@ export default TabsWidget;
 ✓ Focus indicator visible on buttons
 ✓ Label on tablist
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Arrow key navigation not implemented** — Per WAI-ARIA Tabs pattern, Left/Right arrow keys should cycle through tabs. Currently, arrow keys do nothing. Keyboard-only users must use Tab to navigate, which is inefficient for widgets with many tabs.
    - Evidence: `tabs-missing-arrow-nav.md:10-15` (handleTabKeyDown only handles Enter/Space, not arrow keys)

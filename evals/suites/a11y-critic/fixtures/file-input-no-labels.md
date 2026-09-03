@@ -52,7 +52,9 @@ export default BuggyFileInput;
 ✓ accept attribute specifies allowed file types
 ✓ Visual error message displayed
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <label> element** — Visual "Upload file" text is a div, not a semantic label. Screen reader user cannot identify input purpose. Per HTML form semantics, file inputs must have <label> with htmlFor attribute.
    - Evidence: `file-input-no-labels.md:23` (div instead of label)

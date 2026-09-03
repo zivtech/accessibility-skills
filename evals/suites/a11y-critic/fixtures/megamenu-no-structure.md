@@ -51,7 +51,9 @@ export default BuggyMegaMenu;
 ✓ Menu structure visible
 ✓ Expansion mechanic works on click
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <nav> landmark** — Menu is just a div, not a navigation landmark. Screen reader user cannot identify as site navigation. Per HTML, main navigation should use <nav> element.
    - Evidence: `megamenu-no-structure.md:8-9` (div instead of nav)

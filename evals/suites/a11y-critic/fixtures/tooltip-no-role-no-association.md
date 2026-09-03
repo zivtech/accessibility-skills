@@ -43,7 +43,9 @@ export default BuggyTooltip;
 
 ✓ role="tooltip" on tooltip div
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Tooltip only appears on hover, not focus** — Keyboard user pressing Tab to trigger button does not see tooltip. Tooltip appears on hover only (JavaScript onMouseEnter), not on focus. Per WCAG 1.4.13 (Content on Hover or Focus), tooltips must appear on focus for keyboard users.
    - Evidence: `tooltip-no-role-no-association.md:11-13` (onMouseEnter only, no onFocus handler)

@@ -67,7 +67,9 @@ export default BuggyInfiniteScroll;
 ✓ Semantic <ul> and <li> list structure
 ✓ Loading mechanism (Intersection Observer)
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing aria-live region for loading announcements** — No aria-live region to announce when new items load. Screen reader user doesn't know that content has been added to the list. Per WCAG 4.1.3 (Status Messages), loading status must be announced.
    - Evidence: `infinite-scroll-no-announcement.md:45-50` (no aria-live element)

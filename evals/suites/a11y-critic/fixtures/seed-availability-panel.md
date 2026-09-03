@@ -161,7 +161,9 @@ export default SeedAvailabilityPanel;
 ✓ Availability and cart-confirmation messages render inside role="status" aria-live="polite" containers
 ✓ Add to Cart button has a visible focus indicator
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / CRITICAL: The status container is torn down and rebuilt on every update, so aria-live never observes a mutation.** `AvailabilityStatus` is rendered with `key={fetchToken}` (and separately `key={\`cart-${cartToken}\`}`), and both tokens are incremented on every successful fetch specifically to replay the CSS highlight-fade animation. Because the `key` changes, React unmounts the previous `role="status"` element and mounts an entirely new one — already containing the new message — rather than updating the text content of a persistent node. ARIA live regions only announce content that changes within an element already present in the accessibility tree; a freshly-inserted element that arrives with its content already in place is not an update to observe, so nothing is announced. This defeats both the availability status and the cart-confirmation message, despite `role="status"` and `aria-live="polite"` being present and technically correct in isolation.
    - Evidence: `seed-availability-panel.md` — `<AvailabilityStatus key={fetchToken} message={availability} />` and `<AvailabilityStatus key={\`cart-${cartToken}\`} message={cartMessage} />`; `fetchToken`/`cartToken` incremented on every update inside the `useEffect`/`handleAddToCart` callbacks

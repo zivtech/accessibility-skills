@@ -153,7 +153,9 @@ export default WatershedMapPanel;
 5. **Genuine anchor implemented correctly** — `Open full report` is a real `<a href="/reports/watershed-2026">` with a real destination, `target="_blank"`, `rel="noopener noreferrer"`, and a visually-hidden "(opens in a new tab)" disclosure so the new-tab behavior is announced rather than silently sprung on the user.
 6. **Visible focus indicators** — every interactive element (`.map-control`, the data-table link, and the report anchor) has a `:focus-visible` outline.
 
-## Accessibility Issues (None Planted — CLEAN Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 None. This fixture is a CLEAN baseline with no planted defects. Everything from
 this heading down is ground-truth material and is stripped from model prompts by

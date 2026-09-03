@@ -48,7 +48,9 @@ export default BuggyCheckboxGroup;
 ✓ Label associated with each checkbox
 ✓ htmlFor properly used
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <fieldset> to group related checkboxes** — Screen reader announces each checkbox as individual element without understanding they're part of a group. Per HTML semantics, related checkboxes should be wrapped in <fieldset> to create programmatic grouping.
    - Evidence: `checkbox-group-no-fieldset.md:18-20` (div wrapper instead of fieldset)

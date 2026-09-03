@@ -181,7 +181,9 @@ export default VideoTutorialPage;
 - Controls grouped with role="group" and aria-label
 - Focus management on all interactive elements is correct
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing `<track kind="captions">` element** — The `<video>` element has no `<track>` child for captions. Users who are deaf or hard of hearing have no way to access the speech content. WCAG 1.2.2 (Captions, Prerecorded) requires synchronized captions for all prerecorded video with audio.
    - Evidence: `video-tutorial-no-captions.md:100-105` — `<video>` element with no `<track>` children

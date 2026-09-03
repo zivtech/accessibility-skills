@@ -272,7 +272,9 @@ export default Modal;
 ✓ Heading hierarchy correct (h2 for modal title)
 ✓ Semantic structure: header > title + close button, body
 
-## Accessibility Issues (None Planted — CLEAN Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 None. This fixture is a CLEAN baseline: the component is a complete, correct
 WAI-ARIA Modal Dialog implementation with no planted defects. Everything from

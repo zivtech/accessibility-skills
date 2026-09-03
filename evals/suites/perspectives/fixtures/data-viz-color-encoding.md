@@ -148,7 +148,9 @@ export default RevenueChart;
 - Legend includes text names alongside color swatches
 - Page-level landmarks are correct
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: 5 data series distinguished only by fill color — WCAG 1.4.1 (Use of Color)**
    Bars use fill color as the sole differentiator between regions. No pattern fills, no direct value labels on bars, no shape variation. Color-blind users (protanopia, deuteranopia) cannot distinguish blue from purple, or red from green/orange. All colors pass contrast ratio checks — automated tools will not flag this.

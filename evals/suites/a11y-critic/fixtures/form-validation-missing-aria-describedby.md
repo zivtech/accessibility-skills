@@ -205,7 +205,9 @@ export default LoginForm;
 ✓ Focus indicators visible
 ✓ Semantic form structure
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Error messages not associated with form inputs via aria-describedby** — Although errors are displayed and aria-invalid is set, the input has no aria-describedby attribute pointing to the error message. Screen reader user hears "Email Address, invalid" but doesn't hear what's wrong.
    - Evidence: `form-validation-missing-aria-describedby.md:69-79` (aria-invalid without aria-describedby; error message ID not linked)

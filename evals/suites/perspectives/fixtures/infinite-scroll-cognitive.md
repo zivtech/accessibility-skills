@@ -205,7 +205,9 @@ export default InfiniteScrollFeed;
 - Responsive layout at 600px
 - All contrast passes WCAG AA
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No position indicator, no "back to top", no page numbers — WCAG 2.4.8 (Location)**
    User cannot determine where they are in the feed. No visible "back to top" button, no "showing 1-10 of N", no page counter. After scrolling, the only way back is manual scroll.

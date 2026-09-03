@@ -165,7 +165,9 @@ export default SlipReservationTabs;
 ✓ Tabpanels use the hidden attribute rather than conditional unmounting
 ✓ The three category `<li>` wrappers use role="presentation" so their list-item semantics don't interfere with the tablist
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: A non-tab link sits inside the tablist without role="presentation" on its wrapping list item, breaking the tablist's expected content model and its position-in-set announcement.** The "Dock Rates & Rules (PDF)" link's `<li>` is the fourth child of `<ul role="tablist">`, but unlike its three sibling list items, it has no `role="presentation"`. WAI-ARIA's tablist pattern expects a tablist's children to be tabs (or presentational wrappers around them) — a bare list item with a plain link inside breaks that expectation. In practice, this means the container's list-item semantics leak through inconsistently: three items are silenced (role="presentation") so only their tab role is announced, while the fourth keeps its "list item" role alongside a link that has no tab semantics at all. Depending on the assistive technology, this produces an inconsistent announcement across children of the same container (e.g., some screen readers compute "tab 1 of 4" for the real tabs from the tablist's child count, when only 3 real tabs exist), and a screen reader or switch user navigating the tablist by its expected pattern encounters an item that doesn't behave like the three before it.
    - Evidence: `slip-reservation-tabs.md` — `<li role="presentation">` on the three category items vs. plain `<li>` (no role) wrapping the `<a href="/marina/dock-rates.pdf">` link, all as siblings inside `<ul role="tablist">`

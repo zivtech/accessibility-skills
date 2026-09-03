@@ -137,7 +137,9 @@ export default WatershedMapPanel;
 - Pressing any of the three actions updates the map's zoom/pan state in place; none of them navigates the browser anywhere or changes the URL.
 - **Open full report** opens the underlying watershed report PDF in a new tab, leaving the map panel open in the original tab.
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Zoom in / Zoom out / Reset view are anchors used as buttons (F42)** — All three map actions are `<a href="javascript:void(0)" onClick={...}>` elements sharing the identical pseudo-href `javascript:void(0)`. An anchor's default role is `link`, which tells assistive technology "activating this navigates to a destination." None of these three does — they mutate in-page map state and go nowhere. A screen reader user who pulls up the page's links list (a common navigation strategy) hears "Zoom in, link", "Zoom out, link", "Reset view, link" alongside the one real destination on the page, with no way to tell from the role alone that three of the four are not links at all. The role communicates a promise — navigation — that activating the control does not keep.
    - Evidence: `pseudo-link-map-controls.md:26-36` (three `<a>` elements, each `href="javascript:void(0)"`, in `.map-controls`)

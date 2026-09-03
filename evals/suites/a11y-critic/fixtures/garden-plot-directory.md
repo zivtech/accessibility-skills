@@ -153,7 +153,9 @@ export default GardenPlotDirectory;
 ✓ All navigation links are real anchor elements with visible, descriptive text
 ✓ Sticky nav only mounts once the visitor has actually scrolled past the hero (not present in the DOM before that point)
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MINOR (severity-calibration item — see rubric): Once scrolled, two `<nav aria-label="Main navigation">` landmarks with identical content exist in the accessibility tree at the same time.** `StickyNavClone` renders a full second `<SiteNav>` once `window.scrollY > 320`, and nothing hides or removes the original header `<nav>` when the clone appears — it simply scrolls out of the visible viewport but remains fully present in the DOM and the accessibility tree. A screen reader user navigating by landmark (e.g., NVDA/JAWS "next landmark," or the VoiceOver rotor) encounters "navigation, Main navigation" twice, with the same four links each time, and has no way to tell from the announcement alone that one is a duplicate of the other.
    - Evidence: `garden-plot-directory.md` — `<SiteNav className="site-nav" />` in `.site-header` and `<SiteNav className="sticky-nav-clone" />` rendered by `StickyNavClone`, both using the identical `aria-label="Main navigation"` from the shared `SiteNav` component; neither is hidden from assistive technology when the other is present

@@ -101,7 +101,9 @@ export default BuggyDropdown;
 ✓ Arrow key navigation
 ✓ Label association via htmlFor
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Focus not restored after selection** — When user selects an option by clicking or pressing Enter, focus is lost (goes to document body). Keyboard user has no clear reference point to continue navigation. Per WAI-ARIA Listbox Pattern, focus should return to trigger button.
    - Evidence: `interactive-dropdown-focus-bug.md:39-43` (handleSelect function has no focus restoration)

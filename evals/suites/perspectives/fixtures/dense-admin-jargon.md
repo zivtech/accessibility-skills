@@ -231,7 +231,9 @@ export default AdminSettings;
 - Page has `<h1>` and `<h2>` landmark headings
 - Error span uses `role="alert"` for immediate announcement
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Dense 3-column layout with 9px column headers** — The settings grid uses a fixed 3-column CSS grid with no responsive breakpoints. Section header `<h2>` elements are set to `font-size: 9px` — well below the WCAG 1.4.4 minimum and below any readable threshold at 1x zoom. At 200% magnification, the 3-column layout produces horizontal overflow rather than reflowing to a single column.
    - Evidence: `.settings-grid { grid-template-columns: 1fr 1fr 1fr }` with no media query; `.settings-column h2 { font-size: 9px }` in component CSS

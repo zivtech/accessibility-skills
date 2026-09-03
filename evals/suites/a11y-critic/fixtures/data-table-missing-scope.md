@@ -104,7 +104,9 @@ export default SalesDataTable;
 ✓ Row headers use <th> element
 ✓ Heading above table (h2)
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Column headers lack scope="col" attribute** — Per WCAG 2.2 criterion 1.3.1, table headers must identify whether they apply to columns or rows. Without scope, screen reader doesn't know if "Q1" is a column header or row header.
    - Evidence: `data-table-missing-scope.md:12-16` (th elements without scope="col")

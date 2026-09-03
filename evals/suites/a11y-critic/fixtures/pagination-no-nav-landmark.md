@@ -57,7 +57,9 @@ export default BuggyPagination;
 ✓ aria-label on page buttons
 ✓ disabled state on edge buttons
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <nav> landmark** — Pagination is navigation but uses div. Screen reader user cannot identify as pagination landmark. Per HTML semantics, pagination should be wrapped in <nav> with aria-label to create navigation landmark.
    - Evidence: `pagination-no-nav-landmark.md:5-6` (div instead of nav)

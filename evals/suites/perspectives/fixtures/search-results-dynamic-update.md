@@ -196,7 +196,9 @@ export default SearchPage;
 - Keyboard navigation between results works (Tab through links)
 - `<main>` landmark wrapping the page
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No aria-live on results container — WCAG 4.1.3 (Status Messages)**
    Results update dynamically as the user types, but the results section has no `aria-live` attribute. Screen reader users focused on the input are unaware that results changed below.

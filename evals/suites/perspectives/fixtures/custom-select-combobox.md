@@ -156,7 +156,9 @@ export default CustomSelect;
 - Options are focusable via `tabIndex={0}`
 - Visual selected state (bold + background color)
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Arrow keys don't navigate options — WCAG 2.1.1 (Keyboard) + APG Combobox**
    Only Tab moves between options. ArrowUp/ArrowDown are not handled in `onKeyDown`. This violates both the WCAG keyboard requirement and the APG combobox interaction pattern.

@@ -199,7 +199,9 @@ export default ProductTabs;
 ✓ Focus indicator visible (2px solid blue)
 ✓ Semantic list for product items
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Focus does not follow aria-selected on arrow key navigation** — When a user presses Arrow Right/Left, aria-selected updates and the visual state changes, but DOM focus stays on the previously active tab. The user's screen reader announces the old tab while the panel content has changed. Per WAI-ARIA Tabs pattern, focus MUST move to the newly selected tab.
    - Evidence: `tabs-incomplete-aria-selected.md:16-18` and `tabs-incomplete-aria-selected.md:21-23` — setActiveTab called but tabRefs.current[newIndex].focus() never called
