@@ -1,0 +1,1 @@
+{"response": "VERDICT: REVISE\nCRITICAL: `button:has-text(\"Close\")` matches text content, not the accessible name; derive it with getByRole. The trace shows the control focused at step 2, so the FAIL is an artifact.", "done": true}

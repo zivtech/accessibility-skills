@@ -13,6 +13,8 @@ Usage:
     python3 ollama/run_benchmark.py planner-federal <model> <fixture-id>     # Planner + a11y-test crosswalk in-prompt (declared-508 condition)
     python3 ollama/run_benchmark.py cj <model> <fixture-id>                  # Content-judgment single fixture (judgment rubric = system prompt)
     python3 ollama/run_benchmark.py cj-baseline <model> <fixture-id>         # Same fixture, no rubric (baseline condition)
+    python3 ollama/run_benchmark.py recipe <model> <fixture-id>              # a11y-test recipe review (a11y-test slice = system prompt)
+    python3 ollama/run_benchmark.py recipe-baseline <model> <fixture-id>     # Same fixture, no slice (baseline condition)
     python3 ollama/run_benchmark.py ollama-clean                   # CLEAN fixtures, all models
     python3 ollama/run_benchmark.py ollama-bugs                    # HAS-BUGS fixtures, all models
     python3 ollama/run_benchmark.py single <model> <fixture-id>    # One fixture, one model
@@ -135,6 +137,38 @@ CJ_FIXTURES = [
     "identification-across-views",
     "clean-control",
 ]
+
+# a11y-test-recipe lane (GT-16, wave 2, 2026-09-03). The artifact under
+# review is a keyboard test recipe plus the run output it produced, against
+# the component it targets; the graded judgment is whether the recipe's
+# recorded outcome is supported by its own evidence. The system prompt is
+# three heading-anchored slices of the a11y-test SKILL.md: the verification
+# evidence contract (with the detector-lane authority boundary), the keyboard
+# test method, and the live-site / SPA / CSS / ARIA-check sections that follow
+# the APG templates -- the recipe-authoring guidance as it stands. Nothing in
+# the slice speaks to selector semantics; that absence is what the lane
+# measures, fixture-first, before any SKILL.md sentence lands.
+RECIPE_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-test-recipe", "fixtures")
+
+RECIPE_FIXTURES = [
+    "dialog-dismiss-recipe",
+    "dialog-dismiss-recipe-clean",
+]
+
+RECIPE_SLICES = (
+    ("## Verification evidence contract", "## Retest classification"),
+    ("## 1. Keyboard Accessibility Tests", "### WAI-ARIA APG Keyboard Test Templates"),
+    ("### Live Site Requirement", "## Section 5:"),
+)
+
+RECIPE_PROMPT_PREFIX = (
+    "Review the following keyboard test recipe, its run output, and the component "
+    "it targets. Decide whether the recipe's recorded outcome is supported by its "
+    "own evidence. Open with `VERDICT: ACCEPT` (the recipe and its recorded outcome "
+    "stand as filed) or `VERDICT: REVISE` (the recipe must change before its outcome "
+    "can be filed), then list every issue with a severity (CRITICAL / MAJOR / MINOR / "
+    "ENHANCEMENT) and a `filename.md:<line>` citation into the fixture.\n\n"
+)
 
 OPEVIDENCE_PROMPT_PREFIX = (
     "Review the following operation-evidence package for admissibility under "
@@ -855,6 +889,82 @@ def run_opevidence(model, fixture_id, system_prompt, condition="opevidence"):
     return out_path
 
 
+def load_recipe_system_prompt():
+    """Three heading-anchored slices of a11y-test SKILL.md (RECIPE_SLICES),
+    joined in file order. Hard error if any anchor is missing -- a silent
+    empty/full-file fallback would score a model against the wrong
+    instrument."""
+    with open(A11Y_TEST_SKILL_PATH) as f:
+        content = f.read()
+    parts = []
+    for start_anchor, end_anchor in RECIPE_SLICES:
+        start = content.find(start_anchor)
+        if start == -1:
+            sys.exit(f"load_recipe_system_prompt: anchor not found in "
+                     f"{A11Y_TEST_SKILL_PATH}: {start_anchor!r}")
+        end = content.find(end_anchor, start)
+        if end == -1:
+            sys.exit(f"load_recipe_system_prompt: anchor not found in "
+                     f"{A11Y_TEST_SKILL_PATH}: {end_anchor!r}")
+        parts.append(content[start:end].strip())
+    return "\n\n".join(parts)
+
+
+def run_recipe(model, fixture_id, system_prompt, condition="recipe"):
+    """a11y-test recipe-review lane. condition="baseline" runs the identical
+    fixture with no system prompt to measure what the skill slice carries;
+    its output file gets a distinct prefix so the skill-condition glob never
+    counts it. Scored by ollama/score_output.py against the fixture's rubric
+    (verdict + must-find keywords), the same instrument as the critic lane."""
+    prompt = RECIPE_PROMPT_PREFIX + load_fixture(fixture_id, RECIPE_FIXTURES_DIR)
+
+    payload = {
+        "model": model,
+        "prompt": prompt,
+        "stream": False,
+        # 24576: the three-slice system prompt measures ~4k tokens and a
+        # fixture (component + CSS + recipe + four run artifacts) ~3k;
+        # thinking-by-default models share the window with reasoning tokens.
+        "options": {"num_ctx": 24576, "temperature": 0.3},
+    }
+    if system_prompt:
+        payload["system"] = system_prompt
+
+    file_prefix = "ollama-recipe" if condition == "recipe" else "ollama-recipe-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    print(f"\n{'='*60}")
+    print(f"RECIPE ({condition}) | Model: {model} | Fixture: {fixture_id}")
+    print(f"Output: {out_path}")
+    print(f"Started: {time.strftime('%H:%M:%S')}")
+
+    start = time.time()
+    req = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=1200) as resp:
+        data = json.loads(resp.read())
+
+    elapsed = time.time() - start
+    data["_benchmark"] = {
+        "model": model,
+        "fixture_id": fixture_id,
+        "skill": "a11y-test",
+        "condition": condition,
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+    write_json_atomic(out_path, data)
+
+    resp_len = len(data.get("response", ""))
+    print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
+    return out_path
+
+
 PERSPECTIVE_CTX = {
     "qwen3:32b": 32768,
     "llama3.3:70b": 32768,
@@ -1126,6 +1236,22 @@ def main():
         model, fixture_id = sys.argv[2], sys.argv[3]
         validate_fixture_id(fixture_id)
         run_opevidence(model, fixture_id, "", condition="baseline")
+
+    elif cmd == "recipe":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py recipe <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_recipe(model, fixture_id, load_recipe_system_prompt())
+
+    elif cmd == "recipe-baseline":
+        if len(sys.argv) < 4:
+            print("Usage: run_benchmark.py recipe-baseline <model> <fixture-id>")
+            sys.exit(1)
+        model, fixture_id = sys.argv[2], sys.argv[3]
+        validate_fixture_id(fixture_id)
+        run_recipe(model, fixture_id, "", condition="baseline")
 
     elif cmd == "cj":
         if len(sys.argv) < 4:

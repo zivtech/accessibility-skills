@@ -1,0 +1,80 @@
+fixture_id: dialog-dismiss-recipe-clean
+suite: a11y-test-recipe
+name: Delete-Report Dialog — Keyboard Dismiss Recipe (name-derived selectors)
+description: >-
+  The same modal confirmation dialog, byte-identical component and CSS, with a
+  keyboard test recipe whose selector for the icon-only close control is derived
+  from the accessible-name inventory — `dialog.getByRole('button', { name:
+  'Close dialog', exact: true })` — and the run output it produced: two PASS
+  rows, a trace that reaches the control on the second Tab press, and a
+  dismiss-and-return step that executed. Nothing is planted. The graded
+  behaviour is leaving a sound recipe and a sound component alone.
+language: jsx
+framework: React
+input_format: component + CSS + Playwright recipe + run output (stdout, trace.json, screen-reader-census.json, findings.json)
+difficulty: CLEAN
+domain: Test Instrument
+work_type: recipe_review
+
+expected_findings:
+  - category: must_find
+    count: 0
+    notes: "No defects. The recipe's control-under-test selector is role+name from the census row, the run's assertions all executed, and the filed PASS rows cite the trace steps that support them."
+
+  - category: should_find
+    count: 0
+
+  - category: nice_to_find
+    count: 2
+    items:
+      - description: "Optional: the recipe does not exercise Escape or Shift+Tab wrap — scope, not defects; a reviewer who lists them as ENHANCEMENT coverage gaps is being thorough rather than wrong"
+        severity: ENHANCEMENT
+      - description: "Optional: `p:has-text(\"cannot be undone\")` could be `getByText('cannot be undone')` for consistency with the other locators — an equivalence, not a defect; both resolve a text-bearing element by its text"
+        severity: ENHANCEMENT
+        note: "Scored here so that a reviewer who mentions it as a style preference is not confused with one who flags it as a broken selector (trap 3)."
+
+  - category: false_positive_trap
+    count: 6
+    items:
+      - description: "The icon-only close button with aria-label='Close dialog' over an aria-hidden svg is correct — not a 2.5.3, 4.1.2, or 1.1.1 failure"
+        impact: "Lines 96-100. No visible text label exists for 2.5.3 to apply to; the name is computed from aria-label; the svg is hidden and unfocusable."
+      - description: "The 'Close account' button behind the backdrop is not a defect and not a duplicate-name problem"
+        impact: "Lines 22, 37-39: it is inside the inert root while the dialog is open, so it is neither tabbable nor in the accessibility tree; the recipe's dialog-scoped, exact-name locator would not reach it even if it were."
+      - description: "`p:has-text(\"cannot be undone\")` (line 184) resolves — text-content matching is exactly right for a text-bearing paragraph"
+        impact: "A review that flags every `:has-text()` on sight has replaced selector reasoning with a lint rule. The selector is wrong only for elements whose name is not their text content, which the paragraph is not."
+      - description: "`exact: true` on the close-control locator (line 188) is a deliberate tightening, not over-specification or brittleness"
+        impact: "The default name match is a case-insensitive substring; `exact: true` excludes any other control whose name contains the phrase. Calling it brittle, or recommending the substring default as an improvement, is a false alarm either way."
+      - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision"
+        impact: "Lines 60-62: the APG dialog pattern permits initial focus on the least destructive action; the heading is announced through aria-labelledby (:89)."
+      - description: "The six-press Tab bound and the 100 ms settle wait are recipe hygiene, not defects"
+        impact: "Lines 190-196: two full cycles of a three-control dialog, with the React-state settle the a11y-test method calls for; the trace shows the control reached on press 2."
+
+wcag_criteria:
+  - "2.1.1 Keyboard (PASS row filed from trace step 2)"
+  - "2.4.3 Focus Order (PASS row filed from trace step 3 — focus returned to the trigger)"
+
+multi_perspective_coverage:
+  - screen_reader: "The close control announces 'Close dialog, button'; the dialog announces its heading through aria-labelledby and its description through aria-describedby."
+  - keyboard: "Tab reaches the close control on the second press; Enter on it dismisses and returns focus to the trigger (trace step 3)."
+  - low_vision: "Not affected."
+  - cognitive: "Not affected."
+
+notes: |
+  Provenance: GT-16 (wave 2, fixture-first) — the CLEAN half of the
+  `dialog-dismiss-recipe` pair. Independent public reference as the BUG
+  half: Playwright's documented selector semantics.
+
+  Expected verdict: ACCEPT (or ACCEPT-WITH-RESERVATIONS carrying only
+  ENHANCEMENT items).
+
+  The component is byte-identical to the BUG half's, so any component
+  finding a reviewer raises here is a false alarm by construction — the
+  BUG half's traps 1-4 recur here as traps 1, 2, 5, 6 — and the recipe
+  adds two more: a `:has-text()` that is correct because its target is
+  text-bearing, and an `exact: true` that is correct because it is
+  deliberate. Authored under the issue #51 blind envelope: no
+  "Accessibility Features Present" section precedes the cut line.
+
+  Negative space — what an ACCEPT here does NOT certify: Escape, Shift+Tab
+  wrap, colour contrast, target size, the page beneath the dialog, or the
+  recipe's behaviour on any component other than this one.

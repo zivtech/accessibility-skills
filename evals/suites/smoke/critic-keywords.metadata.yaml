@@ -1,0 +1,14 @@
+fixture_id: smoke-critic-keywords
+difficulty: HAS-BUGS
+notes: "Expected verdict: REVISE. Smoke for score_output.py explicit keywords_all / keywords_any (2026-09-03)."
+expected_findings:
+  - category: must_find
+    count: 2
+    items:
+      - description: "conjunctive plus disjunctive tokens"
+        keywords_all: ["has-text"]
+        keywords_any: ["getbyrole", "text content"]
+        wcag: ""
+      - description: "disjunctive tokens only"
+        keywords: ["trace"]
+        wcag: ""

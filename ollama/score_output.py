@@ -92,6 +92,27 @@ def check_finding(text: str, finding: dict) -> dict:
     description = finding.get("description", "")
     wcag = finding.get("wcag", "")
 
+    # Explicit scoring tokens (2026-09-03, GT-16 lane). A rubric item may
+    # declare its own keywords instead of relying on the description branches
+    # below or on the first-four-words fallback, which is polarity-blind:
+    # `keywords_all` must every appear, `keywords` (alias `keywords_any`)
+    # needs any one; both may be combined. Rubrics carrying neither field
+    # score exactly as before.
+    explicit_any = finding.get("keywords") or finding.get("keywords_any") or []
+    explicit_all = finding.get("keywords_all") or []
+    if explicit_any or explicit_all:
+        from score_common import normalize_quotes
+        norm_text = normalize_quotes(text.lower())
+        any_ok = not explicit_any or any(normalize_quotes(k.lower()) in norm_text for k in explicit_any)
+        all_ok = all(normalize_quotes(k.lower()) in norm_text for k in explicit_all)
+        wcag_number = re.search(r"(\d+\.\d+\.\d+)", wcag) if wcag else None
+        return {
+            "description": description,
+            "found": any_ok and all_ok,
+            "wcag_cited": bool(wcag_number and wcag_number.group(1) in text),
+            "keywords_checked": [*explicit_all, *explicit_any],
+        }
+
     keywords = []
     if "aria-describedby" in description.lower():
         keywords = ["aria-describedby", "describedby"]
