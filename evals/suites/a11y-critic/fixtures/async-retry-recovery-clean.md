@@ -104,6 +104,13 @@ const AccountActivityPanel = ({ status, transactions, onRetry }) => (
   margin: 0;
   padding: 0;
 }
+
+.txn-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+}
 ```
 
 ## Expected Behavior
@@ -111,11 +118,12 @@ const AccountActivityPanel = ({ status, transactions, onRetry }) => (
 - The parent owns the request. This component renders one of four states — `loading`, `error`, `ready` with transactions, `ready` with none — and reports each one.
 - The status region and the alert region are both in the DOM in every state; text is written into them rather than mounted with them.
 - A failure is announced assertively and names the control that recovers from it. A recovery after Retry is announced politely, as is an empty result.
-- The Retry control is in the header and never unmounts, so no state change destroys the user's focus position.
+- The Retry control is in the header and never unmounts, so no state change destroys the user's focus position. Whether it is disabled during a request, and whether a press while one is already in flight is acknowledged, belong to the parent that owns the request.
+- The parent is expected to mount this component before starting the first request. A panel that first renders already in `loading` puts the message into the region in the same commit that creates it, which is the one case the persistent-region pattern cannot cover.
 
 ## Accessibility Features Present
 
-1. **Persistent live regions** — `.panel-status` (`role="status"`) and `.panel-error` (`role="alert"`) are in the DOM in every state (`async-retry-recovery-clean.md:22`, `:40`), with text written into them rather than being mounted alongside their own content. This is what makes the announcements reliable: a live region that appears with its message already inside is frequently not spoken.
+1. **Persistent live regions** — `.panel-status` (`role="status"`) and `.panel-error` (`role="alert"`) are in the DOM in every state (`async-retry-recovery-clean.md:22`, `:40`), with text written into them rather than being mounted alongside their own content. This is what makes every *transition* announce: a live region that appears with its message already inside is frequently not spoken. The one case it cannot cover on its own is the first paint, which is why mounting before the first request is stated above as the parent's contract.
 2. **Recovery has somewhere to land** — the two regions are siblings rather than alternatives, so the `error` → `loading` → `ready` sequence produces a spoken outcome instead of the status region having been replaced by the error.
 3. **Politeness matched to urgency** — a failure that requires a user action is `role="alert"` (assertive); a routine result count is `role="status"` (polite).
 4. **The empty result is a message, not a blank panel** (`:31-32`) — a successful response with no transactions says so, rather than announcing a count of zero or nothing at all.
