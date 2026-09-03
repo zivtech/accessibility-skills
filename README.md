@@ -1,195 +1,82 @@
 # Accessibility Skills
 
-Cross-model accessibility skill and evaluation bundle — plan, test, review, and audit web accessibility from real perspectives. It ships Claude Code-compatible skills and benchmark assets used across Claude, Codex/OpenAI, Gemini-ready hosted runs, and local Ollama models.
+Skills and evaluation assets for planning, testing, reviewing, and auditing web accessibility — WCAG 2.2 AA by default, Revised Section 508 when an engagement declares it.
 
 ```bash
 npx skills add zivtech/accessibility-skills
 ```
 
-**[Visual Explainer](https://zivtech.github.io/accessibility-skills/)** | **[Project Recap](docs/project-recap.html)** (open locally)
+**[Visual explainer](https://zivtech.github.io/accessibility-skills/)** · **[Documentation index](docs/)** · **[Benchmarks](ollama/BENCHMARK.md)**
 
-## Release status — v1.0.0 (2026-08-12)
+## What it does
 
-**v1's supported runtime is Claude**: the Claude Code skills in `.claude/skills/` (the `npx skills add` install above) and the Claude subagent lane behind `/a11y-workflow`. Receipts for that surface: the Opus subagent planner lane (25/25, 2026-06-12) and the 2026-08-12 declared-508 rows — 11/11 PASS in both crosswalk conditions plus the lane's first verified stable-ID recomputation on the bug-report fixture ([receipts](evals/results/ict-baseline-phase3/README.md)).
+Most accessibility failures are not missing attributes. They come from design decisions: the wrong interaction pattern for the job, focus that moves but makes no sense, states that are visible but never announced, semantics that pass axe-core and still confuse a screen reader. Linters do not catch those. These skills are built to.
 
-Everything else in the repo ships as benchmark infrastructure, not a supported v1 runtime: the local Ollama lane remains what its own results say it is — a **detector, never a verdict authority** — and the Codex/Gemini/Claude-API rows for the newest instruments, cloud-runner `planner-federal` condition parity, and the batched instrument revisions are TBD, tracked on [#17](https://github.com/zivtech/accessibility-skills/issues/17). The known issue at cut — condensed `.claude/agents/` definitions predating the Phase 2 federal profile — was resolved immediately post-cut ([#18](https://github.com/zivtech/accessibility-skills/pull/18) synced the defs and added a marker-based drift check; [#19](https://github.com/zivtech/accessibility-skills/pull/19) fixed a real URL drift in the Codex mirror).
+The bundle covers the lifecycle — design it, review the design, measure it, review what you measured, file what you found, and report it — plus two orthogonal audit lenses:
 
-This bundle packages four core skills that cover the full accessibility development lifecycle:
+- **a11y-critic** asks *is the accessibility approach sound?*
+- **perspective-audit** asks *who is blocked?* (seven access-method perspectives)
+- **a11y-role-audit** asks *who on the team owns this?* (six ARRM responsibility roles)
 
-- **Accessibility Planner** (`a11y-planner`): designs accessible implementations before coding (WCAG 2.2, WAI-ARIA APG patterns)
-- **Accessibility Critic** (`a11y-critic`): reviews plans before implementation AND implementations after testing
-- **Accessibility Tester** (`a11y-test`): runs real Playwright keyboard tests, axe-core scans, static analysis, and visual regression
-- **Perspective Audit** (`perspective-audit`): deep review from 7 disability and situational access perspectives, escalated by the planner or critic when specific perspectives reach MEDIUM or HIGH alarm levels
+## Commands
 
-Additional companion skills:
+| Command | What it does |
+|---|---|
+| `/a11y-workflow` | Orchestrates the whole lifecycle; spawns the specialist agents. Claude Code only |
+| `/a11y-planner` | Designs the accessible implementation before code hardens the wrong pattern |
+| `/a11y-critic` | Reviews a plan before implementation, and the implementation after tests pass |
+| `/a11y-test` | Runs real tests — Playwright keyboard, axe-core, journey audits, component screen-reader assertions |
+| `/perspective-audit` | Deep review from the access perspectives the planner or critic escalated |
+| `/a11y-role-audit` | Attributes findings to the team role that owns the fix |
+| `/bug-reporting` | Turns findings into reproducible issues a developer can act on without a follow-up conversation |
+| `/acr-reporting` | Serializes a finished audit into a draft OpenACR conformance report for human sign-off |
+| `/a11y-content-judgment` | *(candidate)* Drafts per-row judgments on the criteria a scanner cannot decide; a named human ratifies |
 
-- **Accessibility Bug Reporting** (`bug-reporting`): converts findings into reproducible accessibility issues with required reporting fields (URL, XPath, HTML snippet, WCAG SC, rule ID, severity, frequency); `references/build-error-workbook.mjs` serializes schema-shaped reports into a verifiable client-triage XLSX workbook (routed `exceljs` peer dependency, never vendored — see [adoption assessment](docs/error-workbook-adoption-assessment.md))
-- **ACR Reporting** (`acr-reporting`): serializes a finished audit-scope evaluation into a draft Accessibility Conformance Report in GSA's OpenACR format — validated/rendered via the routed pinned `@openacr/openacr` CLI, finished and signed by a human (Phase 2 gate passed 2026-08-12; receipts in `evals/results/acr-reporting-phase2/`)
-- **Content Judgment** (`a11y-content-judgment`, candidate): draft-and-ratify pipeline for the judgment-shaped criteria a scanner cannot decide — are titles, headings, labels, link text in context, and image alternatives useful for the person (2.4.2, 2.4.6, 2.4.4, 1.1.1), and is identification consistent across pages (3.2.4; 3.2.3 deterministic). The agent drafts per-row `yes | no | unsure` with a rationale; a named human ratifies; nothing is a criterion outcome until `ratified_by` is filled. Eval lane + first rows 2026-09-02 (`evals/suites/a11y-content-judgment/`); gate not met as the rubric stands — see `docs/content-judgment-adoption-assessment.md`.
-
-## Why this bundle exists
-
-Most accessibility failures are not just missing attributes. They come from design decisions:
-
-- the wrong interaction pattern chosen for the job
-- focus that technically moves but makes no sense to keyboard users
-- loading, error, and success states that are visible but not announced
-- semantics that pass automated checks while still confusing screen readers
-
-This repo combines four skills that cover the full lifecycle:
-
-1. **Plan first** so semantic structure, keyboard behavior, APG pattern mapping, and testing strategy are explicit before coding.
-2. **Critique the plan** so gaps (missing focus traps, incomplete state communication) are caught before any code is written.
-3. **Review after testing** so passing automated checks do not hide broken accessibility design.
-4. **Audit from real perspectives** so the planner and critic can escalate specific disability or situational access concerns for deep review by perspective agents grounded in CivicActions personas and the W3C WAI ARRM framework.
-
-## What’s in the bundle
-
-### Accessibility Planner (`a11y-planner`)
-
-The Accessibility Planner is the pre-implementation design surface. It produces plans for:
-
-- semantic HTML structure and landmark strategy
-- APG pattern choice for interactive components
-- keyboard behavior and focus management
-- state communication for assistive technology
-- visual accessibility concerns like contrast, motion, and resize behavior
-- testing strategy for automated and manual checks
-
-The planner uses a 9-phase protocol:
-
-1. Scope and context
-2. Semantic structure plan
-3. Interaction pattern plan
-4. Focus management
-5. State communication
-6. Visual accessibility
-7. Content accessibility
-8. Testing strategy
-9. Implementation tasks
-
-### Accessibility Critic (`a11y-critic`)
-
-The Accessibility Critic reviews accessibility design decisions at two points: **after planning** (to catch gaps before code is written) and **after testing** (to verify the implementation). It looks for:
-
-- semantic mismatches between UI intent and HTML structure
-- incomplete or incorrect ARIA pattern implementations
-- broken focus traps, restoration, or tab order
-- missing live regions or state announcements
-- low-vision and cognitive accessibility friction
-- gaps that pass axe-core but still fail real users
-
-The critic uses an 8-phase review protocol with evidence-backed severity and a mandatory multi-perspective pass:
-
-- screen reader user
-- keyboard-only user
-- low-vision user
-- cognitive accessibility lens
-
-### Accessibility Tester (`a11y-test`)
-
-The Accessibility Tester is the measurement layer. It runs real tests and produces evidence that feeds into the critic's review, with six execution modes:
-
-- **`npx playwright test`** — Codified CI keyboard tests, visual regression, axe-core scans. Primary path.
-- **`references/baseline-url-scan.mjs`** — Baseline URL-list scans: point at a list of URLs, get per-page axe-core results with no spec authoring. Detector output for regression baselines and sweep triage — never keyboard-operability or screen-reader evidence, and a clean scan is not conformance. See [adoption assessment](docs/baseline-url-scan-adoption-assessment.md).
-- **`agent-browser`** — Interactive reconnaissance: snapshot ARIA structure, verify fixes, probe widgets. Fastest for exploratory work (~1.5-2.6s per task).
-- **`/webwright:run`** — Generate complete Python Playwright test scripts from prose descriptions. LLM-generated, ~30-130s first run, then ~4s re-runs with no LLM cost. Produces reusable `.py` artifacts.
-- **`keyboard-a11y-tester`** — Goal-driven journey audits of live URLs: keyboard + emulated screen-reader personas, evidence-linked WCAG findings, live-region capture, focus-indicator measurement. External clone pinned to release `0.5.0`; cross-validated against this repo's 33 critic fixtures. See [adoption assessment](docs/keyboard-a11y-tester-adoption-assessment.md).
-- **`@guidepup/virtual-screen-reader`** — Component/unit-level screen-reader assertions (accessible names, reading order, live-region announcements) in the project's own Vitest/Jest suite or Storybook play functions, pre-deploy, no URL needed. npm devDependency exact-pinned `0.32.1`; validated in jsdom, Vitest, Chromium, and Storybook 10. See [adoption assessment](docs/virtual-screen-reader-adoption-assessment.md).
-
-Test capabilities:
-
-- Playwright keyboard interaction tests (Tab, Enter, Escape, arrow keys — real key presses, not attribute checks)
-- axe-core scanning via Playwright injection for automated WCAG violation detection
-- eslint-plugin-jsx-a11y static analysis for React/Vue/JSX projects
-- Visual regression testing with Playwright screenshots and optional BackstopJS
-- WCAG 2.2 compliance checks including new criteria (2.4.11, 2.4.13, 2.5.7, 2.5.8, 3.3.7, 3.3.8)
-- Dynamic test prioritization based on automated scan findings
-- ARIA tree inspection via `aria_snapshot()` (Webwright) or `snapshot -i` (agent-browser)
-- Goal-driven journey audits with per-step trace, reading-order census, and screenshot evidence (keyboard-a11y-tester)
-- Screen-reader announcement and reading-order assertions at the component level, including live-region capture with politeness prefixes (virtual-screen-reader)
-
-### Perspective Audit (`perspective-audit`)
-
-The Perspective Audit provides deep accessibility review from 7 disability and situational access perspectives. It is activated by escalation — when the planner or critic flags one or more perspectives at MEDIUM or HIGH alarm level, those perspectives get a focused deep review.
-
-The 7 perspectives:
-
-- **Magnification & Reflow** — zoom users, reflow at 320px, touch target sizing
-- **Environmental Contrast** — outdoor use, low-light, color vision deficiency
-- **Vestibular & Motion** — motion sensitivity, parallax, auto-playing animation
-- **Auditory Access** — deaf/hard-of-hearing, captions, visual alternatives to audio
-- **Keyboard & Motor** — switch users, voice control, limited dexterity, one-handed use
-- **Screen Reader & Semantic** — NVDA/JAWS/VoiceOver users, semantic structure, live regions
-- **Cognitive & Neurodivergent** — reading level, information density, consistent navigation
-
-Each perspective uses a Jobs-to-be-Done checklist derived from CivicActions accessibility personas with ARRM role-responsibility mapping for team assignment.
+Repository-maintenance skills — `/maintain-accessibility-skills`, `/verify`, `/drupal-a11y-patch-eval` — are for working *on* this repo rather than with it. See [docs/skills.md](docs/skills.md).
 
 ## Lifecycle
 
 ```
-plan → [generate test scripts] → critique plan → [perspective audit] → revise → implement → test → critique implementation → [perspective audit] → fix → re-test
+plan → [role audit] → critique plan → [perspective audit] → revise → implement
+     → test → [role audit] → critique implementation → [perspective audit] → fix → re-test
 ```
 
-1. Run `/a11y-planner` to design the feature before implementation.
-2. Optionally run `/webwright:run` to generate test scripts from the planner's output.
-3. Run `/a11y-critic` on the plan to catch gaps before coding.
-4. If the critic escalates perspectives at MEDIUM/HIGH, run `/perspective-audit` for deep review.
-5. Revise the plan based on critic and audit findings.
-6. Build the feature.
-7. Run `/a11y-test` (Playwright keyboard tests, axe-core scans, visual regression; virtual-screen-reader assertions for component announcement behavior; a keyboard-a11y-tester journey audit for live-URL targets).
-8. Run `/a11y-critic` on the implementation after tests pass.
-9. If the critic escalates perspectives, run `/perspective-audit` again.
-10. Fix findings, re-test.
+The critic serves at **two** checkpoints, not one: before code is written, and after tests pass. Bracketed steps run on escalation — the planner or critic flags a perspective at MEDIUM or HIGH and the audit follows. Start with `/a11y-workflow` if you want the sequence driven for you.
 
-## Commands
+## Where things live
 
-- `/a11y-workflow` — Accessibility Workflow: orchestrate the full lifecycle (scout → plan → critique → test → critique), Claude Code only
-- `/a11y-planner` — Accessibility Planner: design accessibility before coding
-- `/a11y-critic` — Accessibility Critic: review plans or implementations
-- `/a11y-test` — Accessibility Tester: run keyboard, axe-core, and visual regression tests; journey audits (keyboard-a11y-tester); component screen-reader assertions (virtual-screen-reader)
-- `/perspective-audit` — Perspective Audit: deep review from escalated disability/situational access perspectives
-- `/bug-reporting` — Accessibility Bug Reporting: produce reproducible bug reports from test or review findings
-- `/acr-reporting` — ACR Reporting: serialize a finished audit-scope evaluation into a draft OpenACR Accessibility Conformance Report for human sign-off
-- `/a11y-content-judgment` — Content Judgment (candidate): inventory the judgment-shaped elements of a URL list, draft per-row judgments for a human ratifier, never flip an outcome cell
+| Path | What |
+|---|---|
+| `.claude/skills/` | Skill definitions — this is what `npx skills add` installs |
+| `.claude/agents/` | Companion agent prompts for the workflow lane |
+| `.agents/`, `.codex/` | Codex-compatible mirrors, kept byte-identical by CI |
+| `docs/` | Contracts, adoption assessments, verified spec references — [index](docs/) |
+| `evals/suites/` | Fixtures and rubrics, 13 suites |
+| `evals/results/` | Committed raw benchmark artifacts; every published number traces to one |
+| `ollama/` | Benchmark runners and scorers, local and hosted |
+| `templates/` | Base protocol templates the skills build on |
 
-## Evidence Contract and Vital-Core Boundary
+## Standards
 
-This repo adopts Vital-Core's reporting discipline, not its scanner runtime. The optional [A11y Evidence Finding Contract](docs/a11y-evidence-finding-contract.md) gives `a11y-test`, `a11y-critic`, and `perspective-audit` stable finding IDs, fingerprints, source evidence, WCAG/APG citations, Section 508/FPC context, perspective alarms, reproduction steps, expected/actual behavior, and trend language. Clean reviews should not emit empty finding contracts.
+WCAG 2.2 AA is the default target. Audit-scope engagements follow **WCAG-EM 2.0**; engagements that declare Revised Section 508 additionally reference the **ICT Testing Baseline** — which sits *beside* WCAG-EM (EM structures the evaluation, the baseline defines the minimum test set), never on top of it, and never lowers the 2.2 AA target to the federal 2.0 floor.
 
-At audit scope, the report-level companion [A11y Evaluation Report Contract](docs/a11y-evaluation-report-contract.md) aggregates findings into a WCAG-EM-shaped evaluation report (scope, conformance target, accessibility support baseline, sample set with rationale, per-SC outcomes, coverage boundary); findings link into it via the optional `evaluation_context` field. Appendix A of that contract carries a non-normative serialization example for `sample_set`, and Appendix B one for a `ratified_receipt`; both are worked examples, and nothing validates against either until a second independent instance exists. The contract has its own eval lane (`evals/suites/evaluation-report/`) measuring exactly this aggregation seam — the contract document is the system prompt under test, with a no-contract baseline condition; first model rows under Model Baselines below. See the [WCAG-EM 2.0 adoption assessment](docs/wcag-em-2-adoption-assessment.md) and [verified spec reference](docs/wcag-em-2-reference.md).
+Conformance outcomes and impact severity are orthogonal: report both, derive neither from the other. Five further orthogonal axis pairs, and the machine mechanism that makes the rule checkable, are in the [orthogonality register](docs/a11y-orthogonality-register.md).
 
-The v1 boundary keeps continuous crawling, ISO-week dashboards, generated report state, Wappalyzer/ParaCharts vendors, Lighthouse/security/sustainability engines, and mutable crawl state out of this bundle. See [Vital-Core Adoption Assessment](docs/vital-core-adoption-assessment.md). Use [Section508.gov conformance guidance](https://www.section508.gov/develop/applicability-conformance/) as regulatory context for WCAG 2.0 Level A/AA, and use [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) as the current planning and review target.
+Full detail: [docs/standards-and-contracts.md](docs/standards-and-contracts.md).
 
-The federal test-completeness standard behind that Section 508 context now has a name here: the [ICT Testing Baseline](https://ictbaseline.access-board.gov/) — what minimum tests a Section 508 conformance test process must include, sitting beside WCAG-EM at audit scope (EM structures the evaluation; the baseline defines the minimum test set), not on top of it. Baseline vocabulary belongs to declared Revised-508 engagements at audit scope only — a baseline citation in a component-scope review is a finding against the output, mirroring the EM rule — and the bundle's WCAG 2.2 AA default target never lowers to the federal 2.0 floor. The reference layer and audit-scope wiring landed 2026-08-12 (Phases 0–2): [adoption assessment](docs/ict-testing-baseline-adoption-assessment.md), [verified reference](docs/ict-testing-baseline-reference.md), [test-ID manifest](docs/ict-baseline-test-id-manifest.yaml), and a hand-built [coverage crosswalk](.claude/skills/a11y-test/references/ict-baseline-crosswalk.yaml) mapping all 62 web baseline tests to execution modes (22 covered / 26 partial / 13 not-covered / 1 always-passes — the not-covered rows are the point, naming what goes to manual/AT methods). Declared-508 audits get a planner federal profile whose conformance floor declaration gates every baseline citation (and becomes the report's conformance target), an optional manifest-validated `baseline_test` finding field, and an optional federal annex on the evaluation report. The Phase 3 eval lane landed the same day: a de-hinted federal planner fixture (#27, crosswalk-supplied vs withheld conditions), a declared-508 bug-report fixture (#7), and baseline-ID fidelity checks across the planner/bug-report/critic scorers — synthetically calibrated with an adversarial trap-taking control, first local rows landed and adjudicated the same day — zero fabricated baseline IDs across six rows, with the crosswalk-supplied condition outscoring the withheld condition on both models and the filed-value check catching a live wrong-but-valid filing ([receipts](evals/results/ict-baseline-phase3/README.md)); hosted rows are tracked on [#17](https://github.com/zivtech/accessibility-skills/issues/17).
+## Status
 
-## Model Baselines
+Current release: **[v1.0.0](https://github.com/zivtech/accessibility-skills/releases)** (2026-08-12). The supported runtime is Claude — the skills in `.claude/skills/` and the subagent lane behind `/a11y-workflow`.
 
-The evaluation story is cross-provider. The benchmark suite compares the same fixtures and rubrics across hosted and local model families.
+Everything else ships as benchmark infrastructure, not a supported runtime. In particular the local Ollama lane is what its own results say it is: a **detector, never a verdict authority**. No local model has passed the verdict-authority bar at any size tested. Open work is tracked in [issues](https://github.com/zivtech/accessibility-skills/issues).
 
-Current committed result summaries cover:
+Model comparisons across Claude, Codex/OpenAI, Gemini and local Ollama families — with the caveats that make each number readable — are in [ollama/BENCHMARK.md](ollama/BENCHMARK.md).
 
-- **Claude API** — Haiku-first escalation to Sonnet/Sonnet+thinking across 33 critic fixtures
-- **Claude Code subagents** — Opus a11y-planner agents across all 25 planner fixtures (25/25 PASS, 234/235 must-have criteria), raw artifacts in `evals/results/claude-planner/`; Opus perspective-audit agents across all 25 perspective fixtures (2026-07-13, **first blind lane** — answer key withheld: post-003 scorer 20 PASS / 5 WARN / 0 FAIL, must-find 36/37; content-adjudicated 25/25 verdicts, 37/37 must-find, 0 CRITICAL/MAJOR on all 5 CLEAN fixtures), raw artifacts in `evals/results/claude-perspective/`. **Note:** all critic/perspective rows dated before 2026-07-13 ran non-blind (runners embedded fixture answer keys — since fixed, see BENCHMARK.md's blind-protocol disclosure); planner rows are exempt. Additionally, all critic/perspective rows dated before 2026-07-16 — blind lanes included — saw inline `// BUG:` hint comments in fixture code (de-hinted 2026-07-16); detection numbers are hint-assisted upper bounds, per BENCHMARK.md's hint-comment disclosure
-- **Codex/OpenAI** — GPT-5.2-first escalation to GPT-5.5-low across 33 critic fixtures
-- **Gemini** — Gemini 2.5 Flash across all 33 critic fixtures via the gemini CLI (31/33 PASS, 98% criteria-level must-find; pro escalation pending quota), raw artifacts in `evals/results/gemini/`
-- **Ollama local models** — qwen3:32b **blind re-run 2026-07-13** (critic 33/33 PASS, 97% must-find, 0 false positives — blind-confirmed; perspective detection 20/20 + 36/37 must-find blind-confirmed, but 4/5 CLEAN perspective fixtures draw false REVISE/BLOCK verdicts blind, so the historical "100% perspective / 0% FP" row was answer-key-assisted on CLEAN), 25/25 planner; raw blind artifacts in `evals/results/ollama-blind/`. Same-day blind full-suite critic lanes: qwen3.5:latest 33/33 PASS + 98.5% must-find (needs ≥32K num_ctx on 4 long fixtures — receipts in BENCHMARK.md) and llama3.3:70b 33/33 PASS + 92.6%/97.1% adjudicated must-find. Historical non-blind rows: qwen3.5:27b (partial run: stopped 17/33 on /think stalls), deepseek-r1 probes. All of these rows predate the 2026-07-16 fixture de-hint (inline `// BUG:` comments were still in the prompts), so detection numbers are hint-assisted upper bounds; they also predate the same-day reassurance/verdict-steering fix (critic CLEAN/ADVERSARIAL prompts included their expected verdicts — those rows are verdict-assisted upper bounds; see the disclosure in `ollama/BENCHMARK.md`). **De-hinted re-run (qwen3:32b, 2026-07-16, `evals/results/ollama-dehinted/`)**: critic detection held exactly (33/33 PASS, 67/68 content-adjudicated must-find in both lanes; CLEAN 4/4 with zero findings — verdict-assisted except the repaired modal-complete-clean, whose prompt was properly cut); perspective lost exactly one hint-carried must-find item (36/37 vs 37/37 — map-interface-zoom target size); and the blind lane's "4/5 CLEAN wrong verdicts" proved run-unstable (1/5 wrong in the re-run on byte-identical CLEAN prompts) — cite both draws or neither. **Post-PR-4 unassisted re-baseline (2026-07-19, `evals/results/ollama-rebaseline/`)**: with verdict prose and grading notes cut and reassurance comments removed, critic CLEAN drew its first wrong REVISE plus finding-raising WARNs on 2 more fixtures (the historical "0% critic FP" was verdict-assisted), perspective drew 4/5 wrong CLEAN verdicts (third draw; media-player-captions wrong in all three) and its first HAS-BUGS FAIL (checkout-form — variance on a byte-identical prompt). Routing: qwen3:32b is a detector, not a verdict authority
+## Contributing
 
-- **July 2026 new-model funnel** (2026-07-28/29, ollama 0.31.1→0.32.5, `evals/results/new-local-models-2026-07/`) — eight candidates through the staged screening funnel against the post-PR-4 unassisted baseline. **qwen3.6:35b is the new local detector recommendation**: first-ever full critic sweep (68/68 must-find; prior champion 65/68), perspective 36/37, planner 25/25, faster than qwen3:32b — with a data-fidelity caveat (fabrication-prone on exact values; bug-reporting suite's first model rows: 1/6 PASS). Stage 3 ×3-draw CLEAN characterization plus a same-day qwen3:32b control both failed the verdict-authority promotion bar: **no local verdict authority exists at ≤128 GB (July 2026)** — the "detector, not a verdict authority" routing rule now covers the entire local tier. laguna-s-2.1 (96 GB, needs ollama ≥0.32) cleared screening as a capability proof but lost on speed, agentic derails, and fabrication; qwen3.6:27b, both gemma4 tags, laguna-xs, gpt-oss:120b, and ornith:35b stopped at screening (receipts and adjudications in the lane README).
+Read [docs/evaluation.md](docs/evaluation.md) before adding a fixture. The eval suites carry a blind protocol with machine-enforced rules about what a prompt may show a model, and a fixture that breaks them fails CI rather than quietly producing a wrong number.
 
-- **August 2026 funnel reopen: Qwen 3.8** (2026-08-23, ollama 0.32.15, `evals/results/new-local-models-2026-08/`) — first firing of the funnel's reopen-triggers (Qwen 3.8 open weights; 27B only, thinking-by-default, MTP default tag). **`qwen3.8:27b` stopped at Stage 1 on the zero-incompletions gate**: champion-equal screening detection (15/15 content-adjudicated) and the best 27B CLEAN calibration recorded (1 judged-wrong verdict — the family's stable interactive-dropdown blind spot), but one stochastic "/think stall" (38.8K thinking chars → clean `stop`, 0-char response; byte-identical re-draw recovered with a zero-finding correct PASS), ADVERSARIAL severity overshoot (REJECT where REVISE is the ceiling), and ~12 tok/s on the default MTP tag. Routing unchanged — qwen3.6:35b remains the detector recommendation. The lane also closed the July hardening item: streaming runners now record `done_reason` + `thinking_chars`, which is what made the stall classifiable. Stage 2/3 not run; watch items (a ≥32B sibling, MTP/termination changes in ollama minors) in the lane README.
-
-- **WCAG-EM step-11 instruments** (2026-08-01, `evals/results/wcag-em-step11/`) — first rows on the two step-11 instruments, qwen3.6:35b ×2 draws plus a qwen3:32b control. Evaluation-report chain lane (report contract as system prompt vs no-contract baseline): the A/B direction is draw-stable — every baseline draw of every model FAILs on report shape (no per-SC outcome map, no coverage boundary, no sampling method without the contract) — while the 35b contract verdict is not (WARN → FAIL across byte-identical prompts; draw 2 silently dropped all severity data, the funnel's data-fidelity caveat at must-tier magnitude). De-hinted planner audit fixture (#26): 35b 7/11 → 9/11 across draws with the central false-coverage trap passed both times; the qwen3:32b control — 11/11 draw-stable on the hinted sibling — scores 3/11 with real methodology absences, proving the old saturation was fixture-cueing. Single-fixture receipts, not lane rows; the 25-fixture planner aggregates above stand as measured.
-
-Every hosted family is a peer row backed by committed raw artifacts. See [ollama/BENCHMARK.md](ollama/BENCHMARK.md) and [ollama/README.md](ollama/README.md) for the detailed tables, commands, and caveats.
-
-## Install
-
-```bash
-npx skills add zivtech/accessibility-skills
-```
-
-Manual install:
+Install manually if you would rather not use `npx`:
 
 ```bash
 git clone https://github.com/zivtech/accessibility-skills.git
@@ -197,139 +84,10 @@ cp -r accessibility-skills/.claude/skills/* ~/.claude/skills/
 cp accessibility-skills/.claude/agents/*.md ~/.claude/agents/
 ```
 
-## Repository Layout
-
-```text
-.claude/
-  agents/                              # Standalone agent prompts
-  skills/
-    a11y-critic/
-      SKILL.md                         # Skill definition
-      references/
-        external-skills-manifest.yaml  # External skill references
-    a11y-planner/
-      SKILL.md
-      references/
-        external-skills-manifest.yaml
-    a11y-test/
-      SKILL.md
-    a11y-content-judgment/
-      SKILL.md                         # Draft-and-ratify judge for titles/headings/links/images/labels (CANDIDATE)
-      references/
-        content-inventory.mjs          # URL-list content inventory (peer dep: playwright)
-        build-judgment-rows.mjs        # Dedupe + heuristic flags + batches; merge to CSV
-        judgment-rubric.md             # Per-criterion judgment rubric
-        judge-prompt.md                # Per-batch judge prompt
-    perspective-audit/
-      SKILL.md                         # Escalation-based perspective auditor
-      references/
-        perspectives.md                # 7 JTBD checklists (CivicActions personas)
-        arrm-perspective-mapping.md    # W3C WAI ARRM role routing
-  teams/                               # a11y-workflow team definition
-.agents/
-  skills/                              # Codex-compatible skill mirrors
-.codex/
-  agents/                              # Codex agent definitions for planner/critic
-docs/
-  EXTERNAL-SKILLS-INVENTORY.md         # Landscape scan of external a11y skills + adopted tools
-  PERSPECTIVE-AGENTS-PLAN.md           # Architecture plan (v2.1, 3-critic reviewed)
-  a11y-evidence-finding-contract.md     # Shared optional finding contract
-  a11y-evaluation-report-contract.md    # Audit-scope report-level contract (WCAG-EM-shaped)
-  vital-core-adoption-assessment.md     # Adopt/adapt/defer/reject boundary
-  keyboard-a11y-tester-adoption-assessment.md   # Journey-audit mode adoption + cross-validation
-  virtual-screen-reader-adoption-assessment.md  # Component SR-assertion mode adoption + cross-validation
-  wcag-em-2-adoption-assessment.md      # WCAG-EM 2.0 gap analysis + tiered audit-scope adoption plan
-  wcag-em-2-reference.md                # Verified WCAG-EM 2.0 spec reference (Phase 0 gate artifact)
-  ict-testing-baseline-adoption-assessment.md   # ICT Testing Baseline gap analysis + tiered federal-scope adoption plan
-  ict-testing-baseline-reference.md     # Verified ICT Testing Baseline reference (Phase 0 gate artifact)
-  ict-baseline-test-id-manifest.yaml    # Machine-readable baseline test-ID ground truth (62 web / 57 documents)
-  drupal-patch-evaluations/            # Drupal core a11y patch evaluation ledger, patches, reports
-  a11y-planner/
-  a11y-critic/
-templates/
-evals/
-  suites/
-    a11y-critic/                         # 33 critic fixtures + rubrics
-    a11y-planner/                        # 26 planner fixtures + rubrics (26th de-hinted, 2026-08-01)
-    perspectives/                        # 25 + 5 calibration perspective fixtures
-    bug-reporting/                       # 6 bug-report input fixtures (no answer keys in the .md)
-    evaluation-report/                   # Audit-report chain fixture: contract vs no-contract conditions
-    smoke/                               # Committed scorer smoke cases asserted in CI
-    webwright-benchmark/                 # Webwright vs agent-browser speed + correctness data
-  results/                               # Committed raw benchmark + cross-validation artifacts
-    keyboard-a11y-tester/                #   KAT vs 33 critic fixtures agreement record
-    virtual-screen-reader/               #   VSR fixture sweep, probes, Storybook lane record
-  harness/
-ollama/                                  # Local + hosted benchmark runners and score scripts
-```
-
-Tracked install surfaces now include `.claude/` for Claude Code-compatible discovery, `.agents/skills/` for Codex-compatible skills, and `.codex/agents/` for Codex agent definitions. The protocols, fixtures, rubrics, and benchmark runners are model-agnostic. Per-skill documentation lives under `docs/`.
-
-## Testing & Contributing
-
-### Evaluation suite
-
-The `evals/suites/perspectives/` directory contains a 30-fixture evaluation suite (25 main + 5 calibration) that validates the perspective-audit skill and the perspective enhancements to the planner, critic, and tester.
-
-Fixture categories:
-- **HAS-BUGS (new dimension)** — 10 fixtures with planted bugs in auditory, vestibular, cognitive, contrast, and magnification dimensions
-- **HAS-BUGS (existing dimension)** — 6 regression fixtures with keyboard/screen reader bugs all conditions should catch
-- **CLEAN** — 5 fixtures with zero real bugs, measuring false positive rate
-- **ADVERSARIAL** — 4 fixtures that pass automated tools but have subtle perspective-specific issues
-
-Each fixture has 3 files:
-- `fixtures/{id}.md` — Component code, expected behavior, planted bugs
-- `fixtures/{id}.metadata.yaml` — Ground truth: expected findings, alarm levels, false positive traps
-- `rubrics/{id}.rubric.yaml` — Scoring dimensions, expected performance per condition, thresholds
-
-### Running evaluations
-
-Fixture code blocks ship hint-free (since 2026-07-16): planted-bug documentation lives only in
-each fixture's `## Accessibility Issues` answer-key section, which both runners strip from
-prompts (blind protocol). The CI guard `ollama/test_blind_prompts.py` fails if either leak —
-answer keys or inline `BUG` hint comments — reappears in any composed prompt. (The former
-`strip_bug_comments.py` workflow, which wrote stripped copies to a `fixtures-eval/` directory
-no runner read, is deleted; see the hint-comment disclosure in `ollama/BENCHMARK.md`.)
-
-The perspective eval harness runs fixtures under 3 prompt conditions. These are prompt-condition baselines, separate from model-family baselines such as Claude, Codex/OpenAI, Gemini, and local Ollama runs:
-- **A** — Standard a11y-critic (Sonnet, no perspectives)
-- **B** — Standard a11y-critic + "also review for auditory, vestibular, cognitive, and contrast" (Sonnet)
-- **C** — Enhanced a11y-critic + perspective-audit (Opus, with alarm levels)
-
-### Baselines to maintain
-
-Any change to the skills must preserve these baselines:
-
-| Baseline | Current | Minimum | How to test |
-|----------|---------|---------|-------------|
-| **Calibration alarm accuracy** | 35/35 (100%) | 28/35 (80%) | Run 5 calibration fixtures under condition C, score alarm levels against `calibration/*.metadata.yaml` expected levels |
-| **CLEAN false positive rate** | 0% | 0% | Run 5 CLEAN fixtures under condition C, count MAJOR/CRITICAL findings (must be 0) |
-| **Regression non-inferiority** | C = A (6/6) | C ≥ A - 5% | Run 6 regression fixtures under A and C, compare existing-dimension true positive rate |
-
-Scoring for alarm levels: exact match = 1.0, within +/-1 level = 0.5, off by 2 levels = 0.0.
-
-### Adding new fixtures
-
-1. Create 3 files using the naming convention `{kebab-case-id}.md`, `.metadata.yaml`, `.rubric.yaml`
-2. Or add the spec to `generate_fixtures.py` and run it to generate metadata + rubric
-3. Use snake_case for perspective keys in metadata: `magnification_reflow`, `environmental_contrast`, `vestibular_motion`, `auditory_access`, `keyboard_motor`, `screen_reader_semantic`, `cognitive_neurodivergent`
-4. Document planted bugs only in the fixture's `## Accessibility Issues` answer-key section below the blind cut line — never as inline comments in the code blocks (the CI guard `ollama/test_blind_prompts.py` fails any composed prompt that leaks `BUG` hints)
-   - The cut-line heading is exactly `## Accessibility Issues` — no parenthetical. Annotate below it (`_Answer key: planted defects._`), not in the heading: the guard rejects any other spelling, and a loose one is how six variants accumulated before 2026-09-03 (issue #51)
-   - Every `## ` heading in the fixture must be declared in `VISIBLE_HEADINGS` or `EVAL_SIDE_HEADINGS` in `ollama/test_blind_prompts.py`. Adding a new leak now takes an explicit edit there rather than an omission nobody sees
-   - Add a row to `evals/fixture-title-manifest.yaml` classifying the fixture's H1 (`neutral` / `names-defect` / `asserts-feature`). Line 1 is above the cut, so the title reaches the model in every lane
-5. CLEAN fixtures must have zero real bugs and 3+ false positive traps
-6. Regression fixtures must include `regression_fixture: true` and `non_inferiority_test` in metadata/rubric
-
-See `evals/suites/perspectives/PILOT-REPORT.md` for full evaluation methodology and results.
-
-## Evaluation Assets
-
-This repo includes eval suites for `a11y-planner`, `a11y-critic`, and `perspectives`. The fixture and rubric assets are included here; the broader harness originated in the source monorepo.
-
 ## License
 
 GPL-3.0-or-later. See [LICENSE](LICENSE).
 
-## Repository History Note
+`bug-reporting` derives from the MIT-licensed [ACCESSIBILITY.md](https://github.com/mgifford/ACCESSIBILITY.md) guide, contributed by @mgifford. Perspective checklists derive from CivicActions accessibility personas; role mapping follows the W3C WAI [ARRM](https://www.w3.org/WAI/planning/arrm/) framework.
 
-**2026-08-12:** Repository history was rewritten; all commit hashes changed. Existing clones and forks should re-clone, or fetch and hard-reset their local branches to the new `origin/main`.
+> **History note (2026-08-12):** repository history was rewritten and all commit hashes changed. Re-clone, or fetch and hard-reset local branches to the new `origin/main`.
