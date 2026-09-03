@@ -5,9 +5,11 @@ expected_findings:
   - category: must_find
     count: 2
     items:
-      - description: "conjunctive plus disjunctive tokens"
-        keywords_all: ["has-text"]
-        keywords_any: ["getbyrole", "text content"]
+      - description: "conjunction of any-of groups"
+        keywords_all:
+          - ["has-text", "rendered text"]
+          - ["getbyrole", "accessible name"]
+          - ["withdraw", "artifact"]
         wcag: ""
       - description: "disjunctive tokens only"
         keywords: ["trace"]

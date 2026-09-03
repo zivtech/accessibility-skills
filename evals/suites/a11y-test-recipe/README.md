@@ -1,7 +1,8 @@
 # a11y-test-recipe eval suite
 
 **Status: one BUG/CLEAN pair + runner lane landed 2026-09-03 (GT-16, wave 2,
-fixture-first); first model rows in `evals/results/gt16-dialog-dismiss-recipe/`.**
+fixture-first), revision 2 after a gate + baseline-draw repair round; rows in
+`evals/results/gt16-dialog-dismiss-recipe/`.**
 
 This suite measures a **test-instrument judgment**: given a keyboard test
 recipe, the run output it produced, and the component it targets, does the
@@ -11,10 +12,14 @@ grades an evidence package against the five admissibility rules the a11y-test
 skill states) at the level *before* a run is treated as evidence: is the
 recipe pointing at the control it claims to test at all.
 
-The component in every fixture here is correct. The defects, where planted,
-are in the recipe or in the outcome it filed. A review that blames the
-component has found the right symptom for the wrong reason, and the rubrics
-score that as a false alarm.
+The component in every fixture here is meant to be correct, and that claim is
+gated, not assumed: revision 1 of the pair shipped a real focus-return defect
+(focus restored inside the handler while the page root was still `inert`) that
+a blind baseline draw and the bench-reviewer gate both caught; revision 2
+restores focus from the dialog's effect cleanup, after the commit that removes
+`inert`. The defects, where planted, are in the recipe or in the outcome it
+filed. A review that blames the component has found the right symptom for the
+wrong reason, and the rubrics score that as a false alarm.
 
 ## Why this lane exists (GT-16)
 
@@ -43,7 +48,7 @@ selector provenance — that absence is what the A/B measures.
 | Fixture | Kind | What is graded |
 |---|---|---|
 | `dialog-dismiss-recipe` | BUG | must: the `:has-text()` selector cannot resolve an `aria-label`-named control and bound to the wrong button (call log); should: the trace contradicts the filed 2.1.1 FAIL — withdraw it, don't ratify it. Four traps: the icon-only button, the inert "Close account" button, initial focus on Cancel, the six-press bound |
-| `dialog-dismiss-recipe-clean` | CLEAN | byte-identical component; selector is `dialog.getByRole('button', { name: 'Close dialog', exact: true })`; two PASS rows with the trace steps that support them. Six traps: the four above plus a `:has-text()` on a text-bearing paragraph (correct) and `exact: true` (deliberate) |
+| `dialog-dismiss-recipe-clean` | CLEAN | byte-identical component; selector is `dialog.getByRole('button', { name: 'Close dialog', exact: true })`; two operation-scoped PASS rows (each with a `claim_boundary`) and the trace steps that support them. Seven traps: the four above plus a `:has-text()` on a text-bearing paragraph (correct), `exact: true` (deliberate), and the PASS rows read as conformance claims (they say they are not) |
 
 Fixture shape (the blind envelope proposed in issue #51 — no
 "Accessibility Features Present" section precedes the cut line):
@@ -81,12 +86,21 @@ task prefix asks for `VERDICT: ACCEPT` (recipe and outcome stand as filed) or
 
 `ollama/score_output.py`, the critic lane's instrument: verdict + must-find
 detection for BUG, verdict + no-findings for CLEAN. The BUG rubric is the first
-to use the scorer's explicit `keywords_all` / `keywords_any` fields (added
+to use the scorer's explicit `keywords_all` field with **any-of groups** (added
 2026-09-03): the first-four-words fallback is polarity-blind on this fixture,
 because any review that quotes the selector would score the must-find whether
-it diagnosed it or not. The must-find requires `has-text` **and** one of the
-semantics/remedy tokens; a "scope the selector to the dialog" review (wrong
-diagnosis) scores 0/1. Proof: `evals/results/gt16-dialog-dismiss-recipe/canaries.py`.
+it diagnosed it or not, and the scorer's 0.4 abort threshold means two separate
+must-finds can be half-earned by a review that ratifies the FAIL. So the single
+must-find is a conjunction of three groups — names the semantics (has-text /
+rendered text content), names the remedy or the name source (getByRole /
+getByLabel / accessible name), and withdraws the filed FAIL (withdraw /
+unsupported / cannot be filed / instrument artifact …). A review that ratifies
+the FAIL with a getByRole "nit", or one that scopes the selector to the dialog
+and lets the FAIL stand, scores 0/1; a correct review that never types the
+literal `has-text` scores 1/1. Proof, including the gate's own probes:
+`evals/results/gt16-dialog-dismiss-recipe/canaries.py`. Residual class the
+tokens cannot separate: a ratifying review that also uses a withdrawal token in
+another sense — adjudicate by hand.
 
 False-positive traps are adjudicated by hand in the results README, as in the
 other GT pairs. Scorer statuses are detector output, not verdict authority.
@@ -94,7 +108,8 @@ other GT pairs. Scorer statuses are detector output, not verdict authority.
 ## What this suite is NOT
 
 - Not a component review — the a11y-critic suite does that; the component here
-  is correct by construction and any component finding is a false alarm.
+  is gated correct (rev2, after a repair round) and any component finding is a
+  false alarm.
 - Not the operation-evidence admissibility lane — those five rules are a closed
   set in SKILL.md and their scorer rejects unknown rule ids; this lane grades a
   judgment that lane cannot express without a sixth rule, which is exactly the

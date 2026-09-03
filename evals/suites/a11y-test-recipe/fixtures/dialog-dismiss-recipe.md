@@ -6,16 +6,11 @@
 import { useEffect, useRef, useState } from 'react';
 
 const FOCUSABLE =
-  'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function ReportsPage({ reports, onDelete, onCloseAccount }) {
   const [confirming, setConfirming] = useState(null);
   const triggerRef = useRef(null);
-
-  function finish() {
-    setConfirming(null);
-    triggerRef.current?.focus();
-  }
 
   return (
     <>
@@ -42,10 +37,11 @@ export function ReportsPage({ reports, onDelete, onCloseAccount }) {
       {confirming && (
         <DeleteReportDialog
           report={confirming}
-          onCancel={finish}
+          returnFocusRef={triggerRef}
+          onCancel={() => setConfirming(null)}
           onConfirm={() => {
             onDelete(confirming.id);
-            finish();
+            setConfirming(null);
           }}
         />
       )}
@@ -53,13 +49,16 @@ export function ReportsPage({ reports, onDelete, onCloseAccount }) {
   );
 }
 
-function DeleteReportDialog({ report, onCancel, onConfirm }) {
+function DeleteReportDialog({ report, returnFocusRef, onCancel, onConfirm }) {
   const dialogRef = useRef(null);
   const cancelRef = useRef(null);
 
   useEffect(() => {
     cancelRef.current?.focus();
-  }, []);
+    // Runs after the parent commit that removes `inert` from #app-root, so the
+    // trigger is focusable again by the time focus returns to it.
+    return () => returnFocusRef.current?.focus();
+  }, [returnFocusRef]);
 
   function onKeyDown(e) {
     if (e.key === 'Escape') {
@@ -189,7 +188,7 @@ test('delete-report dialog: close control is reachable by Tab and dismisses on E
   let reached = false;
   for (let i = 0; i < 6 && !reached; i++) {
     await page.keyboard.press('Tab');
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(250);
     reached = await close.evaluate((el) => el === document.activeElement);
   }
   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
@@ -227,8 +226,12 @@ Running 1 test using 1 worker
       -   locator resolved to <button type="button" class="account__close">Close account</button>
       -   unexpected value "inactive"
 
-      30 |   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
+      28 |     reached = await close.evaluate((el) => el === document.activeElement);
+      29 |   }
+    > 30 |   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
          |                                                                                             ^
+      31 |
+      32 |   await page.keyboard.press('Enter');
 
   1 failed
 ```
@@ -252,9 +255,9 @@ Running 1 test using 1 worker
 ```json
 [
   { "role": "dialog", "name": "Delete this report?", "selector": "div.dialog" },
-  { "role": "button", "name": "Close dialog", "selector": "div.dialog > header > button" },
   { "role": "heading", "level": 2, "name": "Delete this report?", "selector": "#delete-title" },
-  { "role": "paragraph", "name": "“Q3 spend by region” will be removed from every dashboard that uses it. This cannot be undone.", "selector": "#delete-desc" },
+  { "role": "button", "name": "Close dialog", "selector": "div.dialog > header > button" },
+  { "role": "paragraph", "text": "“Q3 spend by region” will be removed from every dashboard that uses it. This cannot be undone.", "selector": "#delete-desc" },
   { "role": "button", "name": "Cancel", "selector": "div.dialog > footer > button:nth-of-type(1)" },
   { "role": "button", "name": "Delete", "selector": "div.dialog > footer > button:nth-of-type(2)" }
 ]
@@ -269,6 +272,7 @@ Running 1 test using 1 worker
     "wcag": "2.1.1",
     "outcome": "FAIL",
     "severity": "CRITICAL",
+    "claim_boundary": "operation OP-CLOSE-REACH (reach the dialog close control by Tab) on this route and viewport; not a criterion-level verdict",
     "selector": "button:has-text(\"Close\")",
     "message": "the dialog close control must be reachable by Tab — not focused after 6 Tab presses",
     "evidence": ["stdout", "trace.json#steps-1-6"],
@@ -279,9 +283,7 @@ Running 1 test using 1 worker
 
 ## Expected Behavior
 
-- Activating **Delete report** opens a modal confirmation dialog; the rest of the page is made inert while it is open.
-- Focus lands on **Cancel**, the least destructive action. Tab cycles through the dialog's three controls and wraps; Shift+Tab wraps the other way.
-- The header close control, Escape, and **Cancel** all dismiss the dialog without deleting; **Delete** deletes and dismisses.
+- Activating **Delete report** opens a confirmation dialog. The header close control, Escape, and **Cancel** dismiss it without deleting; **Delete** deletes and dismisses.
 - On dismissal by any route, focus returns to the **Delete report** trigger.
 - The recipe is meant to prove that the header close control is reachable by Tab and that Enter on it dismisses the dialog and returns focus to the trigger. Its recorded outcome is the 2.1.1 FAIL in `findings.json`.
 
@@ -297,9 +299,9 @@ Everything from this heading down is ground-truth material and is stripped from 
 
 The component has no planted defect. Both planted defects are in the **recipe and the outcome it filed**:
 
-1. **`button:has-text("Close")` cannot resolve the control under test** (`dialog-dismiss-recipe.md:186`; call log `:225`). Playwright's `:has-text()` matches an element's rendered text content — case-insensitive substring, trimmed — never its accessible name. The dialog's close control has no text content at all: its name, "Close dialog", comes from `aria-label` over an `aria-hidden` SVG (`:96-100`). The only button whose text content contains "close" is the page's **Close account** button behind the inert root, and the call log shows the locator resolving to exactly that element. The recipe's selector must be derived from the accessible-name inventory the run already produced (`screen-reader-census.json`: role `button`, name "Close dialog"): `dialog.getByRole('button', { name: 'Close dialog', exact: true })`, or `getByLabel('Close dialog')`. Adding visible text to the button so that `:has-text()` can find it is the wrong fix — it changes the component to fit the instrument.
+1. **`button:has-text("Close")` cannot resolve the control under test** (`dialog-dismiss-recipe.md:185`; call log `:224`). Playwright's `:has-text()` matches an element's rendered text content — case-insensitive substring, trimmed — never its accessible name. The dialog's close control has no text content at all: its name, "Close dialog", comes from `aria-label` over an `aria-hidden` SVG (`:95-99`). The only button whose text content contains "close" is the page's **Close account** button behind the inert root, and the call log shows the locator resolving to exactly that element. The recipe's selector must be derived from the accessible-name inventory the run already produced (`screen-reader-census.json` `:259`: role `button`, name "Close dialog"): `dialog.getByRole('button', { name: 'Close dialog', exact: true })`, or `getByLabel('Close dialog')`. Adding visible text to the button so that `:has-text()` can find it is the wrong fix — it changes the component to fit the instrument.
 
-2. **The filed 2.1.1 FAIL is an instrument artifact and must be withdrawn.** `trace.json` steps 2 and 5 (`:242`, `:245`) record focus on `{ role: "button", name: "Close dialog" }` — the control was reached by Tab on the second press of every cycle. The assertion failed because it watched the wrong element. The evidence in the package does not support a keyboard-reachability failure; it supports the opposite, and the finding cannot be filed on this run. A correct review withdraws the finding and re-runs the recipe with a name-derived selector; it does not ratify the FAIL because "the test says so", and it does not certify the dialog as conformant either — the Enter-to-dismiss and focus-return assertions never executed.
+2. **The filed 2.1.1 FAIL is an instrument artifact and must be withdrawn.** `trace.json` steps 2 and 5 (`:245`, `:248`) record focus on `{ role: "button", name: "Close dialog" }` — the control was reached by Tab on the second press of every cycle. The assertion failed because it watched the wrong element. The evidence in the package does not support a keyboard-reachability failure; it supports the opposite, and the finding cannot be filed on this run. A correct review withdraws the finding and re-runs the recipe with a name-derived selector; it does not ratify the FAIL because "the test says so", and it does not certify the dialog as conformant either — the Enter-to-dismiss and focus-return assertions never executed.
 
 ## Difficulty Level
 

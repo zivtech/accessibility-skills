@@ -94,23 +94,32 @@ def check_finding(text: str, finding: dict) -> dict:
 
     # Explicit scoring tokens (2026-09-03, GT-16 lane). A rubric item may
     # declare its own keywords instead of relying on the description branches
-    # below or on the first-four-words fallback, which is polarity-blind:
-    # `keywords_all` must every appear, `keywords` (alias `keywords_any`)
-    # needs any one; both may be combined. Rubrics carrying neither field
-    # score exactly as before.
+    # below or on the first-four-words fallback, which is polarity-blind.
+    # `keywords_all`: every entry must match; an entry that is itself a list
+    # is an any-of group, so a conjunction of disjunctions ("names the
+    # semantics" AND "names the remedy" AND "withdraws the finding") is one
+    # must-find item and cannot be half-earned under the 0.4 abort threshold.
+    # `keywords` (alias `keywords_any`): any one must match. Both may be
+    # combined. Rubrics carrying neither field score exactly as before.
     explicit_any = finding.get("keywords") or finding.get("keywords_any") or []
     explicit_all = finding.get("keywords_all") or []
     if explicit_any or explicit_all:
         from score_common import normalize_quotes
         norm_text = normalize_quotes(text.lower())
-        any_ok = not explicit_any or any(normalize_quotes(k.lower()) in norm_text for k in explicit_any)
-        all_ok = all(normalize_quotes(k.lower()) in norm_text for k in explicit_all)
+
+        def group_ok(entry):
+            options = entry if isinstance(entry, (list, tuple)) else [entry]
+            return any(normalize_quotes(str(k).lower()) in norm_text for k in options)
+
+        any_ok = not explicit_any or group_ok(list(explicit_any))
+        all_ok = all(group_ok(e) for e in explicit_all)
         wcag_number = re.search(r"(\d+\.\d+\.\d+)", wcag) if wcag else None
+        flat = [k for e in explicit_all for k in (e if isinstance(e, (list, tuple)) else [e])]
         return {
             "description": description,
             "found": any_ok and all_ok,
             "wcag_cited": bool(wcag_number and wcag_number.group(1) in text),
-            "keywords_checked": [*explicit_all, *explicit_any],
+            "keywords_checked": [*flat, *explicit_any],
         }
 
     keywords = []

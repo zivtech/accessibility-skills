@@ -17,33 +17,41 @@ input_format: component + CSS + Playwright recipe + run output (stdout, trace.js
 difficulty: HAS-BUGS
 domain: Test Instrument
 work_type: recipe_review
+fixture_revision: 2   # rev1 (cbd2f41) carried an unplanted focus-return defect and a census out of DOM order; both repaired 2026-09-03
 
 expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "has-text text-content selector mismatch — `button:has-text(\"Close\")` matches rendered text content, so it cannot resolve the icon-only close control whose name is `aria-label`; the call log shows it bound to the inert 'Close account' button"
-        keywords_all: ["has-text"]
-        keywords_any: ["getbyrole", "getbylabel", "accessible name", "text content", "textcontent"]
+      - description: "has-text text-content selector mismatch — `button:has-text(\"Close\")` matches rendered text content, so it cannot resolve the icon-only close control whose name is `aria-label`; the call log shows it bound to the inert 'Close account' button; the filed FAIL is an instrument artifact and is withdrawn, not ratified"
+        # Conjunction of three any-of groups (score_output.py keywords_all): a
+        # review must name the semantics, name the remedy or the name source,
+        # AND withdraw the filed FAIL. One item, so a ratifying review cannot
+        # half-earn it under the 0.4 abort threshold.
+        keywords_all:
+          - ["has-text", "hastext", "rendered text", "text content", "textcontent", "visible text"]
+          - ["getbyrole", "getbylabel", "by role", "accessible name", "accname", "aria-label"]
+          - ["withdraw", "retract", "unsupported", "not supported", "cannot be filed", "should not be filed", "must not be filed", "does not support", "doesn't support", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "spurious", "false fail", "invalid finding", "finding is invalid", "misattributed", "mis-attributed"]
         severity: CRITICAL
         wcag: "n/a — instrument defect, not a criterion: Playwright selector semantics (`:has-text()` = text content; role locators = ARIA accessible name)"
-        evidence: "dialog-dismiss-recipe.md:186 (the selector); :225 (call log: locator resolved to <button class=\"account__close\">Close account</button>); :96-100 (the control's name is aria-label over an aria-hidden svg, no text content); :255 (census row: role button, name \"Close dialog\")"
+        evidence: "dialog-dismiss-recipe.md:185 (the selector); :224 (call log: locator resolved to <button class=\"account__close\">Close account</button>); :95-99 (the control's name is aria-label over an aria-hidden svg, no text content); :259 (census row: role button, name \"Close dialog\"); :273 (outcome FAIL) against :245 and :248 (trace: focus on \"Close dialog\")"
         user_group: "Nobody directly — the defect is in the instrument. Its downstream victims are the developers who receive a false 2.1.1 defect, and the keyboard users whose real defects go untested while the suite chases this one"
-        expected_behavior: "Selectors for the control under test are derived from its accessible name — `dialog.getByRole('button', { name: 'Close dialog', exact: true })` or `getByLabel('Close dialog')` — using the census the run already produced"
-        fix: "Replace the `:has-text()` locator with the role+name locator from the census row; re-run. Do not add visible text to the button to make the old selector work — that changes the component to fit the instrument"
+        expected_behavior: "Selectors for the control under test are derived from its accessible name — `dialog.getByRole('button', { name: 'Close dialog', exact: true })` or `getByLabel('Close dialog')` — using the census the run already produced; the FAIL is withdrawn and the recipe re-run before anything is filed"
+        fix: "Replace the `:has-text()` locator with the role+name locator from the census row; mark the finding withdrawn; re-run. Do not add visible text to the button to make the old selector work — that changes the component to fit the instrument"
 
   - category: should_find
     count: 1
     items:
-      - description: "trace contradicts the filed FAIL — steps 2 and 5 record focus on { role: button, name: \"Close dialog\" }, so the 2.1.1 finding is an instrument artifact and must be withdrawn, not ratified"
-        keywords_all: ["trace"]
-        keywords_any: ["artifact", "instrument", "withdraw", "retract", "false", "not supported", "unsupported", "does not support", "contradict"]
-        severity: CRITICAL
+      - description: "trace steps 2 and 5 cited as the contradiction — the review points at the specific trace rows that record focus on { role: button, name: \"Close dialog\" }, not just at the FAIL"
+        keywords_all:
+          - ["trace"]
+          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":245", ":248", "line 245", "line 248"]
+        severity: MAJOR
         wcag: "2.1.1 Keyboard (the criterion the finding wrongly cites — the evidence shows the control reachable)"
-        evidence: "dialog-dismiss-recipe.md:242, :245 (focus_after name \"Close dialog\"); :270 (outcome FAIL); :274 (the finding cites trace steps 1-6 as its own evidence)"
+        evidence: "dialog-dismiss-recipe.md:245, :248 (focus_after name \"Close dialog\"); :278 (the finding cites trace steps 1-6 as its own evidence)"
         user_group: "Developers receiving the finding; the keyboard users a wasted fix cycle does not help"
-        expected_behavior: "A review withdraws the FAIL and re-runs with a corrected selector; it does not certify the dialog either — the dismiss and focus-return assertions never executed"
-        fix: "Mark the finding withdrawn (instrument artifact), re-run the corrected recipe, file from the re-run"
+        expected_behavior: "The withdrawal is argued from the trace rows themselves, so the developer reading the review can verify it without re-running"
+        fix: "Quote the trace steps in the withdrawal note"
 
 wcag_criteria:
   - "2.1.1 Keyboard (cited by the filed finding; not violated by the component on this evidence)"
@@ -73,14 +81,27 @@ notes: |
   the component is correct throughout. It is the first pair in the bundle
   whose defect surface is the recipe, and it is authored under the blind
   envelope proposed in issue #51 — no "Accessibility Features Present"
-  section precedes the cut line, so the traps are not pre-argued to the
-  model.
+  section precedes the cut line, and (rev2) the Expected Behavior section
+  no longer states the inert root, the initial-focus choice, or the
+  three-control cycle, so the traps are not pre-argued to the model.
 
-  Scoring note: this rubric uses the explicit `keywords_all` /
-  `keywords_any` fields added to score_output.py for this lane. The
-  first-four-words fallback is polarity-blind here — any review that
-  quotes the selector would score the must-find. `keywords_all:
-  ["has-text"]` alone would still credit a review that says "scope
-  `:has-text("Close")` to the dialog" (the wrong diagnosis), so the
-  any-list demands the semantics or the remedy as well. Proof:
-  evals/results/gt16-dialog-dismiss-recipe/canaries.py.
+  Revision history. rev1 (cbd2f41) shipped an unplanted component defect:
+  focus was restored to the trigger inside the click/keydown handler,
+  while `#app-root` still carried `inert` (React 18 flushes the state
+  update after the handler returns), so the focus call was a no-op and
+  focus fell to <body> on every dismissal. A blind baseline draw and the
+  bench-reviewer gate both caught it; rev2 restores focus from the
+  dialog's effect cleanup, which runs after the commit that removes
+  `inert`. rev1 also listed the census out of DOM order (close button
+  before heading) — repaired. Receipts: evals/results/gt16-dialog-dismiss-recipe/.
+
+  Scoring note: the must-find is one item built from three any-of groups
+  (score_output.py `keywords_all`, list entries = any-of). The gate's
+  probes against rev1 — a review that ratifies the FAIL with a getByRole
+  "nit" (had semantics + remedy, no withdrawal), a scope-it-to-the-dialog
+  review phrased with "text content" (no remedy, no withdrawal), and a
+  fully correct review that never typed the literal `has-text` (rev1
+  scored it 0/1) — all score as they should under rev2. Proof:
+  evals/results/gt16-dialog-dismiss-recipe/canaries.py. Residual class:
+  a ratifying review that also uses a withdrawal token in another sense;
+  adjudicate by hand.

@@ -1,6 +1,7 @@
 fixture_id: dialog-dismiss-recipe
 suite: a11y-test-recipe
-rubric_version: "1.0"
+rubric_version: "1.1"
+fixture_revision: 2
 difficulty: HAS-BUGS
 scoring_method: hybrid
 scorer: ollama/score_output.py
@@ -11,12 +12,12 @@ hybrid_weights:
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
-    description: "Instrument defects a competent reviewer of the recipe must find"
+    description: "Instrument defects a competent reviewer of the recipe must find, with the disposition they imply"
     weight: 3
 
   - id: should_find
     name: "Should-Find Issues"
-    description: "The consequence a skilled reviewer draws from the must-find"
+    description: "The evidence a skilled reviewer cites for the must-find"
     weight: 2
 
   - id: nice_to_find
@@ -43,29 +44,32 @@ expected_findings:
   - category: must_find
     count: 1
     items:
-      - description: "has-text text-content selector mismatch — `button:has-text(\"Close\")` matches rendered text content, so it cannot resolve the icon-only close control whose name is `aria-label`; the call log shows it bound to the inert 'Close account' button"
-        keywords_all: ["has-text"]
-        keywords_any: ["getbyrole", "getbylabel", "accessible name", "text content", "textcontent"]
+      - description: "has-text text-content selector mismatch — `button:has-text(\"Close\")` matches rendered text content, so it cannot resolve the icon-only close control whose name is `aria-label`; the call log shows it bound to the inert 'Close account' button; the filed FAIL is an instrument artifact and is withdrawn, not ratified"
+        keywords_all:
+          - ["has-text", "hastext", "rendered text", "text content", "textcontent", "visible text"]
+          - ["getbyrole", "getbylabel", "by role", "accessible name", "accname", "aria-label"]
+          - ["withdraw", "retract", "unsupported", "not supported", "cannot be filed", "should not be filed", "must not be filed", "does not support", "doesn't support", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "spurious", "false fail", "invalid finding", "finding is invalid", "misattributed", "mis-attributed"]
         severity: CRITICAL
         wcag: "n/a — instrument defect (Playwright selector semantics)"
-        evidence_requirement: "cites the selector (:186) and either the call log's resolved element (:225) or the control's aria-label-only name (:96-100); credit is stronger when the review names the remedy — a role+name or label locator built from the census row (:255)"
-        expected_to_find: "80%"
+        evidence_requirement: "cites the selector (:185) and either the call log's resolved element (:224) or the control's aria-label-only name (:95-99); names the remedy — a role+name or label locator built from the census row (:259); and states that the FAIL (:273) cannot be filed on this run"
+        expected_to_find: "75%"
 
   - category: should_find
     count: 1
     items:
-      - description: "trace contradicts the filed FAIL — steps 2 and 5 record focus on { role: button, name: \"Close dialog\" }, so the 2.1.1 finding is an instrument artifact and must be withdrawn, not ratified"
-        keywords_all: ["trace"]
-        keywords_any: ["artifact", "instrument", "withdraw", "retract", "false", "not supported", "unsupported", "does not support", "contradict"]
-        severity: CRITICAL
+      - description: "trace steps 2 and 5 cited as the contradiction — the review points at the specific trace rows that record focus on { role: button, name: \"Close dialog\" }"
+        keywords_all:
+          - ["trace"]
+          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":245", ":248", "line 245", "line 248"]
+        severity: MAJOR
         wcag: "2.1.1 Keyboard"
-        evidence_requirement: "cites trace steps 2 and/or 5 (:242, :245) against findings.json (:270); credit is reduced if the review withdraws the FAIL but then certifies the dialog — the dismiss and focus-return assertions (:197-199) never executed"
+        evidence_requirement: "cites :245 and/or :248 against findings.json (:273); credit is reduced if the review withdraws the FAIL but then certifies the dialog — the dismiss and focus-return assertions (:196-198) never executed"
         expected_to_find: "65%"
 
   - category: nice_to_find
     count: 2
     items:
-      - description: "The corrected recipe should also assert the dismiss-and-return steps ran (Enter on the close control hides the dialog, focus returns to the trigger) before any PASS is filed — the first run never reached them"
+      - description: "The corrected recipe should also assert the dismiss-and-return steps ran (Enter on the close control hides the dialog, focus returns to the trigger) before any PASS is filed — the first run never reached them (:196-198)"
         severity: ENHANCEMENT
       - description: "Selector provenance belongs in the recipe: a comment or fixture field naming the census row each locator was derived from, so a reviewer can check name-to-selector agreement without re-reading the DOM"
         severity: ENHANCEMENT
@@ -74,19 +78,19 @@ expected_findings:
     count: 4
     items:
       - description: "The icon-only close button with aria-label='Close dialog' over an aria-hidden svg is correct — flagging it (2.5.3, 4.1.2, 1.1.1) or 'fixing' it by adding visible text so the selector can find it is a false alarm"
-        impact: "Lines 96-100: the button has an accessible name from aria-label, the svg is hidden from the accessibility tree and unfocusable, and there is no visible text label for 2.5.3 Label in Name to apply to. A review that changes the component so that `:has-text()` works has inverted the relationship between instrument and subject."
+        impact: "Lines 95-99: the button has an accessible name from aria-label, the svg is hidden from the accessibility tree and unfocusable, and there is no visible text label for 2.5.3 Label in Name to apply to. A review that changes the component so that `:has-text()` works has inverted the relationship between instrument and subject."
         expected_to_find: "70%"
 
       - description: "The 'Close account' button behind the backdrop is not a defect — it sits inside the inert root while the dialog is open"
-        impact: "Lines 22 and 37-39: the button is a legitimate page control that `inert` removes from the tab order and the accessibility tree while the dialog is open. The recipe's selector reaching it is a selector problem, not a component one. A review that proposes renaming or removing it to disambiguate the selector is fixing the wrong side."
+        impact: "Lines 17 and 32-34: the button is a legitimate page control that `inert` removes from the tab order and the accessibility tree while the dialog is open. The recipe's selector reaching it is a selector problem, not a component one. A review that proposes renaming or removing it to disambiguate the selector is fixing the wrong side."
         expected_to_find: "60%"
 
-      - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision, not a 2.4.3 defect"
-        impact: "Lines 60-62: the APG dialog pattern permits initial focus on the least destructive action for a confirmation dialog whose content is short; the heading is announced through aria-labelledby (:89) regardless. A review that requires focus on the heading or the first tabbable element is applying one option of a pattern as if it were the rule."
+      - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision, not a 2.4.3 defect; and focus return from the effect cleanup is correct, not a timing bug"
+        impact: "Lines 56-61: the APG dialog pattern permits initial focus on the least destructive action for a confirmation dialog whose content is short; the heading is announced through aria-labelledby (:88) regardless. The cleanup-based return (:58-60) runs after the parent commit that removes `inert` from #app-root (:17), which is why it is not inside the handler. A review that requires focus on the heading, or that calls the cleanup return a race, is applying one option of a pattern as if it were the rule."
         expected_to_find: "55%"
 
       - description: "The six-press Tab bound is not the defect — the trace reaches the control on press 2 of every cycle"
-        impact: "Lines 188-194: the loop's bound is two full cycles of a three-control dialog, and the trace (:241-246) shows the control focused on presses 2 and 5. A review that attributes the FAIL to the bound, or calls the bound arbitrary as a finding, has not read the trace against the assertion."
+        impact: "Lines 187-193: the loop's bound is two full cycles of a three-control dialog, and the trace (:243-249) shows the control focused on presses 2 and 5. A review that attributes the FAIL to the bound, or calls the bound arbitrary as a finding, has not read the trace against the assertion."
         expected_to_find: "50%"
 
 composite_score_formula: |
@@ -114,13 +118,14 @@ verdict_expectations:
 known_judgment_calls:
   - "A review that recommends `getByRole('button', { name: /close/i })` unscoped, or `getByLabel('Close dialog')`, has the remedy right; the CLEAN sibling's `exact: true` and dialog scoping are the tighter form, not the only acceptable one."
   - "A review that withdraws the 2.1.1 FAIL and files nothing against the component is the expected disposition; one that additionally files a 'PASS' for reachability from the trace alone is over-claiming — the trace is a focus record, not the dismiss/return evidence the recipe set out to collect."
+  - "A review that prefers `flushSync` around the state update, or a layout-effect cleanup, over the passive cleanup at :58-60 is stating a preference, not a defect — provided it does not claim the passive cleanup fails. (A layout cleanup would: React processes the dialog's deletion before the sibling root's attribute update, so `inert` is still present at that point.)"
   - "Scorer statuses are detector output, not verdict authority — the same routing rule as every local-model lane. The false-positive traps are adjudicated by hand in the results README."
 
 notes: |
   Provenance: GT-16. Independent public reference: Playwright's documented
   selector semantics (`:has-text()` matches text content; role locators
   follow the ARIA accessible-name computation). See the metadata notes for
-  the verified quotations.
+  the verified quotations and the rev1 → rev2 repair history.
 
   Under promotion-bar clause 3, this fixture's deliverable is the
   distinction between an instrument defect and a component defect. The

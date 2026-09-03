@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
-"""Scorer-discrimination canaries for the GT-16 pair (a11y-test-recipe).
+"""Scorer-discrimination canaries for the GT-16 pair (a11y-test-recipe), rev2.
 
-The BUG rubric is the first to use score_output.py's explicit
-`keywords_all` / `keywords_any` fields (2026-09-03). The first-four-words
-fallback is polarity-blind on this fixture: every review that quotes the
-selector — including one that ratifies it — would score the must-find.
-The explicit fields demand `has-text` AND one of the semantics/remedy
-tokens. These canaries are the standing proof; the CLEAN rows exercise the
-verdict gate.
+The BUG rubric is the first to use score_output.py's explicit `keywords_all`
+field with any-of groups (2026-09-03). The first-four-words fallback is
+polarity-blind on this fixture: every review that quotes the selector —
+including one that ratifies it — would score the must-find. And because the
+scorer's abort threshold is 0.4, two separate must-finds could be half-earned
+by a review that ratifies the FAIL. So the must-find is ONE item requiring
+three groups at once: names the semantics, names the remedy or name source,
+and withdraws the filed FAIL.
 
-    trap-only (REVISE, blames the component)      must 0/1 -> FAIL
-    wrong diagnosis (scope :has-text to dialog)   must 0/1 -> FAIL
-    remedy without the selector named              must 0/1 -> FAIL (documented limit)
-    correct review                                 must 1/1, should 1/1 -> PASS
-    CLEAN correct ACCEPT                            PASS
-    CLEAN lint-style REVISE (flags p:has-text)      FAIL
+Cases (the lettered ones are the bench-reviewer gate's probes against rev1,
+which rev1 scored wrongly — see bench-reviewer-gate-opus-rev1.md, C-2):
+
+    trap-only (REVISE, blames the component)              must 0/1 -> FAIL
+    A  wrong diagnosis, "text content", FAIL stands        must 0/1 -> FAIL   (rev1: PASS)
+    B  ratifies FAIL + getByRole "nit"                     must 0/1 -> FAIL   (rev1: PASS)
+    C  ratifies FAIL, quotes trace, "not a false positive" must 0/1 -> FAIL; should not credited
+    D  correct, never types the literal `has-text`         must 1/1 -> PASS   (rev1: FAIL)
+    correct review                                         must 1/1, should 1/1 -> PASS
+    CLEAN correct ACCEPT                                    PASS
+    CLEAN lint-style REVISE (flags p:has-text)              FAIL  (FALSE ALARM)
+    E  CLEAN flags the rev1 focus-return defect             FAIL  (FALSE ALARM — correct under rev2, where the defect is repaired)
 
 Run:  python3 evals/results/gt16-dialog-dismiss-recipe/canaries.py    (exit 0 = CLEAN)
 """
@@ -29,46 +36,75 @@ RUBRICS = os.path.join(REPO, "evals", "suites", "a11y-test-recipe", "rubrics")
 BUG = "dialog-dismiss-recipe"
 CLEAN = "dialog-dismiss-recipe-clean"
 
+# (fixture, label, expected Status, required output line, forbidden output line or None, review text)
 CASES = [
- (BUG, "trap-only", "FAIL", "Must-find issues: 0/1",
+ (BUG, "trap-only", "FAIL", "Must-find issues: 0/1", None,
   """VERDICT: REVISE
   CRITICAL (2.5.3): the close button has no visible text label; add the word Close
-  so users can see what it does (dialog-dismiss-recipe.md:96-100).
-  MAJOR (2.4.3): initial focus should land on the heading, not Cancel (:60-62).
+  so users can see what it does (dialog-dismiss-recipe.md:95-99). Its aria-label
+  alone is not enough.
+  MAJOR (2.4.3): initial focus should land on the heading, not Cancel (:56-57).
   MINOR: the page has two controls named Close — the account section's Close
-  account button (:37-39) should be renamed to avoid the collision.
-  MINOR: six Tab presses is an arbitrary bound (:190)."""),
- (BUG, "wrong-diagnosis", "FAIL", "Must-find issues: 0/1",
+  account button (:32-34) should be renamed to avoid the collision.
+  MINOR: six Tab presses is an arbitrary bound (:189)."""),
+ (BUG, "A-wrong-diagnosis", "FAIL", "Must-find issues: 0/1", None,
   """VERDICT: REVISE
-  MAJOR: `button:has-text("Close")` (:186) is not scoped to the dialog, so it
-  can reach the page underneath; use dialog.locator('button:has-text("Close")')
-  instead. The 2.1.1 FAIL stands until the scoped selector is re-run."""),
- (BUG, "remedy-without-selector", "FAIL", "Must-find issues: 0/1",
+  MAJOR: `button:has-text("Close")` (:185) matches on text content anywhere in
+  the page, so it is not scoped to the dialog and can reach the page underneath;
+  use dialog.locator('button:has-text("Close")') instead. The 2.1.1 FAIL stands
+  until the scoped selector is re-run."""),
+ (BUG, "B-ratifies-with-nit", "FAIL", "Must-find issues: 0/1", None,
   """VERDICT: REVISE
-  CRITICAL: the locator on line 186 should be getByRole('button', { name: 'Close dialog' })
-  built from the census row (:255); the current one resolves to Close account."""),
- (BUG, "correct", "PASS", "Must-find issues: 1/1",
+  CRITICAL (2.1.1): the close control is genuinely not reachable — the recipe
+  pressed Tab six times and `button:has-text("Close")` never received focus
+  (:194, :224). The component must add the close button to the focus trap.
+  As a nit, prefer getByRole over `button:has-text("Close")`; the aria-label is
+  "Close dialog" so getByRole('button', { name: 'Close dialog' }) reads better."""),
+ (BUG, "C-ratifies-quotes-trace", "FAIL", "Must-find issues: 0/1", "Should-find issues: 1/1",
   """VERDICT: REVISE
-  CRITICAL: `button:has-text("Close")` (:186) matches rendered text content, not the
+  CRITICAL (2.1.1): confirmed. trace.json (:243-249) shows focus cycling
+  Cancel/Delete/Close dialog but the assertion at :194 still failed, so the
+  control the test targets is not operable by keyboard. This is not a false
+  positive; the test instrument recorded it twice. Fix the component's focus
+  handling before re-running."""),
+ (BUG, "D-correct-no-literal", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: the locator on :185 selects by rendered text content, not by
+  accessible name. The close control (:95-99) has no text — its name "Close
+  dialog" comes from aria-label — so the locator cannot match it; the call log
+  (:224) shows it resolved to the inert "Close account" button instead. Build the
+  locator from the census row (:259): getByRole('button', { name: 'Close dialog',
+  exact: true }) scoped to the dialog. The filed 2.1.1 FAIL (:273) is therefore
+  unsupported and must be withdrawn; the trace at :245 and :248 shows the control
+  focused on the second press of each cycle."""),
+ (BUG, "correct", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: `button:has-text("Close")` (:185) matches rendered text content, not the
   accessible name. The close control's name comes from aria-label over an
-  aria-hidden svg (:96-100) and has no text content, so the locator bound to the
-  inert "Close account" button — the call log says so (:225). Derive the selector
-  from the census row (:255): dialog.getByRole('button', { name: 'Close dialog', exact: true }).
-  CRITICAL: the filed 2.1.1 FAIL (:270) is contradicted by its own trace — steps 2
-  and 5 (:242, :245) record focus on "Close dialog". The finding is an instrument
+  aria-hidden svg (:95-99) and has no text content, so the locator bound to the
+  inert "Close account" button — the call log says so (:224). Derive the selector
+  from the census row (:259): dialog.getByRole('button', { name: 'Close dialog', exact: true }).
+  CRITICAL: the filed 2.1.1 FAIL (:273) is contradicted by its own trace — steps 2
+  and 5 (:245, :248) record focus on "Close dialog". The finding is an instrument
   artifact and must be withdrawn; re-run before filing anything."""),
- (CLEAN, "correct-accept", "PASS", "Verdict correct: YES",
+ (CLEAN, "correct-accept", "PASS", "Verdict correct: YES", None,
   """VERDICT: ACCEPT
-  The selector for the control under test is role+name with exact matching (:188),
-  taken from the census row (:255); the trace reaches it on press 2 and the
-  dismiss/return step executed (:230). p:has-text on the description (:184) targets
-  a text-bearing element and resolves. ENHANCEMENT: Escape and Shift+Tab wrap are
-  not exercised."""),
- (CLEAN, "lint-style-revise", "FAIL", "FALSE ALARM",
+  The selector for the control under test is role+name with exact matching (:187),
+  taken from the census row (:234); the trace reaches it on press 2 (:223) and the
+  dismiss/return step executed (:224). p:has-text on the description (:183) targets
+  a text-bearing element and resolves. Both PASS rows carry a claim_boundary
+  (:249, :259). ENHANCEMENT: Escape and Shift+Tab wrap are not exercised."""),
+ (CLEAN, "lint-style-revise", "FAIL", "FALSE ALARM", None,
   """VERDICT: REVISE
-  MAJOR: `p:has-text("cannot be undone")` (:184) — has-text selectors are unreliable;
-  use getByText. MAJOR: exact: true (:188) makes the locator brittle. MINOR: the
-  close button needs visible text (:96-100)."""),
+  MAJOR: `p:has-text("cannot be undone")` (:183) — has-text selectors are unreliable;
+  use getByText. MAJOR: exact: true (:187) makes the locator brittle. MINOR: the
+  close button needs visible text (:95-99)."""),
+ (CLEAN, "E-flags-focus-return", "FAIL", "FALSE ALARM", None,
+  """VERDICT: REVISE
+  MAJOR (2.4.3): focus return is unreliable — the trigger is inside #app-root
+  (:17), which is inert until the state update flushes, so focusing it from the
+  dialog (:60) is a no-op and focus falls to body. The trace's step 3 (:224)
+  records behaviour the component cannot produce."""),
 ]
 
 def run(fid, text):
@@ -81,10 +117,11 @@ def run(fid, text):
     return buf.getvalue()
 
 bad = 0
-for fid, label, want_status, want_line, text in CASES:
+for fid, label, want_status, want_line, forbid_line, text in CASES:
     out = run(fid, text)
     status = next((l for l in out.splitlines() if l.startswith("Status:")), "Status: ?")
-    ok = (f"Status: {want_status}" in status) and (want_line in out)
+    ok = (f"Status: {want_status}" in status) and (want_line in out) and (forbid_line is None or forbid_line not in out)
     bad += 0 if ok else 1
-    print(f"{'ok ' if ok else 'BAD'} {fid:30s} {label:24s} -> {status}   [{want_line}: {'yes' if want_line in out else 'NO'}]")
+    extra = f"  forbid[{forbid_line}]: {'absent' if forbid_line not in out else 'PRESENT'}" if forbid_line else ""
+    print(f"{'ok ' if ok else 'BAD'} {fid:30s} {label:24s} -> {status}   [{want_line}: {'yes' if want_line in out else 'NO'}]{extra}")
 sys.exit(1 if bad else 0)

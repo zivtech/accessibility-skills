@@ -1,6 +1,7 @@
 fixture_id: dialog-dismiss-recipe-clean
 suite: a11y-test-recipe
-rubric_version: "1.0"
+rubric_version: "1.1"
+fixture_revision: 2
 difficulty: CLEAN
 scoring_method: hybrid
 scorer: ollama/score_output.py
@@ -16,7 +17,7 @@ dimensions:
 
   - id: should_find
     name: "Should-Find Issues"
-    description: "The consequence a skilled reviewer draws from the must-find"
+    description: "The evidence a skilled reviewer cites for the must-find"
     weight: 2
 
   - id: nice_to_find
@@ -47,33 +48,38 @@ expected_findings:
     count: 0
 
   - category: nice_to_find
-    count: 2
+    count: 3
     items:
       - description: "Optional: Escape and Shift+Tab wrap are not exercised — coverage scope, not defects"
         severity: ENHANCEMENT
       - description: "Optional: `p:has-text(\"cannot be undone\")` could be `getByText(...)` for locator consistency — an equivalence, not a defect"
         severity: ENHANCEMENT
+      - description: "Optional: the recipe cannot tell 'dismissed' from 'deleted and dismissed'; asserting the report is still listed after dismissal closes that gap"
+        severity: ENHANCEMENT
 
   - category: false_positive_trap
-    count: 6
+    count: 7
     items:
       - description: "The icon-only close button with aria-label='Close dialog' over an aria-hidden svg is correct — not a 2.5.3, 4.1.2, or 1.1.1 failure"
-        impact: "Lines 96-100. No visible text label exists for 2.5.3 to apply to; the name is computed from aria-label; the svg is hidden and unfocusable."
+        impact: "Lines 95-99. No visible text label exists for 2.5.3 to apply to; the name is computed from aria-label; the svg is hidden and unfocusable."
         expected_to_find: "70%"
       - description: "The 'Close account' button behind the backdrop is not a defect and not a duplicate-name problem"
-        impact: "Lines 22, 37-39: inside the inert root while the dialog is open; the recipe's dialog-scoped, exact-name locator would not reach it even if it were not."
+        impact: "Lines 17, 32-34: inside the inert root while the dialog is open; the recipe's dialog-scoped, exact-name locator would not reach it even if it were exposed."
         expected_to_find: "65%"
-      - description: "`p:has-text(\"cannot be undone\")` (line 184) resolves — text-content matching is right for a text-bearing paragraph"
+      - description: "`p:has-text(\"cannot be undone\")` (line 183) resolves — text-content matching is right for a text-bearing paragraph"
         impact: "Flagging every `:has-text()` on sight replaces selector reasoning with a lint rule; the selector is wrong only for elements whose name is not their text content."
         expected_to_find: "55%"
-      - description: "`exact: true` on the close-control locator (line 188) is a deliberate tightening, not over-specification or brittleness"
+      - description: "`exact: true` on the close-control locator (line 187) is a deliberate tightening, not over-specification or brittleness"
         impact: "The default name match is a case-insensitive substring; `exact: true` excludes any other control whose name contains the phrase."
         expected_to_find: "60%"
-      - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision"
-        impact: "Lines 60-62: the APG dialog pattern permits initial focus on the least destructive action; the heading is announced through aria-labelledby (:89)."
+      - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision; focus return from the effect cleanup is correct, not a race"
+        impact: "Lines 56-61: the APG dialog pattern permits initial focus on the least destructive action; the heading is announced through aria-labelledby (:88). The cleanup return (:58-60) runs after the parent commit that removes `inert` (:17)."
         expected_to_find: "55%"
-      - description: "The six-press Tab bound and the 100 ms settle wait are recipe hygiene, not defects"
-        impact: "Lines 190-196: two full cycles of a three-control dialog with the React-state settle the a11y-test method calls for; the trace shows the control reached on press 2."
+      - description: "The six-press Tab bound and the 250 ms settle wait are recipe hygiene, not defects"
+        impact: "Lines 189-195: two full cycles of a three-control dialog with a settle inside the 200–500 ms range the a11y-test method states; the trace shows the control reached on press 2."
+        expected_to_find: "50%"
+      - description: "The two PASS rows are operation-scoped, not conformance claims — flagging them as 2.1.1 / 2.4.3 over-claims is a false alarm"
+        impact: "Lines 249 and 259: each row's claim_boundary names the operation, route and viewport and disclaims a criterion-level verdict; the wcag field records the criterion the operation bears on."
         expected_to_find: "50%"
 
 composite_score_formula: |
@@ -89,29 +95,34 @@ scoring_thresholds:
 expected_reviewer_performance:
   - condition: recipe-skill
     expected_score: 80-100
-    reasoning: "Should ACCEPT with at most ENHANCEMENT notes; the slice's 'close buttons have descriptive aria-label' check and the detector-authority boundary steer it off the component traps."
+    reasoning: "Should ACCEPT with at most ENHANCEMENT notes; the slice's 'close buttons have descriptive aria-label' check and the detector-authority boundary steer it off the component traps and onto the claim_boundary fields."
   - condition: baseline-zero-shot
     expected_score: 50-90
-    reasoning: "The exposure is lint-style flagging — `:has-text()` on the paragraph, `exact: true`, or the icon-only button — from a reviewer who wants to return something."
+    reasoning: "The exposure is lint-style flagging — `:has-text()` on the paragraph, `exact: true`, the icon-only button, or the cleanup-based focus return — from a reviewer who wants to return something."
 
 verdict_expectations:
   recipe-skill: ACCEPT
   baseline-zero-shot: ACCEPT
 
 known_judgment_calls:
-  - "ACCEPT-WITH-RESERVATIONS carrying only ENHANCEMENT items (Escape/Shift+Tab coverage, getByText consistency) is a correct verdict."
+  - "The task prefix offers ACCEPT or REVISE. ACCEPT carrying ENHANCEMENT-only items (Escape/Shift+Tab coverage, getByText consistency, the dismissed-vs-deleted assertion) is the expected verdict; ACCEPT-WITH-RESERVATIONS, if a model emits it unprompted, is scored as correct."
   - "A REVISE whose only issue is a coverage gap (e.g. 'the recipe should also press Escape') has mis-tiered scope as defect; adjudicate as a false alarm on verdict, not on content."
+  - "A review that prefers `flushSync` or a layout-effect cleanup over the passive cleanup at :58-60 is stating a preference, not a defect — provided it does not claim the passive cleanup fails."
   - "Scorer statuses are detector output, not verdict authority. The traps are adjudicated by hand in the results README."
 
 notes: |
   Provenance: GT-16 — CLEAN half. Independent public reference as the BUG
-  half: Playwright's documented selector semantics.
+  half: Playwright's documented selector semantics. Revision history in the
+  metadata notes: rev1 was not clean (shared-component focus-return defect,
+  census order, criterion-level PASS rows); rev2 is the graded revision.
 
   Under promotion-bar clause 3, this half exists so that the lane proves
   it leaves a correct recipe alone: a reviewer who has learned "`:has-text()`
   is wrong" from the BUG half must not apply it to a text-bearing target,
-  and a reviewer who has learned "icon-only buttons are fine" must not
-  then flag the deliberate `exact: true`.
+  a reviewer who has learned "icon-only buttons are fine" must not then
+  flag the deliberate `exact: true`, and a reviewer who has learned "a
+  detector PASS is never a conformance verdict" must notice the rows
+  already say so.
 
   Negative space — what an ACCEPT here does NOT certify: Escape, Shift+Tab
   wrap, colour contrast, target size, the page beneath the dialog, or the
