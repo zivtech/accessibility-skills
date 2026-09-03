@@ -193,7 +193,6 @@ export default PortalRoutes;
 .nav-link:focus-visible,
 .skip-link:focus-visible,
 .primary:focus-visible,
-.portal-main:focus-visible,
 .view-heading:focus-visible {
   outline: 3px solid #0b4fa8;
   outline-offset: 2px;
@@ -268,15 +267,6 @@ export default PortalRoutes;
 
 4. **Scroll and focus are handled separately** (`:49-52`) — the app scrolls the window to the top itself, then focuses with `preventScroll: true`. Calling `focus()` without `preventScroll` would let the browser choose the scroll position, which on a long view can leave the heading against the top edge or skip past sticky header chrome. Doing both in a `requestAnimationFrame` callback lets the new route's DOM commit first, so the heading queried from `<main>` is the new view's.
 
-5. **Both programmatic focus targets have a visible indicator** (`:193-200`) — neither the heading nor `<main>` is keyboard-reachable, so 2.4.7 does not reach either, but the indicator is kept on both so that a sighted user who navigated by keyboard can see where focus landed. Leaving it off `<main>` would make a successful skip-link activation invisible, since `<main>` is already on screen and nothing else changes.
+5. **The heading has a visible focus indicator** (`:193-199`) — it is a programmatic focus target rather than a keyboard-reachable one, but the indicator is kept so that a sighted user who navigated by keyboard can see where focus landed.
 
 6. **The route table has no dead ends and no disagreements** (`:129-138`) — every route renders a view that owns its heading and title, and a catch-all covers everything else, so no URL yields an empty document or a stale title. There is deliberately no index route and no root redirect: a redirect fires a second render that reads as a navigation and steals focus on cold entry, and an index route rendering a section at `/` would leave `NavLink ... end` inactive there, putting a section on screen that no nav item claims.
-
-## Accessibility Issues (None Planted — CLEAN Baseline)
-
-None. This fixture is the correct-implementation half of a pair; everything
-below this heading is withheld from model prompts by the harness.
-
-## Difficulty Level
-
-**CLEAN** — Baseline for false-positive avoidance on client-side route changes. The `tabIndex={-1}` heading, the first render that deliberately does not move focus, the absence of an `aria-live` route announcer, and `preventScroll` on the focus call are each a correct decision that reads like a defect to a reviewer applying a rule mechanically rather than reasoning about what the user hears and where focus lands.

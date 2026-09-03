@@ -46,10 +46,14 @@ expected_findings:
     impact: "No major issues"
 
   - category: nice_to_find
-    count: 1
-    description: "Optional: the focused heading announces the section name but not that a navigation completed; some implementations extend the focused heading's accessible name for that context"
-    impact: "Enhancement suggestion (ENHANCEMENT severity)"
-    expected_to_find: "25%"
+    count: 2
+    items:
+      - description: "Optional: the focused heading announces the section name but not that a navigation completed; some implementations extend the focused heading's accessible name for that context"
+        impact: "Enhancement suggestion (ENHANCEMENT severity)"
+        expected_to_find: "25%"
+      - description: "Optional: back/forward are treated as forward navigations — no useNavigationType() check, so a POP resets scroll and moves focus where the browser would have restored both"
+        impact: "Enhancement suggestion (ENHANCEMENT severity). No SC maps to it; both revision-4 draws reached it, so it is scored rather than left as unlisted surface a reviewer could be penalised for noticing."
+        expected_to_find: "40%"
 
   - category: false_positive_trap
     count: 6
@@ -167,3 +171,7 @@ notes: |
   current; viewport meta added to both halves. Residual, stated rather than
   fixed: a trailing-slash URL renders the right view without a current-page
   mark (2.4.8, AAA, host-normalised in practice).
+
+  Revision 5 (2026-09-03): `.portal-main:focus-visible` added, the one item
+  both skill draws raised. Additive CSS only; the ACCEPT draws are against
+  revision 4 and were not re-run for it.
