@@ -186,6 +186,7 @@ test('delete-report dialog: close control is reachable by Tab and dismisses on E
   // Close control under test.
   const close = page.locator('button:has-text("Close")');
 
+  // OP-CLOSE-REACH: the close control is reachable by Tab.
   // Three focusable controls in the dialog; six presses is two full cycles.
   let reached = false;
   for (let i = 0; i < 6 && !reached; i++) {
@@ -195,6 +196,7 @@ test('delete-report dialog: close control is reachable by Tab and dismisses on E
   }
   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
 
+  // OP-CLOSE-DISMISS: Enter on the close control hides the dialog and returns focus to the trigger.
   await page.keyboard.press('Enter');
   await expect(dialog).toBeHidden();
   await expect(trigger).toBeFocused();
@@ -228,12 +230,12 @@ Running 1 test using 1 worker
       -   locator resolved to <button type="button" class="account__close">Close account</button>
       -   unexpected value "inactive"
 
-      28 |     reached = await close.evaluate((el) => el === document.activeElement);
-      29 |   }
-    > 30 |   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
+      29 |     reached = await close.evaluate((el) => el === document.activeElement);
+      30 |   }
+    > 31 |   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
          |                                                                                             ^
-      31 |
-      32 |   await page.keyboard.press('Enter');
+      32 |
+      33 |   // OP-CLOSE-DISMISS: Enter on the close control hides the dialog and returns focus to the trigger.
 
   1 failed
 ```
@@ -278,7 +280,7 @@ Running 1 test using 1 worker
     "selector": "button:has-text(\"Close\")",
     "message": "the dialog close control must be reachable by Tab — not focused after 6 Tab presses",
     "evidence": ["stdout", "trace.json#steps-1-6"],
-    "source": "assertion:tests/dialog-dismiss.spec.js:30"
+    "source": "assertion:tests/dialog-dismiss.spec.js:31"
   }
 ]
 ```
@@ -286,7 +288,6 @@ Running 1 test using 1 worker
 ## Expected Behavior
 
 - Activating **Delete report** opens a confirmation dialog. The header close control, Escape, and **Cancel** dismiss it without deleting; **Delete** deletes and dismisses.
-- On dismissal by any route, focus returns to the **Delete report** trigger.
 - The recipe is meant to prove that the header close control is reachable by Tab and that Enter on it dismisses the dialog and returns focus to the trigger. Its recorded outcome is the 2.1.1 FAIL in `findings.json`.
 
 ## Frameworks & Environment

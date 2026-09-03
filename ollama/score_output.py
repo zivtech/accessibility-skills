@@ -107,9 +107,24 @@ def check_finding(text: str, finding: dict) -> dict:
         from score_common import normalize_quotes
         norm_text = normalize_quotes(text.lower())
 
+        # Polarity: an occurrence preceded (within four words) by a negation
+        # is not a match — "not a false positive", "does not contradict",
+        # "not spurious" must not earn a withdrawal token (GT-16 gate rev2,
+        # C-1). Substring matching cannot see negation, so this is the one
+        # place it looks. Tokens that carry their own negation ("cannot be
+        # filed") are matched on the text before them, not inside them.
+        neg = r"\b(?:not|no|never|neither|nor|isn'?t|aren'?t|wasn'?t|doesn'?t|don'?t|didn'?t|cannot|can'?t|without|hardly|rather than)\b\W+(?:\w+\W+){0,3}$"
+
+        def token_ok(tok):
+            tok = normalize_quotes(str(tok).lower())
+            for m in re.finditer(re.escape(tok), norm_text):
+                if not re.search(neg, norm_text[max(0, m.start() - 60):m.start()]):
+                    return True
+            return False
+
         def group_ok(entry):
             options = entry if isinstance(entry, (list, tuple)) else [entry]
-            return any(normalize_quotes(str(k).lower()) in norm_text for k in options)
+            return any(token_ok(k) for k in options)
 
         any_ok = not explicit_any or group_ok(list(explicit_any))
         all_ok = all(group_ok(e) for e in explicit_all)

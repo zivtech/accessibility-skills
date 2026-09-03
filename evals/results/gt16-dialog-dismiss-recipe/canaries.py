@@ -22,6 +22,13 @@ which rev1 scored wrongly — see bench-reviewer-gate-opus-rev1.md, C-2):
     CLEAN correct ACCEPT                                    PASS
     CLEAN lint-style REVISE (flags p:has-text)              FAIL  (FALSE ALARM)
     E  CLEAN flags the rev1 focus-return defect             FAIL  (FALSE ALARM — correct under rev2, where the defect is repaired)
+    P1a ratifies: "dialog does not support keyboard access"  must 0/1 -> FAIL   (rev2: PASS — gate rev2 C-1)
+    P1b ratifies: "unsupported in older AT"                 must 0/1 -> FAIL   (rev2: PASS)
+    P1c ratifies: "confirmed genuine, not spurious"          must 0/1 -> FAIL   (rev2: PASS — polarity inversion)
+    P7  correct diagnosis, then certifies the dialog         PASS by design — the over-claim is hand-adjudicated; the scorer cannot see it
+
+Line numbers inside the review texts are fixture-relative; a model reading
+prompts/*.blind.md sees every line +2 (the task prefix is prompt lines 1-2).
 
 Run:  python3 evals/results/gt16-dialog-dismiss-recipe/canaries.py    (exit 0 = CLEAN)
 """
@@ -57,13 +64,13 @@ CASES = [
   """VERDICT: REVISE
   CRITICAL (2.1.1): the close control is genuinely not reachable — the recipe
   pressed Tab six times and `button:has-text("Close")` never received focus
-  (:194, :224). The component must add the close button to the focus trap.
+  (:195, :226). The component must add the close button to the focus trap.
   As a nit, prefer getByRole over `button:has-text("Close")`; the aria-label is
   "Close dialog" so getByRole('button', { name: 'Close dialog' }) reads better."""),
  (BUG, "C-ratifies-quotes-trace", "FAIL", "Must-find issues: 0/1", "Should-find issues: 1/1",
   """VERDICT: REVISE
-  CRITICAL (2.1.1): confirmed. trace.json (:243-249) shows focus cycling
-  Cancel/Delete/Close dialog but the assertion at :194 still failed, so the
+  CRITICAL (2.1.1): confirmed. trace.json (:245-251) shows focus cycling
+  Cancel/Delete/Close dialog but the assertion at :195 still failed, so the
   control the test targets is not operable by keyboard. This is not a false
   positive; the test instrument recorded it twice. Fix the component's focus
   handling before re-running."""),
@@ -72,28 +79,52 @@ CASES = [
   CRITICAL: the locator on :185 selects by rendered text content, not by
   accessible name. The close control (:95-99) has no text — its name "Close
   dialog" comes from aria-label — so the locator cannot match it; the call log
-  (:224) shows it resolved to the inert "Close account" button instead. Build the
-  locator from the census row (:259): getByRole('button', { name: 'Close dialog',
-  exact: true }) scoped to the dialog. The filed 2.1.1 FAIL (:273) is therefore
-  unsupported and must be withdrawn; the trace at :245 and :248 shows the control
+  (:226) shows it resolved to the inert "Close account" button instead. Build the
+  locator from the census row (:261): getByRole('button', { name: 'Close dialog',
+  exact: true }) scoped to the dialog. The filed 2.1.1 FAIL (:275) is therefore
+  unsupported and must be withdrawn; the trace at :247 and :250 shows the control
   focused on the second press of each cycle."""),
  (BUG, "correct", "PASS", "Must-find issues: 1/1", None,
   """VERDICT: REVISE
   CRITICAL: `button:has-text("Close")` (:185) matches rendered text content, not the
   accessible name. The close control's name comes from aria-label over an
   aria-hidden svg (:95-99) and has no text content, so the locator bound to the
-  inert "Close account" button — the call log says so (:224). Derive the selector
-  from the census row (:259): dialog.getByRole('button', { name: 'Close dialog', exact: true }).
-  CRITICAL: the filed 2.1.1 FAIL (:273) is contradicted by its own trace — steps 2
-  and 5 (:245, :248) record focus on "Close dialog". The finding is an instrument
+  inert "Close account" button — the call log says so (:226). Derive the selector
+  from the census row (:261): dialog.getByRole('button', { name: 'Close dialog', exact: true }).
+  CRITICAL: the filed 2.1.1 FAIL (:275) is contradicted by its own trace — steps 2
+  and 5 (:247, :250) record focus on "Close dialog". The finding is an instrument
   artifact and must be withdrawn; re-run before filing anything."""),
+ (BUG, "P1a-ratifies-does-not-support", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): the dialog does not support keyboard access to its close
+  control — `button:has-text("Close")` (:185) never received focus after six Tab
+  presses, and the aria-label on the icon button (:95) is not enough on its own.
+  The component must add the close button to the focus trap. The FAIL stands as
+  filed."""),
+ (BUG, "P1b-ratifies-unsupported", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL: the close control relies on aria-label over an aria-hidden svg (:95-99),
+  which is unsupported in older assistive technology, and `button:has-text("Close")`
+  (:185) confirms it is unreachable. Ratify the 2.1.1 FAIL and fix the component."""),
+ (BUG, "P1c-ratifies-not-spurious", "FAIL", "Must-find issues: 0/1", None,
+  """VERDICT: REVISE
+  CRITICAL (2.1.1): confirmed genuine, not spurious — `button:has-text("Close")`
+  (:185) could not be focused and the aria-label (:95) does not change that. The
+  filed FAIL is correct; the component must expose the control in the trap."""),
+ (BUG, "P7-correct-then-certifies", "PASS", "Must-find issues: 1/1", None,
+  """VERDICT: REVISE
+  CRITICAL: `button:has-text("Close")` (:185) matches text content, not the
+  accessible name from aria-label (:95); the call log (:226) shows it bound to
+  Close account. Use getByRole from the census row (:261). The filed FAIL (:275)
+  is refuted by the trace (:247, :250) and must be withdrawn. The dialog PASSES
+  2.1.1 and can be certified conformant on this evidence."""),
  (CLEAN, "correct-accept", "PASS", "Verdict correct: YES", None,
   """VERDICT: ACCEPT
   The selector for the control under test is role+name with exact matching (:187),
-  taken from the census row (:234); the trace reaches it on press 2 (:223) and the
-  dismiss/return step executed (:224). p:has-text on the description (:183) targets
+  taken from the census row (:236); the trace reaches it on press 2 (:225) and the
+  dismiss/return step executed (:226). p:has-text on the description (:183) targets
   a text-bearing element and resolves. Both PASS rows carry a claim_boundary
-  (:249, :259). ENHANCEMENT: Escape and Shift+Tab wrap are not exercised."""),
+  (:251, :261). ENHANCEMENT: Escape and Shift+Tab wrap are not exercised."""),
  (CLEAN, "lint-style-revise", "FAIL", "FALSE ALARM", None,
   """VERDICT: REVISE
   MAJOR: `p:has-text("cannot be undone")` (:183) — has-text selectors are unreliable;
@@ -103,7 +134,7 @@ CASES = [
   """VERDICT: REVISE
   MAJOR (2.4.3): focus return is unreliable — the trigger is inside #app-root
   (:17), which is inert until the state update flushes, so focusing it from the
-  dialog (:60) is a no-op and focus falls to body. The trace's step 3 (:224)
+  dialog (:60) is a no-op and focus falls to body. The trace's step 3 (:226)
   records behaviour the component cannot produce."""),
 ]
 

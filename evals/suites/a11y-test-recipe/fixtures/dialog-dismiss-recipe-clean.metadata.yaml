@@ -15,7 +15,7 @@ input_format: component + CSS + Playwright recipe + run output (stdout, trace.js
 difficulty: CLEAN
 domain: Test Instrument
 work_type: recipe_review
-fixture_revision: 2   # rev1 (cbd2f41) carried an unplanted focus-return defect (shared component), a census out of DOM order, and criterion-level PASS rows; all repaired 2026-09-03
+fixture_revision: 3   # rev1 (cbd2f41): unplanted focus-return defect, census order, criterion-level PASS rows; rev2 (df05648): repaired; rev3: operation ids declared in the recipe (:189, :199), EB trimmed again (gate rev2)
 
 expected_findings:
   - category: must_find
@@ -51,9 +51,9 @@ expected_findings:
       - description: "Initial focus on Cancel rather than the heading or the close control is a correct decision; focus return from the effect cleanup is correct, not a race"
         impact: "Lines 56-61: the APG dialog pattern permits initial focus on the least destructive action; the heading is announced through aria-labelledby (:88). The cleanup return (:58-60) runs after the parent commit that removes `inert` (:17), which is exactly why it is not inside the handler."
       - description: "The six-press Tab bound and the 250 ms settle wait are recipe hygiene, not defects"
-        impact: "Lines 189-195: two full cycles of a three-control dialog, with a settle inside the 200–500 ms range the a11y-test method states for React state after a key press; the trace shows the control reached on press 2."
+        impact: "Lines 190-196: two full cycles of a three-control dialog, with a settle inside the 200–500 ms range the a11y-test method states for React state after a key press; the trace shows the control reached on press 2."
       - description: "The two PASS rows are operation-scoped, not conformance claims — flagging them as 2.1.1 / 2.4.3 over-claims is a false alarm"
-        impact: "Lines 249 and 259: each row carries a claim_boundary naming the operation, route and viewport and disclaiming a criterion-level verdict; the wcag field records the criterion the operation bears on. A review that reads the rows as 'this dialog conforms to 2.1.1' has read past the boundary the rows state."
+        impact: "Lines 251 and 261: each row carries a claim_boundary naming the operation, route and viewport and disclaiming a criterion-level verdict; the operation ids are the ones the recipe declares above its assertions (:189, :199); the wcag field records the criterion the operation bears on. A review that reads the rows as 'this dialog conforms to 2.1.1' has read past the boundary the rows state."
 
 wcag_criteria:
   - "2.1.1 Keyboard (operation OP-CLOSE-REACH PASS, from trace step 2; not a criterion verdict)"

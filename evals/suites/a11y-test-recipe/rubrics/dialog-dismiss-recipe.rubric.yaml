@@ -1,7 +1,7 @@
 fixture_id: dialog-dismiss-recipe
 suite: a11y-test-recipe
-rubric_version: "1.1"
-fixture_revision: 2
+rubric_version: "1.2"
+fixture_revision: 3
 difficulty: HAS-BUGS
 scoring_method: hybrid
 scorer: ollama/score_output.py
@@ -48,10 +48,11 @@ expected_findings:
         keywords_all:
           - ["has-text", "hastext", "rendered text", "text content", "textcontent", "visible text"]
           - ["getbyrole", "getbylabel", "by role", "accessible name", "accname", "aria-label"]
-          - ["withdraw", "retract", "unsupported", "not supported", "cannot be filed", "should not be filed", "must not be filed", "does not support", "doesn't support", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "spurious", "false fail", "invalid finding", "finding is invalid", "misattributed", "mis-attributed"]
+          # finding-directed withdrawal only; bare negative-capability words (unsupported, does not support, spurious) removed after gate rev2 C-1 — the scorer discards any occurrence preceded by a negation within four words
+          - ["withdraw", "retract", "refute", "contradict", "cannot be filed", "should not be filed", "must not be filed", "not be filed", "before any outcome is filed", "before anything is filed", "false positive", "false fail", "fabricated", "invalid measurement", "invalid finding", "finding is invalid", "instrument artifact", "selector artifact", "not a component defect", "no component defect", "not a defect in the component", "not in the component", "misattributed", "mis-attributed", "does not exist"]
         severity: CRITICAL
         wcag: "n/a — instrument defect (Playwright selector semantics)"
-        evidence_requirement: "cites the selector (:185) and either the call log's resolved element (:224) or the control's aria-label-only name (:95-99); names the remedy — a role+name or label locator built from the census row (:259); and states that the FAIL (:273) cannot be filed on this run"
+        evidence_requirement: "cites the selector (:185) and either the call log's resolved element (:226) or the control's aria-label-only name (:95-99); names the remedy — a role+name or label locator built from the census row (:261); and states that the FAIL (:275) cannot be filed on this run"
         expected_to_find: "75%"
 
   - category: should_find
@@ -60,16 +61,16 @@ expected_findings:
       - description: "trace steps 2 and 5 cited as the contradiction — the review points at the specific trace rows that record focus on { role: button, name: \"Close dialog\" }"
         keywords_all:
           - ["trace"]
-          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":245", ":248", "line 245", "line 248"]
+          - ["step 2", "steps 2", "step 5", "steps 5", "press 2", "second press", "second tab", ":247", ":250", "line 247", "line 250", ":249", ":252"]   # fixture-relative and prompt-relative (+2: the task prefix is prompt lines 1-2)
         severity: MAJOR
         wcag: "2.1.1 Keyboard"
-        evidence_requirement: "cites :245 and/or :248 against findings.json (:273); credit is reduced if the review withdraws the FAIL but then certifies the dialog — the dismiss and focus-return assertions (:196-198) never executed"
+        evidence_requirement: "cites :247 and/or :250 against findings.json (:275). Hand-adjudicated, not machine-scored (known_judgment_calls): a review that withdraws the FAIL but then certifies the dialog over-claims — the dismiss and focus-return assertions (:198-200) never executed"
         expected_to_find: "65%"
 
   - category: nice_to_find
     count: 2
     items:
-      - description: "The corrected recipe should also assert the dismiss-and-return steps ran (Enter on the close control hides the dialog, focus returns to the trigger) before any PASS is filed — the first run never reached them (:196-198)"
+      - description: "The corrected recipe should also assert the dismiss-and-return steps ran (Enter on the close control hides the dialog, focus returns to the trigger) before any PASS is filed — the first run never reached them (:198-200)"
         severity: ENHANCEMENT
       - description: "Selector provenance belongs in the recipe: a comment or fixture field naming the census row each locator was derived from, so a reviewer can check name-to-selector agreement without re-reading the DOM"
         severity: ENHANCEMENT
@@ -90,7 +91,7 @@ expected_findings:
         expected_to_find: "55%"
 
       - description: "The six-press Tab bound is not the defect — the trace reaches the control on press 2 of every cycle"
-        impact: "Lines 187-193: the loop's bound is two full cycles of a three-control dialog, and the trace (:243-249) shows the control focused on presses 2 and 5. A review that attributes the FAIL to the bound, or calls the bound arbitrary as a finding, has not read the trace against the assertion."
+        impact: "Lines 188-194: the loop's bound is two full cycles of a three-control dialog, and the trace (:245-251) shows the control focused on presses 2 and 5. A review that attributes the FAIL to the bound, or calls the bound arbitrary as a finding, has not read the trace against the assertion."
         expected_to_find: "50%"
 
 composite_score_formula: |
@@ -118,7 +119,7 @@ verdict_expectations:
 known_judgment_calls:
   - "A review that recommends `getByRole('button', { name: /close/i })` unscoped, or `getByLabel('Close dialog')`, has the remedy right; the CLEAN sibling's `exact: true` and dialog scoping are the tighter form, not the only acceptable one."
   - "A review that withdraws the 2.1.1 FAIL and files nothing against the component is the expected disposition; one that additionally files a 'PASS' for reachability from the trace alone is over-claiming — the trace is a focus record, not the dismiss/return evidence the recipe set out to collect."
-  - "A review that prefers `flushSync` around the state update, or a layout-effect cleanup, over the passive cleanup at :58-60 is stating a preference, not a defect — provided it does not claim the passive cleanup fails. (A layout cleanup would: React processes the dialog's deletion before the sibling root's attribute update, so `inert` is still present at that point.)"
+  - "A review that prefers `flushSync` around the state update, a layout-effect cleanup, or the slice's React-16 `setTimeout(0)` wrap over the passive cleanup at :58-60 is stating a preference, not a defect — provided it does not claim the passive cleanup fails. (A layout cleanup would: React processes the dialog's deletion before the sibling root's attribute update, so `inert` is still present at that point. The `setTimeout(0)` note in the slice self-scopes to React 16; the fixture is 18.3.)"
   - "Scorer statuses are detector output, not verdict authority — the same routing rule as every local-model lane. The false-positive traps are adjudicated by hand in the results README."
 
 notes: |

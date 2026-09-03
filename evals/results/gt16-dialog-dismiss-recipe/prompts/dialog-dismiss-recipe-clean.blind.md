@@ -188,6 +188,7 @@ test('delete-report dialog: close control is reachable by Tab and dismisses on E
   // Close control under test — name taken from the census row for the header control.
   const close = dialog.getByRole('button', { name: 'Close dialog', exact: true });
 
+  // OP-CLOSE-REACH: the close control is reachable by Tab.
   // Three focusable controls in the dialog; six presses is two full cycles.
   let reached = false;
   for (let i = 0; i < 6 && !reached; i++) {
@@ -197,6 +198,7 @@ test('delete-report dialog: close control is reachable by Tab and dismisses on E
   }
   await expect(close, '2.1.1 Keyboard: the dialog close control must be reachable by Tab').toBeFocused({ timeout: 500 });
 
+  // OP-CLOSE-DISMISS: Enter on the close control hides the dialog and returns focus to the trigger.
   await page.keyboard.press('Enter');
   await expect(dialog).toBeHidden();
   await expect(trigger).toBeFocused();
@@ -252,7 +254,7 @@ Running 1 test using 1 worker
     "selector": "getByRole('button', { name: 'Close dialog', exact: true })",
     "message": "close control focused on Tab press 2 of a 3-control cycle",
     "evidence": ["trace.json#step-2"],
-    "source": "assertion:tests/dialog-dismiss.spec.js:32"
+    "source": "assertion:tests/dialog-dismiss.spec.js:33"
   },
   {
     "finding_id": "kbd-dialog-close-dismiss-focus-return",
@@ -262,7 +264,7 @@ Running 1 test using 1 worker
     "selector": "getByRole('button', { name: 'Delete report' })",
     "message": "Enter on the close control hid the dialog and returned focus to the trigger",
     "evidence": ["trace.json#step-3"],
-    "source": "assertion:tests/dialog-dismiss.spec.js:35-36"
+    "source": "assertion:tests/dialog-dismiss.spec.js:37-38"
   }
 ]
 ```
@@ -270,7 +272,6 @@ Running 1 test using 1 worker
 ## Expected Behavior
 
 - Activating **Delete report** opens a confirmation dialog. The header close control, Escape, and **Cancel** dismiss it without deleting; **Delete** deletes and dismisses.
-- On dismissal by any route, focus returns to the **Delete report** trigger.
 - The recipe is meant to prove that the header close control is reachable by Tab and that Enter on it dismisses the dialog and returns focus to the trigger. Its recorded outcome is the two PASS rows in `findings.json`.
 
 ## Frameworks & Environment

@@ -1,7 +1,7 @@
 # a11y-test-recipe eval suite
 
 **Status: one BUG/CLEAN pair + runner lane landed 2026-09-03 (GT-16, wave 2,
-fixture-first), revision 2 after a gate + baseline-draw repair round; rows in
+fixture-first), revision 3 after two gate rounds; rows in
 `evals/results/gt16-dialog-dismiss-recipe/`.**
 
 This suite measures a **test-instrument judgment**: given a keyboard test
@@ -98,9 +98,15 @@ unsupported / cannot be filed / instrument artifact …). A review that ratifies
 the FAIL with a getByRole "nit", or one that scopes the selector to the dialog
 and lets the FAIL stand, scores 0/1; a correct review that never types the
 literal `has-text` scores 1/1. Proof, including the gate's own probes:
-`evals/results/gt16-dialog-dismiss-recipe/canaries.py`. Residual class the
-tokens cannot separate: a ratifying review that also uses a withdrawal token in
-another sense — adjudicate by hand.
+`evals/results/gt16-dialog-dismiss-recipe/canaries.py`. The withdrawal group
+holds only finding-directed forms (the rev2 gate showed "the dialog does not
+support keyboard access" — a ratifying review's modal phrasing — earned the
+bare token `does not support`), and the scorer discards any occurrence
+preceded by a negation within four words ("not a false positive", "does not
+contradict"). Residual classes, hand-adjudicated: a ratifying review using a
+finding-directed token affirmatively in another sense, and a correct review
+that then certifies the dialog. Blind prompts sit +2 lines from the fixtures
+(the task prefix); rubric line tokens carry both offsets.
 
 False-positive traps are adjudicated by hand in the results README, as in the
 other GT pairs. Scorer statuses are detector output, not verdict authority.
