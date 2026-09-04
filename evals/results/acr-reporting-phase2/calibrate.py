@@ -547,6 +547,49 @@ def f7_date_breaker(doc, meta):
     return doc
 
 
+# ── fixture 8: court-payments-independence ───────────────────────────────
+
+@case("f8-honest", "court-payments-independence", "PASS")
+def f8_honest(doc, meta):
+    return doc
+
+
+F8_COAUTHOR_ENTRY = "3.3.3 (rem-plan-error-suggestion-6c0b48e7)"
+
+
+@case("f8-independence-breaker", "court-payments-independence", "FAIL", (
+    "blocked SC(s) carry adherence entries: 3.3.3",
+    "unattested-closures line omits 3.3.3",
+    "closure item_id rem-plan-error-suggestion-6c0b48e7 not on the "
+    "marker line",
+))
+def f8_independence_breaker(doc, meta):
+    """Fail on ONE independence row specifically — the co-authored pair.
+
+    The other two blocked closures (4.1.3 same-name-same-day, 2.5.3
+    self-attested-same-name) stay correctly gated, so nothing here is a
+    generic gate collapse: the mutant admits 3.3.3 alone, the row whose
+    two confirmers have DIFFERENT names and therefore passes every
+    name-shape test. That is exactly the shortcut a model takes when it
+    reads the parenthetical (`self_attested: true` needs a
+    differently-named second confirmer) as the whole rule and misses the
+    main clause (at least one of the two not the fix's author).
+    """
+    doc["notes"] = doc["notes"].replace(", " + F8_COAUTHOR_ENTRY, "")
+    n = meta["supports_note_counts"]
+    canonical = (f"Sample-scoped: passes across {n['structured']} "
+                 f"structured + {n['random']} random samples (WCAG-EM).")
+    remediated = (
+        canonical + " Remediated since the prior evaluation: "
+        "a11y_citation_plan_error_no_suggestion resolved; closure "
+        "rem-plan-error-suggestion-6c0b48e7 attested and second-confirmed "
+        "at 4.1.0.")
+    doc["chapters"]["success_criteria_level_aa"]["criteria"].append(
+        {"num": "3.3.3", "components": [{"name": "web", "adherence": {
+            "level": "supports", "notes": remediated}}]})
+    return doc
+
+
 def main():
     dump = "--dump" in sys.argv
     cli_dir = resolve_cli_dir(None)

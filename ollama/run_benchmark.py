@@ -102,6 +102,7 @@ ACR_FIXTURES = [
     "parks-registration-clean",
     "county-library-retest",
     "utility-billing-retest",
+    "court-payments-independence",
 ]
 
 # a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system

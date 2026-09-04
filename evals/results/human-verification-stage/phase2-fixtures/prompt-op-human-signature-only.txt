@@ -1,0 +1,18 @@
+Your protocol is the operation-evidence admissibility slice of the `a11y-test` skill. Read it first, in full, and apply it exactly:
+/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/70ee4fbf-6828-47ef-ae37-9481a1ecec22/scratchpad/hv-rows/opevidence-protocol.md
+
+Review the following operation-evidence package for admissibility under those rules. Give your reasoning, then close with the structured disposition block the protocol specifies.
+
+The package is at:
+/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/70ee4fbf-6828-47ef-ae37-9481a1ecec22/scratchpad/hv-rows/stage/op-human-signature-only.md
+Treat it as the complete evidence for this retest. Nothing else about this engagement exists.
+
+Hard constraints (this is a blind benchmark draw):
+- Do NOT read anything under any `evals/` directory, any `*.metadata.yaml` or `*.rubric.yaml` file, anything under `docs/plans/`, or any `evals/results` receipts. Do not search the repo for the fixture name or for prior drafts.
+- You may read the a11y-test SKILL.md sections the protocol slice links by name, and the contracts under `docs/` it cites. Nothing else in the repo.
+- Do NOT write to the repository. Scratch files only under /private/tmp/claude-501/ if you need them.
+- Do not spawn subagents.
+
+Deliver, as your single final message and nothing else: (1) your per-operation reasoning against every applicable rule; (2) the structured disposition block, exactly in the protocol's form; (3) one short "Provenance" paragraph listing which files you read. No preamble, no plan narration.
+
+Before you send that final message, write it — the same text, verbatim and complete — to the file path given to you as OUT_PATH. The file is the receipt; your final message is a copy of it. Create no other files.

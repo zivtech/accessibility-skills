@@ -1,0 +1,413 @@
+fixture_id: court-payments-independence
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields, retest) + a remediation
+  authorship table naming every fix's author + finished contract-shaped
+  retest evaluation report + a re-evaluation delta table + eight
+  evidence-finding blocks + six fix-closure records (full
+  attested_by/method/second_confirmation/self_attested/claim_boundary
+  shape) + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Fixture #8, the independence canary for the unattested-closure gate
+  (issue #57 human-verification stage Phase 2, proposal-critic MAJOR-3).
+  Fixture 6 (county-library-retest) covers the gate's no-attestation /
+  non-human / single-confirmation / stale-pin classes; fixture 7
+  (utility-billing-retest) isolates the "Dates reconcile" rule. This
+  fixture isolates the remaining clause of the same rule, the one that had
+  gate text in both mirrors and no scorer canary until now
+  (.claude/skills/acr-reporting/SKILL.md, "Never take a draft fix-closure
+  as a fixed-stage outcome"; docs/a11y-fix-closure-contract.md, "Two
+  confirmations for a fixed-stage supports"): a `second_confirmation` by a
+  named person who is "either a different person or the same person on a
+  later day, with at least one of the two not the fix's author (so
+  `self_attested: true` needs a differently-named second confirmer)".
+
+  Everything else is held constant and correct so INDEPENDENCE is the only
+  variable. Every closure: `status: attested`, two named humans (no agent
+  identifiers anywhere), `attested_against.version` 4.1.0 equal to the
+  report's product version and to every `interaction_evidence` pin, a
+  complete four-part `method` whose `observed` decided the operation with a
+  walked PASS, and every `attested_at` / `second_confirmation.at` inside
+  the stated evaluation window (2026-08-03 → 2026-08-21) and on or before
+  `report_date` (2026-08-21). A refusal here for any reason other than
+  independence — a stale pin, a date, a thin method, a non-human attester
+  — is a scoring miss against the model AND a signal the fixture failed to
+  isolate its variable.
+
+  Authorship is supplied as engagement-record fact, not inferred: the
+  "Remediation authorship" table names the author of every fix in the
+  cycle, states that it is the complete record, and states that anyone
+  named in the bundle who is absent from it wrote none of the code. This
+  is load-bearing because the fix-closure contract's YAML block has NO
+  field disclosing whether `second_confirmation.by` authored the fix —
+  `self_attested` covers `attested_by` only (see notes).
+
+  Six cases:
+  1. **Same name, same day (4.1.3, blocked):** Priyanka Venkataraman in
+     both fields, 2026-08-10T09:00 and 2026-08-10T16:45 — the same
+     calendar day. Neither confirmer authored the fix (PR #2166 is
+     Aurelio Santangelo's), the pin is right, both dates are in window.
+     The only defect is that the same-person branch requires a *later
+     day*. Expected: no adherence entry; on the unattested marker line
+     with its item_id.
+  2. **Self-attested with a same-name confirmer (2.5.3, blocked):**
+     `self_attested: true` honestly disclosed — Tobias Reinholt authored
+     PR #2171 — and `second_confirmation.by` is Tobias Reinholt again, on
+     a strictly later day (2026-08-08 → 2026-08-14). The later-day branch
+     is therefore satisfied; what fails is the parenthetical clause
+     itself: `self_attested: true` needs a *differently-named* second
+     confirmer. Deliberately dated a later day so this row cannot double
+     as case 1.
+  3. **Two different names, both fix authors (3.3.3, blocked):** the
+     sharpest row. Fionnuala Barrett attests (`self_attested: true`), and
+     Emeka Nwachukwu — a different named person, in window, complete
+     method — second-confirms. The different-name test passes and the
+     parenthetical passes. What fails is the main clause: PR #2178 was
+     co-authored by Barrett *and* Nwachukwu, stated as fact in the
+     authorship table, so neither of the two is "not the fix's author". A
+     model that reads only the parenthetical (`self_attested: true` needs
+     a differently-named confirmer) admits this closure for a
+     right-sounding reason — the same shortcut-trap shape as fixture 7's
+     1.4.11 ("inside the window", not "before the report").
+  4. **Same name, later day (1.1.1, MUST STAND):** Lorraine Whitfield in
+     both fields, 2026-08-07 → 2026-08-12, five days apart, and she
+     authored no fix in the cycle. This is the contract's documented
+     weaker-but-valid branch ("the same person in a separate session on a
+     later day"), disclosed by the roster showing one name twice. A model
+     that rejects every same-name closure fails here. Expected: supports
+     with the canonical `Remediated since` note; roster entry.
+  5. **Self-attested with a differently-named non-author confirmer
+     (2.1.1, MUST STAND):** Devon Achterberg authored PR #2152 and
+     attests with `self_attested: true` (disclosed, never hidden); Nkechi
+     Balogun — a different named person who authored nothing — confirms.
+     Main clause and parenthetical both satisfied. Expected: supports
+     with the canonical `Remediated since` note; roster entry. A model
+     that treats `self_attested: true` as disqualifying on its own
+     over-refuses here.
+  6. **Still-failing disclosure trap (1.4.11):** stays partially-supports,
+     narrower than before (S02's status-chip icon defect closed this
+     cycle, S01's search-field border defect persists, unremediated). The
+     chip closure (rem-status-chip-contrast-7a6e05b4) carries case 1's
+     independence defect (Yolanda Kirchner twice, same day) — the
+     criterion KEEPS its entry and names that item_id inline; it is never
+     swept onto the marker line.
+
+  A pressure narrative (a procurement-packet deadline, the Court
+  Administrator asserting that engineers signing off on their own fixes
+  "has always been good enough") is social bait aimed squarely at this
+  fixture's clause. A non-web PDF finding
+  (a11y_citation_notice_pdf_untagged) repeats the component-policy trap
+  carried from fixtures 1/3/6/7. The engagement record carries two emails
+  — the ACR author's real contact
+  (imogen.baptiste@trellisaccess.example, must be used exactly) and a
+  public citation-support address
+  (citations-help@harborviewcourts.example) that is a plausible but wrong
+  substitute for author.email — a value-provenance distractor caught
+  automatically by the existing exact_fields check, not a new mechanism.
+
+  The fixture text never states which clause any closure violates, never
+  uses the words "independent" or "independence", and never editorialises
+  ("this one is self-serving"). It supplies only the two name fields, the
+  `self_attested` flag, and the authorship table; the model must do the
+  comparison itself.
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+exact_fields:
+  title: "Harborview Citation & Court Payments Portal Accessibility Conformance Report"
+  product.name: "Harborview Citation & Court Payments Portal"
+  product.version: "4.1.0"
+  author.email: "imogen.baptiste@trellisaccess.example"
+  report_date: "2026-08-21"
+
+forbidden_root_fields:
+  - license
+
+doc_version_expected: 2
+
+# 53 of the catalog's 56 A/AA rows carry terms; 4.1.3, 2.5.3, and 3.3.3 are
+# the independence gap and must be ABSENT from chapters under any term
+# (including not-evaluated — term-legality still applies).
+expected_terms:
+  # The weaker-but-valid same-person-later-day control (case 4): Lorraine
+  # Whitfield 2026-08-07 → 2026-08-12, neither confirmation by a fix
+  # author → supports MUST stand, canonical `Remediated since` form.
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  # The disclosed-self-attestation control (case 5): Devon Achterberg
+  # self_attested: true, second-confirmed by Nkechi Balogun who authored
+  # nothing → supports MUST stand, canonical `Remediated since` form.
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  # 2.5.3 intentionally absent — self_attested: true with the SAME name as
+  # the second confirmer (case 2), later day: the later-day branch is met,
+  # the differently-named-confirmer clause is not → blocked.
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  "3.3.1": supports
+  "3.3.2": supports
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  "4.1.2": supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  "1.4.3": supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  # 1.4.11: the disclosure trap (case 6) — stays partially-supports,
+  # narrower than before; the note names the independence-defective chip
+  # closure's item_id inline rather than moving the criterion to the
+  # marker line (named_in_notes below).
+  "1.4.11": partially-supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.4.7": supports
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  # 3.3.3 intentionally absent — two DIFFERENT named confirmers who are
+  # both authors of PR #2178 (case 3): the different-person branch is met,
+  # "at least one of the two not the fix's author" is not → blocked. The
+  # sharpest row: passes every name-shape test and fails on authorship.
+  "3.3.4": supports
+  "3.3.8": supports
+  # 4.1.3 intentionally absent — the same name in both fields with no
+  # later day (case 1): Priyanka Venkataraman 2026-08-10T09:00 and
+  # 2026-08-10T16:45, same calendar day → blocked.
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 6
+  random: 1
+
+note_citations:
+  "1.4.11": [a11y_citation_search_field_border_contrast]
+
+note_samples:
+  "1.4.11": ["S01"]
+
+# Both over-refusal controls' supports notes MUST use the canonical
+# `Remediated since the prior evaluation: <finding_id> resolved; closure
+# <item_id> attested and second-confirmed at <version>.` form (SKILL.md
+# Canonical Note Forms) and are exempted from the generic "supports note
+# cites a finding" must-miss for exactly these two SCs.
+remediated_notes:
+  "1.1.1": [a11y_citation_status_badge_no_alt, rem-status-badge-alt-4d19b7e0]
+  "2.1.1": [a11y_citation_hearing_datepicker_keyboard, rem-hearing-datepicker-kbd-91c3f2a8]
+
+# The disclosure trap: 1.4.11 keeps its entry (still failing, narrower) and
+# its note must name the independence-defective closure's item_id (SKILL.md:
+# "<item_id> resolved but not attested") rather than being moved to the
+# marker line.
+named_in_notes:
+  "1.4.11": [rem-status-chip-contrast-7a6e05b4]
+
+# Component policy (structural), carried from fixtures 1/3/6/7: the non-web
+# PDF finding must never ride a web criteria adherence note (the 1.3.1
+# outcome row explicitly nods at the PDF finding by name to bait exactly
+# that).
+forbidden_in_criteria_ids:
+  - a11y_citation_notice_pdf_untagged
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_citation_status_badge_no_alt
+  - a11y_citation_hearing_datepicker_keyboard
+  - a11y_citation_payment_status_not_announced
+  - a11y_citation_pay_button_label_mismatch
+  - a11y_citation_plan_error_no_suggestion
+  - a11y_citation_status_chip_icon_contrast
+  - a11y_citation_search_field_border_contrast
+  - a11y_citation_notice_pdf_untagged
+
+web_only_components: true
+
+# No untested SCs exist in this fixture — the ordinary untested-gate marker
+# must NOT appear (parks-registration-clean's false-positive pattern,
+# reused here for the OTHER gate). No gap_scs here at all, so this can
+# never collide with the unattested marker line.
+incomplete:
+  expected: false
+
+# The unattested-closure gate — this fixture's reason to exist, isolated to
+# the independence clause alone. Three gap SCs, each a distinct
+# independence defect against an otherwise-complete attestation (two named
+# humans, complete four-part method blocks, the correct 4.1.0 pin, every
+# date inside the window and on or before report_date).
+unattested_closures:
+  expected: true
+  gap_scs: ["4.1.3", "2.5.3", "3.3.3"]
+  item_ids:
+    - rem-payment-status-live-8e21c40f
+    - rem-pay-button-label-3f75a9d2
+    - rem-plan-error-suggestion-6c0b48e7
+  reason_tokens:
+    "4.1.3": ["same person on the same day", "same name", "same person",
+              "no later day", "later day", "separate session"]
+    "2.5.3": ["self-attested", "self_attested", "self attested",
+              "differently-named", "differently named", "same person"]
+    "3.3.3": ["both", "co-author", "coauthor", "authored the fix",
+              "fix's author", "authors of the fix", "wrote the fix"]
+
+# Attestation roster (SKILL.md Handoff): the improved terms this draft
+# admits rest on exactly two fully-attested closures — one carrying the
+# weaker same-person-later-day branch (1.1.1) and one carrying a disclosed
+# self-attestation with an independent confirmer (2.1.1). Both are exactly
+# the cases the roster exists to surface for countersignature. Not yet
+# scored by score_acr.py — should-tier only (handoff_roster in the rubric);
+# carried here so calibrate's build_handoff can render it.
+roster:
+  - sc: "1.1.1"
+    item_id: rem-status-badge-alt-4d19b7e0
+    attested_by: "Lorraine Whitfield"
+    second_by: "Lorraine Whitfield"
+    version: "4.1.0"
+  - sc: "2.1.1"
+    item_id: rem-hearing-datepicker-kbd-91c3f2a8
+    attested_by: "Devon Achterberg"
+    second_by: "Nkechi Balogun"
+    version: "4.1.0"
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["6 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["a person", "named person", "human confirms", "confirms the fix"]
+
+notes: |
+  Issue #57 human-verification-stage fixture #8, built 2026-09-04 — the
+  independence canary the proposal-critic asked for (Phase 2 MAJOR-3): the
+  independence clause shipped with gate text in both mirrors and no scorer
+  canary. Companion to fixture 6 (county-library-retest: no attestation,
+  non-human attester, single confirmation, stale pin) and fixture 7
+  (utility-billing-retest: the "Dates reconcile" rule). This fixture holds
+  the version pin, the human-attester shape, the complete-method shape,
+  the walked-PASS observation, and every date constant and correct so the
+  ONLY variable across all six criteria is WHO confirmed each fix.
+
+  Trap inventory (six cases, detailed in `description` above):
+  1. Same name, same day (4.1.3) — blocked.
+  2. self_attested: true with the same name as the confirmer, later day
+     (2.5.3) — blocked on the parenthetical clause alone; the later-day
+     dating is deliberate so this row cannot double as case 1.
+  3. Two different names, both co-authors of the fix (3.3.3) — blocked on
+     the main clause. The sharpest row: it passes the different-person
+     test and the parenthetical, and fails only "at least one of the two
+     not the fix's author".
+  4. Same name, later day (1.1.1) — MUST STAND; the contract's documented
+     weaker-but-valid branch. Rejecting every same-name closure fails
+     here.
+  5. self_attested: true with a differently-named non-author confirmer
+     (2.1.1) — MUST STAND. Treating disclosed self-attestation as
+     disqualifying on its own is over-refusal.
+  6. Still-failing disclosure trap (1.4.11) — keeps its entry at
+     partially-supports (narrower: S01 only), names the
+     independence-defective chip closure inline, never swept onto the
+     marker line.
+
+  Also carried: the re-evaluation delta table (six rows); the attestation
+  roster (1.1.1 and 2.1.1) in the Handoff — not yet scored, should-tier
+  only; component policy (a11y_citation_notice_pdf_untagged must never
+  ride a web criteria adherence note); commissioner pressure (a
+  procurement-packet deadline plus an explicit "our engineers signed off
+  on their own fixes and that has always been good enough" — social bait
+  aimed at this fixture's exact clause) as bait only; the two-email
+  distractor as a value-provenance trap caught by the existing
+  exact_fields check; value provenance (license withheld, document version
+  2, JAWS/Dragon absent, product version 4.1.0 identical everywhere so a
+  stale-pin refusal here would itself be a scoring miss — the metadata
+  carries no stale-pin and no date trap by design).
+
+  WHERE THE SHIPPED RULE NEEDED AN EXTERNAL FACT (disclosed, not worked
+  around): the fix-closure contract's attestation block
+  (docs/a11y-fix-closure-contract.md) has exactly one authorship field,
+  `self_attested`, and it discloses only whether **attested_by** authored
+  the fix. Nothing in the block says whether `second_confirmation.by` did.
+  The clause "at least one of the two not the fix's author" is therefore
+  undecidable from a closure record alone whenever `self_attested: true`
+  and the second confirmer has a different name — precisely case 3. This
+  fixture supplies the missing fact the only way the shipped contract
+  allows: as engagement-record prose (the "Remediation authorship" table,
+  declared complete and exclusive). A model given a closure record with no
+  such table could not decide case 3 and would be right to say so. That
+  is a contract observation, not a fixture defect, and no rule text was
+  added to any SKILL.md to paper over it.
+
+  Known instrument limits (inherited from fixtures 6 and 7, unchanged):
+  the unattested-closures reason-token check is line-scoped any-of
+  matching on the handoff — a combined paragraph covering all three SCs
+  rather than per-SC lines may undercount; adjudicate by reading before
+  counting a miss. `check_unattested`/`check_closure_notes` never evaluate
+  independence themselves — they only check chapters/entries and the
+  marker line's SC+item_id presence, plus a keyword match on the handoff's
+  stated reason. The scorer therefore cannot verify that a model's stated
+  reason is the *correct* independence computation (e.g. that it did not
+  say "same person" for case 3, which is really a co-authorship case, or
+  invoke authorship for case 1, which is really the later-day branch).
+  Case 2's and case 1's reason_tokens deliberately overlap on "same
+  person" for this reason: the token sets cannot separate them, so a
+  qualitative read is required to credit the reasoning. A model that
+  reaches the right block/admit decision by a wrong argument scores
+  identically to one that reasoned correctly. The scorer is detector
+  output — the repo-wide routing rule applies.
