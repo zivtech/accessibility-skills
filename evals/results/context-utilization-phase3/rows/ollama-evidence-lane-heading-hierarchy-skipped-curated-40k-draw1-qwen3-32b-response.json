@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The blog post has significant structural accessibility issues with heading hierarchy and missing landmarks that degrade screen reader navigation. The component uses semantic HTML but violates heading order and landmark requirements.\n\n**Pre-commitment Predictions**: Expected to find skipped heading levels and missing main landmark based on axe-core evidence. Confirmed both issues exist in the code.\n\n**Critical Findings** (blocks access):\n1. **Skipped heading levels violate document structure**  \n   - File: `BlogPost.jsx`  \n   - ARIA/HTML: `<h1>` followed by multiple `<h3>`  \n   - User group: Screen reader users  \n   - WCAG: 1.3.1 Info and Relationships  \n   - Fix: Ensure heading levels increase sequentially (h1 \u2192 h2 \u2192 h3). Change first four `<h3>` to `<h2>` and adjust subsequent headings accordingly.\n\n**Major Findings** (significantly degrades experience):\n1. **Missing main landmark for document structure**  \n   - File: `BlogPost.jsx`  \n   - ARIA/HTML: No `<main>` element  \n   - User group: Screen reader users  \n   - WCAG: 2.4.1 Bypass Blocks  \n   - Fix: Add `<main>` landmark wrapping the article content to identify primary content area.\n\n2. **Missing landmark structure for navigation**  \n   - File: `BlogPost.jsx`  \n   - ARIA/HTML: No `<nav>`, `<aside>`, or other landmarks  \n   - User group: Screen reader users  \n   - WCAG: 2.4.1 Bypass Blocks  \n   - Fix: Add appropriate landmarks to section the page (e.g., `<nav>` for table of contents if present).\n\n**What's Missing**:\n- Proper heading hierarchy for logical document structure\n- Landmark regions to aid navigation\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Headings skip from level 1 to 3, creating confusion about document structure. No main landmark makes content discovery harder.\n- **Keyboard-only user**: Landmark navigation (Ctrl+F5 in JAWS) won't find main content without proper landmarks.\n- **Low vision user**: Screen magnifier users may struggle with disorganized heading hierarchy.\n- **Cognitive accessibility**: Users with cognitive disabilities may find the inconsistent structure disorienting.\n\n**Verdict Justification**: The component fails to meet WCAG 1.3.1 (Info and Relationships) and 2.4.1 (Bypass Blocks) requirements. The heading hierarchy skips levels, making document structure unclear to screen readers. The absence of a main landmark prevents efficient navigation. These issues must be fixed before the component can be considered accessible.\n\n**Open Questions**:\n- Should the article be wrapped in a `<main>` element, or should the `<article>` itself serve as the main landmark?\n- Are there additional landmarks needed for the page structure (e.g., `<nav>` for a table of contents)?",
+  "done": true,
+  "total_duration": 291541157250,
+  "eval_count": 1147,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 291.6,
+    "timestamp": "2026-08-26T20:39:40",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2547,
+    "estimated_prompt_tokens": 20678,
+    "prompt_eval_count": 17049,
+    "context_pressure": false,
+    "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+    "prompt_byte_length": 72632,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+    "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+    "pack_byte_length": 9730,
+    "pack_available": true
+  }
+}

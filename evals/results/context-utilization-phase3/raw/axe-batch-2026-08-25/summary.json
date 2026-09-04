@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.2",
+  "generated": "2026-08-26T00:08:16.885Z",
+  "axe_core_version": "4.13.0",
+  "totals": {
+    "urls_scanned": 33,
+    "viewports_per_url": [
+      "1280x800"
+    ],
+    "viewport_scans": 33,
+    "measured": 33,
+    "errors": 0,
+    "violation_nodes": 136,
+    "violation_nodes_by_impact": {
+      "critical": 2,
+      "serious": 27,
+      "moderate": 107,
+      "minor": 0,
+      "unknown": 0
+    }
+  },
+  "violations_by_rule": [
+    {
+      "rule_id": "region",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/accordion-no-region-role.html",
+        "http://127.0.0.1:8777/async-form-vague-success.html",
+        "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+        "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+        "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+        "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+        "http://127.0.0.1:8777/data-table-missing-scope.html",
+        "http://127.0.0.1:8777/expandable-section-no-button.html",
+        "http://127.0.0.1:8777/file-input-no-labels.html",
+        "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+        "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+        "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+        "http://127.0.0.1:8777/image-carousel-no-region.html",
+        "http://127.0.0.1:8777/infinite-scroll-no-announcement.html",
+        "http://127.0.0.1:8777/interactive-dropdown-clean.html",
+        "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+        "http://127.0.0.1:8777/loading-state-missing-aria-busy.html",
+        "http://127.0.0.1:8777/megamenu-no-structure.html",
+        "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+        "http://127.0.0.1:8777/radio-button-group-no-grouping.html",
+        "http://127.0.0.1:8777/search-focus-stays-in-input.html",
+        "http://127.0.0.1:8777/search-results-dynamic-clean.html",
+        "http://127.0.0.1:8777/tabbed-nav-vs-tab-pattern.html",
+        "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+        "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+        "http://127.0.0.1:8777/toast-notification-no-role.html",
+        "http://127.0.0.1:8777/video-player-missing-captions.html"
+      ],
+      "nodes": 46,
+      "page_count": 27
+    },
+    {
+      "rule_id": "landmark-one-main",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/accordion-no-region-role.html",
+        "http://127.0.0.1:8777/async-form-vague-success.html",
+        "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+        "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+        "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+        "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+        "http://127.0.0.1:8777/data-table-missing-scope.html",
+        "http://127.0.0.1:8777/expandable-section-no-button.html",
+        "http://127.0.0.1:8777/file-input-no-labels.html",
+        "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+        "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+        "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+        "http://127.0.0.1:8777/image-carousel-no-region.html",
+        "http://127.0.0.1:8777/infinite-scroll-no-announcement.html",
+        "http://127.0.0.1:8777/interactive-dropdown-clean.html",
+        "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+        "http://127.0.0.1:8777/loading-state-missing-aria-busy.html",
+        "http://127.0.0.1:8777/megamenu-no-structure.html",
+        "http://127.0.0.1:8777/modal-complete-clean.html",
+        "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+        "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+        "http://127.0.0.1:8777/popover-no-focus-management.html",
+        "http://127.0.0.1:8777/radio-button-group-no-grouping.html",
+        "http://127.0.0.1:8777/search-focus-stays-in-input.html",
+        "http://127.0.0.1:8777/search-results-dynamic-clean.html",
+        "http://127.0.0.1:8777/tabbed-nav-vs-tab-pattern.html",
+        "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+        "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+        "http://127.0.0.1:8777/toast-notification-no-role.html",
+        "http://127.0.0.1:8777/tooltip-no-role-no-association.html",
+        "http://127.0.0.1:8777/video-player-missing-captions.html"
+      ],
+      "nodes": 31,
+      "page_count": 31
+    },
+    {
+      "rule_id": "page-has-heading-one",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/accordion-no-region-role.html",
+        "http://127.0.0.1:8777/async-form-vague-success.html",
+        "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+        "http://127.0.0.1:8777/button-skip-link-clean.html",
+        "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+        "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+        "http://127.0.0.1:8777/data-table-missing-scope.html",
+        "http://127.0.0.1:8777/expandable-section-no-button.html",
+        "http://127.0.0.1:8777/file-input-no-labels.html",
+        "http://127.0.0.1:8777/image-carousel-no-region.html",
+        "http://127.0.0.1:8777/infinite-scroll-no-announcement.html",
+        "http://127.0.0.1:8777/interactive-dropdown-clean.html",
+        "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+        "http://127.0.0.1:8777/loading-state-missing-aria-busy.html",
+        "http://127.0.0.1:8777/megamenu-no-structure.html",
+        "http://127.0.0.1:8777/modal-complete-clean.html",
+        "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+        "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+        "http://127.0.0.1:8777/popover-no-focus-management.html",
+        "http://127.0.0.1:8777/radio-button-group-no-grouping.html",
+        "http://127.0.0.1:8777/search-focus-stays-in-input.html",
+        "http://127.0.0.1:8777/search-results-dynamic-clean.html",
+        "http://127.0.0.1:8777/tabbed-nav-vs-tab-pattern.html",
+        "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+        "http://127.0.0.1:8777/tabs-missing-arrow-nav.html",
+        "http://127.0.0.1:8777/toast-notification-no-role.html",
+        "http://127.0.0.1:8777/tooltip-no-role-no-association.html",
+        "http://127.0.0.1:8777/video-player-missing-captions.html"
+      ],
+      "nodes": 28,
+      "page_count": 28
+    },
+    {
+      "rule_id": "target-size",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/accordion-no-region-role.html",
+        "http://127.0.0.1:8777/image-carousel-no-region.html",
+        "http://127.0.0.1:8777/pagination-no-nav-landmark.html"
+      ],
+      "nodes": 17,
+      "page_count": 3
+    },
+    {
+      "rule_id": "color-contrast",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+        "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+        "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html"
+      ],
+      "nodes": 8,
+      "page_count": 3
+    },
+    {
+      "rule_id": "heading-order",
+      "impact": "moderate",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+        "http://127.0.0.1:8777/heading-hierarchy-skipped.html"
+      ],
+      "nodes": 2,
+      "page_count": 2
+    },
+    {
+      "rule_id": "aria-allowed-attr",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-attr?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/search-focus-stays-in-input.html"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    },
+    {
+      "rule_id": "aria-hidden-focus",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-hidden-focus?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/multistep-form-error-clearing.html"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    },
+    {
+      "rule_id": "label",
+      "impact": "critical",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/file-input-no-labels.html"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    },
+    {
+      "rule_id": "tabindex",
+      "impact": "serious",
+      "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
+      "pages": [
+        "http://127.0.0.1:8777/app-focus-order-illogical.html"
+      ],
+      "nodes": 1,
+      "page_count": 1
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "safety_margin_est_tokens": 500,
+  "padding_order": "sorted filename, whole files, skip own/F11, first-fit",
+  "rebuild": "2026-08-26b \u2014 file-input own set +sr-census (ruling 6 completion); others byte-identical",
+  "fixtures": {
+    "button-skip-link-clean": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/button-skip-link-clean.dump.txt",
+      "dump_bytes": 49558,
+      "pack_est_tokens": 14160,
+      "assembled_est_tokens": 32187,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 581,
+      "own_artifacts": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json"
+      ],
+      "padding_files_used": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/000-127-0-0-1-8777-accordion-no-region-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/001-127-0-0-1-8777-app-focus-order-illogical-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/002-127-0-0-1-8777-async-form-vague-success-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/003-127-0-0-1-8777-breadcrumb-navigation-no-nav-landmark-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/005-127-0-0-1-8777-checkbox-group-no-fieldset-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/006-127-0-0-1-8777-combobox-autocomplete-no-listbox-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/007-127-0-0-1-8777-dashboard-heading-inconsistency-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/008-127-0-0-1-8777-data-table-missing-scope-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/009-127-0-0-1-8777-expandable-section-no-button-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/011-127-0-0-1-8777-form-field-vs-summary-errors-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/012-127-0-0-1-8777-form-validation-missing-aria-describedby-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/014-127-0-0-1-8777-image-carousel-no-region-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/015-127-0-0-1-8777-infinite-scroll-no-announcement-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/016-127-0-0-1-8777-interactive-dropdown-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/017-127-0-0-1-8777-interactive-dropdown-focus-bug-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/018-127-0-0-1-8777-loading-state-missing-aria-busy-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/019-127-0-0-1-8777-megamenu-no-structure-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/020-127-0-0-1-8777-modal-complete-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/022-127-0-0-1-8777-pagination-no-nav-landmark-html.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json"
+      ],
+      "padding_pool": "axe"
+    },
+    "modal-complete-clean": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/modal-complete-clean.dump.txt",
+      "dump_bytes": 44231,
+      "pack_est_tokens": 12628,
+      "assembled_est_tokens": 32255,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 513,
+      "own_artifacts": [
+        "evals/results/keyboard-a11y-tester/driven/modal-complete-clean.trace.json"
+      ],
+      "padding_files_used": [
+        "evals/results/keyboard-a11y-tester/findings/accordion-no-region-role.json",
+        "evals/results/keyboard-a11y-tester/findings/app-focus-order-illogical.json",
+        "evals/results/keyboard-a11y-tester/findings/async-form-vague-success.json",
+        "evals/results/keyboard-a11y-tester/findings/breadcrumb-navigation-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/button-skip-link-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/checkbox-group-no-fieldset.json",
+        "evals/results/keyboard-a11y-tester/findings/combobox-autocomplete-no-listbox-role.json",
+        "evals/results/keyboard-a11y-tester/findings/dashboard-heading-inconsistency.json",
+        "evals/results/keyboard-a11y-tester/findings/data-table-missing-scope.json",
+        "evals/results/keyboard-a11y-tester/findings/expandable-section-no-button.json",
+        "evals/results/keyboard-a11y-tester/findings/file-input-no-labels.json",
+        "evals/results/keyboard-a11y-tester/findings/form-field-vs-summary-errors.json",
+        "evals/results/keyboard-a11y-tester/findings/form-validation-missing-aria-describedby.json",
+        "evals/results/keyboard-a11y-tester/findings/heading-hierarchy-skipped.json",
+        "evals/results/keyboard-a11y-tester/findings/image-carousel-no-region.json",
+        "evals/results/keyboard-a11y-tester/findings/infinite-scroll-no-announcement.json",
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-focus-bug.json",
+        "evals/results/keyboard-a11y-tester/findings/loading-state-missing-aria-busy.json",
+        "evals/results/keyboard-a11y-tester/findings/megamenu-no-structure.json",
+        "evals/results/keyboard-a11y-tester/findings/multistep-form-error-clearing.json",
+        "evals/results/keyboard-a11y-tester/findings/pagination-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/popover-no-focus-management.json",
+        "evals/results/keyboard-a11y-tester/findings/radio-button-group-no-grouping.json",
+        "evals/results/keyboard-a11y-tester/findings/search-focus-stays-in-input.json",
+        "evals/results/keyboard-a11y-tester/findings/search-results-dynamic-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/tabbed-nav-vs-tab-pattern.json",
+        "evals/results/keyboard-a11y-tester/findings/tabs-incomplete-aria-selected.json",
+        "evals/results/keyboard-a11y-tester/findings/tabs-missing-arrow-nav.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/keyboard-a11y-tester/findings/modal-complete-clean.json"
+      ],
+      "padding_pool": "findings"
+    },
+    "heading-hierarchy-skipped": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.dump.txt",
+      "dump_bytes": 48838,
+      "pack_est_tokens": 13954,
+      "assembled_est_tokens": 31866,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 902,
+      "own_artifacts": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json",
+        "evals/results/context-utilization-phase3/raw/heading-hierarchy-skipped-kat-census/sr-census.json"
+      ],
+      "padding_files_used": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/000-127-0-0-1-8777-accordion-no-region-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/001-127-0-0-1-8777-app-focus-order-illogical-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/002-127-0-0-1-8777-async-form-vague-success-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/003-127-0-0-1-8777-breadcrumb-navigation-no-nav-landmark-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/005-127-0-0-1-8777-checkbox-group-no-fieldset-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/006-127-0-0-1-8777-combobox-autocomplete-no-listbox-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/007-127-0-0-1-8777-dashboard-heading-inconsistency-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/008-127-0-0-1-8777-data-table-missing-scope-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/009-127-0-0-1-8777-expandable-section-no-button-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/011-127-0-0-1-8777-form-field-vs-summary-errors-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/012-127-0-0-1-8777-form-validation-missing-aria-describedby-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/014-127-0-0-1-8777-image-carousel-no-region-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/015-127-0-0-1-8777-infinite-scroll-no-announcement-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/016-127-0-0-1-8777-interactive-dropdown-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/017-127-0-0-1-8777-interactive-dropdown-focus-bug-html.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json"
+      ],
+      "padding_pool": "axe"
+    },
+    "file-input-no-labels": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/file-input-no-labels.dump.txt",
+      "dump_bytes": 49530,
+      "pack_est_tokens": 14152,
+      "assembled_est_tokens": 31893,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 875,
+      "own_artifacts": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json",
+        "evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-census/sr-census.json",
+        "evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-driven/trace.json"
+      ],
+      "padding_files_used": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/000-127-0-0-1-8777-accordion-no-region-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/001-127-0-0-1-8777-app-focus-order-illogical-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/002-127-0-0-1-8777-async-form-vague-success-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/003-127-0-0-1-8777-breadcrumb-navigation-no-nav-landmark-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/005-127-0-0-1-8777-checkbox-group-no-fieldset-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/006-127-0-0-1-8777-combobox-autocomplete-no-listbox-role-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/007-127-0-0-1-8777-dashboard-heading-inconsistency-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/008-127-0-0-1-8777-data-table-missing-scope-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/009-127-0-0-1-8777-expandable-section-no-button-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/011-127-0-0-1-8777-form-field-vs-summary-errors-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/012-127-0-0-1-8777-form-validation-missing-aria-describedby-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/014-127-0-0-1-8777-image-carousel-no-region-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/015-127-0-0-1-8777-infinite-scroll-no-announcement-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/016-127-0-0-1-8777-interactive-dropdown-clean-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/017-127-0-0-1-8777-interactive-dropdown-focus-bug-html.json",
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/018-127-0-0-1-8777-loading-state-missing-aria-busy-html.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json"
+      ],
+      "padding_pool": "axe"
+    },
+    "tabs-missing-arrow-nav": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.dump.txt",
+      "dump_bytes": 42846,
+      "pack_est_tokens": 12234,
+      "assembled_est_tokens": 30490,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 2278,
+      "own_artifacts": [
+        "evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json"
+      ],
+      "padding_files_used": [
+        "evals/results/keyboard-a11y-tester/findings/accordion-no-region-role.json",
+        "evals/results/keyboard-a11y-tester/findings/app-focus-order-illogical.json",
+        "evals/results/keyboard-a11y-tester/findings/async-form-vague-success.json",
+        "evals/results/keyboard-a11y-tester/findings/breadcrumb-navigation-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/button-skip-link-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/checkbox-group-no-fieldset.json",
+        "evals/results/keyboard-a11y-tester/findings/combobox-autocomplete-no-listbox-role.json",
+        "evals/results/keyboard-a11y-tester/findings/dashboard-heading-inconsistency.json",
+        "evals/results/keyboard-a11y-tester/findings/data-table-missing-scope.json",
+        "evals/results/keyboard-a11y-tester/findings/expandable-section-no-button.json",
+        "evals/results/keyboard-a11y-tester/findings/file-input-no-labels.json",
+        "evals/results/keyboard-a11y-tester/findings/form-field-vs-summary-errors.json",
+        "evals/results/keyboard-a11y-tester/findings/form-validation-missing-aria-describedby.json",
+        "evals/results/keyboard-a11y-tester/findings/heading-hierarchy-skipped.json",
+        "evals/results/keyboard-a11y-tester/findings/image-carousel-no-region.json",
+        "evals/results/keyboard-a11y-tester/findings/infinite-scroll-no-announcement.json",
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-focus-bug.json",
+        "evals/results/keyboard-a11y-tester/findings/loading-state-missing-aria-busy.json",
+        "evals/results/keyboard-a11y-tester/findings/megamenu-no-structure.json",
+        "evals/results/keyboard-a11y-tester/findings/modal-complete-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/multistep-form-error-clearing.json",
+        "evals/results/keyboard-a11y-tester/findings/pagination-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/popover-no-focus-management.json",
+        "evals/results/keyboard-a11y-tester/findings/radio-button-group-no-grouping.json",
+        "evals/results/keyboard-a11y-tester/findings/search-focus-stays-in-input.json",
+        "evals/results/keyboard-a11y-tester/findings/search-results-dynamic-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/tabbed-nav-vs-tab-pattern.json",
+        "evals/results/keyboard-a11y-tester/findings/tabs-incomplete-aria-selected.json",
+        "evals/results/keyboard-a11y-tester/findings/toast-notification-no-role.json",
+        "evals/results/keyboard-a11y-tester/findings/tooltip-no-role-no-association.json",
+        "evals/results/keyboard-a11y-tester/findings/video-player-missing-captions.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/keyboard-a11y-tester/findings/tabs-missing-arrow-nav.json"
+      ],
+      "padding_pool": "findings"
+    },
+    "interactive-dropdown-focus-bug": {
+      "dump_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.dump.txt",
+      "dump_bytes": 46584,
+      "pack_est_tokens": 13300,
+      "assembled_est_tokens": 31454,
+      "est_ceiling": 32768,
+      "headroom_est_tokens": 1314,
+      "own_artifacts": [
+        "evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json"
+      ],
+      "padding_files_used": [
+        "evals/results/keyboard-a11y-tester/findings/accordion-no-region-role.json",
+        "evals/results/keyboard-a11y-tester/findings/app-focus-order-illogical.json",
+        "evals/results/keyboard-a11y-tester/findings/async-form-vague-success.json",
+        "evals/results/keyboard-a11y-tester/findings/breadcrumb-navigation-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/button-skip-link-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/checkbox-group-no-fieldset.json",
+        "evals/results/keyboard-a11y-tester/findings/combobox-autocomplete-no-listbox-role.json",
+        "evals/results/keyboard-a11y-tester/findings/dashboard-heading-inconsistency.json",
+        "evals/results/keyboard-a11y-tester/findings/data-table-missing-scope.json",
+        "evals/results/keyboard-a11y-tester/findings/expandable-section-no-button.json",
+        "evals/results/keyboard-a11y-tester/findings/file-input-no-labels.json",
+        "evals/results/keyboard-a11y-tester/findings/form-field-vs-summary-errors.json",
+        "evals/results/keyboard-a11y-tester/findings/form-validation-missing-aria-describedby.json",
+        "evals/results/keyboard-a11y-tester/findings/heading-hierarchy-skipped.json",
+        "evals/results/keyboard-a11y-tester/findings/image-carousel-no-region.json",
+        "evals/results/keyboard-a11y-tester/findings/infinite-scroll-no-announcement.json",
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/loading-state-missing-aria-busy.json",
+        "evals/results/keyboard-a11y-tester/findings/megamenu-no-structure.json",
+        "evals/results/keyboard-a11y-tester/findings/modal-complete-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/multistep-form-error-clearing.json",
+        "evals/results/keyboard-a11y-tester/findings/pagination-no-nav-landmark.json",
+        "evals/results/keyboard-a11y-tester/findings/popover-no-focus-management.json",
+        "evals/results/keyboard-a11y-tester/findings/radio-button-group-no-grouping.json",
+        "evals/results/keyboard-a11y-tester/findings/search-focus-stays-in-input.json",
+        "evals/results/keyboard-a11y-tester/findings/search-results-dynamic-clean.json",
+        "evals/results/keyboard-a11y-tester/findings/tabbed-nav-vs-tab-pattern.json",
+        "evals/results/keyboard-a11y-tester/findings/tabs-incomplete-aria-selected.json",
+        "evals/results/keyboard-a11y-tester/findings/tabs-missing-arrow-nav.json",
+        "evals/results/keyboard-a11y-tester/findings/toast-notification-no-role.json",
+        "evals/results/keyboard-a11y-tester/findings/tooltip-no-role-no-association.json",
+        "evals/results/keyboard-a11y-tester/findings/video-player-missing-captions.json"
+      ],
+      "padding_excluded_own_or_f11": [
+        "evals/results/keyboard-a11y-tester/findings/interactive-dropdown-focus-bug.json"
+      ],
+      "padding_pool": "findings"
+    }
+  }
+}

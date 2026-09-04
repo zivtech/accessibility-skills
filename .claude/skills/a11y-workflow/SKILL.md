@@ -23,6 +23,7 @@ This skill sequences the accessibility lifecycle by spawning specialist agents f
 | Role | Agent | Model | Job |
 |------|-------|-------|-----|
 | Scout | `a11y-scout` | haiku | File discovery, ARIA inventory, component type ID |
+| Reader | `a11y-evidence-reader` | haiku → sonnet | Evidence digest + coverage note when artifacts exceed the inject budget (never opus) |
 | Planner | `a11y-planner` | opus | Design accessibility before coding (9-phase) |
 | Critic | `a11y-critic` | opus | Review ARIA patterns, focus management, state communication (8-phase) |
 | Tester | `a11y-test` skill | n/a | Playwright keyboard tests, axe-core scans, baseline-url-scan sweeps (`--census` DOM heuristics, `--alt-snapshot`), keyboard-a11y-tester journey audits, virtual-screen-reader component SR assertions |
@@ -35,8 +36,9 @@ Each agent starts with a fresh context window. The main session bridges context 
 - **Scout → Planner/Critic**: Scout returns a structured recon summary (~500-1500 chars). Inject verbatim into the next agent's prompt.
 - **Planner → Critic**: Planner writes plan to `docs/a11y-plans/YYYY-MM-DD-<feature>-a11y-plan.md`. Critic is spawned with file paths to the plan and source code — it reads both using its Read tool.
 - **Critic → Perspective Audit**: Extract only the alarm levels and findings for escalated perspectives (~500-1500 chars). Inject into the perspective-audit prompt.
-- **Test → Critic**: Inject structured test results summary (~500-1000 chars) into the critic prompt alongside source file paths. keyboard-a11y-tester artifacts (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) exceed the inject budget — pass their file paths instead; the critic's Phase 0 knows the format and its calibration rules.
-- **Size budget rule**: Output > 2K chars → write to file, next agent reads. Output ≤ 2K chars → inject into prompt.
+- **Test → Critic**: Inject structured test results summary (~500-1000 chars) into the critic prompt alongside source file paths. keyboard-a11y-tester artifacts (`trace.json`, `deterministic-findings.json`, `screen-reader-census.json`) typically exceed the inject budget — check against the threshold below; when they do, the orchestrator routes them through `a11y-evidence-reader` (below) rather than reading them wholesale — never the critic itself. The critic's Phase 0 covers any targeted re-read via the passed paths.
+- **Evidence-reader delegation (the inject budget)**: when a step's evidence artifacts exceed **8K measured tokens (≈32KB on disk, chars/4)**, the orchestrator spawns `a11y-evidence-reader` (haiku extraction, sonnet if interpretation is needed, never opus) instead of reading the corpus itself, then hands the digest **plus the original artifact paths** to the critic/planner — which never spawns the reader itself (depth-1 holds). Findings cite digest handles; a targeted re-read routes back through the orchestrator, not a wholesale re-read. Rationale: 8K ≈ 2× the reader's own ≤4K-token digest ceiling (`a11y-evidence-reader.md`) — past that ratio delegation nets real compression. Tunable pending Phase 3 rows (`docs/plans/2026-08-24-context-utilization-plan.md`).
+- **Size budget rule**: Output > 2K chars → write to file, next agent reads. Output ≤ 2K chars → inject into prompt. **Exception: the evidence-reader's digest.** The reader's `Write`/`Edit` tools are blocked by design, so its digest is exempt from this rule and injected whole regardless of size. If the digest opens with `BUDGET EXCEEDED`, the orchestrator — not the reader — writes it to a file verbatim and passes the path to the next agent; it never re-summarizes the digest to force it under budget.
 
 ## Skill-Improvement Capture (gate-exit discipline)
 
@@ -124,13 +126,24 @@ Agent(subagent_type="a11y-role-auditor", model="opus", prompt="
 ")
 ```
 
+### Step 6c: Digest Evidence (conditional)
+If Step 6's test artifacts exceed the inject budget (see "Context Passing Between Agents" above):
+```
+Agent(subagent_type="a11y-evidence-reader", model="haiku", prompt="
+  Question: <what the critic must adjudicate>
+  Artifacts: <paths>
+  question_source: orchestrator, /a11y-workflow Step 6c
+")
+```
+Escalate to `model="sonnet"` when interpretation is genuinely needed (schema not covered by a recipe, conflicting artifacts, an evidence class that isn't obvious from the question, vision-mode verdicts). Never opus — a question needing opus-tier judgment is not an extraction question; hand the reader's handles to the opus-tier critic instead. Pass the returned digest **plus the original artifact paths** into Step 7 — the coverage note travels with it, and a targeted re-read routes back through the orchestrator, never a wholesale re-read of the corpus.
+
 ### Step 7: Critique the Implementation
 ```
 Agent(subagent_type="a11y-critic", model="opus", prompt="
   Review this implementation for accessibility design issues.
   Source files: <file paths>
   Test results summary: <inject test output summary>
-  keyboard-a11y-tester artifacts (if produced): <paths to trace.json / deterministic-findings.json / screen-reader-census.json>
+  keyboard-a11y-tester artifacts (if produced): <if Step 6c ran: the digest + coverage note from Step 6c, plus the original artifact paths. Otherwise: raw paths to trace.json / deterministic-findings.json / screen-reader-census.json>
   virtual-screen-reader results (if produced): <inject spoken-phrase log slices + tool version + test file paths — logs are small enough to inject directly>
 ")
 ```
@@ -153,6 +166,7 @@ User drives each step manually. The skill spawns the appropriate agent for the r
 | `plan` | a11y-planner | opus | Design accessibility (pass prior recon if available) |
 | `critique` | a11y-critic | opus | Review plan or implementation |
 | `test` | a11y-test skill | n/a | Run Playwright + axe-core; baseline-url-scan.mjs (`--census`/`--alt-snapshot`) for a URL-list sweep; virtual-screen-reader assertions for component announcement targets; keyboard-a11y-tester journey audit for live-URL targets |
+| `read` | a11y-evidence-reader | haiku → sonnet | Digest evidence artifacts that exceed the inject budget into a contract-shaped digest + coverage note; never opus |
 | `audit` | perspective-audit | opus | Deep perspective review (specify `--perspectives` to limit) |
 | `roles` | a11y-role-auditor | opus | ARRM role-based review (specify `--roles` to limit) |
 

@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The BuggyDropdown implements a WAI-ARIA Listbox pattern but has critical gaps in focus management, state communication, and keyboard operability. The component fails to restore focus to the trigger button after selection, lacks proper accessible name for the listbox, and fails to announce state changes to screen readers.\n\n**Pre-commitment Predictions**: Predicted issues with focus restoration, arrow key navigation, and state announcements were confirmed. Unexpectedly found that the listbox itself has no accessible name, which would prevent screen readers from identifying its purpose.\n\n**Critical Findings** (blocks access):\n1. **Focus lost to body after selection** (`src/components/BuggyDropdown.jsx:34`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users are trapped at the body element after selection (WCAG 2.1.2 No Keyboard Trap). Screen readers cannot identify where focus went.\n   - Fix: In `handleSelect`, add `document.getElementById('dropdown-btn').focus()` before setting `isOpen(false)`\n\n2. **Listbox missing accessible name** (`src/components/BuggyDropdown.jsx:29`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers cannot identify the purpose of the listbox (WCAG 1.3.1 Info and Relationships). Users would hear \"listbox\" but not know what it controls.\n   - Fix: Add `aria-label=\"Sort options\"` to the `<ul>` element\n\n**Major Findings** (significantly degrades experience):\n1. **Arrow key navigation without focus movement** (`src/components/BuggyDropdown.jsx:22-30`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users can navigate options but screen readers don't know which is selected (WCAG 4.1.2 Name, Role, Value). The `selectedIndex` changes but focus remains on the listbox.\n   - Fix: Add `tabIndex=\"-1\"` to each `<li>` and in `handleKeyDown`, call `listRef.current.children[selectedIndex].focus()`\n\n2. **No announcement when dropdown opens** (`src/components/BuggyDropdown.jsx:18`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers don't announce the listbox is now open (WCAG 4.1.3 Status Messages). Users must guess based on visual cues.\n   - Fix: Add `aria-live=\"polite\"` to the listbox and use `document.announce()` when opening\n\n3. **Stale accessible name on trigger button** (`src/components/BuggyDropdown.jsx:16`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers announce the old selection after closing (WCAG 4.1.2 Name, Role, Value). Users hear \"Sort by\" but see \"Price: low to high\".\n   - Fix: Add `aria-label={options[selectedIndex]}` to the button\n\n**What's Missing**:\n- Focus restoration after Escape key closes dropdown\n- Active descendant pattern for listbox selection\n- Proper announcement when selection changes\n- Keyboard trap prevention when dropdown closes\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Hears \"listbox\" but no label, can't navigate options, doesn't know which is selected, and gets trapped at body after selection\n- **Keyboard-only user**: Can navigate options but focus doesn't move, gets trapped at body, must manually tab back\n- **Cognitive accessibility**: No feedback when selection changes, inconsistent state announcements\n\n**Verdict Justification**: The component fails to meet WCAG 2.2 requirements for keyboard operability and state communication. The focus restoration bug alone blocks keyboard access, while the missing accessible name prevents screen reader users from understanding the component's purpose. These issues require code changes before the component can be considered accessible.\n\n**Open Questions**:\n- Should the listbox use `aria-labelledby` instead of `aria-label` if a visible label exists?\n- Does the current implementation need to handle multiple selection scenarios?",
+  "done": true,
+  "total_duration": 144329729375,
+  "eval_count": 1245,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 32768,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 144.4,
+    "timestamp": "2026-08-26T22:05:24",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2027,
+    "estimated_prompt_tokens": 20880,
+    "prompt_eval_count": 16975,
+    "context_pressure": false,
+    "prompt_sha256": "55d34ddf12f56cac0d885eb0b0bcff683fbab3673824ab01b528efe560767a93",
+    "prompt_byte_length": 73353,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md",
+    "pack_sha256": "5fe85d89dd6c78bf6ee9a6a5c8232842a47801ab2f0bf30ce60582a023b75d41",
+    "pack_byte_length": 9591,
+    "pack_available": true
+  }
+}

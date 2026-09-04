@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The blog post has semantic heading elements but violates heading hierarchy rules (h1 \u2192 h3), lacks a main landmark, and has incomplete landmark structure. These issues impact screen reader navigation and content organization.\n\n**Pre-commitment Predictions**: \n- Skipped heading levels (h1 \u2192 h3) would confuse screen reader users\n- Missing main landmark would make content discovery harder\n- Inconsistent heading hierarchy would break logical reading order\n\n**Critical Findings** (blocks access):\n1. **Skipped heading levels (WCAG 1.3.1 Info and Relationships)**  \n   - Confidence: HIGH  \n   - Why this matters: Screen readers use heading levels to navigate content structure. Skipping from h1 to h3 creates a confusing hierarchy.  \n   - Fix: Ensure heading levels increase by only one (h1 \u2192 h2 \u2192 h3). Change the first h3 to h2:  \n     ```jsx\n     <h2>Why Accessibility Matters</h2>\n     ```\n\n**Major Findings** (significantly degrades experience):\n1. **Missing main landmark (WCAG 2.4.1 Bypass Blocks)**  \n   - Confidence: HIGH  \n   - Why this matters: Keyboard/screen reader users cannot quickly jump to main content.  \n   - Fix: Wrap the blog post in a `<main>` element:  \n     ```jsx\n     <main aria-labelledby=\"blog-title\">\n       <article className=\"blog-post\">\n         <h1 id=\"blog-title\">Introduction to Web Accessibility</h1>\n         {/* rest of content */}\n       </article>\n     </main>\n     ```\n\n2. **Incomplete landmark structure (WCAG 2.4.1 Bypass Blocks)**  \n   - Confidence: MEDIUM  \n   - Why this matters: Content isn't fully contained by semantic landmarks, making navigation harder.  \n   - Fix: Add `<main>` and consider using `<section>` for grouping related content:  \n     ```jsx\n     <section aria-labelledby=\"why-accessibility\">\n       <h2 id=\"why-accessibility\">Why Accessibility Matters</h2>\n       {/* content */}\n     </section>\n     ```\n\n**Minor Findings**:\n- No skip link provided for long-form content (WCAG 2.4.1 Bypass Blocks)\n\n**Enhancements**:\n- Add `lang=\"en\"` to the HTML element for better screen reader language detection\n- Consider adding `aria-labelledby` to the `<main>` element for better landmark identification\n\n**What's Missing**:\n- Missing semantic structure for grouping related sections (e.g., `<section>` with aria-labelledby)\n- No landmark for the list of common issues\n- No explicit language declaration\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Headings are announced but the hierarchy is confusing. Landmarks are missing, making content discovery harder.\n- **Keyboard-only user**: Tab order is logical, but landmark navigation is incomplete.\n- **Low vision user**: Visual hierarchy is clear, but screen reader users would benefit from better structure.\n- **Cognitive accessibility**: Clear headings help, but inconsistent hierarchy may cause confusion.\n\n**Verdict Justification**: The component fails WCAG 1.3.1 (Info and Relationships) due to skipped heading levels and WCAG 2.4.1 (Bypass Blocks) due to missing landmarks. These issues significantly impact screen reader navigation and content organization. The component requires structural revisions before it can be accepted.\n\n**Open Questions**:\n- Should the \"Common Issues\" list be wrapped in a `<section>` with an explicit landmark?\n- Is the current heading hierarchy sufficient for the content's complexity?",
+  "done": true,
+  "total_duration": 234670647084,
+  "eval_count": 1318,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 234.8,
+    "timestamp": "2026-08-26T20:53:53",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2870,
+    "estimated_prompt_tokens": 31866,
+    "prompt_eval_count": 28809,
+    "context_pressure": false,
+    "prompt_sha256": "b11d82e0fd5a0a252cd5b4a061f7e279987e96d2b36f9b1d3468fddc5cfae932",
+    "prompt_byte_length": 111737,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.dump.txt",
+    "pack_sha256": "4413a4ca353b36f83ceaf656ca1e6e52bc3bbf6ce431d145f7939e5f0a926d9d",
+    "pack_byte_length": 48838,
+    "pack_available": true
+  }
+}

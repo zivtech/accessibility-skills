@@ -1,0 +1,48 @@
+{
+  "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+  "started": "2026-08-26T00:07:33.277Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "title": "popover-no-focus-management",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 11,
+      "inapplicable_count": 77
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:37.261Z"
+}

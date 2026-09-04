@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3.6:35b
+Condition: overflow-32k (DUMP) | Draw: 1
+prompt_eval_count=30079 done_reason=length output_clipped=True context_pressure=True
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '1. **Missing Arrow Key Navigation in Composite Widget**'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3.6:35b",
+  "condition": "overflow-32k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 30079,
+  "done_reason": "length",
+  "context_pressure": true,
+  "output_clipped": true,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "1. **Missing Arrow Key Navigation in Composite Widget**",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

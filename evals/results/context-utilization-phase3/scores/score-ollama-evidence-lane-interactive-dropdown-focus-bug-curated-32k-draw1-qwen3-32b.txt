@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3:32b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=16975 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/2
+  + [0] Focus not restored to trigger button after selection — '**Pre-commitment Predictions**: Expected to find focus restoration issues after selection/escape, incomplete ARIA pattern implementation, and missing accessible name for the listbox. Actual findings c…'
+  X [1] Focus not restored to trigger button after Escape key — reason=raw-set-gap
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3:32b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 16975,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Expected to find focus restoration issues after selection/escape, incomplete ARIA pattern implementation, and missing accessible name for the listbox. Actual findings c\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 1,
+      "description": "Focus not restored to trigger button after Escape key",
+      "found": false,
+      "reason": "raw-set-gap"
+    }
+  ],
+  "false_positives": null
+}

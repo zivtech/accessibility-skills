@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The BuggyDropdown component implements the WAI-ARIA listbox pattern but has critical gaps in focus management, state communication, and accessible naming that prevent full accessibility compliance.\n\n**Pre-commitment Predictions**: Expected to find focus restoration issues after selection/escape, incomplete ARIA pattern implementation, and missing accessible name for the listbox. Actual findings confirmed all predictions and revealed additional gaps in state announcements.\n\n**Critical Findings** (blocks access):\n1. **Missing focus restoration after selection/escape** (`src/components/BuggyDropdown.jsx:37`, `src/components/BuggyDropdown.jsx:22`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users lose context after interaction. Screen reader users cannot track focus changes.\n   - Fix: Add `button.focus()` in `handleSelect` and `handleKeyDown` after closing the dropdown.\n   - WCAG: 2.1.2 (No Keyboard Trap), 2.4.3 (Focus Order)\n\n2. **Listbox missing accessible name** (`src/components/BuggyDropdown.jsx:28`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers cannot announce the purpose of the listbox.\n   - Fix: Add `aria-label` or `aria-labelledby` to the listbox element.\n   - WCAG: 4.1.2 (Name, Role, Value)\n\n**Major Findings** (significantly degrades experience):\n1. **Arrow key navigation without state announcements** (`src/components/BuggyDropdown.jsx:32-40`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers don't announce option changes during keyboard navigation.\n   - Fix: Implement `aria-activedescendant` pattern with live region announcements.\n   - WCAG: 4.1.3 (Status Messages)\n\n2. **Selection state not announced** (`src/components/BuggyDropdown.jsx:37`)\n   - Confidence: HIGH\n   - Why this matters: Users aren't notified when an option is selected.\n   - Fix: Add `aria-live` region or update button's accessible name on selection.\n   - WCAG: 4.1.3 (Status Messages)\n\n**Minor Findings**:\n- Button text updates without accessible name update (WCAG 4.1.2)\n\n**What's Missing**:\n- Focus restoration logic after selection/escape\n- Accessible name for listbox\n- State announcements for keyboard navigation\n- Proper focus management after selection\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Listbox is announced but lacks context. Option changes not announced. Selection confirmation missing.\n- **Keyboard-only user**: Focus gets lost to body after selection. No clear return to trigger button.\n- **Low vision user**: Focus indicators may not be visible enough (needs contrast check).\n- **Cognitive accessibility**: Lack of feedback makes interaction confusing.\n\n**Verdict Justification**: The component fails critical accessibility requirements for keyboard navigation and screen reader interaction. The missing focus restoration and accessible name issues block basic usability for assistive technology users. The arrow key navigation without announcements creates a confusing experience. These issues must be fixed before the component can be considered accessible.\n\n**Open Questions**:\n- Should the listbox use `aria-labelledby` with the label element instead of `aria-label`?\n- Is there a specific reason the listbox doesn't use `aria-activedescendant` for focus management?\n\n### A11y Evidence Finding\nfinding_id: focus-to-body-after-select\nfingerprint: 3a7d4f1b8c9e2a6d\nsource: keyboard-a11y-tester driven trace (step_0005)\nwcag_or_apg: WCAG 2.1.2 (No Keyboard Trap)\nsection_508_fpc_context: not in scope\nseverity: CRITICAL\nperspective_alarms: keyboard=HIGH, screen-reader=HIGH\nevidence: {\"step_id\":\"step_0005\",\"keystroke_sent\":\"Enter\",\"active_element_selector\":\"body\",\"focus_moved\":true}\nreproduction_steps: Open dropdown \u2192 press Enter to select option\nexpected_behavior: Focus should return to trigger button\nactual_behavior: Focus moves to body element\ntrend: new\n\n### A11y Evidence Finding\nfinding_id: listbox-empty-accessible-name\nfingerprint: 8d3f9a1c7e2b6d4a\nsource: keyboard-a11y-tester driven trace (step_0003)\nwcag_or_apg: WCAG 4.1.2 (Name, Role, Value)\nsection_508_fpc_context: not in scope\nseverity: CRITICAL\nperspective_alarms: screen-reader=HIGH\nevidence: {\"step_id\":\"step_0003\",\"active_element_selector\":\"#dropdown-list\",\"ax_name_role_state\":{\"name\":\"\",\"role\":\"listbox\"}}\nreproduction_steps: Open dropdown \u2192 inspect listbox element\nexpected_behavior: Listbox should have accessible name\nactual_behavior: Accessible name is empty string\ntrend: new",
+  "done": true,
+  "total_duration": 377384677625,
+  "eval_count": 1825,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 32768,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 377.4,
+    "timestamp": "2026-08-26T22:02:59",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 3792,
+    "estimated_prompt_tokens": 20880,
+    "prompt_eval_count": 16975,
+    "context_pressure": false,
+    "prompt_sha256": "55d34ddf12f56cac0d885eb0b0bcff683fbab3673824ab01b528efe560767a93",
+    "prompt_byte_length": 73353,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md",
+    "pack_sha256": "5fe85d89dd6c78bf6ee9a6a5c8232842a47801ab2f0bf30ce60582a023b75d41",
+    "pack_byte_length": 9591,
+    "pack_available": true
+  }
+}

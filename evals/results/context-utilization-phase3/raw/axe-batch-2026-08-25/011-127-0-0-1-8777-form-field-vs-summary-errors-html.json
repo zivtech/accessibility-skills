@@ -1,0 +1,52 @@
+{
+  "url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+  "started": "2026-08-26T00:06:35.260Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+      "title": "form-field-vs-summary-errors",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 9,
+          "sample_selectors": [
+            "h1",
+            "label[for=\"field-email\"]",
+            "#field-email"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 23,
+      "inapplicable_count": 66
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:39.639Z"
+}

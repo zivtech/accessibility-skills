@@ -1,0 +1,1408 @@
+### evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json (keyboard-a11y-tester driven trace)
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "personas": [
+    "keyboard",
+    "screen-reader"
+  ],
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "start_url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "open the sort dropdown, move into the listbox, pick an option, verify focus returns to trigger"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step_0001",
+      "index": 1,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#dropdown-btn",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Sort by",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "hasPopup": "listbox",
+          "expanded": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 14,
+                "text": "Sort by"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 68.234375,
+        "y": 16,
+        "width": 73.65625,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "Newest▼",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0001.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "document",
+          "button, Sort by, not expanded, has popup listbox"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Sort by, not expanded, has popup listbox"
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 379,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0002",
+      "index": 2,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "#dropdown-btn",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Sort by",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "hasPopup": "listbox",
+          "expanded": true,
+          "controls": "dropdown-list",
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 14,
+                "text": "Sort by"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 68.234375,
+        "y": 16,
+        "width": 73.65625,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "Newest▼",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0002.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.2239,
+        "edge": 0.3108,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 367,
+        "ref_area_2px_perimeter": 379,
+        "area_pass": false,
+        "contrast": 2.98,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0003",
+      "index": 3,
+      "keystroke_sent": "Tab",
+      "active_element_selector": "#dropdown-list",
+      "tag": "ul",
+      "tabindex": 0,
+      "dom_order_index": 14,
+      "ax_name_role_state": {
+        "name": "",
+        "role": "listbox",
+        "states": {
+          "focusable": true,
+          "focused": true,
+          "multiselectable": false,
+          "orientation": "vertical",
+          "required": false
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 16,
+        "y": 53,
+        "width": 1248,
+        "height": 54
+      },
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "Newest\nPrice: low to high\nRating",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0003.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0,
+        "edge": 0,
+        "style_cue": true,
+        "pixel_cue": false,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "listbox, orientated vertically"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "listbox, orientated vertically"
+      },
+      "focus_appearance": {
+        "changed_area": 0,
+        "ref_area_2px_perimeter": 5208,
+        "area_pass": false,
+        "contrast": null,
+        "contrast_pass": null,
+        "aaa_pass": false
+      }
+    },
+    {
+      "step_id": "step_0004",
+      "index": 4,
+      "keystroke_sent": "ArrowDown",
+      "active_element_selector": "#dropdown-list",
+      "tag": "ul",
+      "tabindex": 0,
+      "dom_order_index": 14,
+      "ax_name_role_state": {
+        "name": "",
+        "role": "listbox",
+        "states": {
+          "focusable": true,
+          "focused": true,
+          "multiselectable": false,
+          "orientation": "vertical",
+          "required": false
+        }
+      },
+      "focus_moved": false,
+      "bounding_box": {
+        "x": 16,
+        "y": 53,
+        "width": 1248,
+        "height": 54
+      },
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "Newest\nPrice: low to high\nRating",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0004.png",
+      "focus_visible": {
+        "border_band": 0.3287,
+        "interior": 0.0482,
+        "edge": 0.0702,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      },
+      "focus_appearance": {
+        "changed_area": 6555,
+        "ref_area_2px_perimeter": 5208,
+        "area_pass": true,
+        "contrast": 5.67,
+        "contrast_pass": true,
+        "aaa_pass": true
+      }
+    },
+    {
+      "step_id": "step_0005",
+      "index": 5,
+      "keystroke_sent": "Enter",
+      "active_element_selector": "body",
+      "tag": "body",
+      "tabindex": null,
+      "dom_order_index": -1,
+      "ax_name_role_state": {
+        "name": null,
+        "role": "none",
+        "states": {}
+      },
+      "focus_moved": true,
+      "bounding_box": null,
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "",
+      "is_body": true,
+      "computed_focus_style": null,
+      "region": null,
+      "focused_region_screenshot": null,
+      "focus_visible": null,
+      "sr_announcement": {
+        "new_phrases": [],
+        "live_announcements": [],
+        "focus_announcement": null
+      }
+    },
+    {
+      "step_id": "step_0006",
+      "index": 6,
+      "keystroke_sent": "Shift+Tab",
+      "active_element_selector": "#dropdown-btn",
+      "tag": "button",
+      "tabindex": null,
+      "dom_order_index": 12,
+      "ax_name_role_state": {
+        "name": "Sort by",
+        "role": "button",
+        "states": {
+          "invalid": "false",
+          "focusable": true,
+          "focused": true,
+          "hasPopup": "listbox",
+          "expanded": false,
+          "labelledby": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 14,
+                "text": "Sort by"
+              }
+            ]
+          }
+        }
+      },
+      "focus_moved": true,
+      "bounding_box": {
+        "x": 68.234375,
+        "y": 16,
+        "width": 130.71875,
+        "height": 21
+      },
+      "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "text": "Price: low to high▼",
+      "is_body": false,
+      "computed_focus_style": {
+        "outline_style": "auto",
+        "outline_width": "1px",
+        "outline_color": "rgb(0, 95, 204)",
+        "outline_offset": "0px",
+        "box_shadow": null,
+        "has_outline": true,
+        "has_shadow": false
+      },
+      "region": {
+        "landmark": null,
+        "heading": null
+      },
+      "focused_region_screenshot": "screenshots/step_0006.png",
+      "focus_visible": {
+        "border_band": 0,
+        "interior": 0.349,
+        "edge": 0.3381,
+        "style_cue": true,
+        "pixel_cue": true,
+        "visible": true,
+        "shape_cue": true,
+        "indicator": "outline"
+      },
+      "sr_announcement": {
+        "new_phrases": [
+          "button, Sort by, not expanded, has popup listbox"
+        ],
+        "live_announcements": [],
+        "focus_announcement": "button, Sort by, not expanded, has popup listbox"
+      },
+      "focus_appearance": {
+        "changed_area": 1220,
+        "ref_area_2px_perimeter": 607,
+        "area_pass": true,
+        "contrast": 2.53,
+        "contrast_pass": false,
+        "aaa_pass": false
+      }
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/accordion-no-region-role.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:09.507Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/accordion-no-region-role.html",
+      "locations": [],
+      "summary": "4 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > div:nth-of-type(1) > button (contrast 3.15), #root > div > div:nth-of-type(2) > button (contrast 1.82), #root > div > div:nth-of-type(3) > button (contrast 1.65), #root > div > div:nth-of-type(1) > button (contrast 3.15)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0005"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/app-focus-order-illogical.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:09.507Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+      "locations": [
+        "nav \"Header navigation\"",
+        "nav \"Sidebar navigation\", under heading “NAVIGATION”"
+      ],
+      "summary": "9 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > header > nav > ul > li:nth-of-type(1) > a (contrast 5.75), #root > div > header > nav > ul > li:nth-of-type(2) > a (contrast 5.75), #root > div > header > nav > ul > li:nth-of-type(3) > a (contrast 5.75), #root > div > div > aside > nav > ul > li:nth-of-type(1) > a (contrast 1.18), #root > div > div > aside > nav > ul > li:nth-of-type(2) > a (contrast 1.18)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0004",
+        "step_0005",
+        "step_0006",
+        "step_0012",
+        "step_0013",
+        "step_0014",
+        "step_0015",
+        "step_0016",
+        "step_0017"
+      ]
+    },
+    {
+      "id": "positive-tabindex-desktop",
+      "wcag": "2.4.3",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AA",
+      "confidence": 0.9,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+      "locations": [
+        "under heading “NAVIGATION”"
+      ],
+      "summary": "2 element(s) use a positive tabindex, forcing a manual tab order: #root > div > button[tabindex=1], #root > div > button[tabindex=1]",
+      "persona_impact": "Positive tabindex overrides natural order and commonly makes focus jump around unpredictably.",
+      "evidence": [
+        "step_0001",
+        "step_0019"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/async-form-vague-success.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:09.507Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "locations": [
+        "form, under heading “Send Us Feedback”"
+      ],
+      "summary": "4 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #feedback-name (contrast 2.45), #feedback-email (contrast 2.45), #feedback-message (contrast 2.45), #feedback-name (contrast 2.45)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0006"
+      ]
+    },
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/async-form-vague-success.html (aria-live/status/alert/log) never produced an announcement during this session: #root > div > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > div > div"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/breadcrumb-navigation-no-nav-landmark.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:09.507Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+      "locations": [],
+      "summary": "1 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > ol > li:nth-of-type(1) > a (contrast 2.27)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/button-skip-link-clean.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:33.456Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+      "locations": [
+        "nav \"Main navigation\""
+      ],
+      "summary": "6 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > a (contrast 2.04), #root > div > nav > ul > li:nth-of-type(1) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(2) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(3) > a (contrast 2.27), #root > div > nav > ul > li:nth-of-type(4) > a (contrast 2.27)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0005",
+        "step_0007"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/checkbox-group-no-fieldset.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:33.464Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/combobox-autocomplete-no-listbox-role.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:33.469Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+      "locations": [],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #combobox-input (contrast 3.46), #combobox-input (contrast 3.46)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0003"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/dashboard-heading-inconsistency.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:33.502Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+      "locations": [],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > div:nth-of-type(1) > ul > li:nth-of-type(1) > a (contrast 1.46), #root > div > div:nth-of-type(1) > ul > li:nth-of-type(2) > a (contrast 1.42), #root > div > div:nth-of-type(1) > ul > li:nth-of-type(3) > a (contrast 1.45)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003"
+      ]
+    },
+    {
+      "id": "sr-heading-skip-desktop",
+      "wcag": "1.3.1",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.75,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+      "locations": [],
+      "summary": "1 heading level skip(s) on http://127.0.0.1:8777/dashboard-heading-inconsistency.html (jumping past one or more levels): heading, Total Users, level 3",
+      "persona_impact": "A screen-reader user navigating by heading level loses the document outline and may miss sections.",
+      "evidence": [
+        "#root > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > h3"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/data-table-missing-scope.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:57.021Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/expandable-section-no-button.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:57.025Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/file-input-no-labels.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:57.040Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/form-field-vs-summary-errors.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:10:57.191Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+      "locations": [
+        "form, under heading “Create your account”"
+      ],
+      "summary": "5 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #field-email (contrast 3.42), #field-password (contrast 3.42), #field-confirmPassword (contrast 3.42), #field-displayName (contrast 3.42), #field-email (contrast 3.42)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0007"
+      ]
+    },
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+      "locations": [],
+      "summary": "4 declared live region(s) on http://127.0.0.1:8777/form-field-vs-summary-errors.html (aria-live/status/alert/log) never produced an announcement during this session: #root > form > div:nth-of-type(1) > div, #root > form > div:nth-of-type(2) > div, #root > form > div:nth-of-type(3) > div, #root > form > div:nth-of-type(4) > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > form > div:nth-of-type(1) > div",
+        "#root > form > div:nth-of-type(2) > div",
+        "#root > form > div:nth-of-type(3) > div",
+        "#root > form > div:nth-of-type(4) > div"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/form-validation-missing-aria-describedby.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:20.595Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "locations": [
+        "form, under heading “Login”"
+      ],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #email (contrast 3.39), #password (contrast 3.39), #email (contrast 3.39)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0005"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/heading-hierarchy-skipped.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:20.606Z",
+  "findings": [
+    {
+      "id": "sr-heading-skip-desktop",
+      "wcag": "1.3.1",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.75,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+      "locations": [],
+      "summary": "1 heading level skip(s) on http://127.0.0.1:8777/heading-hierarchy-skipped.html (jumping past one or more levels): heading, Why Accessibility Matters, level 3",
+      "persona_impact": "A screen-reader user navigating by heading level loses the document outline and may miss sections.",
+      "evidence": [
+        "#root > article > h3:nth-of-type(1)"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/image-carousel-no-region.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:20.617Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/image-carousel-no-region.html",
+      "locations": [],
+      "summary": "6 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button:nth-of-type(1) (contrast 2.4), #root > div > button:nth-of-type(2) (contrast 2.19), #root > div > div:nth-of-type(2) > button:nth-of-type(1) (contrast 1.49), #root > div > div:nth-of-type(2) > button:nth-of-type(2) (contrast 1.26), #root > div > div:nth-of-type(2) > button:nth-of-type(3) (contrast 1.41)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0005",
+        "step_0007"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/infinite-scroll-no-announcement.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:20.647Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/interactive-dropdown-clean.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:44.138Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/loading-state-missing-aria-busy.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:44.240Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/megamenu-no-structure.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:11:44.402Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/modal-complete-clean.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:07.677Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "locations": [],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button (contrast 3.14), #root > div > button (contrast 3.14)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0003"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/multistep-form-error-clearing.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:07.701Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+      "locations": [
+        "form, under heading “Personal Information”",
+        "form, under heading “Address”"
+      ],
+      "summary": "5 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #name (contrast 2.45), #email (contrast 2.45), #street (contrast n/a), #zip (contrast n/a), #name (contrast 2.45)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0007"
+      ]
+    },
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/multistep-form-error-clearing.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/multistep-form-error-clearing.html (aria-live/status/alert/log) never produced an announcement during this session: #root > form > div:nth-of-type(2)",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > form > div:nth-of-type(2)"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/pagination-no-nav-landmark.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:07.743Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+      "locations": [],
+      "summary": "13 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button:nth-of-type(1) (contrast 2.37), #root > div > div > button:nth-of-type(1) (contrast 1.49), #root > div > div > button:nth-of-type(2) (contrast 1.26), #root > div > div > button:nth-of-type(3) (contrast 1.26), #root > div > div > button:nth-of-type(4) (contrast 1.54)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0005",
+        "step_0006",
+        "step_0007",
+        "step_0008",
+        "step_0009",
+        "step_0010"
+      ]
+    },
+    {
+      "id": "no-skip-link-desktop",
+      "wcag": "2.4.1",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AA",
+      "confidence": 0.55,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+      "locations": [],
+      "summary": "No \"skip to main content\" style link was found among the first focus stops.",
+      "persona_impact": "A keyboard user must Tab through the entire header/nav to reach main content on every page — painful for users with limited stamina or motor control.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0003",
+        "step_0004",
+        "step_0005"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/popover-no-focus-management.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:07.774Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/popover-no-focus-management.html",
+      "locations": [],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button (contrast 3.1), #root > div > button (contrast 3.1)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0003"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/radio-button-group-no-grouping.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:31.235Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/search-focus-stays-in-input.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:31.250Z",
+  "findings": [
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/search-focus-stays-in-input.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/search-focus-stays-in-input.html (aria-live/status/alert/log) never produced an announcement during this session: #root > div > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > div > div"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/search-results-dynamic-clean.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:31.282Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/search-results-dynamic-clean.html",
+      "locations": [
+        "form"
+      ],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #search-input (contrast 1.28), #root > div > form > button (contrast 5.03), #search-input (contrast 1.28)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0004"
+      ]
+    },
+    {
+      "id": "sr-live-region-silent-desktop",
+      "wcag": "4.1.3",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.4,
+      "severity": "moderate",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/search-results-dynamic-clean.html",
+      "locations": [],
+      "summary": "1 declared live region(s) on http://127.0.0.1:8777/search-results-dynamic-clean.html (aria-live/status/alert/log) never produced an announcement during this session: #root > div > div",
+      "persona_impact": "If this region is meant to announce dynamic updates (e.g. form errors, confirmations), a screen-reader user never hears them on this path.",
+      "evidence": [
+        "#root > div > div"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/tabbed-nav-vs-tab-pattern.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:31.334Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/tabs-incomplete-aria-selected.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:54.768Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+      "locations": [],
+      "summary": "3 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #tab-1 (contrast 1.8), #panel-1 (contrast 2.95), #tab-1 (contrast 2.43)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0002",
+        "step_0006"
+      ]
+    },
+    {
+      "id": "missing-accessible-name-desktop",
+      "wcag": "4.1.2",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AA",
+      "confidence": 0.7,
+      "severity": "serious",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/tabs-incomplete-aria-selected.html",
+      "locations": [],
+      "summary": "1 focusable control(s) have no accessible name: tabpanel at #panel-1",
+      "persona_impact": "A keyboard user who relies on speech recognition cannot target these controls by voice, and their purpose is not conveyed programmatically.",
+      "evidence": [
+        "step_0002"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/tabs-missing-arrow-nav.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:54.778Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/toast-notification-no-role.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:54.792Z",
+  "findings": []
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/tooltip-no-role-no-association.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:12:54.805Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/tooltip-no-role-no-association.html",
+      "locations": [],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > button (contrast 3.12), #root > div > button (contrast 3.12)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0003"
+      ]
+    }
+  ]
+}
+```
+
+### evals/results/keyboard-a11y-tester/findings/video-player-missing-captions.json (keyboard-a11y-tester batch-crawl findings (sibling page))
+
+```json
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "generated_at": "2026-07-10T18:13:18.359Z",
+  "findings": [
+    {
+      "id": "focus-appearance-weak-desktop",
+      "wcag": "2.4.13",
+      "source": "deterministic",
+      "persona": "keyboard",
+      "evidence_kind": "step_id",
+      "conformance_level": "AAA",
+      "confidence": 0.5,
+      "severity": "minor",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/video-player-missing-captions.html",
+      "locations": [],
+      "summary": "2 focus stop(s) have a visible indicator that does not meet the AAA Focus Appearance bar (>= 2px-perimeter area and >= 3:1 contrast). Informative only. e.g. #root > div > div > button (contrast 3.03), #root > div > div > button (contrast 3.03)",
+      "persona_impact": "The focus indicator is present but may be hard to perceive for low-vision users.",
+      "evidence": [
+        "step_0001",
+        "step_0003"
+      ]
+    }
+  ]
+}
+```

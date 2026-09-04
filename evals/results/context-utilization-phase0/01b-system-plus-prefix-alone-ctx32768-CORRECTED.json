@@ -1,0 +1,22 @@
+{
+ "model": "qwen3:32b",
+ "created_at": "2026-08-24T18:08:24.583632Z",
+ "response": "",
+ "done": true,
+ "done_reason": "length",
+ "total_duration": 70105067500,
+ "load_duration": 2528760250,
+ "prompt_eval_count": 13853,
+ "prompt_eval_duration": 67535769000,
+ "eval_count": 1,
+ "eval_duration": 1000,
+ "_probe_meta": {
+  "phase": "step2-system-plus-prefix-alone-CORRECTED",
+  "num_ctx": 32768,
+  "wall_seconds": 70.1,
+  "note": "Replaces the empty-prompt design, which hit Ollama's preload-only shortcut (see 01-system-alone-ctx32768.json: done_reason=load, no prompt_eval_count). prompt field here is PROMPT_PREFIX only (no fixture content)."
+ },
+ "context_stripped": "token-id array removed post-capture to keep receipts lean (context-utilization plan, principle 1)",
+ "context_length": 13854,
+ "context_sha256": "e458105f6d24c3b8399057afc9883be9ad51d374af722eca2bfc27c7e1039bd6"
+}

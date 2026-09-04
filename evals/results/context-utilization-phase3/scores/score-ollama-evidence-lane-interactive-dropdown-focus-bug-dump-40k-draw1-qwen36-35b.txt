@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=31021 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '- **Evidence**: `Component Code:17` (`handleToggle`) and `Component Code:25` (`handleSelect`) close the dropdown via `setIsOpen(false)` but never call `buttonRef.current.focus()` or equivalent. Keyboa…'
+  + [1] Focus not restored to trigger button after Escape key — '**Overall Assessment**: The component implements the structural skeleton of a WAI-ARIA Menu Button / Listbox pattern correctly (using `<button>` and `role="listbox"`), but fails on two critical intera…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 31021,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "- **Evidence**: `Component Code:17` (`handleToggle`) and `Component Code:25` (`handleSelect`) close the dropdown via `setIsOpen(false)` but never call `buttonRef.current.focus()` or equivalent. Keyboa\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements the structural skeleton of a WAI-ARIA Menu Button / Listbox pattern correctly (using `<button>` and `role=\"listbox\"`), but fails on two critical intera\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

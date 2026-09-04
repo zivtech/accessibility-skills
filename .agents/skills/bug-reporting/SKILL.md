@@ -35,6 +35,8 @@ Every report must give enough information for a developer who was not present
 during testing to reproduce, understand, and fix the problem without additional
 back-and-forth.
 
+Serialize each report from the finding entry's captured fields (from the scan/trace input or evidence-contract block) plus targeted per-finding lookups — never by re-reading the full scan or trace corpus wholesale.
+
 ---
 
 ## Severity Scale (this skill)

@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n## Findings\n\n### Critical Findings (blocks access)\nNone found. The component is functional via mouse and Tab key, though the interaction model is incomplete.\n\n### Major Findings (significantly degrades experience)\n\n1. **Missing Arrow Key Navigation in Composite Widget**\n   - **Evidence:** `TabsWidget.jsx:14-18` (`handleTabKeyDown` only handles Enter/Space); `evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json` step_0002 (ArrowRight sent, `focus_moved: false`).\n   - **User Group:** Keyboard-only users, Screen reader users.\n   - **WCAG/APG Citation:** WAI-ARIA APG Tabs Pattern; WCAG 2.1.1 (Keyboard).\n   - **Why this matters:** The WAI-ARIA Tabs pattern defines the tablist as a *composite widget*. Users expect arrow keys to cycle through tabs. Without this, keyboard users cannot navigate between tabs without Tabbing out and back in, which is confusing and breaks the mental model of the widget.\n   - **Fix:** Update `handleTabKeyDown` to handle `ArrowRight`, `ArrowLeft`, `Home`, and `End`. Implement logic to update `activeTab` state and move focus (via roving tabindex) accordingly.\n\n### Minor Findings (friction but workaround exists)\n\n1. **Redundant Enter/Space Handling**\n   - **Evidence:** `TabsWidget.jsx:15-17`.\n   - **Why this matters:** Native `<button>` elements activate on Enter and Space automatically. The custom handler is redundant unless preventing default behavior (which isn't needed here). It adds complexity without benefit.\n\n### Enhancements (best practice not met)\n\n1. **Focus Management Post-Activation**\n   - **Evidence:** `TabsWidget.jsx:8` (`setActiveTab`).\n   - **Why this matters:** Current design keeps focus on the tab button after activation. While valid, some patterns prefer moving focus to the first interactive element inside the panel for better flow. This is a design choice; ensure it aligns with your specific UX requirements.\n\n## What's Missing (gaps)\n\n- **Arrow Key Logic:** The `handleTabKeyDown` function is a stub that ignores arrow keys.\n- **Home/End Support:** No handling for jumping to the first or last tab.\n- **Focus Restoration:** Not applicable here (not a modal), but ensure focus stays on the active tab after state update (React usually handles this if the element remains in DOM).\n\n## Multi-Perspective Notes\n\n- **Screen reader user:** Hears \"tab, Overview, selected\". If they try to use arrow keys (standard for tabs), nothing happens. They are stranded or confused.\n- **Keyboard-only user:** Can Tab to the first tab. Cannot cycle through tabs with arrows. Must Tab out of the widget and back in to reach other tabs.\n- **Low vision user:** Focus indicator (`outline`) is visible (3px solid). Good.\n- **Cognitive accessibility:** Interaction model is inconsistent. Click works; arrow keys don't.\n\n## Verdict Justification\n\nThe component implements 80% of the WAI-ARIA Tabs pattern correctly (semantics, ARIA attributes, roving tabindex structure). However, it fails on the critical interaction requirement: **arrow key navigation**. This is not a minor visual issue; it breaks the core usability for keyboard users. The `REVISE` verdict reflects that the design is structurally sound but functionally incomplete regarding the APG pattern.\n\n## Open Questions (unscored)\n\n- Is there a specific UX reason to disable arrow keys? (Unlikely, but worth",
+  "done": true,
+  "total_duration": 85386817834,
+  "eval_count": 2689,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "overflow-32k",
+    "payload": "DUMP",
+    "draw": 1,
+    "num_ctx": 32768,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 85.5,
+    "timestamp": "2026-08-26T22:23:23",
+    "done_reason": "length",
+    "output_clipped": true,
+    "thinking_chars": 7435,
+    "estimated_prompt_tokens": 30490,
+    "prompt_eval_count": 30079,
+    "context_pressure": true,
+    "prompt_sha256": "3acc3fd7ff090184f3ef9f0802b145c2eb420fe2ad2bcfbed2a5cfa8c7990030",
+    "prompt_byte_length": 106968,
+    "overflow_receipt": true,
+    "guard_tripped": true,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.dump.txt",
+    "pack_sha256": "96fc2742c0f1d20e3a917400f7cdcd21f6c9146b6afbcbdc6622272a35cb3cfa",
+    "pack_byte_length": 42846,
+    "pack_available": true
+  }
+}

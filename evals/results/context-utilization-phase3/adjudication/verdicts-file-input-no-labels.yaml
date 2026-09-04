@@ -1,0 +1,522 @@
+fixture_id: file-input-no-labels
+tier: HAS-BUGS
+rows:
+  - row: claude-evidence-lane-file-input-no-labels-curated-hosted-draw1-opus
+    model: opus
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Finding 1 CRITICAL "The file input has no programmatic label" - "BuggyFileInput.jsx:19 renders <div>Upload file</div> - a plain div, no <label>, no htmlFor"; gap list item 1 "A <label> element. None exists in the component."'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Finding 2 CRITICAL: "The input at BuggyFileInput.jsx:20-24 has no aria-describedby and no aria-invalid"; gap list "aria-describedby. No help text and no error text is bound to the control."'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Finding 2 CRITICAL plus gap list item 4 "aria-invalid. The control reports itself valid in every state it can reach."; fix adds aria-invalid={error ? "true" : undefined}'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Finding 3 MAJOR (WCAG 3.3.2): state table row "Accepted file types | Only inside the OS picker filter | No - no help text, no association"; fix renders help text "PDF, DOC or DOCX. Maximum size 5 MB." referenced by aria-describedby'
+
+  - row: claude-evidence-lane-file-input-no-labels-curated-hosted-draw1-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing accessible label on the file input" - "<div>Upload file</div> is a plain, unassociated div - not a <label>, no htmlFor, no id on the input"; keyword list missed the phrasing, not the finding'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Error text not associated with the input via aria-describedby" with fix and WCAG 1.3.1/3.3.1 citation'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "aria-invalid is never set." - "The field own validity state is not programmatically exposed at any point."'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 3 "No accessible or visible help text for file-type and size constraints" - accept "only filters what the OS file-picker dialog shows - it is not rendered as visible text and is not announced to assistive technology" (WCAG 3.3.2)'
+
+  - row: claude-evidence-lane-file-input-no-labels-curated-hosted-draw2-opus
+    model: opus
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'C-1 "The file input has no label"; Phase 2 "Label association: FAIL. <div>Upload file</div> (:19) is a plain div. No htmlFor, no id on the input, no nesting, no aria-labelledby"; W-1 "No <label> and no id on the input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'C-2 mechanism 1 "No association. No aria-describedby, so the error is not read when the field is focused (1.3.1, 3.3.1)"; W-2'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'C-2 mechanism 3 "No validity state. The AX tree reports states.invalid = false"; W-3 "No aria-invalid; measured as false while an error is displayed"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'M-1 "The constraints the component enforces are never stated to the user. The accept list at :23 filters the picker dialog but is not user-facing text ... Nothing on screen or in the accessibility tree tells anyone what may be uploaded" (WCAG 3.3.2); W-5'
+
+  - row: claude-evidence-lane-file-input-no-labels-curated-hosted-draw2-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "No accessible label for the file input beyond the browser generic caption" - text is "not associated with the <input type=file> via <label>, htmlFor, or aria-labelledby"; gap list "No <label> (or aria-labelledby) associating Upload file with the input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Error message is not associated with the input via aria-describedby" - "no id exists on the error <div>, and the <input> carries no aria-describedby"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "No aria-invalid on the input at any point." with WCAG 4.1.2 citation and fix'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 3 "No accessible instructions for accepted file types or the size ceiling, disclosed only after failure" - "The accept attribute filters the OS file-picker dialog but is not perceivable text" (WCAG 3.3.2)'
+
+  - row: claude-evidence-lane-file-input-no-labels-dump-hosted-draw1-opus
+    model: opus
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical 1 "File input has no programmatic label; its only accessible name is the browser boilerplate"; Phase 7 gap list opens with "No <label> element anywhere in the component."'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical 2 "BuggyFileInput.jsx:20-24 has no aria-describedby"; Phase 7 "No aria-describedby on the input (would need to reference help text and error, space-separated)"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major 1 "aria-invalid is never set; the field reports itself valid while visibly in error." with WCAG 4.1.2 and fix'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major 2 "The constraints that determine success are invisible until the user violates them" - accept "filters the OS picker and is never exposed as text. There is no help text element and no aria-describedby" (WCAG 3.3.2)'
+
+  - row: claude-evidence-lane-file-input-no-labels-dump-hosted-draw1-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "No real accessible label - only the generic UA-default name is exposed" - "nothing connects them: no <label> wrapping or htmlFor/id pair, no aria-label, no aria-labelledby"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Scorer quote was the sibling-artifact filename list (incidental), but the response does report the defect: Critical Finding 2 "no id for aria-describedby to target, and the input itself never receives aria-describedby"; gap list "Missing aria-describedby linking the error text to the input"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "aria-invalid is never wired to the validation state ... there is no attribute in the JSX to toggle"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Minor Finding "No upfront disclosure of the 5MB size limit (or, beyond the accept filter, the allowed file types)" - accept "communicates nothing to a screen reader user" (WCAG 3.3.2); gap list "Missing upfront instructional text on size/type constraints"'
+
+  - row: claude-evidence-lane-file-input-no-labels-dump-hosted-draw2-opus
+    model: opus
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'CRITICAL-1 "The file input has no author-supplied accessible name; the visible label is an unassociated <div>" - "no id, no wrapping <label>, no aria-label, no aria-labelledby"; gap table "Programmatic label association"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'CRITICAL-2 "the input carries no aria-describedby and no aria-invalid"; gap table row "aria-describedby on the input | Error and hint cannot be read as the field description"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'CRITICAL-2 same paragraph plus gap table "aria-invalid toggling | The field never reports its own error state; trace shows invalid: false"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'MAJOR-2 "The upload constraints are never communicated" - accept "is a picker filter: it is not exposed to assistive technology as a description ... and it appears nowhere in the page accessible text" (WCAG 3.3.2); gap table "Any statement of the size or type constraint"'
+
+  - row: claude-evidence-lane-file-input-no-labels-dump-hosted-draw2-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "No programmatic label" - "a bare <div>Upload file</div> (line 19), with no <label>, htmlFor, aria-label, or aria-labelledby anywhere connecting it to the <input type=file>"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2: error div "has no id, so it cannot be the target of aria-describedby"; gap list "no aria-describedby on the input"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing aria-invalid on the input." - "aria-invalid is never referenced in the JSX at all"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "File-type/size restrictions are never surfaced as instructions" - accept "only filters the OS file picker; it is not visible or programmatically associated instructional text" (WCAG 3.3.2)'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-32k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing label association" - "The file input has no associated label via for attribute or aria-label. Fix: Add <label htmlFor=file-input>Upload file</label>"; gap list "Complete label association (missing for/aria-label)"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Error message not associated with input ... has no id or aria-describedby linking it to the input"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "Missing aria-invalid state ... The input does not use aria-invalid=true when an error occurs" (WCAG 4.1.2)'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Filed at Enhancement tier rather than as a finding, but names the gap and its remedy: "Add help text explaining file type restrictions via aria-describedby" (severity under-rated vs ground-truth MAJOR; defect itself is reported)'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-32k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing accessible label for file input" - "BuggyFileInput.jsx:18 renders <div>Upload file</div> instead of a <label>"; gap list "Programmatic label association: No <label> element exists."'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... provides no id for it, and the input lacks aria-describedby"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "Error state not communicated to assistive technology ... aria-invalid must toggle to true when validation fails"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Gap list "Helper text association: File restrictions (.pdf,.doc,.docx, 5MB limit) are not communicated to AT beyond the accept attribute"; Enhancement repeats the aria-describedby remedy'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-32k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing programmatic label for file input ... Fix: Add <label htmlFor=file-input>Upload file</label> and id=file-input to the <input>"; gap list "Programmatic association between label and input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... Fix: Add aria-describedby=error-message to the <input> and id=error-message to the error div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing aria-invalid state on error ... Screen readers will not announce the input is invalid" (WCAG 4.1.2)'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Filed at Enhancement tier: "Include help text with file type restrictions using aria-describedby" - names the missing associated instruction and its remedy (severity under-rated vs ground-truth MAJOR)'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-32k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing accessible label for file input" - input "has no associated <label>. The visual text Upload file is in a standalone <div> at line 16"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Validation error not communicated to assistive technology ... the input at line 18 has no aria-describedby pointing to it"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing aria-invalid state on validation failure ... input lacks aria-invalid" (WCAG 4.1.2)'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Minor Finding "Help text for file type restrictions not associated: The accept=.pdf,.doc,.docx attribute restricts files but does not communicate this to AT users. Add visible help text ... and associate it via aria-describedby"'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing label association for file input ... Fix: Add <label htmlFor=fileInput>Upload file</label>"; gap list "Proper label association for the file input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... Fix: Add aria-describedby=error-message to the <input> and id=error-message to the error div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing aria-invalid state on error ... WCAG 4.1.2 requires state communication"'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "Missing help text for file type restrictions ... Users will not know accepted file types. WCAG 3.3.2 requires instructions to be available"; gap list repeats it'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing Accessible Name for File Input" - "<div>Upload file</div> is visually present but not associated with <input type=file> ... Fix: Replace <div>Upload file</div> with <label htmlFor=file-input>"; gap list "Programmatic label association (htmlFor/id)"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Error Message Not Associated with Input ... lacks an id and is not referenced by the input via aria-describedby"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "Invalid State Not Communicated Programmatically ... does not update aria-invalid={!!error} on the input"'
+      - item_index: 3
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: 'Absent. No mention of the accept attribute, accepted file types, or the size limit anywhere - findings cover label, aria-describedby, aria-invalid, live region, page landmarks and non-color error indicators only; the four-item gap list carries no instructions/help-text entry'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing programmatic label association ... Fix: Add <label htmlFor=file-input>Upload file</label> and id=file-input to the input"; gap list "Programmatic association between label and input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... Fix: Add aria-describedby=error-message to the input and id=error-message to the error div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 3 "Missing aria-invalid state ... Screen reader users will not know the input is invalid"'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Minor Finding "Missing help text association for file type restrictions" - filed as a finding naming the exact gap (severity under-rated vs ground-truth MAJOR)'
+
+  - row: ollama-evidence-lane-file-input-no-labels-curated-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing accessible label for file input" - "renders <div>Upload file</div> instead of a <label> element. The <input> has no id and no associated label"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "The input does not use aria-describedby to link to the error"; gap list "Missing aria-describedby association: The error message exists but is not programmatically linked to the input field"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Input state (aria-invalid) not updated on error ... The input remains in a neutral state programmatically despite visual feedback" (WCAG 4.1.2)'
+      - item_index: 3
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: 'Absent. The accept attribute, accepted file types and the size limit are never mentioned; findings cover label, error association/announcement, aria-invalid and page landmarks, and the gap list carries describedby, role=alert and lang only'
+
+  - row: ollama-evidence-lane-file-input-no-labels-dump-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing accessible name for file input" on <input type=file>, WCAG 1.3.1 - "Fix: Add <label htmlFor=file-input>Upload file</label> and id=file-input to the input"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... Fix: Add aria-describedby=error-message to the input and id=error-message to the error div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 3 "No aria-invalid state on error ... Fix: Add aria-invalid={error ? true : false} to the input"'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing help text for file type restrictions", user group screen reader users, WCAG 2.2: 3.3.2 (Labels or Instructions), fix adds an aria-describedby hint listing PDF, DOC, DOCX'
+
+  - row: ollama-evidence-lane-file-input-no-labels-dump-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "File Input Lacks a Programmatic Label" - "BuggyFileInput.jsx:18 renders <div>Upload file</div> instead of a <label>"; gap list "Missing Label Element"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error Message Not Associated with Input ... The input (line 19) has no aria-describedby attribute pointing to this div ID"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Invalid State Not Communicated Programmatically ... does not update the input aria-invalid attribute"; gap list "Missing Invalid State"'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Minor Finding 1 "File Type Restrictions Not Visible to Sighted Users" - accept present but "there is no visible text explaining this restriction"; fix adds help text "associate it with the input via aria-describedby"; keyboard note adds "no visual or programmatic guidance on allowed file types". User-group framing differs from ground truth, substance matches'
+
+  - row: ollama-evidence-lane-file-input-no-labels-dump-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "Missing label association for file input ... Fix: Add <label htmlFor=file-input>Upload file</label> and id=file-input to the input"; gap list "No accessible name for the file input beyond Choose File"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error message not associated with input ... Fix: Add aria-describedby=error-message to input and id=error-message to error div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Missing aria-invalid state on error", WCAG 2.2: 4.1.2 (Name, Role, Value)'
+      - item_index: 3
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "Missing help text about file type restrictions", WCAG 2.2: 3.3.2; screen-reader note states "file type restrictions not announced"'
+
+  - row: ollama-evidence-lane-file-input-no-labels-dump-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1 "File input lacks a visible label associated via htmlFor" - "renders <div>Upload file</div> above the input. The input at line 21 has no aria-label and no associated <label>"'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 "Error messages are not associated with the input or announced ... The input does not have aria-describedby pointing to this div"'
+      - item_index: 2
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1 "Invalid state is not communicated programmatically ... does not update the input aria-invalid attribute" (WCAG 4.1.2)'
+      - item_index: 3
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2 "File type constraints are not visible in the label or help text" - accept "is invisible to users who cannot see the UI (screen readers)" (WCAG 3.3.2); gap list "Missing visible help text"'

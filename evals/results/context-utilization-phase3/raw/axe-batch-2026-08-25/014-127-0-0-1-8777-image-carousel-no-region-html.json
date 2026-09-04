@@ -1,0 +1,81 @@
+{
+  "url": "http://127.0.0.1:8777/image-carousel-no-region.html",
+  "started": "2026-08-26T00:06:49.075Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/image-carousel-no-region.html",
+      "title": "image-carousel-no-region",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".carousel-images"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            "button[aria-label=\"Previous image\"]",
+            ".active",
+            "button[aria-label=\"Go to image 2\"]"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 18,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:52.906Z"
+}

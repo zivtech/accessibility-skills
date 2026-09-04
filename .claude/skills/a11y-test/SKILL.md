@@ -22,7 +22,7 @@ Pick the right execution mode from the routing table before running anything (th
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
 | Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom, Storybook play functions, or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
-| Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
+| Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot --max-output 8000` | Same daemon, no test runner needed. |
 | A person confirms a fix at the fixed stage (the closure record needs its `attestation` block), or walks an ICT baseline row no machine mode covers | [`references/human-verification-walkthrough.md`](references/human-verification-walkthrough.md) | The human tier: a planned-operation-driven walk that records `before` / `action` / `expected` / `observed` per operation in a shape the five admissibility rules can read, plus an attended-media shape for the alternative-content rows. Never a free walk; the one place a single PASS is the unreliable result. See "Human verification walk-through" below. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
@@ -46,11 +46,11 @@ Do you have a prose description of what to test, but no test script yet?
 
 | Defect class | Evidence REQUIRED before "verified" | Mode |
 |---|---|---|
-| Keyboard operability (reachable, operable with Tab/Enter/Space/Escape/arrows) | Real-keyboard Playwright transcript — actual `page.keyboard.press()` calls, never ARIA-attribute inspection alone | `npx playwright test` |
-| Focus order & focus-visible sufficiency | Journey-level focus trace evidence | `keyboard-a11y-tester` |
-| Accessible name/role/state; status-message announcements | Assertion output against actual computed screen-reader output | `virtual-screen-reader` |
-| Machine-detectable semantics, contrast, alt-presence (a rule fires or stops firing) | Re-scan of the touched page(s) after the fix | `baseline-url-scan.mjs` (axe-core violations; `--census`/`--alt-snapshot` for the heuristic classes) |
-| Visual-only classes (layout, spacing, color/swatch correctness) | Screenshot comparison | screenshots (`agent-browser screenshot` / Playwright screenshot) |
+| `keyboard-operability` — Keyboard operability (reachable, operable with Tab/Enter/Space/Escape/arrows) | Real-keyboard Playwright transcript — actual `page.keyboard.press()` calls, never ARIA-attribute inspection alone | `npx playwright test` |
+| `focus-order-indicator` — Focus order & focus-visible sufficiency | Journey-level focus trace evidence | `keyboard-a11y-tester` |
+| `name-role-state` — Accessible name/role/state; status-message announcements | Assertion output against actual computed screen-reader output | `virtual-screen-reader` |
+| `machine-detectable` — Machine-detectable semantics, contrast, alt-presence (a rule fires or stops firing) | Re-scan of the touched page(s) after the fix | `baseline-url-scan.mjs` (axe-core violations; `--census`/`--alt-snapshot` for the heuristic classes) |
+| `visual-only` — Visual-only classes (layout, spacing, color/swatch correctness) | Screenshot comparison | screenshots (`agent-browser screenshot` / Playwright screenshot) |
 
 This table is what `a11y-critic` Phase 0 checks a remediation's attached evidence against, and what `bug-reporting`'s "Verification evidence" field cites.
 
@@ -128,6 +128,15 @@ The four disposition values are this block's closed set. `PASS` and `FAIL` mean 
 Not every PASS carries the same evidence. A **rule-tier** pass verified the operation-specific predicate the row is about — this exact control, this exact expected result. A **chain-tier** pass rode a generic keyboard-chain success: the page was navigable and nothing obviously broke, with no operation-specific rule behind it. Counting the two together overstates coverage.
 
 Partition passes into the two tiers and make the ratio visible in the evidence artifact itself, not in prose. A completeness claim reporting a single PASS count — without showing how many rested on an operation-specific rule versus a generic chain — has not established what it claims. This is a self-check on our own output quality, not a statement about the product: a chain-tier-heavy PASS set is a signal to go back and add operation-specific predicates, never a reason to report a high pass rate.
+### Evidence consumption (context discipline)
+
+**Evidence artifacts are handles, not payloads.** Reference `trace.json`, `findings.json`, axe-core results, and similar artifacts by path — never paste them wholesale into context. Pull only the fields under adjudication; jq recipes for the common extractions live in [references/evidence-extraction.md](references/evidence-extraction.md).
+
+Screenshots are cited by path in findings and reports. Actually viewing one — reading its image content into context — is reserved for visual-class adjudication (the last row of the evidence table above); every other defect class is decided from extracted fields, not pixels.
+
+Long-running commands (scans, test runs, crawls) redirect stdout to a file; read back only the summary or failing subset, never the full log — then pull what you need with the extraction recipes ([references/evidence-extraction.md](references/evidence-extraction.md)).
+
+`agent-browser` calls in conversational sessions carry `--max-output <chars>` to cap output per call — see "Interactive reconnaissance with agent-browser" below.
 
 ## Interactive reconnaissance with agent-browser
 
@@ -135,15 +144,15 @@ For ad-hoc a11y probing inside a conversational session — before writing a `.s
 
 ```bash
 agent-browser open https://example.com/component-under-test
-agent-browser snapshot -i                    # Returns interactive elements with refs: [ref=e1], [ref=e2]...
-agent-browser focus @e1                      # Focus by ref
-agent-browser press Enter                    # Real CDP keyboard event
-agent-browser get attr @e1 aria-expanded     # Verify state mutation
-agent-browser screenshot --annotate          # Numbered overlays mapping to refs (useful for multimodal review)
+agent-browser snapshot -i --max-output 8000        # Returns interactive elements with refs: [ref=e1], [ref=e2]...
+agent-browser focus @e1                            # Focus by ref
+agent-browser press Enter                          # Real CDP keyboard event
+agent-browser get attr @e1 aria-expanded            # Verify state mutation
+agent-browser screenshot --annotate                # Numbered overlays mapping to refs (useful for multimodal review)
 agent-browser close
 ```
 
-Key flags: `--profile Default` (reuse the user's Chrome login state for authenticated sites), `--session <name>` (isolated browser per parallel agent), `--json` (parseable output for programmatic checks), `--allowed-domains` (safety).
+Key flags: `--profile Default` (reuse the user's Chrome login state for authenticated sites), `--session <name>` (isolated browser per parallel agent), `--json` (parseable output for programmatic checks), `--max-output <chars>` (truncate output to N characters — cap output-heavy commands like `snapshot -i`; a capped snapshot can silently drop element refs, so raise the cap rather than probing an inventory you know is truncated), `--allowed-domains` (safety).
 
 **Keyboard-driving discipline (applies to all interactive modes, this one included):** never send a pre-counted sequence of Tabs. Snapshot/observe, then act on what is actually focused — "Tab until the focused control is named X" is right; "Tab 6 times" is wrong. Confirm success by state change (attribute flip, URL change, announcement), not assumption.
 
@@ -210,7 +219,7 @@ Press Escape and verify the modal closes and focus returns to the trigger.
 - Assertions verify state changes (before/after), not just attribute presence
 - No `time.sleep()` > 5 seconds or hardcoded waits that mask timing issues
 
-**ARIA snapshot capability:** Webwright's Playwright environment captures `page.locator("body").aria_snapshot()` — the full accessibility tree with roles, states, and relationships as structured YAML. Richer than `agent-browser snapshot -i` for structural analysis (captures all 4 tab→panel relationships via aria-controls/aria-labelledby cross-references, vs. agent-browser which shows only interactive element refs).
+**ARIA snapshot capability:** Webwright's Playwright environment captures `page.locator("body").aria_snapshot()` — the full accessibility tree with roles, states, and relationships as structured YAML. Richer than `agent-browser snapshot -i --max-output 8000` for structural analysis (captures all 4 tab→panel relationships via aria-controls/aria-labelledby cross-references, vs. agent-browser which shows only interactive element refs).
 
 **Limitations:**
 - No built-in axe-core — the LLM must write injection code (it does this correctly; see benchmark task 3c)

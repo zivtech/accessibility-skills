@@ -1,0 +1,672 @@
+# Phase 3 evidence-volume lane manifest.
+#
+# Consumed by ollama/score_evidence_lane.py (--manifest / --fixture-id) and
+# referenced by this directory's README.md. This file is config/scaffolding,
+# not a pack: it names the 6 chosen fixtures, their evidence-class
+# assignment, and the PLANNED locations pack construction will populate — it
+# carries no evidence content itself. must_find_keywords IS live scoring
+# config (gate F1), not a placeholder — see README §9.6.
+#
+# Status: PACKS BUILT — gate PASSED round 4 (2026-08-25, commit 25da496);
+# pack construction executed 2026-08-25/26. All 5 preconditions done; all 6
+# CURATED digests frozen (sonnet, def_rev 2026-08-26a, per-fixture
+# digest_content_hash below); all 6 DUMP packs built + F14-estimated-asserted;
+# completeness audits committed at completeness_audit_path (README §10 gate F4
+# 4-field shape). dump_sizing measured fields filled from
+# receipts/dump-measured-probes-2026-08-26.json. No scored model rows yet.
+#
+# Revision history:
+# - 2026-08-25 a: two orchestrator addenda — question-provenance/template
+#   (README §9.1), re-curation gate (§9.2), states-dict precondition (§10);
+#   real protocol-token probes (§4), qwen3:32b ceiling risk (§4.1).
+# - 2026-08-25 b: bench-reviewer REVISE gate — F1-F5 fixes applied here and
+#   in score_evidence_lane.py; F6 (runner) owned by a separate agent, this
+#   manifest carries its interface contract (packs:/conditions: below); F10
+#   fix recorded as a blocking checklist item; num_ctx standardized to
+#   32768/40960 (DUMP-cell ruling, orchestrator decision); rulings 1-6 from
+#   the gate review applied (see per-fixture notes).
+# - 2026-08-26 c: pack construction — questions authored (3 fresh blind
+#   agents; recovery + correction records in receipts/), n=1 calibration
+#   checkpoint FIRED and resolved (reader def hardened + def_rev stamp;
+#   lane CURATED readers amended to sonnet), 6 CURATED digests frozen with
+#   hashes, 6 DUMP packs built (deterministic first-fit padding, build
+#   record packs/dump-sizing-build-record.json), file-input raw set
+#   expanded (+sr-census, ruling 6 completion), completeness audits
+#   committed, measured-token probe receipts recorded.
+
+lane: context-utilization-phase3
+status: scored-rows-complete-adjudicated  # 2026-08-26: local 72+2 receipts, hosted 48, opus adjudication folded — see RESULTS-2026-08-26.md
+plan_ref: docs/plans/2026-08-24-context-utilization-plan.md#phase-3
+gate_review_ref: docs/plans/2026-08-25-context-utilization-phase3-gate-review.md
+readme: evals/results/context-utilization-phase3/README.md
+lane_setup_gate_date: "2026-09-01"   # confirmed — written into the plan's own §9 R7 row
+scope: critic-suite-only
+
+# Blocking on ALL fixtures below (README §10) — pack construction must not
+# start until every precondition's `done` flips true.
+preconditions:
+  - id: reader-states-dict-jq-c-exempt
+    done: true
+    evidence: "commit 805c084 (\"fix(skills): Phase 2 post-ship fixes — consumer digest guard, reader wiring, mirror re-sync\")"
+    owner: a11y-evidence-reader def maintainer
+    description: >
+      .claude/agents/a11y-evidence-reader.md must exempt the full ARIA
+      `states` dict from the <What_You_Emit> "<=10 lines" excerpt cap and
+      specify jq -c compact emission. Without this fix a large states dict
+      can still be silently condensed, which the completeness audit would
+      misbook as pack-omission rather than a reader-def bug (README §10).
+      RESOLVED 2026-08-25 — the fix is in the committed def as of 805c084.
+  - id: build-fixtures-path-and-shims-check
+    done: true   # resolved 2026-08-25/26 pack-construction: FIXTURES repointed repo-relative
+                 # (build_fixtures.py:8-10, same commit as this flip); 41 pages build, all 6
+                 # lane fixtures render; axe sweep restricted to the 33 originally-shimmed
+                 # fixtures (raw/axe-batch-2026-08-25/summary.json: urls_scanned=33, errors=0)
+    owner: pack-construction session (2026-08-25/26)
+    description: >
+      Gate F10. evals/results/keyboard-a11y-tester/harness/build_fixtures.py:8's
+      FIXTURES path is hardcoded to the old a11y-meta-skills repo (README
+      §3/§12 item 2 — a one-line fix). Repointing it exposes all 41 critic
+      fixtures to a SHIMS dict authored for only 33 (2026-07-10 vintage) —
+      the 8 fixtures added 2026-08-14 would render as bare <Component />
+      and may fail to render meaningfully. Fix: restrict any axe
+      batch-render sweep to the 33 originally-shimmed fixtures (this lane's
+      6 fixtures are all in the original 33, confirmed against README §2.0's
+      enumeration — no new-fixture rendering risk for THIS lane), or verify
+      shims exist before including any fixture outside that set.
+  - id: dump-spec-estimated-units
+    done: true
+    evidence: "README §4.1a restates the binding dump spec in estimated tokens (gate F14, round-3 fix). This precondition tracks the SPEC restatement only, not per-fixture execution — that is tracked separately per-fixture by each fixture's dump_sizing.asserted_before_freeze (still false for all 6) and by README §10 step 4, which packs must satisfy before freeze regardless of this precondition's status."
+    owner: phase3-lane-designer
+    description: >
+      Gate F14 (blocking, closed this pass). The binding dump spec was stated
+      in measured tokens while the client-side guard gates on estimated
+      tokens (rb.estimate_tokens, chars/3.5) — measured against this lane's
+      own probes, that estimator overestimates 22-30%, not the plan's
+      documented ~7%. README §4.1a restates the spec in estimated-token
+      terms (13764 estimated tokens of guard headroom for the one fixture
+      measured so far; unmeasured for the other 5) and §10 step 4 adds the
+      per-fixture pre-freeze assertion. See known_risks for the still-open
+      empirical question (does real JSON dump content tokenize densely
+      enough to clear the guard) and F13-style routing for the runner-
+      builder's own follow-up (estimate_tokens docstring + plan correction).
+  - id: adjudication-questions-authored
+    done: true   # all 6 authored + attested 2026-08-25/26: 5 by the original fresh sonnet
+                 # agent (spawn prompt recorded verbatim BEFORE spawning), 1 (heading-
+                 # hierarchy-skipped) re-authored by a second fresh sonnet agent after the
+                 # first agent's corrected regeneration died mid-response on a network
+                 # outage (recovery record + both spawn prompts:
+                 # receipts/question-authoring-spawn-prompt.md). Questions live in each
+                 # fixture's question_provenance block below, filled verbatim.
+    owner: fresh general-purpose sonnet agents (question-author, question-author-2, question-author-3) — no README/metadata exposure
+                 # question-author-3 (2026-08-26): file-input-no-labels re-authored over its
+                 # expanded three-artifact set after the sr-census was added to complete
+                 # ruling 6 (second correction record in receipts/question-authoring-spawn-prompt.md).
+    description: >
+      Ruling 8 hardening (gate re-review, binding). A TBD adjudication_question
+      field per fixture is data, not a gate — this precondition makes "all 6
+      questions authored, attested, and recorded" an explicit, checkable
+      blocking step before pack construction proceeds, rather than trusting
+      the manifest's per-fixture TBD placeholders to get filled in as a side
+      effect of some other step. See each fixture's question_provenance
+      block and README §9.1/§9.6 for the authoring protocol (spawn-prompt
+      recording, README-blindness requirement).
+  - id: n-equals-1-calibration-checkpoint
+    done: true   # FIRED and resolved 2026-08-26 on interactive-dropdown-focus-bug (3 draws;
+                 # full record: receipts/n1-calibration-checkpoint.md). Draws 1-2 (haiku,
+                 # draw 2 provably on the hardened def via the new def_rev output stamp):
+                 # condensed states dict 2/2, draw-2 fabricated wcag_or_apg (4.1.3 — the
+                 # documented wrong mapping) — treated as reader-def/instrument defect, NOT
+                 # pack-omission, never frozen. Def hardened (states: field, verbatim-in-full
+                 # question_source, no-reconstruction evidence lines, def_rev provenance
+                 # stamp). Draw 3 (sonnet, def_rev 2026-08-26a): contract-clean, verified
+                 # field-by-field vs raw. RECORDED AMENDMENT to §10 step 1: this lane's
+                 # CURATED digests run at sonnet uniformly (haiku stays the def's default
+                 # outside this lane).
+    owner: pack-construction session (2026-08-26), reviewer of first CURATED digests
+    description: >
+      Added 2026-08-25 (critic re-verification carry-forward), same failure
+      family as reader-states-dict-jq-c-exempt above but not closed by that
+      commit: nothing in Phase 2 is model-tested past n=1. This lane's first
+      real CURATED digests double as reader-def calibration data. If a
+      first-pass digest shows a condensed states dict or a single-class
+      label on a genuinely mixed evidence-class question, that is a
+      reader-def defect surfacing — fix the def, re-run the reader — and
+      must NOT be booked as pack-omission or frozen into a pack (README §10).
+
+# Open, unresolved risks this draft surfaces but does not decide (bench-
+# reviewer gate items) — see the named README section for full context/math.
+known_risks:
+  - id: f6-protocol-estimate-superseded
+    readme_ref: "README.md §4"
+    status: resolved-in-this-draft
+    summary: >
+      Plan F6's "16,157 qwen3.6-class protocol" figure does not reconcile
+      with the 2026-08-25 protocol-alone probe (14,276) and is superseded by
+      it in this lane's budgets; F6 itself needs a superseded-by-probe note
+      in the plan doc (not edited here — out of this task's scope).
+  - id: gate-f2-curated-digest-cap
+    readme_ref: "README.md §4"
+    status: SUPERSEDED-BY-MEASUREMENT 2026-08-26   # the cap's premise (~7% overestimate
+        # -> ~1,942 real margin) was falsified by F14 (prose overestimate is 22-30%);
+        # all 12 CURATED@32K probes (6 fixtures x 2 models, receipts/dump-measured-
+        # probes-2026-08-26.json) fit with 4,561-8,608 MEASURED margin tokens — worst
+        # is modal-complete-clean @ 35b (full prompt 20,015 + 8,192 = 28,207 <= 32,768).
+        # Three frozen digests exceed the old 3,000-measured-derived cap on the est
+        # side (modal 3,877 / tabs 3,501 / file-input 4,510 est) and every one fits
+        # with thousands of measured tokens to spare; no INVALID-row risk in evidence.
+    summary: >
+      Gate F2 original text (kept for the record): at 32,768 the client-side
+      guard's ~7% overestimate leaves CURATED only ~1,942 real margin tokens —
+      a >3,000-token digest risks an INVALID row. Hard cap: CURATED digest
+      <=3,000 measured tokens, probe-verified on the largest of the 6
+      fixtures before freeze. Superseded as annotated above — the pre-freeze
+      probe requirement WAS honored (all 12 cells probed before any scored
+      row); the numeric cap itself rested on the falsified ~7% figure.
+  - id: num-ctx-standardized-40960
+    readme_ref: "README.md §4/§4.1"
+    status: resolved-in-this-draft
+    summary: >
+      DUMP-cell ruling (gate review) + orchestrator decision, now EMPIRICALLY
+      CONFIRMED (2026-08-25 ceiling probe: qwen3:32b clamps a requested 49152
+      to its declared 40960 — server log "requested context size too large
+      ... n_ctx_train=40960"; qwen3.6:35b declares 262144, no clamp). The
+      lane standardizes on num_ctx=40960 for the 40K cells, matching the
+      repo's ACR-lane high-water mark and making P1b a matched 32K->40K
+      contrast for both models. See conditions: below.
+  - id: truncation-formula-2-of-2-replications
+    readme_ref: "README.md §4.1"
+    status: empirical-formula-mechanism-unconfirmed
+    summary: >
+      floor(n_ctx/2)+2 as the silently-evaluated token count under an
+      overflow/clamp has now matched twice at different scales: Phase 0.4b
+      historical (n_ctx=16384 -> 8194 tokens, 49.8% of that prompt) and the
+      2026-08-25 ceiling probe (n_ctx=40960 post-clamp -> 20482 tokens, 54.7%
+      dropped from a 45176-token prompt). Both re-derived and confirmed
+      arithmetically. Treated as a PREDICTIVE planning formula for budget
+      math in this lane; the underlying Ollama mechanism producing it is NOT
+      independently confirmed — 2 data points, not a proof.
+  - id: f13-phase0-guard-blind-to-declared-context-length
+    readme_ref: "README.md §4.1"
+    status: confirmed-major-routed-elsewhere
+    summary: >
+      Gate-confirmed MAJOR finding (credited to phase3-lane-designer, escapes
+      this lane's scope): run_benchmark.py's Phase 0.2 client-side overflow
+      guard estimates against the REQUESTED num_ctx only, never a model's
+      declared /api/tags context_length — so a request above a model's real
+      ceiling (exactly this lane's original 49152-vs-qwen3:32b situation)
+      would have been waved through as fitting while the server silently
+      truncated underneath it. Routed to the runner-builder as a Phase 0
+      fast-follow (NOT ollama/run_benchmark.py — do not fix here or in this
+      lane's own files).
+  - id: overflow-receipt-fixture-pinned
+    readme_ref: "README.md §4.1/§8"
+    status: resolved-in-this-draft
+    summary: >
+      The plan's "1 fixture x 1 draw per model" OVERFLOW receipt needs a
+      named fixture for determinism (an operator-choice default risks a
+      non-reproducible receipt). Pinned to tabs-missing-arrow-nav — see
+      overflow_receipt_fixture: below — matching the exact arithmetic
+      already computed against it (14276 + 891 + 15000 + 8192 = 38359 >
+      32768, guard fires).
+  - id: f14-dump-json-tokenization-ratio-unmeasured
+    readme_ref: "README.md §4.1a"
+    status: RESOLVED-BY-MEASUREMENT 2026-08-26   # 12 probes (6 dumps x 2 models, receipts/dump-measured-probes-2026-08-26.json):
+        # real dump content (mostly JSON) est/measured = 1.07-1.11 on qwen3:32b and
+        # 1.01-1.03 on qwen3.6:35b — the estimator mildly OVERcounts JSON (never the
+        # prose 1.22-1.30, never the feared <=0.918 undercount requirement, which is
+        # moot because the packs were built to the ESTIMATED ceiling, not to 15000
+        # measured). Every assembled DUMP prompt fits: worst measured 31,721
+        # (modal-complete-clean @ 35b) + 8,192 = 39,913 <= 40,960 (margin 1,047).
+        # Measured dump content lands ~14.3-15.6K tokens on 35b — at ruling 7's
+        # 15,000-measured informational target by construction, not by luck.
+    summary: >
+      Gate F14. The client-side guard gates on estimated tokens
+      (chars/3.5); this lane's binding dump spec (15000 measured tokens) is
+      stated in measured tokens. For a 15000-measured dump to clear the
+      13764-estimated-token guard ceiling worked out for the one measured
+      fixture, its est/measured ratio must be <=0.918 -- the estimator would
+      need to UNDERcount the dump, the opposite direction from every ratio
+      measured so far (1.22-1.30, all prose). Whether real dump content
+      (mostly JSON: axe rule output, keyboard traces) tokenizes densely
+      enough to land in that range is unmeasured -- plausible (dense
+      punctuation could push it to 2.5-3.5 chars/token) but not proven.
+      Scaling by the only ratio in hand (prose) would refuse every DUMP row
+      as INVALID -- the entire dilution arm of P1. MUST be measured before
+      freeze (README §10 step 4) -- §10's no-regeneration rule makes this
+      uncorrectable after the fact, which is why it is a pre-freeze gate,
+      not a post-hoc check.
+
+fixtures:
+  - fixture_id: button-skip-link-clean
+    tier: CLEAN
+    fixed_by_plan: true
+    evidence_class_primary: axe-detectable
+    fixture_path: evals/suites/a11y-critic/fixtures/button-skip-link-clean.md
+    metadata_path: evals/suites/a11y-critic/fixtures/button-skip-link-clean.metadata.yaml
+    raw_source: real-tool-run-page-shell-capable
+    raw_source_note: >
+      Real batch-crawl KAT findings already committed at
+      evals/results/keyboard-a11y-tester/findings/button-skip-link-clean.json
+      (padding-eligible only — gate F11 — never this fixture's own raw pack).
+      New axe run planned via baseline-url-scan.mjs against the existing
+      build_fixtures.py render (this fixture already ships nav/main/footer,
+      so page-level axe rules are meaningful here unlike the other 5).
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/button-skip-link-clean.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/button-skip-link-clean.curated.md, dump: evals/results/context-utilization-phase3/packs/button-skip-link-clean.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 32187   # assembled prompt, est (pack alone: 14160)
+      dump_measured_tokens: {qwen3:32b: 29356, qwen3.6:35b: 31380}
+      est_measured_ratio: {qwen3:32b: 1.0964, qwen3.6:35b: 1.0257}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 32187 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json
+        and the tool that produced each (keyboard-a11y-tester driven trace /
+        keyboard-a11y-tester batch-crawl findings / axe-core scan): does this evidence
+        set show any interaction defect (focus not reaching or leaving an element as
+        expected, an ARIA state changing with no accessible announcement, a
+        keyboard-operability failure) and does it show any structural defect (a
+        missing or incorrect ARIA role, landmark, label, or heading-order violation)
+        for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true   # must be true once authored — README §9.1
+      digest_content_hash: 5ad71c354a061ea3563757ba0c2ee64184ec21499299f27522bf99ad9df2cae1   # sha256 of frozen CURATED digest (sonnet, def_rev 2026-08-26a)
+    exercises: []
+
+  - fixture_id: modal-complete-clean
+    tier: CLEAN
+    fixed_by_plan: false
+    evidence_class_primary: keyboard-trace
+    fixture_path: evals/suites/a11y-critic/fixtures/modal-complete-clean.md
+    metadata_path: evals/suites/a11y-critic/fixtures/modal-complete-clean.metadata.yaml
+    raw_source: committed-real-artifact
+    raw_source_note: >
+      evals/results/keyboard-a11y-tester/driven/modal-complete-clean.trace.json
+      ONLY (gate F11 — .findings.json is the tool's near-ground-truth
+      conclusion, not a raw observation; excluded from both arms' raw pack
+      for this fixture, though it remains valid PADDING sourced from other
+      fixtures). Reuse the trace as-is (ruling 3: committed KAT traces are
+      real tool output and satisfy "where feasible" on the merits), or
+      fresh re-run via harness/drive.sh if the gate wants lane-isolated
+      artifacts.
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/modal-complete-clean.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/modal-complete-clean.curated.md, dump: evals/results/context-utilization-phase3/packs/modal-complete-clean.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 32255   # assembled prompt, est (pack alone: 12628)
+      dump_measured_tokens: {qwen3:32b: 29919, qwen3.6:35b: 31721}
+      est_measured_ratio: {qwen3:32b: 1.0781, qwen3.6:35b: 1.0168}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 32255 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/keyboard-a11y-tester/driven/modal-complete-clean.trace.json and
+        the tool that produced each (keyboard-a11y-tester driven trace /
+        keyboard-a11y-tester batch-crawl findings / axe-core scan): does this evidence
+        set show any interaction defect (focus not reaching or leaving an element as
+        expected, an ARIA state changing with no accessible announcement, a
+        keyboard-operability failure) and does it show any structural defect (a
+        missing or incorrect ARIA role, landmark, label, or heading-order violation)
+        for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true
+      digest_content_hash: 768976a1521962a5dc882d3f59d60a04db46f7d012cb759268eb1282bc8a4b87   # sha256 of frozen CURATED digest (sonnet, def_rev 2026-08-26a); est 3877 tok; CURATED@32K probed 2026-08-26: full prompt fits both models (worst 20,015 measured + 8,192 <= 32,768) — F2 cap superseded-by-measurement, see known_risks
+    exercises: []
+
+  - fixture_id: heading-hierarchy-skipped
+    tier: HAS-BUGS
+    fixed_by_plan: false
+    evidence_class_primary: axe-detectable
+    fixture_path: evals/suites/a11y-critic/fixtures/heading-hierarchy-skipped.md
+    metadata_path: evals/suites/a11y-critic/fixtures/heading-hierarchy-skipped.metadata.yaml
+    raw_source: real-tool-run
+    raw_source_note: >
+      New axe run required (no prior axe artifact exists for critic-suite
+      fixtures). Component-scoped render (heading-order needs no page
+      shell) via the existing build_fixtures.py harness, path fixed first
+      (precondition build-fixtures-path-and-shims-check above).
+      COLLECTED 2026-08-25/26:
+      evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json
+      (axe-core scan) PLUS
+      evals/results/context-utilization-phase3/raw/heading-hierarchy-skipped-kat-census/sr-census.json
+      (keyboard-a11y-tester screen-reader reading-order census — added to
+      the raw set at pack construction; the census evidences the heading
+      sequence with roles+tags from a second tool. The question-author was
+      sent the corrected two-artifact list before authoring — see
+      receipts/question-authoring-spawn-prompt.md, correction message +
+      recovery record).
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/heading-hierarchy-skipped.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md, dump: evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 31866   # assembled prompt, est (pack alone: 13954)
+      dump_measured_tokens: {qwen3:32b: 28809, qwen3.6:35b: 30811}
+      est_measured_ratio: {qwen3:32b: 1.1061, qwen3.6:35b: 1.0342}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 31866 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json
+        (axe-core scan) and
+        evals/results/context-utilization-phase3/raw/heading-hierarchy-skipped-kat-census/sr-census.json
+        (keyboard-a11y-tester screen-reader reading-order census), and the tool that
+        produced each (keyboard-a11y-tester driven trace / keyboard-a11y-tester
+        batch-crawl findings / keyboard-a11y-tester screen-reader reading-order census
+        / axe-core scan): does this evidence set show any interaction defect (focus
+        not reaching or leaving an element as expected, an ARIA state changing with no
+        accessible announcement, a keyboard-operability failure) and does it show any
+        structural defect (a missing or incorrect ARIA role, landmark, label, or
+        heading-order violation) for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true
+      digest_content_hash: 35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d   # sha256 of frozen CURATED digest (sonnet, def_rev 2026-08-26a)
+    # Gate F1 fix: explicit per-item keyword overrides, hand-authored,
+    # bypassing score_output.py's generic cascade entirely (it FOUND both
+    # items on a null response — see gate-review.md F1). Ruling 4: the
+    # "should"-bearing verbatim exercise on this fixture's real axe `help`
+    # string must be mechanically checked at lane setup (run axe once, grep
+    # for "should", record the actual rule id + string in the completeness
+    # audit) — never synthesized if heading-order's real wording lacks it.
+    must_find_keywords:
+      - item_index: 0   # "Heading hierarchy skips from h1 directly to h3"
+        keywords: ["h1 to h3", "h1 directly to h3", "skips h2", "skipping h2", "skip h2", "no h2"]
+      - item_index: 1   # "Inconsistent heading hierarchy (h3 then h2)"
+        keywords: ["h3 then h2", "h3 followed by h2", "back to h2", "jumps back to h2", "inconsistent heading hierarchy"]
+    exercises: [should-bearing-verbatim-excerpt]
+
+  - fixture_id: file-input-no-labels
+    tier: HAS-BUGS
+    fixed_by_plan: false
+    evidence_class_primary: axe-detectable
+    evidence_class_note: >
+      Gate F4 + ruling 6 correction: the earlier "3 of 4 source-only" claim
+      was wrong under the "any tool, in principle" test — KAT's own driven
+      session on the sibling form-validation fixture proves items [1]
+      (aria-describedby relation) and [2] (aria-invalid state) ARE
+      AX-observable (keyboard-a11y-tester/README.md:103). Only item [3]
+      (file type restriction not announced) is genuinely source-only. Fix
+      (ruling 6): collect a keyboard/AX artifact for THIS fixture too, via
+      harness/drive.sh — lifts the tool-observable pool from 6 to 8 across
+      the lane and resolves F9's power question. Until that artifact is
+      actually collected, items [1]/[2] are tool_observable:true but
+      evidence_in_raw_set:false (raw-set-gap) in the completeness audit —
+      the gap is visible, not silently misclassified as pack-omission.
+    fixture_path: evals/suites/a11y-critic/fixtures/file-input-no-labels.md
+    metadata_path: evals/suites/a11y-critic/fixtures/file-input-no-labels.metadata.yaml
+    raw_source: real-tool-run
+    raw_source_note: >
+      Axe run (component-scoped render, label rule needs no page shell) via
+      the existing build_fixtures.py harness, PLUS a new keyboard-a11y-tester
+      driven session (ruling 6) to make items [1]/[2] genuinely
+      evidence_in_raw_set:true rather than a documented gap.
+      COLLECTED 2026-08-25/26 (three artifacts):
+      evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json
+      (axe-core scan) PLUS
+      evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-driven/trace.json
+      (keyboard-a11y-tester driven trace, error state pre-triggered at mount
+      via the build_fixtures.py wrapper) PLUS
+      evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-census/sr-census.json
+      (keyboard-a11y-tester screen-reader reading-order census, added at
+      pack construction 2026-08-26 — the driven trace alone carried no
+      error-present evidence, so items [1]/[2] would have stayed a raw-set
+      gap despite ruling 6's collection; the census walk captures the
+      rendered error text as an unassociated bare-text node, completing the
+      evidence pair. Question-author correction recorded in
+      receipts/question-authoring-spawn-prompt.md, same discipline as
+      heading-hierarchy-skipped).
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/file-input-no-labels.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/file-input-no-labels.curated.md, dump: evals/results/context-utilization-phase3/packs/file-input-no-labels.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 31893   # assembled prompt, est (pack alone: 14152)
+      dump_measured_tokens: {qwen3:32b: 28965, qwen3.6:35b: 30965}
+      est_measured_ratio: {qwen3:32b: 1.1011, qwen3.6:35b: 1.03}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 31893 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json
+        (axe-core scan),
+        evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-driven/trace.json
+        (keyboard-a11y-tester driven trace), and
+        evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-census/sr-census.json
+        (keyboard-a11y-tester screen-reader reading-order census), and the tool that
+        produced each (keyboard-a11y-tester driven trace / keyboard-a11y-tester
+        batch-crawl findings / keyboard-a11y-tester screen-reader reading-order census
+        / axe-core scan): does this evidence set show any interaction defect (focus
+        not reaching or leaving an element as expected, an ARIA state changing with no
+        accessible announcement, a keyboard-operability failure) and does it show any
+        structural defect (a missing or incorrect ARIA role, landmark, label, or
+        heading-order violation) for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true
+      digest_content_hash: 6c7a4cd5476215ea9f2c061dd94717aa3f886358ad33eb829d76642f2a02e560   # sha256 of frozen CURATED digest (sonnet draw 2 over the expanded 3-artifact set incl. sr-census, def_rev 2026-08-26a; draw 1 superseded when the raw set grew — receipts). est 4510 tok; CURATED@32K probed 2026-08-26: fits both models (19,074/18,543 measured) — F2 cap superseded-by-measurement, see known_risks
+    must_find_keywords:
+      - item_index: 0   # "Missing <label> element"
+        keywords: ["missing <label>", "missing a label", "no <label>", "lacks a <label>", "unlabeled file input", "without a label element"]
+      - item_index: 1   # "No aria-describedby linking to error message"
+        keywords: ["aria-describedby", "describedby"]
+      - item_index: 2   # "No aria-invalid when error present"
+        keywords: ["aria-invalid", "missing aria-invalid", "no aria-invalid", "not marked invalid", "invalid state is not"]
+      - item_index: 3   # "File type restrictions not announced" — deliberately NOT aria-live/announced (gate F1: that mis-routes a 3.3.2 defect to live-region keywords)
+        keywords: ["accept attribute", "file type restriction", "accepted file types", "restriction is not conveyed", "what file types are allowed", "file type is not communicated"]
+    exercises: []
+
+  - fixture_id: tabs-missing-arrow-nav
+    tier: HAS-BUGS
+    fixed_by_plan: false
+    evidence_class_primary: keyboard-trace
+    fixture_path: evals/suites/a11y-critic/fixtures/tabs-missing-arrow-nav.md
+    metadata_path: evals/suites/a11y-critic/fixtures/tabs-missing-arrow-nav.metadata.yaml
+    raw_source: committed-real-artifact
+    raw_source_note: >
+      evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json
+      ONLY (gate F11 — .findings.json excluded from this fixture's own raw
+      pack, padding-eligible for others). Reuse as-is (ruling 3), or fresh
+      re-run via harness/drive.sh.
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/tabs-missing-arrow-nav.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md, dump: evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 30490   # assembled prompt, est (pack alone: 12234)
+      dump_measured_tokens: {qwen3:32b: 28445, qwen3.6:35b: 30079}
+      est_measured_ratio: {qwen3:32b: 1.0719, qwen3.6:35b: 1.0137}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 30490 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json
+        and the padding corpus evals/results/keyboard-a11y-tester/findings/*.json
+        (~30+ files, with findings/tabs-missing-arrow-nav.json excluded from this
+        fixture's evidence by pack policy), and the tool that produced each
+        (keyboard-a11y-tester driven trace / keyboard-a11y-tester batch-crawl findings
+        / axe-core scan): does this evidence set show any interaction defect (focus
+        not reaching or leaving an element as expected, an ARIA state changing with no
+        accessible announcement, a keyboard-operability failure) and does it show any
+        structural defect (a missing or incorrect ARIA role, landmark, label, or
+        heading-order violation) for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true
+      digest_content_hash: 35fc4ad1476e0039c643aa80f56cb285a2abdc611096ad5b996bab2b015e461c   # sha256 of frozen CURATED digest (sonnet draw 2, def_rev 2026-08-26a; draw 1 discarded for a one-char question restatement — receipts/n1-calibration-checkpoint.md)
+    must_find_keywords:
+      - item_index: 0   # "Arrow key navigation not implemented for tab cycling"
+        keywords: ["arrow key navigation", "arrow keys", "left arrow", "right arrow", "no arrow key support", "missing arrow key"]
+    exercises: [glob-partial-coverage]
+
+  - fixture_id: interactive-dropdown-focus-bug
+    tier: HAS-BUGS
+    fixed_by_plan: false
+    evidence_class_primary: keyboard-trace
+    fixture_path: evals/suites/a11y-critic/fixtures/interactive-dropdown-focus-bug.md
+    metadata_path: evals/suites/a11y-critic/fixtures/interactive-dropdown-focus-bug.metadata.yaml
+    raw_source: committed-real-artifact
+    raw_source_note: >
+      evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json
+      ONLY (gate F11 — .findings.json excluded, same rule as the other 2
+      driven-trace fixtures). The Phase 2.3 worked-example digest over this
+      same trace must NOT be reused verbatim; the CURATED pack needs a
+      fresh blind read for this lane's own question (README §2.1) — the
+      digest_content_hash field below exists specifically to make that
+      mechanically checkable (ruling 5), not merely documented as a rule.
+    completeness_audit_path: evals/results/context-utilization-phase3/completeness/interactive-dropdown-focus-bug.audit.yaml
+    pack_paths: {curated: evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md, dump: evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.dump.txt}
+    # Gate F14 (binding): the guard gates on ESTIMATED tokens, not measured — these
+    # must both be recorded, per fixture, before freeze (README §10 step 4). TBD
+    # until pack construction runs `run_evidence_lane.py --dry-run` against a real
+    # (non-placeholder) pack. guard_ceiling_estimated_tokens = 32768 - est(protocol) -
+    # est(this fixture); est_measured_ratio near/below ~0.918 is required for a
+    # 15000-measured dump to clear it (worked example: tabs-missing-arrow-nav, README
+    # §4.1a) — every prose ratio measured so far is 1.22-1.30, the WRONG direction.
+    # Drift note: est(protocol) drifts with a11y-critic SKILL.md edits (e.g. commit
+    # 805c084, +356 chars, landed after the 2026-08-25 probes) — this assertion
+    # measures the THEN-CURRENT assembled prompt by construction, so drift does not
+    # invalidate it; only the README's own worked-example snapshot numbers age.
+    dump_sizing:
+      # Filled 2026-08-26 from packs/dump-sizing-build-record.json (estimated, build-time)
+      # + receipts/dump-measured-probes-2026-08-26.json (measured prompt_eval_count,
+      # num_predict=1, whole assembled prompt incl. protocol+fixture — per model, since
+      # measured tokenization differs by model while the chars/3.5 estimate does not).
+      dump_estimated_tokens: 31454   # assembled prompt, est (pack alone: 13300)
+      dump_measured_tokens: {qwen3:32b: 29273, qwen3.6:35b: 31021}
+      est_measured_ratio: {qwen3:32b: 1.0745, qwen3.6:35b: 1.014}
+      guard_ceiling_estimated_tokens: 32768   # 40960 - 8192 reserve (gate F14 assertion, holds: 31454 <= 32768)
+      asserted_before_freeze: true   # dry-run est assertion + measured probes both recorded pre-freeze
+    question_provenance:
+      adjudication_question: >
+        Based on
+        evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json
+        and the tool that produced each (keyboard-a11y-tester driven trace /
+        keyboard-a11y-tester batch-crawl findings / axe-core scan): does this evidence
+        set show any interaction defect (focus not reaching or leaving an element as
+        expected, an ARIA state changing with no accessible announcement, a
+        keyboard-operability failure) and does it show any structural defect (a
+        missing or incorrect ARIA role, landmark, label, or heading-order violation)
+        for the component these artifacts describe?
+      question_source: "Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types only; no fixture metadata, rubrics, ground-truth files, or lane README consulted"
+      attested_no_ground_truth_access: true
+      digest_content_hash: 5fe85d89dd6c78bf6ee9a6a5c8232842a47801ab2f0bf30ce60582a023b75d41   # sha256 of frozen CURATED digest (sonnet draw 3, def_rev 2026-08-26a); ruling-5 != assertion vs Phase 2.3 worked-example hash d248fe7b... PASSED (receipts/n1-calibration-checkpoint.md)
+    # Gate F1's headline example: the OLD generic matcher gave both items
+    # the byte-identical keyword set ['focus','restored'], so they could
+    # never be told apart. These discriminate on the triggering EVENT
+    # (selection vs Escape), the actual distinguishing fact between the
+    # two defects — ruling 6 (fixture swap discussion) keeps this fixture
+    # conditional on F1, which this override set closes.
+    must_find_keywords:
+      - item_index: 0   # "Focus not restored to trigger button after selection"
+        keywords: ["after selecting", "after selection", "handleSelect", "when an option is selected", "selecting an option"]
+      - item_index: 1   # "Focus not restored to trigger button after Escape key"
+        keywords: ["after escape", "pressing escape", "escape key", "handleEscape", "escape handler"]
+    exercises: []
+
+# Pinned for determinism (team-lead direction, 2026-08-25 re-review) — the
+# plan's "1 fixture x 1 draw per model" OVERFLOW receipt is not an operator's
+# free choice. tabs-missing-arrow-nav matches the exact arithmetic already
+# computed against it in README §4.1 (14276 + 891 + 15000 + 8192 = 38359 >
+# 32768, guard fires on both models).
+overflow_receipt_fixture: tabs-missing-arrow-nav
+
+# Runner interface contract (orchestrator addendum 3) — the runner-builder
+# agent reads this section as its only config source for num_ctx and draw
+# count; per-fixture pack_paths (above) for pack injection. Coordinate
+# schema changes directly (SendMessage to phase3-runner-builder), not
+# through the orchestrator.
+conditions:
+  local:
+    - {condition_id: curated-32k, payload: CURATED, num_ctx: 32768, scored: true}
+    - {condition_id: curated-40k, payload: CURATED, num_ctx: 40960, scored: true}
+    - {condition_id: dump-40k, payload: DUMP, num_ctx: 40960, scored: true, dump_spec_measured_tokens: 15000, dump_spec_note: "gate F14: 15000 measured tokens is SECONDARY/informational (ruling 7's uniform target) — the BINDING ceiling is per-fixture guard_ceiling_estimated_tokens under each fixture's dump_sizing block (README §4.1a); worked example (tabs-missing-arrow-nav) = 13764 estimated tokens, unmeasured for the other 5 fixtures until README §10 step 4 runs"}
+    - {condition_id: overflow-32k, payload: DUMP, num_ctx: 32768, scored: false, note: "receipt only — 1 fixture x 1 draw per model; uses dump-40k's pack; guard fires per gate arithmetic (38,359 > 32,768)"}
+  hosted:
+    - {condition_id: curated-hosted, payload: CURATED, scored: true, note: "reuses the curated pack content — no ctx dimension hosted-side"}
+    - {condition_id: dump-hosted, payload: DUMP, scored: true, note: "reuses the dump-40k pack content — no ctx dimension hosted-side"}
+
+models:
+  local: [qwen3.6:35b, qwen3:32b]
+  hosted: [opus, sonnet]
+
+draws: 2   # was draws_per_cell — renamed to match the runner interface contract's exact field name
+
+run_count:
+  local_scored: 72
+  local_overflow_receipts: 2
+  hosted_scored: 48
+
+predictions: [P1, P1b, P2, P3]   # verbatim text: README.md §6
+decision_rules_ref: README.md#7-decision-rules-verbatim-pre-committed

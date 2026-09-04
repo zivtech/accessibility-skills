@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: ACCEPT-WITH-RESERVATIONS\n\n**Overall Assessment**: The modal implements the core WAI-ARIA Modal Dialog pattern correctly with focus trapping, escape key handling, and focus restoration. However, there are MAJOR findings related to focus indicator consistency and missing state announcements that need resolution before shipping.\n\n**Pre-commitment Predictions**: Expected focus trapping issues and missing live regions. Actual findings confirmed focus indicator inconsistencies and missing state communication.\n\n**Critical Findings** (blocks access):\n1. **Focus indicator contrast inconsistency** (`src/components/Modal.tsx:112` CSS `.modal-dialog:focus` and `.modal-close:focus`): \n   - Confidence: HIGH\n   - Why this matters: Inconsistent focus indicator contrast (3px solid #0066cc vs 2px solid #0066cc) violates WCAG 2.4.13 (Focus Appearance) which requires 2px perimeter and 3:1 contrast change. The trace shows area_pass/aaa_pass flags flipping between true/false for the same elements.\n   - Fix: Standardize focus indicators to 3px solid #0066cc with 3:1 contrast against adjacent colors. Add `outline-offset: 2px` to both focus states.\n\n**Major Findings** (significantly degrades experience):\n1. **Missing modal state announcements** (`src/components/Modal.tsx:1-150`): \n   - Confidence: HIGH\n   - Why this matters: No aria-live region announces modal open/close. Screen reader users won't know the dialog appears/disappears unless they're already focused on it. The trace shows sr_announcement only captures button focus, not dialog presence.\n   - Fix: Add `role=\"alert\"` to the modal overlay with dynamic text \"Dialog opened\" and \"Dialog closed\" in useEffect handlers. Or use `aria-live=\"polite\"` with a hidden div that updates on open/close.\n\n2. **Missing landmark role for modal** (`src/components/Modal.tsx:110`): \n   - Confidence: MEDIUM\n   - Why this matters: The modal container has role=\"dialog\" but no landmark role. Screen reader users can't navigate to it via landmarks. The trace shows region.landmark is always null.\n   - Fix: Add `role=\"region\"` with `aria-label=\"Dialog\"` to the modal-dialog container. Or use `role=\"dialog\"` as a landmark (some screen readers treat dialog as a landmark).\n\n**Minor Findings** (friction but workaround exists):\n- Missing `aria-describedby` for complex modals with multiple sections. Add if content requires additional context.\n\n**Enhancements** (best practice not met):\n- Add `aria-labelledby` to the close button for better screen reader context (currently only has `aria-label`).\n\n**What's Missing**:\n- Live region for modal state changes\n- Consistent focus indicator styling\n- Landmark role for dialog container\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Dialog is announced but no state changes. Container isn't navigable via landmarks.\n- **Keyboard user**: Focus is trapped but indicator contrast is inconsistent.\n- **Low vision user**: Focus indicators may not be visible at 200% zoom if background contrasts vary.\n- **Cognitive**: No confirmation before closing, but Escape is discoverable.\n\n**Verdict Justification**: The modal passes core accessibility requirements but has MAJOR issues with focus indicators and state communication. These need fixing before shipping. The focus trapping and restoration are well-implemented.\n\n**Open Questions**:\n- Should the modal container itself be focusable to serve as a landmark? (Current implementation uses aria-labelledby but no focusable element)\n- Does the inconsistent focus indicator stem from CSS specificity issues between .modal-dialog and .modal-close styles?",
+  "done": true,
+  "total_duration": 213529461417,
+  "eval_count": 1662,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "modal-complete-clean",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 213.6,
+    "timestamp": "2026-08-26T20:16:42",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 4071,
+    "estimated_prompt_tokens": 23505,
+    "prompt_eval_count": 19354,
+    "context_pressure": false,
+    "prompt_sha256": "84c922d7e133c8b845146cc5833bfb7c3996c4b9f937c364bb6b652dfc7fdc58",
+    "prompt_byte_length": 82584,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/modal-complete-clean.curated.md",
+    "pack_sha256": "768976a1521962a5dc882d3f59d60a04db46f7d012cb759268eb1282bc8a4b87",
+    "pack_byte_length": 13653,
+    "pack_available": true
+  }
+}

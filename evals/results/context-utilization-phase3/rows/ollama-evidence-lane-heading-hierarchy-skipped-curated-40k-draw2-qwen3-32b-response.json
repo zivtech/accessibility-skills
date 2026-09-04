@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n## Overall Assessment\nThe blog post component has critical structural accessibility issues related to heading hierarchy and landmark regions. The heading levels skip from h1 to h3, violating WCAG 2.2.2 (Headings and Labels) and creating a confusing information architecture for screen reader users. The component also lacks proper landmark structure, making navigation difficult for keyboard and screen reader users.\n\n## Pre-commitment Predictions\nPredicted heading hierarchy issues (h1 followed by h3) and missing landmark regions. Actual findings confirmed both issues with additional evidence from axe-core and screen reader census data.\n\n## Critical Findings (blocks access):\n1. **Skipped heading levels (h1 \u2192 h3)**\n   - File: `BlogPost.jsx:8` (first h3), `BlogPost.jsx:12` (second h3)\n   - User group: Screen reader users\n   - WCAG 2.2.2 (Headings and Labels): Headings must increase by only one level at a time\n   - Fix: Change all h3 elements after the h1 to h2 until the h2 \"Tools and Resources\" is reached\n   - Confidence: HIGH\n\n2. **Missing main landmark**\n   - File: `BlogPost.jsx:4` (article element)\n   - User group: Screen reader/keyboard users\n   - WCAG 2.4.1 (Bypass Blocks): Page content should be contained by landmarks\n   - Fix: Add `<main>` element wrapping the blog content with `role=\"main\"`\n   - Confidence: HIGH\n\n## Major Findings (significantly degrades experience):\n1. **Incomplete heading hierarchy**\n   - File: `BlogPost.jsx` (entire heading structure)\n   - User group: Screen reader users\n   - WCAG 1.3.1 (Info and Relationships): Information structure must be clear\n   - Fix: Ensure consistent heading progression (h1 \u2192 h2 \u2192 h3)\n   - Confidence: HIGH\n\n2. **Missing navigation landmark**\n   - File: `BlogPost.jsx` (entire component)\n   - User group: Screen reader users\n   - WCAG 2.4.1 (Bypass Blocks): Missing skip links for landmark navigation\n   - Fix: Add `aria-label` to landmarks for better screen reader announcements\n   - Confidence: MEDIUM\n\n## What's Missing:\n- Missing skip navigation landmark for screen reader users to bypass repeated content\n- Missing proper association between heading levels and document structure\n- Missing landmark regions for section navigation\n\n## Multi-Perspective Notes:\n- **Screen reader user**: Headings announce in level 1 \u2192 level 3 sequence, creating confusion about document structure. Landmark navigation is missing.\n- **Keyboard-only user**: Tab order is logical but landmark navigation is missing, making content discovery harder.\n- **Low vision user**: Visual hierarchy is clear but screen reader users would miss the structural issues.\n- **Cognitive accessibility**: Clear heading progression helps all users understand content organization.\n\n## Verdict Justification\nThe component fails to meet WCAG 2.2.2 requirements for heading hierarchy and lacks proper landmark structure. These issues significantly impact screen reader users' ability to navigate and understand the document structure. The findings are backed by axe-core violations and screen reader census data showing the skipped heading levels.\n\n## Open Questions\n1. Should the article element be replaced with a main element, or should both be used together?\n2. Are there additional landmark regions needed for the sections within the blog post?\n3. Does the CSS styling of headings affect screen reader interpretation of the hierarchy?\n\n### A11y Evidence Finding\n```\n### A11y Evidence Finding\nfinding_id: heading-order-violation\nfingerprint: 0x3a8f1c9d\nsource: axe-core 4.13.0 scan (h3:nth-child(2))\nwcag_or_apg: WCAG 2.2.2 (Headings and Labels)\nsection_508_fpc_context: 508 \u00a71194.22(a) (Structure, Paragraphs, Headings)\nseverity: CRITICAL\nperspective_alarms: screen-reader=HIGH, keyboard=LOW, low-vision=LOW\nevidence: h3:nth-child(2) follows h1 without h2\nreproduction_steps: Use screen reader to navigate headings\nexpected_behavior: Headings should increase by one level at a time\nactual_behavior: h1 \u2192 h3 skips level\ntrend: persistent\n```\n\n### A11y Evidence Finding\n```\n### A11y Evidence Finding\nfinding_id: landmark-missing\nfingerprint: 0x7b2e9f1a\nsource: axe-core 4.13.0 scan (html)\nwcag_or_apg: WCAG 2.4.1 (Bypass Blocks)\nsection_508_fpc_context: 508 \u00a71194.22(a) (Structure)\nseverity: MAJOR\nperspective_alarms: screen-reader=HIGH, keyboard=HIGH\nevidence: No main landmark in document\nreproduction_steps: Use screen reader landmark navigation\nexpected_behavior: Document should have one main landmark\nactual_behavior: Only article landmark present\ntrend: persistent\n```",
+  "done": true,
+  "total_duration": 192121961459,
+  "eval_count": 1472,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 192.2,
+    "timestamp": "2026-08-26T20:42:52",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 1698,
+    "estimated_prompt_tokens": 20678,
+    "prompt_eval_count": 17049,
+    "context_pressure": false,
+    "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+    "prompt_byte_length": 72632,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+    "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+    "pack_byte_length": 9730,
+    "pack_available": true
+  }
+}

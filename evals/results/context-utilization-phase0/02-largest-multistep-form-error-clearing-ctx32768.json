@@ -1,0 +1,23 @@
+{
+ "model": "qwen3:32b",
+ "created_at": "2026-08-24T18:03:18.182903Z",
+ "response": "",
+ "done": true,
+ "done_reason": "length",
+ "total_duration": 89348878625,
+ "load_duration": 1801625,
+ "prompt_eval_count": 16447,
+ "prompt_eval_duration": 89286395000,
+ "eval_count": 1,
+ "eval_duration": 1000,
+ "_probe_meta": {
+  "phase": "step2-fixture",
+  "role": "largest",
+  "fixture_id": "multistep-form-error-clearing",
+  "num_ctx": 32768,
+  "wall_seconds": 89.4
+ },
+ "context_stripped": "token-id array removed post-capture to keep receipts lean (context-utilization plan, principle 1)",
+ "context_length": 16448,
+ "context_sha256": "81f12a779c07b52d6ff293e56cb3299abaa4612e298b312927b7034ecc16f875"
+}

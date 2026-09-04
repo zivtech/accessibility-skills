@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: opus
+Condition: dump-hosted (DUMP) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '- `evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json` — `mode: driven-live`, `start_url: http://127.0.0.1:8777/tabs-missing-arrow-nav.html`, personas `keyboard` + `screen-rea…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "opus",
+  "condition": "dump-hosted",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "- `evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json` \u2014 `mode: driven-live`, `start_url: http://127.0.0.1:8777/tabs-missing-arrow-nav.html`, personas `keyboard` + `screen-rea\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

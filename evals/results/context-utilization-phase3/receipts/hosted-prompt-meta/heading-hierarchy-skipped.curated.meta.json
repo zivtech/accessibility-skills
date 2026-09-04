@@ -1,0 +1,13 @@
+{
+ "fixture_id": "heading-hierarchy-skipped",
+ "condition": "curated-hosted",
+ "payload": "CURATED",
+ "prompt_path": "/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/2fa50fdd-4969-44a8-a983-0424c18d8b28/scratchpad/hosted/heading-hierarchy-skipped.curated.prompt.md",
+ "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+ "user_prompt_sha256": "b512fe063ea965da8428457ac99eddc4352840dd13ec6761ac555c204e26a5ae",
+ "prompt_byte_length": 72632,
+ "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+ "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+ "pack_byte_length": 9730,
+ "pack_available": true
+}

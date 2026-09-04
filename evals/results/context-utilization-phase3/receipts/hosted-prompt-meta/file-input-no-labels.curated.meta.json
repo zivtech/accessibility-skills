@@ -1,0 +1,13 @@
+{
+ "fixture_id": "file-input-no-labels",
+ "condition": "curated-hosted",
+ "payload": "CURATED",
+ "prompt_path": "/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/2fa50fdd-4969-44a8-a983-0424c18d8b28/scratchpad/hosted/file-input-no-labels.curated.prompt.md",
+ "prompt_sha256": "bc21fed4206ad0037d6f1e3522c24c2a36fbc5b092453a0dbd51b121eccd5f24",
+ "user_prompt_sha256": "b664b1acc14ac57de91d64836264f6bf9caccd3a246b1b1aead18b598f4073a2",
+ "prompt_byte_length": 78162,
+ "pack_path": "evals/results/context-utilization-phase3/packs/file-input-no-labels.curated.md",
+ "pack_sha256": "6c7a4cd5476215ea9f2c061dd94717aa3f886358ad33eb829d76642f2a02e560",
+ "pack_byte_length": 15858,
+ "pack_available": true
+}

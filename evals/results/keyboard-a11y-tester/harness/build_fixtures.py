@@ -5,7 +5,9 @@ import re
 import sys
 from pathlib import Path
 
-FIXTURES = Path("/Users/AlexUA_1/claude/a11y-meta-skills/evals/suites/a11y-critic/fixtures")
+# Repo-relative (fixed 2026-08-25, Phase 3 lane precondition build-fixtures-path-and-shims-check;
+# was hardcoded to the old a11y-meta-skills canonical-source path).
+FIXTURES = Path(__file__).resolve().parents[3] / "suites" / "a11y-critic" / "fixtures"
 OUT = Path(__file__).parent / "pages"
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -34,6 +36,24 @@ SHIMS = {
 }
 
 WRAPPERS = {
+    # Phase 3 evidence lane (ruling 6): pre-trigger the component's own error
+    # state at mount (oversized file via DataTransfer + native change event)
+    # so the driven KAT session can observe the error-present AX tree —
+    # aria-invalid / aria-describedby absence is only observable while the
+    # error is rendered. Same stateful-wrapper pattern as modal-complete-clean.
+    "file-input-no-labels": """
+const Demo = () => {
+  useEffect(() => {
+    const input = document.querySelector('input[type=file]');
+    if (!input) return;
+    const dt = new DataTransfer();
+    dt.items.add(new File([new Uint8Array(6000000)], 'quarterly-report.pdf', {type: 'application/pdf'}));
+    input.files = dt.files;
+    input.dispatchEvent(new Event('change', {bubbles: true}));
+  }, []);
+  return <BuggyFileInput />;
+};
+""",
     "tabbed-nav-vs-tab-pattern": """
 // Next.js router stub: hash-based so route changes are observable without Next.
 const useRouter = () => ({ push: (p) => { window.location.hash = p; } });

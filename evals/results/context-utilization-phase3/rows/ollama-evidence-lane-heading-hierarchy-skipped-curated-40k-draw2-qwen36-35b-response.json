@@ -1,0 +1,33 @@
+{
+  "response": "**VERDICT: REVISE**\n\n**Overall Assessment**: The component contains a structural heading hierarchy violation (`h1` skipped to `h3`) that breaks the document outline for assistive technology users. Additionally, the component lacks landmark context (e.g., `<main>`), which is required if this renders as the primary content of a page. These are fundamental design gaps that must be addressed before shipping.\n\n**Pre-commitment Predictions**:\n- **Skipped Heading Levels**: Predicted `h1` to `h3` skip based on visual hierarchy cues often found in blog templates. Confirmed by code and evidence.\n- **Landmark Context**: Predicted missing `<main>` wrapper for a standalone article component. Confirmed by axe-core artifact.\n- **Color Contrast**: Predicted potential failure for grey text (`#666`) if background is not white.\n\n**Critical Findings** (blocks access):\n\n1. **Skipped Heading Levels Break Document Outline**\n   - **Evidence**: Code shows `<h1>` followed immediately by multiple `<h3>` elements. The provided evidence pack confirms this: `axe-core` reports a `heading-order` violation on `h3:nth-child(2)`, and the KAT census explicitly lists the reading order as level 1 then level 3 (indices 3 and 4).\n   - **User Group**: Screen reader users.\n   - **WCAG/APG**: WCAG 1.3.1 Info and Relationships (Level A); WCAG 2.4.6 Headings and Labels (Level AA).\n   - **Why this matters**: Screen readers use heading levels to build a document outline. Skipping from `h1` to `h3` confuses the hierarchy, making it difficult for users to understand the relationship between sections or navigate efficiently.\n   - **Fix**: Change all `<h3>` elements in the \"Introduction\" section to `<h2>`. The structure should be `h1` -> `h2` -> `h2`...\n\n**Major Findings** (significantly degrades experience):\n\n1. **Missing Landmark Context for Main Content**\n   - **Evidence**: Code renders only an `<article>` without a surrounding landmark. The provided evidence pack confirms `axe-core` violations for `landmark-one-main` and `region` (content not contained by landmarks).\n   - **User Group**: Screen reader users, keyboard users.\n   - **WCAG/APG**: WCAG 1.3.1 Info and Relationships (Level A); WCAG 4.1.2 Name, Role, Value (Level A).\n   - **Why this matters**: Without a `<main>` landmark, screen reader users cannot easily identify the primary content of the page or use \"landmark navigation\" to jump directly to it. If this component is the main content of a page, it must be wrapped in a `<main>` element.\n   - **Fix**: Wrap the component in a `<main>` tag or ensure the parent layout provides the `<main>` landmark.\n\n**Minor Findings** (friction but workaround exists):\n\n1. **Color Contrast Risk on Grey Text**\n   - **Evidence**: CSS defines `color: #666` for `h3`. On a pure white background (`#fff`), this ratio is 5.74:1 (passes AA). However, if the page background is not white (e.g., light grey or off-white), this text may fail WCAG 1.4.3 Contrast (Minimum).\n   - **User Group**: Low vision users.\n   - **Fix**: Verify contrast against the actual page background color. If the background is `#f5f5f5`, the ratio drops to ~4.6:1, which passes but leaves no margin for error.\n\n**What's Missing** (gaps, unhandled edge cases):\n\n- **Proper Heading Hierarchy**: The `h3` elements are structurally incorrect as they skip a level.\n- **Landmark Wrapper**: The component is an isolated semantic unit (`<article>`) but lacks the container (`<main>`) required to function correctly within a page layout.\n\n**Multi-Perspective Notes**:\n\n- **Screen reader user**: Will hear `h1` then jump to `h3`. The outline will be broken, and navigation by headings will be confusing (e.g., \"Heading 1, Heading 3\" instead of \"Heading 1, Heading 2\").\n- **Keyboard-only user**: No interactive elements in this snippet, so no keyboard traps. However, if this is part of a page without landmarks, they may struggle to navigate to the main content.\n- **Low vision user**: Text colors are likely acceptable on white backgrounds but require verification against the actual page background.\n- **Cognitive accessibility**: The visual hierarchy (implied by font sizes in CSS) suggests `h3` is a subsection of `h1`, but the semantic structure contradicts this, creating a mismatch between visual and programmatic meaning.\n\n**Verdict Justification**:\nThe heading hierarchy violation is a structural defect that fundamentally alters how assistive technology users perceive the document structure. It must be fixed before shipping. The landmark issue depends on the rendering context but is flagged as a design gap for this component in isolation.\n\n**Open Questions (unscored)**:\n\n- What is the background color of the page where this component renders? (To confirm contrast safety).\n- Is this component rendered inside a layout that provides `<main>` and `<nav>` landmarks, or does it need to include them?",
+  "done": true,
+  "total_duration": 67222270708,
+  "eval_count": 3407,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 67.3,
+    "timestamp": "2026-08-26T18:50:59",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 8603,
+    "estimated_prompt_tokens": 20678,
+    "prompt_eval_count": 17583,
+    "context_pressure": false,
+    "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+    "prompt_byte_length": 72632,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+    "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+    "pack_byte_length": 9730,
+    "pack_available": true
+  }
+}

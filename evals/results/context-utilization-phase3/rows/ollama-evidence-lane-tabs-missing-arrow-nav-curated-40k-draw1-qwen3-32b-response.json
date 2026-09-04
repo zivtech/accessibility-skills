@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The TabsWidget component implements the basic structure of the WAI-ARIA Tabs pattern but is missing critical keyboard navigation functionality required for full accessibility. While the component satisfies semantic structure and roving tabindex requirements, it fails to implement arrow key navigation (Left/Right) which is essential for keyboard operability.\n\n**Pre-commitment Predictions**: \n- Custom tabs often lack arrow key navigation and focus restoration. Confirmed: arrow key navigation is completely missing.\n- Roving tabindex is present but incomplete without keyboard support. Confirmed: tabindex management is correct but insufficient without arrow key handlers.\n- ARIA state communication is partially implemented. Confirmed: aria-selected is present but doesn't update during keyboard navigation.\n\n**Critical Findings** (blocks access):\n1. **Missing arrow key navigation for tablist** (file: TabsWidget.jsx:23-30)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users cannot navigate between tabs using arrow keys, violating WCAG 2.1.1 (Keyboard) and WAI-ARIA Tabs pattern requirements.\n   - Fix: Implement `ArrowLeft`/`ArrowRight` handlers in `handleTabKeyDown` to cycle focus between tabs. Example:\n     ```jsx\n     if (e.key === 'ArrowRight') {\n       e.preventDefault();\n       const nextIndex = (activeTab + 1) % tabs.length;\n       handleTabClick(nextIndex);\n     } else if (e.key === 'ArrowLeft') {\n       e.preventDefault();\n       const prevIndex = (activeTab - 1 + tabs.length) % tabs.length;\n       handleTabClick(prevIndex);\n     }\n     ```\n\n**Major Findings** (significantly degrades experience):\n1. **No ARIA state updates during keyboard navigation** (file: TabsWidget.jsx:23-30)\n   - Confidence: HIGH\n   - Why this matters: Screen reader users won't receive announcements when tabs change via arrow keys, violating WCAG 4.1.3 (Status Messages).\n   - Fix: Add `aria-live` regions or use `aria-activedescendant` to announce tab changes. Current implementation only updates visual state, not programmatic state during keyboard navigation.\n\n**What's Missing**:\n- Missing keyboard navigation for tablist (arrow key support)\n- Missing screen reader announcements when tabs change via keyboard\n- Missing focus restoration logic when tab changes programmatically\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Will hear initial tab announcement but no updates during arrow key navigation. Semantic structure is correct but interaction model is incomplete.\n- **Keyboard-only user**: Can tab between tabs but cannot use arrow keys to navigate, which is standard for tab controls.\n- **Low vision user**: Focus indicator is visible but navigation is limited to Tab key only.\n- **Cognitive accessibility**: The interaction model is inconsistent with standard tab behavior, creating confusion.\n\n**Verdict Justification**: The component implements 80% of the WAI-ARIA Tabs pattern but is missing the 20% that makes it fully functional for keyboard and screen reader users. The missing arrow key navigation and state announcements create a significant barrier for keyboard users and screen reader users. The component passes automated tests but fails real-world accessibility requirements.\n\n**Open Questions**:\n- Should we implement `aria-activedescendant` for programmatic focus updates, or is `aria-selected` sufficient?\n- How should we handle circular navigation at the edges of the tablist (e.g., ArrowLeft from first tab)?\n- Should we add keyboard shortcuts documentation for custom tab navigation?",
+  "done": true,
+  "total_duration": 313198672625,
+  "eval_count": 1169,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 313.2,
+    "timestamp": "2026-08-26T21:42:43",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2024,
+    "estimated_prompt_tokens": 21759,
+    "prompt_eval_count": 17960,
+    "context_pressure": false,
+    "prompt_sha256": "9593336c612feb854968dcb9f57a252ba669f3051f1e1695daefe9820009fec7",
+    "prompt_byte_length": 76443,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md",
+    "pack_sha256": "35fc4ad1476e0039c643aa80f56cb285a2abdc611096ad5b996bab2b015e461c",
+    "pack_byte_length": 12318,
+    "pack_available": true
+  }
+}

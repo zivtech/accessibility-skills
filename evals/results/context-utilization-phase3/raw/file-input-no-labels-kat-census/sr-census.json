@@ -1,0 +1,32 @@
+{
+  "http://127.0.0.1:8777/file-input-no-labels.html": {
+    "captured_at": "2026-08-26T18:02:20.012Z",
+    "entries": [
+      {
+        "index": 1,
+        "spoken_phrase": "document",
+        "role": "document",
+        "tag": "body",
+        "selector": "body"
+      },
+      {
+        "index": 2,
+        "spoken_phrase": "Upload file",
+        "role": "Upload file",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 3,
+        "spoken_phrase": "File too large",
+        "role": "File too large",
+        "tag": null,
+        "selector": null
+      }
+    ],
+    "declared_live_regions": [],
+    "declared_broken_aria_refs": [],
+    "declared_alternate_reading_order": [],
+    "truncated": false
+  }
+}

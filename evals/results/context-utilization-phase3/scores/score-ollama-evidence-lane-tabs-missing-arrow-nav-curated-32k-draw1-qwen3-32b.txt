@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3:32b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=17960 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Overall Assessment**: The TabsWidget component implements the basic WAI-ARIA Tabs pattern but is missing critical keyboard navigation functionality required by the pattern. While it supports Tab key…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3:32b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 17960,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The TabsWidget component implements the basic WAI-ARIA Tabs pattern but is missing critical keyboard navigation functionality required by the pattern. While it supports Tab key\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

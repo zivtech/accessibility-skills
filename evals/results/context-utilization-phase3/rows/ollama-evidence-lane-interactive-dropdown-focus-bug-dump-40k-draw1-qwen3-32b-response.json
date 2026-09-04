@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**VERDICT: REVISE**\n\n**Overall Assessment**: The component implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus management gaps that break keyboard navigation flow. Focus restoration is missing after selection and Escape key closure, creating keyboard traps.\n\n**Pre-commitment Predictions**: Custom dropdowns often have focus restoration issues. Expected to find missing focus management on close, which was confirmed.\n\n**Critical Findings** (blocks access):\n1. **Missing focus restoration after selection** (src/components/BuggyDropdown.jsx:40)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users lose context after selection, requiring Tab/Shift+Tab to find the button again. Violates WCAG 2.1.2 (No Keyboard Trap) and WAI-ARIA APG Listbox pattern.\n   - Fix: Add `document.getElementById('dropdown-btn')?.focus()` in `handleSelect` after `setIsOpen(false)`\n\n2. **Missing focus restoration after Escape key closure** (src/components/BuggyDropdown.jsx:25)\n   - Confidence: HIGH\n   - Why this matters: Escape closes the dropdown but leaves focus on the list, creating a keyboard trap. Violates WCAG 2.1.2.\n   - Fix: Add `document.getElementById('dropdown-btn')?.focus()` in `handleKeyDown` after `setIsOpen(false)`\n\n**Major Findings** (significantly degrades experience):\n1. **Focus indicator contrast issues** (WCAG 2.4.13)\n   - Confidence: MEDIUM\n   - Why this matters: Focus indicators have 2.53-3.46 contrast ratios, below AAA standard but meeting AA. May be hard to perceive for low-vision users.\n   - Fix: Increase focus outline contrast to 3:1 minimum (e.g., `outline: 2px solid #000`)\n\n**What's Missing**:\n- Focus restoration logic after dropdown closure\n- Error state announcements for invalid selections\n- Proper handling of focus when options are dynamically updated\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Semantic structure is correct but focus restoration gaps would require manual navigation after interaction.\n- **Keyboard-only user**: Current implementation creates keyboard traps when closing via Escape or selection.\n- **Low vision user**: Focus indicators need stronger contrast to meet AAA standards.\n- **Cognitive accessibility**: Interaction model is consistent but could be clearer with better focus management.\n\n**Verdict Justification**: The component implements the correct ARIA pattern but has critical focus management gaps that break keyboard navigation. These issues would significantly degrade the experience for keyboard users and screen reader users. The focus restoration fixes are straightforward but essential for compliance with WCAG 2.1.2.\n\n**Open Questions**:\n- Should the focus restoration use refs instead of `getElementById` for better React integration?\n- Are there edge cases where focus restoration might conflict with other focus management in the app?",
+  "done": true,
+  "total_duration": 372709274042,
+  "eval_count": 1293,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 372.7,
+    "timestamp": "2026-08-26T22:18:54",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 3253,
+    "estimated_prompt_tokens": 31454,
+    "prompt_eval_count": 29273,
+    "context_pressure": false,
+    "prompt_sha256": "21ef3a445b5ed732b92cf285bd0e5bcd780ecbb2b06010fff78917985eb7e585",
+    "prompt_byte_length": 110343,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.dump.txt",
+    "pack_sha256": "d7b2c559e6adcbaa7212f0ec290e59d2cfc429f6407d7ac27751387b0694b137",
+    "pack_byte_length": 46584,
+    "pack_available": true
+  }
+}

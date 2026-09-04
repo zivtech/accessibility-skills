@@ -1,0 +1,26 @@
+{
+  "test_case_id": "127-0-0-1",
+  "viewport": "desktop",
+  "mode": "driven-live",
+  "findings": [
+    {
+      "id": "sr-focusable-not-exposed-desktop",
+      "wcag": "4.1.2",
+      "source": "deterministic",
+      "persona": "screen-reader",
+      "evidence_kind": "selector",
+      "conformance_level": "AA",
+      "confidence": 0.75,
+      "severity": "serious",
+      "viewport": "desktop",
+      "goal_id": "adhoc",
+      "url": "http://127.0.0.1:8777/file-input-no-labels.html",
+      "locations": [],
+      "summary": "1 control(s) on http://127.0.0.1:8777/file-input-no-labels.html are keyboard-focusable but never appear in the screen-reader accessibility-tree walk (likely aria-hidden=\"true\" combined with a focusable tabindex): #root > div > input",
+      "persona_impact": "A sighted keyboard user can tab to this control; a screen-reader user never learns it exists.",
+      "evidence": [
+        "#root > div > input"
+      ]
+    }
+  ]
+}

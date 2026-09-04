@@ -1,0 +1,548 @@
+# ADJUDICATION RULE APPLIED (recorded so the call is auditable):
+#   REAL-FP            = the row files a defect (Critical/Major/Minor tier) asserting a WCAG
+#                        failure or broken behavior that ground truth does not recognize.
+#   SCOPED-ENHANCEMENT = framed as enhancement / polish / optional hardening / consumer-contract,
+#                        OR is the ground-truth nice_to_find (aria-current), OR explicitly
+#                        declines to assert a failure ("2.4.1 is met", "not an AA failure").
+#   NOT-A-FINDING      = observation, restated evidence, hedged "needs verification" commentary,
+#                        Open Question, or a positive/clean statement.
+#   Duplicate filings of the SAME nonexistent defect count once (real_fp_count = distinct
+#   fabricated defects asserted, not distinct filed entries).
+#
+# ADJUDICATOR DISSENT — READ BEFORE USING THESE NUMBERS (fixture-quality problem, not model noise):
+#   The fixture CSS genuinely contains `.main-nav a:focus { outline: 3px solid #0066cc;
+#   outline-offset: -3px }` over `.main-nav { background: #333 }`. #0066cc vs #333333 computes to
+#   2.271:1 (L=0.13873 / 0.03310), against the 3:1 non-text threshold, with #333 adjacent on BOTH
+#   sides because the offset is negative. That arithmetic is correct and independently reproduced
+#   by 8 of 20 rows. Understanding SC 1.4.11 treats author-styled focus indicators as state
+#   information at 3:1, so the AA mapping is the dominant professional reading (contested, not
+#   fringe). Ground truth declares the fixture CLEAN and lists "Focus indicators visible on
+#   navigation links" as an implemented feature, saying nothing about ratio.
+#   I have scored these as REAL-FP because the task designates ground truth authoritative — but
+#   they are NOT fabrications, and reporting them as evidence that opus/sonnet invent defects on
+#   clean code would be wrong. Recommend either (a) fixing the fixture CSS to a >=3:1 ring, or
+#   (b) adding the ring to expected_findings, before this fixture is used as an FP control again.
+#   Same caveat, weaker, for the missing-tabindex-on-<main> class: real property of the fixture,
+#   standard hardening advice; scored REAL-FP only where a row asserts the skip link is BROKEN or
+#   fails 2.4.1, not where it says modern browsers handle it and tabindex is hardening.
+#   The `page-has-heading-one` axe hit is real measured evidence tagged best-practice with NO WCAG
+#   mapping; scored REAL-FP only where a row converts it into a WCAG SC violation (1.3.1 / 2.4.6 /
+#   2.4.10 / 2.4.1 / 508 207.1) — those citations are wrong on the merits, not merely over-scoped.
+fixture_id: button-skip-link-clean
+tier: CLEAN
+rows:
+  - row: claude-evidence-lane-button-skip-link-clean-curated-hosted-draw1-opus
+    model: opus
+    condition: curated-hosted
+    draw: 1
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: MAJOR 1 - nav focus ring computes 2.27:1, filed as a WCAG 1.4.11 AA failure
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Threshold: 3:1. Result: FAIL, by a wide margin - 76% of the required ratio.'
+      - description: MAJOR 2 - non-wrapping flex nav asserted as a probable WCAG 1.4.10 Reflow failure at 320px
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: Total ~380px against a 320px viewport -> ~60px of unavoidable horizontal overflow. MAJOR stands, gated on verification.
+      - description: MINOR 1 - <main> lacks tabindex=-1; explicitly states 2.4.1 is met and frames it as hardening for the VoiceOver cursor case
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: the mechanism required by WCAG 2.4.1 Bypass Blocks is present and 2.4.1 is met
+      - description: MINOR 2 - no aria-current and no visual current-page state (the ground-truth nice_to_find, filed one tier high)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'The protocol''s own calibration puts an isolated missing aria-current at MINOR'
+      - description: MINOR 3 - list-style:none strips list role in Safari/VoiceOver, scoped to one browser/AT pair with a one-attribute fix
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Impact is correctly scoped to Safari/VoiceOver rather than claimed universally.
+      - description: Four Enhancements (h1 contract, -40px offset fragility, aria-label wording, focus-style consistency) all scoped as no-access-barrier
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: '## Enhancements (best practice not met, no access barrier)'
+    real_fp_count: 2
+
+  - row: claude-evidence-lane-button-skip-link-clean-curated-hosted-draw1-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 1
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: MAJOR 1 - skip-link target not focusable, asserted as a WCAG 2.4.1 Level A failure with focus resetting to body
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: focus effectively resets to <body>, so the very next Tab press restarts sequential navigation from the top of the document
+      - description: MINOR 1 - axe page-has-heading-one, correctly refused a hard WCAG mapping and attributed to children/harness
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: This is a design-hardening recommendation, not a mandate to change this specific fixture.
+      - description: MINOR 2 - no aria-current mechanism (the ground-truth nice_to_find, filed at MINOR)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'calibrated to MINOR per the protocol''s own worked guidance'
+      - description: Skip link has no author-defined focus style - moved to Open Questions, not scored
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: Moved here rather than scored as a finding because the developer could readily refute it
+    real_fp_count: 1
+
+  - row: claude-evidence-lane-button-skip-link-clean-curated-hosted-draw2-opus
+    model: opus
+    condition: curated-hosted
+    draw: 2
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: MAJOR-1 - nav focus ring 2.27:1 filed as a WCAG 1.4.11 AA failure (SC mapping self-flagged as contested)
+        scorer_flagged: true
+        verdict: REAL-FP
+        evidence: 'Citation: WCAG 2.2 1.4.11 Non-text Contrast (AA) ... severity: MAJOR'
+      - description: MINOR-1 - <main> lacks tabindex=-1; states modern engines make the control work and calls the attribute long-standing hardening
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: the next Tab usually continues from inside main and the control works ... is the long-standing recommended hardening
+      - description: MINOR-2 - aria-label duplicates the role word; explicitly no SC failed
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: No WCAG SC is failed - this is an announcement-quality item ... this is polish, not a barrier
+      - description: MINOR-3 - list-style:none and Safari list roles, with explicit author-attributability caveat
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: reasonable practitioners decline to score it as an author failure
+      - description: MINOR-4 - reflow at 320px flagged as unmeasured, refutable, and Needs user verification rather than asserted
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: 'Confidence: MEDIUM that a real reflow failure exists; HIGH that it is currently unverified'
+      - description: ENH-1/2/3 - aria-current (ground-truth nice_to_find), h1 contract, -40px offset, all scoped below finding threshold
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: I would treat a review that filed this as a WCAG failure as itself defective
+    real_fp_count: 1
+
+  - row: claude-evidence-lane-button-skip-link-clean-curated-hosted-draw2-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: Major 1 - skip-link target not focusable, asserted to defeat WCAG 2.4.1 with focus very likely restarting at the top
+        scorer_flagged: true
+        verdict: REAL-FP
+        evidence: is very likely back at the top of the tab sequence ... That reintroduces exactly the repeated-navigation burden the skip link exists to eliminate
+      - description: Major 2 - nav focus outline 2.27:1 asserted as below the WCAG 3:1 focus-indicator minimum
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: it is a genuine, numeric WCAG shortfall on the only cue provided
+      - description: Minor - page-has-heading-one, attribution flagged ambiguous and no hard SC forced
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'so I''m not stretching this into a hard numbered-criterion failure'
+      - description: Minor - skip link has no author focus style, flagged Needs-verification with mitigation noted
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: Flagged as Minor/Needs-verification rather than Major because the mitigating location-based signal is present
+      - description: Enhancements - aria-current (ground-truth nice_to_find) and absence of a skip-link transition (explicitly not a defect)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'This is not a defect - the absence of motion means there''s nothing for prefers-reduced-motion to need to suppress'
+    real_fp_count: 2
+
+  - row: claude-evidence-lane-button-skip-link-clean-dump-hosted-draw1-opus
+    model: opus
+    condition: dump-hosted
+    draw: 1
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: MAJOR 1 - nav focus ring 2.27:1 filed as a WCAG 1.4.11 AA failure
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'WCAG: 1.4.11 Non-text Contrast (Level AA) ... Required: 3:1.'
+      - description: MAJOR 2 - non-wrapping flex nav asserted as a WCAG 1.4.10 Reflow failure at 320px / 400% zoom
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: it will overflow horizontally at 320px / 400% zoom ... the overflow propagates to the document and produces page-level horizontal scrolling
+      - description: MINOR 1 - <main> lacks tabindex=-1, recalibrated down from MAJOR with the landmark-rotor mitigation stated
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: keyboard-only users are largely served ... Recalibrated from MAJOR. Mitigated by the landmark rotor
+      - description: ENHANCEMENT 1 - missing h1, explicitly refused as a WCAG violation
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: No WCAG 2.2 A/AA success criterion requires an <h1>, and a reviewer who calls this a WCAG violation is wrong.
+      - description: ENHANCEMENT 2/3 - aria-current (ground-truth nice_to_find) and aria-label role redundancy
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'Filed at ENHANCEMENT to match this skill''s own severity scale'
+    real_fp_count: 2
+
+  - row: claude-evidence-lane-button-skip-link-clean-dump-hosted-draw1-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 1
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: Major 1 - missing tabindex=-1 kept at MAJOR as an incomplete keyboard/AT mechanism despite conceding modern-browser coverage
+        scorer_flagged: true
+        verdict: REAL-FP
+        evidence: 'kept at MAJOR because the feature''s own explicit mechanism is genuinely incomplete'
+      - description: Major 2 - nav focus outline 2.27:1 filed as below the WCAG 1.4.11 AA 3:1 minimum
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'That is below the 3:1 minimum WCAG 1.4.11 (Non-Text Contrast, AA) requires for the visual presentation of a UI component''s state'
+      - description: Minor - no h1 in the scanned render, explicitly not charged to the component
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: not a defect in the code shown here, hence Minor rather than Major
+      - description: Enhancements - aria-current (ground-truth nice_to_find) and an optional header/banner wrapper explicitly marked not required
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Not required - a nav-first shell without an explicit banner region is common and valid
+    real_fp_count: 2
+
+  - row: claude-evidence-lane-button-skip-link-clean-dump-hosted-draw2-opus
+    model: opus
+    condition: dump-hosted
+    draw: 2
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: MAJOR-1 - skip link asserted to fail technique G1 under WCAG 2.4.1 because <main> never receives DOM focus
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: whose test procedure requires that activating the link move the reading position or focus to the main content, not merely scroll to it
+      - description: MAJOR-2 - non-wrapping flex nav asserted as a likely WCAG 1.4.10 AA failure at 320px
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: If confirmed, this is a hard AA failure.
+      - description: MINOR-1 - focus ring 2.27:1, but explicitly declines to assert an AA failure and concedes 2.4.7 AA is met
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: that reading is contested rather than settled, so I am not asserting an AA failure here. I would rather be accurate than alarming.
+      - description: MINOR-2 - fixed -40px off-screen offset under text-only zoom, explicitly not a clean failure of any criterion
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: not a clean failure of any single criterion; it is a visual defect in the 1.4.4 Resize Text territory
+      - description: ENHANCEMENT-1/2/3 - aria-current (ground-truth nice_to_find), aria-label redundancy, undocumented children h1 contract
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: This is polish, not a gap
+    real_fp_count: 2
+
+  - row: claude-evidence-lane-button-skip-link-clean-dump-hosted-draw2-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: Major 1 - skip-link target not programmatically focusable, asserted as a WCAG 2.4.1/2.4.3 Level A shortfall at HIGH confidence
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'a mechanism to bypass repeated blocks must actually relocate the user''s operating position, not merely scroll the viewport'
+      - description: Minor - page has no h1; fix explicitly assigned to the content layer, axe best-practice tagging acknowledged
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Fix belongs at the content layer ... not inside MainLayout.jsx itself
+      - description: Enhancement - no aria-current mechanism (the ground-truth nice_to_find, correctly tiered)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: this is calibrated as best-practice, not an access barrier
+      - description: Focus-ring contrast correctly withheld and moved to Open Questions instead of filed
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: this remains a manual/measured-verification item, not a scored finding
+    real_fp_count: 1
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-32k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 1
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: CRITICAL - missing h1 filed as a WCAG 1.3.1 violation that blocks access, charged to MainLayout.jsx
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Missing h1 element in document structure - WCAG 2.2: 1.3.1 Info and Relationships'
+      - description: MAJOR - fabricated skip-link obscuration risk from sticky elements; no sticky or fixed positioning exists anywhere in the fixture CSS
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Skip link visibility risk with sticky elements - WCAG 2.4.11 Focus Not Obscured - Fix: Add margin-top: 4rem'
+      - description: Minor - nav outline stated to meet 2.4.7 with contrast offered only as a possible improvement
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Navigation links use 3px outline (meets WCAG 2.4.7) but could improve contrast against background
+      - description: Enhancements - aria-current (ground-truth nice_to_find) and an optional footer aria-label
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Add aria-current="page" to active navigation link for better context
+      - description: 'What''s Missing - claims the skip link needs its own landmark region via role=navigation (incorrect advice, but no violation asserted)'
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: No landmark region for the skip link itself (could use role="navigation")
+    real_fp_count: 2
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-32k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 1
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: CRITICAL - missing h1 filed as WCAG 2.4.6 / 1.3.1 blocking access, with an evidence block stamped severity CRITICAL
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'severity: CRITICAL ... wcag_or_apg: WCAG 2.2 2.4.6'
+      - description: MAJOR - claims the off-screen top:-40px reveal can leave the skip link partially visible and cites WCAG 1.3.1; ground truth records this technique as correct
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: moving an element off-screen via top can sometimes leave it partially visible or focusable in edge cases ... WCAG 2.2 1.3.1 (Info and Relationships)
+      - description: Minor - generic advice about distinct labels if multiple navs are ever added
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: This is good practice, but ensure that if there are multiple <nav> elements on a page
+      - description: Enhancement - vague skip-link focus-restoration polish, concedes browsers handle it natively
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: browsers handle this natively for anchor links
+    real_fp_count: 2
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-32k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 2
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: Minor 1 - missing h1 filed as a violation of WCAG 2.4.10 Section Titles, repeated in the evidence block; no SC requires an h1 and 2.4.10 is AAA
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Missing h1 element in page structure (WCAG 2.4.10) - Confidence: HIGH'
+      - description: Enhancements - aria-current (ground-truth nice_to_find), redundant role=navigation on <nav>, conditional footer aria-label
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Add role="navigation" to nav element for redundant landmark identification
+      - description: 'What''s Missing - claims no explicit landmark for footer while conceding the semantic footer is present'
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: No explicit landmark for footer (though semantic footer is present)
+    real_fp_count: 1
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-32k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: CRITICAL 1 - skip-link target not focusable, asserted to strand the user and leave focus on the link, filed as blocking access under 2.4.3
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: focus remains on the skip link itself (or is lost) ... must tab through the entire page again to reach the content
+      - description: CRITICAL 2 - focus indicator contrast filed as a blocking WCAG 2.4.13 failure with a miscomputed ratio (~2.0:1 vs the actual 2.27:1) and an invisible-focus claim
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: has a calculated contrast ratio of approximately 2.0:1 ... Low-vision users cannot see where their focus is in the navigation.
+      - description: MAJOR 1 - missing h1 filed as a WCAG 1.3.1 / 2.4.6 violation, with an evidence block at severity MAJOR
+        scorer_flagged: true
+        verdict: REAL-FP
+        evidence: 'WCAG/APG: WCAG 1.3.1 (Info and Relationships), WCAG 2.4.6 (Labels or Titles)'
+      - description: MINOR 1 - navigation lacks aria-current (the ground-truth nice_to_find, filed one tier high)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Navigation lacks active state indication ... Fix - add aria-current="page" when true
+    real_fp_count: 3
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 1
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: CRITICAL - missing h1 filed as a blocking WCAG 2.4.10 Section Titles violation with a fabricated requirement
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: WCAG 2.4.10 (Section Titles) requires at least one h1 for document structure
+      - description: MAJOR - fabricated skip-link magnifier defect citing a nonexistent 2.4.7 requirement; the revealed skip link is white on #0066cc at 5.57:1
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: No visual indicator for skip link when using screen magnifiers ... WCAG 2.4.7 (Focus Visible) requires 3:1 contrast and 2px perimeter
+      - description: Minor / Enhancements - aria-current (ground-truth nice_to_find), footer aria-label, redundant role=navigation
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Navigation links could use aria-current="page" on active link for better context
+    real_fp_count: 2
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 1
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: CRITICAL 1 - missing h1 filed as blocking access under WCAG 1.3.1 and 2.4.1 Bypass Blocks (the 2.4.1 mapping is invented)
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'WCAG/APG: WCAG 2.2 1.3.1 Info and Relationships; WCAG 2.2 2.4.1 Bypass Blocks (heading hierarchy is the primary navigation structure)'
+      - description: MAJOR 1 - asserts focus does not move on skip-link activation, leaving keyboard users stranded in the navigation
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: the browser scrolls to the element, but keyboard focus remains on the anchor tag or body
+      - description: MAJOR 2 - fabricated defect claiming top-based skip-link reveal causes layout shifts, cited under WCAG 1.3.2 Meaningful Sequence
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Skip Link CSS Uses top Instead of transform ... WCAG/APG: WCAG 2.2 1.3.2 Meaningful Sequence'
+      - description: Minor - speculative focus-indicator clipping risk from the negative outline-offset, phrased as a check to perform
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: potentially clipping it against the text if the font size is large ... Ensure the padding (16px) is sufficient
+    real_fp_count: 3
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: CRITICAL + MAJOR (same defect filed twice) - missing h1 asserted as a WCAG 2.4.10 / 2.4.1 violation with both SC names transposed
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: WCAG 2.4.10 (Bypass Blocks) and 2.4.1 (Headings) ... The missing h1 violates WCAG 2.4.10
+      - description: Enhancement - aria-current (the ground-truth nice_to_find), correctly tiered
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Consider adding aria-current="page" to active navigation link for better context (WCAG 4.1.2)
+      - description: 'What''s Missing - suggests role=banner on the nav element (incorrect advice, but offered as an option, no violation asserted)'
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: could add role="banner" to nav for clarity
+    real_fp_count: 1
+
+  - row: ollama-evidence-lane-button-skip-link-clean-curated-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: MAJOR 1 - missing h1 filed as a failed critical requirement charged to MainLayout.jsx lines 3-19
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: fails the critical requirement of providing page context (<h1>), which is a fundamental accessibility pattern
+      - description: MINOR 4 - fabricated screen-reader-noise defect, with the actively harmful fix of aria-hidden on a focusable skip link
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'Fix: Hide the skip link from assistive technology until it receives focus. Add aria-hidden="true" to the element'
+      - description: MAJOR 2 - skip-link target focusability, framed as a design gap that concedes modern browsers work (severity over-called at MAJOR, but no violation asserted)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: While modern browsers (Chrome, Firefox) automatically focus landmarks when linked via anchor, this behavior is inconsistent in older browsers
+      - description: MINOR 3 - active navigation state missing (the ground-truth aria-current nice_to_find)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Conditionally apply aria-current="page" to the matching link
+      - description: ENHANCEMENT 5 - focus indicator contrast, asserted as sufficient and offered only as a verification step
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: While blue on dark gray has sufficient contrast, ensure the 3px outline meets WCAG 2.4.13 minimums in all states
+    real_fp_count: 2
+
+  - row: ollama-evidence-lane-button-skip-link-clean-dump-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 1
+    row_verdict: ACCEPT-WITH-RESERVATIONS
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: MAJOR 1 - missing h1 filed as a WCAG 2.4.10 violation mapped to a fabricated Section 508 provision (SC 207.1)
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: 'WCAG: 2.4.10 (Section 508 SC 207.1)'
+      - description: Minor - skip-link focus styling speculated as possibly insufficient at zoom, phrased as a suggestion
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: 'the focus style (top: 0) may not be sufficient for low vision users ... Fix - Consider adding a subtle background color'
+      - description: Enhancements - html lang (outside the component''s render scope; axe reported no lang violation) and aria-current (ground-truth nice_to_find)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Add lang="en" to the <html> element to specify the document language for screen readers
+    real_fp_count: 1
+
+  - row: ollama-evidence-lane-button-skip-link-clean-dump-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 1
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: MAJOR 1 - focus indicator filed as a WCAG 2.4.13 contrast failure with a miscomputed ratio (~2.4:1 vs the actual 2.27:1) plus an invisible-to-low-vision claim in the overall assessment
+        scorer_flagged: true
+        verdict: REAL-FP
+        evidence: renders it invisible to low-vision keyboard users ... contrast ratio ... is approximately 2.4:1
+      - description: MAJOR 2 - missing h1 filed as failing a WCAG 1.3.1 semantic requirement
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: fails the semantic requirement for a single level-one heading per WCAG 1.3.1 (Info and Relationships)
+      - description: Minor Findings section contains only positive confirmations (skip-link text, list semantics)
+        scorer_flagged: false
+        verdict: NOT-A-FINDING
+        evidence: The skip link text "Skip to main content" is standard and effective. No changes needed here.
+      - description: 'What''s Missing - aria-current (ground-truth nice_to_find), explicitly placed outside the component''s scope'
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: 'This is not in the component''s scope but is a common gap in navigation patterns.'
+    real_fp_count: 2
+
+  - row: ollama-evidence-lane-button-skip-link-clean-dump-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 2
+    row_verdict: REVISE
+    row_verdict_appropriate_for_clean: false
+    false_positives:
+      - description: CRITICAL - missing h1 filed as blocking access under WCAG 2.4.10 Section Headings
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: Per WCAG 2.4.10 (Section Headings), documents should have a clear heading hierarchy
+      - description: MAJOR - separate claim that the skip link itself fails WCAG 2.4.1 because its destination is not clearly identified
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: Per WCAG 2.4.1 (Bypass Blocks), the destination should be clearly identified
+      - description: Minor - asserts a WCAG 3.1.1 lang violation; the component renders no <html>, and axe html-has-lang did not fire on the scanned page
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: No lang attribute on html element (WCAG 3.1.1)
+      - description: Minor - incoherent claim that the skip link needs a focus indicator while unfocused, cited under WCAG 2.4.7
+        scorer_flagged: false
+        verdict: REAL-FP
+        evidence: No focus indicator on skip link when not focused (WCAG 2.4.7)
+      - description: Enhancement - aria-current (the ground-truth nice_to_find)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: Consider adding aria-current="page" to active navigation item
+    real_fp_count: 4
+
+  - row: ollama-evidence-lane-button-skip-link-clean-dump-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 2
+    row_verdict: ACCEPT
+    row_verdict_appropriate_for_clean: true
+    false_positives:
+      - description: Minor 1 - page-has-heading-one correctly reframed as consumer responsibility with a documentation fix, not a component defect
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: This is architecturally correct for a layout shell; the title belongs to the page content, not the wrapper.
+      - description: Enhancement 1 - conditional skip-link z-index stacking advice for a hypothetical fixed header (no such header exists in the fixture)
+        scorer_flagged: false
+        verdict: SCOPED-ENHANCEMENT
+        evidence: If the application has a fixed/sticky header with a higher z-index (e.g., 200), the skip link will appear under the header
+    real_fp_count: 0

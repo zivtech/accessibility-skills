@@ -1,0 +1,44 @@
+Fixture: heading-hierarchy-skipped | Model: qwen3.6:35b
+Condition: curated-40k (CURATED) | Draw: 2
+prompt_eval_count=17583 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 0/2
+  X [0] Heading hierarchy skips from h1 directly to h3 — reason=model-miss
+  X [1] Inconsistent heading hierarchy (h3 then h2) — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "qwen3.6:35b",
+  "condition": "curated-40k",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": 17583,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [],
+    "matched_count": 0,
+    "recall": 0.0
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Heading hierarchy skips from h1 directly to h3",
+      "found": false,
+      "reason": "model-miss"
+    },
+    {
+      "item_index": 1,
+      "description": "Inconsistent heading hierarchy (h3 then h2)",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

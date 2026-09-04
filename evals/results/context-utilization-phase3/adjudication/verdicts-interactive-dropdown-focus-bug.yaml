@@ -1,0 +1,303 @@
+fixture_id: interactive-dropdown-focus-bug
+tier: HAS-BUGS
+rows:
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-curated-hosted-draw1-opus
+    model: opus
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'CRITICAL-3: ''Three close paths — Escape (:22–24), Enter-to-select (:33–35 → handleSelect, lines 15–19), and option click (:66 → handleSelect) — all call setIsOpen(false) and nothing else... No .focus() call on the trigger exists anywhere in the component.'' Also G4.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same CRITICAL-3 names the Escape branch explicitly; APG table row ''Escape closes popup AND returns focus to trigger | Closes only; focus is lost | lines 22–24''; G4 ''Neither handleSelect ... nor the Escape branch (lines 22–24) ... touches focus.'''
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-curated-hosted-draw1-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 3: ''Closing the dropdown — by selecting an option OR by pressing Escape — abandons focus to <body> with no restoration to the trigger'', citing handleSelect lines 22–26. Scorer''s quoted <li> snippet was incidental, but the defect is genuinely filed.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same Critical Finding 3 covers the Escape branch (lines 29–31) and flags it as code-verified, not trace-measured; What''s Missing: ''No focus-restoration call in either dropdown-closing branch ... the gap is total, not partial.'''
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-curated-hosted-draw2-opus
+    model: opus
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'C1: ''Focus is dropped to <body> on selection and never restored to the trigger; the Escape path has the same defect.'' Evidence cites handleSelect at BuggyDropdown.jsx:15-19 plus measured step_0005.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'C1 body: ''The Escape branch at lines 22–24 is the identical code path — setIsOpen(false) with no focus restoration,'' with an explicit scope caution that the Escape path is code-read, not measured.'
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-curated-hosted-draw2-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''No focus restoration when the dropdown closes — neither on selection nor on Escape. See handleSelect (lines 22–26)... Both call setIsOpen(false) and nothing else.'''
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same Critical Finding 1 covers ''the Escape branch of handleKeyDown (lines 29–31)''; fix instructs ''In the Escape branch of handleKeyDown, do the same''; What''s Missing repeats ''Missing focus restoration on both exit paths (Escape, Selection)''.'
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-dump-hosted-draw1-opus
+    model: opus
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'MAJOR-1: ''Focus is destroyed on close and reverts to <body>; it never returns to the trigger. handleSelect (:15-19) and the Escape branch (:22-24) both set isOpen false... Neither path calls .focus() on the trigger.'''
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same MAJOR-1 names the Escape branch (:22-24); What''s Missing lists ''Focus restoration on both close paths (select and Escape).'''
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-dump-hosted-draw1-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2: ''Focus is not restored to the trigger button when the popup closes... Selection path (handleSelect, BuggyDropdown.jsx:15-19): calls setIsOpen(false)... Nothing calls .focus() on the button.'''
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same finding: ''Escape path (handleKeyDown, BuggyDropdown.jsx:22-24): identical code shape — setIsOpen(false) with no accompanying focus call,'' flagged MEDIUM-HIGH as source-verified rather than trace-measured.'
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-dump-hosted-draw2-opus
+    model: opus
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'C1: ''Focus is destroyed on every close — the popup unmounts while holding focus and nothing restores the trigger. BuggyDropdown.jsx:15-19 (handleSelect) and :22-24 (Escape branch) both call setIsOpen(false)... Neither stores or restores a focus target.'''
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same C1 covers the Escape branch, explicitly labelled source-derived (''Escape was never pressed'' in the trace); fix says ''Call close() from handleSelect and from the Escape branch.'''
+  - row: claude-evidence-lane-interactive-dropdown-focus-bug-dump-hosted-draw2-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus is lost to document.body after selecting an option... See BuggyDropdown.jsx:15-19 (handleSelect), which calls setIsOpen(false) and nothing else.'''
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2: ''Escape closes the dropdown without restoring focus to the trigger. See BuggyDropdown.jsx:22-24, the Escape branch of handleKeyDown, which calls setIsOpen(false) and nothing else.'''
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-32k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Missing focus restoration after selection/escape''; A11y Evidence Finding focus-to-body-after-select with expected ''Focus should return to trigger button''.'
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Same Critical Finding 1 covers Escape as ''selection/escape'' with fix ''Add button.focus() in handleSelect and handleKeyDown after closing the dropdown''; What''s Missing repeats ''Focus restoration logic after selection/escape''. Scorer keyword list lacked the ''selection/escape'' form.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-32k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus restoration missing on selection and Escape key''; evidence cites handleSelect and the trace''s step_0005 focus-to-body.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same finding cites ''handleKeyDown for Escape... Neither function restores focus to the trigger button''; fix: ''In handleSelect and the Escape handler, call triggerRef.current.focus().'''
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-32k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus lost to body after selection''; fix ''In handleSelect, add document.getElementById(''''dropdown-btn'''').focus()''.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'What''s Missing: ''Focus restoration after Escape key closes dropdown'' — a gap-analysis entry, which is the venue the fixture''s own notes name for surfacing this item. No separate severity-rated finding, but the defect is identified as a gap to close.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-32k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus escapes to body after selection or Escape key; trigger never restored'', citing handleSelect and measured step_0005.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same finding cites ''src/BuggyDropdown.jsx:27-29 (handleKeyDown Escape branch) set setIsOpen(false) but never restore focus''; fix names ''handleSelect and the Escape branch''.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus restoration missing after selection/escape''; Overall Assessment ''fails to restore focus to the trigger button after selection or closure''.'
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Same Critical Finding 1 covers Escape as ''selection/escape'', fix ''In handleSelect and handleKeyDown, add ...focus() after setIsOpen(false)''; What''s Missing repeats ''Focus restoration after selection/escape''.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1: ''Focus Management Failure on Selection'' — evidence setIsOpen(false) without focus move, trace step_0005 active element becomes body; fix buttonRef.current.focus() in handleSelect.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 2: ''Focus Management Failure on Escape'' — fix ''In handleKeyDown for Escape, restore focus to the trigger''. (Trace step cited is wrong, but the defect is correctly reported.)'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Missing focus restoration after selection'' with fix in handleSelect.'
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2 is literally ''Missing focus restoration on Escape'' — ''Users can''''t navigate back to the trigger button after closing via Escape''; fix ''In handleKeyDown for Escape, add ...focus()''. Scorer keyword list had no ''on Escape'' / ''via Escape'' form.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-curated-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus lost to body after selection; no focus restoration'' — BuggyDropdown.jsx handleSelect sets setIsOpen(false) without saving/restoring focus; trace step_0005.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Minor Finding 6: ''Escape key does not restore focus'' — handleKeyDown Escape case calls setIsOpen(false) but does not restore focus; fix triggerRef.current.focus(). Severity is under-rated but the defect is identified and treated as fixable.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-dump-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Missing focus restoration after selection'' — fix adds focus() in handleSelect after setIsOpen(false).'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2: ''Missing focus restoration after Escape key closure'' — fix adds focus() in handleKeyDown after setIsOpen(false). (Mechanism described as ''leaves focus on the list'' rather than body — imprecise, but the defect is correctly identified.)'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-dump-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Focus restoration to trigger is missing on close'' — cites handleSelect closing via setIsOpen(false) with no buttonRef.current.focus(); trace step_0005 confirms focus moves to <body>.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Overall Assessment: ''Keyboard users are stranded on the page body after making a selection or pressing Escape''; prediction ''Focus management after closing (Escape/selection) would be missing'' is marked confirmed as a critical design gap. Code attribution is imprecise (handleToggle cited instead of the Escape branch), but the Escape defect is asserted as a problem.'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-dump-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 1: ''Missing focus restoration after selection'' — ''After selecting an option, focus jumps to <body> (step_0005 in trace)''; fix in handleSelect.'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Critical Finding 2: ''Missing focus restoration after Escape'' — fix ''Add to handleKeyDown Escape handler: document.getElementById(''''dropdown-btn'''')?.focus()''. (Cites step_0004, an ArrowDown step, as evidence — misattributed, but the defect claim is genuine.)'
+  - row: ollama-evidence-lane-interactive-dropdown-focus-bug-dump-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Major Finding 1: ''Focus is not restored to the trigger button on Escape or selection'' — cites handleSelect calling setIsOpen(false) but never triggerRef.current?.focus().'
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: 'Same Major Finding 1 cites the Escape branch and instructs the fix ''in both the Escape handler and after handleSelect''; What''s Missing repeats ''Missing focus restoration design''.'

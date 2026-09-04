@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The TabsWidget component implements the basic WAI-ARIA Tabs pattern but is missing critical keyboard navigation functionality required by the pattern. While it supports Tab key navigation and mouse clicks, it lacks Left/Right arrow key navigation which is essential for full keyboard accessibility.\n\n**Pre-commitment Predictions**: \n- Tabs often lack arrow key navigation (confirmed)\n- Focus restoration on tab change might be missing (confirmed)\n- ARIA states might not update properly during keyboard navigation (confirmed)\n\n**Critical Findings** (blocks access):\n1. **Missing arrow key navigation** (`src/components/TabsWidget.jsx:31`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users cannot navigate between tabs using arrow keys, violating the WAI-ARIA Tabs pattern requirement (4.1.2 Name, Role, Value). \n   - Fix: Add Left/Right arrow key handlers in `handleTabKeyDown` to cycle through tabs and update focus accordingly.\n\n**Major Findings** (significantly degrades experience):\n1. **Focus doesn't move with tab changes** (`src/components/TabsWidget.jsx:31`)\n   - Confidence: HIGH\n   - Why this matters: When switching tabs via keyboard, focus remains on the original tab button, creating a mismatch between visual and programmatic focus (2.4.3 Focus Order).\n   - Fix: Implement logic to move focus to the newly selected tab button when arrow keys are used.\n\n**What's Missing**:\n- Missing arrow key navigation logic in `handleTabKeyDown`\n- Missing focus management when tabs are changed via keyboard\n- Missing ARIA live region announcements when tabs are changed via arrow keys\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Can navigate tabs with Tab but cannot use arrow keys. Screen reader announces tab selection only on initial focus, not during keyboard navigation.\n- **Keyboard-only user**: Can navigate with Tab but arrow key navigation is missing, making tab switching less efficient.\n- **Cognitive accessibility**: The lack of arrow key navigation may confuse users expecting standard tab behavior.\n\n**Verdict Justification**: The component implements 80% of the WAI-ARIA Tabs pattern but is missing the critical arrow key navigation functionality. This prevents keyboard users from navigating tabs efficiently and creates a mismatch between visual and programmatic focus. The component needs to be revised to implement the complete pattern.\n\n**Open Questions**:\n- Should the component also support Home/End keys for tab navigation?\n- Should the focus automatically move to the content panel when a tab is selected?\n\n### A11y Evidence Finding\n```\nfinding_id: tabs-missing-arrow-nav\nfingerprint: 3a7d4e9b\nsource: keyboard-a11y-tester driven trace (evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json)\nwcag_or_apg: WAI-ARIA APG Tabs pattern\nsection_508_fpc_context: not in scope\nseverity: MAJOR\nperspective_alarms: keyboard=HIGH, screen-reader=MEDIUM\nevidence: \n  - \"step_0002\",\"keystroke\":\"ArrowRight\",\"selector\":\"#tab-overview\",\"focus_moved\":false\n  - \"step_0003\",\"keystroke\":\"ArrowLeft\",\"selector\":\"#tab-overview\",\"focus_moved\":false\nreproduction_steps: \n  - Focus on first tab using Tab key\n  - Press ArrowRight/ArrowLeft keys\nexpected_behavior: Focus should move to next/previous tab and aria-selected should update\nactual_behavior: Focus remains on original tab, aria-selected does not change\ntrend: new\n```",
+  "done": true,
+  "total_duration": 325258533208,
+  "eval_count": 1277,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 32768,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 325.3,
+    "timestamp": "2026-08-26T21:33:38",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2421,
+    "estimated_prompt_tokens": 21759,
+    "prompt_eval_count": 17960,
+    "context_pressure": false,
+    "prompt_sha256": "9593336c612feb854968dcb9f57a252ba669f3051f1e1695daefe9820009fec7",
+    "prompt_byte_length": 76443,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md",
+    "pack_sha256": "35fc4ad1476e0039c643aa80f56cb285a2abdc611096ad5b996bab2b015e461c",
+    "pack_byte_length": 12318,
+    "pack_available": true
+  }
+}

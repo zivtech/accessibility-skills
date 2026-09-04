@@ -1,0 +1,112 @@
+{
+  "api_version": {
+    "version": "0.32.15"
+  },
+  "qwen3_32b_tag_entry": {
+    "name": "qwen3:32b",
+    "model": "qwen3:32b",
+    "modified_at": "2026-06-11T12:06:37-04:00",
+    "size": 20201253829,
+    "digest": "030ee887880fc378860c2dd35101da424377520441ae4bfe7be6deff8ade7840",
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "32.8B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 40960,
+      "embedding_length": 5120
+    },
+    "capabilities": [
+      "completion",
+      "tools",
+      "thinking"
+    ]
+  },
+  "system_prompt_chars": 60373,
+  "fixtures": {
+    "largest": {
+      "fixture_id": "multistep-form-error-clearing",
+      "raw_file_bytes": 17273,
+      "blinded_content_chars": 8818,
+      "blinded_prompt_chars": 8939
+    },
+    "median": {
+      "fixture_id": "tabs-missing-arrow-nav",
+      "raw_file_bytes": 5363,
+      "blinded_content_chars": 3021,
+      "blinded_prompt_chars": 3142
+    },
+    "smallest": {
+      "fixture_id": "button-skip-link-clean",
+      "raw_file_bytes": 2977,
+      "blinded_content_chars": 2216,
+      "blinded_prompt_chars": 2337
+    }
+  },
+  "step2_ctx32768": {
+    "system_alone": {
+      "prompt_eval_count": null,
+      "done_reason": "load",
+      "eval_count": null,
+      "total_duration_ns": null,
+      "wall_seconds": 9.6
+    },
+    "largest": {
+      "fixture_id": "multistep-form-error-clearing",
+      "prompt_eval_count": 16447,
+      "done_reason": "length",
+      "eval_count": 1,
+      "total_duration_ns": 89348878625,
+      "wall_seconds": 89.4
+    },
+    "median": {
+      "fixture_id": "tabs-missing-arrow-nav",
+      "prompt_eval_count": 14649,
+      "done_reason": "length",
+      "eval_count": 1,
+      "total_duration_ns": 6959329125,
+      "wall_seconds": 7.0
+    },
+    "smallest": {
+      "fixture_id": "button-skip-link-clean",
+      "prompt_eval_count": 14489,
+      "done_reason": "length",
+      "eval_count": 1,
+      "total_duration_ns": 5474086125,
+      "wall_seconds": 5.5
+    }
+  },
+  "step3_ctx16384_largest_x2": {
+    "fixture_id": "multistep-form-error-clearing",
+    "draws": [
+      {
+        "draw": 1,
+        "prompt_eval_count": 8194,
+        "done_reason": "length",
+        "eval_count": 1,
+        "response_present": false,
+        "response_repr": "''",
+        "total_duration_ns": 47772369083,
+        "prompt_eval_duration_ns": 44910378000,
+        "load_duration_ns": 2799472875,
+        "wall_seconds": 47.8
+      },
+      {
+        "draw": 2,
+        "prompt_eval_count": 8194,
+        "done_reason": "length",
+        "eval_count": 1,
+        "response_present": false,
+        "response_repr": "''",
+        "total_duration_ns": 129813250,
+        "prompt_eval_duration_ns": 70654000,
+        "load_duration_ns": 1573000,
+        "wall_seconds": 0.2
+      }
+    ]
+  }
+}

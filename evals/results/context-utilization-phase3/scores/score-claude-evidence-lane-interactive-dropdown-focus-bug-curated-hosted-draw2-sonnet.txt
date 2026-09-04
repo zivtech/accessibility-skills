@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: sonnet
+Condition: curated-hosted (CURATED) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '**Overall Assessment**: `BuggyDropdown` picks the right WAI-ARIA APG pattern (a Listbox opened by a disclosure-style button) and gets several individual pieces of it right — native `<button>`, a real …'
+  + [1] Focus not restored to trigger button after Escape key — '**Pre-commitment Predictions**: Before reading the code, for a "custom dropdown/select" component I predicted: (1) focus management after Escape is probably broken or absent, (2) arrow-key navigation …'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "sonnet",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: `BuggyDropdown` picks the right WAI-ARIA APG pattern (a Listbox opened by a disclosure-style button) and gets several individual pieces of it right \u2014 native `<button>`, a real \u2026",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Before reading the code, for a \"custom dropdown/select\" component I predicted: (1) focus management after Escape is probably broken or absent, (2) arrow-key navigation \u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

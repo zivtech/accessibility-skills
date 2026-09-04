@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: sonnet
+Condition: dump-hosted (DUMP) | Draw: 1
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Pre-commitment Predictions**: Before reading the code, for a Tabs widget the likely defects are: (1) missing or incomplete Arrow key navigation, (2) `aria-selected` not synchronized with actual stat…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "sonnet",
+  "condition": "dump-hosted",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Before reading the code, for a Tabs widget the likely defects are: (1) missing or incomplete Arrow key navigation, (2) `aria-selected` not synchronized with actual stat\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

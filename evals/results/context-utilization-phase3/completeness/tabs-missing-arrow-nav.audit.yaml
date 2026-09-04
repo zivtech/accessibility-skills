@@ -1,0 +1,28 @@
+# Completeness audit — tabs-missing-arrow-nav (README §10 step 3, gate F4 4-field shape).
+# Produced by the pack-construction session 2026-08-26 with ground-truth access
+# (fixture .metadata.yaml expected_findings), AFTER the blind CURATED digest froze.
+# Every raw_handle was verified against the actual artifact in-session.
+# adjudication_question / question_source are copied VERBATIM FROM THE FROZEN
+# DIGEST (provenance check rides with the completeness numbers — F3a).
+fixture_id: tabs-missing-arrow-nav
+digest_pack: evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md
+adjudication_question: 'Based on evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json
+  and the padding corpus evals/results/keyboard-a11y-tester/findings/*.json (~30+ files, with findings/tabs-missing-arrow-nav.json
+  excluded from this fixture''s evidence by pack policy), and the tool that produced each (keyboard-a11y-tester
+  driven trace / keyboard-a11y-tester batch-crawl findings / axe-core scan): does this evidence set show
+  any interaction defect (focus not reaching or leaving an element as expected, an ARIA state changing
+  with no accessible announcement, a keyboard-operability failure) and does it show any structural defect
+  (a missing or incorrect ARIA role, landmark, label, or heading-order violation) for the component these
+  artifacts describe?'
+question_source: Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types
+  only; no fixture metadata, rubrics, ground-truth files, or lane README consulted
+items:
+- item_index: 0
+  description: Arrow key navigation not implemented for tab cycling
+  tool_observable: true
+  evidence_in_raw_set: true
+  in_curated_pack: true
+  raw_handle: 'evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json :: step_0002
+    (ArrowRight) + step_0003 (ArrowLeft): active_element_selector stays #tab-overview, focus_moved=false,
+    states byte-identical incl. selected=true. In digest: obs trace-arrow-keys + trace-tab-states-and-announcement-stable
+    (full per-step states quoted).'

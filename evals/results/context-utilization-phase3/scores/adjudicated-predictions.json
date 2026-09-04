@@ -1,0 +1,103 @@
+{
+ "found": {
+  "opus|curated-hosted": 18,
+  "sonnet|curated-hosted": 18,
+  "opus|dump-hosted": 18,
+  "sonnet|dump-hosted": 18,
+  "qwen3:32b|curated-32k": 17,
+  "qwen3.6:35b|curated-32k": 17,
+  "qwen3:32b|curated-40k": 16,
+  "qwen3.6:35b|curated-40k": 14,
+  "qwen3:32b|dump-40k": 17,
+  "qwen3.6:35b|dump-40k": 17
+ },
+ "per_draw": {
+  "opus|curated-hosted|d1": 9,
+  "sonnet|curated-hosted|d1": 9,
+  "opus|curated-hosted|d2": 9,
+  "sonnet|curated-hosted|d2": 9,
+  "opus|dump-hosted|d1": 9,
+  "sonnet|dump-hosted|d1": 9,
+  "opus|dump-hosted|d2": 9,
+  "sonnet|dump-hosted|d2": 9,
+  "qwen3:32b|curated-32k|d1": 8,
+  "qwen3.6:35b|curated-32k|d1": 8,
+  "qwen3:32b|curated-32k|d2": 9,
+  "qwen3.6:35b|curated-32k|d2": 9,
+  "qwen3:32b|curated-40k|d1": 8,
+  "qwen3.6:35b|curated-40k|d1": 7,
+  "qwen3:32b|curated-40k|d2": 8,
+  "qwen3.6:35b|curated-40k|d2": 7,
+  "qwen3:32b|dump-40k|d1": 9,
+  "qwen3.6:35b|dump-40k|d1": 9,
+  "qwen3:32b|dump-40k|d2": 8,
+  "qwen3.6:35b|dump-40k|d2": 8
+ },
+ "real_fp": {
+  "opus|curated-hosted": 3,
+  "sonnet|curated-hosted": 4,
+  "opus|dump-hosted": 5,
+  "sonnet|dump-hosted": 5,
+  "qwen3:32b|curated-32k": 10,
+  "qwen3.6:35b|curated-32k": 12,
+  "qwen3:32b|curated-40k": 9,
+  "qwen3.6:35b|curated-40k": 10,
+  "qwen3:32b|dump-40k": 7,
+  "qwen3.6:35b|dump-40k": 3
+ },
+ "miss_partition": {
+  "qwen3.6:35b|curated-40k": {
+   "not-tool-observable": 2,
+   "model-miss": 2
+  },
+  "qwen3:32b|curated-32k": {
+   "model-miss": 1
+  },
+  "qwen3.6:35b|curated-32k": {
+   "model-miss": 1
+  },
+  "qwen3:32b|curated-40k": {
+   "model-miss": 2
+  },
+  "qwen3:32b|dump-40k": {
+   "model-miss": 1
+  },
+  "qwen3.6:35b|dump-40k": {
+   "model-miss": 1
+  }
+ },
+ "corrections": {
+  "spurious_match": 1,
+  "rephrased_found": 49
+ },
+ "flips": [
+  "qwen3:32b|curated-32k|heading-hierarchy-skipped|item1: d1=miss d2=F",
+  "qwen3.6:35b|curated-32k|heading-hierarchy-skipped|item1: d1=miss d2=F",
+  "qwen3:32b|dump-40k|heading-hierarchy-skipped|item1: d1=F d2=miss",
+  "qwen3.6:35b|dump-40k|heading-hierarchy-skipped|item1: d1=F d2=miss"
+ ],
+ "predictions": {
+  "P1": {
+   "net": -4,
+   "verdict": "REVERSED (dump wins by >=2)"
+  },
+  "P1b": {
+   "net": 4,
+   "verdict": "VIOLATED (net +4)"
+  },
+  "P2": {
+   "net": 0,
+   "verdict": "HOLDS (CURATED loses <=1)"
+  },
+  "P3": {
+   "local_dump_vs_curated": [
+    10,
+    19
+   ],
+   "hosted_dump_vs_curated": [
+    10,
+    7
+   ]
+  }
+ }
+}

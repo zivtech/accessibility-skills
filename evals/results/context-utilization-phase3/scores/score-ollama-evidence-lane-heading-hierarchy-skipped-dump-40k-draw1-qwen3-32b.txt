@@ -1,0 +1,46 @@
+Fixture: heading-hierarchy-skipped | Model: qwen3:32b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=28809 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Heading hierarchy skips from h1 directly to h3 — '- **Location**: `BlogPost.jsx:4` (h1 to h3 skip), `BlogPost.jsx:7` (h3 to h2 jump)'
+  + [1] Inconsistent heading hierarchy (h3 then h2) — '2. **Inconsistent heading hierarchy**'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "qwen3:32b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 28809,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Heading hierarchy skips from h1 directly to h3",
+        "found": true,
+        "evidence_quote": "- **Location**: `BlogPost.jsx:4` (h1 to h3 skip), `BlogPost.jsx:7` (h3 to h2 jump)",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 1,
+        "description": "Inconsistent heading hierarchy (h3 then h2)",
+        "found": true,
+        "evidence_quote": "2. **Inconsistent heading hierarchy**",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

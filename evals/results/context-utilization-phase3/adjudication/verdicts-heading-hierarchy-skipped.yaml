@@ -1,0 +1,303 @@
+fixture_id: heading-hierarchy-skipped
+tier: HAS-BUGS
+rows:
+  - row: claude-evidence-lane-heading-hierarchy-skipped-curated-hosted-draw1-opus
+    model: opus
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "MAJOR-1 filed as 'Heading hierarchy skips level 2 and inverts section nesting'; evidence block marks 'line 6 <h3>Why Accessibility Matters</h3> <- level 2 skipped'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Same MAJOR-1: 'line 24 <h2>Tools and Resources</h2> <- level 2 arrives after its apparent children'; discussed at length as the inversion the user cannot resolve."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-curated-hosted-draw1-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "'fixture line 11 (<h1>...) is followed directly by fixture line 13 (<h3>Why Accessibility Matters</h3>), skipping h2 entirely' — filed as Major Finding 1 with a fix."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1 also states the first h2 elements 'don't appear until fixture lines 31 and 34' and that this 'inverts the article's real structure'; fix is to relabel all six as h2."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-curated-hosted-draw2-opus
+    model: opus
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'The obvious reading is h1 skips to h3'; MAJOR finding 1 records four h3s with 'no level-2 heading between the h1 and the four h3s' and prescribes promotion to h2."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'This is not a bare skip. The outline is inverted. The four h3s come before the two h2s'; evidence line notes 'prompt.md:31,34 two <h2> elements AFTER the h3 block'."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-curated-hosted-draw2-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Minor Finding 1 titled 'Heading hierarchy skips from <h1> to <h3>' with source lines and the fix 'change the four <h3> elements ... to <h2>'. (Severity under-called, but the defect is reported.)"
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'the two <h2> sections that follow them are, by content, editorially equivalent to the four <h3> sections ... yet they are assigned two different, non-adjacent heading levels' — reintroduction of level 2 named and fixed."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-dump-hosted-draw1-opus
+    model: opus
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "MAJOR-1; 'h1 -> h3 is such an increase, so it fires once'; census cited as 'index 3 level 1 -> index 4 level 3, adjacent, nothing between'. Fix promotes the four h3s."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'index 24 Getting Started level 3 -> index 25 Tools and Resources level 2, adjacent'; the four orphaned h3s and 'the two trailing h2s that retroactively claim them as children' are the core of the finding."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-dump-hosted-draw1-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'its heading levels skip from h1 straight to h3 four times in a row'; Major Finding 1 records 'No h2 exists between the h1 and the first h3'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Same finding title: 'then reverses upward to h2 twice — the outline does not match the document's actual section structure'; fix renumbers to a gap-free outline."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-dump-hosted-draw2-opus
+    model: opus
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "MAJOR-1 source block annotates 'line 6 <h3>Why Accessibility Matters</h3> <- level jumps 1 -> 3', corroborated by axe heading-order and the census level sequence."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'line 24 <h2>Tools and Resources</h2> <- level drops 3 -> 2, re-parenting everything above'; explicitly called 'the more damaging of the two' and invisible to axe."
+  - row: claude-evidence-lane-heading-hierarchy-skipped-dump-hosted-draw2-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "'Finding A — Heading level skips from H1 to H3 (four sibling sections mis-nested)', restated as Major Finding 1 with fix 'Promote the four <h3> elements to <h2>'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'Two <h2> elements (Tools and Resources, Conclusion) appear only afterward'; four h3s described as 'actually top-level companions to Tools and Resources and Conclusion', fixed by matching their sibling level."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-32k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped heading levels in document structure'; actual_behavior 'Headings skip from h1 to h3'; fix 'Add missing h2 headings between h1 and first h3'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "The h3->h2 transition is never named as a defect. The sequence is quoted once in passing as 'disordered hierarchy (h1 -> h3 -> h3 -> h3 -> h2 -> h2)' and the only heading fix targets the missing h2 before the first h3; the separate 'Inconsistent heading styling' finding is about CSS font sizes, not level order."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-32k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1 'Skipped Heading Levels Break Document Outline' — '<h1> followed immediately by multiple <h3> elements', axe heading-order and census index 3 -> 4 cited."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "No mention anywhere of the later h2 headings, of Tools and Resources / Conclusion, or of a level-3-to-level-2 transition. The whole finding is scoped to the h1->h3 skip."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-32k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped heading levels violate information hierarchy' at BlogPost.jsx:6 (h3 after h1); evidence line 'h3:nth-child(2) appears immediately after h1, skipping h2'."
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 2 'Inconsistent heading structure disrupts navigation' — 'BlogPost.jsx:25 (h2 Tools and Resources appears after multiple h3s)' with a reorder fix. Match is substantive, not incidental."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-32k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'the heading hierarchy is structurally broken, skipping from h1 to h3'; Major Finding 1 evidence 'BlogPost.jsx:4 (<h1>) -> BlogPost.jsx:6 (<h3>)' with a promote/insert fix."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'and later jumping back to h2'; evidence line 'Later, src/components/BlogPost.jsx:22 jumps back to <h2>'; census walk described as 'h1 -> h3 -> h2, which is logically incoherent'."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped heading levels violate document structure' — '<h1> followed by multiple <h3>'; fix 'Change first four <h3> to <h2>'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "No reference to the trailing h2 headings or to a h3->h2 transition anywhere; the only structural statement is 'Headings skip from level 1 to 3'. Cognitive note ('inconsistent structure disorienting') is generic restatement of the skip."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1 'Skipped Heading Levels Break Document Outline' — 'Code shows <h1> followed immediately by <h3>', axe heading-order cited, fix changes the first h3 to h2."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "Only a passing evidence phrase 'KAT census confirms the sequence: h1 -> h3 -> h2' with no engagement; the response in fact asserts the opposite in What's Missing — 'leaving no level 2 headings' — so the later h2s are not recognized as present, let alone as a defect."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "'The heading levels skip from h1 to h3'; Critical Finding 1 'Skipped heading levels (h1 -> h3)' with per-line locations and a retag fix."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "The later h2 is referenced only as a boundary inside the fix text ('until the h2 Tools and Resources is reached'); the h3->h2 transition is never stated to be a defect, and the second heading finding ('Incomplete heading hierarchy') restates the skip generically."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-curated-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "'a structural heading hierarchy violation (h1 skipped to h3)'; Critical Finding 1 cites axe heading-order plus census indices 3 and 4, with a retag-to-h2 fix."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "No mention of the trailing h2 headings or of a level regression; the screen-reader note stops at 'Will hear h1 then jump to h3', and the fix ('h1 -> h2 -> h2...') is argued purely from the skip."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-dump-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped heading levels disrupt document structure', location 'BlogPost.jsx:4 (h1 to h3 skip)'; What's Missing repeats 'From h1 to h3 ... creates an inconsistent hierarchy'."
+      - item_index: 1
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Same finding names 'BlogPost.jsx:7 (h3 to h2 jump)'; Major Finding 2 'Inconsistent heading hierarchy — h3 appears before any h2' with a reorder fix. Substantive, not incidental."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-dump-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped Heading Levels Break Document Outline' — h3 follows h1, axe heading-order on h3:nth-child(2), census level 1 -> level 3; fix supplied."
+      - item_index: 1
+        scorer_said: missed
+        verdict: REPHRASED-FOUND
+        adjudicated_found: true
+        evidence: "Separate Critical Finding 2 'Heading Hierarchy Regresses (Backwards)' — '<h2> appears after <h3>. The hierarchy goes h1 -> h3 -> ... -> h2' with a restructure fix."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-dump-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1 'Skipped heading levels (WCAG 1.3.1)' — 'Skipping from h1 to h3 creates a confusing hierarchy'; fix changes the first h3 to h2."
+      - item_index: 1
+        scorer_said: found
+        verdict: SPURIOUS-MATCH
+        adjudicated_found: false
+        evidence: "The matched string 'Inconsistent heading hierarchy would break logical reading order' is a Pre-commitment Prediction bullet with no corresponding finding. No finding, What's Missing entry, or perspective note anywhere identifies the later h2s or a h3->h2 regression."
+  - row: ollama-evidence-lane-heading-hierarchy-skipped-dump-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Finding 1 'Skipped Heading Levels Breaks Document Outline' — 'h3 immediately follows h1'; evidence-finding block actual_behavior 'Heading levels skip from h1 directly to h3'."
+      - item_index: 1
+        scorer_said: missed
+        verdict: GENUINE-MISS
+        adjudicated_found: false
+        evidence: "No mention of the trailing h2 headings or any level regression; the prescribed outline is 'h1 -> h2 -> p' and the whole argument rests on the single h1->h3 jump."

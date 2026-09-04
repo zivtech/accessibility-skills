@@ -177,6 +177,8 @@ This is the display-layer companion to the skill's existing "invent nothing" rul
 
 ## Serialization Procedure
 
+Serialize the draft from the evaluation report and evidence-contract finding blocks (`finding_id`s) already on hand, plus targeted per-finding lookups — never by re-reading the underlying raw evidence corpus wholesale.
+
 1. **Verify inputs** against the block list. Missing input → stop, emit the named-field gap list.
 2. **Select the catalog** from the engagement record's report-template requirement (never guess; never downgrade silently).
 3. **Build the metadata block** field-by-field from the engagement record: `title`, `product`, `author` (with email), `report_date`, `evaluation_methods_used` (MUST state WCAG-EM + sample size: e.g., "WCAG-EM 2.0; 12 structured + 2 random samples + 2 complete processes"), and a **mandatory `legal_disclaimer`** carrying draft language (e.g., "Draft for review — not a legally binding conformance claim until reviewed and issued by <owner>").

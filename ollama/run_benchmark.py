@@ -28,11 +28,172 @@ Usage:
 """
 
 import json
+import math
 import os
 import re
 import sys
 import time
 import urllib.request
+
+# --- Context-overflow guard (context-utilization plan Phase 0.2/0.3, 2026-08-24) ---
+# Twin copy in ollama/ollama_a11y.py (this file: run_benchmark.py) — keep both
+# in sync by hand; these are standalone scripts, not a shared package.
+CHARS_PER_TOKEN_CONSERVATIVE = 3.5  # F15 (gate re-review round 4, 2026-08-25):
+# real measured ratio — critic protocol (a11y-critic SKILL.md, frontmatter
+# stripped, 60,373 chars) / prompt_eval_count on this lane's own
+# num_predict=1 probe corpus (2026-08-25) = 4.23 chars/token (qwen3.6:35b) /
+# 4.36 chars/token (qwen3:32b) — supersedes the earlier stale "16,157
+# tokens / 3.74 chars/token" figure (wrong on both counts). 3.5 stays
+# unchanged, still deliberately below both measured ratios — the safe
+# direction — but by more than previously documented; see
+# estimate_tokens()'s docstring for what that overestimate is in practice.
+RESPONSE_RESERVE = 8192  # thinking models: reasoning tokens share num_ctx
+
+
+def estimate_tokens(text):
+    """Conservative token estimate. CHARS_PER_TOKEN_CONSERVATIVE (3.5) was
+    documented as a ~7% overestimate against one earlier measured ratio;
+    measured against this lane's real num_predict=1 probes
+    (context-utilization-phase3, 2026-08-25 — gate F14 part 3, docs/plans/
+    2026-08-25-context-utilization-phase3-gate-review.md "Final gate
+    ruling") it overestimates by 22-30%, not ~7%: protocol alone, est
+    17,480 vs measured 14,276 (qwen3.6:35b) / 13,853 (qwen3:32b) tokens =
+    1.224x-1.262x; protocol + tabs-missing-arrow-nav fixture, est 19,004
+    vs measured 15,167 / 14,649 = 1.253x-1.297x.
+
+    The asymmetry this creates, stated plainly: a prompt that DOES get
+    sent has MORE real headroom than the ~7% figure implies (measured
+    margins are looser than believed) — but the guard's pass/fail decision
+    runs on this inflated estimate, so it refuses real prompts that would
+    have fit more often than a 7%-based mental model predicts (guard
+    margins are tighter). CHARS_PER_TOKEN_CONSERVATIVE stays 3.5 — this is
+    a documentation-accuracy fix, not a retune."""
+    return math.ceil(len(text) / CHARS_PER_TOKEN_CONSERVATIVE)
+
+
+def context_overflow(system_text, prompt_text, num_ctx, declared_context_length=None):
+    """Client-side primary gate (F6/F7): does estimated prompt + response
+    reserve exceed num_ctx? Returns (overflow: bool, estimated_tokens: int).
+
+    F13 fast-follow (gate re-review, 2026-08-25): num_ctx alone is the
+    REQUESTED window, not what Ollama will actually allocate. Proven live
+    the same day — qwen3:32b requested at 49,152 was silently clamped
+    server-side to its declared 40,960, and a 45,176-token prompt lost
+    54.7% of itself to truncation (`prompt=45176 keep=4 new=20482`) while
+    this exact guard, checking only the requested value, would have waved
+    it through. declared_context_length (fetch_declared_context_length,
+    below) is the model's real ceiling from /api/tags; when supplied, the
+    guard compares against min(num_ctx, declared_context_length) instead of
+    num_ctx alone — the estimate formula and RESPONSE_RESERVE are otherwise
+    unchanged. None (the default) preserves the exact old behavior for any
+    caller that hasn't been updated to pass it."""
+    estimated = estimate_tokens((system_text or "") + (prompt_text or ""))
+    effective_ctx = num_ctx if declared_context_length is None else min(num_ctx, declared_context_length)
+    return estimated + RESPONSE_RESERVE > effective_ctx, estimated
+
+
+class GuardConfigError(Exception):
+    """fetch_declared_context_length's own failures (F13) — /api/tags
+    unreachable, or the requested model missing from it, or present but
+    carrying no context_length field. Always raised, never silently
+    swallowed into a default ceiling — that would recreate the exact
+    silent-clamp bug this fetch exists to catch."""
+
+
+_DECLARED_CONTEXT_LENGTH_CACHE = {}  # F13: memoized per model for the process lifetime
+
+
+def _tag_variants(model):
+    """R5 follow-up (2026-08-27): /api/tags ALWAYS reports a tagged name
+    ("laguna-xs-2.1:latest"), while callers routinely invoke the bare name
+    ("laguna-xs-2.1") and every *_CTX map is keyed on whatever string the
+    caller typed. Those are two namespaces, and before this they diverged
+    silently: `laguna-xs-2.1` — the exact string with 12 committed critic
+    rows AND a CRITIC_CTX entry — raised GuardConfigError, while
+    `laguna-xs-2.1:latest` resolved. Try both spellings of the implicit
+    ":latest" tag before declaring a model missing. Only ":latest" is
+    implied; "qwen3.5:27b" and "qwen3.5:latest" are DIFFERENT models (9.7B
+    vs a 27B that is not installed) and are never conflated here."""
+    if ":" not in model:
+        return [model, model + ":latest"]
+    base, _, tag = model.rpartition(":")
+    return [model, base] if tag == "latest" else [model]
+
+
+def _fetch_context_length_from_show(model, show_url):
+    """R5 follow-up (2026-08-27): some models list in /api/tags with a null
+    details.context_length — gemma4:31b and gemma4:26b do, and both are
+    mapped in CRITIC_CTX, so the F13 raise hard-blocked two mapped models
+    from running any lane at all. /api/show carries the GGUF metadata the
+    tags summary omits, as model_info["<arch>.context_length"].
+
+    This is NOT a fallback guess and NOT a default: verified 2026-08-27 that
+    /api/show agrees EXACTLY with /api/tags on every model that reports both
+    (qwen3:32b 40960, qwen3.6:35b 262144, llama3.3:70b 131072, and the same
+    262144 for gemma4 where tags is null). Same number, fuller source.
+    Returns None on any failure so the caller still raises."""
+    try:
+        req = urllib.request.Request(
+            show_url, data=json.dumps({"model": model}).encode(),
+            headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            info = json.loads(resp.read()).get("model_info") or {}
+    except Exception:
+        return None
+    hits = [v for k, v in info.items()
+            if k.endswith(".context_length") and isinstance(v, int) and v > 0]
+    return min(hits) if hits else None  # min: the safe direction if ever ambiguous
+
+
+def ctx_for(model, mapping, default):
+    """num_ctx lookup that tolerates the implicit-":latest" spelling gap
+    (_tag_variants). Without it a map entry written bare misses a tagged
+    invocation and the run silently falls to the _DEFAULT."""
+    for variant in _tag_variants(model):
+        if variant in mapping:
+            return mapping[variant]
+    return default
+
+
+def fetch_declared_context_length(model, *, tags_url=None, show_url=None):
+    """F13 fast-follow: the model's real context_length ceiling, from
+    Ollama's own /api/tags (models[].details.context_length — confirmed
+    live, 2026-08-25: qwen3:32b -> 40960, qwen3.6:35b -> 262144). Cached per
+    model. Fails loud on any of: /api/tags unreachable, model not listed,
+    or listed with no context_length field — never a silent default, since
+    a default here would be exactly the bug this function exists to close.
+
+    R5 follow-up (2026-08-27): resolves the implicit ":latest" tag
+    (_tag_variants) and falls back to /api/show's GGUF model_info when
+    /api/tags reports a null context_length (_fetch_context_length_from_show).
+    Still fails loud when neither source has a value — never a silent
+    default."""
+    if model in _DECLARED_CONTEXT_LENGTH_CACHE:
+        return _DECLARED_CONTEXT_LENGTH_CACHE[model]
+    url = tags_url or OLLAMA_TAGS_URL
+    show = show_url or url.replace("/api/tags", "/api/show")
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url), timeout=10) as resp:
+            data = json.loads(resp.read())
+    except Exception as e:
+        raise GuardConfigError(f"F13 guard: cannot fetch declared context_length for {model!r} — "
+                                f"/api/tags unreachable at {url}: {e}") from e
+    listed = {entry.get("name"): entry for entry in data.get("models", [])}
+    matched_name = next((v for v in _tag_variants(model) if v in listed), None)
+    if matched_name is None:
+        raise GuardConfigError(f"F13 guard: model {model!r} not found in /api/tags at {url} "
+                                f"(installed: {sorted(n for n in listed if n)})")
+    declared = (listed[matched_name].get("details") or {}).get("context_length")
+    if declared is None:
+        declared = _fetch_context_length_from_show(matched_name, show)
+    if declared is None:
+        raise GuardConfigError(f"F13 guard: model {model!r} found in /api/tags but neither its "
+                                f"details nor /api/show at {show} carry a context_length — "
+                                "cannot verify the real ceiling.")
+    _DECLARED_CONTEXT_LENGTH_CACHE[model] = declared
+    return declared
+
+
 
 BASE_DIR = os.path.dirname(__file__)
 RESULTS_DIR = os.environ.get("BENCHMARK_RESULTS_DIR", "/tmp")
@@ -271,6 +432,8 @@ ALL_PERSPECTIVE_FIXTURES = [
 # Metal server on IPv4) shows it. Matches ollama_a11y.py's default.
 # (2026-08-01: the evalreport first-rows run hit exactly this.)
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434/api/generate")
+# F13: same host, /api/tags instead of /api/generate — fetch_declared_context_length's target.
+OLLAMA_TAGS_URL = os.environ.get("OLLAMA_TAGS_URL", "http://127.0.0.1:11434/api/tags")
 
 OLLAMA_MODELS = ["llama3.3:70b", "qwen3:32b", "deepseek-r1:70b", "qwen3.5:27b"]
 SMALL_MODELS = ["qwen3.5:latest"]  # 6.6 GB — test as lightweight tier
@@ -367,6 +530,83 @@ def write_json_atomic(path, data):
     os.replace(tmp, path)
 
 
+def write_overflow_row(out_path, model, fixture_id, estimated, num_ctx, skill, condition=None,
+                        declared_context_length=None):
+    """Context-overflow guard (Phase 0.2/0.3): the client-side estimate says
+    this prompt will not fit num_ctx + RESPONSE_RESERVE. Skip the API call —
+    do not send a prompt already known to be silently front-truncated (F7) —
+    and write an INVALID row instead. The filename carries an -INVALID suffix
+    so score-all/score-perspective globs (which match "*-response.json"
+    exactly) never pick it up; the various *-remaining commands correctly
+    keep treating the fixture as not-yet-benchmarked.
+
+    declared_context_length (F13, optional): the model's real ceiling from
+    fetch_declared_context_length, recorded so a row that overflowed because
+    Ollama would have clamped below the requested num_ctx is distinguishable
+    from one that overflowed on the requested value alone."""
+    invalid_path = out_path[: -len(".json")] + "-INVALID.json" if out_path.endswith(".json") else out_path + "-INVALID.json"
+    row = {
+        "invalid": "context_overflow",
+        "estimated_prompt_tokens": estimated,
+        "num_ctx": num_ctx,
+        "declared_context_length": declared_context_length,
+        "response_reserve": RESPONSE_RESERVE,
+        "_benchmark": {
+            "model": model,
+            "fixture_id": fixture_id,
+            "skill": skill,
+            "condition": condition,
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        },
+    }
+    write_json_atomic(invalid_path, row)
+    effective_ctx = num_ctx if declared_context_length is None else min(num_ctx, declared_context_length)
+    banner = (
+        "\n" + "!" * 60 + "\n"
+        "CONTEXT OVERFLOW — generation SKIPPED, not sent to the API\n"
+        f"  Model:      {model}\n"
+        f"  Fixture:    {fixture_id}\n"
+        f"  Estimated:  {estimated} prompt tokens\n"
+        f"  num_ctx:    {num_ctx} (declared_context_length={declared_context_length}, "
+        f"effective ceiling={effective_ctx})\n"
+        f"  Reserve:    {RESPONSE_RESERVE}\n"
+        f"  Shortfall:  {estimated + RESPONSE_RESERVE - effective_ctx} tokens over budget\n"
+        f"  Row:        {invalid_path}\n"
+        "  This fixture FAILS for this model/lane. Raise num_ctx or curate\n"
+        "  the input. Batch continues.\n"
+        + "!" * 60
+    )
+    print(banner, file=sys.stderr)
+    return invalid_path
+
+
+def flag_context_pressure(prompt_eval_count, num_ctx):
+    """Post-run corroboration (Phase 0.2/0.3): True when the API's own count
+    confirms the prompt landed within RESPONSE_RESERVE tokens of num_ctx —
+    the row stays valid but is flagged so BENCHMARK.md can note reduced
+    generation headroom. Returns False (cannot confirm) when the API didn't
+    report prompt_eval_count.
+
+    KNOWN GAP, not fixed here (F13 fast-follow residual — filed as
+    github.com/zivtech/accessibility-skills issue #28, fix deferred per the
+    gate's own condition): compares against the REQUESTED num_ctx, never
+    the F13-clamped effective ceiling (min(num_ctx, declared_context_length)),
+    so it under-reports pressure whenever declared_context_length < num_ctx
+    — see issue #28 before trusting a False here as "no pressure" on a row
+    the server may have actually clamped."""
+    if prompt_eval_count is None:
+        return False
+    pressure = prompt_eval_count >= num_ctx - RESPONSE_RESERVE
+    if pressure:
+        print(
+            f"\nWARNING: context_pressure — prompt_eval_count={prompt_eval_count} "
+            f">= num_ctx({num_ctx}) - RESPONSE_RESERVE({RESPONSE_RESERVE}). "
+            "Row is valid but ran with reduced response headroom.",
+            file=sys.stderr,
+        )
+    return pressure
+
+
 def strip_frontmatter(content):
     if content.startswith("---"):
         end = content.index("---", 3)
@@ -439,9 +679,11 @@ def build_escalation_prompt(fixture_id):
 
 
 CRITIC_CTX = {
-    # qwen3.6 (thinking-by-default): critic prompt alone measured at 16,157 tokens
-    # (prompt_eval, 2026-07-28 smoke) — at 16384 generation hits done_reason=length
-    # inside the thinking stream and the scored response comes back empty.
+    # qwen3.6 (thinking-by-default): critic protocol alone measured at 14,276
+    # tokens for qwen3.6:35b / 13,853 for qwen3:32b (num_predict=1 probes,
+    # 2026-08-25 — supersedes the earlier 16,157 estimate cited here) — at
+    # 16384 generation hits done_reason=length inside the thinking stream and
+    # the scored response comes back empty.
     "qwen3.6:27b": 32768,
     "qwen3.6:35b": 32768,
     # gemma4 tokenizer: critic prompt alone measures 16,477 tokens (num_predict=1
@@ -457,32 +699,53 @@ CRITIC_CTX = {
     # qwen3.8 (thinking-by-default, same lineage/tokenizer class as qwen3.6;
     # num_predict=1 probe recorded in the 2026-08 funnel README).
     "qwen3.8:27b": 32768,
+    # added 2026-08-24 per context-utilization plan Phase 0.2; historical rows
+    # at 16,384 under retro-probe (Phase 0.4). qwen3:32b was the standing
+    # fallback baseline with NO entry here — it silently ran the critic suite
+    # at CRITIC_CTX_DEFAULT (16384) even though every measured current-gen
+    # tokenizer above puts the critic prompt alone at >=16.1K (plan F7).
+    "qwen3:32b": 32768,
 }
-CRITIC_CTX_DEFAULT = 16384
+# R5.4 (2026-08-27, R5 decision memo §3): raised 16384 -> 32768.
+# At 16,384 the budget is 8,192 and all 41 critic fixtures estimate
+# 17,650-19,906 -> 41/41 refuse. An unmapped model got a hard stop, never a run.
+# Probe receipt: evals/results/context-utilization-r5/num-ctx-probe-receipts.md
+# (num_predict=1 against the assembled production prompt, per model x suite).
+# A _DEFAULT is a starting guess for a model that does not exist yet; the
+# client-side guard, not this integer, is the safety property (memo §8).
+CRITIC_CTX_DEFAULT = 32768
 
 
 def run_ollama(model, fixture_id, system_prompt, content_override=None,
                out_path_override=None, extra_meta=None):
     fixture_content = content_override or load_fixture(fixture_id)
     prompt = PROMPT_PREFIX + fixture_content
-
-    payload = {
-        "model": model,
-        "system": system_prompt,
-        "prompt": prompt,
-        "stream": True,
-        "options": {"num_ctx": CRITIC_CTX.get(model, CRITIC_CTX_DEFAULT), "temperature": 0.3},
-    }
+    num_ctx = ctx_for(model, CRITIC_CTX, CRITIC_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
 
     model_tag = make_model_tag(model)
     out_path = out_path_override or os.path.join(
         RESULTS_DIR, f"ollama-bench-{fixture_id}-{model_tag}-response.json"
     )
 
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx, skill="a11y-critic",
+                                   declared_context_length=declared_context_length)
+
+    payload = {
+        "model": model,
+        "system": system_prompt,
+        "prompt": prompt,
+        "stream": True,
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
+    }
+
     print(f"\n{'='*60}")
     print(f"Model: {model} | Fixture: {fixture_id}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt) + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -505,6 +768,7 @@ def run_ollama(model, fixture_id, system_prompt, content_override=None,
                 break
 
     elapsed = time.time() - start
+    prompt_eval_count = final_chunk.get("prompt_eval_count")
     data = {
         "response": response_text,
         "done": True,
@@ -521,6 +785,19 @@ def run_ollama(model, fixture_id, system_prompt, content_override=None,
             # from a genuine empty answer (July funnel, finding 2).
             "done_reason": final_chunk.get("done_reason"),
             "thinking_chars": thinking_chars,
+            # Context-overflow guard corroboration (Phase 0.2/0.3, 2026-08-24):
+            # the client-side estimate is the primary gate (already passed,
+            # or this function would have returned above); prompt_eval_count
+            # is the API's own count, recorded here for corroboration only.
+            "estimated_prompt_tokens": estimated,
+            "prompt_eval_count": prompt_eval_count,
+            "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+            # R5.1 (2026-08-27): the window the row actually ran at. Without it
+            # no row is attributable to a num_ctx era after a default is raised
+            # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+            # declared_context_length below carries what the server would allow.
+            "num_ctx": num_ctx,
+            "declared_context_length": declared_context_length,  # F13
         },
     }
     if extra_meta:
@@ -686,26 +963,73 @@ def load_planner_federal_system_prompt():
     )
 
 
+# NUM_CTX MAP HYGIENE (context-utilization plan Phase 0.2, 2026-08-24): lifted
+# from a hardcoded 32768 literal that applied identically to every model in
+# both the "planner" and "planner-federal" conditions. Empty map + a default
+# equal to the old literal preserves that exact behavior for every model.
+PLANNER_CTX = {}
+# R5.4 (2026-08-27, R5 decision memo §3): raised 32768 -> 40960.
+# At 32,768 the budget is 24,576 and the plain-planner fixtures estimate
+# 23,974-25,709 -> 19/28 refuse, the 9 that clear do so by <=603 tokens; the
+# planner-federal condition (crosswalk appended to the system prompt, est
+# 30,274-32,009) refuses 28/28. R5.3 measured the output side on 57 committed
+# local rows: 3 are clipped (done_reason=length, pec+eval_count = 32,768
+# exactly, all three end mid-sentence) and 0/57 would clip at 40,960.
+# CAUTION (R5.2): 40,960 clears planner-federal by only 759 ESTIMATED tokens
+# (max est 32,009 + 8,192 reserve = 40,201), i.e. ~2,657 chars of protocol
+# growth. a11y-planner/SKILL.md grew 11,132 chars in the six weeks to
+# 2026-08-25. qwen3:32b's declared ceiling IS 40,960, so for that model there
+# is no larger legal value -- the next raise is not available. Watch this.
+# Probe receipt: evals/results/context-utilization-r5/num-ctx-probe-receipts.md
+# (num_predict=1 against the assembled production prompt, per model x suite).
+# A _DEFAULT is a starting guess for a model that does not exist yet; the
+# client-side guard, not this integer, is the safety property (memo §8).
+PLANNER_CTX_DEFAULT = 40960
+PLANNER_FEDERAL_CTX = {}
+# The planner-federal condition appends the ICT baseline crosswalk to the
+# planner protocol, so its system prompt is far larger than the plain lane's.
+# Measured 2026-09-04 while integrating the context-utilization guard: the
+# largest federal prompt estimates 33,240 tokens, which with the 8,192
+# reserve overruns the 40,960 planner default -- five fixtures would have
+# been refused by the guard rather than drawn. Raised for this condition
+# only; the plain planner lane keeps its probed default. Per-model declared
+# limits are still enforced by the F13 declared-context check.
+PLANNER_FEDERAL_CTX_DEFAULT = 49152
+
+
 def run_planner(model, fixture_id, system_prompt, condition="planner"):
     fixture_content = load_fixture(fixture_id, PLANNER_FIXTURES_DIR)
     prompt = PLANNER_PROMPT_PREFIX + fixture_content
+    if condition == "planner-federal":
+        num_ctx = ctx_for(model, PLANNER_FEDERAL_CTX, PLANNER_FEDERAL_CTX_DEFAULT)
+    else:
+        num_ctx = ctx_for(model, PLANNER_CTX, PLANNER_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    model_tag = make_model_tag(model)
+    file_prefix = "ollama-planner-federal" if condition == "planner-federal" else "ollama-planner"
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(
+            out_path, model, fixture_id, estimated, num_ctx, skill="a11y-planner", condition=condition,
+            declared_context_length=declared_context_length,
+        )
 
     payload = {
         "model": model,
         "system": system_prompt,
         "prompt": prompt,
         "stream": False,
-        "options": {"num_ctx": 32768, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
-
-    model_tag = make_model_tag(model)
-    file_prefix = "ollama-planner-federal" if condition == "planner-federal" else "ollama-planner"
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"PLANNER | Model: {model} | Fixture: {fixture_id} | Condition: {condition}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt) + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -717,6 +1041,7 @@ def run_planner(model, fixture_id, system_prompt, condition="planner"):
         data = json.loads(resp.read())
 
     elapsed = time.time() - start
+    prompt_eval_count = data.get("prompt_eval_count")
     data["_benchmark"] = {
         "model": model,
         "fixture_id": fixture_id,
@@ -724,6 +1049,15 @@ def run_planner(model, fixture_id, system_prompt, condition="planner"):
         "condition": condition,
         "elapsed_seconds": round(elapsed, 1),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "estimated_prompt_tokens": estimated,
+        "prompt_eval_count": prompt_eval_count,
+        "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+        # R5.1 (2026-08-27): the window the row actually ran at. Without it
+        # no row is attributable to a num_ctx era after a default is raised
+        # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+        # declared_context_length below carries what the server would allow.
+        "num_ctx": num_ctx,
+        "declared_context_length": declared_context_length,  # F13
     }
 
     write_json_atomic(out_path, data)
@@ -733,25 +1067,59 @@ def run_planner(model, fixture_id, system_prompt, condition="planner"):
     return out_path
 
 
+# NUM_CTX MAP HYGIENE (context-utilization plan Phase 0.2, 2026-08-24): lifted
+# from a hardcoded 16384 literal that applied identically to every model.
+# Empty map + a default equal to the old literal preserves that exact
+# behavior for every model.
+BUGREPORT_CTX = {}
+CJ_CTX = {}
+OPEVIDENCE_CTX = {}
+RECIPE_CTX = {}
+# Lanes added on main after the Phase 0.2-0.3 guard shipped, wired into it
+# 2026-09-04 when the context-utilization branch was integrated. Empty map +
+# a default equal to each lane's previous literal preserves the exact
+# behaviour every existing row was drawn under; only the guard is new.
+CJ_CTX_DEFAULT = 40960
+OPEVIDENCE_CTX_DEFAULT = 16384
+RECIPE_CTX_DEFAULT = 24576
+# R5.4 (2026-08-27, R5 decision memo §3): raised 16384 -> 32768.
+# At 16,384 the budget is 8,192 and the bug-reporting SKILL.md system prompt
+# ALONE estimates 8,518 -- over budget before any fixture is appended. 7/7
+# refuse; no local bug-report row could run at all.
+# Probe receipt: evals/results/context-utilization-r5/num-ctx-probe-receipts.md
+# (num_predict=1 against the assembled production prompt, per model x suite).
+# A _DEFAULT is a starting guess for a model that does not exist yet; the
+# client-side guard, not this integer, is the safety property (memo §8).
+BUGREPORT_CTX_DEFAULT = 32768
+
+
 def run_bugreport(model, fixture_id, system_prompt):
     fixture_content = load_fixture(fixture_id, BUGREPORT_FIXTURES_DIR)
     prompt = BUGREPORT_PROMPT_PREFIX + fixture_content
+    num_ctx = ctx_for(model, BUGREPORT_CTX, BUGREPORT_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-bugreport-{fixture_id}-{model_tag}-response.json")
+
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx, skill="bug-reporting",
+                                   declared_context_length=declared_context_length)
 
     payload = {
         "model": model,
         "system": system_prompt,
         "prompt": prompt,
         "stream": False,
-        "options": {"num_ctx": 16384, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
-
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"ollama-bugreport-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"BUGREPORT | Model: {model} | Fixture: {fixture_id}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt) + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -763,12 +1131,22 @@ def run_bugreport(model, fixture_id, system_prompt):
         data = json.loads(resp.read())
 
     elapsed = time.time() - start
+    prompt_eval_count = data.get("prompt_eval_count")
     data["_benchmark"] = {
         "model": model,
         "fixture_id": fixture_id,
         "skill": "bug-reporting",
         "elapsed_seconds": round(elapsed, 1),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "estimated_prompt_tokens": estimated,
+        "prompt_eval_count": prompt_eval_count,
+        "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+        # R5.1 (2026-08-27): the window the row actually ran at. Without it
+        # no row is attributable to a num_ctx era after a default is raised
+        # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+        # declared_context_length below carries what the server would allow.
+        "num_ctx": num_ctx,
+        "declared_context_length": declared_context_length,  # F13
     }
 
     write_json_atomic(out_path, data)
@@ -776,6 +1154,14 @@ def run_bugreport(model, fixture_id, system_prompt):
     resp_len = len(data.get("response", ""))
     print(f"Done: {time.strftime('%H:%M:%S')} ({elapsed:.0f}s, {resp_len} chars)")
     return out_path
+
+
+# NUM_CTX MAP HYGIENE (context-utilization plan Phase 0.2, 2026-08-24): lifted
+# from a hardcoded 32768 literal that applied identically to every model in
+# both the "contract" and "baseline" conditions. Empty map + a default equal
+# to the old literal preserves that exact behavior for every model.
+EVALREPORT_CTX = {}
+EVALREPORT_CTX_DEFAULT = 32768
 
 
 def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
@@ -784,6 +1170,19 @@ def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
     gets a distinct prefix so the -remaining glob never counts it as a
     contract-condition run."""
     prompt = load_fixture(fixture_id, EVALREPORT_FIXTURES_DIR)
+    num_ctx = ctx_for(model, EVALREPORT_CTX, EVALREPORT_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    file_prefix = "ollama-evalreport" if condition == "contract" else "ollama-evalreport-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(
+            out_path, model, fixture_id, estimated, num_ctx, skill="evaluation-report", condition=condition,
+            declared_context_length=declared_context_length,
+        )
 
     payload = {
         "model": model,
@@ -792,19 +1191,16 @@ def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
         # 32k flat: contract + evidence package + a full report is the longest
         # input/output pair in the benchmark, and thinking-by-default models
         # share the window with reasoning tokens.
-        "options": {"num_ctx": 32768, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
     if system_prompt:
         payload["system"] = system_prompt
-
-    file_prefix = "ollama-evalreport" if condition == "contract" else "ollama-evalreport-baseline"
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"EVALREPORT ({condition}) | Model: {model} | Fixture: {fixture_id}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt or '') + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -816,6 +1212,7 @@ def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
         data = json.loads(resp.read())
 
     elapsed = time.time() - start
+    prompt_eval_count = data.get("prompt_eval_count")
     data["_benchmark"] = {
         "model": model,
         "fixture_id": fixture_id,
@@ -823,6 +1220,15 @@ def run_evalreport(model, fixture_id, system_prompt, condition="contract"):
         "condition": condition,
         "elapsed_seconds": round(elapsed, 1),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "estimated_prompt_tokens": estimated,
+        "prompt_eval_count": prompt_eval_count,
+        "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+        # R5.1 (2026-08-27): the window the row actually ran at. Without it
+        # no row is attributable to a num_ctx era after a default is raised
+        # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+        # declared_context_length below carries what the server would allow.
+        "num_ctx": num_ctx,
+        "declared_context_length": declared_context_length,  # F13
     }
 
     write_json_atomic(out_path, data)
@@ -837,11 +1243,32 @@ def load_evalreport_contract():
         return f.read()
 
 
+# NUM_CTX MAP HYGIENE (context-utilization plan Phase 0.2, 2026-08-24): lifted
+# from a hardcoded 40960 literal that applied identically to every model in
+# both the "acr" and "baseline" conditions. Empty map + a default equal to
+# the old literal preserves that exact behavior for every model.
+ACR_CTX = {}
+ACR_CTX_DEFAULT = 40960
+
+
 def run_acr(model, fixture_id, system_prompt, condition="acr"):
     """ACR-reporting lane. condition="baseline" runs the identical fixture
     with no system prompt to measure what the skill carries; its output file
     gets a distinct prefix so skill-condition globs never count it."""
     prompt = load_fixture(fixture_id, ACR_FIXTURES_DIR)
+    num_ctx = ctx_for(model, ACR_CTX, ACR_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    file_prefix = "ollama-acr" if condition == "acr" else "ollama-acr-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(
+            out_path, model, fixture_id, estimated, num_ctx, skill="acr-reporting", condition=condition,
+            declared_context_length=declared_context_length,
+        )
 
     payload = {
         "model": model,
@@ -850,19 +1277,16 @@ def run_acr(model, fixture_id, system_prompt, condition="acr"):
         # 40k: the longest pair in the benchmark — a ~10k-token evidence
         # bundle + the skill + a full 56-criterion YAML draft, with
         # thinking-by-default models sharing the window with reasoning.
-        "options": {"num_ctx": 40960, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
     if system_prompt:
         payload["system"] = system_prompt
-
-    file_prefix = "ollama-acr" if condition == "acr" else "ollama-acr-baseline"
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"ACR ({condition}) | Model: {model} | Fixture: {fixture_id}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt or '') + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -874,6 +1298,7 @@ def run_acr(model, fixture_id, system_prompt, condition="acr"):
         data = json.loads(resp.read())
 
     elapsed = time.time() - start
+    prompt_eval_count = data.get("prompt_eval_count")
     data["_benchmark"] = {
         "model": model,
         "fixture_id": fixture_id,
@@ -881,6 +1306,15 @@ def run_acr(model, fixture_id, system_prompt, condition="acr"):
         "condition": condition,
         "elapsed_seconds": round(elapsed, 1),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "estimated_prompt_tokens": estimated,
+        "prompt_eval_count": prompt_eval_count,
+        "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+        # R5.1 (2026-08-27): the window the row actually ran at. Without it
+        # no row is attributable to a num_ctx era after a default is raised
+        # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+        # declared_context_length below carries what the server would allow.
+        "num_ctx": num_ctx,
+        "declared_context_length": declared_context_length,  # F13
     }
 
     write_json_atomic(out_path, data)
@@ -931,20 +1365,29 @@ def run_cj(model, fixture_id, system_prompt, condition="cj"):
     gets a distinct prefix so rubric-condition globs never count it."""
     prompt = load_fixture(fixture_id, CJ_FIXTURES_DIR)
 
+    file_prefix = "ollama-cj" if condition == "cj" else "ollama-cj-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+    num_ctx = ctx_for(model, CJ_CTX, CJ_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    overflow, estimated = context_overflow(system_prompt or "", prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx,
+                                   skill="a11y-content-judgment",
+                                   declared_context_length=declared_context_length)
+
     payload = {
         "model": model,
         "prompt": prompt,
         "stream": False,
         # 40k: a batch of up to ~90 rows plus one JSON line per row back,
         # with thinking-by-default models sharing the window with reasoning.
-        "options": {"num_ctx": 40960, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
     if system_prompt:
         payload["system"] = system_prompt
 
-    file_prefix = "ollama-cj" if condition == "cj" else "ollama-cj-baseline"
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"CJ ({condition}) | Model: {model} | Fixture: {fixture_id}")
@@ -984,6 +1427,18 @@ def run_opevidence(model, fixture_id, system_prompt, condition="opevidence"):
     glob never counts it."""
     prompt = OPEVIDENCE_PROMPT_PREFIX + load_fixture(fixture_id, OPEVIDENCE_FIXTURES_DIR)
 
+    file_prefix = "ollama-opevidence" if condition == "opevidence" else "ollama-opevidence-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+    num_ctx = ctx_for(model, OPEVIDENCE_CTX, OPEVIDENCE_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    overflow, estimated = context_overflow(system_prompt or "", prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx,
+                                   skill="a11y-test",
+                                   declared_context_length=declared_context_length)
+
     payload = {
         "model": model,
         "prompt": prompt,
@@ -992,14 +1447,11 @@ def run_opevidence(model, fixture_id, system_prompt, condition="opevidence"):
         # each fixture's operation description + evidence package ~1k tokens;
         # the structured disposition block adds little more, but
         # thinking-by-default models share the window with reasoning tokens.
-        "options": {"num_ctx": 16384, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
     if system_prompt:
         payload["system"] = system_prompt
 
-    file_prefix = "ollama-opevidence" if condition == "opevidence" else "ollama-opevidence-baseline"
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"OPEVIDENCE ({condition}) | Model: {model} | Fixture: {fixture_id}")
@@ -1061,6 +1513,18 @@ def run_recipe(model, fixture_id, system_prompt, condition="recipe"):
     (verdict + must-find keywords), the same instrument as the critic lane."""
     prompt = RECIPE_PROMPT_PREFIX + load_fixture(fixture_id, RECIPE_FIXTURES_DIR)
 
+    file_prefix = "ollama-recipe" if condition == "recipe" else "ollama-recipe-baseline"
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
+    num_ctx = ctx_for(model, RECIPE_CTX, RECIPE_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    overflow, estimated = context_overflow(system_prompt or "", prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx,
+                                   skill="a11y-test",
+                                   declared_context_length=declared_context_length)
+
     payload = {
         "model": model,
         "prompt": prompt,
@@ -1068,14 +1532,11 @@ def run_recipe(model, fixture_id, system_prompt, condition="recipe"):
         # 24576: the three-slice system prompt measures ~4k tokens and a
         # fixture (component + CSS + recipe + four run artifacts) ~3k;
         # thinking-by-default models share the window with reasoning tokens.
-        "options": {"num_ctx": 24576, "temperature": 0.3},
+        "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
     if system_prompt:
         payload["system"] = system_prompt
 
-    file_prefix = "ollama-recipe" if condition == "recipe" else "ollama-recipe-baseline"
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"{file_prefix}-{fixture_id}-{model_tag}-response.json")
 
     print(f"\n{'='*60}")
     print(f"RECIPE ({condition}) | Model: {model} | Fixture: {fixture_id}")
@@ -1118,12 +1579,33 @@ PERSPECTIVE_CTX = {
     "qwen3.6:35b": 32768,
     "qwen3.8:27b": 32768,
 }
-PERSPECTIVE_CTX_DEFAULT = 16384
+# R5.4 (2026-08-27, R5 decision memo §3): raised 16384 -> 32768.
+# At 16,384 the budget is 8,192 and the perspective prompts (SKILL.md + BOTH
+# reference files) estimate 7,645-10,106 -> 21/25 refuse. Every current model
+# is mapped to 32,768 above, so the exposure was unmapped models only.
+# NOTE (R5.2): this is the one suite where the 3.5 chars/token estimator
+# UNDER-counts -- est 10,106 vs measured 10,175 (qwen3.6:35b) -- so the
+# "deliberately below both measured ratios / the safe direction" claim in
+# estimate_tokens() is calibrated on critic text and does not hold here.
+# Probe receipt: evals/results/context-utilization-r5/num-ctx-probe-receipts.md
+# (num_predict=1 against the assembled production prompt, per model x suite).
+# A _DEFAULT is a starting guess for a model that does not exist yet; the
+# client-side guard, not this integer, is the safety property (memo §8).
+PERSPECTIVE_CTX_DEFAULT = 32768
 
 
 def run_perspective(model, fixture_id, system_prompt):
     prompt = build_escalation_prompt(fixture_id)
-    num_ctx = PERSPECTIVE_CTX.get(model, PERSPECTIVE_CTX_DEFAULT)
+    num_ctx = ctx_for(model, PERSPECTIVE_CTX, PERSPECTIVE_CTX_DEFAULT)
+    declared_context_length = fetch_declared_context_length(model)  # F13
+
+    model_tag = make_model_tag(model)
+    out_path = os.path.join(RESULTS_DIR, f"ollama-perspective-{fixture_id}-{model_tag}-response.json")
+
+    overflow, estimated = context_overflow(system_prompt, prompt, num_ctx, declared_context_length)
+    if overflow:
+        return write_overflow_row(out_path, model, fixture_id, estimated, num_ctx, skill="perspective-audit",
+                                   declared_context_length=declared_context_length)
 
     payload = {
         "model": model,
@@ -1133,13 +1615,11 @@ def run_perspective(model, fixture_id, system_prompt):
         "options": {"num_ctx": num_ctx, "temperature": 0.3},
     }
 
-    model_tag = make_model_tag(model)
-    out_path = os.path.join(RESULTS_DIR, f"ollama-perspective-{fixture_id}-{model_tag}-response.json")
-
     print(f"\n{'='*60}")
     print(f"PERSPECTIVE | Model: {model} | Fixture: {fixture_id}")
     print(f"Output: {out_path}")
     print(f"Started: {time.strftime('%H:%M:%S')}")
+    print(f"Prompt: {len(system_prompt) + len(prompt)} chars (~{estimated} est. tokens) | num_ctx: {num_ctx}")
 
     start = time.time()
     req = urllib.request.Request(
@@ -1162,6 +1642,7 @@ def run_perspective(model, fixture_id, system_prompt):
                 break
 
     elapsed = time.time() - start
+    prompt_eval_count = final_chunk.get("prompt_eval_count")
     data = {
         "response": response_text,
         "done": True,
@@ -1175,6 +1656,15 @@ def run_perspective(model, fixture_id, system_prompt):
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
             "done_reason": final_chunk.get("done_reason"),
             "thinking_chars": thinking_chars,
+            "estimated_prompt_tokens": estimated,
+            "prompt_eval_count": prompt_eval_count,
+            "context_pressure": flag_context_pressure(prompt_eval_count, num_ctx),
+            # R5.1 (2026-08-27): the window the row actually ran at. Without it
+            # no row is attributable to a num_ctx era after a default is raised
+            # (R5 decision memo §5.1). Requested value, not the clamped ceiling —
+            # declared_context_length below carries what the server would allow.
+            "num_ctx": num_ctx,
+            "declared_context_length": declared_context_length,  # F13
         },
     }
 

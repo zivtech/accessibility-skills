@@ -1,0 +1,46 @@
+Fixture: heading-hierarchy-skipped | Model: qwen3:32b
+Condition: dump-40k (DUMP) | Draw: 2
+prompt_eval_count=28809 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Heading hierarchy skips from h1 directly to h3 — '- Why this matters: Screen readers use heading levels to navigate content structure. Skipping from h1 to h3 creates a confusing hierarchy.'
+  + [1] Inconsistent heading hierarchy (h3 then h2) — '- Inconsistent heading hierarchy would break logical reading order'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "qwen3:32b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": 28809,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Heading hierarchy skips from h1 directly to h3",
+        "found": true,
+        "evidence_quote": "- Why this matters: Screen readers use heading levels to navigate content structure. Skipping from h1 to h3 creates a confusing hierarchy.",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 1,
+        "description": "Inconsistent heading hierarchy (h3 then h2)",
+        "found": true,
+        "evidence_quote": "- Inconsistent heading hierarchy would break logical reading order",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

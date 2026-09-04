@@ -45,6 +45,78 @@ Cross-cutting: the 3.8 tokenizer is the first current-gen one to fit the critic 
 **What this changes about the numbers below.** Detection rows are unaffected: removing the answer key does not degrade must-find, on either lane. What it exposes is the CLEAN side. On the eleven fixtures whose expected verdict is ACCEPT, qwen3.6:35b returned a clean ACCEPT **11% of the time with the section present and 4% without it** — so the historical "false positive rate" rows in this file are not measuring a model that mostly accepts clean code and occasionally slips. They are measuring a model that almost never accepts clean code, scored by a rubric dimension (`false_positive_trap`, declared in 50 of 50 critic rubrics) that **no scorer reads**. The `detector, never a verdict authority` routing rule already covered this; the A/B is the first direct measurement of it.
 
 **Power bound, stated plainly.** At n = 55 per arm from a 10.9% base, only a rise to ~33% was catchable at 80% power; observed power on the effect seen was 31%. These are **null results at low power, not evidence that the leaks were worthless.** The title lane additionally sits on a 100% ceiling in both arms, so it bounds the title effect from below only. No hosted row was drawn on either lane.
+## August 2026 Context Retro-Probe: qwen3:32b critic num_ctx (2026-08-24, ollama 0.32.15 default :11434 — version caveat below)
+
+`qwen3:32b` had no `CRITIC_CTX` entry, so its entire critic-suite history (all three eras: blind, de-hinted, rebaseline — 99 rows) ran at the 16,384 default, while the critic prompt alone measures ≥16.1K tokens on the qwen3.6/gemma4 tokenizers. A live `num_predict=1` retro-probe plus an `eval_count` analysis of all 99 committed rows settles what that did (full receipts: `evals/results/context-utilization-phase0/`; plan: `docs/plans/2026-08-24-context-utilization-plan.md`):
+
+- **Tokenizer reprieve:** qwen3:32b's tokenizer is the leanest measured — system+prefix = **13,853 tokens** (vs **14,276** qwen3.6, 15,609 qwen3.8). 30 of the 33 benchmarked critic fixtures therefore fit the 16,384 window comfortably. *Corrected 2026-08-27 (R5 decision memo §6 fold note): the qwen3.6 figure here read 16,157, a stale estimate superseded by the 2026-08-25 `num_predict=1` measurement. Re-probed the same day at **14,360** (qwen3.6:35b) / **13,936** (qwen3:32b) / **14,551** (gemma4:31b, the densest of the three) — the drift is `a11y-critic/SKILL.md` growth between the two dates, not tokenizer variance. Receipts: `evals/results/context-utilization-r5/`.*
+- **Prompt-side truncation, confirmed and bounded:** the largest fixture (`multistep-form-error-clearing`, 16,447 true prompt tokens, 63 over the window) was not trimmed by 63 tokens — the server silently evaluated **8,194 of 16,447 tokens (49.8%)**, deterministic across cache-cold/warm draws. Which portion was retained is not established by the probe (the API's `context` field is byte-identical across configs and is not usable evidence). **Asterisk: that fixture's three historical rows were produced with roughly half the input silently absent.** Up to two further fixtures (≥14.6KB raw) plausibly sit at/over the window — unmeasured, flagged not asserted.
+- **Output-side clipping: not in evidence (99/99).** A naive per-row budget formula flags 44–50 rows as ceiling-contact, but it is falsified by the probe's own ground truth (its worst case understated real headroom ~1,600× — prompt truncation *creates* output room), and every independent check contradicts clipping: r(fixture bytes, eval_count) = **+0.508** (wrong sign for clipping), 0/99 unclosed `<think>`, 99/99 `done:true`, all 17 structurally-unusual endings read as legitimate. Details: `historical-exposure-analysis.md` in the receipts dir.
+- **Standing:** published qwen3:32b critic aggregates (67/68 → 65/68 adjudicated, and the per-fixture records) stand, with the narrow asterisk above on `multistep-form-error-clearing` rows. Perspective-suite rows are unaffected (`PERSPECTIVE_CTX` always mapped qwen3:32b to 32,768).
+- **Fixed going forward:** `CRITIC_CTX["qwen3:32b"] = 32768` plus a client-side context-overflow guard in every lane (estimate + 8,192 reserve, INVALID rows instead of silent truncation) — see `ollama/test_context_guard.py`.
+- *Version caveat:* the probe ran on the default GUI instance (0.32.15, :11434); historical rows ran on the pinned dedicated :11435 instances (0.31.1–0.32.5). Token counts are tokenizer-determined and robust; the halving *behavior* is the current server's, and older versions were not re-probed.
+
+## August 2026 `num_ctx` Default Corrections (2026-08-27, R5.4/R5.5 — map hygiene)
+
+Four suite `_DEFAULT`s were raised. Receipts (`num_predict=1` probes against the assembled
+production prompt, per model × suite) and the historical analysis:
+`evals/results/context-utilization-r5/`. Decision:
+`docs/plans/2026-08-27-context-utilization-r5-decision-memo.md` §3.
+
+**This section annotates; it rewrites nothing.** No committed row in any lane is restated, rescored,
+or withdrawn. Rows below ran at the OLD value and are not comparable to rows produced after this date
+without saying which window they used — which is why `num_ctx` is now recorded on every scored row
+(R5.1, beside `declared_context_length`); rows predating 2026-08-27 do not carry it and must be
+attributed from this table.
+
+| default | old → new | why the old value was wrong | committed local rows that predate the change |
+|---|---|---|---|
+| `CRITIC_CTX_DEFAULT` | 16,384 → **32,768** | budget 8,192 vs assembled prompts estimating 17,650–19,906 → **41/41 fixtures refuse** | **66** — `qwen3.5:latest` 33 + `llama3.3:70b` 33, both in `ollama-blind`, both absent from `CRITIC_CTX` (see caveat below) |
+| `PLANNER_CTX_DEFAULT` | 32,768 → **40,960** | budget 24,576 vs 23,974–25,709 (plain) → **19/28 refuse**, the 9 that clear by ≤603 tokens; **28/28 refuse** in the `planner-federal` condition (crosswalk appended, 30,274–32,009) | **57** — every committed local planner row (`PLANNER_CTX` is empty): qwen3.6:35b 29, laguna-s-2.1 25, qwen3:32b 3 |
+| `BUGREPORT_CTX_DEFAULT` | 16,384 → **32,768** | budget 8,192 vs a **system prompt alone of 8,518** — over budget before any fixture is appended → **7/7 refuse**; no local bug-report row could run | **14** — every committed local bug-report row: qwen3.6:35b 7, laguna-s-2.1 6, qwen3:32b 1 |
+| `PERSPECTIVE_CTX_DEFAULT` | 16,384 → **32,768** | budget 8,192 vs 7,645–10,106 → **21/25 refuse** | **25** — laguna-s-2.1, absent from `PERSPECTIVE_CTX` |
+
+`EVALREPORT_CTX_DEFAULT` (32,768) and `ACR_CTX_DEFAULT` (40,960) were measured and left alone.
+`ollama_a11y.py`'s flat 32,768 wrapper default became a per-command dict (`SKILL_NUM_CTX`:
+planner 40,960, others 32,768), hand-synced with the above and now locked by a test.
+
+**"Defaults only affect unmapped models" is false as history — twice over.** The 2026-08-24 section
+above records qwen3:32b's entire 99-row critic history running on a default. The same pattern is now
+visible for two more models: **66 committed `ollama-blind` critic rows** (`qwen3.5:latest`,
+`llama3.3:70b`) also ran at 16,384, with critic prompts that estimate 17.6–19.9K. Those rows predate
+the 2026-08-24 context-overflow guard, so they were *run*, not refused — prompt-side truncation was
+neither detected nor bounded for them. **They are not re-analysed here** (the Phase 0.4 retro-probe
+covered qwen3:32b only) and their published aggregates stand unrevised; the exposure is recorded so
+the next reader does not have to rediscover it.
+
+**Output-side clipping is confirmed in the planner lane** (R5.3, all 57 committed local planner
+rows): **3 rows** carry `done_reason=length` with `prompt_eval_count + eval_count = 32,768` exactly
+and end mid-sentence — two laguna-s-2.1 runaway generations (60–64K response chars, no thinking
+stream) and one `qwen3.6:35b` `planner-federal` row
+(`evals/results/ict-baseline-phase3/…-qwen36-35b-response.json`, scored 10/11 PASS, **score
+unchanged**, now on record as an incomplete generation). **0/57** would clip at 40,960. This is a
+different verdict from the critic lane's 2026-08-24 "not in evidence" — there the flag was
+contradicted by every corroborating check; here it is corroborated by three independent ones.
+
+**Two calibration corrections, both against claims this file and the code rely on:**
+- The 3.5 chars/token estimator is **not uniformly conservative**. Measured est/measured on the
+  largest fixture: critic 1.13–1.20, planner 1.19–1.25, bug-report **1.04–1.09**, and perspective
+  **0.993 on qwen3.6:35b** — i.e. it *under*-counts, the unsafe direction. `estimate_tokens()`'s
+  "deliberately below both measured ratios — the safe direction" was calibrated on critic-protocol
+  text and does not generalize. The 8,192 reserve is what absorbs it today, not the ratio.
+- **Protocol growth silently eats output headroom.** `a11y-planner/SKILL.md` grew **71,881 →
+  83,013 chars (+~2,800 real tokens)** between the July 2026 rows and 2026-08-25. Every July planner
+  row therefore had ~2,800 more output tokens available than the same fixture gets today at the same
+  `num_ctx`, so R5.3's 3/57 clipping rate is a **floor for today, not a current rate**. A first
+  guard-side check against this now exists
+  (`test_every_raised_default_actually_clears_its_suite_today`).
+
+**Watch item — where the next integer runs out.** `planner-federal` clears 40,960 by only **759
+estimated tokens** (max est 32,009 + 8,192 reserve = 40,201), ≈ 2,657 chars of protocol growth, on a
+file that grew 11,132 chars in six weeks. And `qwen3:32b`'s declared ceiling **is** 40,960, so for
+that model there is no larger legal value: the next raise is not available. True tokens are
+comfortable (measured 26,135–26,924, ~14K real headroom) — the squeeze is on the *estimator*, and the
+estimator is what the guard obeys.
 
 ## Baseline Families
 

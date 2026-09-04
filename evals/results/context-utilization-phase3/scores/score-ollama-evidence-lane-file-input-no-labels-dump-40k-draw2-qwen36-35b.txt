@@ -1,0 +1,61 @@
+Fixture: file-input-no-labels | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 2
+prompt_eval_count=30965 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/4
+  + [1] No aria-describedby linking to error message — '- **Evidence:** `src/components/BuggyFileInput.jsx:23-26` renders errors in a generic `<div className="error-message">`. The input does not have `aria-describedby` pointing to this div, nor does the e…'
+  + [2] No aria-invalid when error present — '2.  **Error State Blindness:** `setError` updates React state but does not update DOM ARIA attributes (`aria-invalid`) or live regions (`role="alert"`).'
+  X [0] Missing <label> element — reason=model-miss
+  X [3] File type restrictions not announced — reason=not-tool-observable
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "file-input-no-labels",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": 30965,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 4,
+    "matched": [
+      {
+        "item_index": 1,
+        "description": "No aria-describedby linking to error message",
+        "found": true,
+        "evidence_quote": "- **Evidence:** `src/components/BuggyFileInput.jsx:23-26` renders errors in a generic `<div className=\"error-message\">`. The input does not have `aria-describedby` pointing to this div, nor does the e\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 2,
+        "description": "No aria-invalid when error present",
+        "found": true,
+        "evidence_quote": "2.  **Error State Blindness:** `setError` updates React state but does not update DOM ARIA attributes (`aria-invalid`) or live regions (`role=\"alert\"`).",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Missing <label> element",
+      "found": false,
+      "reason": "model-miss"
+    },
+    {
+      "item_index": 3,
+      "description": "File type restrictions not announced",
+      "found": false,
+      "reason": "not-tool-observable"
+    }
+  ],
+  "false_positives": null
+}

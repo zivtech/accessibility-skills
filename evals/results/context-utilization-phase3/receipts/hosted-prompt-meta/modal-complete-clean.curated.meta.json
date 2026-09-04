@@ -1,0 +1,13 @@
+{
+ "fixture_id": "modal-complete-clean",
+ "condition": "curated-hosted",
+ "payload": "CURATED",
+ "prompt_path": "/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/2fa50fdd-4969-44a8-a983-0424c18d8b28/scratchpad/hosted/modal-complete-clean.curated.prompt.md",
+ "prompt_sha256": "84c922d7e133c8b845146cc5833bfb7c3996c4b9f937c364bb6b652dfc7fdc58",
+ "user_prompt_sha256": "b8f371b8328a0406fa44424171e15f13d2882e55f6ac62022dab84a25bead424",
+ "prompt_byte_length": 82584,
+ "pack_path": "evals/results/context-utilization-phase3/packs/modal-complete-clean.curated.md",
+ "pack_sha256": "768976a1521962a5dc882d3f59d60a04db46f7d012cb759268eb1282bc8a4b87",
+ "pack_byte_length": 13653,
+ "pack_available": true
+}

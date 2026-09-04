@@ -988,3 +988,4 @@ Instead, if the button has complex interactions or is part of a complex feature,
 - **accessibility-testing**: Run automated tests (axe-core, Pa11y-CI), keyboard navigation tests, visual regression tests.
 - **a11y-test**: Real keyboard testing with Playwright. Tests real key presses, not just ARIA attributes.
 - **accessibility-standards**: WCAG 2.2 AA reference, coding patterns, four-layer enforcement architecture.
+- **a11y-evidence-reader**: Contract-shaped digest of evidence artifacts (axe JSON, keyboard traces, SR censuses) when they exceed the inject budget. Detector output, one tier BELOW the artifact it cites — cite a digest line as support for a design decision only after re-fetching at the cited handle; otherwise the citation is digest-only.

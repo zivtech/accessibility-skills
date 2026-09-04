@@ -1,0 +1,61 @@
+Fixture: file-input-no-labels | Model: qwen3.6:35b
+Condition: curated-40k (CURATED) | Draw: 2
+prompt_eval_count=19074 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/4
+  + [1] No aria-describedby linking to error message — '- **Evidence**: `src/components/BuggyFileInput.jsx:24-27` renders error text in a `<div>` but lacks `role="alert"` or `aria-live`. The input does not use `aria-describedby` to link to the error. `sr-c…'
+  + [2] No aria-invalid when error present — '3. Input state (`aria-invalid`) not updated when error is present.'
+  X [0] Missing <label> element — reason=model-miss
+  X [3] File type restrictions not announced — reason=not-tool-observable
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "file-input-no-labels",
+  "model": "qwen3.6:35b",
+  "condition": "curated-40k",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": 19074,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 4,
+    "matched": [
+      {
+        "item_index": 1,
+        "description": "No aria-describedby linking to error message",
+        "found": true,
+        "evidence_quote": "- **Evidence**: `src/components/BuggyFileInput.jsx:24-27` renders error text in a `<div>` but lacks `role=\"alert\"` or `aria-live`. The input does not use `aria-describedby` to link to the error. `sr-c\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 2,
+        "description": "No aria-invalid when error present",
+        "found": true,
+        "evidence_quote": "3. Input state (`aria-invalid`) not updated when error is present.",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Missing <label> element",
+      "found": false,
+      "reason": "model-miss"
+    },
+    {
+      "item_index": 3,
+      "description": "File type restrictions not announced",
+      "found": false,
+      "reason": "not-tool-observable"
+    }
+  ],
+  "false_positives": null
+}

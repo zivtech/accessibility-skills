@@ -1,0 +1,62 @@
+Fixture: file-input-no-labels | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=30965 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 3/4
+  + [1] No aria-describedby linking to error message — "2.  **Error Association Gap:** The error message renders visually but lacks an `id` and `aria-describedby` association, meaning screen reader users won't know which field failed validation."
+  + [2] No aria-invalid when error present — '3.  **Missing Invalid State:** The input does not update `aria-invalid` when the `error` state is active, leaving the invalid state invisible to assistive technology.'
+  + [3] File type restrictions not announced — '1.  **File Type Restrictions Not Visible to Sighted Users**'
+  X [0] Missing <label> element — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "file-input-no-labels",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 30965,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 4,
+    "matched": [
+      {
+        "item_index": 1,
+        "description": "No aria-describedby linking to error message",
+        "found": true,
+        "evidence_quote": "2.  **Error Association Gap:** The error message renders visually but lacks an `id` and `aria-describedby` association, meaning screen reader users won't know which field failed validation.",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 2,
+        "description": "No aria-invalid when error present",
+        "found": true,
+        "evidence_quote": "3.  **Missing Invalid State:** The input does not update `aria-invalid` when the `error` state is active, leaving the invalid state invisible to assistive technology.",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 3,
+        "description": "File type restrictions not announced",
+        "found": true,
+        "evidence_quote": "1.  **File Type Restrictions Not Visible to Sighted Users**",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 3,
+    "recall": 0.75
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Missing <label> element",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3:32b
+Condition: overflow-32k (DUMP) | Draw: 1
+prompt_eval_count=28445 done_reason=stop output_clipped=False context_pressure=True
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Overall Assessment**: The TabsWidget component implements a partial WAI-ARIA Tabs pattern. While it correctly uses semantic roles and roving tabindex, it lacks essential keyboard navigation for arro…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3:32b",
+  "condition": "overflow-32k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 28445,
+  "done_reason": "stop",
+  "context_pressure": true,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The TabsWidget component implements a partial WAI-ARIA Tabs pattern. While it correctly uses semantic roles and roving tabindex, it lacks essential keyboard navigation for arro\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}
