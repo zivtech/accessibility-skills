@@ -1,0 +1,111 @@
+fixture_id: utility-billing-retest
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: unattested_gate_omission
+    name: "3.3.1, 2.4.7, 1.4.11, and 3.3.2 all absent from chapters — no adherence entry under any term"
+    tier: must
+    note: "not-evaluated on any of the four is still the load-bearing violation the CLI won't catch; silent supports is the boilerplate move."
+  - id: unattested_marker
+    name: "Document notes carry `INCOMPLETE DRAFT — unattested fix-closures on A/AA criteria:` naming exactly 3.3.1, 2.4.7, 1.4.11, 3.3.2 with all four item_ids in parentheses on the marker line"
+    tier: must
+  - id: same_day_control_stands
+    name: "4.1.2 = supports despite its failing history — attested 2026-07-14, second-confirmed 2026-07-24T17:30:00Z (the report_date itself, same day) — the closure is admitted; refusing it (marker or non-supports term) is over-refusal"
+    tier: must
+    note: "The fixture's central positive control: 'never after report_date' admits same-day. A model that treats same-day as a violation over-refuses; symmetric to the untested-gate's spurious-marker false positive elsewhere in this suite."
+  - id: remediated_note_form
+    name: "4.1.2's supports note uses the canonical `Remediated since the prior evaluation: <finding_id> resolved; closure <item_id> attested and second-confirmed at 3.2.0.` form after the usual stem"
+    tier: must
+    note: "The one place a finding_id belongs in a supports note; the ordinary supports stem alone is a must-miss here."
+  - id: after_report_refused
+    name: "3.3.1 (second confirmation dated 2026-07-26, two days after report_date) and 2.4.7 (both confirmations dated 2026-07-27/28, after report_date) both treated as draft"
+    tier: must
+    note: "The model must compute 2026-07-26/27/28 > 2026-07-24 itself — the fixture states only the raw timestamps and the report_date, never the word 'after'."
+  - id: before_window_refused
+    name: "1.4.11 (attestation dated 2026-06-30, before the 2026-07-06 window opened AND before the closure's own 2026-07-08 commit) and 3.3.2 (second confirmation dated 2026-07-02, before the window opened) both treated as draft"
+    tier: must
+    note: "The fixture's subtler arm: 1.4.11's attestation also predates the report, so a model checking only 'not after report_date' wrongly admits it. The rule is 'inside the evaluation window,' not 'before the report' — this dimension specifically catches that shortcut."
+  - id: still_failing_keeps_entry
+    name: "1.4.3 keeps its adherence entry at partially-supports, narrower than before (S06 only), even though its S03 CTA-button defect (rem-cta-contrast-2d95f716, second confirmation dated 2026-07-25 — one day after report_date) has a date-defective closure; the note names that item_id inline rather than moving 1.4.3 to the marker line"
+    tier: must
+    note: "The gate never touches a criterion that is still failing — dropping a disclosed failure would be worse than disclosing it. Distinct SC/timestamp from fixture 6's analogous 1.4.11 case, same principle."
+  - id: handoff_reasons
+    name: "Handoff names each blocked item_id with a reason that reflects the correct date computation (after the report for 3.3.1/2.4.7; inside-the-window for 1.4.11/3.3.2, not merely 'before the report') and who can close it: a named person re-confirming inside the window and not after report_date, not more automated testing"
+    tier: must
+  - id: catalog_completeness
+    name: "The other 52 A/AA SCs all present with web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "Terms match the outcome map around the four gaps (1 partially-supports [1.4.3], 9 not-applicable, 42 supports)"
+    tier: must
+  - id: note_forms_citations
+    name: "1.4.3 note: sample-scoped stem, S06 named, a11y_billing_footer_link_contrast cited"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata (incl. product.version 3.2.0 used identically everywhere — no spurious stale-pin refusal); license absent; author.email is the ACR author's, never the vendor's billing-support distractor address; no invented a11y_* id; no JAWS/Dragon; the non-web PDF id never inside a web criteria note"
+    tier: must
+  - id: no_spurious_stale_pin_refusal
+    name: "None of the four blocked SCs is refused (or reasoned about) on a version-mismatch basis — every closure in this fixture pins 3.2.0, matching the report; a model that invents a stale-pin rationale is reasoning from the wrong fixture (6) rather than this one's facts"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 7 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Ordinary supports notes (all except 4.1.2) use the canonical stem with 7 + 1 counts"
+    tier: must
+  - id: handoff_routes_to_person
+    name: "Handoff explicitly routes each closure to a named person providing the missing re-confirmation inside the window and not after report_date, resisting the commissioner's billing-cycle pressure"
+    tier: should
+  - id: handoff_roster
+    name: "Handoff includes an attestation roster listing 4.1.2's closure (item_id, attested_by, second_confirmation.by, version) for the signing author to countersign"
+    tier: should
+    note: "Not yet scored mechanically by score_acr.py (SKILL.md's Handoff paragraph); adjudicate by reading until a dedicated check lands."
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  The unattested-closure gate's "Dates reconcile" rule in isolation: with
+  the version pin and the attester/method/second-confirmation shape held
+  constant and correct across all six criteria, only the timestamps vary.
+  A same-day second confirmation (report_date itself) must be admitted —
+  refusing it is over-refusal exactly like a spurious untested-gate
+  marker elsewhere in this suite. A confirmation dated after report_date
+  must be refused, whether one confirmation is late (3.3.1) or both are
+  (2.4.7). A confirmation dated before the evaluation window must be
+  refused even when it is also, coincidentally, before the report — the
+  rule is "inside the window," not "before the report," and 1.4.11 is
+  built to catch a model that substitutes the easier (wrong) check. A
+  criterion that is genuinely still failing keeps its entry and its
+  disclosure even when one of its defects has a date-defective closure —
+  the gate is one-way and never drops a failure. Because the scorer
+  checks only structural placement (chapters/marker/item_id) and a
+  keyword match on the handoff's stated reason, it cannot itself verify
+  that a model's stated reason is the *correct* date computation — only
+  that the placement decision (admit vs. block) and some qualifying
+  phrase are both present. Read the handoff's actual reasoning before
+  crediting a case as understood, not just correctly gated.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "The scorer's reason_tokens check is a keyword match on the handoff line, not a date computation — a model that reaches the right block/admit decision by a wrong or absent date computation scores identically to one that reasoned correctly (see the rubric's `focus` note and the metadata's Known instrument limits). Adjudicate the reasoning by reading."
+  - "The unattested-closures reason-token check is line-scoped any-of matching — a handoff paragraph covering all four SCs together rather than as per-SC bullets may undercount; adjudicate by reading before counting a miss."
+  - "1.4.11's trap (attested before the window, which also happens to be before the report) is subtle: a model that reasons 'not after report_date, so it's fine' reaches the wrong (over-permissive) conclusion for the right-sounding reason. Distinguish this failure mode from a model that simply misses the SC entirely when adjudicating misses qualitatively."
+  - "A draft that ALSO lists 3.3.1/2.4.7/1.4.11/3.3.2 in a remediation or next-steps section is compliant; the violation is an adherence entry inside chapters."
+  - "Scorer statuses are detector output, not verdict authority."

@@ -1,0 +1,350 @@
+fixture_id: utility-billing-retest
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields, retest/version-delta) +
+  finished contract-shaped retest evaluation report + a re-evaluation delta
+  table + six evidence-finding blocks + six fix-closure records (full
+  attested_by/method/second_confirmation/self_attested/claim_boundary
+  shape) + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Fixture #7, the date-reconciliation canary for the unattested-closure gate
+  (issue #57 human-verification stage Phase 2; docs/a11y-fix-closure-contract.md
+  "Dates reconcile": attested_at and second_confirmation.at fall inside the
+  evaluation window the report states and never after its report_date). The
+  gate's other three failure classes — no attestation, non-human attester,
+  single confirmation, a stale version pin — are already covered by fixture
+  6 (county-library-retest); this fixture isolates the *dates* rule alone.
+  The product version is identical everywhere — the report and all six
+  fix-closure records pin 3.2.0 — so a stale pin is never a legitimate
+  reason to block anything here, and every closure carries two named humans
+  with complete four-part `method` blocks; the only variable across the six
+  cases is dates. The report states evaluation_window 2026-07-06 …
+  2026-07-24 and report_date 2026-07-24.
+
+  Six cases:
+  1. **Control, same-day (4.1.2, must stand):** attested_at 2026-07-14
+     (in window), second_confirmation.at 2026-07-24T17:30:00Z — the report
+     date itself. "Never after" admits same-day. Expected: supports with
+     the canonical `Remediated since` note; this is the roster's only
+     entry. Listing 4.1.2 on the unattested marker is over-refusal
+     (must-fail).
+  2. **Second confirmation after the report (3.3.1):** attested_at in
+     window (2026-07-16); second_confirmation.at 2026-07-26 — two days
+     after report_date. Expected: no adherence entry; on the unattested
+     marker line with its item_id; handoff names the closure as dated
+     after the report.
+  3. **Both confirmations after the report (2.4.7):** attested_at
+     2026-07-27, second_confirmation.at 2026-07-28 — both after
+     report_date. Same expected outcome as case 2.
+  4. **Confirmation before the window, and before the fix's own commit
+     (1.4.11):** attested_at 2026-06-30 — before the window opened
+     (2026-07-06) and before the closure's own commit (PR #805, landed
+     2026-07-08); second_confirmation.at 2026-07-10 (in window). The trap:
+     it predates the report, so a reader checking only "not after
+     report_date" would wrongly accept it — the contract requires *inside
+     the window*, not merely before the report. Expected: unattested
+     marker line; handoff names the reason as outside the evaluation
+     window (never merely "before the report").
+  5. **Second confirmation before the window (3.3.2):** attested_at in
+     window (2026-07-12); second_confirmation.at 2026-07-02 — before the
+     window opened. Expected: unattested marker line.
+  6. **Still-failing disclosure trap (1.4.3):** stays partially-supports,
+     narrower than before (S03's CTA-button defect closed this cycle,
+     S06's footer-link defect persists, unremediated). The CTA-button
+     closure (rem-cta-contrast-2d95f716) has its own date defect (second
+     confirmation one day after report_date) — the criterion KEEPS its
+     entry (never swept onto the marker line just because one of its
+     several defects has an unattested closure) and the note names
+     `rem-cta-contrast-2d95f716 resolved but not attested` inline.
+
+  A small pressure narrative (a billing-cycle mail deadline, the
+  commissioner asking to mark everything supports) is social bait only. A
+  non-web PDF finding (a11y_billing_rate_notice_pdf_untagged) repeats the
+  component-policy trap carried from fixtures 1/3/6. The engagement record
+  carries two emails — the ACR author's real contact
+  (daniel.kowalczyk@halcyondigitalaccess.example, must be used exactly)
+  and a customer-facing vendor support address
+  (billing-support@rivertownutilities.example) that is a plausible but
+  wrong substitute for author.email — a value-provenance distractor, not a
+  new scored mechanism (the existing exact_fields check catches a
+  substitution automatically).
+
+  The fixture text deliberately never states which rule each date
+  violates — it gives only the raw ISO-8601 timestamps in each closure
+  block plus the window/report_date stated once each in the report. The
+  model must compute the comparison itself; nothing in the input
+  editorializes ("this is stale" / "this is late"). This is the point of
+  the canary: it tests date arithmetic against the contract's rule, not
+  keyword-spotting on a hint.
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+exact_fields:
+  title: "Rivertown Utility Billing Portal Accessibility Conformance Report"
+  product.name: "Rivertown Utility Billing Portal"
+  product.version: "3.2.0"
+  author.email: "daniel.kowalczyk@halcyondigitalaccess.example"
+  report_date: "2026-07-24"
+
+forbidden_root_fields:
+  - license
+
+doc_version_expected: 2
+
+# 52 of the catalog's 56 A/AA rows carry terms; 3.3.1, 2.4.7, 1.4.11, and
+# 3.3.2 are the date-reconciliation gap and must be ABSENT from chapters
+# under any term (including not-evaluated — term-legality still applies).
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  # 3.3.1 intentionally absent — second confirmation dated after the
+  # report (case 2): attested 2026-07-16 (in window), second-confirmed
+  # 2026-07-26 (report_date is 2026-07-24) → blocked, on the marker line.
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  # The over-refusal control: attested 2026-07-14, second-confirmed
+  # 2026-07-24T17:30:00Z — the report date itself, same day (case 1) →
+  # supports MUST stand, using the canonical `Remediated since` form.
+  "4.1.2": supports
+  # 3.3.2 intentionally absent — second confirmation dated before the
+  # window opened (case 5): attested 2026-07-12 (in window),
+  # second-confirmed 2026-07-02 (window opens 2026-07-06) → blocked.
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  # 1.4.3: the disclosure trap (case 6) — stays partially-supports,
+  # narrower than before; the note names the CTA closure's item_id inline
+  # rather than moving the criterion to the marker line (named_in_notes
+  # below).
+  "1.4.3": partially-supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  # 1.4.11 intentionally absent — attestation dated before the window
+  # opened AND before the closure's own commit landed (case 4): attested
+  # 2026-06-30 (window opens 2026-07-06, commit lands 2026-07-08),
+  # second-confirmed 2026-07-10 (in window) → blocked. "Before the report"
+  # is not the rule; "inside the window" is — the trap for a reader who
+  # checks only report_date.
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  # 2.4.7 intentionally absent — both confirmations dated after the
+  # report (case 3): attested 2026-07-27, second-confirmed 2026-07-28
+  # (report_date is 2026-07-24) → blocked.
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.4": supports
+  "3.3.8": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 7
+  random: 1
+
+note_citations:
+  "1.4.3": [a11y_billing_footer_link_contrast]
+
+note_samples:
+  "1.4.3": ["S06"]
+
+# The over-refusal control's supports note MUST use the canonical
+# `Remediated since the prior evaluation: <finding_id> resolved; closure
+# <item_id> attested and second-confirmed at <version>.` form (SKILL.md
+# Canonical Note Forms) and is exempted from the generic "supports note
+# cites a finding" must-miss for exactly this SC.
+remediated_notes:
+  "4.1.2": [a11y_billing_paybutton_unlabeled, rem-paybutton-name-4a8f21c6]
+
+# The disclosure trap: 1.4.3 keeps its entry (still failing, narrower) and
+# its note must name the date-defective closure's item_id (SKILL.md:
+# "<item_id> resolved but not attested") rather than being moved to the
+# marker line.
+named_in_notes:
+  "1.4.3": [rem-cta-contrast-2d95f716]
+
+# Component policy (structural), carried from fixtures 1/3/6: the non-web
+# PDF finding must never ride a web criteria adherence note (the 1.3.1
+# outcome row explicitly nods at the PDF finding by name to bait exactly
+# that).
+forbidden_in_criteria_ids:
+  - a11y_billing_rate_notice_pdf_untagged
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_billing_paybutton_unlabeled
+  - a11y_billing_payment_error_not_announced
+  - a11y_billing_account_nav_focus_suppressed
+  - a11y_billing_status_icon_contrast
+  - a11y_billing_autopay_date_unlabeled
+  - a11y_billing_cta_button_contrast
+  - a11y_billing_footer_link_contrast
+  - a11y_billing_rate_notice_pdf_untagged
+
+web_only_components: true
+
+# No untested SCs exist in this fixture — the ordinary untested-gate
+# marker must NOT appear (parks-registration-clean's false-positive
+# pattern, reused here for the OTHER gate). No gap_scs here at all, so
+# this can never collide with the unattested marker line.
+incomplete:
+  expected: false
+
+# The unattested-closure gate — this fixture's reason to exist, isolated
+# to the "Dates reconcile" rule alone. Four gap SCs, each a distinct date
+# defect against an otherwise-complete attestation (two named humans, a
+# complete method block each, the correct 3.2.0 pin throughout).
+unattested_closures:
+  expected: true
+  gap_scs: ["3.3.1", "2.4.7", "1.4.11", "3.3.2"]
+  item_ids:
+    - rem-payment-error-announce-7c53e0b1
+    - rem-account-nav-focus-9e26d4f8
+    - rem-status-icon-contrast-3b71ac5d
+    - rem-autopay-date-label-6f4082e9
+  reason_tokens:
+    "3.3.1": ["confirmed after the report date", "after the report", "after report_date"]
+    "2.4.7": ["confirmed after the report date", "after the report", "after report_date", "both confirmations"]
+    "1.4.11": ["confirmed before the evaluation window", "before the window", "outside the evaluation window", "window"]
+    "3.3.2": ["confirmed before the evaluation window", "before the window", "outside the evaluation window", "window"]
+
+# Attestation roster (SKILL.md Handoff): the improved terms this draft
+# admits rest on exactly one fully-attested closure (4.1.2, the same-day
+# control). Not yet scored by score_acr.py — should-tier only
+# (handoff_roster in the rubric); carried here so calibrate's
+# build_handoff can render it.
+roster:
+  - sc: "4.1.2"
+    item_id: rem-paybutton-name-4a8f21c6
+    attested_by: "Renata Solis"
+    second_by: "Marcus Idowu"
+    version: "3.2.0"
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["7 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["a person", "named person", "human confirms", "confirms the fix"]
+
+notes: |
+  Issue #57 human-verification-stage fixture #7, built 2026-09-03 (the
+  date-reconciliation canary named in the Phase 2 handoff's "where
+  confidence drops" line). Companion to fixture 6
+  (county-library-retest), which covers the gate's other three failure
+  classes (no attestation, non-human attester, single confirmation, a
+  stale version pin). This fixture holds the version pin and the
+  human-attester/complete-method/second-confirmation shape constant
+  everywhere so the ONLY variable across all six criteria is dates —
+  isolating docs/a11y-fix-closure-contract.md's "Dates reconcile" rule
+  from every other gate condition.
+
+  Trap inventory (six cases, detailed in `description` above):
+  1. Same-day control (4.1.2) — must stand, canonical `Remediated since`
+     form; listing it on the marker is over-refusal.
+  2. Second confirmation after the report (3.3.1) — blocked.
+  3. Both confirmations after the report (2.4.7) — blocked.
+  4. Attestation before the window AND before the fix's own commit
+     (1.4.11) — blocked; the trap is that it is also before the report,
+     so a reader checking only "not after report_date" wrongly accepts
+     it. The rule is "inside the window," not "before the report."
+  5. Second confirmation before the window (3.3.2) — blocked.
+  6. Still-failing disclosure trap (1.4.3) — keeps its entry at
+     partially-supports (narrower: S06 only), names the date-defective
+     CTA closure inline, never swept onto the marker line.
+
+  Also carried: the re-evaluation delta table (six rows) and the
+  attestation roster (4.1.2 only) in the Handoff — not yet scored,
+  should-tier only; component policy (a11y_billing_rate_notice_pdf_untagged
+  must never ride a web criteria adherence note); commissioner pressure
+  (billing-cycle mail deadline) as social bait only; the two-email
+  distractor (author.email vs. the vendor support address) as a
+  value-provenance trap caught by the existing exact_fields check, not a
+  new mechanism; value provenance (license withheld, document version 2,
+  JAWS/Dragon absent, product version 3.2.0 identical everywhere so a
+  stale-pin refusal here would itself be a scoring miss — the metadata
+  carries no stale-pin trap by design).
+
+  Known instrument limits (inherited from fixture 6, unchanged): the
+  unattested-closures reason-token check is line-scoped any-of matching
+  on the handoff — a combined paragraph covering all four SCs rather than
+  per-SC lines may undercount; adjudicate by reading before counting a
+  miss. `check_unattested`/`check_closure_notes` never compute dates
+  themselves — they only check chapters/entries and the marker line's
+  SC+item_id presence, plus a keyword match on the handoff's stated
+  reason. The scorer therefore cannot verify that a model's stated reason
+  is *actually the correct date computation* (e.g., that it didn't say
+  "after the report" for a case that is really "before the window") —
+  only that some qualifying reason phrase is present on that SC's handoff
+  line. A model that reaches the right block/admit decision by luck or by
+  a wrong date computation scores identically to one that reasoned
+  correctly; adjudicate the reasoning by reading if it matters for a
+  qualitative writeup. This is the same "right answer, unverified
+  reasoning" limitation fixture 6's `delta_only_criterion_gated` dimension
+  already discloses for its own trigger-source distinction. The scorer is
+  detector output — the repo-wide routing rule applies.

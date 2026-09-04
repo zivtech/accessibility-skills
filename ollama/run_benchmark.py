@@ -101,6 +101,7 @@ ACR_FIXTURES = [
     "campus-events-untested",
     "parks-registration-clean",
     "county-library-retest",
+    "utility-billing-retest",
 ]
 
 # a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system
