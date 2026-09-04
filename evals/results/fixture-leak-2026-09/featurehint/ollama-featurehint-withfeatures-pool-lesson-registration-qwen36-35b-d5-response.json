@@ -1,0 +1,17 @@
+{
+  "response": "",
+  "done": true,
+  "total_duration": 239298604167,
+  "eval_count": 15945,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "fixture_id": "pool-lesson-registration",
+    "elapsed_seconds": 239.4,
+    "timestamp": "2026-09-04T01:24:23",
+    "done_reason": "length",
+    "thinking_chars": 57393,
+    "lane": "featurehint",
+    "condition": "withfeatures",
+    "draw": "5"
+  }
+}

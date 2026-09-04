@@ -1,0 +1,1657 @@
+{
+  "rows": [
+    {
+      "chars": 5741,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6991,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6662,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6231,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6032,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5369,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6930,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6439,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6586,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5199,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 8889,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7848,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8851,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7713,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7701,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8319,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 5308,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7556,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6535,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7990,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8851,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7427,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7679,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8902,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 9602,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 5227,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 5449,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6291,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6396,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 9545,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6795,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 5359,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 4775,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7167,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 5283,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7069,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7334,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8384,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 4900,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6653,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7294,
+      "condition": "neutral",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7598,
+      "condition": "neutral",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7903,
+      "condition": "neutral",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 8301,
+      "condition": "neutral",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 8886,
+      "condition": "neutral",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 4523,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5743,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 4317,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5572,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6952,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "breadcrumb-navigation-no-nav-landmark",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5979,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 6398,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5636,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 5282,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 4421,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "checkbox-group-no-fieldset",
+      "found": 2,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true
+      ],
+      "total": 2,
+      "truncated": false
+    },
+    {
+      "chars": 7473,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8411,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 9030,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8016,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8383,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "combobox-autocomplete-no-listbox-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6753,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6697,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7920,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6300,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8461,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "expandable-section-no-button",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6433,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6623,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8093,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7343,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 9086,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "image-carousel-no-region",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6429,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6970,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8075,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 6655,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7000,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "infinite-scroll-no-announcement",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 7889,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 6345,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 6641,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7144,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7487,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "pagination-no-nav-landmark",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 7189,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8500,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 5818,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8749,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8537,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "toast-notification-no-role",
+      "found": 4,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "total": 4,
+      "truncated": false
+    },
+    {
+      "chars": 8032,
+      "condition": "titled",
+      "draw": 1,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 8622,
+      "condition": "titled",
+      "draw": 2,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 8402,
+      "condition": "titled",
+      "draw": 3,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 10494,
+      "condition": "titled",
+      "draw": 4,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    },
+    {
+      "chars": 8118,
+      "condition": "titled",
+      "draw": 5,
+      "echoes_title": false,
+      "fixture": "video-player-missing-captions",
+      "found": 3,
+      "model": "qwen36-35b",
+      "per_item": [
+        true,
+        true,
+        true
+      ],
+      "total": 3,
+      "truncated": false
+    }
+  ],
+  "summary": {
+    "fixtures": {
+      "breadcrumb-navigation-no-nav-landmark": {
+        "neutral": {
+          "draws": 5,
+          "found": 10,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 10,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 10,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 10,
+          "truncated": 0
+        }
+      },
+      "checkbox-group-no-fieldset": {
+        "neutral": {
+          "draws": 5,
+          "found": 10,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 10,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 10,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 10,
+          "truncated": 0
+        }
+      },
+      "combobox-autocomplete-no-listbox-role": {
+        "neutral": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        }
+      },
+      "expandable-section-no-button": {
+        "neutral": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        }
+      },
+      "image-carousel-no-region": {
+        "neutral": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        }
+      },
+      "infinite-scroll-no-announcement": {
+        "neutral": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        }
+      },
+      "pagination-no-nav-landmark": {
+        "neutral": {
+          "draws": 5,
+          "found": 15,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 15,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 15,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 15,
+          "truncated": 0
+        }
+      },
+      "toast-notification-no-role": {
+        "neutral": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 20,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 20,
+          "truncated": 0
+        }
+      },
+      "video-player-missing-captions": {
+        "neutral": {
+          "draws": 5,
+          "found": 15,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 15,
+          "truncated": 0
+        },
+        "titled": {
+          "draws": 5,
+          "found": 15,
+          "rate": 1.0,
+          "title_echoes": 0,
+          "total": 15,
+          "truncated": 0
+        }
+      }
+    },
+    "totals": {
+      "delta": 0.0,
+      "neutral": {
+        "found": 150,
+        "rate": 1.0,
+        "title_echoes": 0,
+        "total": 150,
+        "truncated": 0
+      },
+      "titled": {
+        "found": 150,
+        "rate": 1.0,
+        "title_echoes": 0,
+        "total": 150,
+        "truncated": 0
+      }
+    }
+  }
+}
