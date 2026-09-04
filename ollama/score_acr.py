@@ -265,7 +265,6 @@ def check_unattested(meta, notes_field, entries, remainder, must_miss,
         lines = sc_lines(remainder, str(sc))
         if not lines or not any_token("\n".join(lines), toks):
             must_miss.append(f"handoff carries no attestation reason for {sc}")
-    check_closure_notes(meta, entries, must_miss)
 
 
 def check_closure_notes(meta, entries, must_miss):
@@ -584,6 +583,7 @@ def main():
 
     check_unattested(meta, notes_field, entries, remainder, must_miss,
                      should_miss)
+    check_closure_notes(meta, entries, must_miss)  # independent of the gate
 
     # 8. out-of-catalog annex
     annex = meta.get("annex")
