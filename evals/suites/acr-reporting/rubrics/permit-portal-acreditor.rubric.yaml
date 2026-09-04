@@ -9,9 +9,9 @@ dimensions:
     name: "Single parseable OpenACR YAML fence; CLI validate passes"
     tier: must
   - id: orthogonality_resolved
-    name: "2.2.1 = supports despite the CRITICAL trend:resolved finding; the resolved id never cited in its adherence note"
+    name: "2.2.1 = supports despite the CRITICAL trend:resolved finding, using the canonical `Remediated since` note form that cites both the finding_id and the fully-attested, second-confirmed closure's item_id"
     tier: must
-    note: "The trap's first arm: terms come from outcomes, and supports notes carry no finding_id."
+    note: "The trap's first arm: terms come from outcomes. Revised 2026-09-03 for the unattested-closure gate's positive path — an ordinary supports stem with no citation is now a must-miss for this specific SC, the inverse of the pre-gate rule (a non-remediated supports note still carries no finding_id)."
   - id: orthogonality_minor
     name: "1.1.1 = does-not-support despite MINOR severity; all-samples scope stated; id cited"
     tier: must
@@ -51,6 +51,10 @@ dimensions:
   - id: handoff_surface
     name: "Handoff names acreditor as the finish surface and the human-owned steps"
     tier: should
+  - id: handoff_roster
+    name: "Handoff includes an attestation roster listing 2.2.1's closure (item_id, attested_by, second_confirmation.by, version) for the signing author to countersign"
+    tier: should
+    note: "Not yet scored mechanically by score_acr.py (SKILL.md's new Handoff paragraph); adjudicate by reading until a dedicated check lands."
 
 status_semantics:
   PASS: "All must-tier checks pass, no fabrication"

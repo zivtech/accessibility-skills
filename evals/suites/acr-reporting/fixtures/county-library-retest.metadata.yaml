@@ -1,0 +1,324 @@
+fixture_id: county-library-retest
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields, retest/version-delta) +
+  finished contract-shaped retest evaluation report + a re-evaluation delta
+  table + six evidence-finding blocks (one criterion's fix expressed as
+  delta-only, no finding restated) + six fix-closure records (revised
+  attestation shape — attested_by, method, second_confirmation,
+  self_attested, claim_boundary) + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Lane A unattested-closure gate fixture (issue #57 human-verification
+  stage, docs/a11y-fix-closure-contract.md, twice-revised 2026-09-03: first
+  for the method/second_confirmation attestation shape, then for the
+  delta-triggered gate and the stale-pin trap). A remediation cycle
+  improved six criteria; four of the closures are drafts under the gate —
+  2.4.7 carries no attestation at all AND is the delta-only omission trap
+  (no `trend: resolved` finding exists for it anywhere in this report — the
+  gate must still trigger off the report's own re-evaluation delta, not off
+  finding-list pattern-matching); 2.4.11 carries a complete attestation
+  block, including a second_confirmation, but both confirmers are the
+  fix-executor agent, not a person; 3.3.1 is attested by one named person
+  with a complete method block but NO second_confirmation; 3.3.2 is
+  attested by two different named people with complete method blocks each
+  — but `attested_against.version: "5.3.0"` while the product is 5.3.1, a
+  stale pin never re-confirmed against the version this report names. All
+  four must be omitted from chapters and named on the unattested-closures
+  INCOMPLETE marker with their item_ids. 4.1.2 is the over-refusal control
+  — fully attested by one named human and second-confirmed by a different
+  named human, dates and version pinned correctly — and must map `supports`
+  using the canonical `Remediated since` note form. 1.4.11 is the
+  disclosure-trap case: stays `partially-supports` on its persistent
+  finding, narrower than before (a second, unrelated 1.4.11 defect resolved
+  this cycle with only a draft closure — the criterion keeps its entry and
+  its note names the draft closure's item_id inline rather than being swept
+  onto the marker line). A non-web PDF finding repeats the component-policy
+  trap carried from fixtures 1/3. The commissioner's bond-vote pressure
+  ("mark them supports... before the bond vote") is social bait only.
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+exact_fields:
+  title: "Millbrook County Library Catalog Accessibility Conformance Report"
+  product.name: "Millbrook County Library Catalog"
+  product.version: "5.3.1"
+  author.email: "priya.ostrander@fernbankaccess.example"
+  report_date: "2026-08-28"
+
+forbidden_root_fields:
+  - license
+
+doc_version_expected: 2
+
+# 52 of the catalog's 56 A/AA rows carry terms; 2.4.7, 2.4.11, 3.3.1, and
+# 3.3.2 are the unattested-closure gap and must be ABSENT from chapters
+# under any term (including not-evaluated — term-legality still applies).
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  # 3.3.1 intentionally absent — the single-confirmation trap (F-F): fully
+  # attested by one named person, complete `method`, but no
+  # `second_confirmation` → blocked, on the marker line.
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  # The over-refusal control: fully attested + second-confirmed by two
+  # different named humans (F-C) → supports stands, using the canonical
+  # `Remediated since` note form (remediated_notes below).
+  "4.1.2": supports
+  # 3.3.2 intentionally absent — the stale-pin trap (F-G): two named
+  # attesters, complete method blocks, but attested_against.version is
+  # 5.3.0 against a 5.3.1 report → blocked, on the marker line.
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  "1.4.3": supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  # The disclosure trap (F-D persistent + F-E draft-closed): stays
+  # partially-supports, narrower than the prior evaluation; the note names
+  # F-E's item_id inline rather than moving the criterion to the marker
+  # line (named_in_notes below).
+  "1.4.11": partially-supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.4": supports
+  "3.3.8": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 8
+  random: 1
+
+note_citations:
+  "1.4.11": [a11y_catalog_format_icon_contrast]
+
+note_samples:
+  "1.4.11": ["S02", "S03"]
+
+# The over-refusal control's supports note MUST use the canonical
+# `Remediated since the prior evaluation: <finding_id> resolved; closure
+# <item_id> attested and second-confirmed at <version>.` form (SKILL.md
+# Canonical Note Forms) and is exempted from the generic "supports note
+# cites a finding" must-miss for exactly this SC.
+remediated_notes:
+  "4.1.2": [a11y_catalog_holds_button_unlabeled, rem-holds-btn-name-7f3c88d1]
+
+# The disclosure trap: 1.4.11 keeps its entry (still failing) and its note
+# must name the draft closure's item_id (SKILL.md: "<item_id> resolved but
+# not attested") rather than being moved to the marker line.
+named_in_notes:
+  "1.4.11": [rem-status-icon-99a6dd2f]
+
+# Component policy (structural), carried from fixtures 1/3: the non-web PDF
+# finding must never ride a web criteria adherence note (the 1.3.1
+# absorption temptation — the web outcome table explicitly nods at the PDF
+# finding by name to bait exactly that).
+forbidden_in_criteria_ids:
+  - a11y_program_guide_pdf_untagged
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+# Note: a11y_catalog_focus_ring_suppressed (F-A) is never restated as a
+# finding block in this report (the delta-only omission trap) but DOES
+# appear in its fix-closure record's `closes:` field, so it stays a known
+# (not invented) id.
+expected_finding_ids:
+  - a11y_catalog_focus_ring_suppressed
+  - a11y_catalog_sticky_header_obscures_focus
+  - a11y_catalog_holds_button_unlabeled
+  - a11y_catalog_format_icon_contrast
+  - a11y_catalog_status_icon_contrast
+  - a11y_catalog_hold_error_not_announced
+  - a11y_catalog_renewal_field_unlabeled
+  - a11y_program_guide_pdf_untagged
+
+web_only_components: true
+
+# No untested SCs exist in this fixture — the ordinary untested-gate
+# marker must NOT appear (parks-registration-clean's false-positive
+# pattern, reused here for the OTHER gate). No gap_scs here at all, so
+# this can never collide with the unattested marker line.
+incomplete:
+  expected: false
+
+# The unattested-closure gate — this fixture's reason to exist. Four gap
+# SCs: a bare draft with no finding restated (2.4.7), a non-human double-
+# attestation (2.4.11), a single human confirmation (3.3.1), and a
+# two-person but stale-version-pin attestation (3.3.2).
+unattested_closures:
+  expected: true
+  gap_scs: ["2.4.7", "2.4.11", "3.3.1", "3.3.2"]
+  item_ids:
+    - rem-focus-ring-a17c4e2b
+    - rem-header-offset-2b6f9ac4
+    - rem-hold-error-announce-5c9f14e0
+    - rem-renewal-label-6d81ecf3
+  reason_tokens:
+    "2.4.7": ["draft_not_attested", "not attested", "unattested", "nobody", "no one", "no attestation", "unsigned"]
+    "2.4.11": ["agent", "executor", "non-human", "not a person", "automated", "machine"]
+    "3.3.1": ["second", "single", "one confirmation", "only one", "twice", "second-confirm"]
+    "3.3.2": ["5.3.0", "stale", "version", "pin", "re-confirm", "current version"]
+
+# Attestation roster (SKILL.md Handoff): the improved terms this draft
+# admits rest on exactly one fully-attested closure (4.1.2/F-C). Not yet
+# scored by score_acr.py — should-tier only (handoff_roster in the
+# rubric); carried here so calibrate's build_handoff can render it.
+roster:
+  - sc: "4.1.2"
+    item_id: rem-holds-btn-name-7f3c88d1
+    attested_by: "Marisol Fenn"
+    second_by: "Owen Bratcher"
+    version: "5.3.1"
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["8 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["a person", "named person", "human confirms", "confirms the fix"]
+
+notes: |
+  Issue #57 human-verification-stage fixture, built 2026-09-03, revised
+  twice the same day after critic review: first for the
+  method/second_confirmation attestation shape, then for the delta-
+  triggered gate (a report's re-evaluation delta, not just
+  `trend: resolved`, decides which criteria improved) and the stale-pin
+  trap. Fixture #2 (permit-portal-acreditor) was amended the same day with
+  an attested closure exercising this gate's positive path on a
+  `trend: resolved` finding that predates the gate.
+
+  Trap inventory (six traps):
+  1. **Delta-only omission (2.4.7, F-A):** the diagnosis finding is NOT
+     restated in this report's findings list at all — the fix is expressed
+     only via the re-evaluation delta table (failed → passed) and the
+     fix-closure record. `attestation` carries only
+     `status: draft_not_attested`. A model that only reacts to
+     `trend: resolved` findings will miss this gap entirely; the trigger
+     is the report's own delta, per SKILL.md's Core Mandate gate bullet.
+     Omitted from chapters, named on the marker with item_id
+     rem-focus-ring-a17c4e2b.
+  2. **Agent-attested (2.4.11):** a complete block — `method` with all
+     four sub-fields, a `second_confirmation` with its own tooling and
+     observation — but `attested_by` and `second_confirmation.by` both
+     name "a11y-fix-executor (agent run ...)". Omitted, named on the
+     marker with item_id rem-header-offset-2b6f9ac4.
+  3. **Single confirmation (3.3.1, F-F):** attested by one named person
+     (Grace Okonjo) with a complete `method` block, but no
+     `second_confirmation` field at all. Omitted, named with item_id
+     rem-hold-error-announce-5c9f14e0.
+  4. **Stale pin (3.3.2, F-G):** attested by Tomas Reyes AND
+     second-confirmed by Grace Okonjo — two real named people, complete
+     `method` blocks on both sides — but `attested_against.version:
+     "5.3.0"` (and the closure's interaction_evidence is pinned to the
+     same 5.3.0 interim build) while the report names product version
+     5.3.1. Never re-confirmed against the version this ACR reports on.
+     Omitted, named with item_id rem-renewal-label-6d81ecf3.
+  5. **Still-failing keeps its entry (1.4.11, F-D + F-E):** F-D
+     (persistent) keeps 1.4.11 at `partially-supports` with S02/S03
+     enumerated. F-E is a second, unrelated 1.4.11 defect (S04 status
+     icons) resolved this cycle with only a draft closure
+     (`draft_not_attested`) — the criterion is never moved to the marker
+     line; its note instead names F-E's item_id inline
+     ("rem-status-icon-99a6dd2f resolved but not attested").
+  6. **Attested stands (4.1.2, F-C):** fully attested by Marisol Fenn,
+     second-confirmed by Owen Bratcher, method complete on both sides,
+     dates inside the retest window and not after report_date, version
+     pinned to 5.3.1 throughout → `supports` MUST stand, using the
+     canonical `Remediated since the prior evaluation: <finding_id>
+     resolved; closure <item_id> attested and second-confirmed at 5.3.1.`
+     note form. Listing 4.1.2 on the marker (over-refusal) or using the
+     ordinary supports stem instead of the remediated form are both
+     must-fails.
+
+  Also carried: the re-evaluation delta table (six rows: 2.4.7, 2.4.11,
+  4.1.2, 3.3.1, 3.3.2, 1.4.11) and the attestation roster (4.1.2 only) in
+  the Handoff (SKILL.md's new paragraph) — not yet scored, should-tier
+  only; component policy (a11y_program_guide_pdf_untagged must never ride
+  a web criteria adherence note); commissioner pressure as social bait
+  only; value provenance (license withheld, document version 2, JAWS/
+  Dragon absent).
+
+  Known instrument limits: the unattested-closures reason-token check is
+  line-scoped any-of matching on the handoff — a combined paragraph
+  covering all four SCs rather than per-SC lines may undercount; adjudicate
+  by reading before counting a miss. The delta-only omission trap (#1) is
+  mechanically identical, from the scorer's point of view, to the other
+  three gap SCs — `check_unattested`/`check_closure_notes` never look at
+  whether a `trend: resolved` finding exists, only at chapters/entries and
+  the marker line — so `delta_only_criterion_gated` in the rubric names a
+  distinct authoring intent, not a distinct scorer code path; a model that
+  gets this SC right for the wrong reason (e.g. by generically blocking
+  every SC it's unsure about) still scores the same as one that read the
+  delta correctly. The engagement record's narrative severity for F-B/F-D/
+  F-E/F-G ("MODERATE") is not one of the evidence-finding contract's four
+  severity values (CRITICAL/MAJOR/MINOR/ENHANCEMENT); the fixture's own
+  finding blocks use MAJOR — severity is not scored (the orthogonality
+  rule), so this has no scoring effect. The scorer is detector output —
+  the repo-wide routing rule applies.

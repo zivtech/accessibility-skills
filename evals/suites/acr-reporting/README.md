@@ -21,14 +21,67 @@ toolchain validates boilerplate — `openacr validate` accepts a 2-criterion
 fragment and accepts `not-evaluated` on a Level A criterion. The skill's
 gates are the only enforcement layer; this suite is where they are priced.
 
-## Fixtures (4 — plan items 1, 2, 3, 5; Lane B items 4/4b are Phase 3)
+## Fixtures (5 — plan items 1, 2, 3, 5; issue #57 item 6; Lane B items 4/4b are Phase 3)
 
 | # | Fixture | Catalog | Difficulty | What it tests |
 |---|---|---|---|---|
 | 1 | `transit-portal-q3-acr` | 2.5 / WCAG 2.2-508 | COMPLEX | Serialization chain fixture (the finished rcm-2026q3 evaluation, one step downstream of the evaluation-report suite's `transit-portal-q3`): full 56-SC mapping with all five terms exercised, component policy (native + PDF findings stay out of web entries), the 4.1.1 removed-criterion edge, value provenance incl. a withheld license |
-| 2 | `permit-portal-acreditor` | 2.4 / WCAG 2.1-508 | ADVERSARIAL | Orthogonality trap both directions (CRITICAL trend:resolved on a passing SC tempts does-not-support; MINOR sitewide failure tempts supports) + the dual-catalog policy end to end (acreditor surface → 2.1 catalog, six measured 2.2-only outcomes ride the out-of-catalog annex, never dropped, never criteria rows) |
+| 2 | `permit-portal-acreditor` | 2.4 / WCAG 2.1-508 | ADVERSARIAL | Orthogonality trap both directions (CRITICAL trend:resolved on a passing SC tempts does-not-support; MINOR sitewide failure tempts supports) + the dual-catalog policy end to end (acreditor surface → 2.1 catalog, six measured 2.2-only outcomes ride the out-of-catalog annex, never dropped, never criteria rows). Also carries the unattested-closure gate's positive path: its resolved 2.2.1 finding now has a fully attested, second-confirmed fix-closure record, so the term stands unchanged but the note must use the canonical `Remediated since` form. |
 | 3 | `campus-events-untested` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The untested gate: 1.4.13 untested + 3.3.4 cantTell → INCOMPLETE draft (both omitted from chapters, marker + exact gap list opening the document notes, per-SC reasons in the handoff); `not-evaluated` or silent `supports` on either is a must-fail |
 | 5 | `parks-registration-clean` | 2.5 / WCAG 2.2-508 | CLEAN | Complete-bundle false-positive control: all-passing evidence → complete draft with zero spurious gaps, zero INCOMPLETE machinery, zero a11y_* tokens (no findings exist), the evidenced AAA pass mapped supports, and the out-of-scope 2024 rumor left out |
+| 6 | `county-library-retest` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The unattested-closure gate (issue #57), full shape: a remediation retest whose re-evaluation delta lists six improved or narrowed criteria. Four must be omitted and named on a second INCOMPLETE marker with their item_ids — a closure with no attestation whose finding appears only in the delta, never as a `trend: resolved` finding (2.4.7, the delta-only trigger); a complete but non-human double-attestation (2.4.11); one named human confirmation with no second confirmation (3.3.1); two named confirmations pinned to an interim 5.3.0 build against a 5.3.1 report (3.3.2, stale pin). A fully attested and second-confirmed closure (4.1.2) must still map `supports` with the canonical `Remediated since` note form (over-refusal control), and the handoff carries the attestation roster for countersignature. A still-failing criterion (1.4.11) keeps its `partially-supports` entry and names a draft-closed defect inline rather than being swept onto the marker (disclosure trap). A non-web PDF finding repeats the component-policy trap, all under commissioner pressure to publish before a bond vote |
+
+### The unattested-closure gate (fixture 6)
+
+Fixture 3 gates on evidence that was never collected (untested/cantTell).
+Fixture 6 gates on evidence that was collected but never confirmed by a
+person, per the fix-closure contract's revised attestation shape
+([A11y Fix-Closure Contract](../../../docs/a11y-fix-closure-contract.md)):
+a criterion whose term *improves* since the prior evaluation needs a fully
+attested closure — `attestation.status: attested`, a **named human** in
+`attested_by`, `attested_against` equal to the report's product version, a
+`method` block with non-empty `tooling`/`action`/`expected`/`observed`, a
+`second_confirmation` by a different named person (or the same person on a
+later day), and dates inside the evaluation window and not after
+`report_date` — before the criterion's improved outcome may become an ACR
+`supports`. The trigger is the report's own **re-evaluation delta** — the
+outcome-level list of criteria newly passing or failing that the report
+contract requires on every re-run — never an optional field: `trend:
+resolved` is a secondary trigger, so a fix expressed only through the delta
+(no diagnosis finding restated in this report at all) must gate exactly the
+same way a model relying on `trend: resolved` alone would miss it. Four
+distinct ways a closure falls short of full attestation, all scored the
+same way:
+
+1. **No attestation at all** (`status: draft_not_attested` or the block
+   absent).
+2. **Attested by a non-human** — a complete block, including
+   `second_confirmation`, but an agent/model/tool identifier in
+   `attested_by` and/or `second_confirmation.by`.
+3. **Single confirmation** — attested by one named person with a complete
+   `method`, but no `second_confirmation` at all.
+4. **A stale version pin** — two different named people, each with a
+   complete `method` block, but `attested_against.version` (and the
+   closure's `interaction_evidence`) pinned to an earlier build than the
+   version this report names, never re-confirmed against it.
+
+Any of the four gets the criterion omitted from chapters exactly like an
+untested SC, and named on a second document-notes marker line
+(`INCOMPLETE DRAFT — unattested fix-closures on A/AA criteria: <SC
+(item_id), ...>`). The gate never touches a criterion that is **still
+failing** — a `does-not-support` or a `partially-supports` keeps its
+adherence entry even when one of several defects on it has an unattested
+closure; that closure's `item_id` is named inline in the entry's own note
+instead (`<item_id> resolved but not attested`), because dropping a
+disclosed failure would be worse than disclosing it. And a closure that
+clears every bar must be admitted — with the canonical `Remediated since
+the prior evaluation: <finding_id> resolved; closure <item_id> attested
+and second-confirmed at <version>.` note form, the one place a
+`finding_id` belongs in a `supports` note — never refused: over-refusal is
+scored exactly like a spurious untested-gate marker. The handoff for any
+admitted improvement also carries an **attestation roster** (per-closure
+`attested_by`/`second_confirmation.by`/version, for the signing author to
+countersign) — should-tier for now, not yet scored mechanically.
 
 Every fixture is a **triplet**: `fixtures/<id>.md` (the engagement record +
 finished evaluation report + finding blocks + catalog frame, sent to the
