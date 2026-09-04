@@ -2,7 +2,7 @@
 
 Twelve skills ship in `.claude/skills/`. Nine are for doing accessibility work; three are for working on this repository.
 
-Each has a Codex-compatible mirror under `.agents/skills/`, kept byte-identical by `scripts/check_mirrors.py --strict` in CI.
+Each has a Codex-compatible mirror under `.agents/skills/`, kept byte-identical by `scripts/check_mirrors.py --strict` in CI. The one declared exception is `a11y-planner`, whose eight-line Claude/Codex terminology divergence is pinned by count and content fingerprint in the script's `PARITY_EXEMPTIONS`; changing it fails the gate until the record is updated. (`a11y-role-audit` has a Codex mirror too, but a deliberately condensed one, declared as a non-mirror pair.)
 
 ---
 
@@ -121,3 +121,5 @@ These operate on this repo rather than on a client's code.
 `.claude/agents/` carries nine agent prompts. Five back the workflow lane (`a11y-scout`, `a11y-planner`, `a11y-critic`, `perspective-audit`, `a11y-role-auditor`); four maintain the eval suites (`bench-runner`, `bench-reporter`, `bench-reviewer`, `fixture-builder`).
 
 Agent definitions can drift from their SKILL.md source. A marker-based drift check in `scripts/check_mirrors.py --strict` catches it in CI — added after a real instance where the planner agent definition predated a skill change by weeks.
+
+The same script gates full-text parity on the skill mirrors themselves — added after a CRITICAL a11y-critic guard shipped to the Claude surface only on 2026-08-25 and `--strict` stayed green, because a body-prose edit changes no heading and no URL (issue #27). `--self-test` proves that perturbation now fails.

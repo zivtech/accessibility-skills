@@ -35,5 +35,7 @@ jobs:
         run: python3 ollama/test_blind_prompts.py --self-test
       - name: Blind-prompt guard (answer keys, hints, cut lines, headings, titles)
         run: python3 ollama/test_blind_prompts.py
+      - name: Mirror parity guard self-test (parity checks must fire)
+        run: python3 scripts/check_mirrors.py --self-test
       - name: Mirror drift check (strict)
         run: python3 scripts/check_mirrors.py --strict
