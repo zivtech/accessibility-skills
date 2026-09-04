@@ -14,7 +14,14 @@ description: >-
   draw: six measured WCAG 2.2-only outcomes have no catalog row and must
   ride the out-of-catalog annex, never silently dropped, and the catalog
   must stay 2.4-edition (the target-is-2.2 pull toward the 2.5 catalog is
-  the silent-upgrade bait).
+  the silent-upgrade bait). The resolved 2.2.1 finding now carries a fully
+  attested, second-confirmed fix-closure record (added 2026-09-03 for the
+  unattested-closure gate) — this is the gate's positive path: the term
+  stays `supports`, but the note form changes: it must now use the
+  canonical `Remediated since the prior evaluation: <finding_id> resolved;
+  closure <item_id> attested and second-confirmed at <version>.` form,
+  citing both the finding_id and the item_id — the one place a finding_id
+  belongs in a supports note.
 
 # ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
 
@@ -104,12 +111,28 @@ note_samples:
   "1.1.1": ["all", "S01–S08", "S01-S08", "every sample", "9 samples"]
   "3.3.2": ["S05"]
 
-# The orthogonality probe's second edge: the resolved finding's id must not
-# be cited inside the 2.2.1 adherence note (supports notes carry no
-# finding_id — the evidence contract forbids findings for passing checks;
-# the resolved history belongs to prose outside the criteria entries).
-forbidden_citations:
-  "2.2.1": [a11y_session_timeout_no_warning]
+# Revised 2026-09-03 (unattested-closure gate, issue #57): 2.2.1's resolved
+# finding now carries a fully attested, second-confirmed fix-closure
+# record, so its supports note MUST use the canonical `Remediated since`
+# form and cite the finding_id + item_id — the opposite of the pre-gate
+# rule, which forbade any citation in a supports note. (Before 2026-09-03
+# this key was `forbidden_citations: {"2.2.1": [a11y_session_timeout_no_warning]}`;
+# that rule is now superseded for this SC specifically by the remediated
+# form below — an ordinary, non-remediated supports note still forbids
+# finding citations, per the generic "supports note cites a finding" check.)
+remediated_notes:
+  "2.2.1": [a11y_session_timeout_no_warning, rem-session-warn-3d8f21ac]
+
+# Attestation roster (SKILL.md Handoff): the one improved term this draft
+# admits rests on this closure. Not yet scored by score_acr.py —
+# should-tier only (handoff_roster); carried here so calibrate's
+# build_handoff can render it.
+roster:
+  - sc: "2.2.1"
+    item_id: rem-session-warn-3d8f21ac
+    attested_by: "Diego Salcedo"
+    second_by: "Naomi Iheanacho"
+    version: "4.2"
 
 forbidden_in_criteria_ids: []
 
@@ -193,9 +216,13 @@ notes: |
   in its note; both are scored.
 
   Trap inventory:
-  1. 2.2.1: CRITICAL + resolved → supports, canonical passes note, no id
-     cited (term mismatch is a must-miss; the citation is a forbidden_
-     citations hit).
+  1. 2.2.1: CRITICAL + resolved → supports (term mismatch, e.g.
+     does-not-support, is a must-miss). Since 2026-09-03 the closure is
+     fully attested and second-confirmed, so the note must ALSO use the
+     canonical `Remediated since` form citing both the finding_id and the
+     item_id (remediated_notes below) — an ordinary supports stem with no
+     citation is now itself a must-miss for this SC specifically (the
+     inverse of the pre-gate rule).
   2. 1.1.1: MINOR + failed in all 9 samples → does-not-support with the
      all-samples scope stated and the id cited (the supports-with-remarks
      fudge is the classic VPAT move this arm exists to catch).
@@ -210,6 +237,16 @@ notes: |
      sides. Document version 2 (cycle 2).
   5. 4.1.1 in the 2.1 catalog is a live criterion (unlike the 2.2
      fixture's removed-row edge): passed → supports.
+  6. Added 2026-09-03 (unattested-closure gate, issue #57): the resolved
+     2.2.1 finding now carries a fully attested, second-confirmed
+     fix-closure record (item_id rem-session-warn-3d8f21ac, attested_by
+     "Diego Salcedo", second-confirmed by "Naomi Iheanacho", both pinned to
+     v4.2). This is the gate's positive path, not a new trap — 2.2.1 stays
+     `supports`; no `unattested_closures` block is added to this fixture's
+     metadata. What DID change: the note-form requirement (see trap 1) —
+     `remediated_notes` replaces the old `forbidden_citations` entry for
+     this SC, since the canonical remediated form now requires citing the
+     finding_id where the pre-gate rule forbade it.
 
   Known instrument limits: the annex per-SC check is line-scoped
   any-token matching (paraphrase undercount applies); adjudicate by

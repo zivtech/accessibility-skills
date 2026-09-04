@@ -198,6 +198,38 @@ evidence: payment step re-asks the applicant address entered at the application 
 trend: new
 ```
 
+### Fix-closure records (a11y-test / remediation lane, abbreviated)
+
+```
+item_id: rem-session-warn-3d8f21ac
+closes: a11y_session_timeout_no_warning
+original_observation: CYCLE 1 (2025): applicant sessions expired at 20 minutes with no warning and no extend control, discarding in-progress applications
+root_cause_triage: C-implement-fresh
+fix_approach: added a warning dialog at 15 minutes with a keyboard-operable extend control, shipped in v4.2
+interaction_evidence: keyboard trace on v4.2 (Firefox, no AT) — dialog appears at the 15-minute mark in S04, S06, and both P01 branches; Tab reaches the extend control, Enter dismisses the dialog and resets the session timer
+commit: PR #216 (alderglen-permits-web@4.2)
+attestation:
+  status: attested
+  attested_by: "Diego Salcedo"
+  attester_role: "accessibility QA lead, Cardinal Accessibility Group"
+  attested_at: 2026-07-29T10:05:00Z
+  attested_against:
+    version: "4.2"
+  attested_under: "WCAG-EM 2.0 retest"
+  self_attested: false
+  method:
+    tooling: "NVDA 2026.1 + Firefox 141, keyboard only, on the v4.2 production build"
+    action: "Sat idle on S04 until the 15-minute warning fired, tabbed to the extend control, pressed Enter"
+    expected: "The warning dialog announces itself, the extend control is reachable, and Enter resets the session timer"
+    observed: "Dialog announced; Tab reached the extend control; Enter dismissed the dialog and reset the session timer"
+  second_confirmation:
+    by: "Naomi Iheanacho"
+    at: 2026-07-30T11:20:00Z
+    tooling: "VoiceOver + Safari 18, keyboard only, on the v4.2 production build"
+    observed: "Same result on S06: dialog announced at the 15-minute mark, extend control reachable, timer reset"
+  claim_boundary: "Confirms rem-session-warn-3d8f21ac no longer reproduces at 4.2 for the S04/S06 session-timeout interaction. Not a re-evaluation of 2.2.1 across the sample set; nothing about other timed interactions."
+```
+
 ### Coverage boundary
 
 None — every in-scope surface is a web view reachable by the web

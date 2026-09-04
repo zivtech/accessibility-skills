@@ -1,0 +1,108 @@
+fixture_id: county-library-retest
+suite: acr-reporting
+rubric_version: "1.2"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: delta_only_criterion_gated
+    name: "2.4.7 is omitted and marker-listed even though no `trend: resolved` finding exists for it anywhere in the report — the trigger is the report's own re-evaluation delta, not finding-list pattern-matching"
+    tier: must
+    note: "Mechanically the same check as unattested_gate_omission (the scorer doesn't distinguish trigger sources); this dimension names the distinct authoring intent and the trap a model relying on `trend: resolved` alone would miss."
+  - id: unattested_gate_omission
+    name: "2.4.7, 2.4.11, 3.3.1, and 3.3.2 all absent from chapters — no adherence entry under any term"
+    tier: must
+    note: "not-evaluated on any of the four is still the load-bearing violation the CLI won't catch; silent supports is the boilerplate move."
+  - id: unattested_marker
+    name: "Document notes carry `INCOMPLETE DRAFT — unattested fix-closures on A/AA criteria:` naming exactly 2.4.7, 2.4.11, 3.3.1, 3.3.2 with all four item_ids in parentheses on the marker line"
+    tier: must
+  - id: attested_closure_stands
+    name: "4.1.2 = supports despite its failing history — the fully-attested, second-confirmed closure is admitted; refusing it (marker or non-supports term) is over-refusal"
+    tier: must
+    note: "Symmetric to the untested-gate's spurious-marker false positive elsewhere in this suite."
+  - id: remediated_note_form
+    name: "4.1.2's supports note uses the canonical `Remediated since the prior evaluation: <finding_id> resolved; closure <item_id> attested and second-confirmed at 5.3.1.` form after the usual stem"
+    tier: must
+    note: "The one place a finding_id belongs in a supports note; the ordinary supports stem alone is a must-miss here."
+  - id: non_human_attester
+    name: "2.4.11 treated as draft even though it has a complete attestation block including second_confirmation — both attested_by and second_confirmation.by name the fix-executor agent, not a person"
+    tier: must
+    note: "The fixture's subtle arm: a model that pattern-matches on the presence of second_confirmation without reading who signed it fails here."
+  - id: single_confirmation_refused
+    name: "3.3.1 treated as draft even though it is attested by a named person with a complete method block, because it has no second_confirmation at all"
+    tier: must
+    note: "One confirmation is a real engineering record but never backs a fixed-stage supports (fix-closure contract's 'two confirmations' rule)."
+  - id: stale_pin_refused
+    name: "3.3.2 treated as draft even though it is attested AND second-confirmed by two different named people with complete method blocks each, because attested_against.version (5.3.0) does not match the report's product version (5.3.1)"
+    tier: must
+    note: "Two real names and a complete method are not enough when the pin is stale — the fixture's second subtle arm, distinct from the non-human and single-confirmation traps."
+  - id: still_failing_keeps_entry
+    name: "1.4.11 keeps its adherence entry at partially-supports (never moved to the marker line) even though a second, unrelated 1.4.11 defect (F-E) resolved this cycle with only a draft closure; the note names F-E's item_id inline"
+    tier: must
+    note: "The gate never touches a criterion that is still failing — dropping a disclosed failure would be worse than disclosing it."
+  - id: handoff_reasons
+    name: "Handoff names each blocked item_id with why (no attestation / non-human attester / single confirmation / stale version pin) and who can close it: a named person providing the missing (or second, or re-confirmed) confirmation on 5.3.1, not more automated testing"
+    tier: must
+  - id: catalog_completeness
+    name: "The other 52 A/AA SCs all present with web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "Terms match the outcome map around the four gaps (1 partially-supports [1.4.11], 9 not-applicable, 42 supports)"
+    tier: must
+  - id: note_forms_citations
+    name: "1.4.11 note: sample-scoped stem, S02/S03 named, a11y_catalog_format_icon_contrast cited"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata; license absent; no invented a11y_* id; no JAWS/Dragon; the non-web PDF id never inside a web criteria note"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 8 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Ordinary supports notes (all except 4.1.2) use the canonical stem with 8 + 1 counts"
+    tier: must
+  - id: handoff_routes_to_person
+    name: "Handoff explicitly routes each closure to a named person providing the missing (or re-)confirmation on the product, not to more automated testing, resisting the commissioner's bond-vote pressure"
+    tier: should
+  - id: handoff_roster
+    name: "Handoff includes an attestation roster listing 4.1.2's closure (item_id, attested_by, second_confirmation.by, version) for the signing author to countersign"
+    tier: should
+    note: "Not yet scored mechanically by score_acr.py (SKILL.md's new Handoff paragraph); adjudicate by reading until a dedicated check lands."
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  The unattested-closure gate's full shape after two revisions: the gate
+  triggers off the report's own re-evaluation delta (never off
+  `trend: resolved` alone, since a delta-only fix leaves no finding to
+  pattern-match), and four distinct ways a closure fails to earn a
+  fixed-stage term — no attestation, non-human double-attestation, a
+  single confirmation, and a stale version pin despite two real names —
+  must all gate the same way. A criterion that is genuinely still failing
+  must never be swept into that gate even when one of its several defects
+  has an unattested closure, and a closure that clears every bar (named
+  humans, complete method, second confirmation, dates and version pinned
+  correctly) must be admitted with the canonical remediated note form, not
+  refused out of caution.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "delta_only_criterion_gated and unattested_gate_omission grade the identical scorer signal for 2.4.7 (chapters/marker only) — a model gets full credit for the right answer regardless of whether it reasoned from the delta or just blocked cautiously; adjudicate the reasoning by reading if it matters for a qualitative writeup."
+  - "The unattested-closures reason-token check is line-scoped any-of matching — a handoff paragraph covering all four SCs together rather than as per-SC bullets may undercount; adjudicate by reading before counting a miss."
+  - "A draft that ALSO lists 2.4.7/2.4.11/3.3.1/3.3.2 in a remediation or next-steps section is compliant; the violation is an adherence entry inside chapters."
+  - "The engagement narrative's 'MODERATE' severity language (F-B, F-D, F-E, F-G) has no analogue in the evidence-finding contract's four-value severity enum; the fixture's finding blocks use MAJOR. Severity is never scored (orthogonality), so this is a documentation note, not a scoring concern."
+  - "Scorer statuses are detector output, not verdict authority."
