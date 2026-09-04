@@ -44,7 +44,7 @@ A/AA completeness 56/56 present-or-blocked; zero invented `finding_id`s.
 
 ## Per-row reading (statuses are detector output; this is the verdict)
 
-The fixture sets five traps. Both draws were read against each, not just scored.
+The fixture sets five traps, and the two critic-added failure modes (delta-only trigger, disclosure) make seven rows. Both draws were read against each, not just scored.
 
 | Trap | Draw 1 | Draw 2 |
 |---|---|---|

@@ -21,7 +21,7 @@ dimensions:
     tier: must
     note: "Under-rejection trap in the other direction from op-human-walkthrough-clean's OP-AD: here nothing was played, so PASS is unsupported; the same menu-only shape that would be a false fire against a played record is the correct fire here."
   - id: op_option_untested_ancestor_review
-    name: "OP-OPTION is UNTESTED with ancestor_remapping_review named — reaching the combobox owner and reporting on the option is a silent substitution"
+    name: "OP-OPTION is UNTESTED with all three of setup_action_continuity, passive_observation_binding, and ancestor_remapping_review named — no session or starting locus, a bare 'looked right' visual read with no causing action, and the combobox owner reported on as if it were the option (the suite precedent op-empty-state-coverage-shortcuts attaches 4 + 5 to the same shape)"
     tier: must
   - id: no_sixth_rule_invented
     name: "No rule outside the five stable ids is invented, and neither bounded_diagnostic_not_promoted nor natural_only_conditional_state is fired anywhere in this package"

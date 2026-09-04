@@ -57,6 +57,24 @@ must_catch:
       description is present or adequate.
     hook_present: ["lists a", "Described"]
     hook_absent_in_evidence: ["played", "heard"]
+  - id: setup_action_continuity
+    operation: OP-OPTION
+    why: >-
+      "Tabbed to the filter" names no session, no starting locus, and no
+      path a second person could retrace; the same deficiency the fixture
+      cites for OP-RETURN. Continuity cannot be shown for an action whose
+      `before` is not stated.
+    hook_present: ["Tabbed to the filter"]
+    hook_absent_in_evidence: ["session", "reached_by", "locus"]
+  - id: passive_observation_binding
+    operation: OP-OPTION
+    why: >-
+      "looked right" is a bare visual read of a state with no `observed_via`,
+      no causing key press named for the option itself, and no announced or
+      visible result of an action — a passive observation offered as the
+      whole observation, which rule 4 never admits standalone.
+    hook_present: ["looked right"]
+    hook_absent_in_evidence: ["observed_via", "announced", "ArrowDown"]
   - id: ancestor_remapping_review
     operation: OP-OPTION
     why: >-

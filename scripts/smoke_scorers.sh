@@ -448,6 +448,8 @@ run_case "opevidence ophumansig gold (PASS)" "$OP_SCORER" \
     "opevidence-ophumansig-gold-response.json" "$OS_META" \
     "+ setup_action_continuity under OP-RETURN" \
     "+ passive_observation_binding under OP-AD" \
+    "+ setup_action_continuity under OP-OPTION" \
+    "+ passive_observation_binding under OP-OPTION" \
     "+ ancestor_remapping_review under OP-OPTION" "Status: PASS"
 
 # Case 68: opevidence ophumansig trap — accepts the whole signature-only
