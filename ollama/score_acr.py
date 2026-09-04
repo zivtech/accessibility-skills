@@ -61,6 +61,9 @@ DISABLED_STEM = "Outside the web evaluation method's coverage:"
 INCOMPLETE_RE = re.compile(
     r"INCOMPLETE DRAFT\s*[—–-]+\s*untested A/AA criteria:", re.IGNORECASE)
 SC_TOKEN_RE = re.compile(r"\b\d\.\d+\.\d+\b")
+UNATTESTED_RE = re.compile(
+    r"INCOMPLETE DRAFT\s*[—–-]+\s*unattested fix-closures on A/AA criteria:",
+    re.IGNORECASE)
 FAIL_CLASS = ("fail", "not met", "does-not-support", "does not support",
               "partially-supports", "partially supports")
 PASS_CLASS = ("pass", "supports", "met")
@@ -205,6 +208,58 @@ def any_token(text, tokens):
 def sc_lines(text, sc):
     return [l for l in text.splitlines() if sc in l]
 
+def unattested_gap_scs(meta):
+    ua = meta.get("unattested_closures") or {}
+    return [str(s) for s in ua.get("gap_scs", [])] if ua.get("expected") else []
+
+
+def check_unattested(meta, notes_field, entries, remainder, must_miss,
+                     should_miss):
+    """7b. The unattested-closure gate (SKILL.md 'INCOMPLETE Drafts').
+
+    Metadata contract: unattested_closures: {expected, gap_scs, item_ids,
+    reason_tokens}. Fixtures without `expected` get the false-positive
+    branch: any unattested-closures marker is a must-fail.
+    """
+    ua = meta.get("unattested_closures") or {}
+    m = UNATTESTED_RE.search(notes_field)
+    if not ua.get("expected"):
+        if m:
+            must_miss.append("spurious unattested-closures marker on "
+                             "attested or absent closures (false-positive "
+                             "control)")
+        return
+    gap = [str(s) for s in ua.get("gap_scs", [])]
+    print(f"\nUnattested-closure gate: marker {'present' if m else 'ABSENT'}")
+    if not m:
+        must_miss.append("document notes lack the unattested-closures marker")
+    else:
+        line = notes_field[m.end():].split("\n", 1)[0]
+        listed = set(SC_TOKEN_RE.findall(line))
+        over = sorted(listed - set(gap))
+        if over:
+            must_miss.append(f"attested closure listed as unattested: "
+                             f"{', '.join(over)} (over-refusal)")
+        under = sorted(set(gap) - listed)
+        if under:
+            must_miss.append(f"unattested-closures line omits {', '.join(under)}")
+        for item in ua.get("item_ids") or []:
+            if str(item) not in line and str(item) not in remainder:
+                must_miss.append(f"closure item_id {item} named nowhere "
+                                 f"(marker line or handoff)")
+        inc = INCOMPLETE_RE.search(notes_field)
+        if inc and inc.start() > m.start():
+            should_miss.append("untested marker line should precede the "
+                               "unattested-closures line")
+    present = [sc for sc in gap if sc in entries]
+    if present:
+        must_miss.append(f"blocked SC(s) carry adherence entries: "
+                         f"{', '.join(present)} (the attestation gate)")
+    for sc, toks in (ua.get("reason_tokens") or {}).items():
+        lines = sc_lines(remainder, str(sc))
+        if not lines or not any_token("\n".join(lines), toks):
+            must_miss.append(f"handoff carries no attestation reason for {sc}")
+
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
@@ -283,6 +338,7 @@ def main():
     gap_scs = [str(s) for s in (meta.get("incomplete") or {}).get(
         "gap_scs", [])] if (meta.get("incomplete") or {}).get(
         "expected") else []
+    gap_scs = gap_scs + unattested_gap_scs(meta)
     if cat:
         missing = [sc for sc in cat["a"] + cat["aa"]
                    if sc not in entries and sc not in gap_scs]
@@ -469,11 +525,12 @@ def main():
                                    "the document notes")
             line = notes_field[m.end():].split("\n", 1)[0]
             listed = set(SC_TOKEN_RE.findall(line))
-            expected_gaps = set(gap_scs)
+            expected_gaps = set(str(x) for x in inc.get("gap_scs", []))
             if listed != expected_gaps:
                 must_miss.append(f"gap list is {sorted(listed)}, expected "
                                  f"{sorted(expected_gaps)}")
-        present = [sc for sc in gap_scs if sc in entries]
+        untested_gaps = [str(x) for x in inc.get("gap_scs", [])]
+        present = [sc for sc in untested_gaps if sc in entries]
         if present:
             must_miss.append(f"blocked SC(s) carry adherence entries: "
                              f"{', '.join(present)} (the untested gate)")
@@ -485,6 +542,9 @@ def main():
         if INCOMPLETE_RE.search(notes_field):
             must_miss.append("spurious INCOMPLETE marker on complete "
                              "evidence (false-positive control)")
+
+    check_unattested(meta, notes_field, entries, remainder, must_miss,
+                     should_miss)
 
     # 8. out-of-catalog annex
     annex = meta.get("annex")
