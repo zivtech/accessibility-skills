@@ -1,4 +1,4 @@
-# Operation-evidence package — OP-CLOSE + OP-OPTION (mixed package)
+# Operation-evidence package — OP-CLOSE + OP-OPTION
 
 You are reviewing the evidence package a retest run produced for two planned
 operations, both claimed PASS by the run. A package is mixed by default —

@@ -1,0 +1,124 @@
+fixture_id: op-human-signature-only
+suite: a11y-test-operation-evidence
+input_format: five human-sourced operation records, one complete Shape 1 package, three under-specified signatures, and one fully shaped package whose observed line is empty of observation
+difficulty: MODERATE
+description: >-
+  A mixed human-sourced package: five operations from the same walk, all
+  claimed PASS, where exactly one operation's evidence is admissible. OP-ESC
+  is the well-formed Shape 1 package (session, continuous before/action
+  identity, an announced result) — its PASS should stand. The other three are
+  the walk-through reference's under-specified shape ("I checked it; it's
+  fine") in three different guises: OP-RETURN has no `before`, `action`, or
+  `observed` detail at all; OP-AD reports only that the CC/AD menu lists a
+  track, with nothing played or heard; OP-OPTION reports the nested option's
+  state with no owner/descendant mapping cited for how it was reached; and
+  OP-LABEL is the tidier failure — every Shape 1 field present, `before` and
+  `action` real, and `observed: "As expected"`, which restates `expected` and
+  observes nothing, so rule 4 alone fires (no observed result of the action
+  is bound to it). A competent review attributes the rejection to each
+  specific operation, leaves
+  OP-ESC's PASS untouched, and does not invent a sixth rule or reach for
+  natural_only_conditional_state or bounded_diagnostic_not_promoted — the
+  reference is explicit that the existing five rules already cover this case.
+
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
+
+expected_admissibility: REJECT
+expected_dispositions:
+  OP-ESC: PASS
+  OP-RETURN: UNTESTED
+  OP-AD: UNTESTED
+  OP-OPTION: UNTESTED
+  OP-LABEL: UNTESTED
+rules_violated_must_be_empty_for: [OP-ESC]   # any rule attached to OP-ESC here is a false fire (must-tier)
+expected_verdict_must_not:
+  # assertion-shaped only: a correct rejection naturally quotes the claim it
+  # rejects ("the OP-AD PASS claim rests on…"), so claim-shaped phrases are
+  # never listed here — check_dispositions catches the real failure
+  - "package accepted"
+  - "all five operations pass"
+  - "admissible as a whole"
+
+must_catch:
+  - id: setup_action_continuity
+    operation: OP-RETURN
+    why: >-
+      "Checked the Renew dialog; focus return works fine now" has no starting
+      locus and no session — rule 2 cannot be shown without a `before` identity
+      and an action continuous with it.
+    hook_present: ["works fine"]
+    hook_absent_in_evidence: ["before", "session", "reached_by"]
+  - id: passive_observation_binding
+    operation: OP-RETURN
+    why: >-
+      The record has no action for an observation to bind to — "works fine"
+      names no causing key press and no announced or visible result.
+    hook_present: ["works fine"]
+    hook_absent_in_evidence: ["Escape", "announced", "observed_via"]
+  - id: passive_observation_binding
+    operation: OP-AD
+    why: >-
+      A track listed in a menu is not a track heard. Nothing was played and
+      nothing was heard, so the menu listing cannot stand alone as evidence the
+      description is present or adequate.
+    hook_present: ["lists a", "Described"]
+    hook_absent_in_evidence: ["played", "heard"]
+  - id: setup_action_continuity
+    operation: OP-OPTION
+    why: >-
+      "Tabbed to the filter" names no session, no starting locus, and no
+      path a second person could retrace; the same deficiency the fixture
+      cites for OP-RETURN. Continuity cannot be shown for an action whose
+      `before` is not stated.
+    hook_present: ["Tabbed to the filter"]
+    hook_absent_in_evidence: ["session", "reached_by", "locus"]
+  - id: passive_observation_binding
+    operation: OP-OPTION
+    why: >-
+      "looked right" is a bare visual read of a state with no `observed_via`,
+      no causing key press named for the option itself, and no announced or
+      visible result of an action — a passive observation offered as the
+      whole observation, which rule 4 never admits standalone.
+    hook_present: ["looked right"]
+    hook_absent_in_evidence: ["observed_via", "announced", "ArrowDown"]
+  - id: ancestor_remapping_review
+    operation: OP-OPTION
+    why: >-
+      Reaching "the filter" (the combobox owner) and reporting on the option
+      inside it, with no mapping cited, has not observed the target — a silent
+      ancestor substitution, not a reviewed owner/descendant mapping.
+    hook_present: ["Tabbed to the filter"]
+    hook_absent_in_evidence: ["mapping", "ancestor", "owner"]
+
+  - id: passive_observation_binding
+    operation: OP-LABEL
+    why: >-
+      Every field is present and the setup is continuous, but "As expected"
+      is not an observation: no announced result of the Tab press is bound
+      to the action — the person restated `expected` where `observed` goes.
+      Rule 4 fires alone; rules 2 and 5 are honored, and firing either is
+      over-flagging.
+    hook_present: ["As expected"]
+    hook_absent_in_evidence: ["Renew, button"]
+nice_to_have:
+  - ["per-operation", "attribution", "signature", "not an observation"]
+  - ["UNTESTED", "no sixth rule"]
+
+notes: |
+  Built for issue #57 Phase 2 (human verification walk-through) as the
+  under-rejection/over-rejection counterpart to op-human-walkthrough-clean.
+  Same generic component family as the rest of the suite (a results table with
+  a filter combobox and a details dialog) plus one media element; no
+  engagement identifiers, routes, selectors, counts, or real names — initials
+  only, per the reference's own convention. WCAG 2.2 AA scope throughout, no
+  baseline citations.
+
+  Deliberately does NOT list bounded_diagnostic_not_promoted or
+  natural_only_conditional_state anywhere in must_catch: none of the four
+  operations involves a stagnation diagnostic or a conditional state, and the
+  walk-through reference is explicit that the under-specified package needs no
+  sixth rule — the five existing rules already have something to read. Firing
+  either of those two rules here is over-flagging the scorer's exhaustive
+  must_catch check already catches.
+
+  Detector output, not verdict authority.

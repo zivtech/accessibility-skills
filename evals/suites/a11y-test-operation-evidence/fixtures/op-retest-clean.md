@@ -1,4 +1,4 @@
-# Operation-evidence package — OP-CLOSE + OP-EMPTY + OP-OPTION (well-formed)
+# Operation-evidence package — OP-CLOSE + OP-EMPTY + OP-OPTION
 
 You are reviewing the evidence package a retest run produced for three planned
 operations. Decide whether the package is admissible as evidence for the claims

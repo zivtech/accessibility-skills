@@ -1,0 +1,44 @@
+fixture_id: op-human-walkthrough-clean
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py
+
+dimensions:
+  - id: human_package_accepted_admissible
+    name: "The human-sourced package is accepted as admissible evidence, not discounted for being self-reported"
+    tier: must
+    note: "OP-RETURN's before/action/observed fields and the second confirmation are the structured self-report the walk-through reference calls for; dismissing them as 'just a signature' is a false positive."
+  - id: op_flash_blocked_not_untested
+    name: "OP-FLASH stays BLOCKED — an admitted, bounded observation with no analyzer reading — and is not collapsed to UNTESTED"
+    tier: must
+    note: "UNTESTED means nobody looked. Someone watched three full cycles and reported what they saw; that observation is admitted evidence about the operation standing without the reading that would decide it."
+  - id: op_ad_fail_accepted_on_played_observation
+    name: "OP-AD's FAIL is accepted on the strength of a played-and-heard record, and is not flagged as a passive menu observation or held for a second confirmation"
+    tier: must
+    note: "The person played specific positions with and without the track and reports what was heard, not merely that the menu lists a track. A single FAIL needs no second confirmation — that rule governs a PASS."
+  - id: no_rule_fired_against_structured_self_report
+    name: "No admissibility rule is fired against evidence that honors it — rules_violated is empty for every operation"
+    tier: must
+    note: "Rules 2 and 4 are self-report for human evidence by design; a reviewer that treats the self-report form itself as a violation, rather than checking whether the required fields are present, over-flags a clean package."
+
+status_semantics:
+  PASS: "All three claims accepted with correct dispositions (OP-RETURN PASS, OP-FLASH BLOCKED, OP-AD FAIL); no rule mis-fired"
+  WARN: "Correct overall but hedges one disposition without cause, or omits an operation from claim_boundary"
+  FAIL: "Any rule flagged against evidence that honors it, OP-FLASH read as UNTESTED, OP-AD read as needing a second confirmation or as a passive observation, or any disposition wrong"
+
+focus: >-
+  False-alarm resistance for human-sourced evidence specifically. Every field
+  the five admissibility rules read has an admissible human-sourced form (a
+  structured before/action/observed record, an honest BLOCKED, a played-and-
+  heard media record), and this package is built entirely from those forms.
+  The graded behavior is leaving a clean human package alone — including the
+  two dispositions (BLOCKED, single-FAIL-no-second-confirmation) a reviewer
+  calibrated only on machine evidence is most likely to get wrong.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) and references/human-verification-walkthrough.md as the standard under test"
+known_judgment_calls:
+  - "The discriminating signal is whether each rule and each disposition definition is honored for human-sourced evidence specifically, not surface phrasing — the vocabulary matches op-human-signature-only on purpose."
+  - "A response that separately notes OP-RETURN's second confirmation as the PASS's second-package requirement, and OP-AD's FAIL as not needing one, is a defensible bonus, not required for PASS."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority."

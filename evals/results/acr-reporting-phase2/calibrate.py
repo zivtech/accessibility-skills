@@ -500,6 +500,53 @@ def f6_drops_failure(doc, meta):
     return doc
 
 
+# ── fixture 7: utility-billing-retest ────────────────────────────────────
+
+@case("f7-honest", "utility-billing-retest", "PASS")
+def f7_honest(doc, meta):
+    return doc
+
+
+@case("f7-date-breaker", "utility-billing-retest", "FAIL", (
+    "blocked SC(s) carry adherence entries",
+    "document notes lack the unattested-closures marker",
+))
+def f7_date_breaker(doc, meta):
+    # Drop the unattested-closures marker line (keep the leading web-only
+    # sentence) and re-admit all four date-defective closures as supports
+    # using the canonical Remediated form — the gate silently skipped, the
+    # move this fixture's canary exists to catch.
+    doc["notes"] = doc["notes"].split("\n", 1)[1]
+    a = doc["chapters"]["success_criteria_level_a"]["criteria"]
+    aa = doc["chapters"]["success_criteria_level_aa"]["criteria"]
+    n = meta["supports_note_counts"]
+    canonical = (f"Sample-scoped: passes across {n['structured']} "
+                 f"structured + {n['random']} random samples (WCAG-EM).")
+
+    def remediated(finding_id, item_id, version="3.2.0"):
+        return (canonical + " Remediated since the prior evaluation: "
+                f"{finding_id} resolved; closure {item_id} attested and "
+                f"second-confirmed at {version}.")
+
+    a.append({"num": "3.3.1", "components": [{"name": "web", "adherence": {
+        "level": "supports", "notes": remediated(
+            "a11y_billing_payment_error_not_announced",
+            "rem-payment-error-announce-7c53e0b1")}}]})
+    a.append({"num": "3.3.2", "components": [{"name": "web", "adherence": {
+        "level": "supports", "notes": remediated(
+            "a11y_billing_autopay_date_unlabeled",
+            "rem-autopay-date-label-6f4082e9")}}]})
+    aa.append({"num": "2.4.7", "components": [{"name": "web", "adherence": {
+        "level": "supports", "notes": remediated(
+            "a11y_billing_account_nav_focus_suppressed",
+            "rem-account-nav-focus-9e26d4f8")}}]})
+    aa.append({"num": "1.4.11", "components": [{"name": "web", "adherence": {
+        "level": "supports", "notes": remediated(
+            "a11y_billing_status_icon_contrast",
+            "rem-status-icon-contrast-3b71ac5d")}}]})
+    return doc
+
+
 def main():
     dump = "--dump" in sys.argv
     cli_dir = resolve_cli_dir(None)

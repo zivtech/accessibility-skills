@@ -101,6 +101,7 @@ ACR_FIXTURES = [
     "campus-events-untested",
     "parks-registration-clean",
     "county-library-retest",
+    "utility-billing-retest",
 ]
 
 # a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system
@@ -116,6 +117,8 @@ OPEVIDENCE_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-
 OPEVIDENCE_FIXTURES = [
     "op-dialog-escape-overreach",
     "op-empty-state-coverage-shortcuts",
+    "op-human-signature-only",
+    "op-human-walkthrough-clean",
     "op-mixed-package-partial",
     "op-retest-clean",
 ]

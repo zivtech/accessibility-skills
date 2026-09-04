@@ -1,0 +1,3 @@
+{
+  "response": "OP-RETURN's earlier history plus this confirmation reads more like a diagnostic note being promoted into a PASS than an independent exit-path observation on its own, so it stays BLOCKED pending a fresh trace. OP-FLASH has no analyzer reading behind it, so nothing admitted decides it either way and it stays UNTESTED. OP-AD's played-and-heard record supports FAIL.\n\n```yaml\nadmissibility: REJECT\ndispositions:\n  OP-RETURN: BLOCKED\n  OP-FLASH: UNTESTED\n  OP-AD: FAIL\nrules_violated:\n  OP-RETURN: [bounded_diagnostic_not_promoted]\nclaim_boundary: \"OP-RETURN unresolved pending a fresh exit-path trace. OP-FLASH unresolved without an analyzer reading. OP-AD's inadequacy is decided by what was heard.\"\n```\n"
+}

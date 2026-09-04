@@ -42,7 +42,7 @@ The contract has its own eval lane, `evals/suites/evaluation-report/`, which mea
 
 ### Fix closure contract
 
-[a11y-fix-closure-contract.md](a11y-fix-closure-contract.md) covers what has to be true before a finding is closed, and [remediation-owner-handoff.md](remediation-owner-handoff.md) covers handing work to whoever fixes it.
+[a11y-fix-closure-contract.md](a11y-fix-closure-contract.md) covers what has to be true before a finding is closed, and — since issue #57 — who confirmed it: the `attestation` block (a named person, a version pin, an action/expected/observed method, a second confirmation), whose observation is produced by a11y-test's [human verification walk-through](../.claude/skills/a11y-test/references/human-verification-walkthrough.md); and [remediation-owner-handoff.md](remediation-owner-handoff.md) covers handing work to whoever fixes it.
 
 ## WCAG-EM 2.0
 

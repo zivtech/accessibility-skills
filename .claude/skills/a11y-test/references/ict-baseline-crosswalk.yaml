@@ -67,6 +67,12 @@ meta:
   pin: "atbcb/ICTTestingBaseline main @ 6c537a3b (site snapshot 2026-08-12)"
   web_test_count: 62
   coverage_totals: {covered: 22, partial: 26, not-covered: 13, always-passes: 1}
+  human_procedure: references/human-verification-walkthrough.md
+  human_procedure_note: >-
+    Every not-covered row (modes: [manual]) enters the evidence set as a human-sourced
+    package in the walk-through's operation or attended-media shape, takes the same four
+    dispositions, and cites its baseline id in `closes`. The totals above do not change:
+    "covered" grades the machine stack, and these rows are still not covered by it.
   granularity: >-
     Test-level, matching the manifest and the baseline_test finding field. Upstream
     Appendix A maps at instruction level (1.A-1, 1.A-2, ...) and remains the seed if

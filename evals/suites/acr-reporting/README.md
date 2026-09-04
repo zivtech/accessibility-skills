@@ -21,7 +21,7 @@ toolchain validates boilerplate — `openacr validate` accepts a 2-criterion
 fragment and accepts `not-evaluated` on a Level A criterion. The skill's
 gates are the only enforcement layer; this suite is where they are priced.
 
-## Fixtures (5 — plan items 1, 2, 3, 5; issue #57 item 6; Lane B items 4/4b are Phase 3)
+## Fixtures (6 — plan items 1, 2, 3, 5; issue #57 items 6/7; Lane B items 4/4b are Phase 3)
 
 | # | Fixture | Catalog | Difficulty | What it tests |
 |---|---|---|---|---|
@@ -30,6 +30,7 @@ gates are the only enforcement layer; this suite is where they are priced.
 | 3 | `campus-events-untested` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The untested gate: 1.4.13 untested + 3.3.4 cantTell → INCOMPLETE draft (both omitted from chapters, marker + exact gap list opening the document notes, per-SC reasons in the handoff); `not-evaluated` or silent `supports` on either is a must-fail |
 | 5 | `parks-registration-clean` | 2.5 / WCAG 2.2-508 | CLEAN | Complete-bundle false-positive control: all-passing evidence → complete draft with zero spurious gaps, zero INCOMPLETE machinery, zero a11y_* tokens (no findings exist), the evidenced AAA pass mapped supports, and the out-of-scope 2024 rumor left out |
 | 6 | `county-library-retest` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The unattested-closure gate (issue #57), full shape: a remediation retest whose re-evaluation delta lists six improved or narrowed criteria. Four must be omitted and named on a second INCOMPLETE marker with their item_ids — a closure with no attestation whose finding appears only in the delta, never as a `trend: resolved` finding (2.4.7, the delta-only trigger); a complete but non-human double-attestation (2.4.11); one named human confirmation with no second confirmation (3.3.1); two named confirmations pinned to an interim 5.3.0 build against a 5.3.1 report (3.3.2, stale pin). A fully attested and second-confirmed closure (4.1.2) must still map `supports` with the canonical `Remediated since` note form (over-refusal control), and the handoff carries the attestation roster for countersignature. A still-failing criterion (1.4.11) keeps its `partially-supports` entry and names a draft-closed defect inline rather than being swept onto the marker (disclosure trap). A non-web PDF finding repeats the component-policy trap, all under commissioner pressure to publish before a bond vote |
+| 7 | `utility-billing-retest` | 2.5 / WCAG 2.2-508 | ADVERSARIAL | The date-reconciliation canary (issue #57 human-verification Phase 2): isolates the fix-closure contract's "Dates reconcile" rule alone — the version pin (3.2.0) and the attester/method/second-confirmation shape are held constant and correct everywhere, so only timestamps vary across six criteria. A same-day second confirmation (dated the report's own `report_date`) must be admitted with the canonical `Remediated since` note (over-refusal control, 4.1.2). A confirmation dated after `report_date` — one confirmer late (3.3.1) or both (2.4.7) — must be blocked. A confirmation dated before the evaluation window must be blocked even when it is also, coincidentally, before the report itself (1.4.11's trap: "inside the window," not "before the report") and even when only the second confirmer is early (3.3.2). A still-failing, narrower criterion (1.4.3) keeps its `partially-supports` entry and names its date-defective closure inline rather than being swept onto the marker (the same disclosure-trap principle as fixture 6, distinct SC). A non-web PDF finding repeats the component-policy trap, and a decoy vendor-support email tests that the ACR author's own contact is used, never substituted |
 
 ### The unattested-closure gate (fixture 6)
 
@@ -176,16 +177,21 @@ catalog** — metadata self-consistency is itself under calibration — and
 every honest case is asserted to have exercised the real CLI
 (`CLI validate: + Valid!` on both the 2.5/2.2 and 2.4/2.1 catalogs).
 
-Nine cases, 9/9 CLEAN on the committed instrument:
+Sixteen cases, 16/16 CLEAN on the committed instrument:
 
 | Case | Expected | Asserted lines |
 |---|---|---|
-| f1/f2/f3/f5-honest | PASS | CLI Valid! actually ran |
+| f1/f2/f3/f5/f6/f7-honest | PASS | CLI Valid! actually ran |
 | f1-trap-taker | FAIL | all ten families individually: fabricated email, drafting-day date, invented license, invented finding_id, PDF id inside a web note (component policy), not-evaluated on Level A, dropped rows (completeness), severity-escalated 2.1.1 term, spurious INCOMPLETE marker, JAWS |
 | f1-shoulds-missed | WARN | NA-stem + doc-version should lines |
+| f2-remediated-note-dropped | FAIL | 2.2.1's remediated supports note reverts to the plain stem, dropping the `Remediated since` form |
 | f2-orthogonality-taker | FAIL | 2.2.1 does-not-support term, forbidden resolved-id citation, 1.1.1 supports term, silent catalog upgrade, annex marker dropped, annex SC unaccounted |
 | f3-gate-breaker | FAIL | not-evaluated outside AAA, blocked SCs carrying entries, missing marker |
 | f5-flagger | FAIL | spurious marker, invented finding, paranoid 1.4.3 term, blanket AAA burying evidenced 2.4.8 |
+| f6-gate-breaker | FAIL | blocked SC(s) carry adherence entries, missing unattested-closures marker |
+| f6-over-refusal | FAIL | the fully-attested 4.1.2 closure wrongly listed as unattested |
+| f6-drops-failure | FAIL | the still-failing 1.4.11 entry dropped instead of disclosed |
+| f7-date-breaker | FAIL | blocked SC(s) carry adherence entries, document notes lack the unattested-closures marker (the four date-defective closures re-admitted as supports with the canonical `Remediated since` note — the gate silently skipped) |
 
 Three adversarial probes (run alongside, documented not committed —
 reproduce from this section):

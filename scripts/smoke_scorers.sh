@@ -243,6 +243,8 @@ OD_META="../a11y-test-operation-evidence/fixtures/op-dialog-escape-overreach.met
 OE_META="../a11y-test-operation-evidence/fixtures/op-empty-state-coverage-shortcuts.metadata.yaml"
 OC_META="../a11y-test-operation-evidence/fixtures/op-retest-clean.metadata.yaml"
 OM_META="../a11y-test-operation-evidence/fixtures/op-mixed-package-partial.metadata.yaml"
+OH_META="../a11y-test-operation-evidence/fixtures/op-human-walkthrough-clean.metadata.yaml"
+OS_META="../a11y-test-operation-evidence/fixtures/op-human-signature-only.metadata.yaml"
 OP_SCORER="ollama/score_operation_evidence.py"
 
 # Case 20: opevidence opdialog gold (PASS)
@@ -424,6 +426,39 @@ run_case "opevidence opclean unparseable block (FAIL, distinct line)" "$OP_SCORE
 run_case "opevidence opdialog gold block, hookless prose (WARN)" "$OP_SCORER" \
     "opevidence-opdialog-no-hooks-response.json" "$OD_META" \
     "hook not mentioned for bounded_diagnostic_not_promoted" "Status: WARN"
+
+# ── human-sourced walk-through packages (issue #57 Phase 2) ────────────────
+
+# Case 65: opevidence ophumanclean gold (PASS, human-sourced false-alarm control)
+run_case "opevidence ophumanclean gold (PASS)" "$OP_SCORER" \
+    "opevidence-ophumanclean-gold-response.json" "$OH_META" \
+    "Rules violated: {}" "Status: PASS"
+
+# Case 66: opevidence ophumanclean trap — promoted diagnostic on OP-RETURN,
+# OP-FLASH collapsed to UNTESTED instead of BLOCKED (FAIL)
+run_case "opevidence ophumanclean trap (FAIL)" "$OP_SCORER" \
+    "opevidence-ophumanclean-trap-response.json" "$OH_META" \
+    "admissibility: got 'REJECT', expected 'ACCEPT'" \
+    "disposition OP-FLASH: got 'UNTESTED', expected 'BLOCKED'" \
+    "unexpected rule fired on OP-RETURN: bounded_diagnostic_not_promoted" "Status: FAIL"
+
+# Case 67: opevidence ophumansig gold (PASS, per-operation attribution across
+# one admissible operation and three under-specified signatures)
+run_case "opevidence ophumansig gold (PASS)" "$OP_SCORER" \
+    "opevidence-ophumansig-gold-response.json" "$OS_META" \
+    "+ setup_action_continuity under OP-RETURN" \
+    "+ passive_observation_binding under OP-AD" \
+    "+ setup_action_continuity under OP-OPTION" \
+    "+ passive_observation_binding under OP-OPTION" \
+    "+ ancestor_remapping_review under OP-OPTION" \
+    "+ passive_observation_binding under OP-LABEL" "Status: PASS"
+
+# Case 68: opevidence ophumansig trap — accepts the whole signature-only
+# package (FAIL)
+run_case "opevidence ophumansig trap (FAIL)" "$OP_SCORER" \
+    "opevidence-ophumansig-trap-response.json" "$OS_META" \
+    "admissibility: got 'ACCEPT', expected 'REJECT'" \
+    "disposition OP-RETURN: got 'PASS', expected 'UNTESTED'" "Status: FAIL"
 
 # ── a11y-content-judgment scorer (wave-2 item #1, 2026-09-02) ──────────────
 CJ_SCORER="ollama/score_content_judgment.py"

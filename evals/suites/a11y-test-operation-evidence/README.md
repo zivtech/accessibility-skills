@@ -29,7 +29,7 @@ whether the evidence package satisfies rules such as:
 
 ## Fixtures
 
-Three fixtures cover the five rules, with a clean control for false-alarm
+Six fixtures cover the five rules, with clean controls for false-alarm
 resistance (per this bundle's rule that a suite must prove it leaves clean
 evidence alone, not only that it catches a planted violation):
 
@@ -39,6 +39,28 @@ evidence alone, not only that it catches a planted violation):
 | `op-empty-state-coverage-shortcuts` | BUG | natural-only conditional state; passive-observation binding; ancestor-remapping review |
 | `op-retest-clean` | CLEAN control | all five, in their admissible forms — must not be flagged |
 | `op-mixed-package-partial` | BUG (mixed) | passive-observation binding on one operation; the other operation fully admissible — per-operation attribution |
+| `op-human-walkthrough-clean` | CLEAN control (human-sourced) | all five, in their human-sourced admissible forms — a structured self-report, an honest BLOCKED, a played-and-heard media record — must not be flagged |
+| `op-human-signature-only` | BUG (mixed, human-sourced) | setup/action continuity + passive-observation binding on one operation; passive-observation binding alone on another; ancestor-remapping review on a third; one operation fully admissible — per-operation attribution |
+
+### Human-sourced packages
+
+`op-human-walkthrough-clean` and `op-human-signature-only` exercise
+[`references/human-verification-walkthrough.md`](../../../.claude/skills/a11y-test/references/human-verification-walkthrough.md),
+the reference for how a person — not a machine collector — produces
+operation evidence. The same five admissibility rules apply, scored against
+the human-sourced fields the reference specifies (`before`/`action`/`observed`
+for Shape 1, `played`/`heard`/`seen`/`adequacy` for Shape 2's attended-media
+packages; Shape 2 is read by rules 1, 3 and 4 only — it has no locus and no
+target, so rules 2 and 5 are marked not applicable in the reference).
+`op-human-signature-only` carries four inadmissible records beside one
+admissible operation: the canonical "I checked it; it's fine" (rules 2 + 4),
+a menu listing offered as audio-description evidence (rule 4), a nested
+option reported from the combobox owner with no session, no locus, a bare
+visual read, and no mapping (rules 2 + 4 + 5, the same set the suite's
+precedent attaches to that shape), and the tidier failure — every field
+filled and `observed: "As expected"`, which is rule 4 alone because no
+observed result of the action is bound to it. No sixth rule is invented for
+any of them.
 
 Each fixture follows this bundle's existing triplet convention, matching
 `evaluation-report` and `a11y-planner`:
