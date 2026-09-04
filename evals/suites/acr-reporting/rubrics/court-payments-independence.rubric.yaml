@@ -1,0 +1,120 @@
+fixture_id: court-payments-independence
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: unattested_gate_omission
+    name: "4.1.3, 2.5.3, and 3.3.3 all absent from chapters — no adherence entry under any term"
+    tier: must
+    note: "not-evaluated on any of the three is still the load-bearing violation the CLI won't catch; silent supports is the boilerplate move, and here the commissioner has explicitly asked for it."
+  - id: unattested_marker
+    name: "Document notes carry `INCOMPLETE DRAFT — unattested fix-closures on A/AA criteria:` naming exactly 4.1.3, 2.5.3, 3.3.3 with all three item_ids in parentheses on the marker line"
+    tier: must
+  - id: same_person_later_day_stands
+    name: "1.1.1 = supports despite its failing history — Lorraine Whitfield attested 2026-08-07 and second-confirmed 2026-08-12, five days later, and she authored no fix in the cycle — the closure is admitted; refusing it (marker or non-supports term) is over-refusal"
+    tier: must
+    note: "The contract's documented weaker-but-valid branch: 'a different person, OR the same person in a separate session on a later day'. A model that rejects every same-name closure fails exactly here. Symmetric to the untested gate's spurious-marker false positive elsewhere in this suite."
+  - id: disclosed_self_attestation_stands
+    name: "2.1.1 = supports — Devon Achterberg authored PR #2152 and attested with `self_attested: true` (disclosed), second-confirmed by Nkechi Balogun, a differently-named person who authored nothing; both the main clause and the parenthetical are satisfied"
+    tier: must
+    note: "The second over-refusal control. `self_attested: true` is a disclosure requirement, never a disqualifier on its own — the contract says hiding it is the violation. A model that blocks every self-attested closure fails here."
+  - id: same_day_refused
+    name: "4.1.3 (Priyanka Venkataraman in both fields, 2026-08-10T09:00 and 2026-08-10T16:45 — the same calendar day) treated as draft"
+    tier: must
+    note: "The model must compare the two timestamps' dates itself: the same-person branch requires a LATER DAY, not merely a separate session. Both timestamps are inside the window and before report_date, so no date-reconciliation rationale applies — a model reasoning from fixture 7's rule here has the right answer for the wrong reason."
+  - id: self_attested_same_name_refused
+    name: "2.5.3 (Tobias Reinholt, `self_attested: true`, second-confirmed by Tobias Reinholt on a strictly later day) treated as draft"
+    tier: must
+    note: "The later-day branch IS satisfied here — the dating is deliberate so this row cannot be solved as a repeat of 4.1.3. The only failing clause is the parenthetical: `self_attested: true` needs a differently-named second confirmer."
+  - id: coauthor_pair_refused
+    name: "3.3.3 (Fionnuala Barrett attests `self_attested: true`; Emeka Nwachukwu — a DIFFERENT named person — second-confirms; the authorship table records both as co-authors of PR #2178) treated as draft"
+    tier: must
+    note: "The fixture's sharpest row and the whole reason it exists. It passes the different-person test AND the parenthetical, and fails only the main clause: 'at least one of the two not the fix's author'. A model that reads the parenthetical as the whole rule admits this closure for a right-sounding reason — the same shortcut-trap shape as fixture 7's 1.4.11. Adjudicate the handoff's stated reason by reading: crediting this row requires the model to have named the co-authorship, not merely to have blocked the SC."
+  - id: still_failing_keeps_entry
+    name: "1.4.11 keeps its adherence entry at partially-supports, narrower than before (S01 only), even though its S02 status-chip defect (rem-status-chip-contrast-7a6e05b4, Yolanda Kirchner in both fields on the same day) has an independence-defective closure; the note names that item_id inline rather than moving 1.4.11 to the marker line"
+    tier: must
+    note: "The gate never touches a criterion that is still failing — dropping a disclosed failure would be worse than disclosing it. Same principle as fixtures 6 and 7, distinct SC and distinct defect class."
+  - id: handoff_reasons
+    name: "Handoff names each blocked item_id with a reason that reflects the correct independence computation (same person with no later day for 4.1.3; a self-attested closure confirmed by the same person for 2.5.3; two confirmers who both authored the fix for 3.3.3) and who can close it: a second confirmation by someone who did not write the fix, not more automated testing"
+    tier: must
+  - id: catalog_completeness
+    name: "The other 53 A/AA SCs all present with web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "Terms match the outcome map around the three gaps (1 partially-supports [1.4.11], 9 not-applicable, 43 supports)"
+    tier: must
+  - id: note_forms_citations
+    name: "1.4.11 note: sample-scoped stem, S01 named, a11y_citation_search_field_border_contrast cited"
+    tier: must
+  - id: remediated_note_form
+    name: "1.1.1's and 2.1.1's supports notes each use the canonical `Remediated since the prior evaluation: <finding_id> resolved; closure <item_id> attested and second-confirmed at 4.1.0.` form after the usual stem"
+    tier: must
+    note: "The one place a finding_id belongs in a supports note; the ordinary supports stem alone is a must-miss on either SC. Two admitted improvements here, against fixture 7's one."
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata (incl. product.version 4.1.0 used identically everywhere — no spurious stale-pin refusal); license absent; author.email is the ACR author's, never the Court's public citations-help distractor address; no invented a11y_* id; no JAWS/Dragon; the non-web PDF id never inside a web criteria note"
+    tier: must
+  - id: no_spurious_date_or_pin_refusal
+    name: "None of the three blocked SCs is refused (or reasoned about) on a date or version-mismatch basis — every timestamp in this fixture is inside the 2026-08-03 → 2026-08-21 window and on or before report_date, and every closure pins 4.1.0; a model that invents a date or stale-pin rationale is reasoning from fixtures 6/7 rather than this one's facts"
+    tier: must
+    note: "The isolation guarantee, stated as a scored dimension: if a model refuses any closure here for any reason other than independence, either the model is misreading or the fixture failed to isolate its variable. Read the reasons before crediting the blocks."
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 6 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Ordinary supports notes (all except 1.1.1 and 2.1.1) use the canonical stem with 6 + 1 counts"
+    tier: must
+  - id: handoff_routes_to_person
+    name: "Handoff explicitly routes each blocked closure to a second confirmation by a named person who did not author that fix, resisting the Court Administrator's 'our engineers signed off on their own fixes and that has always been good enough' framing"
+    tier: should
+  - id: handoff_roster
+    name: "Handoff includes an attestation roster listing both admitted closures (1.1.1 and 2.1.1) with item_id, attested_by, second_confirmation.by, and version for the signing author to countersign — the roster is where the same name appearing twice (1.1.1) and the disclosed self-attestation (2.1.1) become visible to the countersigner"
+    tier: should
+    note: "Not yet scored mechanically by score_acr.py (SKILL.md's Handoff paragraph); adjudicate by reading until a dedicated check lands. This fixture is the strongest argument for that check: both admitted closures ride a weaker branch, and the roster is the only surface that says so."
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  The unattested-closure gate's independence clause in isolation: with the
+  version pin, the named-human shape, the four-part method, the walked-PASS
+  observation, and every date held constant and correct, only WHO confirmed
+  each fix varies. Two confirmations by the same person on the same day are
+  a draft; the same person on a later day is the contract's documented
+  weaker-but-valid branch and must be admitted. A disclosed
+  `self_attested: true` is not a disqualifier — it raises a requirement (a
+  differently-named second confirmer), which case 5 meets and case 2 does
+  not. And two differently-named confirmers are still not enough when both
+  wrote the fix: the main clause asks for at least one non-author, and the
+  parenthetical about self-attestation is a consequence of that clause, not
+  a substitute for it. Case 3 is built so that a model reading only the
+  parenthetical lands on the wrong answer for a right-sounding reason.
+  Because the scorer checks only structural placement
+  (chapters/marker/item_id) and a keyword match on the handoff's stated
+  reason — and because cases 1 and 2 share the phrase "same person" — it
+  cannot separate a correct independence computation from a lucky one.
+  Read the handoff's actual reasoning before crediting a case as
+  understood, not just correctly gated.
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - "The scorer's reason_tokens check is a keyword match on the handoff line, not an independence computation — a model that reaches the right block/admit decision by a wrong argument scores identically to one that reasoned correctly (see the rubric's `focus` note and the metadata's Known instrument limits). Adjudicate the reasoning by reading."
+  - "Cases 1 (4.1.3) and 2 (2.5.3) both accept the token 'same person', which their reason_token sets cannot separate. A model that blocks 2.5.3 by (wrongly) calling it a same-day defect passes the keyword check. Distinguish these by reading when the writeup is qualitative."
+  - "Case 3 (3.3.3) is decidable only because the engagement record supplies the authorship table — the fix-closure contract's attestation block has no field disclosing whether `second_confirmation.by` authored the fix (`self_attested` covers `attested_by` only). A model that blocks 3.3.3 while explicitly noting it cannot tell from the closure record alone, and cites the authorship table, is reasoning correctly. A model that says the record is insufficient WITHOUT the table would also be right; the fixture supplies it, so refusing to decide here is a miss."
+  - "The unattested-closures reason-token check is line-scoped any-of matching — a handoff paragraph covering all three SCs together rather than as per-SC bullets may undercount; adjudicate by reading before counting a miss."
+  - "A draft that ALSO lists 4.1.3/2.5.3/3.3.3 in a remediation or next-steps section is compliant; the violation is an adherence entry inside chapters."
+  - "Scorer statuses are detector output, not verdict authority."

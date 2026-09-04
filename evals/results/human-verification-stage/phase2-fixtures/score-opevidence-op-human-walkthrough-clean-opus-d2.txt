@@ -1,0 +1,19 @@
+Fixture: op-human-walkthrough-clean
+Response length: 13045 chars
+Structured block: + parsed (1762 chars)
+Admissibility: 'ACCEPT' (expected 'ACCEPT')
+Dispositions: {'OP-RETURN': 'PASS', 'OP-FLASH': 'BLOCKED', 'OP-AD': 'FAIL'}
+Rules violated: {}
+
+Must-catch:
+
+Nice-to-have (informational only):
+  + nice-to-have: ['admissible', 'accept', 'well-formed']
+  + nice-to-have: ['BLOCKED', 'instrument', 'analyzer']
+  + nice-to-have: ['second confirmation', 'human-sourced']
+
+Must misses: 0
+Fabrications: 0
+Should misses: 0
+
+Status: PASS

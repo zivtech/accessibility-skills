@@ -13,7 +13,7 @@ Counts are fixture `.md` files; each carries a `.metadata.yaml` (ground truth) a
 | `perspectives` | 25 | Perspective-audit detection and alarm calibration (plus 5 calibration fixtures) |
 | `bug-reporting` | 7 | Finding → filable issue, with fabrication and stable-ID checks |
 | `a11y-content-judgment` | 6 | Draft-and-ratify judgments on scanner-undecidable criteria |
-| `acr-reporting` | 6 | Evaluation report → OpenACR draft, validated through the pinned CLI |
+| `acr-reporting` | 7 | Evaluation report → OpenACR draft, validated through the pinned CLI |
 | `a11y-test-operation-evidence` | 6 | Retest evidence admissibility — over- and under-rejection traps, incl. human-sourced walk-through packages |
 | `a11y-test-recipe` | 2 | Is a keyboard test recipe's recorded outcome supported by its own evidence |
 | `evaluation-report` | 1 | Aggregating finished findings into the WCAG-EM-shaped report contract |

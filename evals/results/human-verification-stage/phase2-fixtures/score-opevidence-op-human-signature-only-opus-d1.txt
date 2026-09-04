@@ -1,0 +1,26 @@
+Fixture: op-human-signature-only
+Response length: 14641 chars
+Structured block: + parsed (2898 chars)
+Admissibility: 'REJECT' (expected 'REJECT')
+Dispositions: {'OP-ESC': 'PASS', 'OP-RETURN': 'UNTESTED', 'OP-AD': 'UNTESTED', 'OP-OPTION': 'UNTESTED', 'OP-LABEL': 'UNTESTED'}
+Rules violated: {'OP-RETURN': ['setup_action_continuity', 'passive_observation_binding'], 'OP-AD': ['bounded_diagnostic_not_promoted', 'passive_observation_binding'], 'OP-OPTION': ['setup_action_continuity', 'passive_observation_binding', 'ancestor_remapping_review'], 'OP-LABEL': ['passive_observation_binding']}
+
+Must-catch:
+  + setup_action_continuity under OP-RETURN
+  + passive_observation_binding under OP-RETURN
+  + passive_observation_binding under OP-AD
+  + setup_action_continuity under OP-OPTION
+  + passive_observation_binding under OP-OPTION
+  + ancestor_remapping_review under OP-OPTION
+  + passive_observation_binding under OP-LABEL
+
+Nice-to-have (informational only):
+  + nice-to-have: ['per-operation', 'attribution', 'signature']
+  + nice-to-have: ['UNTESTED', 'no sixth rule']
+
+Must misses: 1
+  - unexpected rule fired on OP-AD: bounded_diagnostic_not_promoted
+Fabrications: 0
+Should misses: 0
+
+Status: FAIL

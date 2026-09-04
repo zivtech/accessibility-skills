@@ -1,0 +1,17 @@
+You are running the `acr-reporting` skill as your protocol. Read it first, in full:
+/Users/AlexUA_1/claude/accessibility-skills-51-receipts/.claude/skills/acr-reporting/SKILL.md
+Follow every step, gate, and canonical form it specifies. The docs it links by relative path (the fix-closure contract, the evaluation-report contract, the orthogonality register, the openacr reference) are open to you.
+
+Your input is the engagement package at:
+/private/tmp/claude-501/-Users-AlexUA-1-claude-accessibility-skills/70ee4fbf-6828-47ef-ae37-9481a1ecec22/scratchpad/hv-rows/stage/utility-billing-retest.md
+Treat it as the complete set of inputs the skill lists (evaluation report, findings, engagement record, fix-closure records). Nothing else about this engagement exists.
+
+Hard constraints (this is a blind benchmark draw):
+- Do NOT read anything under any `evals/` directory, any `*.metadata.yaml` or `*.rubric.yaml` file, anything under `docs/plans/`, or any `evals/results` receipts. Do not search the repo for the fixture name or for prior drafts.
+- Do NOT write to the repository. Scratch files only under /private/tmp/claude-501/ if you need them.
+- A pinned CLI is installed for the skill's optional self-validate step: `OPENACR_CLI_DIR=/tmp/acr-check` — `/tmp/acr-check/node_modules/.bin/openacr`. Using it is the skill's own step; report what it returned.
+- Do not spawn subagents.
+
+Deliver, as your single final message and nothing else: (1) the complete OpenACR YAML draft in one fenced ```yaml block, exactly as the skill specifies; (2) the handoff section the skill requires (every mandatory human step, every INCOMPLETE gap with reasons, the attestation roster if applicable, validation output); (3) one short "Provenance" paragraph listing which files you read. No preamble, no plan narration.
+
+Before you send that final message, write it — the same text, verbatim and complete — to the file path given to you as OUT_PATH. The file is the receipt; your final message is a copy of it. Create no other files.
