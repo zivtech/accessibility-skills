@@ -1,0 +1,35 @@
+Fixture: modal-complete-clean | Model: sonnet
+Condition: dump-hosted (DUMP) | Draw: 1
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: CLEAN | Verdict: REVISE
+CLEAN fixture — correct_verdict=False candidate_fp_count=0 (nice_to_find items may inflate this — adjudicate before counting as FP, README §9.5/F8)
+Status: SCORED (candidate — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "modal-complete-clean",
+  "model": "sonnet",
+  "condition": "dump-hosted",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "CLEAN",
+  "verdict": "REVISE",
+  "false_positives": {
+    "applicable": true,
+    "correct_verdict": false,
+    "structured_findings": 0,
+    "wrong_verdict": true,
+    "fp_count": 0
+  },
+  "must_find": {
+    "total": 0,
+    "matched": [],
+    "matched_count": 0,
+    "recall": null
+  },
+  "misses": []
+}

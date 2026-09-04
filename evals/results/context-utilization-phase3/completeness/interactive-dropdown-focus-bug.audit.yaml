@@ -1,0 +1,33 @@
+# Completeness audit — interactive-dropdown-focus-bug (README §10 step 3, gate F4 4-field shape).
+# Produced by the pack-construction session 2026-08-26 with ground-truth access
+# (fixture .metadata.yaml expected_findings), AFTER the blind CURATED digest froze.
+# Every raw_handle was verified against the actual artifact in-session.
+# adjudication_question / question_source are copied VERBATIM FROM THE FROZEN
+# DIGEST (provenance check rides with the completeness numbers — F3a).
+fixture_id: interactive-dropdown-focus-bug
+digest_pack: evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md
+adjudication_question: 'Based on evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json
+  and the tool that produced each (keyboard-a11y-tester driven trace / keyboard-a11y-tester batch-crawl
+  findings / axe-core scan): does this evidence set show any interaction defect (focus not reaching or
+  leaving an element as expected, an ARIA state changing with no accessible announcement, a keyboard-operability
+  failure) and does it show any structural defect (a missing or incorrect ARIA role, landmark, label,
+  or heading-order violation) for the component these artifacts describe?'
+question_source: Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types
+  only; no fixture metadata, rubrics, ground-truth files, or lane README consulted
+items:
+- item_index: 0
+  description: Focus not restored to trigger button after selection
+  tool_observable: true
+  evidence_in_raw_set: true
+  in_curated_pack: true
+  raw_handle: 'evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json ::
+    step_0005 (Enter at #dropdown-list -> active_element_selector=body, focus_moved=true; step_0006 reaches
+    #dropdown-btn only via explicit Shift+Tab). In digest: obs focus-to-body-after-select.'
+- item_index: 1
+  description: Focus not restored to trigger button after Escape key
+  tool_observable: true
+  evidence_in_raw_set: false
+  in_curated_pack: false
+  raw_handle: 'evals/results/keyboard-a11y-tester/driven/interactive-dropdown-focus-bug.trace.json ::
+    steps[].keystroke_sent = [Tab, Enter, Tab, ArrowDown, Enter, Shift+Tab] — no Escape step was ever
+    driven; raw-set-gap (a driven session sending Escape would capture it in principle).'

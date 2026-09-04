@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: sonnet
+Condition: dump-hosted (DUMP) | Draw: 1
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '**Overall Assessment**: `BuggyDropdown` chooses a legitimate, recognized pattern — native `<button>` + `aria-haspopup="listbox"`/`aria-expanded`/`aria-controls`, popped open onto a `<ul role="listbox"…'
+  + [1] Focus not restored to trigger button after Escape key — '**Pre-commitment Predictions**: Before reading the trace in detail, the expected failure modes for a "custom dropdown/select" per the protocol\'s own component-type list were: (1) focus not restored af…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "sonnet",
+  "condition": "dump-hosted",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: `BuggyDropdown` chooses a legitimate, recognized pattern \u2014 native `<button>` + `aria-haspopup=\"listbox\"`/`aria-expanded`/`aria-controls`, popped open onto a `<ul role=\"listbox\"\u2026",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Before reading the trace in detail, the expected failure modes for a \"custom dropdown/select\" per the protocol's own component-type list were: (1) focus not restored af\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

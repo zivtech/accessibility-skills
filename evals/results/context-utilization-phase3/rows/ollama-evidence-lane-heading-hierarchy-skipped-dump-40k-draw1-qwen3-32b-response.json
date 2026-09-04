@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n## Findings\n\n**Critical Findings** (blocks access):\n1. **Skipped heading levels disrupt document structure**  \n   - **Location**: `BlogPost.jsx:4` (h1 to h3 skip), `BlogPost.jsx:7` (h3 to h2 jump)  \n   - **User group**: Screen reader users  \n   - **WCAG 2.4.10 (Section Headings)**: Headings must be sequential.  \n   - **Fix**: Ensure heading levels increase by only one level at a time. For example, after h1, use h2 for \"Why Accessibility Matters\", then h3 for sub-sections.  \n\n2. **Missing main landmark for primary content**  \n   - **Location**: Entire component lacks `<main>`  \n   - **User group**: Keyboard/screen reader users  \n   - **WCAG 2.4.1 (Bypass Blocks)**: Missing landmark makes navigation harder.  \n   - **Fix**: Wrap content in `<main aria-label=\"Blog Post Content\">` to provide a semantic landmark.  \n\n**Major Findings** (significantly degrades experience):\n1. **Incomplete landmark structure**  \n   - **Location**: No `<nav>`, `<main>`, or `<aside>` landmarks  \n   - **User group**: Screen reader/keyboard users  \n   - **WCAG 2.4.6 (Headings and Labels)**: Missing landmarks make navigation harder.  \n   - **Fix**: Add `<main>` and consider adding `<nav>` for any navigation elements.  \n\n2. **Inconsistent heading hierarchy**  \n   - **Location**: h3 appears before any h2  \n   - **User group**: Screen reader users  \n   - **WCAG 2.4.10**: Disrupts logical reading order.  \n   - **Fix**: Reorder headings to h1 \u2192 h2 \u2192 h3.  \n\n**Minor Findings** (friction but workaround exists):\n- No skip link for long documents (not critical for short blog posts).  \n\n**Enhancements** (best practice not met):\n- Add `lang=\"en\"` to `<html>` for screen reader language context.  \n\n---\n\n## What's Missing\n\n1. **Missing main landmark**: The article lacks a `<main>` element, which is required for semantic structure.  \n2. **Skipped heading levels**: From h1 to h3 and h3 to h2 creates an inconsistent hierarchy.  \n3. **No landmark regions**: Missing `<nav>`, `<main>`, `<aside>` for better navigation.  \n\n---\n\n## Multi-Perspective Notes\n\n- **Screen reader user**:  \n  - Headings are announced but the skipped levels create confusion.  \n  - No main landmark makes it harder to navigate to primary content.  \n- **Keyboard-only user**:  \n  - Tab order is logical, but landmark structure is missing.  \n- **Low vision user**:  \n  - Visual hierarchy is clear, but heading levels are inconsistent.  \n- **Cognitive accessibility**:  \n  - Inconsistent headings may confuse users who rely on structure.  \n\n---\n\n## Verdict Justification\n\nThe component fails WCAG 2.4.10 (Section Headings) and 2.4.6 (Headings and Labels) due to skipped heading levels and missing landmarks. These issues significantly impact screen reader users' ability to navigate the content. The severity is **CRITICAL** for heading order and **MAJOR** for landmark structure.  \n\nTo upgrade to **ACCEPT**, the following must be fixed:  \n1. Fix heading levels to h1 \u2192 h2 \u2192 h3.  \n2. Add `<main>` landmark.  \n\n---\n\n## Open Questions\n\n- Should the \"Tools and Resources\" section be an h2 or h3?  \n- Is there a need for a skip link in this short blog post?",
+  "done": true,
+  "total_duration": 426380795625,
+  "eval_count": 1391,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 426.4,
+    "timestamp": "2026-08-26T20:49:59",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 3013,
+    "estimated_prompt_tokens": 31866,
+    "prompt_eval_count": 28809,
+    "context_pressure": false,
+    "prompt_sha256": "b11d82e0fd5a0a252cd5b4a061f7e279987e96d2b36f9b1d3468fddc5cfae932",
+    "prompt_byte_length": 111737,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.dump.txt",
+    "pack_sha256": "4413a4ca353b36f83ceaf656ca1e6e52bc3bbf6ce431d145f7939e5f0a926d9d",
+    "pack_byte_length": 48838,
+    "pack_available": true
+  }
+}

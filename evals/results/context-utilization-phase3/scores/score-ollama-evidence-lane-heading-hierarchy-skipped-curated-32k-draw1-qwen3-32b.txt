@@ -1,0 +1,46 @@
+Fixture: heading-hierarchy-skipped | Model: qwen3:32b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=17049 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/2
+  + [0] Heading hierarchy skips from h1 directly to h3 — 'actual_behavior: Headings skip from h1 to h3'
+  X [1] Inconsistent heading hierarchy (h3 then h2) — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "qwen3:32b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 17049,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Heading hierarchy skips from h1 directly to h3",
+        "found": true,
+        "evidence_quote": "actual_behavior: Headings skip from h1 to h3",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 1,
+      "description": "Inconsistent heading hierarchy (h3 then h2)",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

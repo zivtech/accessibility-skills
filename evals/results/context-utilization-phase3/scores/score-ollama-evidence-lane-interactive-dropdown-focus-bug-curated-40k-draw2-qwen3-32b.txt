@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3:32b
+Condition: curated-40k (CURATED) | Draw: 2
+prompt_eval_count=16975 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/2
+  + [0] Focus not restored to trigger button after selection — '**Overall Assessment**: The BuggyDropdown implements the WAI-ARIA Listbox pattern but has critical gaps in focus restoration, state announcements, and accessible naming. The component fails to restore…'
+  X [1] Focus not restored to trigger button after Escape key — reason=raw-set-gap
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3:32b",
+  "condition": "curated-40k",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": 16975,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The BuggyDropdown implements the WAI-ARIA Listbox pattern but has critical gaps in focus restoration, state announcements, and accessible naming. The component fails to restore\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 1,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 1,
+      "description": "Focus not restored to trigger button after Escape key",
+      "found": false,
+      "reason": "raw-set-gap"
+    }
+  ],
+  "false_positives": null
+}

@@ -1,0 +1,88 @@
+{
+  "url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+  "started": "2026-08-26T00:06:10.344Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+      "title": "dashboard-heading-inconsistency",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            ".metric-card:nth-child(1) > .metric-label",
+            ".metric-card:nth-child(2) > .metric-label",
+            ".metric-card:nth-child(3) > .metric-label"
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".metric-card:nth-child(1) > h3"
+          ]
+        },
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 25,
+      "inapplicable_count": 64
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:21.860Z"
+}

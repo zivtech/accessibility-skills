@@ -1,0 +1,242 @@
+{
+  "http://127.0.0.1:8777/heading-hierarchy-skipped.html": {
+    "captured_at": "2026-08-26T00:14:33.127Z",
+    "entries": [
+      {
+        "index": 1,
+        "spoken_phrase": "document",
+        "role": "document",
+        "tag": "body",
+        "selector": "body"
+      },
+      {
+        "index": 2,
+        "spoken_phrase": "article",
+        "role": "article",
+        "tag": "article",
+        "selector": "#root > article"
+      },
+      {
+        "index": 3,
+        "spoken_phrase": "heading, Introduction to Web Accessibility, level 1",
+        "role": "heading",
+        "tag": "h1",
+        "selector": "#root > article > h1"
+      },
+      {
+        "index": 4,
+        "spoken_phrase": "heading, Why Accessibility Matters, level 3",
+        "role": "heading",
+        "tag": "h3",
+        "selector": "#root > article > h3:nth-of-type(1)"
+      },
+      {
+        "index": 5,
+        "spoken_phrase": "paragraph",
+        "role": "paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(1)"
+      },
+      {
+        "index": 6,
+        "spoken_phrase": "Web accessibility ensures that everyone, including people with disabilities, can access and interact with web content effectively.",
+        "role": "Web accessibility ensures that everyone",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 7,
+        "spoken_phrase": "end of paragraph",
+        "role": "end of paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(1)"
+      },
+      {
+        "index": 8,
+        "spoken_phrase": "heading, WCAG Guidelines, level 3",
+        "role": "heading",
+        "tag": "h3",
+        "selector": "#root > article > h3:nth-of-type(2)"
+      },
+      {
+        "index": 9,
+        "spoken_phrase": "paragraph",
+        "role": "paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(2)"
+      },
+      {
+        "index": 10,
+        "spoken_phrase": "The Web Content Accessibility Guidelines (WCAG) provide a set of standards...",
+        "role": "The Web Content Accessibility Guidelines (WCAG) provide a set of standards...",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 11,
+        "spoken_phrase": "end of paragraph",
+        "role": "end of paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(2)"
+      },
+      {
+        "index": 12,
+        "spoken_phrase": "heading, Common Issues, level 3",
+        "role": "heading",
+        "tag": "h3",
+        "selector": "#root > article > h3:nth-of-type(3)"
+      },
+      {
+        "index": 13,
+        "spoken_phrase": "list",
+        "role": "list",
+        "tag": "ul",
+        "selector": "#root > article > ul"
+      },
+      {
+        "index": 14,
+        "spoken_phrase": "listitem, level 1, position 1, set size 3",
+        "role": "listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(1)"
+      },
+      {
+        "index": 15,
+        "spoken_phrase": "Missing alt text for images",
+        "role": "Missing alt text for images",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 16,
+        "spoken_phrase": "end of listitem, level 1, position 1, set size 3",
+        "role": "end of listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(1)"
+      },
+      {
+        "index": 17,
+        "spoken_phrase": "listitem, level 1, position 2, set size 3",
+        "role": "listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(2)"
+      },
+      {
+        "index": 18,
+        "spoken_phrase": "Poor color contrast",
+        "role": "Poor color contrast",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 19,
+        "spoken_phrase": "end of listitem, level 1, position 2, set size 3",
+        "role": "end of listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(2)"
+      },
+      {
+        "index": 20,
+        "spoken_phrase": "listitem, level 1, position 3, set size 3",
+        "role": "listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(3)"
+      },
+      {
+        "index": 21,
+        "spoken_phrase": "Inaccessible forms",
+        "role": "Inaccessible forms",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 22,
+        "spoken_phrase": "end of listitem, level 1, position 3, set size 3",
+        "role": "end of listitem",
+        "tag": "li",
+        "selector": "#root > article > ul > li:nth-of-type(3)"
+      },
+      {
+        "index": 23,
+        "spoken_phrase": "end of list",
+        "role": "end of list",
+        "tag": "ul",
+        "selector": "#root > article > ul"
+      },
+      {
+        "index": 24,
+        "spoken_phrase": "heading, Getting Started, level 3",
+        "role": "heading",
+        "tag": "h3",
+        "selector": "#root > article > h3:nth-of-type(4)"
+      },
+      {
+        "index": 25,
+        "spoken_phrase": "heading, Tools and Resources, level 2",
+        "role": "heading",
+        "tag": "h2",
+        "selector": "#root > article > h2:nth-of-type(1)"
+      },
+      {
+        "index": 26,
+        "spoken_phrase": "paragraph",
+        "role": "paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(3)"
+      },
+      {
+        "index": 27,
+        "spoken_phrase": "There are many tools available to help with accessibility testing...",
+        "role": "There are many tools available to help with accessibility testing...",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 28,
+        "spoken_phrase": "end of paragraph",
+        "role": "end of paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(3)"
+      },
+      {
+        "index": 29,
+        "spoken_phrase": "heading, Conclusion, level 2",
+        "role": "heading",
+        "tag": "h2",
+        "selector": "#root > article > h2:nth-of-type(2)"
+      },
+      {
+        "index": 30,
+        "spoken_phrase": "paragraph",
+        "role": "paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(4)"
+      },
+      {
+        "index": 31,
+        "spoken_phrase": "Accessibility is not optional. It's a fundamental part of web development.",
+        "role": "Accessibility is not optional. It's a fundamental part of web development.",
+        "tag": null,
+        "selector": null
+      },
+      {
+        "index": 32,
+        "spoken_phrase": "end of paragraph",
+        "role": "end of paragraph",
+        "tag": "p",
+        "selector": "#root > article > p:nth-of-type(4)"
+      },
+      {
+        "index": 33,
+        "spoken_phrase": "end of article",
+        "role": "end of article",
+        "tag": "article",
+        "selector": "#root > article"
+      }
+    ],
+    "declared_live_regions": [],
+    "declared_broken_aria_refs": [],
+    "declared_alternate_reading_order": [],
+    "truncated": false
+  }
+}

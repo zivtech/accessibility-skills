@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The blog post component has critical structural accessibility issues with heading hierarchy and landmark regions that must be addressed before it can be considered accessible.\n\n**Pre-commitment Predictions**: Expected to find heading hierarchy issues due to skipped heading levels and missing landmark regions. Actual findings confirmed both issues.\n\n**Critical Findings** (blocks access):\n1. **Skipped heading levels violate information hierarchy**  \n   - File: `BlogPost.jsx:6` (h3 after h1), `BlogPost.jsx:14` (h3 after h1), etc.  \n   - User group: Screen reader users  \n   - WCAG: 2.4.10 (Section Headings)  \n   - Fix: Ensure heading levels increase sequentially (h1 \u2192 h2 \u2192 h3). Replace h3 with h2 for \"Why Accessibility Matters\" and subsequent sections.  \n\n**Major Findings** (significantly degrades experience):\n1. **Missing main landmark region**  \n   - File: `BlogPost.jsx:1` (article element lacks main landmark)  \n   - User group: Screen reader users  \n   - WCAG: 2.4.1 (Bypass Blocks)  \n   - Fix: Wrap content in `<main>` element or add `role=\"main\"` to the article.  \n2. **Inconsistent heading structure disrupts navigation**  \n   - File: `BlogPost.jsx:25` (h2 \"Tools and Resources\" appears after multiple h3s)  \n   - User group: Screen reader users  \n   - WCAG: 2.4.10 (Section Headings)  \n   - Fix: Reorder headings to maintain h1 \u2192 h2 \u2192 h3 progression throughout the document.\n\n**What's Missing**:\n- Missing `<main>` landmark for primary content area\n- Inconsistent heading hierarchy breaks logical document structure\n- No skip navigation link for keyboard/screen reader users to bypass repeated content\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Headings would be announced in an illogical order (h1 \u2192 h3 \u2192 h3 \u2192 h3 \u2192 h2), making content navigation confusing. Landmark regions are missing, complicating orientation.\n- **Keyboard-only user**: No immediate issues, but structural problems could affect screen reader keyboard navigation.\n- **Low vision user**: Visual hierarchy is somewhat preserved, but screen reader users would miss the logical flow.\n- **Cognitive accessibility**: Inconsistent structure could confuse users trying to follow the content flow.\n\n**Verdict Justification**: The component fails to meet WCAG 2.4.10 (Section Headings) and 2.4.1 (Bypass Blocks) requirements. The heading hierarchy skips levels and lacks proper landmark regions, making content navigation difficult for screen reader users. These issues must be fixed before the component can be considered accessible.\n\n**Open Questions**:\n- Should the article element remain as-is or be replaced with main?\n- Are there additional landmark regions needed for better content organization?\n\n```\n### A11y Evidence Finding\nfinding_id: heading-hierarchy-violation\nfingerprint: 0x1a2b3c4d5e6f7890\nsource: axe-core 4.13.0 (evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json)\nwcag_or_apg: WCAG 2.4.10 (Section Headings)\nsection_508_fpc_context: 508(b)(1) - Web-based Intranet and Internet Information and Applications\nseverity: MAJOR\nperspective_alarms: screen-reader=HIGH, keyboard=LOW, low-vision=MEDIUM\nevidence: h3:nth-child(2) appears immediately after h1, skipping h2\nreproduction_steps: Inspect DOM structure, navigate headings via screen reader\nexpected_behavior: Headings should increase by one level at a time (h1 \u2192 h2 \u2192 h3)\nactual_behavior: h1 is followed by h3, creating a skipped level\ntrend: persistent\n```",
+  "done": true,
+  "total_duration": 167514035833,
+  "eval_count": 1449,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 32768,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 167.5,
+    "timestamp": "2026-08-26T20:34:48",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2595,
+    "estimated_prompt_tokens": 20678,
+    "prompt_eval_count": 17049,
+    "context_pressure": false,
+    "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+    "prompt_byte_length": 72632,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+    "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+    "pack_byte_length": 9730,
+    "pack_available": true
+  }
+}

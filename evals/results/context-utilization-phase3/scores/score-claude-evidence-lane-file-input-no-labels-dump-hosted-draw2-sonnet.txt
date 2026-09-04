@@ -1,0 +1,61 @@
+Fixture: file-input-no-labels | Model: sonnet
+Condition: dump-hosted (DUMP) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/4
+  + [1] No aria-describedby linking to error message — '**Pre-commitment Predictions**: Before reading the code, for a "file input with client-side validation" component the expected failure modes were: (1) missing/unassociated `<label>`, (2) error not lin…'
+  + [2] No aria-invalid when error present — '**Pre-commitment Predictions**: Before reading the code, for a "file input with client-side validation" component the expected failure modes were: (1) missing/unassociated `<label>`, (2) error not lin…'
+  X [0] Missing <label> element — reason=model-miss
+  X [3] File type restrictions not announced — reason=not-tool-observable
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "file-input-no-labels",
+  "model": "sonnet",
+  "condition": "dump-hosted",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 4,
+    "matched": [
+      {
+        "item_index": 1,
+        "description": "No aria-describedby linking to error message",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Before reading the code, for a \"file input with client-side validation\" component the expected failure modes were: (1) missing/unassociated `<label>`, (2) error not lin\u2026",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 2,
+        "description": "No aria-invalid when error present",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Before reading the code, for a \"file input with client-side validation\" component the expected failure modes were: (1) missing/unassociated `<label>`, (2) error not lin\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Missing <label> element",
+      "found": false,
+      "reason": "model-miss"
+    },
+    {
+      "item_index": 3,
+      "description": "File type restrictions not announced",
+      "found": false,
+      "reason": "not-tool-observable"
+    }
+  ],
+  "false_positives": null
+}

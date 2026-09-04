@@ -1,0 +1,203 @@
+fixture_id: tabs-missing-arrow-nav
+tier: HAS-BUGS
+rows:
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-curated-hosted-draw1-opus
+    model: opus
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched a Phase 1 prediction line, but the response files it as a real finding: 'CRITICAL-1 - Roving tabindex plus no arrow-key handler makes every inactive tab keyboard-unreachable ... handleTabKeyDown branches on e.key === Enter || e.key === ' ' only. There is no ArrowRight, ArrowLeft, Home, or End branch anywhere in the component.' Fix sketch adds the arrow branch; What's Missing lists 'The entire arrow-key handler. Not partially implemented - absent.'"
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-curated-hosted-draw1-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Roving-tabindex Tabs pattern has no keyboard driver - Left/Right Arrow do nothing, and no other tab is keyboard-reachable ... There is no ArrowLeft/ArrowRight (or Home/End) branch anywhere in the component.' Cites WCAG 2.1.1 + APG Tabs, gives an arrow-key fix."
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-curated-hosted-draw2-opus
+    model: opus
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched a Phase 1 self-critique line, but the defect is filed as Critical Finding 2: 'No arrow-key navigation - and roving tabindex has already removed the fallback, so 2 of 3 tabs are unreachable by keyboard ... There is no ArrowRight, ArrowLeft, Home, or End branch anywhere in the component.' Evidence Finding block finding_id tabs-arrow-keys-do-not-move-focus."
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-curated-hosted-draw2-sonnet
+    model: sonnet
+    condition: curated-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Arrow-key navigation is entirely unimplemented; roving tabindex has no driver, so no tab other than the active one is keyboard-reachable.' Evidence Finding block finding_id tabs-arrow-key-navigation-missing, WCAG 2.1.1 + APG Tabs."
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-dump-hosted-draw1-opus
+    model: opus
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched an evidence-inventory table row, but the defect is filed as 'C1 - Roving tabindex is implemented without arrow-key navigation, making 2 of 3 tabs unreachable by keyboard.' Phase 3 table marks 'Roving tabindex mechanism (arrow keys...)' as absent; Evidence Finding tabs-roving-tabindex-without-arrow-keys."
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-dump-hosted-draw1-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched the predictions line, but the defect is filed as Critical Finding 1: 'Arrow key navigation is entirely absent, and because roving tabindex leaves only the active tab in the Tab sequence, this makes every non-active tab unreachable by keyboard ... no ArrowLeft/ArrowRight/Home/End branch exists anywhere in the file.'"
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-dump-hosted-draw2-opus
+    model: opus
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched the evidence-scope bullet, but the defect is filed as '1. CRITICAL - Roving tabindex plus missing arrow-key handler makes 2 of 3 tabs unreachable by keyboard ... there is no ArrowRight, ArrowLeft, Home, or End branch.' Evidence Finding tabs-arrow-key-navigation-absent, WCAG 2.1.1 + APG Tabs."
+  - row: claude-evidence-lane-tabs-missing-arrow-nav-dump-hosted-draw2-sonnet
+    model: sonnet
+    condition: dump-hosted
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Scorer matched the Phase 0 scope note, but the defect is filed as Critical Finding 1: 'Roving-tabindex tabs are unreachable by keyboard - arrow key navigation is not implemented ... there is no ArrowLeft/ArrowRight/Home/End case.' Cites APG Tabs + WCAG 2.1.1 with an arrow-key fix sketch."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-32k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing arrow key navigation (src/components/TabsWidget.jsx:31) ... Keyboard users cannot navigate between tabs using arrow keys, violating the WAI-ARIA Tabs pattern requirement.' Fix: add Left/Right arrow handlers in handleTabKeyDown."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-32k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing Arrow Key Navigation in handleTabKeyDown ... The handleTabKeyDown function only checks for Enter or Space.' Cites WCAG 2.1.1 and APG Tabs; trace steps 0002/0003 quoted as evidence."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-32k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing arrow key navigation for tabs - File: TabsWidget.jsx:27 (handleTabKeyDown function) ... Fix: Add Left/Right arrow key handlers to cycle through tabs.' WCAG 2.1.1 + APG Tabs cited."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-32k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-32k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1: 'Missing Arrow Key Navigation Breaks Roving Tabindex Pattern ... handleTabKeyDown only checks Enter/Space. Keyboard-a11y-tester trace confirms focus_moved:false for both ArrowRight and ArrowLeft steps.' Filed at MAJOR (matches ground-truth severity) with an Evidence Finding block."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing arrow key navigation for tablist (file: TabsWidget.jsx:23-30) ... violating WCAG 2.1.1 (Keyboard) and WAI-ARIA Tabs pattern requirements.' Fix implements ArrowLeft/ArrowRight branches."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing Arrow Key Navigation in Tablist ... handleTabKeyDown only checks Enter and Space. Trace evidence: step_0002 (ArrowRight) and step_0003 (ArrowLeft) show focus_moved: false.' Evidence Finding tabs-missing-arrow-key-nav."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing arrow key navigation (src/components/TabsWidget.jsx:24) ... Fix: Add Left/Right arrow key handlers to handleTabKeyDown to cycle focus between tabs.' Evidence Finding tabs-missing-arrow-nav quoting trace step_0002."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-curated-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: curated-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1: 'Missing Arrow Key Navigation for Tabs Pattern ... handleTabKeyDown only checks Enter/Space. Hard evidence from trace: step_0002 (ArrowRight) and step_0003 (ArrowLeft) both report focus_moved: false.' Cites APG Tabs + WCAG 2.1.1 with wrap-around fix."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-dump-40k-draw1-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing arrow key navigation (src/components/TabsWidget.jsx:27) ... Fix: Add arrow key handling in handleTabKeyDown to cycle through tabs.' Evidence Finding tabs-missing-arrow-nav; What's Missing lists 'Arrow key navigation for keyboard users.'"
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-dump-40k-draw1-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 1
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Finding 1: 'Missing Arrow Key Navigation for Tabs ... The handleTabKeyDown function only checks for Enter and Space.' Measured evidence cites trace steps 0002/0003 focus_moved:false; fix adds ArrowRight/ArrowLeft with focus movement."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-dump-40k-draw2-qwen3-32b
+    model: qwen3-32b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Critical Findings section is empty, but Major Finding 1 files the defect: 'Missing arrow key navigation for tab selection - handleTabKeyDown only handles Enter/Space but lacks Left/Right arrow key support required by WAI-ARIA Tabs pattern.' Filed at MAJOR (matches ground-truth severity) with an ArrowRight/ArrowLeft fix."
+  - row: ollama-evidence-lane-tabs-missing-arrow-nav-dump-40k-draw2-qwen36-35b
+    model: qwen36-35b
+    condition: dump-40k
+    draw: 2
+    items:
+      - item_index: 0
+        scorer_said: found
+        verdict: GENUINE-FOUND
+        adjudicated_found: true
+        evidence: "Major Finding 1: 'Missing Arrow Key Navigation for Roving Tabindex ... handleTabKeyDown only checks e.key === Enter || e.key === ' '.' Measured trace steps 0002/0003 focus_moved:false; Evidence Finding missing-arrow-key-nav-tiles at MAJOR."

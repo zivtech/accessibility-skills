@@ -1,0 +1,90 @@
+{
+  "url": "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+  "started": "2026-08-26T00:05:54.952Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+      "title": "breadcrumb-navigation-no-nav-landmark",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            "a[href=\"#/\"]",
+            "a[href$=\"#/products\"]",
+            "li:nth-child(3)"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "bypass",
+          "impact": "serious",
+          "help": "Page must have means to bypass repeated blocks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "wcag2a",
+            "wcag241",
+            "section508",
+            "section508.22.o",
+            "TTv5",
+            "TT9.a",
+            "EN-301-549",
+            "EN-9.2.4.1",
+            "RGAAv4",
+            "RGAA-12.7.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "passes_count": 17,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:58.483Z"
+}

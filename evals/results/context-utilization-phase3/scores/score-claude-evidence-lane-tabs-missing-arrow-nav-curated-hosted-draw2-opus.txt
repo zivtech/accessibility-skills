@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: opus
+Condition: curated-hosted (CURATED) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**What I did not predict, and should have**: that the *existing* keyboard handler is destructive rather than merely absent. I went looking for a missing feature and found a live defect. Predicting "ar…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "opus",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**What I did not predict, and should have**: that the *existing* keyboard handler is destructive rather than merely absent. I went looking for a missing feature and found a live defect. Predicting \"ar\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

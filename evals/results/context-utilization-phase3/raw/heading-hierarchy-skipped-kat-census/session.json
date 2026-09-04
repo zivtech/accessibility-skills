@@ -1,0 +1,21 @@
+{
+  "caseId": "127-0-0-1",
+  "viewport": "desktop",
+  "viewport_size": {
+    "width": 1280,
+    "height": 800
+  },
+  "startUrl": "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+  "cdpUrl": "http://127.0.0.1:8902",
+  "goalId": "adhoc",
+  "goals": [
+    {
+      "id": "adhoc",
+      "intent": "Read the article using assistive technology navigation and review its structure"
+    }
+  ],
+  "captchaCompat": false,
+  "persona": "all",
+  "srLogLength": 0,
+  "index": 0
+}

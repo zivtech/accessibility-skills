@@ -1,0 +1,35 @@
+Fixture: button-skip-link-clean | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=31380 done_reason=stop output_clipped=False context_pressure=False
+Tier: CLEAN | Verdict: REVISE
+CLEAN fixture — correct_verdict=False candidate_fp_count=1 (nice_to_find items may inflate this — adjudicate before counting as FP, README §9.5/F8)
+Status: SCORED (candidate — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "button-skip-link-clean",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 31380,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "CLEAN",
+  "verdict": "REVISE",
+  "false_positives": {
+    "applicable": true,
+    "correct_verdict": false,
+    "structured_findings": 1,
+    "wrong_verdict": true,
+    "fp_count": 1
+  },
+  "must_find": {
+    "total": 0,
+    "matched": [],
+    "matched_count": 0,
+    "recall": null
+  },
+  "misses": []
+}

@@ -1,0 +1,12 @@
+{
+  "model": "qwen3:32b",
+  "created_at": "2026-08-24T18:01:48.83352Z",
+  "response": "",
+  "done": true,
+  "done_reason": "load",
+  "_probe_meta": {
+    "phase": "step2-system-alone",
+    "num_ctx": 32768,
+    "wall_seconds": 9.6
+  }
+}

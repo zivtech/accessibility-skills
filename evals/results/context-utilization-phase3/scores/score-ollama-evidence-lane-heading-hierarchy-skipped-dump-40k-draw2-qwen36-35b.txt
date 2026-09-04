@@ -1,0 +1,46 @@
+Fixture: heading-hierarchy-skipped | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 2
+prompt_eval_count=30811 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/2
+  + [0] Heading hierarchy skips from h1 directly to h3 — '"reproduction_steps": "Navigate to the page; use screen reader heading navigation (e.g., H key in NVDA/JAWS). Observe jump from h1 to h3.",'
+  X [1] Inconsistent heading hierarchy (h3 then h2) — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": 30811,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Heading hierarchy skips from h1 directly to h3",
+        "found": true,
+        "evidence_quote": "\"reproduction_steps\": \"Navigate to the page; use screen reader heading navigation (e.g., H key in NVDA/JAWS). Observe jump from h1 to h3.\",",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 0.5
+  },
+  "misses": [
+    {
+      "item_index": 1,
+      "description": "Inconsistent heading hierarchy (h3 then h2)",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

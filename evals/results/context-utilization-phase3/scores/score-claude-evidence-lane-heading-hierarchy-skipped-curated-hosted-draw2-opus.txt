@@ -1,0 +1,44 @@
+Fixture: heading-hierarchy-skipped | Model: opus
+Condition: curated-hosted (CURATED) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 0/2
+  X [0] Heading hierarchy skips from h1 directly to h3 — reason=model-miss
+  X [1] Inconsistent heading hierarchy (h3 then h2) — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "heading-hierarchy-skipped",
+  "model": "opus",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [],
+    "matched_count": 0,
+    "recall": 0.0
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Heading hierarchy skips from h1 directly to h3",
+      "found": false,
+      "reason": "model-miss"
+    },
+    {
+      "item_index": 1,
+      "description": "Inconsistent heading hierarchy (h3 then h2)",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

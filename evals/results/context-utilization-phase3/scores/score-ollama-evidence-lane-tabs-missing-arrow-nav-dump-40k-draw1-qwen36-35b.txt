@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=30079 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Overall Assessment**: The `TabsWidget` implements the visual and ARIA structure of the WAI-ARIA Tabs pattern correctly (roles, states, cross-references), but fails the interaction model. It is missi…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 30079,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The `TabsWidget` implements the visual and ARIA structure of the WAI-ARIA Tabs pattern correctly (roles, states, cross-references), but fails the interaction model. It is missi\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

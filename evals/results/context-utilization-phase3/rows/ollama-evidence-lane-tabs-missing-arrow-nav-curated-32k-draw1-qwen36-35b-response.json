@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REJECT\n\n**Overall Assessment**: The component implements the visual and ARIA structural requirements of the WAI-ARIA Tabs pattern but fails a core interaction requirement: arrow key navigation. Keyboard users cannot move between tabs using standard arrow keys, which is a fundamental expectation for this widget type. This defect is confirmed by both code inspection (missing logic) and hard evidence from the provided trace (arrow presses result in no state change).\n\n**Pre-commitment Predictions**:\n1.  **Missing Arrow Key Navigation**: Predicted based on the component title (\"Missing Arrow Key Navigation\") and common implementation gaps in custom widgets. **Confirmed.**\n2.  **Incomplete `handleTabKeyDown` logic**: Predicted that keyboard handling would be limited to mouse-equivalent keys (Enter/Space) without composite widget support. **Confirmed.**\n3.  **Focus management on panel activation**: Predicted focus might stay on the trigger button rather than moving into the panel content. **Confirmed** (focus stays on the tab due to roving tabindex, which is acceptable but requires consistent arrow key handling).\n\n---\n\n## Critical Findings (blocks access)\n\n1.  **Missing Arrow Key Navigation in `handleTabKeyDown`**\n    -   **Evidence**:\n        -   **Code**: `src/components/TabsWidget.jsx:14-18`. The `handleTabKeyDown` function only checks for `'Enter'` or `' '`:\n            ```jsx\n            if (e.key === 'Enter' || e.key === ' ') { ... }\n            ```\n        -   **Trace**: `evals/results/keyboard-a11y-tester/driven/tabs-missing-arrow-nav.trace.json`, `step_0002` and `step_0003`. Arrow keys are pressed but `focus_moved` remains `false`.\n    -   **User Group Impacted**: Keyboard-only users.\n    -   **WCAG/APG Citation**: WCAG 2.1.1 (Keyboard); WAI-ARIA APG Tabs Pattern (\"Arrow keys move focus between tabs\").\n    -   **Fix**: Update `handleTabKeyDown` to handle `ArrowLeft` and `ArrowRight`. Calculate the next index based on the current active tab and wrap around if necessary.\n\n2.  **Incomplete Composite Widget Implementation**\n    -   **Evidence**: The component uses roving tabindex (`tabIndex={index === activeTab ? 0 : -1}`) which creates a composite widget context, but fails to provide the keyboard shortcuts (arrow keys) required for that context.\n    -   **User Group Impacted**: Keyboard-only users.\n    -   **WCAG/APG Citation**: WAI-ARIA APG Tabs Pattern (\"When focus is on a tab, arrow keys move focus between tabs\").\n    -   **Fix**: Implement the missing logic in Phase 1 fix.\n\n---\n\n## Major Findings (significantly degrades experience)\n\n*None identified beyond the critical findings above.*\n\n---\n\n## Minor Findings (friction but workaround exists)\n\n1.  **Focus Management on Tab Activation**\n    -   **Evidence**: `src/components/TabsWidget.jsx:28`. When a tab is clicked (mouse or keyboard), focus remains on the button itself due to roving tabindex.\n    -   **User Group Impacted**: Screen reader users and keyboard users expecting content flow.\n    -   **WCAG/APG Citation**: WAI-ARIA APG Tabs Pattern (\"When a tab is activated, focus moves to the first focusable element in the associated panel\").\n    -   **Fix**: When `activeTab` changes (via keyboard), programmatically move focus to the first focusable element inside the newly active panel. If using mouse click, keeping focus on the tab is acceptable.\n\n---\n\n## Enhancements (best practice not met)\n\n1.  **Panel Focusability**\n    -   **Evidence**: `src/components/TabsWidget.jsx:35`. Panels are `div`s with `role=\"tabpanel\"`. They do not have `tabIndex=\"-1\"`.\n    -   **User Group Impacted**: Screen reader users navigating by headings or landmarks.\n    -   **WCAG/APG Citation**: WAI-ARIA APG Tabs Pattern (\"Panels should be focusable if they contain interactive content\").\n    -   **Fix**: Add `tabIndex=\"-1\"` to the panel `div` elements so screen readers can announce them as distinct regions, and allow programmatic focus into them.\n\n---\n\n## What's Missing (gaps, unhandled edge cases)\n\n-   **Arrow Key Logic**: The most significant gap. The component is a composite widget but lacks the keyboard shortcuts that define its interaction model.\n-   **Focus Restoration/Transfer**: No logic to transfer focus from the tab to the panel content upon activation.\n\n---\n\n## Multi-Perspective Notes\n\n-   **Screen reader user**: Hears \"tab, Overview, selected, 1 control\". Pressing arrow keys does nothing. They are stuck on the first tab or must Tab out of the group entirely.\n-   **Keyboard-only user**: Can activate tabs with Enter/Space but cannot navigate between them without leaving the widget and coming back (Tab order is linear, not roving via arrows).\n-   **Low vision user**: Focus indicator (`outline: 3px solid`) is visible and meets contrast requirements.\n\n---\n\n## Verdict Justification\n\nThe component fails to implement the WAI-ARIA Tabs pattern's core interaction requirement: arrow key navigation. This is not a minor friction point; it completely breaks the keyboard operability of the widget for its primary use case (switching content). The provided trace evidence (`step_0002`, `step_0003`) confirms this behavior is present in the rendered output, not just theoretical.\n\n**Open Questions (unscored)**:\n-   Does the application have a global keyboard shortcut that conflicts with arrow keys? (Unlikely for tabs, but worth verifying).\n-   Is there a requirement to keep focus on the tab after activation? (If so, arrow key navigation is still required to move between tabs).",
+  "done": true,
+  "total_duration": 77445908417,
+  "eval_count": 2895,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 32768,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 77.5,
+    "timestamp": "2026-08-26T19:03:39",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 6356,
+    "estimated_prompt_tokens": 21759,
+    "prompt_eval_count": 18534,
+    "context_pressure": false,
+    "prompt_sha256": "9593336c612feb854968dcb9f57a252ba669f3051f1e1695daefe9820009fec7",
+    "prompt_byte_length": 76443,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md",
+    "pack_sha256": "35fc4ad1476e0039c643aa80f56cb285a2abdc611096ad5b996bab2b015e461c",
+    "pack_byte_length": 12318,
+    "pack_available": true
+  }
+}

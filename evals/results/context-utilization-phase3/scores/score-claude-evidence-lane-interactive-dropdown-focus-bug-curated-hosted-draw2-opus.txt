@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: opus
+Condition: curated-hosted (CURATED) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '| Selecting an option returns focus to the trigger | **No** | `handleSelect` (15–19) never touches the trigger |'
+  + [1] Focus not restored to trigger button after Escape key — "For a custom dropdown/select, the protocol's prior is: focus management after Escape, arrow-key navigation incomplete, selected state not announced, options container not properly referenced."
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "opus",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "| Selecting an option returns focus to the trigger | **No** | `handleSelect` (15\u201319) never touches the trigger |",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "For a custom dropdown/select, the protocol's prior is: focus management after Escape, arrow-key navigation incomplete, selected state not announced, options container not properly referenced.",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

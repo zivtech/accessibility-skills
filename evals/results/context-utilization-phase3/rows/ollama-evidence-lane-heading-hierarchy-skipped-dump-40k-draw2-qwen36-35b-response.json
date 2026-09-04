@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The component fails to maintain a logical document outline by skipping heading levels (jumping from `<h1>` directly to `<h3>`). This breaks the structural map for screen reader users, who rely on headings to navigate content hierarchy. Additionally, the component lacks landmark regions (`<main>`, `<nav>`) which are essential for page context.\n\n**Pre-commitment Predictions**:\n- **Predicted**: Skipped heading levels (h1 \u2192 h3) and missing landmarks.\n- **Actual**: Both issues confirmed by code inspection and axe-core evidence (`heading-order` violation). The screen reader census confirms the abrupt jump in level.\n\n---\n\n## Findings\n\n### Critical / Major Findings\n\n**1. Skipped Heading Levels Breaks Document Outline**\n- **Evidence**: `BlogPost.jsx:4` (h3 immediately follows h1)\n- **WCAG/APG**: WCAG 1.3.1 Info and Relationships; WAI-ARIA APG Headings pattern.\n- **User Impact**: Screen reader users rely on heading levels to understand the structure of a page. Jumping from level 1 to level 3 creates a \"phantom\" section that doesn't exist, making it impossible for users to navigate or comprehend the content hierarchy accurately.\n- **Fix**: Change the `<h3>` elements to `<h2>` to establish a proper hierarchy: `h1` \u2192 `h2` \u2192 `p`.\n\n**2. Missing Landmark Regions (Context Dependent)**\n- **Evidence**: `axe-core scan 013.../heading-hierarchy-skipped-html.json` (Violation: `landmark-one-main`)\n- **WCAG/APG**: WCAG 1.3.1 Info and Relationships; WCAG 4.1.2 Name, Role, Value.\n- **User Impact**: Without landmarks like `<main>` or `<nav>`, screen reader users cannot easily skip to the primary content or identify where the page content begins and ends.\n- **Fix**: If this component represents a full page or main article view, wrap the content in a `<main>` tag or ensure it is rendered within a layout that provides these landmarks.\n\n### Minor Findings\n\n**3. Visual Styling of Headings via Color Only**\n- **Evidence**: `CSS:19` (`color: #666` for h3)\n- **WCAG/APG**: WCAG 1.4.3 Contrast (Minimum).\n- **User Impact**: While the contrast ratio of `#666` on white is approximately 5.74:1 (passing the 4.5:1 requirement), relying solely on color for visual distinction can be problematic in high-contrast modes or for users with color blindness if other cues are missing.\n- **Fix**: Ensure font-weight or size differences also distinguish heading levels, not just color.\n\n---\n\n## Multi-Perspective Notes\n\n| Perspective | Impact | Notes |\n| :--- | :--- | :--- |\n| **Screen Reader** | **HIGH** | The jump from \"Heading level 1\" to \"Heading level 3\" is jarring and structurally incorrect. It implies a missing section that the user cannot access. |\n| **Keyboard** | LOW | No interactive elements in this snippet; keyboard navigation is not impacted directly by heading levels. |\n| **Low Vision** | MEDIUM | The text color `#666` passes contrast requirements, but visual distinction relies on size and weight. Ensure these are sufficient at 200% zoom. |\n| **Cognitive** | MEDIUM | Skipped headings disrupt the logical flow of information, making it harder for users with cognitive disabilities to follow the structure. |\n\n---\n\n## Verdict Justification\n\nThe component is marked **REVISE** because the skipped heading level is a fundamental semantic error that cannot be ignored. While the visual design might look correct to sighted users, the underlying document outline is broken. This requires code changes (changing `<h3>` to `<h2>`) before it can be accepted.\n\n---\n\n## Open Questions\n\n- **Context of Landmarks**: Is this component rendered inside a parent layout that provides `<main>` and `<nav>` landmarks? If so, the landmark finding may be mitigated by the parent structure.\n- **Heading Content**: Are the headings descriptive enough to convey the section's content without reading the body text? (e.g., \"Why Accessibility Matters\" vs \"Section 1\").\n\n---\n\n### A11y Evidence Finding\n```json\n{\n  \"finding_id\": \"skipped-heading-level\",\n  \"fingerprint\": \"a1b2c3d4\",\n  \"source\": \"axe-core scan 013-127-0-0-1-8777-heading-hierarchy-skipped-html.json\",\n  \"wcag_or_apg\": \"WCAG 1.3.1 Info and Relationships\",\n  \"section_508_fpc_context\": \"Section 508 \u00a7 1194.22 (Software)\",\n  \"severity\": \"MAJOR\",\n  \"perspective_alarms\": [\"screen reader=HIGH\"],\n  \"evidence\": \"axe-core violation 'heading-order' on h3:nth-child(2); sr-census index 4 shows 'level 3' immediately after index 3 'level 1'\",\n  \"reproduction_steps\": \"Navigate to the page; use screen reader heading navigation (e.g., H key in NVDA/JAWS). Observe jump from h1 to h3.\",\n  \"expected_behavior\": \"Headings should increase by one level at a time (h1 \u2192 h2 \u2192 h3).\",\n  \"actual_behavior\": \"Heading levels skip from h1 directly to h3.\",\n  \"trend\": \"new\"\n}\n```",
+  "done": true,
+  "total_duration": 59770657084,
+  "eval_count": 2919,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 59.9,
+    "timestamp": "2026-08-26T18:54:02",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 5637,
+    "estimated_prompt_tokens": 31866,
+    "prompt_eval_count": 30811,
+    "context_pressure": false,
+    "prompt_sha256": "b11d82e0fd5a0a252cd5b4a061f7e279987e96d2b36f9b1d3468fddc5cfae932",
+    "prompt_byte_length": 111737,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.dump.txt",
+    "pack_sha256": "4413a4ca353b36f83ceaf656ca1e6e52bc3bbf6ce431d145f7939e5f0a926d9d",
+    "pack_byte_length": 48838,
+    "pack_available": true
+  }
+}

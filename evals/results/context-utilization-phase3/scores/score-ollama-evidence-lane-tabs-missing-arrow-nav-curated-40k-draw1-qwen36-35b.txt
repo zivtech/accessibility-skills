@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3.6:35b
+Condition: curated-40k (CURATED) | Draw: 1
+prompt_eval_count=18534 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Overall Assessment**: The component implements the visual structure and basic ARIA attributes for a tab widget but fails the core interaction model required by the WAI-ARIA APG Tabs pattern. Specifi…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3.6:35b",
+  "condition": "curated-40k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 18534,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements the visual structure and basic ARIA attributes for a tab widget but fails the core interaction model required by the WAI-ARIA APG Tabs pattern. Specifi\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

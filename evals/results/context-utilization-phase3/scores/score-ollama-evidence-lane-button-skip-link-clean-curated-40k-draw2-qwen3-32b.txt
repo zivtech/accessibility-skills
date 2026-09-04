@@ -1,0 +1,35 @@
+Fixture: button-skip-link-clean | Model: qwen3:32b
+Condition: curated-40k (CURATED) | Draw: 2
+prompt_eval_count=15968 done_reason=stop output_clipped=False context_pressure=False
+Tier: CLEAN | Verdict: REVISE
+CLEAN fixture — correct_verdict=False candidate_fp_count=0 (nice_to_find items may inflate this — adjudicate before counting as FP, README §9.5/F8)
+Status: SCORED (candidate — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "button-skip-link-clean",
+  "model": "qwen3:32b",
+  "condition": "curated-40k",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": 15968,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "CLEAN",
+  "verdict": "REVISE",
+  "false_positives": {
+    "applicable": true,
+    "correct_verdict": false,
+    "structured_findings": 0,
+    "wrong_verdict": true,
+    "fp_count": 0
+  },
+  "must_find": {
+    "total": 0,
+    "matched": [],
+    "matched_count": 0,
+    "recall": null
+  },
+  "misses": []
+}

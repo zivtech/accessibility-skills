@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: sonnet
+Condition: curated-hosted (CURATED) | Draw: 2
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — 'There is no `ArrowLeft`/`ArrowRight`/`Home`/`End` branch anywhere in the component. Meanwhile `tabIndex={index === activeTab ? 0 : -1}` (line 34) removes every *non*-active tab from the natural Tab se…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "sonnet",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 2,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "There is no `ArrowLeft`/`ArrowRight`/`Home`/`End` branch anywhere in the component. Meanwhile `tabIndex={index === activeTab ? 0 : -1}` (line 34) removes every *non*-active tab from the natural Tab se\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

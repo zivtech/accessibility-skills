@@ -1,0 +1,20 @@
+{
+  "largest": {
+    "fixture_id": "multistep-form-error-clearing",
+    "raw_file_bytes": 17273,
+    "blinded_content_chars": 8818,
+    "blinded_prompt_chars": 8939
+  },
+  "median": {
+    "fixture_id": "tabs-missing-arrow-nav",
+    "raw_file_bytes": 5363,
+    "blinded_content_chars": 3021,
+    "blinded_prompt_chars": 3142
+  },
+  "smallest": {
+    "fixture_id": "button-skip-link-clean",
+    "raw_file_bytes": 2977,
+    "blinded_content_chars": 2216,
+    "blinded_prompt_chars": 2337
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "_description": "Derived analysis (not a raw API response): compares the 'context' token-array field returned by /api/generate across the num_ctx=32768 true-count run and the num_ctx=16384 historical-config draw1 run, both against the same prompt (largest fixture: multistep-form-error-clearing). Computed from 02-largest-multistep-form-error-clearing-ctx32768.json and 03-multistep-form-error-clearing-ctx16384-draw1.json.",
+  "inputs": {
+    "ctx32768_receipt": "02-largest-multistep-form-error-clearing-ctx32768.json",
+    "ctx16384_draw1_receipt": "03-multistep-form-error-clearing-ctx16384-draw1.json"
+  },
+  "findings": {
+    "context_array_length_ctx32768": 16448,
+    "context_array_length_ctx16384_draw1": 16448,
+    "context_arrays_byte_identical": true,
+    "prompt_eval_count_ctx32768": 16447,
+    "prompt_eval_count_ctx16384_draw1": 8194,
+    "final_generated_token_id_ctx32768": 151667,
+    "final_generated_token_id_ctx16384_draw1": 151667,
+    "response_text_both_runs": ""
+  },
+  "interpretation": {
+    "conclusion": "The 'context' field returned by /api/generate is NOT usable as evidence of what the server actually evaluated/retained under num_ctx pressure. It is byte-identical between the two runs (same 16448-token array, same final generated token id) despite prompt_eval_count differing by nearly 2x (16447 vs 8194). This means the 'context' field appears to echo the full, untruncated tokenization of system+prompt+response for conversational continuity, independent of whatever internal truncation happened during evaluation.",
+    "practical_consequence": "prompt_eval_count (corroborated by prompt_eval_duration/load_duration timing) is the only field in this API response that reveals the truncation. A caller who checked only the 'context' field's length, or diffed it against a full-context run, would see no difference and could wrongly conclude nothing was dropped.",
+    "not_determined": "This comparison does NOT reveal WHICH tokens were inside the 8194-token window that was actually evaluated at num_ctx=16384 (e.g., whether the critic system prompt's opening instructions survived, whether it was the fixture content that was dropped, or some mix). No evidence in these receipts speaks to that question either way; it is left open rather than guessed at."
+  },
+  "version_caveat": "Server: Ollama v0.32.15 (see 00-api-version.json), the default GUI-app instance at 127.0.0.1:11434. This truncation/echo BEHAVIOR is Ollama-version-dependent per the task brief; only the token COUNTS (prompt_eval_count values) are tokenizer-determined and robust across server versions. This comparison and its conclusion describe v0.32.15 specifically."
+}

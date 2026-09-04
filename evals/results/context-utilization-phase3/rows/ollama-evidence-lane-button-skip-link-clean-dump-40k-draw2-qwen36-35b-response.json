@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: ACCEPT\n\n**Overall Assessment**: The `MainLayout` component implements a robust, semantically correct layout shell. It correctly uses native HTML landmarks (`nav`, `main`, `footer`) and standard skip link patterns. The design decisions are coherent, accessible, and align with WAI-ARIA APG best practices. The only automated violation detected (`page-has-heading-one`) is expected for a layout shell and reflects consumer implementation responsibility rather than a component defect.\n\n**Pre-commitment Predictions**:\n- **Prediction**: I expected the code to be structurally sound with correct landmark usage.\n- **Prediction**: I anticipated potential issues with skip link visibility or focus management if CSS was incomplete.\n- **Actual Findings**: The implementation is clean. Skip link logic is standard and functional. Landmarks are correctly nested. No ARIA patterns are missing or incorrectly applied.\n\n**Critical Findings**:\nNone.\n\n**Major Findings**:\nNone.\n\n**Minor Findings**:\n1. **Consumer Responsibility for Page Headings**\n   - **Evidence**: `axe-core scan 004-...` shows `page-has-heading-one` violation.\n   - **Analysis**: The component renders a `<main>` landmark but does not enforce or provide a default `<h1>`. This is architecturally correct for a layout shell; the title belongs to the page content, not the wrapper. However, consumers must be aware they are responsible for providing an `<h1>` within `children` to satisfy WCAG 2.4.6 (Headings and Labels).\n   - **Fix**: Document in component props or README that an `<h1>` is required in the children content.\n\n**Enhancements**:\n1. **Skip Link Stacking Context Safety**\n   - **Evidence**: `MainLayout.jsx:5` (`z-index: 100`) and CSS `.skip-link:focus`.\n   - **Analysis**: The skip link uses `z-index: 100`. If the application has a fixed/sticky header with a higher z-index (e.g., `200`), the skip link will appear *under* the header when focused, rendering it unusable.\n   - **Fix**: Ensure the skip link's stacking context is higher than any fixed headers in the application. Consider using CSS variables for z-index to allow consumers to override if needed (e.g., `z-index: var(--skip-link-z-index, 100)`).\n\n**What's Missing**:\n- None significant. The component is a standard layout shell and does not require complex state or interaction patterns.\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Landmarks (`nav`, `main`) are clearly announced. Navigation has an accessible label (\"Main navigation\"). Skip link is functional.\n- **Keyboard-only user**: Tab order follows DOM order (Skip -> Nav -> Main). Skip link becomes visible on focus. No keyboard traps.\n- **Low vision user**: Skip link contrast (White on #0066cc) passes AA. Focus indicator (visibility change) is sufficient for the skip link element. Nav links have high contrast.\n- **Cognitive accessibility**: Structure is predictable and standard. Labels are clear.\n\n**Verdict Justification**:\nThe component passes deep review with no design gaps. It implements standard patterns correctly without over-engineering or using ARIA where HTML semantics suffice. The `page-has-heading-one` violation is a content-level issue, not a layout defect. I recommend shipping this as-is, with documentation for consumers regarding heading requirements.\n\n**Open Questions (unscored)**:\n- Does the application have fixed headers with `z-index > 100`? If so, the skip link stacking context needs adjustment.",
+  "done": true,
+  "total_duration": 87911962625,
+  "eval_count": 3857,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "button-skip-link-clean",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 88.0,
+    "timestamp": "2026-08-26T18:34:25",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 11699,
+    "estimated_prompt_tokens": 32187,
+    "prompt_eval_count": 31380,
+    "context_pressure": false,
+    "prompt_sha256": "bca029b908bf0c4a554b388b7d0317fee868391eab1493e27d63232592860ef3",
+    "prompt_byte_length": 112871,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/button-skip-link-clean.dump.txt",
+    "pack_sha256": "738bd1960725c394db5bbd3293f258065d00a97743ef5baa45701f668eaf0058",
+    "pack_byte_length": 49558,
+    "pack_available": true
+  }
+}

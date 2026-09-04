@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: sonnet
+Condition: curated-hosted (CURATED) | Draw: 1
+prompt_eval_count=None done_reason=None output_clipped=False context_pressure=None
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '<li key={index} role="option" aria-selected={index === selectedIndex} onClick={() => handleSelect(index)} className={index === selectedIndex ? \'selected\' : \'\'}>'
+  + [1] Focus not restored to trigger button after Escape key — '**Pre-commitment Predictions**: Based on component type ("custom dropdown/select"), predicted before detailed investigation: (1) focus restoration after Escape/selection would be missing or inconsiste…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "sonnet",
+  "condition": "curated-hosted",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": null,
+  "done_reason": null,
+  "context_pressure": null,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "<li key={index} role=\"option\" aria-selected={index === selectedIndex} onClick={() => handleSelect(index)} className={index === selectedIndex ? 'selected' : ''}>",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Pre-commitment Predictions**: Based on component type (\"custom dropdown/select\"), predicted before detailed investigation: (1) focus restoration after Escape/selection would be missing or inconsiste\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

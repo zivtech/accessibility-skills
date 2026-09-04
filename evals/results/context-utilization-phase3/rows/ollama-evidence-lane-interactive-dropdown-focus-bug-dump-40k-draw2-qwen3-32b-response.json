@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The BuggyDropdown implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus restoration issues that break keyboard navigation flow. The component passes automated tests but fails to meet WCAG 2.4.3 (Focus Order) and 2.4.7 (Focus Visible) requirements for complete keyboard operability.\n\n**Pre-commitment Predictions**: Expected to find incomplete focus management (no focus restoration after selection/escape), missing keyboard trap prevention, and potential issues with arrow key navigation. Actual findings confirmed focus restoration gaps and revealed additional focus appearance issues.\n\n**Critical Findings** (blocks access):\n1. **Missing focus restoration after selection** (`src/components/BuggyDropdown.jsx:28`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users lose context after interaction. After selecting an option, focus jumps to `<body>` (step_0005 in trace), violating WCAG 2.4.3 (Focus Order) and 2.4.7 (Focus Visible).\n   - Fix: Add `handleSelect` focus restoration: \n     ```jsx\n     document.getElementById('dropdown-btn')?.focus()\n     ```\n\n2. **Missing focus restoration after Escape** (`src/components/BuggyDropdown.jsx:18`)\n   - Confidence: HIGH\n   - Why this matters: Escape closes the dropdown but focus remains in listbox (step_0004 in trace), violating WCAG 2.1.2 (No Keyboard Trap). Screen reader users will hear \"listbox\" still focused after dismissal.\n   - Fix: Add to `handleKeyDown` Escape handler:\n     ```jsx\n     document.getElementById('dropdown-btn')?.focus()\n     ```\n\n**Major Findings** (significantly degrades experience):\n1. **Focus appearance contrast issues** (WCAG 2.4.13)\n   - Confidence: MEDIUM\n   - Why this matters: Focus indicators in trace.json show contrast ratios below 3:1 (step_0001: 2.53, step_0006: 2.53). While this doesn't block access, it reduces usability for low-vision users.\n   - Fix: Increase focus outline contrast to 3:1+ by using `outline: 2px solid` with sufficient color contrast.\n\n**What's Missing**:\n- Missing focus restoration logic in both selection and escape scenarios\n- No keyboard trap prevention when dropdown is open\n- No explicit focus management for initial listbox focus (though current implementation works)\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Semantic structure is correct with proper roles and states. However, focus restoration gaps mean screen reader will announce \"listbox\" after interaction completes.\n- **Keyboard-only user**: Arrow key navigation works but focus doesn't return to trigger button after interaction. Escape key closes dropdown but focus remains in listbox.\n- **Low vision user**: Focus indicators meet minimum (2.4.7) but fail AAA (2.4.13) contrast requirements.\n- **Cognitive accessibility**: Interaction model is consistent but missing confirmation of selection completion.\n\n**Verdict Justification**: The component implements 80% of the WAI-ARIA listbox pattern but fails on critical focus management requirements. The missing focus restoration breaks keyboard navigation flow, which is a critical accessibility failure. The contrast issues are secondary but should be addressed for full compliance.\n\n**Open Questions**:\n- Should the focus restoration use `setTimeout` to avoid React re-render issues?\n- Does the current focus indicator style meet minimum contrast requirements (2.4.7) even if it fails AAA?",
+  "done": true,
+  "total_duration": 183334451250,
+  "eval_count": 1424,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 183.4,
+    "timestamp": "2026-08-26T22:21:58",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 3233,
+    "estimated_prompt_tokens": 31454,
+    "prompt_eval_count": 29273,
+    "context_pressure": false,
+    "prompt_sha256": "21ef3a445b5ed732b92cf285bd0e5bcd780ecbb2b06010fff78917985eb7e585",
+    "prompt_byte_length": 110343,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.dump.txt",
+    "pack_sha256": "d7b2c559e6adcbaa7212f0ec290e59d2cfc429f6407d7ac27751387b0694b137",
+    "pack_byte_length": 46584,
+    "pack_available": true
+  }
+}

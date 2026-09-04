@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 2
+prompt_eval_count=31021 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '- `BuggyDropdown.tsx:20-23` (`handleToggle` Escape branch) and `BuggyDropdown.tsx:25-28` (`handleSelect`) call `setIsOpen(false)` but never call `triggerRef.current?.focus()`.'
+  + [1] Focus not restored to trigger button after Escape key — '- **Expected behavior**: Per WCAG 2.4.3 (Focus Order) and WAI-ARIA APG Listbox pattern, closing a popup must restore focus to the element that opened it. Fix: Store a ref to the button (`triggerRef`),…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": 31021,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "- `BuggyDropdown.tsx:20-23` (`handleToggle` Escape branch) and `BuggyDropdown.tsx:25-28` (`handleSelect`) call `setIsOpen(false)` but never call `triggerRef.current?.focus()`.",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "- **Expected behavior**: Per WCAG 2.4.3 (Focus Order) and WAI-ARIA APG Listbox pattern, closing a popup must restore focus to the element that opened it. Fix: Store a ref to the button (`triggerRef`),\u2026",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

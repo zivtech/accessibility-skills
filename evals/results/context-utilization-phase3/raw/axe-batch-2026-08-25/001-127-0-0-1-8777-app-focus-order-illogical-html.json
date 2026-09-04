@@ -1,0 +1,34 @@
+{
+  "url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+  "started": "2026-08-26T00:05:45.825Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+      "title": "app-focus-order-illogical",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "tabindex",
+          "impact": "serious",
+          "help": "Elements should not have tabindex greater than zero",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "button"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 31,
+      "inapplicable_count": 58
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:51.016Z"
+}

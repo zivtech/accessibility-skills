@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The BuggyDropdown implements the WAI-ARIA Listbox pattern but has critical gaps in focus restoration, state announcements, and accessible naming. The component fails to restore focus to the trigger button after selection/closure and lacks proper announcements for state changes.\n\n**Pre-commitment Predictions**: Confirmed - custom dropdowns often miss focus restoration and state announcements. The evidence confirmed missing focus restoration, empty listbox name, and no announcements on state changes.\n\n**Critical Findings** (blocks access):\n1. **Missing focus restoration after selection** (`src/components/BuggyDropdown.jsx:35`)\n   - Confidence: HIGH\n   - Why this matters: Keyboard users lose context after selection. Screen reader users won't know focus has moved to body.\n   - Fix: In `handleSelect`, add `document.getElementById('dropdown-btn').focus()` before `setIsOpen(false)`\n\n2. **Missing focus restoration on Escape** (`src/components/BuggyDropdown.jsx:25`)\n   - Confidence: HIGH\n   - Why this matters: Users can't navigate back to the trigger button after closing via Escape.\n   - Fix: In `handleKeyDown` for Escape, add `document.getElementById('dropdown-btn').focus()` before `setIsOpen(false)`\n\n3. **Empty accessible name for listbox** (`src/components/BuggyDropdown.jsx:29`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers announce the listbox as \"listbox\" with no context.\n   - Fix: Add `aria-label={label}` to the `<ul>` element\n\n**Major Findings** (significantly degrades experience):\n1. **No announcement on dropdown expansion** (`src/components/BuggyDropdown.jsx:20`)\n   - Confidence: HIGH\n   - Why this matters: Screen readers don't announce the listbox is open.\n   - Fix: Add `aria-live=\"polite\"` to a sibling `<div>` and update its content when `isOpen` changes\n\n2. **No active descendant announcements** (`src/components/BuggyDropdown.jsx:46`)\n   - Confidence: MEDIUM\n   - Why this matters: Screen readers don't announce which option is selected during keyboard navigation.\n   - Fix: Add `aria-activedescendant={options[selectedIndex].id}` to the listbox and assign unique `id`s to options\n\n**What's Missing**:\n- Focus restoration logic after selection/closure\n- Accessible name for the listbox\n- State announcements for expansion/selection\n- Active descendant management for keyboard navigation\n\n**Multi-Perspective Notes**:\n- Screen reader user: Listbox is announced but without context. No announcements when options are selected or dropdown expands.\n- Keyboard-only user: Can navigate options but focus gets lost to body after selection. No way to return to trigger button without manual tabbing.\n- Low vision user: Focus indicators may be lost when focus moves to body.\n- Cognitive accessibility: Users may be confused by missing context announcements.\n\n**Verdict Justification**: The component implements the core ARIA pattern but lacks critical focus management and announcements. The focus restoration issues block keyboard access, and the missing announcements prevent screen reader users from understanding state changes. These issues need to be fixed before the component is accessible.\n\n**Open Questions**:\n- Should the focus restoration use a ref instead of `getElementById` for better React integration?\n- Does the current implementation need an aria-live region for option selection announcements?",
+  "done": true,
+  "total_duration": 141756069167,
+  "eval_count": 1242,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 141.8,
+    "timestamp": "2026-08-26T22:12:42",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2641,
+    "estimated_prompt_tokens": 20880,
+    "prompt_eval_count": 16975,
+    "context_pressure": false,
+    "prompt_sha256": "55d34ddf12f56cac0d885eb0b0bcff683fbab3673824ab01b528efe560767a93",
+    "prompt_byte_length": 73353,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md",
+    "pack_sha256": "5fe85d89dd6c78bf6ee9a6a5c8232842a47801ab2f0bf30ce60582a023b75d41",
+    "pack_byte_length": 9591,
+    "pack_available": true
+  }
+}

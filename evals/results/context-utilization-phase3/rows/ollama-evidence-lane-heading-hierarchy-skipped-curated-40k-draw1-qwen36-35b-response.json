@@ -1,0 +1,33 @@
+{
+  "response": "**VERDICT: REVISE**\n\n**Overall Assessment**: The component uses appropriate semantic elements (`<article>`, `<ul>`) but fails on document structure due to skipped heading levels (jumping from `h1` to `h3`). This breaks the logical outline for assistive technology users. Additionally, as a standalone snippet, it lacks landmark regions, which may cause issues if rendered in isolation.\n\n**Pre-commitment Predictions**: \n- Expected to find skipped heading levels (h1 \u2192 h3).\n- Expected to find missing landmarks if treated as a full page.\n- Confirmed skipped headings via evidence pack.\n\n**Critical Findings**: None.\n\n**Major Findings**:\n1. **Skipped Heading Levels Break Document Outline**\n   - **Evidence**: Code shows `<h1>` followed immediately by `<h3>`. `axe-core` confirms `heading-order` violation on `h3:nth-child(2)`. KAT census confirms the sequence: h1 \u2192 h3 \u2192 h2.\n   - **User Group**: Screen reader users (navigation via headings), cognitive accessibility users (structure comprehension).\n   - **WCAG/APG**: 1.3.1 Info and Relationships (headings must convey structure), 2.4.1 Bypass Blocks (skipped levels disrupt outline navigation).\n   - **Fix**: Change the first `<h3>` to `<h2>` or insert an `<h2>` before it to maintain a logical hierarchy (h1 \u2192 h2 \u2192 h3).\n\n**Minor Findings**:\n- None.\n\n**Enhancements**:\n- **Landmark Context**: The component is wrapped in `<article>`. If this renders as the primary content of a page, ensure it is nested inside a `<main>` landmark. As a standalone snippet, it lacks a `role=\"main\"` equivalent.\n  - **WCAG**: 1.3.1 Info and Relationships (landmarks help users navigate large documents).\n\n**What's Missing**:\n- **h2 Elements**: The hierarchy jumps from level 1 to level 3, leaving no level 2 headings to act as sub-sections under the main title. This creates a \"flat\" or \"broken\" outline in screen readers.\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Will hear \"Introduction to Web Accessibility, heading level 1\" followed immediately by \"Why Accessibility Matters, heading level 3\". The jump skips level 2, making the document structure confusing and harder to navigate via heading shortcuts.\n- **Keyboard-only user**: No interactive elements present; no keyboard operability issues.\n- **Low vision user**: Text colors (`#0066cc`, `#333`) meet contrast requirements against white background. Focus indicators are N/A (static content).\n- **Cognitive accessibility**: Skipped headings disrupt the logical flow of information, making it harder to understand the relationship between sections.\n\n**Verdict Justification**: The heading hierarchy violation is a structural defect that directly impacts screen reader navigation and document structure comprehension. It must be fixed before shipping. The landmark issue is contextual but worth noting for integration.\n\n**Open Questions (unscored)**:\n- Is this component intended to be a standalone page or nested within a layout? If standalone, it needs a `<main>` wrapper.",
+  "done": true,
+  "total_duration": 69372671834,
+  "eval_count": 2423,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "heading-hierarchy-skipped",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 69.4,
+    "timestamp": "2026-08-26T18:49:52",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 6561,
+    "estimated_prompt_tokens": 20678,
+    "prompt_eval_count": 17583,
+    "context_pressure": false,
+    "prompt_sha256": "75da021b392badb547d11f6ca6f957a2a596d055d38bf9f9d50a7ca2efb25b36",
+    "prompt_byte_length": 72632,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/heading-hierarchy-skipped.curated.md",
+    "pack_sha256": "35cce64ba7d18618204df4a8fa931a17dbd22522ad94966ab226978f43d1fb6d",
+    "pack_byte_length": 9730,
+    "pack_available": true
+  }
+}

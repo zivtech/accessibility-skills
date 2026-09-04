@@ -1,0 +1,35 @@
+Fixture: modal-complete-clean | Model: qwen3:32b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=19354 done_reason=stop output_clipped=False context_pressure=False
+Tier: CLEAN | Verdict: REVISE
+CLEAN fixture — correct_verdict=False candidate_fp_count=2 (nice_to_find items may inflate this — adjudicate before counting as FP, README §9.5/F8)
+Status: SCORED (candidate — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "modal-complete-clean",
+  "model": "qwen3:32b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 19354,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "CLEAN",
+  "verdict": "REVISE",
+  "false_positives": {
+    "applicable": true,
+    "correct_verdict": false,
+    "structured_findings": 2,
+    "wrong_verdict": true,
+    "fp_count": 2
+  },
+  "must_find": {
+    "total": 0,
+    "matched": [],
+    "matched_count": 0,
+    "recall": null
+  },
+  "misses": []
+}

@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**Overall Assessment**: The Tabs component implements most of the WAI-ARIA Tabs pattern but lacks essential arrow key navigation, making it non-compliant with keyboard accessibility requirements. The missing keyboard navigation blocks keyboard-only users from interacting with the component as expected.\n\n**Pre-commitment Predictions**: Expected to find missing arrow key navigation and incomplete focus management. Confirmed by trace evidence showing no focus movement on arrow keys.\n\n**Critical Findings** (blocks access):\n1. **Missing arrow key navigation for tabs**  \n   - File: `TabsWidget.jsx:27` (handleTabKeyDown function)  \n   - ARIA/HTML element: `button[role=\"tab\"]`  \n   - User group impacted: Keyboard-only users  \n   - WCAG/APG: WAI-ARIA APG Tabs pattern (keyboard navigation required), WCAG 2.1.1 (Keyboard)  \n   - Fix: Add Left/Right arrow key handlers to cycle through tabs. Update activeTab state and focus the corresponding tab button when arrow keys are pressed.\n\n**Major Findings** (significantly degrades experience):\n1. **No focus restoration when switching tabs via arrow keys**  \n   - File: `TabsWidget.jsx:27`  \n   - ARIA/HTML element: `button[role=\"tab\"]`  \n   - User group impacted: Keyboard-only users  \n   - WCAG/APG: WCAG 2.4.3 (Focus Order)  \n   - Fix: When arrow keys are used to switch tabs, focus should move to the newly activated tab button. Currently, focus remains on the previously active tab.\n\n**Minor Findings**:\n- None\n\n**Enhancements**:\n- Consider adding `aria-live` regions for screen reader announcements when tabs are changed via keyboard navigation.\n\n**What's Missing**:\n- Arrow key navigation handlers for Left/Right keys to allow keyboard-only users to switch between tabs.\n- Focus restoration logic when tabs are changed via arrow keys.\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: The tabs are labeled correctly, but without arrow key navigation, the user cannot switch tabs via keyboard. Screen reader announcements don't change when arrow keys are pressed.\n- **Keyboard-only user**: Cannot navigate between tabs using arrow keys. Must use Tab to move, which is not intuitive for tabs.\n- **Low vision user**: The focus indicator is visible, but the lack of arrow key navigation makes it harder to use.\n- **Cognitive accessibility**: The interaction is inconsistent with standard tab behavior, which might confuse users.\n\n**Verdict Justification**: The tabs component fails to meet the WAI-ARIA Tabs pattern requirements for keyboard navigation. The missing arrow key handlers block keyboard-only users from interacting with the component as expected. The component must be revised to implement arrow key navigation and focus restoration.\n\n**Open Questions**:\n- Should the arrow key navigation also support Home/End keys to jump to the first/last tab?\n- Is there a need for additional screen reader announcements when tabs are changed via arrow keys?",
+  "done": true,
+  "total_duration": 231551886834,
+  "eval_count": 1476,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "curated-32k",
+    "payload": "CURATED",
+    "draw": 2,
+    "num_ctx": 32768,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 231.6,
+    "timestamp": "2026-08-26T21:37:30",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 3924,
+    "estimated_prompt_tokens": 21759,
+    "prompt_eval_count": 17960,
+    "context_pressure": false,
+    "prompt_sha256": "9593336c612feb854968dcb9f57a252ba669f3051f1e1695daefe9820009fec7",
+    "prompt_byte_length": 76443,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.curated.md",
+    "pack_sha256": "35fc4ad1476e0039c643aa80f56cb285a2abdc611096ad5b996bab2b015e461c",
+    "pack_byte_length": 12318,
+    "pack_available": true
+  }
+}

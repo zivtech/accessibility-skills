@@ -1,0 +1,34 @@
+{
+  "url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+  "started": "2026-08-26T00:05:58.585Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+      "title": "button-skip-link-clean",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 27,
+      "inapplicable_count": 62
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:01.857Z"
+}

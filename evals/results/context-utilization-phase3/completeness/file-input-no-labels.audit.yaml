@@ -1,0 +1,61 @@
+# Completeness audit — file-input-no-labels (README §10 step 3, gate F4 4-field shape).
+# Produced by the pack-construction session 2026-08-26 with ground-truth access
+# (fixture .metadata.yaml expected_findings), AFTER the blind CURATED digest froze
+# (second freeze — the raw set was expanded with the sr-census BEFORE any pack froze
+# against it, completing ruling 6; the first digest was superseded, never scored).
+# Every raw_handle verified against the actual artifact in-session.
+# adjudication_question / question_source copied VERBATIM FROM THE FROZEN DIGEST.
+fixture_id: file-input-no-labels
+digest_pack: evals/results/context-utilization-phase3/packs/file-input-no-labels.curated.md
+adjudication_question: 'Based on evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json
+  (axe-core scan), evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-driven/trace.json
+  (keyboard-a11y-tester driven trace), and evals/results/context-utilization-phase3/raw/file-input-no-labels-kat-census/sr-census.json
+  (keyboard-a11y-tester screen-reader reading-order census), and the tool that produced each (keyboard-a11y-tester
+  driven trace / keyboard-a11y-tester batch-crawl findings / keyboard-a11y-tester screen-reader reading-order
+  census / axe-core scan): does this evidence set show any interaction defect (focus not reaching or leaving
+  an element as expected, an ARIA state changing with no accessible announcement, a keyboard-operability
+  failure) and does it show any structural defect (a missing or incorrect ARIA role, landmark, label,
+  or heading-order violation) for the component these artifacts describe?'
+question_source: Phase 3 pack curation — authored by a fresh agent from artifact filenames and tool types
+  only; no fixture metadata, rubrics, ground-truth files, or lane README consulted
+items:
+- item_index: 0
+  description: Missing <label> element
+  tool_observable: true
+  evidence_in_raw_set: true
+  in_curated_pack: true
+  raw_handle: 'raw/axe-batch-2026-08-25/010-...-file-input-no-labels-html.json :: viewports.1280x800.violations[0]
+    (id=label, critical, help "Form elements must have labels"). In digest: obs axe-label-missing-input,
+    full violation row quoted verbatim.'
+- item_index: 1
+  description: No aria-describedby linking to error message
+  tool_observable: true
+  evidence_in_raw_set: true
+  in_curated_pack: true
+  raw_handle: 'Evidence pair: raw/file-input-no-labels-kat-census/sr-census.json :: entries[3] ("File
+    too large" as bare text node, tag=null selector=null — the rendered error, unassociated) + raw/file-input-no-labels-kat-driven/trace.json
+    :: steps[0]/[2] ax_name_role_state.states (full dict {invalid:"false",focusable,focused} — no describedby
+    relation) with the error pre-triggered at mount (build_fixtures.py wrapper; trace text field "C:\\fakepath\\quarterly-report.pdf"
+    evidences the oversized-file change fired). In digest: obs census-entries-reading-order + obs 5/6/8
+    states dicts. NOTE: the raw set as first collected (axe+trace only) did NOT evidence error-present
+    — the census was added at pack construction to complete ruling 6; see receipts/question-authoring-spawn-prompt.md
+    second correction.'
+- item_index: 2
+  description: No aria-invalid when error present
+  tool_observable: true
+  evidence_in_raw_set: true
+  in_curated_pack: true
+  raw_handle: 'raw/file-input-no-labels-kat-driven/trace.json :: steps[0]/[2] states.invalid="false" (full
+    dict quoted in digest obs 5/6/8) + error-present via census entries[3] ("File too large") — same evidence
+    pair as item 1.'
+- item_index: 3
+  description: File type restrictions not announced
+  tool_observable: false
+  evidence_in_raw_set: false
+  in_curated_pack: false
+  raw_handle: 'n/a — genuinely source-only (README §10 own worked example): no tool run, real or hypothetical,
+    surfaces the accept-restriction absence; fixture source is withheld from packs by design.'
+note: 'Digest prose note (recorded, not a freeze blocker): obs trace-step1-tab-reaches-fileinput labels
+  contrast/area values as focus_visible fields; in the raw trace they live in the ADJACENT focus_appearance
+  object (focus_visible carries visible/indicator). Every VALUE is exact and the step-granularity handle
+  resolves both objects; field-name attribution blurred in prose only.'

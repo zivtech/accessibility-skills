@@ -27,6 +27,10 @@ jobs:
         run: python3 -m py_compile ollama/*.py evals/suites/perspectives/*.py
       - name: Validate fixtures and registries
         run: python3 scripts/validate_fixtures.py
+      - name: Verify retained run manifests
+        run: python3 scripts/verify_run_manifests.py
+      - name: Test retained run-manifest verifier
+        run: python3 scripts/test_verify_run_manifests.py
       - name: Skill lint (frontmatter + fence balance)
         run: python3 scripts/lint_skills.py
       - name: Scorer smoke tests

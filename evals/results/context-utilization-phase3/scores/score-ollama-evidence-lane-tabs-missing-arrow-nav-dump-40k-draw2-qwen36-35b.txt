@@ -1,0 +1,38 @@
+Fixture: tabs-missing-arrow-nav | Model: qwen3.6:35b
+Condition: dump-40k (DUMP) | Draw: 2
+prompt_eval_count=30079 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 1/1
+  + [0] Arrow key navigation not implemented for tab cycling — '**Overall Assessment**: The component implements a solid foundation for a WAI-ARIA Tabs widget with correct semantic structure (`<button>` inside `role="tablist"`), proper roving tabindex, and correct…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "tabs-missing-arrow-nav",
+  "model": "qwen3.6:35b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 2,
+  "prompt_eval_count": 30079,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 1,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Arrow key navigation not implemented for tab cycling",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements a solid foundation for a WAI-ARIA Tabs widget with correct semantic structure (`<button>` inside `role=\"tablist\"`), proper roving tabindex, and correct\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 1,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

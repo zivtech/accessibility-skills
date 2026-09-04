@@ -1,0 +1,33 @@
+{
+  "response": "**VERDICT: REVISE**\n\n**Overall Assessment**: The component implements a valid WAI-ARIA Listbox pattern structure (button trigger + listbox/listitem roles), but the interaction model is incomplete. Focus management fails on both selection and Escape key events, leaving keyboard users stranded. The listbox lacks an accessible name, and selected state changes are not announced to assistive technology.\n\n**Pre-commitment Predictions**:\n1. Focus would be lost or fail to restore after closing the dropdown (Escape/Selection).\n2. The listbox would lack a contextual accessible name.\n3. Selection of an option would not be announced to screen reader users.\n4. Arrow key navigation might highlight options but fail to sync focus/active-descendant properly without `aria-activedescendant`.\n\n**Critical Findings** (blocks access):\n*(None found that completely block access, as the pattern is structurally valid and keyboard operable)*\n\n**Major Findings** (significantly degrades experience):\n\n1. **Focus Management Failure on Selection**\n   - **Evidence**: `src/components/BuggyDropdown.jsx:30` (`setIsOpen(false)` without focus move). Trace `step_0005`: \"active_element_selector becomes 'body'\".\n   - **User Group**: Keyboard-only users.\n   - **WCAG/APG**: WCAG 2.4.3 Focus Order; WAI-ARIA APG Listbox pattern (Focus Management).\n   - **Fix**: When `handleSelect` is called, explicitly move focus back to the trigger button: `buttonRef.current.focus()`.\n\n2. **Focus Management Failure on Escape**\n   - **Evidence**: `src/components/BuggyDropdown.jsx:36` (`setIsOpen(false)` without focus move). Trace `step_0004`: Focus remains on listbox or moves to body after unmount.\n   - **User Group**: Keyboard-only users.\n   - **WCAG/APG**: WCAG 2.1.2 No Keyboard Trap; WAI-ARIA APG Menu Button pattern (Escape handling).\n   - **Fix**: In `handleKeyDown` for Escape, restore focus to the trigger: `buttonRef.current.focus()`.\n\n3. **Listbox Missing Accessible Name**\n   - **Evidence**: `<ul ... role=\"listbox\">` has no `aria-label` or `aria-labelledby`. Trace `step_0003`: \"ax_name_role_state.name = '' (empty string)\".\n   - **User Group**: Screen reader users.\n   - **WCAG/APG**: WCAG 4.1.2 Name, Role, Value; WAI-ARIA APG Listbox pattern.\n   - **Fix**: Add `aria-label={label}` to the `<ul>` element so screen readers announce \"listbox, Sort by\" instead of just \"listbox\".\n\n4. **Selection State Not Announced**\n   - **Evidence**: No `aria-live` region in component. Trace `step_0002`: \"sr_announcement.new_phrases is []\".\n   - **User Group**: Screen reader users.\n   - **WCAG/APG**: WCAG 4.1.3 Status Messages; WAI-ARIA APG Listbox pattern (Announcing selection).\n   - **Fix**: Add a visually hidden `<div aria-live=\"polite\" role=\"status\">` that updates with the selected option text when `selectedIndex` changes.\n\n**Minor Findings** (friction but workaround exists):\n\n- **Tab Order on Listbox**: The listbox has `tabIndex=\"0\"`, making it tabbable. While valid, standard practice for a dropdown is to keep focus only on the trigger and move focus *into* the list via arrow keys. Consider removing `tabIndex=\"0\"` from the `<ul>` and managing focus solely via arrow key entry (if you want strict APG compliance).\n- **Visual vs Programmatic Sync**: The code uses `selectedIndex` state to highlight options but does not use `aria-activedescendant`. This is a valid approach, but ensure the visual highlight matches the screen reader's \"active\" option. If focus stays on the listbox, SR users might hear \"listbox\" repeatedly without knowing which item is active unless they use virtual cursor or arrow keys to navigate.\n\n**What's Missing** (gaps, unhandled edge cases):\n- **Focus Restoration**: The component does not implement focus restoration for Escape or Selection events.\n- **Accessible Name**: The listbox has no accessible name.\n- **Live Region**: No mechanism to announce the selected value to screen reader users.\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Hears \"button, Sort by\". Opens list. List is announced as \"listbox\" (no context). Navigates options. Selects option. Focus jumps to body. No announcement of selection. Must Shift+Tab back to button. Button says \"button, Sort by\" (label is static, though text changed visually).\n- **Keyboard-only user**: Tab to button. Enter opens. Arrow keys highlight. Enter selects -> focus lost to body. Must manually navigate back. Escape closes -> focus lost or stays on unmounted element.\n- **Low vision user**: Focus indicator visible on button and listbox. Text contrast unknown (assume pass).\n\n**Verdict Justification**: The component passes basic ARIA structure checks but fails critical interaction design requirements for keyboard operability and screen reader state communication. The missing focus restoration is a significant barrier for keyboard users, and the missing accessible name/announcements degrades the experience for screen reader users.\n\n**Open Questions (unscored)**:\n- Does the parent component handle click-outside behavior to close the dropdown? (Not visible in snippet).\n- Is `aria-activedescendant` preferred over moving focus into the listbox for this specific use case? (Moving focus is acceptable if managed correctly).",
+  "done": true,
+  "total_duration": 208903795416,
+  "eval_count": 2865,
+  "_benchmark": {
+    "model": "qwen3.6:35b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "interactive-dropdown-focus-bug",
+    "condition": "curated-40k",
+    "payload": "CURATED",
+    "draw": 1,
+    "num_ctx": 40960,
+    "declared_context_length": 262144,
+    "elapsed_seconds": 209.2,
+    "timestamp": "2026-08-26T19:18:28",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 6598,
+    "estimated_prompt_tokens": 20880,
+    "prompt_eval_count": 17516,
+    "context_pressure": false,
+    "prompt_sha256": "55d34ddf12f56cac0d885eb0b0bcff683fbab3673824ab01b528efe560767a93",
+    "prompt_byte_length": 73353,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/interactive-dropdown-focus-bug.curated.md",
+    "pack_sha256": "5fe85d89dd6c78bf6ee9a6a5c8232842a47801ab2f0bf30ce60582a023b75d41",
+    "pack_byte_length": 9591,
+    "pack_available": true
+  }
+}

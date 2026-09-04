@@ -1,0 +1,1634 @@
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/004-127-0-0-1-8777-button-skip-link-clean-html.json (axe-core scan)
+
+```json
+{
+  "url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+  "started": "2026-08-26T00:05:58.585Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/button-skip-link-clean.html",
+      "title": "button-skip-link-clean",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 27,
+      "inapplicable_count": 62
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:01.857Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/000-127-0-0-1-8777-accordion-no-region-role-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/accordion-no-region-role.html",
+  "started": "2026-08-26T00:05:42.011Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/accordion-no-region-role.html",
+      "title": "accordion-no-region-role",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#panel-0"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 2,
+          "sample_selectors": [
+            "button[aria-controls=\"panel-1\"]",
+            "button[aria-controls=\"panel-2\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "button[aria-controls=\"panel-0\"] > span"
+          ]
+        }
+      ],
+      "passes_count": 18,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:45.724Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/001-127-0-0-1-8777-app-focus-order-illogical-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+  "started": "2026-08-26T00:05:45.825Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/app-focus-order-illogical.html",
+      "title": "app-focus-order-illogical",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "tabindex",
+          "impact": "serious",
+          "help": "Elements should not have tabindex greater than zero",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/tabindex?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "button"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 31,
+      "inapplicable_count": 58
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:51.016Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/002-127-0-0-1-8777-async-form-vague-success-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/async-form-vague-success.html",
+  "started": "2026-08-26T00:05:51.117Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/async-form-vague-success.html",
+      "title": "async-form-vague-success",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            "h2",
+            ".form-group:nth-child(1)",
+            ".form-group:nth-child(2)"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 27,
+      "inapplicable_count": 61
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:54.851Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/003-127-0-0-1-8777-breadcrumb-navigation-no-nav-landmark-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+  "started": "2026-08-26T00:05:54.952Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/breadcrumb-navigation-no-nav-landmark.html",
+      "title": "breadcrumb-navigation-no-nav-landmark",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            "a[href=\"#/\"]",
+            "a[href$=\"#/products\"]",
+            "li:nth-child(3)"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "bypass",
+          "impact": "serious",
+          "help": "Page must have means to bypass repeated blocks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "wcag2a",
+            "wcag241",
+            "section508",
+            "section508.22.o",
+            "TTv5",
+            "TT9.a",
+            "EN-301-549",
+            "EN-9.2.4.1",
+            "RGAAv4",
+            "RGAA-12.7.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "passes_count": 17,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:05:58.483Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/005-127-0-0-1-8777-checkbox-group-no-fieldset-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+  "started": "2026-08-26T00:06:01.958Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+      "title": "checkbox-group-no-fieldset",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 12,
+      "inapplicable_count": 76
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:06.576Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/006-127-0-0-1-8777-combobox-autocomplete-no-listbox-role-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+  "started": "2026-08-26T00:06:06.680Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/combobox-autocomplete-no-listbox-role.html",
+      "title": "combobox-autocomplete-no-listbox-role",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 22,
+      "inapplicable_count": 66
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:10.242Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/007-127-0-0-1-8777-dashboard-heading-inconsistency-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+  "started": "2026-08-26T00:06:10.344Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/dashboard-heading-inconsistency.html",
+      "title": "dashboard-heading-inconsistency",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            ".metric-card:nth-child(1) > .metric-label",
+            ".metric-card:nth-child(2) > .metric-label",
+            ".metric-card:nth-child(3) > .metric-label"
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".metric-card:nth-child(1) > h3"
+          ]
+        },
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 25,
+      "inapplicable_count": 64
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:21.860Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/008-127-0-0-1-8777-data-table-missing-scope-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/data-table-missing-scope.html",
+  "started": "2026-08-26T00:06:21.962Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/data-table-missing-scope.html",
+      "title": "data-table-missing-scope",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 14,
+      "inapplicable_count": 74
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:25.124Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/009-127-0-0-1-8777-expandable-section-no-button-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/expandable-section-no-button.html",
+  "started": "2026-08-26T00:06:25.226Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/expandable-section-no-button.html",
+      "title": "expandable-section-no-button",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 8,
+      "inapplicable_count": 80
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:29.433Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/010-127-0-0-1-8777-file-input-no-labels-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/file-input-no-labels.html",
+  "started": "2026-08-26T00:06:29.535Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/file-input-no-labels.html",
+      "title": "file-input-no-labels",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "help": "Form elements must have labels",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/label?application=playwright",
+          "tags": [
+            "cat.forms",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.n",
+            "TTv5",
+            "TT5.c",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.1.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "input"
+          ]
+        },
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 11,
+      "inapplicable_count": 76
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:35.158Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/011-127-0-0-1-8777-form-field-vs-summary-errors-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+  "started": "2026-08-26T00:06:35.260Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/form-field-vs-summary-errors.html",
+      "title": "form-field-vs-summary-errors",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 9,
+          "sample_selectors": [
+            "h1",
+            "label[for=\"field-email\"]",
+            "#field-email"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 23,
+      "inapplicable_count": 66
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:39.639Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/012-127-0-0-1-8777-form-validation-missing-aria-describedby-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+  "started": "2026-08-26T00:06:39.741Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/form-validation-missing-aria-describedby.html",
+      "title": "form-validation-missing-aria-describedby",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 3,
+          "sample_selectors": [
+            "h1",
+            ".form-group:nth-child(2)",
+            ".form-group:nth-child(3)"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 23,
+      "inapplicable_count": 66
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:42.842Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/013-127-0-0-1-8777-heading-hierarchy-skipped-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+  "started": "2026-08-26T00:06:42.944Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/heading-hierarchy-skipped.html",
+      "title": "heading-hierarchy-skipped",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "help": "Heading levels should only increase by one",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "h3:nth-child(2)"
+          ]
+        },
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 13,
+      "inapplicable_count": 76
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:48.973Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/014-127-0-0-1-8777-image-carousel-no-region-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/image-carousel-no-region.html",
+  "started": "2026-08-26T00:06:49.075Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/image-carousel-no-region.html",
+      "title": "image-carousel-no-region",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            ".carousel-images"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 4,
+          "sample_selectors": [
+            "button[aria-label=\"Previous image\"]",
+            ".active",
+            "button[aria-label=\"Go to image 2\"]"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 18,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:52.906Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/015-127-0-0-1-8777-infinite-scroll-no-announcement-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/infinite-scroll-no-announcement.html",
+  "started": "2026-08-26T00:06:53.008Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/infinite-scroll-no-announcement.html",
+      "title": "infinite-scroll-no-announcement",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 10,
+      "inapplicable_count": 78
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:56.726Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/016-127-0-0-1-8777-interactive-dropdown-clean-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/interactive-dropdown-clean.html",
+  "started": "2026-08-26T00:06:56.827Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/interactive-dropdown-clean.html",
+      "title": "interactive-dropdown-clean",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "label"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "help": "ARIA attributes must conform to valid values",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#dropdown-button"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "span"
+          ]
+        }
+      ],
+      "passes_count": 17,
+      "inapplicable_count": 70
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:04.125Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/017-127-0-0-1-8777-interactive-dropdown-focus-bug-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+  "started": "2026-08-26T00:07:04.226Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/interactive-dropdown-focus-bug.html",
+      "title": "interactive-dropdown-focus-bug",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "label"
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "help": "ARIA attributes must conform to valid values",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=playwright",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#dropdown-btn"
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "span"
+          ]
+        }
+      ],
+      "passes_count": 16,
+      "inapplicable_count": 71
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:10.750Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/018-127-0-0-1-8777-loading-state-missing-aria-busy-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/loading-state-missing-aria-busy.html",
+  "started": "2026-08-26T00:07:10.852Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/loading-state-missing-aria-busy.html",
+      "title": "loading-state-missing-aria-busy",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 8,
+      "inapplicable_count": 80
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:14.541Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/019-127-0-0-1-8777-megamenu-no-structure-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/megamenu-no-structure.html",
+  "started": "2026-08-26T00:07:14.642Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/megamenu-no-structure.html",
+      "title": "megamenu-no-structure",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 8,
+      "inapplicable_count": 80
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:18.913Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/020-127-0-0-1-8777-modal-complete-clean-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/modal-complete-clean.html",
+  "started": "2026-08-26T00:07:19.015Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/modal-complete-clean.html",
+      "title": "modal-complete-clean",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 11,
+      "inapplicable_count": 77
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:24.080Z"
+}
+```
+
+### evals/results/context-utilization-phase3/raw/axe-batch-2026-08-25/022-127-0-0-1-8777-pagination-no-nav-landmark-html.json (axe-core scan (same batch, sibling page))
+
+```json
+{
+  "url": "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+  "started": "2026-08-26T00:07:28.979Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/pagination-no-nav-landmark.html",
+      "title": "pagination-no-nav-landmark",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=playwright",
+          "tags": [
+            "cat.sensory-and-visual-cues",
+            "wcag22aa",
+            "wcag258"
+          ],
+          "node_count": 11,
+          "sample_selectors": [
+            "button[aria-label=\"Previous page\"]",
+            "button[aria-label=\"Page 1\"]",
+            "button[aria-label=\"Page 2\"]"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 16,
+      "inapplicable_count": 72
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:07:33.176Z"
+}
+```

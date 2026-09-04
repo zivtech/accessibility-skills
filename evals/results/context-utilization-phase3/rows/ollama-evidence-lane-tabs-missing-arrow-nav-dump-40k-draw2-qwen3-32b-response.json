@@ -1,0 +1,33 @@
+{
+  "response": "# Verdict: REVISE\n\n**VERDICT: REVISE**\n\n**Overall Assessment**: The TabsWidget implements most of the WAI-ARIA Tabs pattern but is missing critical arrow key navigation required for keyboard accessibility. While basic tab switching works via mouse and Tab key, keyboard-only users cannot navigate between tabs using arrow keys, which is a core requirement for accessible tab components.\n\n**Pre-commitment Predictions**: Expected to find missing arrow key navigation and incomplete roving tabindex implementation. Confirmed both issues exist in the code.\n\n**Critical Findings** (blocks access):\n- None\n\n**Major Findings** (significantly degrades experience):\n1. **Missing arrow key navigation for tab selection**  \n   - **File**: `TabsWidget.jsx:20-28`  \n   - **Issue**: `handleTabKeyDown` only handles Enter/Space but lacks Left/Right arrow key support required by WAI-ARIA Tabs pattern.  \n   - **WCAG**: 2.1.1 Keyboard (Tab must navigate), 2.4.3 Focus Order  \n   - **Impact**: Keyboard-only users cannot navigate between tabs using arrow keys, which is the expected interaction model for tabs.  \n   - **Fix**: Add arrow key handlers to `handleTabKeyDown` to cycle focus between tabs. Example:  \n     ```jsx\n     if (e.key === 'ArrowRight') {\n       e.preventDefault();\n       const nextIndex = (index + 1) % tabs.length;\n       setActiveTab(nextIndex);\n     } else if (e.key === 'ArrowLeft') {\n       e.preventDefault();\n       const prevIndex = (index - 1 + tabs.length) % tabs.length;\n       setActiveTab(prevIndex);\n     }\n     ```\n\n2. **Missing keyboard trap restoration on tab change**  \n   - **File**: `TabsWidget.jsx:15-17`  \n   - **Issue**: When tabs change, focus doesn't automatically move to the new tab's content.  \n   - **WCAG**: 2.4.3 Focus Order  \n   - **Impact**: Users may lose context after switching tabs.  \n   - **Fix**: Add `ref` to each tab panel and programmatically focus the first focusable element in the new panel:  \n     ```jsx\n     const panelRefs = useRef([]);\n     useEffect(() => {\n       if (panelRefs.current[activeTab]) {\n         panelRefs.current[activeTab].focus();\n       }\n     }, [activeTab]);\n     ```\n\n**Minor Findings**:\n- **Focus indicator contrast could be improved**  \n  - The focus outline has 3px solid #0066cc, which meets 3:1 contrast but not AAA (7:1). Consider using a higher-contrast color for better visibility.\n\n**Enhancements**:\n- Add `aria-label` to tab buttons for screen readers when labels are icons-only.\n- Consider adding `role=\"presentation\"` to non-interactive elements in tab panels.\n\n**What's Missing**:\n- Arrow key navigation for tab selection (core WAI-ARIA requirement)\n- Focus restoration to new tab content\n- Keyboard trap management when tab panels contain interactive elements\n\n**Multi-Perspective Notes**:\n- **Screen reader user**: Semantic structure is clear, but missing arrow key navigation means screen reader users must rely on Tab key only, which is less efficient.\n- **Keyboard-only user**: Cannot navigate between tabs using arrow keys, which is the expected interaction model.\n- **Low vision user**: Focus indicator meets minimum contrast requirements but could be improved for AAA compliance.\n- **Cognitive accessibility**: Tab interaction is consistent but missing keyboard shortcuts may confuse users expecting standard tab behavior.\n\n**Verdict Justification**: The component implements most of the WAI-ARIA Tabs pattern but is missing critical keyboard navigation required for full accessibility. The missing arrow key support significantly degrades the experience for keyboard users and violates WCAG 2.1.1 and 2.4.3. The component requires revision to implement the complete pattern.\n\n**Open Questions**:\n- Should the focus restoration on tab change target the first focusable element in the panel or the panel itself?\n- Are there additional keyboard shortcuts (e.g., Home/End to jump to first/last tab) that should be implemented?",
+  "done": true,
+  "total_duration": 222801152292,
+  "eval_count": 1461,
+  "_benchmark": {
+    "model": "qwen3:32b",
+    "skill": "a11y-critic",
+    "lane": "context-utilization-phase3",
+    "fixture_id": "tabs-missing-arrow-nav",
+    "condition": "dump-40k",
+    "payload": "DUMP",
+    "draw": 2,
+    "num_ctx": 40960,
+    "declared_context_length": 40960,
+    "elapsed_seconds": 222.8,
+    "timestamp": "2026-08-26T21:56:42",
+    "done_reason": "stop",
+    "output_clipped": false,
+    "thinking_chars": 2908,
+    "estimated_prompt_tokens": 30490,
+    "prompt_eval_count": 28445,
+    "context_pressure": false,
+    "prompt_sha256": "3acc3fd7ff090184f3ef9f0802b145c2eb420fe2ad2bcfbed2a5cfa8c7990030",
+    "prompt_byte_length": 106968,
+    "overflow_receipt": false,
+    "guard_tripped": false,
+    "pack_path": "evals/results/context-utilization-phase3/packs/tabs-missing-arrow-nav.dump.txt",
+    "pack_sha256": "96fc2742c0f1d20e3a917400f7cdcd21f6c9146b6afbcbdc6622272a35cb3cfa",
+    "pack_byte_length": 42846,
+    "pack_available": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+ "model": "qwen3:32b",
+ "created_at": "2026-08-24T18:03:30.665377Z",
+ "response": "",
+ "done": true,
+ "done_reason": "length",
+ "total_duration": 5474086125,
+ "load_duration": 1384667,
+ "prompt_eval_count": 14489,
+ "prompt_eval_duration": 5426077000,
+ "eval_count": 1,
+ "eval_duration": 1000,
+ "_probe_meta": {
+  "phase": "step2-fixture",
+  "role": "smallest",
+  "fixture_id": "button-skip-link-clean",
+  "num_ctx": 32768,
+  "wall_seconds": 5.5
+ },
+ "context_stripped": "token-id array removed post-capture to keep receipts lean (context-utilization plan, principle 1)",
+ "context_length": 14490,
+ "context_sha256": "2a68e626057d7cf34a8d43b385b958fef032cfb2ca397b303c9efa5acc29ba78"
+}

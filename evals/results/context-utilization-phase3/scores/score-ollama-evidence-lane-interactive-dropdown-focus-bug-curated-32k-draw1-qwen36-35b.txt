@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3.6:35b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=17516 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REJECT
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '- **Evidence**: `src/components/BuggyDropdown.tsx:28` (`handleSelect`) and `src/components/BuggyDropdown.tsx:35` (`handleKeyDown` for Escape). Neither function restores focus to the trigger button. Th…'
+  + [1] Focus not restored to trigger button after Escape key — '**Overall Assessment**: The component implements a custom dropdown using the Listbox pattern but suffers from critical design gaps in focus management, state communication, and accessible naming. Whil…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3.6:35b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 17516,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REJECT",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "- **Evidence**: `src/components/BuggyDropdown.tsx:28` (`handleSelect`) and `src/components/BuggyDropdown.tsx:35` (`handleKeyDown` for Escape). Neither function restores focus to the trigger button. Th\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements a custom dropdown using the Listbox pattern but suffers from critical design gaps in focus management, state communication, and accessible naming. Whil\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}

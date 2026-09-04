@@ -8,6 +8,7 @@ Orchestrated accessibility lifecycle using Claude Code subagents at depth-1.
 |------|-------|-------|-------|-----|
 | **Orchestrator** | `/a11y-workflow` skill | main session | all | Sequence lifecycle, spawn specialists, manage escalation |
 | **Scout** | `a11y-scout` | haiku | read-only | File discovery, ARIA inventory, component type ID |
+| **Reader** | `a11y-evidence-reader` | haiku → sonnet (never opus) | read-only | Contract-shaped evidence digest + coverage note when a step's artifacts exceed the inject budget (threshold defined in a11y-workflow SKILL.md) |
 | **Planner** | `a11y-planner` | opus | no Bash | Design accessibility before coding (9-phase) |
 | **Critic** | `a11y-critic` | opus | read-only | Review ARIA patterns, focus management, state communication (8-phase) |
 | **Tester** | `a11y-test` skill | n/a | Playwright / keyboard-a11y-tester / virtual-screen-reader | Keyboard tests, axe-core scans, live-URL journey audits, component SR assertions |

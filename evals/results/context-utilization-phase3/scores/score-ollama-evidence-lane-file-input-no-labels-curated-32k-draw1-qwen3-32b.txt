@@ -1,0 +1,62 @@
+Fixture: file-input-no-labels | Model: qwen3:32b
+Condition: curated-32k (CURATED) | Draw: 1
+prompt_eval_count=18543 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 3/4
+  + [1] No aria-describedby linking to error message — '1. **Error message not associated with input**: `src/components/BuggyFileInput.jsx:23` - The error message renders but has no `id` or `aria-describedby` linking it to the input. Per WCAG 1.3.1 and 4.1…'
+  + [2] No aria-invalid when error present — '2. **Missing aria-invalid state**: `src/components/BuggyFileInput.jsx:15` - The input does not use `aria-invalid="true"` when an error occurs. Per WCAG 4.1.2 (Name, Role, Value), state changes must be…'
+  + [3] File type restrictions not announced — '- Add help text explaining file type restrictions via `aria-describedby`'
+  X [0] Missing <label> element — reason=model-miss
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "file-input-no-labels",
+  "model": "qwen3:32b",
+  "condition": "curated-32k",
+  "payload": "CURATED",
+  "draw": 1,
+  "prompt_eval_count": 18543,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 4,
+    "matched": [
+      {
+        "item_index": 1,
+        "description": "No aria-describedby linking to error message",
+        "found": true,
+        "evidence_quote": "1. **Error message not associated with input**: `src/components/BuggyFileInput.jsx:23` - The error message renders but has no `id` or `aria-describedby` linking it to the input. Per WCAG 1.3.1 and 4.1\u2026",
+        "wcag_cited": false
+      },
+      {
+        "item_index": 2,
+        "description": "No aria-invalid when error present",
+        "found": true,
+        "evidence_quote": "2. **Missing aria-invalid state**: `src/components/BuggyFileInput.jsx:15` - The input does not use `aria-invalid=\"true\"` when an error occurs. Per WCAG 4.1.2 (Name, Role, Value), state changes must be\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 3,
+        "description": "File type restrictions not announced",
+        "found": true,
+        "evidence_quote": "- Add help text explaining file type restrictions via `aria-describedby`",
+        "wcag_cited": false
+      }
+    ],
+    "matched_count": 3,
+    "recall": 0.75
+  },
+  "misses": [
+    {
+      "item_index": 0,
+      "description": "Missing <label> element",
+      "found": false,
+      "reason": "model-miss"
+    }
+  ],
+  "false_positives": null
+}

@@ -1,0 +1,64 @@
+{
+  "url": "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+  "started": "2026-08-26T00:06:01.958Z",
+  "viewports": {
+    "1280x800": {
+      "status": "measured",
+      "http_status": 200,
+      "final_url": "http://127.0.0.1:8777/checkbox-group-no-fieldset.html",
+      "title": "checkbox-group-no-fieldset",
+      "axe_core_version": "4.13.0",
+      "violations": [
+        {
+          "id": "landmark-one-main",
+          "impact": "moderate",
+          "help": "Document should have one main landmark",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "page-has-heading-one",
+          "impact": "moderate",
+          "help": "Page should contain a level-one heading",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=playwright",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "html"
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "help": "All page content should be contained by landmarks",
+          "help_url": "https://dequeuniversity.com/rules/axe/4.13/region?application=playwright",
+          "tags": [
+            "cat.keyboard",
+            "best-practice",
+            "RGAAv4",
+            "RGAA-9.2.1"
+          ],
+          "node_count": 1,
+          "sample_selectors": [
+            "#root"
+          ]
+        }
+      ],
+      "incomplete": [],
+      "passes_count": 12,
+      "inapplicable_count": 76
+    }
+  },
+  "status": "measured",
+  "finished": "2026-08-26T00:06:06.576Z"
+}

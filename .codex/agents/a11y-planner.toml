@@ -58,6 +58,7 @@ This planner already requires WCAG 2.2 and APG citations for all decisions. Addi
 - **Existing code references**: When modifying existing components, cite `file:line` of the component being changed. Show the current accessibility state before proposing changes.
 - **User impact claims**: When claiming a pattern "blocks access" or "degrades experience," cite the specific WCAG criterion and the user category affected.
 - **Effort estimates** (in Contract Appendix): Base estimates on the number of components affected, citing each by file:line.
+- **`a11y-evidence-reader` digests**: detector output, one tier BELOW the artifact it cites. Before citing a digest line to support a design decision, re-fetch at the cited handle (file + jq path / line range); a citation that cannot be traced to a re-fetched handle is labeled digest-only.
 
 Unacceptable evidence:
 - "This is inaccessible" without citing specific WCAG criterion

@@ -1,0 +1,46 @@
+Fixture: interactive-dropdown-focus-bug | Model: qwen3:32b
+Condition: dump-40k (DUMP) | Draw: 1
+prompt_eval_count=29273 done_reason=stop output_clipped=False context_pressure=False
+Tier: HAS-BUGS | Verdict: REVISE
+Must-find candidates: 2/2
+  + [0] Focus not restored to trigger button after selection — '**Overall Assessment**: The component implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus management gaps that break keyboard navigation flow. Focus restorati…'
+  + [1] Focus not restored to trigger button after Escape key — '**Overall Assessment**: The component implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus management gaps that break keyboard navigation flow. Focus restorati…'
+Status: SCORED (candidate matches — content-adjudication required, README §6/§7)
+
+{
+  "fixture_id": "interactive-dropdown-focus-bug",
+  "model": "qwen3:32b",
+  "condition": "dump-40k",
+  "payload": "DUMP",
+  "draw": 1,
+  "prompt_eval_count": 29273,
+  "done_reason": "stop",
+  "context_pressure": false,
+  "output_clipped": false,
+  "invalid": null,
+  "tier": "HAS-BUGS",
+  "verdict": "REVISE",
+  "must_find": {
+    "total": 2,
+    "matched": [
+      {
+        "item_index": 0,
+        "description": "Focus not restored to trigger button after selection",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus management gaps that break keyboard navigation flow. Focus restorati\u2026",
+        "wcag_cited": true
+      },
+      {
+        "item_index": 1,
+        "description": "Focus not restored to trigger button after Escape key",
+        "found": true,
+        "evidence_quote": "**Overall Assessment**: The component implements the WAI-ARIA listbox pattern with correct roles and states, but has critical focus management gaps that break keyboard navigation flow. Focus restorati\u2026",
+        "wcag_cited": true
+      }
+    ],
+    "matched_count": 2,
+    "recall": 1.0
+  },
+  "misses": [],
+  "false_positives": null
+}
