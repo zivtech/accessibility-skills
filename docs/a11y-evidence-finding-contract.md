@@ -104,6 +104,8 @@ Use trend only when comparing against prior evidence:
 
 Do not infer trend from a single run.
 
+`resolved` records what a retest observed; it does not by itself make the criterion a fixed-stage conformance input. That is decided one layer down: the finding's fix-closure record must carry an `attestation` block with `status: attested` (a named person confirmed the fix on the product — [A11y Fix-Closure Contract](a11y-fix-closure-contract.md)) before `acr-reporting` will map a previously-failed criterion to `supports`. A resolved finding with a draft closure is still resolved. It is not yet a conformance input.
+
 ## Section 508 and WCAG Boundary
 
 For this bundle, WCAG 2.2 AA is the current planning and review target. Section 508 context should be used carefully:

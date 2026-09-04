@@ -272,6 +272,8 @@ A tamper suite over this shape would need, at minimum, the nine cases the origin
 
 The load-bearing rule is the one that is easiest to lose: outcome cells are re-derived from the source map at fold-in time and never read out of the receipt. A receipt that is trusted as data rather than used as an authorization is a way for a draft to write itself into the outcome map with a human's name attached.
 
+A second *derived* instance exists as of 2026-09-03: the `attestation` block of the [A11y Fix-Closure Contract](a11y-fix-closure-contract.md) applies the same mechanism — a status, a named human, a pin to the product version confirmed against, and the authorization-not-data rule — to a fix closure rather than a content judgment. It is not the independent instance this appendix asks for. It was written from this appendix, by the same bundle, in the same week, so it cannot tell whether the shape survives contact with a need that did not already know it. Both stay non-normative examples, the tamper-case count stays nine, and no validator is licensed by the pair.
+
 ## Example Skeleton
 
 ```markdown
