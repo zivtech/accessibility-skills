@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # verify_run_manifests resolves each artifact's historical_git_ref
+          # against the object store; a depth-1 checkout has no such commit
+          # and the verifier cannot prove historical integrity without it.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
