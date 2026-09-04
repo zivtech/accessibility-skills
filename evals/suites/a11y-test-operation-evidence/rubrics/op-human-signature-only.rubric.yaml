@@ -1,0 +1,51 @@
+fixture_id: op-human-signature-only
+suite: a11y-test-operation-evidence
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_operation_evidence.py
+
+dimensions:
+  - id: op_esc_pass_preserved
+    name: "OP-ESC's PASS, earned on its own complete Shape 1 package, is preserved and carries no rule"
+    tier: must
+    note: >-
+      Over-rejection trap: downgrading OP-ESC because three sibling operations
+      in the same walk are inadmissible is a false fire — OP-ESC's own
+      before/action/observed record honors every rule.
+  - id: op_return_untested_correct_rules
+    name: "OP-RETURN is UNTESTED, with setup_action_continuity and passive_observation_binding both named — no before, no action, no observed result"
+    tier: must
+    note: "The walk-through reference's own worked example of an inadmissible package, verbatim: 'I checked it; it's fine' has nothing for either rule to read."
+  - id: op_ad_untested_menu_not_played
+    name: "OP-AD is UNTESTED with passive_observation_binding named — a track listed in a menu is not a track heard"
+    tier: must
+    note: "Under-rejection trap in the other direction from op-human-walkthrough-clean's OP-AD: here nothing was played, so PASS is unsupported; the same menu-only shape that would be a false fire against a played record is the correct fire here."
+  - id: op_option_untested_ancestor_review
+    name: "OP-OPTION is UNTESTED with ancestor_remapping_review named — reaching the combobox owner and reporting on the option is a silent substitution"
+    tier: must
+  - id: no_sixth_rule_invented
+    name: "No rule outside the five stable ids is invented, and neither bounded_diagnostic_not_promoted nor natural_only_conditional_state is fired anywhere in this package"
+    tier: must
+    note: "The reference is explicit: the under-specified package needs no sixth rule. Reaching for a stagnation or conditional-state rule that has no operation here to attach to is over-flagging."
+
+status_semantics:
+  PASS: "admissibility REJECT, dispositions exactly {OP-ESC: PASS, OP-RETURN: UNTESTED, OP-AD: UNTESTED, OP-OPTION: UNTESTED}, rules_violated attaches the four expected (operation, rule) pairs and nothing on OP-ESC"
+  WARN: "Correct dispositions reached but attribution is muddled across the three inadmissible operations, or claim_boundary omits one of the four"
+  FAIL: "OP-ESC downgraded or any rule fired on it, any of the three inadmissible operations rolled up to PASS, or a rule fired outside the expected four (operation, rule) pairs"
+
+focus: >-
+  Per-operation attribution across a package that is mostly signature-only.
+  Real human walk-throughs mix a well-formed package with under-specified
+  ones far more often than a uniform package of either kind — this fixture is
+  the human-sourced analog of op-mixed-package-partial, scaled to four
+  operations and three distinct under-specification shapes (no fields at all,
+  a menu-only observation, a silent ancestor substitution) so a reviewer that
+  pattern-matches on "PASS claimed, therefore accept" cannot get all four
+  right by accident.
+expected_status_competent: PASS
+conditions:
+  skill: "a11y-test/SKILL.md operation-evidence admissibility rules (R-05) and references/human-verification-walkthrough.md as the standard under test"
+known_judgment_calls:
+  - "The defensible structured block is {admissibility: REJECT, dispositions: {OP-ESC: PASS, OP-RETURN: UNTESTED, OP-AD: UNTESTED, OP-OPTION: UNTESTED}, rules_violated: {OP-RETURN: [setup_action_continuity, passive_observation_binding], OP-AD: [passive_observation_binding], OP-OPTION: [ancestor_remapping_review]}}. Package-level REJECT is not license to touch OP-ESC."
+  - "A response that separately restates each operation's claim_boundary, or names the admissible path each rejected operation would need, is a defensible bonus, not required for PASS."
+  - "Scorer statuses (when a scorer exists) are detector output, not verdict authority — same routing rule as every local-model lane."

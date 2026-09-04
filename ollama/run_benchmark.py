@@ -116,6 +116,8 @@ OPEVIDENCE_FIXTURES_DIR = os.path.join(BASE_DIR, "..", "evals", "suites", "a11y-
 OPEVIDENCE_FIXTURES = [
     "op-dialog-escape-overreach",
     "op-empty-state-coverage-shortcuts",
+    "op-human-signature-only",
+    "op-human-walkthrough-clean",
     "op-mixed-package-partial",
     "op-retest-clean",
 ]

@@ -1,0 +1,59 @@
+fixture_id: op-human-walkthrough-clean
+suite: a11y-test-operation-evidence
+input_format: three human-sourced operation packages (Shape 1 + Shape 2, one with a second confirmation)
+difficulty: MODERATE
+description: >-
+  The human-sourced false-alarm control. Three operations walked by a person
+  under the human-verification walk-through reference, every field present,
+  every rule honored: a fully-specified Shape 1 package with a second
+  confirmation by a different person on a later date (OP-RETURN, PASS), an
+  attended Shape 2 observation that is honestly indeterminate without an
+  instrument (OP-FLASH, BLOCKED — not UNTESTED), and a played-and-heard Shape 2
+  package whose single human FAIL needs no second confirmation (OP-AD). A
+  competent review accepts all three claims. Flagging any of them — including
+  collapsing OP-FLASH to UNTESTED, or dismissing OP-AD as a passive menu
+  observation it is not — is a false positive, the failure this fixture exists
+  to catch.
+
+# ── Scorer contract (ollama/score_operation_evidence.py) ──
+
+expected_admissibility: ACCEPT
+expected_dispositions:
+  OP-RETURN: PASS
+  OP-FLASH: BLOCKED       # correctly BLOCKED, not UNTESTED — an attended, bounded observation with no analyzer reading
+  OP-AD: FAIL             # a single human FAIL needs no second confirmation
+expected_verdict_must_not:
+  # each is a rule mis-fired, or a misread disposition, against evidence that honors the rules
+  - "signature not observation"      # OP-RETURN is a full Shape 1 package, not a bare signature
+  - "self-report rejected"           # structured self-report (rules 2 and 4) is the admissible form here, not grounds for rejection
+  - "OP-FLASH UNTESTED"              # collapsing the honest BLOCKED into "nobody looked" throws the observation away
+  - "menu observation standalone"    # OP-AD is a played-and-heard record, not a passive menu listing
+
+nice_to_have:
+  - ["admissible", "accept", "well-formed", "honors"]
+  - ["BLOCKED", "instrument", "analyzer"]
+  - ["second confirmation", "human-sourced"]
+
+notes: |
+  Built for issue #57 Phase 2 (human verification walk-through) as the
+  anti-over-flagging counterpart to op-human-signature-only. Same generic
+  component family as the rest of the suite (a results table with a filter
+  combobox and a details dialog) plus one media element; no engagement
+  identifiers, routes, selectors, counts, real names, or baseline ids — the
+  fixture stays at WCAG 2.2 AA scope, so OP-FLASH is described in plain
+  language ("flash frequency") rather than cited as a 508 not-covered baseline
+  row.
+
+  No `must_catch` entries: like op-retest-clean, this fixture's only expected
+  `rules_violated` is empty for every operation, so any rule fired anywhere is
+  already an unexpected fire the scorer's over-flagging check catches without
+  a separate must_catch list.
+
+  The two traps this fixture guards against run in opposite directions from
+  each other: OP-FLASH's BLOCKED must not be read as a gap to close (the
+  op-retest-clean lesson, replayed for a human-attended observation), and
+  OP-AD's FAIL must not be read as needing the second-confirmation rule that
+  only governs a PASS. A reviewer who is careful about the first trap and
+  sloppy about the second still fails this fixture.
+
+  Detector output, not verdict authority.
