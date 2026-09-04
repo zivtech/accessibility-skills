@@ -244,9 +244,11 @@ def check_unattested(meta, notes_field, entries, remainder, must_miss,
         if under:
             must_miss.append(f"unattested-closures line omits {', '.join(under)}")
         for item in ua.get("item_ids") or []:
-            if str(item) not in line and str(item) not in remainder:
-                must_miss.append(f"closure item_id {item} named nowhere "
-                                 f"(marker line or handoff)")
+            if str(item) not in line:
+                must_miss.append(f"closure item_id {item} not on the "
+                                 f"marker line (SKILL.md: SC (item_id))")
+            elif str(item) not in remainder:
+                should_miss.append(f"handoff never names closure {item}")
         inc = INCOMPLETE_RE.search(notes_field)
         if inc and inc.start() > m.start():
             should_miss.append("untested marker line should precede the "
@@ -259,6 +261,38 @@ def check_unattested(meta, notes_field, entries, remainder, must_miss,
         lines = sc_lines(remainder, str(sc))
         if not lines or not any_token("\n".join(lines), toks):
             must_miss.append(f"handoff carries no attestation reason for {sc}")
+    check_closure_notes(meta, entries, must_miss)
+
+
+def check_closure_notes(meta, entries, must_miss):
+    """Remediated supports notes cite their attested closure; a still-failing
+    criterion keeps its entry and names its unattested closure in the note.
+
+    Metadata: remediated_notes: {SC: [item_id, ...]} (supports notes that MUST
+    carry the `Remediated since` form + each item_id), named_in_notes:
+    {SC: [item_id, ...]} (failing entries whose note MUST name the item_id)."""
+    for sc, items in (meta.get("remediated_notes") or {}).items():
+        e = entries.get(str(sc))
+        if not e:
+            continue  # absence is scored by expected_terms / completeness
+        note = e["notes"]
+        if "remediated since" not in note.lower():
+            must_miss.append(f"{sc} supports note lacks the `Remediated "
+                             f"since` form")
+        for item in items:
+            if str(item) not in note:
+                must_miss.append(f"{sc} note does not cite attested closure "
+                                 f"{item}")
+    for sc, items in (meta.get("named_in_notes") or {}).items():
+        e = entries.get(str(sc))
+        if not e:
+            must_miss.append(f"still-failing {sc} lost its adherence entry "
+                             f"(a disclosed failure was dropped)")
+            continue
+        for item in items:
+            if str(item) not in e["notes"]:
+                must_miss.append(f"{sc} note does not name unattested "
+                                 f"closure {item}")
 
 
 def main():
@@ -421,7 +455,8 @@ def main():
                 "success_criteria_level_aaa":
             if stem_re and not stem_re.match(e["notes"].strip()):
                 bad_stem.append(sc)
-            if any(i in e["notes"] for i in all_ids):
+            if any(i in e["notes"] for i in all_ids) and \
+                    sc not in (meta.get("remediated_notes") or {}):
                 citing_supports.append(sc)
     if bad_stem:
         must_miss.append(

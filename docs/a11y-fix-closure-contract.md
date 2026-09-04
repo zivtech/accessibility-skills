@@ -31,7 +31,7 @@ Skipping triage is the single most common way a remediation claim goes wrong: an
 | `interaction_evidence` | yes | Evidence keyed to the defect class: a keyboard trace for a focus/operability defect, a screen-reader announcement for a name/role/state defect, a computed-style + zoom assertion for a reflow/resize defect. Must match the class of the original observation. |
 | `commit` | yes | The commit SHA(s) or PR that lands the fix. For triage A, the commit that recorded the verification. |
 | `residual` | optional | Anything not closed by this item, or follow-up required. Absence asserts nothing remains. |
-| `attestation` | conditional | The human tier: who confirmed the fix on the product, when, against which product version, by what method. Required before the record may back a fixed-stage conformance input. Absent means `draft_not_attested` — absence never asserts attestation. Shape and rules below. |
+| `attestation` | conditional | The human tier: who confirmed the fix on the product, when, against which product version, doing what and seeing what, and who confirmed it a second time. Required before the record may back a fixed-stage conformance input. Absent means `draft_not_attested` — absence never asserts attestation. Shape and rules below. |
 
 ## The closure rule
 
@@ -39,29 +39,43 @@ A fix-closure record whose `interaction_evidence` does not match the class of it
 
 ## Attestation — the human tier
 
-The closure rule decides whether the evidence *could* demonstrate the fix. It does not record that anyone looked. A closure record can be schema-valid, class-matched, and carry nobody's name — and until this block existed, that record could travel unchanged into a conformance claim. The `a11y-content-judgment` skill already refuses that for a far weaker claim (one judgment on one element): nothing is an outcome until a person's name is in `ratified_by`. This block gives fix closures the same shape, following the report contract's Appendix B `ratified_receipt` pattern rather than inventing a second idiom.
+The closure rule decides whether the evidence *could* demonstrate the fix. It does not record that anyone looked. A closure record can be schema-valid, class-matched, and carry nobody's name — and until this block existed, that record could travel unchanged into a conformance claim. The `a11y-content-judgment` skill already refuses that for a far weaker claim (one judgment on one element): nothing is an outcome until a person's name is in `ratified_by`. This block gives fix closures the same shape, following the report contract's Appendix B `ratified_receipt` pattern rather than inventing a second idiom — with one addition Appendix B does not need: because a closure is about an *operation*, the confirmation records what the person did and saw, not just that they signed.
 
 ```yaml
 attestation:
-  status: attested                      # draft_not_attested | attested
-  attested_by: "J. Reviewer"            # a named human, never an agent or model identifier
-  attested_at: 2026-09-03T15:10:00Z
-  attested_against:                     # the retest-classification pin: version or content marker
-    version: "2.14.1"
-  attestation_method: "Keyboard walk, Firefox + NVDA: Tab to the trigger, Enter, Escape; focus returned to the trigger. Reproduced in a second session."
-  attester_note: "Confirmed on the staging build named above; the production deploy is not covered."
+  status: attested                        # draft_not_attested | attested
+  attested_by: "J. Reviewer"              # a named human, never an agent or model identifier
+  attester_role: "accessibility QA lead"  # optional: who this person is to the engagement
+  attested_at: 2026-09-03T15:10:00Z       # inside the evaluation window; never after the report date
+  attested_against:                       # the retest-classification pin
+    version: "2.14.1"                     # must equal the product version on the report and on interaction_evidence
+  attested_under: "WCAG-EM 2.0 retest"    # optional; declared-508: the named test process + version
+  self_attested: false                    # true when attested_by also authored the fix — disclosed, never hidden
+  method:                                 # what the person did and saw — the observation, not a signature
+    tooling: "Firefox 143 + NVDA 2026.1, keyboard only"
+    action: "Tab to the 'Renew card' trigger, press Enter, press Escape"
+    expected: "Dialog closes; focus returns to the 'Renew card' trigger"
+    observed: "Dialog closed; focus on 'Renew card' — NVDA announced 'Renew card, button'"
+  second_confirmation:                    # required before the record may back a fixed-stage supports
+    by: "M. Second"                       # a different person, or the same person in a separate session on a later day
+    at: 2026-09-04T09:02:00Z
+    tooling: "Chrome 141 + JAWS 2026, keyboard only"
+    observed: "Same result; focus returned to the trigger on both of two openings"
+  claim_boundary: "Confirms rem-focus-return-2c7f0a1b no longer reproduces at 2.14.1 for this interaction. Not a re-evaluation of 2.4.7 across the sample set; nothing about other versions or other dialogs."
 ```
 
 Rules:
 
 - **Absent is draft.** A record with no `attestation` block, or with `status: draft_not_attested`, is a draft closure. It may still pass the closure rule and still be a useful engineering record; it may not back a fixed-stage conformance input.
-- **A named human, never an agent.** `attested_by` is a person's name. A model name, an agent identifier, "automated", "CI", or a tool name in that field is a draft with a misleading status — treat it as `draft_not_attested` and name it in the handoff.
-- **Pinned to the product, not the evidence.** `attested_against` carries the product version or content marker the person confirmed the fix on, and it must equal the marker recorded on the `interaction_evidence` artifact (a11y-test's retest classification requires that marker on every evidence artifact). A mismatch is a stale attestation. A product delta after `attested_at` expires the attestation for any *current*-conformance claim exactly as it expires frozen machine evidence: the record stays valid history, and a fresh confirmation is required.
-- **Method, not just a signature.** `attestation_method` states what the person did — the input method, the assistive technology if any, the action, and what they observed — in enough detail that a second person could repeat it. A bare "verified" is a signature without an observation and does not attest.
+- **A named human, never an agent.** `attested_by` and `second_confirmation.by` are people's names. A model name, an agent identifier, "automated", "CI", or a tool name in either field is a draft with a misleading status — treat it as `draft_not_attested` and name it in the handoff.
+- **Pinned to the product, not the evidence.** `attested_against` carries the product version or content marker the person confirmed the fix on. It must equal the marker on the `interaction_evidence` artifact (a11y-test's retest classification requires that marker on every evidence artifact) and, at report time, the product version the evaluation report names. Either mismatch is a stale attestation and reads as draft. A product delta after `attested_at` expires the attestation for any *current*-conformance claim exactly as it expires frozen machine evidence: the record stays valid history, and a fresh confirmation is required.
+- **An observation, not a signature.** `method` carries what the person did (`action`, with `tooling` naming the input method and any assistive technology), what they expected, and what they observed — each a non-empty statement a second person could repeat and compare. A bare "verified" is a signature without an observation and does not attest; a `method` missing any of the four is the same thing in a different shape.
+- **Two confirmations for a fixed-stage supports.** The retest-classification rule that n = 1 is variance runs the *other* way here: a single failed reproduction costs a re-fix cycle, while a single passed one becomes a `supports` in a published document, and the person confirming a fix knows what they expect to see. A record backs a fixed-stage `supports` only with a `second_confirmation` — a different person, or the same person in a separate session on a later day — and at least one of the two confirmations not by the fix's author. When the attester authored the fix, `self_attested: true` says so; hiding it is a misleading status.
+- **Dates reconcile.** `attested_at` and `second_confirmation.at` fall inside the evaluation window the report states and never after its `report_date`. A confirmation dated after the report it supports means the report closed before the person looked; it reads as draft until the report is re-issued.
 - **Attestation does not cure a closure failure.** An attested record whose `interaction_evidence` still does not match the class of `original_observation` still fails closure. The two gates are independent; a signature on the wrong kind of evidence is a signed claim, not a demonstrated fix.
-- **An authorization, not data.** A downstream consumer (a retest evaluation report, an `acr-reporting` draft) uses an attested record only to *admit* an outcome that its own outcome map already carries. It never reads an outcome out of the closure record. This is Appendix B's load-bearing rule: a receipt trusted as data is a way for a draft to write itself into the outcome map with a human's name attached.
+- **An authorization, not data.** A downstream consumer (a retest evaluation report, an `acr-reporting` draft) uses an attested record only to *admit* an outcome its own outcome map already carries. It never reads an outcome out of the closure record, and attestation never creates or upgrades a term. This is Appendix B's load-bearing rule: a receipt trusted as data is a way for a draft to write itself into the outcome map with a human's name attached. `claim_boundary` carries the record's own statement of what it does and does not assert — the orthogonality register's mechanism, applied to the register's provenance-vs-outcome pair.
 
-What attestation asserts is narrow: the named person performed or directly observed the class-matched interaction on the product at the pinned version, and the original observation did not reproduce. It does not assert that the person reviewed the code, that the surrounding component is correct, or anything about a version other than the one pinned.
+What attestation asserts is narrow, and `claim_boundary` says so on the record: the named people performed or directly observed the class-matched interaction on the product at the pinned version, and the original observation did not reproduce. It does not assert that they reviewed the code, that the surrounding component is correct, that the criterion passes across the sample set, or anything about a version other than the one pinned.
 
 ## Relationship to the other contracts
 

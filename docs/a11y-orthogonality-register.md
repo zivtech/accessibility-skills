@@ -14,6 +14,7 @@ The bundle already states one such pair — conformance outcome vs impact severi
 | interaction-journey count | WCAG-EM page/view sample count | Separate ledgers with separate sampling logic, reconciled explicitly and never conflated: journeys are task paths, samples are pages/views. |
 | issue-tracker state / freshness | adherence term | The issue tracker is a *control plane* (what work exists, who owns it, its state); the evaluation report is the *evidence spine*. Issue state or staleness must never gate or determine an adherence term. |
 | Revised-508 floor (WCAG 2.0 A/AA) | WCAG 2.2 AA remediation layer | Reported as two layers, never merged into one verdict. The federal floor and the recommendation layer answer different questions. (See the federal profile in CLAUDE.md.) |
+| evidence provenance (who confirmed, when, at which version) | conformance outcome | Provenance decides whether an outcome may be *published* as an improved term, never what the outcome *is*. The gate is one-way: absent provenance suppresses a term that improves on the prior evaluation; present provenance never creates or upgrades one, and never reaches a still-failing criterion's disclosed failure. Added 2026-09-03 with the fix-closure `attestation` block (issue #57); the block's `claim_boundary` is this pair's machine mechanism. |
 
 ## The mechanism: `claim_boundary`
 
