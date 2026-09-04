@@ -251,8 +251,12 @@ def check_unattested(meta, notes_field, entries, remainder, must_miss,
                 should_miss.append(f"handoff never names closure {item}")
         inc = INCOMPLETE_RE.search(notes_field)
         if inc and inc.start() > m.start():
-            should_miss.append("untested marker line should precede the "
-                               "unattested-closures line")
+            must_miss.append("unattested-closures line precedes the untested "
+                             "line (SKILL.md: after the untested line)")
+        both = sorted(listed & set(
+            str(x) for x in (meta.get("incomplete") or {}).get("gap_scs", [])))
+        if both:
+            must_miss.append(f"SC on both INCOMPLETE lines: {', '.join(both)}")
     present = [sc for sc in gap if sc in entries]
     if present:
         must_miss.append(f"blocked SC(s) carry adherence entries: "
