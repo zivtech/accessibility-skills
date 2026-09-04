@@ -1,0 +1,34 @@
+Fixture: county-library-retest
+Response length: 38415 chars
+
+Structural: + ACR YAML fence parsed (24501 chars)
+CLI validate: + Valid!
+Catalog: + 2.5-edition-wcag-2.2-508-en
+
+A/AA completeness: 56/56 present-or-blocked
+Term legality: + not-evaluated confined to AAA
+
+Term mapping: 52/52 as expected
+Supports-note stem: 0 nonconforming; 0 citing findings
+
+Value provenance:
+  + title
+  + product.name
+  + product.version
+  + author.email
+  + report_date
+  finding_id tokens: 4 known, 0 invented
+
+Unattested-closure gate: marker present
+
+508 chapters:
+  + functional_performance_criteria (disabled=True, stem=ok)
+  + hardware (disabled=True, stem=ok)
+  + software (disabled=True, stem=ok)
+  + support_documentation_and_services (disabled=True, stem=ok)
+
+Must misses: 0
+Fabrications: 0
+Should misses: 0
+
+Status: PASS

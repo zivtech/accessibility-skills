@@ -200,9 +200,30 @@ def collect_entries(doc):
     return entries, nonweb, all_notes
 
 
+def normalize_prose(text):
+    """Flatten a draft's prose for substring matching.
+
+    The drafts this scorer reads are Markdown, and a token list written as
+    plain text does not survive contact with them. Three sub-classes, each
+    reproduced against real opus draws (receipts:
+    evals/results/human-verification-stage/retest-2026-09-04/):
+
+      inline markup   "after `report_date`"  vs token "after report_date"
+      line wrapping   a folded YAML scalar splitting "1 random" across lines
+      surrounding ws  padding inside table cells
+
+    Strip the markup characters Markdown uses for emphasis and code, then
+    collapse every run of whitespace to one space. Underscores are NOT
+    stripped: `report_date` and `self_attested` are field names that appear
+    in tokens, and removing the underscore would break the match it is meant
+    to make.
+    """
+    return re.sub(r"\s+", " ", text.replace("`", "").replace("*", ""))
+
+
 def any_token(text, tokens):
-    low = text.lower()
-    return any(t.lower() in low for t in tokens)
+    low = normalize_prose(text).lower()
+    return any(re.sub(r"\s+", " ", t).lower() in low for t in tokens)
 
 
 def sc_lines(text, sc):
