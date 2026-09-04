@@ -48,7 +48,7 @@
     {
       "role": "harness",
       "path": "ollama/run_benchmark.py",
-      "sha256": "648755ea8cdb73279d5537731f3c8a377523dd784a3076484ab051a9b9f141a5",
+      "sha256": "094e5c8ba1fe734a838d1c85852ec9342f3287258bb00dd3778b69183b92113b",
       "historical_git_ref": "15091ef91151d2f7dae4f7ae126c0e4c136e2e06",
       "historical_sha256": "0f8ded7c9182375759c2cb15aba9c262cc410cc9f943ace3cb0782589384048d"
     },
