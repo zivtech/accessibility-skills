@@ -371,6 +371,7 @@ attestation:
     observed: "Focus moved across the week and down the month; Enter selected 14 September and the summary updated"
   second_confirmation:
     by: "Nkechi Balogun"
+    authored_fix: false
     at: 2026-08-13T11:15:00Z
     tooling: "Firefox 141 + NVDA 2026.1, keyboard only"
     observed: "Same result on two separate month views; NVDA announced the focused date on each arrow press"
@@ -441,6 +442,7 @@ attestation:
     observed: "NVDA announced 'Pay this citation, button'"
   second_confirmation:
     by: "Tobias Reinholt"
+    authored_fix: true
     at: 2026-08-14T10:00:00Z
     tooling: "VoiceOver + Safari 18, keyboard only"
     observed: "Separate session six days later: VoiceOver announced 'Pay this citation, button' on both the citation and the payment-plan pay controls"
@@ -478,6 +480,7 @@ attestation:
     observed: "NVDA announced 'Enter at least 25 dollars a month. The lowest plan for this balance is 25 dollars.'"
   second_confirmation:
     by: "Emeka Nwachukwu"
+    authored_fix: true
     at: 2026-08-18T09:30:00Z
     tooling: "VoiceOver + Safari 18, keyboard only"
     observed: "Same result on two balances: the message named 25 dollars and 40 dollars respectively"

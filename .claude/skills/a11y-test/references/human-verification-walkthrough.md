@@ -24,6 +24,8 @@ The walk is driven by the campaign, not by the person's curiosity. Before anyone
 
 Missing any of the four: stop. The walk-through has nothing to bind its observations to.
 
+**Which tier checks the pin.** None of the five admissibility rules reads `version`, and that is deliberate rather than a gap in them. The five rules ask whether a package is evidence *about its operation* — locus, continuity, binding, remapping — a question the pin does not bear on. Whether the observation binds to *this report* is an attestation-tier question, and `acr-reporting`'s unattested-closure gate already decides it: `attested_against` must equal the report's product version, with a stale-pin canary in that lane. So a reviewer scoring an operation package correctly admits `version` as well-formed rather than as matched, and says so in `claim_boundary`; the mismatch is caught where the record meets the report, not where the person meets the product. A sixth rule would put the check on the wrong tier and duplicate a gate that already fires.
+
 ## Order
 
 Per sample, per finding, in the order the planned set lists them — the same sample-first traversal the machine campaign uses, so a per-sample evidence artifact gets its human lines appended beside its machine lines. For each finding: read the closure record's `original_observation` and `interaction_evidence`, derive `expected` from the original observation (the defect not reproducing is the expectation, stated concretely — "focus returns to the Renew card trigger", not "works"), perform the class-matched action from the record's stated starting point, write the lines below. Then the next finding on that sample. Then the next sample.
