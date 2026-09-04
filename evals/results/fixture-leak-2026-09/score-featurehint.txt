@@ -1,0 +1,34 @@
+
+=== CLEAN (expected ACCEPT — the 'don't flag correct code' claim)
+fixture                                   ACCEPT with  ACCEPT without  findings w/  findings w/o
+async-retry-recovery-clean                  1/5             1/5               0.2          0.2
+button-skip-link-clean                      0/5             0/5               0.0          0.0
+composite-descendant-clean                  0/5             0/5               0.8          0.0
+interactive-dropdown-clean                  0/5             0/5               0.4          0.4
+map-controls-clean                          0/5             0/5               0.0          0.6
+modal-complete-clean                        0/5             0/5               0.0          0.0
+paired-id-name-columns-clean                2/5             1/5               0.0          0.4
+pool-lesson-registration                    0/5             0/5               0.0          0.6
+search-results-dynamic-clean                1/5             0/5               0.0          0.4
+spa-route-change-clean                      2/5             0/5               0.0          0.0
+trail-conditions-filter                     0/5             0/5               0.0          0.4
+TIER TOTAL                                  6/55            2/55              0.1          0.3
+    ACCEPT-rate delta (with - without): +7.3%
+
+=== HAS-BUGS (control)
+fixture                                   ACCEPT with  ACCEPT without  findings w/  findings w/o
+breadcrumb-navigation-no-nav-landmark       0/3             0/3               0.3          0.3
+checkbox-group-no-fieldset                  0/3             0/3               0.0          0.3
+combobox-autocomplete-no-listbox-role       0/3             0/3               0.0          0.3
+expandable-section-no-button                0/3             0/3               1.7          0.0
+image-carousel-no-region                    0/3             0/3               0.7          0.0
+infinite-scroll-no-announcement             0/3             0/3               0.0          0.7
+pagination-no-nav-landmark                  0/3             0/3               0.0          0.7
+toast-notification-no-role                  0/3             0/3               0.7          0.0
+video-player-missing-captions               0/3             0/3               0.3          0.3
+TIER TOTAL                                  0/27            0/27              0.4          0.3
+    must-find withfeatures   89/90 = 98.9%
+    must-find nofeatures     89/90 = 98.9%
+    ACCEPT-rate delta (with - without): +0.0%
+
+wrote /Users/AlexUA_1/claude/accessibility-skills-51-receipts/evals/results/fixture-leak-2026-09/score-featurehint.json

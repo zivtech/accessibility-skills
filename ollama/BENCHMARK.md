@@ -31,6 +31,21 @@ First firing of the funnel's reopen-triggers (Qwen 3.8 open weights — 27B only
 
 Cross-cutting: the 3.8 tokenizer is the first current-gen one to fit the critic prompt under 16,384 (15,609 — kept at 32K anyway; thinking shares the window), and the July hardening gap is closed — the streaming runners now record `done_reason` + `thinking_chars`, which is what made the stall classifiable (thought-then-silence at `stop`, not a context clip) instead of a mystery empty file.
 
+## Disclosure: Every CLEAN-Fixture Number Below Was Measured With the Answer Key Visible (2026-09-03)
+
+**Read this before reading any CLEAN / false-positive row in this file.**
+
+[Issue #51](https://github.com/zivtech/accessibility-skills/issues/51) established that the critic fixtures showed the model two answer-key sections above the blind cut line: the H1 named the defect, and an `## Accessibility Features Present` section named the non-defects. The deterministic half — one cut-line spelling, a blind-prompt guard, a manifest pinning every H1 — shipped in [#56](https://github.com/zivtech/accessibility-skills/pull/56). The measured half ran 2026-09-03 as two A/B lanes on qwen3.6:35b (254 draws, dedicated :11435). Receipts: [`evals/results/fixture-leak-2026-09/`](../evals/results/fixture-leak-2026-09/).
+
+| Lane | Result |
+|---|---|
+| H1 title, titled vs neutral (9 maximum-leak BUG fixtures × 5 draws) | must-find **150/150 in both arms**. Delta 0. Title echoed in 0 of 90 responses. |
+| Features section, kept vs removed (11 CLEAN × 5 + 9 BUG × 3 draws) | must-find **89/90 in both arms**. CLEAN strict-ACCEPT **6/55 vs 2/55**, Fisher p = 0.27. |
+
+**What this changes about the numbers below.** Detection rows are unaffected: removing the answer key does not degrade must-find, on either lane. What it exposes is the CLEAN side. On the eleven fixtures whose expected verdict is ACCEPT, qwen3.6:35b returned a clean ACCEPT **11% of the time with the section present and 4% without it** — so the historical "false positive rate" rows in this file are not measuring a model that mostly accepts clean code and occasionally slips. They are measuring a model that almost never accepts clean code, scored by a rubric dimension (`false_positive_trap`, declared in 50 of 50 critic rubrics) that **no scorer reads**. The `detector, never a verdict authority` routing rule already covered this; the A/B is the first direct measurement of it.
+
+**Power bound, stated plainly.** At n = 55 per arm from a 10.9% base, only a rise to ~33% was catchable at 80% power; observed power on the effect seen was 31%. These are **null results at low power, not evidence that the leaks were worthless.** The title lane additionally sits on a 100% ceiling in both arms, so it bounds the title effect from below only. No hosted row was drawn on either lane.
+
 ## Baseline Families
 
 This file began as an Ollama benchmark log and now serves as the cross-model benchmark record. Keep Claude, Codex/OpenAI, Gemini, and local models as peer baseline families when result artifacts exist.

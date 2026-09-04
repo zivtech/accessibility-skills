@@ -1,0 +1,16 @@
+fixture                                                titled          neutral    delta
+breadcrumb-navigation-no-nav-landmark           10/10    100%    10/10    100%      +0%
+checkbox-group-no-fieldset                      10/10    100%    10/10    100%      +0%
+combobox-autocomplete-no-listbox-role           20/20    100%    20/20    100%      +0%
+expandable-section-no-button                    20/20    100%    20/20    100%      +0%
+image-carousel-no-region                        20/20    100%    20/20    100%      +0%
+infinite-scroll-no-announcement                 20/20    100%    20/20    100%      +0%
+pagination-no-nav-landmark                      15/15    100%    15/15    100%      +0%
+toast-notification-no-role                      20/20    100%    20/20    100%      +0%
+video-player-missing-captions                   15/15    100%    15/15    100%      +0%
+
+TOTAL titled   150/150  100.0%   (title echoed in 0 responses, 0 truncated)
+TOTAL neutral  150/150  100.0%   (title echoed in 0 responses, 0 truncated)
+DELTA (titled - neutral): +0.0%
+
+wrote /Users/AlexUA_1/claude/accessibility-skills-51-receipts/evals/results/fixture-leak-2026-09/score-titlehint.json

@@ -84,7 +84,9 @@ Full detail: [docs/standards-and-contracts.md](docs/standards-and-contracts.md).
 
 ## Status
 
-Current release: **[v1.0.0](https://github.com/zivtech/accessibility-skills/releases)** (2026-08-12). The supported runtime is Claude — the skills in `.claude/skills/` and the subagent lane behind `/a11y-workflow`.
+Current release: **[v1.1.0](https://github.com/zivtech/accessibility-skills/releases)** (2026-09-04). The supported runtime is Claude — the skills in `.claude/skills/` and the subagent lane behind `/a11y-workflow`.
+
+Since v1.0.0: the `acr-reporting` skill (OpenACR Lane A), a human verification stage with attested fix closures, a sixth a11y-test execution mode (baseline URL-list scan), a repository maintenance skill, and the machine-enforced blind-prompt protocol over every eval suite.
 
 Everything else ships as benchmark infrastructure, not a supported runtime. In particular the local Ollama lane is what its own results say it is: a **detector, never a verdict authority**. No local model has passed the verdict-authority bar at any size tested. Open work is tracked in [issues](https://github.com/zivtech/accessibility-skills/issues).
 

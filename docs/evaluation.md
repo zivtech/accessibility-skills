@@ -57,10 +57,12 @@ What it enforces:
 
 The manifest and the heading allowlist declare current leaks rather than pretending they are gone. Two remain, tracked in [#51](https://github.com/zivtech/accessibility-skills/issues/51):
 
-- **Titles.** 52 of 77 fixture H1s name the defect they plant; 6 more assert the feature under test. Measured on the nine maximum-leak critic fixtures: neutralising the title does not move must-find detection for the current recommended local model, which is already at ceiling there. That is a real result and a weak one — a saturated instrument cannot detect an effect.
-- **The features section.** 45 of 50 critic fixtures show the model an `## Accessibility Features Present` section above the cut. The title names the defect; this names the non-defects; together they bracket the answer. It is realistic *content* — a developer handing over a component really would say what they handled — but its *function* in the eval is not.
+- **Titles.** 52 of 77 fixture H1s name the defect they plant; 6 more assert the feature under test. Measured on the nine maximum-leak critic fixtures (90 draws, qwen3.6:35b): must-find is **150/150 in both arms** — neutralising the title moves nothing, and the title is never echoed back. That is a real result and a weak one: a saturated instrument cannot detect an effect, so this bounds the title effect from below only.
+- **The features section.** 45 of 50 critic fixtures show the model an `## Accessibility Features Present` section above the cut. The title names the defect; this names the non-defects; together they bracket the answer. It is realistic *content* — a developer handing over a component really would say what they handled — but its *function* in the eval is not. Measured across 164 draws: removing it does not move must-find (**89/90 both arms**), and on the eleven CLEAN fixtures it does not rescue the verdict either — strict ACCEPT runs **6/55 with the section and 2/55 without** (p = 0.27). The section was not holding the CLEAN verdicts up. There were no CLEAN verdicts to hold up.
 
 A related finding from the same work, worth knowing before you trust a rubric field: `false_positive_trap` is declared in all 50 critic rubrics and read by **no scorer**. So are `llm_judge`, `hybrid_weights`, and `scoring_method`. Those rubric dimensions do not currently affect any score.
+
+Both lanes are null results at low power — at n = 55 per arm the design could only have caught a ~3x swing — and neither has a hosted row. Raw responses, scores, significance and the power bound: [`evals/results/fixture-leak-2026-09/`](../evals/results/fixture-leak-2026-09/).
 
 ## Adding a fixture
 

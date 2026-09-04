@@ -1,0 +1,37 @@
+=== features-section lane (withfeatures = arm A, nofeatures = arm B)
+
+CLEAN  (n = 55 / 55)
+    withfeatures   ACCEPT=6  ACCEPT-WITH-RESERVATIONS=26  NONE=1  REJECT=1  REVISE=21
+    nofeatures     ACCEPT=2  ACCEPT-WITH-RESERVATIONS=26  REJECT=1  REVISE=26
+  strict ACCEPT
+    arm A   6/55  =  10.9%  95% CI [5.1%, 21.8%]
+    arm B   2/55  =   3.6%  95% CI [1.0%, 12.3%]
+    two-sided Fisher p = 0.2706   observed power = 31%
+  ACCEPT + reservations
+    arm A  32/55  =  58.2%  95% CI [45.0%, 70.3%]
+    arm B  28/55  =  50.9%  95% CI [38.1%, 63.6%]
+    two-sided Fisher p = 0.5659   observed power = 12%
+  raised >=1 structured finding
+    arm A   6/55  =  10.9%  95% CI [5.1%, 21.8%]
+    arm B  11/55  =  20.0%  95% CI [11.6%, 32.4%]
+    two-sided Fisher p = 0.2914   observed power = 26%
+
+    MDE at n=55/arm from a 10.9% base: only a rise to ~33% was catchable at 80% power (~3.0x).
+
+HAS-BUGS  (n = 27 / 27)
+    withfeatures   REJECT=7  REVISE=20
+    nofeatures     REJECT=10  REVISE=17
+    must-find withfeatures   89/90 = 98.9%
+    must-find nofeatures     89/90 = 98.9%
+  REJECT (severity, not detection)
+    arm A   7/27  =  25.9%  95% CI [13.2%, 44.7%]
+    arm B  10/27  =  37.0%  95% CI [21.5%, 55.8%]
+    two-sided Fisher p = 0.5587   observed power = 14%
+
+
+=== H1-title lane (titled = arm A, neutral = arm B)
+  must-find titled   150/150 = 100.0%  (n=45 draws, title echoed in 0, truncated 0)
+  must-find neutral  150/150 = 100.0%  (n=45 draws, title echoed in 0, truncated 0)
+  Both arms sit on the ceiling. A ceiling cannot move up, so this lane
+  bounds the title effect from below only: no detectable effect, on
+  fixtures already found 100% of the time without the title.
