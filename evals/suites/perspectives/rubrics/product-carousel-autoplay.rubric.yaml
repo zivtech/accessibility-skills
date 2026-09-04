@@ -1,10 +1,5 @@
 fixture_id: product-carousel-autoplay
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -28,13 +23,6 @@ dimensions:
       cites relevant WCAG criteria (2.2.2, 2.3.1, 2.3.3), and does not treat keyboard success
       as sufficient coverage of the component's accessibility posture.
     weight: 2
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: >
-      Correctly avoids flagging keyboard navigation, button labels, alt text, or contrast
-      as issues — these are intentionally correct in this fixture.
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -123,17 +111,6 @@ expected_findings:
           The aria-live gap is in the screen reader dimension — all three conditions have some
           screen reader coverage, so the delta here is smaller. This is not the discriminating item.
 
-  - category: false_positive_trap
-    count: 0
-    penalty_weight: 0
-    known_safe_features:
-      - "Prev/next button aria-label attributes"
-      - "Button keyboard focusability and :focus-visible styles"
-      - "Product image alt text"
-      - "Color contrast on text and buttons"
-      - "Decorative dot indicators marked aria-hidden"
-      - "Semantic h2 on product name"
-
 composite_score_formula: |
   score = sum(found_items * dimension_weight) / sum(all_positive_dimension_weights) * 100
 
@@ -212,3 +189,21 @@ notes: |
   The parallax item is the strongest B-vs-C discriminator: it requires knowing that
   background-attachment: fixed creates a parallax effect AND that parallax is a documented
   vestibular trigger — a checklist-level fact unlikely to surface from a generic prompt.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    penalty_weight: 0
+    known_safe_features:
+      - "Prev/next button aria-label attributes"
+      - "Button keyboard focusability and :focus-visible styles"
+      - "Product image alt text"
+      - "Color contrast on text and buttons"
+      - "Decorative dot indicators marked aria-hidden"
+      - "Semantic h2 on product name"

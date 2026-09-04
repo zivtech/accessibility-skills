@@ -1,10 +1,5 @@
 fixture_id: row-action-inconsistent-labels
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -51,17 +41,6 @@ expected_findings:
 
   - category: nice_to_find
     count: 0
-
-  - category: false_positive_trap
-    count: 2
-    items:
-      - description: "The Case ID/Case Name paired links in THIS fixture are still not a 3.2.4 case — the fixture contains both the real violation and the false-alarm shape, and a reviewer must separate them"
-        impact: "Lines 30 and 33 (`/cases/4471`) share a destination with different accessible names ('4471' vs. 'Ridgeway Pumping Station'), exactly like the CLEAN sibling. They remain two different functions — id-lookup and name-lookup — not one function labelled two ways, so they are not part of the 3.2.4 finding. A reviewer who flags this pairing here (in addition to, or instead of, the real Actions-column defect) has applied 'same destination, different name' as the test instead of 'same functionality,' and this is what proves the exception used to accept the CLEAN sibling stays narrow rather than blinding the reviewer to the genuine violation two columns over. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
-        expected_to_find: "78%"
-
-      - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose failure"
-        impact: "Line 30's link text is just the case number, disambiguated by the 'Case ID' column header a screen reader announces alongside it in table-navigation mode — same reasoning as the CLEAN sibling. Flagging it here is an independent false alarm, unrelated to the real Actions-column defect."
-        expected_to_find: "50%"
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -123,3 +102,20 @@ notes: |
   CRITICAL findings reserved for content that is never exposed to assistive
   technology at all (compare async-retry-error-unannounced's CRITICAL
   unannounced-failure finding, where the user gets no signal whatsoever).
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The Case ID/Case Name paired links in THIS fixture are still not a 3.2.4 case — the fixture contains both the real violation and the false-alarm shape, and a reviewer must separate them"
+      impact: "Lines 30 and 33 (`/cases/4471`) share a destination with different accessible names ('4471' vs. 'Ridgeway Pumping Station'), exactly like the CLEAN sibling. They remain two different functions — id-lookup and name-lookup — not one function labelled two ways, so they are not part of the 3.2.4 finding. A reviewer who flags this pairing here (in addition to, or instead of, the real Actions-column defect) has applied 'same destination, different name' as the test instead of 'same functionality,' and this is what proves the exception used to accept the CLEAN sibling stays narrow rather than blinding the reviewer to the genuine violation two columns over. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
+      expected_to_find: "78%"
+
+    - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose failure"
+      impact: "Line 30's link text is just the case number, disambiguated by the 'Case ID' column header a screen reader announces alongside it in table-navigation mode — same reasoning as the CLEAN sibling. Flagging it here is an independent false alarm, unrelated to the real Actions-column defect."
+      expected_to_find: "50%"

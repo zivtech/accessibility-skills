@@ -1,10 +1,5 @@
 fixture_id: chat-cognitive-load
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Minor issues requiring cognitive or keyboard perspective depth"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly implemented aria-live log, labeled controls, and Enter-to-send must NOT be flagged"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -120,42 +110,6 @@ expected_findings:
           emoji container is present but unimplemented — reviewers who note this gap earn
           full credit.
 
-  false_positive_traps:
-    count: 3
-    items:
-      - id: fpt-1
-        description: "aria-live=polite on role=log is correct — must NOT be flagged"
-        penalty: -2
-        trigger: "Reviewer flags the aria-live or role=log on the chat messages container as incorrect"
-        relevant_elements: "chat-messages div with aria-live=polite and role=log"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites the aria-live=polite or role=log as a bug.
-          This is the intentional correct implementation for a chat log. The only
-          related bug (sf-2) is the color-flash visual "new" signal, not the live region.
-          This trap specifically tests whether reviewers understand that aria-live correctly
-          handles content announcements while the visual novelty signal is a separate concern.
-
-      - id: fpt-2
-        description: "Send button, textarea, and emoji picker toggle are correctly implemented"
-        penalty: -2
-        trigger: "Reviewer flags send button, textarea, or emoji picker toggle as keyboard-inaccessible or unlabeled"
-        relevant_elements: "btn-send, chat-input, emoji-picker-btn"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites missing labels or keyboard inaccessibility on
-          the send button, textarea, or emoji picker toggle. All three carry correct
-          aria-label or associated label and are native interactive elements.
-
-      - id: fpt-3
-        description: "Enter-to-send is a standard chat convention — not a keyboard trap"
-        penalty: -2
-        trigger: "Reviewer flags Enter-to-send (without Shift) as a keyboard trap or accessibility violation"
-        relevant_elements: "handleKeyDown in textarea"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites Enter-to-send as a keyboard trap. The pattern
-          includes Shift+Enter for newlines, which is the standard chat convention.
-          Flagging this indicates the reviewer is applying form keyboard semantics to a
-          chat interface without accounting for the different interaction model.
-
 composite_score_formula: |
   positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
   max_positive = (1 * 3) + (2 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 14
@@ -237,3 +191,47 @@ notes: |
   triggers it more than condition A, that is a regression signal worth investigating —
   it may indicate the perspective prompts are causing over-generalization of the
   "non-text notification" pattern to correct implementations.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "aria-live=polite on role=log is correct — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags the aria-live or role=log on the chat messages container as incorrect"
+        relevant_elements: "chat-messages div with aria-live=polite and role=log"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the aria-live=polite or role=log as a bug.
+          This is the intentional correct implementation for a chat log. The only
+          related bug (sf-2) is the color-flash visual "new" signal, not the live region.
+          This trap specifically tests whether reviewers understand that aria-live correctly
+          handles content announcements while the visual novelty signal is a separate concern.
+
+      - id: fpt-2
+        description: "Send button, textarea, and emoji picker toggle are correctly implemented"
+        penalty: -2
+        trigger: "Reviewer flags send button, textarea, or emoji picker toggle as keyboard-inaccessible or unlabeled"
+        relevant_elements: "btn-send, chat-input, emoji-picker-btn"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels or keyboard inaccessibility on
+          the send button, textarea, or emoji picker toggle. All three carry correct
+          aria-label or associated label and are native interactive elements.
+
+      - id: fpt-3
+        description: "Enter-to-send is a standard chat convention — not a keyboard trap"
+        penalty: -2
+        trigger: "Reviewer flags Enter-to-send (without Shift) as a keyboard trap or accessibility violation"
+        relevant_elements: "handleKeyDown in textarea"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites Enter-to-send as a keyboard trap. The pattern
+          includes Shift+Enter for newlines, which is the standard chat convention.
+          Flagging this indicates the reviewer is applying form keyboard semantics to a
+          chat interface without accounting for the different interaction model.

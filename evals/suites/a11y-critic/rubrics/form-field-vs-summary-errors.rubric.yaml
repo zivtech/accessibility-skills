@@ -6,11 +6,6 @@
 
 fixture_id: form-field-vs-summary-errors
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.6
-  llm_judge: 0.4
-
 dimensions:
   - id: must_articulate
     name: "Must Articulate the Dual-Announcement Tradeoff"
@@ -79,17 +74,6 @@ expected_findings:
         evidence_requirement: "Notes that the actual user experience depends on which assistive technology is used"
         expected_to_find: "10%"
 
-  - category: false_positive_trap
-    count: 2
-    items:
-      - description: "The error summary role='alert' is correctly implemented per the error message pattern"
-        impact: "Flagging role='alert' as wrong (e.g., 'should use aria-live=polite instead') is a false positive — the summary is assertive by design because errors on submit are urgent"
-        expected_to_find: "60%"
-
-      - description: "The aria-describedby associations on fields are correctly implemented"
-        impact: "Flagging missing aria-describedby or broken field-error association is a false positive — every field has correct conditional aria-describedby"
-        expected_to_find: "50%"
-
 composite_score_formula: |
   score = (
     must_articulate * 4 +
@@ -157,3 +141,20 @@ notes: |
   That fixture has clear bugs (missing aria-describedby, missing role="alert").
   This fixture has BOTH of those things correctly implemented — and the question
   is whether having both simultaneously is too much.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The error summary role='alert' is correctly implemented per the error message pattern"
+      impact: "Flagging role='alert' as wrong (e.g., 'should use aria-live=polite instead') is a false positive — the summary is assertive by design because errors on submit are urgent"
+      expected_to_find: "60%"
+
+    - description: "The aria-describedby associations on fields are correctly implemented"
+      impact: "Flagging missing aria-describedby or broken field-error association is a false positive — every field has correct conditional aria-describedby"
+      expected_to_find: "50%"

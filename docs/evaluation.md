@@ -60,7 +60,7 @@ The manifest and the heading allowlist declare current leaks rather than pretend
 - **Titles.** 52 of 77 fixture H1s name the defect they plant; 6 more assert the feature under test. Measured on the nine maximum-leak critic fixtures (90 draws, qwen3.6:35b): must-find is **150/150 in both arms** — neutralising the title moves nothing, and the title is never echoed back. That is a real result and a weak one: a saturated instrument cannot detect an effect, so this bounds the title effect from below only.
 - **The features section.** 45 of 50 critic fixtures show the model an `## Accessibility Features Present` section above the cut. The title names the defect; this names the non-defects; together they bracket the answer. It is realistic *content* — a developer handing over a component really would say what they handled — but its *function* in the eval is not. Measured across 164 draws: removing it does not move must-find (**89/90 both arms**), and on the eleven CLEAN fixtures it does not rescue the verdict either — strict ACCEPT runs **6/55 with the section and 2/55 without** (p = 0.27). The section was not holding the CLEAN verdicts up. There were no CLEAN verdicts to hold up.
 
-A related finding from the same work, worth knowing before you trust a rubric field: `false_positive_trap` is declared in all 50 critic rubrics and read by **no scorer**. So are `llm_judge`, `hybrid_weights`, and `scoring_method`. Those rubric dimensions do not currently affect any score.
+A related finding from the same work, now closed: `false_positive_trap` was declared in all 50 critic rubrics and read by **no scorer** — as were `llm_judge`, `hybrid_weights`, and `scoring_method`. The [#65](https://github.com/zivtech/accessibility-skills/pull/65) probe then measured whether scoring it would have been worth it: on the same 110 CLEAN draws the constructs the traps *predicted* fired at 0-10% while the model failed to return a clean ACCEPT 93% of the time, so a trap score would have explained a tenth of the behaviour under a name that promises all of it. All four fields were deleted in [#63](https://github.com/zivtech/accessibility-skills/issues/63); the trap prose survives under each rubric's non-scored `non_scored_authoring_notes` key, which no scorer reads and none is intended to.
 
 Both lanes are null results at low power — at n = 55 per arm the design could only have caught a ~3x swing — and neither has a hosted row. Raw responses, scores, significance and the power bound: [`evals/results/fixture-leak-2026-09/`](../evals/results/fixture-leak-2026-09/).
 
@@ -72,7 +72,7 @@ Both lanes are null results at low power — at n = 55 per arm the design could 
 4. Document planted defects **only** below the cut line — never as inline code comments.
 5. Add a row to `evals/fixture-title-manifest.yaml` classifying the H1.
 6. Scrutinise the CLEAN half as hard as the BUG half. A BUG fixture with an extra unplanted defect is recoverable; a CLEAN fixture with a real defect punishes correct reviews and is much harder to notice.
-7. CLEAN fixtures carry zero real defects and three or more false-positive traps.
+7. CLEAN fixtures carry zero real defects, and document three or more false-positive traps under `non_scored_authoring_notes`. That key is fixture-authoring documentation, not a scored dimension — see the closed leak above.
 8. Run the gates.
 
 ```bash

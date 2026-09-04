@@ -1,10 +1,5 @@
 fixture_id: multi-column-pricing
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Minor motion and keyboard issues requiring secondary perspective depth"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correct table structure, CTA labels, and correct WCAG criterion citation required"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -120,44 +110,6 @@ expected_findings:
           has aria-label='Most popular' — reviewers must NOT flag the aria-label as missing
           (see fpt-2). The only issue is the animation.
 
-  false_positive_traps:
-    count: 3
-    items:
-      - id: fpt-1
-        description: "Table structure with thead/tbody/th scope=col is semantically correct"
-        penalty: -2
-        trigger: "Reviewer flags the table structure as missing headers, incorrect scope, or inaccessible to screen readers"
-        relevant_elements: "pricing-table thead, tbody, th scope=col elements"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites the table structure as a semantic failure.
-          All headers use scope='col' correctly. This trap tests whether reviewers
-          default to flagging data tables as accessibility problems without inspecting
-          the actual markup.
-
-      - id: fpt-2
-        description: "CTA buttons have descriptive aria-label values — must NOT be flagged as unlabeled"
-        penalty: -2
-        trigger: "Reviewer flags CTA buttons as missing or insufficient labels"
-        relevant_elements: "cta-button elements with aria-label='action — plan name'"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites missing labels on CTA buttons.
-          All buttons carry aria-label values identifying both the action and the plan
-          name (e.g., 'Start free trial — Pro plan'). This is more descriptive than
-          the button text alone and is intentionally correct.
-
-      - id: fpt-3
-        description: "Check and X icons individually pass contrast — the issue is 1.4.1 not 1.4.3"
-        penalty: -2
-        trigger: "Reviewer cites 1.4.3 (contrast ratio failure) as the primary violation for the check/X feature cells"
-        relevant_elements: "feature-check spans with available/unavailable CSS classes"
-        scoring_notes: >
-          Apply -2 weight if reviewer's primary citation for the check/X cells is 1.4.3
-          (contrast ratio). The green #38a169 on white and red #e53e3e on white both
-          individually pass contrast. The violation is 1.4.1 (color as sole differentiator
-          between two states). Applying the wrong criterion indicates the reviewer is
-          pattern-matching to "colors = contrast issue" rather than reasoning from the
-          1.4.1 definition.
-
 composite_score_formula: |
   positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
   max_positive = (1 * 3) + (2 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 14
@@ -248,3 +200,49 @@ notes: |
 
   The horizontal scroll wrapper (overflow-x: auto) is correct and should be noted as
   a good practice if cited — it must not be flagged as an accessibility problem.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "Table structure with thead/tbody/th scope=col is semantically correct"
+        penalty: -2
+        trigger: "Reviewer flags the table structure as missing headers, incorrect scope, or inaccessible to screen readers"
+        relevant_elements: "pricing-table thead, tbody, th scope=col elements"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the table structure as a semantic failure.
+          All headers use scope='col' correctly. This trap tests whether reviewers
+          default to flagging data tables as accessibility problems without inspecting
+          the actual markup.
+
+      - id: fpt-2
+        description: "CTA buttons have descriptive aria-label values — must NOT be flagged as unlabeled"
+        penalty: -2
+        trigger: "Reviewer flags CTA buttons as missing or insufficient labels"
+        relevant_elements: "cta-button elements with aria-label='action — plan name'"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels on CTA buttons.
+          All buttons carry aria-label values identifying both the action and the plan
+          name (e.g., 'Start free trial — Pro plan'). This is more descriptive than
+          the button text alone and is intentionally correct.
+
+      - id: fpt-3
+        description: "Check and X icons individually pass contrast — the issue is 1.4.1 not 1.4.3"
+        penalty: -2
+        trigger: "Reviewer cites 1.4.3 (contrast ratio failure) as the primary violation for the check/X feature cells"
+        relevant_elements: "feature-check spans with available/unavailable CSS classes"
+        scoring_notes: >
+          Apply -2 weight if reviewer's primary citation for the check/X cells is 1.4.3
+          (contrast ratio). The green #38a169 on white and red #e53e3e on white both
+          individually pass contrast. The violation is 1.4.1 (color as sole differentiator
+          between two states). Applying the wrong criterion indicates the reviewer is
+          pattern-matching to "colors = contrast issue" rather than reasoning from the
+          1.4.1 definition.

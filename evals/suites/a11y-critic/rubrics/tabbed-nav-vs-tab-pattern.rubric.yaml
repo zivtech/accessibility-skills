@@ -6,11 +6,6 @@
 
 fixture_id: tabbed-nav-vs-tab-pattern
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.6
-  llm_judge: 0.4
-
 dimensions:
   - id: must_articulate
     name: "Must Articulate the Tradeoff"
@@ -74,13 +69,6 @@ expected_findings:
         evidence_requirement: "Notes that buttons with router.push lose native link behaviors"
         expected_to_find: "30%"
 
-  - category: false_positive_trap
-    count: 1
-    items:
-      - description: "The tabs ARIA implementation is correct per APG"
-        impact: "Flagging broken ARIA, missing aria-selected, or incomplete keyboard handling is a false positive — the implementation is correct, the question is whether tabs is the right pattern"
-        expected_to_find: "70%"
-
 composite_score_formula: |
   score = (
     must_articulate * 4 +
@@ -140,3 +128,16 @@ notes: |
   This fixture also tests whether the critic can distinguish between:
   1. "The ARIA is implemented wrong" (false — it's correct per APG)
   2. "The wrong ARIA pattern was chosen" (debatable — depends on priorities)
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The tabs ARIA implementation is correct per APG"
+      impact: "Flagging broken ARIA, missing aria-selected, or incomplete keyboard handling is a false positive — the implementation is correct, the question is whether tabs is the right pattern"
+      expected_to_find: "70%"

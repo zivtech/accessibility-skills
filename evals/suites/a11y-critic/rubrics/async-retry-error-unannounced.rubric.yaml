@@ -1,10 +1,5 @@
 fixture_id: async-retry-error-unannounced
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -64,21 +54,6 @@ expected_findings:
       - description: "Optional: status is initialised to 'loading' (line 7), so the live region enters the DOM with its message already inside it on first mount and is frequently not spoken — the loading announcement the component appears to make does not reliably fire either"
         impact: "Enhancement suggestion. This is a correct observation about the same mount-timing principle the CLEAN pair member is built on, and it is scored so that a reviewer who reaches it is credited rather than caught by the narrowed trap above."
         expected_to_find: "35%"
-
-  - category: false_positive_trap
-    count: 3
-    items:
-      - description: "The loading branch has a correctly-formed live region — reporting it as MISSING is a false alarm"
-        impact: "Lines 34-39 carry role='status', aria-live='polite' and aria-atomic='true'. A review that reports 'this component has no live region' or 'the loading state needs one added' has pattern-matched the component type instead of reading the branch, and has also missed both real defects, which live on the other two branches. NARROWED 2026-09-03: this trap does NOT cover the separate, correct observation that the region is mounted already-populated on first render (status is initialised to 'loading' at line 7) and therefore may not be spoken at all — that is scored as a nice_to_find below, not penalised here. Three independent draws reached it, and the earlier wording would have scored every one of them -2 for being right."
-        expected_to_find: "80%"
-
-      - description: "aria-busy on the panel body is present and correct — flagging it as missing is a false alarm"
-        impact: "Line 33 sets aria-busy={status === 'loading'} on .panel-body. This fixture deliberately does not repeat the aria-busy defect that loading-state-missing-aria-busy already covers."
-        expected_to_find: "75%"
-
-      - description: "aria-hidden='true' on the decorative spinner is correct — flagging it is a false alarm"
-        impact: "Line 36's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
-        expected_to_find: "70%"
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -127,3 +102,24 @@ notes: |
   The three false-positive traps exist because the happy path here is correct.
   Without them, a reviewer could score well by reporting "this async component
   needs live regions" without ever reading which branch has one.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The loading branch has a correctly-formed live region — reporting it as MISSING is a false alarm"
+      impact: "Lines 34-39 carry role='status', aria-live='polite' and aria-atomic='true'. A review that reports 'this component has no live region' or 'the loading state needs one added' has pattern-matched the component type instead of reading the branch, and has also missed both real defects, which live on the other two branches. NARROWED 2026-09-03: this trap does NOT cover the separate, correct observation that the region is mounted already-populated on first render (status is initialised to 'loading' at line 7) and therefore may not be spoken at all — that is scored as a nice_to_find below, not penalised here. Three independent draws reached it, and the earlier wording would have scored every one of them -2 for being right."
+      expected_to_find: "80%"
+
+    - description: "aria-busy on the panel body is present and correct — flagging it as missing is a false alarm"
+      impact: "Line 33 sets aria-busy={status === 'loading'} on .panel-body. This fixture deliberately does not repeat the aria-busy defect that loading-state-missing-aria-busy already covers."
+      expected_to_find: "75%"
+
+    - description: "aria-hidden='true' on the decorative spinner is correct — flagging it is a false alarm"
+      impact: "Line 36's spinner is a CSS animation with no text; the adjacent 'Loading activity…' string inside the same live region carries the message. Flagging 'spinner hidden from screen readers' misreads a correct decorative-image decision."
+      expected_to_find: "70%"

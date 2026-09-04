@@ -1,10 +1,5 @@
 fixture_id: dense-admin-jargon
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Minor issues requiring screen reader or cognitive depth"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly implemented checkboxes, save button, and role=alert must NOT be flagged as bugs"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -125,40 +115,6 @@ expected_findings:
           missing aria-required on the input — these are complementary failures.
           Partial credit (0.5) for citing only one.
 
-  false_positive_traps:
-    count: 3
-    items:
-      - id: fpt-1
-        description: "Error span uses role=alert correctly — the bug is the opaque content, not the ARIA pattern"
-        penalty: -2
-        trigger: "Reviewer penalizes role=alert usage on the error span"
-        relevant_elements: "error-inline span with role=alert"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites the role=alert pattern itself as incorrect.
-          role=alert is appropriate for an inline validation error. The only issue is
-          the content (opaque code vs. description). This trap tests whether reviewers
-          can separate ARIA pattern correctness from content quality.
-
-      - id: fpt-2
-        description: "All 12 checkboxes are native inputs with correct label associations — must NOT be flagged"
-        penalty: -2
-        trigger: "Reviewer flags any checkbox as missing a label or as keyboard-inaccessible"
-        relevant_elements: "All toggle-row input elements and their label elements"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites missing labels on checkboxes or keyboard
-          inaccessibility of any toggle. All inputs use native <input type='checkbox'>
-          with htmlFor/id label association. This trap tests whether the reviewer
-          conflates keyboard/labeling with cognitive/magnification dimensions.
-
-      - id: fpt-3
-        description: "Save button is keyboard-accessible with focus-visible outline — must NOT be flagged"
-        penalty: -2
-        trigger: "Reviewer flags save button as lacking keyboard support or focus indication"
-        relevant_elements: "btn-save button with focus-visible CSS"
-        scoring_notes: >
-          Apply -2 weight if reviewer cites the save button as a keyboard accessibility
-          failure. The button is native <button> with explicit focus-visible outline styles.
-
 composite_score_formula: |
   positive_weights = (must_find * 3) + (should_find * 2) + (nice_to_find * 1) + (evidence_quality * 1) + (format_compliance * 1) + (perspective_coverage * 2)
   max_positive = (1 * 3) + (3 * 2) + (2 * 1) + (1 * 1) + (1 * 1) + (1 * 2) = 16
@@ -237,3 +193,45 @@ notes: |
   This fixture has the lowest expected A-condition score of the four (25-35%) because
   it requires two independent perspective lenses (cognitive AND magnification) and the
   highest-value finding (sf-3) requires code tracing rather than UI inspection.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    count: 3
+    items:
+      - id: fpt-1
+        description: "Error span uses role=alert correctly — the bug is the opaque content, not the ARIA pattern"
+        penalty: -2
+        trigger: "Reviewer penalizes role=alert usage on the error span"
+        relevant_elements: "error-inline span with role=alert"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the role=alert pattern itself as incorrect.
+          role=alert is appropriate for an inline validation error. The only issue is
+          the content (opaque code vs. description). This trap tests whether reviewers
+          can separate ARIA pattern correctness from content quality.
+
+      - id: fpt-2
+        description: "All 12 checkboxes are native inputs with correct label associations — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags any checkbox as missing a label or as keyboard-inaccessible"
+        relevant_elements: "All toggle-row input elements and their label elements"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites missing labels on checkboxes or keyboard
+          inaccessibility of any toggle. All inputs use native <input type='checkbox'>
+          with htmlFor/id label association. This trap tests whether the reviewer
+          conflates keyboard/labeling with cognitive/magnification dimensions.
+
+      - id: fpt-3
+        description: "Save button is keyboard-accessible with focus-visible outline — must NOT be flagged"
+        penalty: -2
+        trigger: "Reviewer flags save button as lacking keyboard support or focus indication"
+        relevant_elements: "btn-save button with focus-visible CSS"
+        scoring_notes: >
+          Apply -2 weight if reviewer cites the save button as a keyboard accessibility
+          failure. The button is native <button> with explicit focus-visible outline styles.

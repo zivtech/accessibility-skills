@@ -1,14 +1,6 @@
 fixture_id: nav-menu-landmarks
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    weight: -2
   - id: critical_false_positive
     name: "Critical False Positive Penalty"
     weight: -3
