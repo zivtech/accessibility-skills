@@ -1,0 +1,41 @@
+=== Over-flagging overall, 110 committed CLEAN draws
+  no clean ACCEPT            102/110 = 93%
+  raised >=1 structured find 17/110 = 15%
+
+=== Did the *predicted* constructs fire?
+
+async-retry-recovery-clean  (10 draws)
+  aria-hidden on decorative spinner     0/10  (0%)
+  two politeness levels                 0/10  (0%)
+  empty persistent containers           1/10  (10%)
+       … - **Persistent empty alert region**: Line 24: `<div className="panel-error" role="aler
+
+modal-complete-clean  (10 draws)
+  role=presentation on overlay          4/10  (40%)
+       … The overlay `<div role="presentation">` will not be removed from the DOM tab order
+       … manifest; the `mousedown` + `click` guard is safe for AT because the overlay is non-focusable and uses `role="presentation"`
+       … tsx:124-135` (`handleOverlayClick`) + `role="presentation"` on overlay
+       … - Use `inert` on the overlay instead of `role="presentation"` if browser support allows, as it more robus
+  setTimeout for initial focus          0/10  (0%)
+
+=== Reading
+
+The predicted constructs fire at 0-40% while the model fails to return a clean
+ACCEPT on 93% of the same draws. The rubric authors guessed wrong about what
+gets over-flagged: the traps are not where the false positives are.
+
+And the one non-trivial rate is the matcher, not the model. Read the
+`role=presentation` excerpts above: the model is affirming the pattern
+("safe for AT because the overlay is non-focusable"), or offering a legitimate
+enhancement ("use `inert` instead ... more robust"), or merely citing the line.
+A naive trap matcher scores those as false positives and would report the
+instrument working. That is the same prose-matching brittleness that produced
+five false must-misses in `score_acr.py` (see
+../human-verification-stage/retest-2026-09-04/), firing here in the flattering
+direction.
+
+Conclusion for #63: scoring this dimension costs hand-authored, adversarially
+tested tokens for all 50 items plus a recalibration and a disclosure, and buys
+an explanation of roughly a tenth of the behaviour. The verdict-level and
+structured-finding measures already in this lane capture all of it for free.
+
