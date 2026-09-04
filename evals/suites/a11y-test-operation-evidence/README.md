@@ -52,12 +52,15 @@ the human-sourced fields the reference specifies (`before`/`action`/`observed`
 for Shape 1, `played`/`heard`/`seen`/`adequacy` for Shape 2's attended-media
 packages; Shape 2 is read by rules 1, 3 and 4 only — it has no locus and no
 target, so rules 2 and 5 are marked not applicable in the reference).
-`op-human-signature-only` carries three under-specified records beside one
+`op-human-signature-only` carries four inadmissible records beside one
 admissible operation: the canonical "I checked it; it's fine" (rules 2 + 4),
-a menu listing offered as audio-description evidence (rule 4), and a nested
+a menu listing offered as audio-description evidence (rule 4), a nested
 option reported from the combobox owner with no session, no locus, a bare
 visual read, and no mapping (rules 2 + 4 + 5, the same set the suite's
-precedent attaches to that shape). No sixth rule is invented for any of them.
+precedent attaches to that shape), and the tidier failure — every field
+filled and `observed: "As expected"`, which is rule 4 alone because no
+observed result of the action is bound to it. No sixth rule is invented for
+any of them.
 
 Each fixture follows this bundle's existing triplet convention, matching
 `evaluation-report` and `a11y-planner`:

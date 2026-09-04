@@ -22,10 +22,10 @@ expected_dispositions:
   OP-OPTION: UNTESTED
 rules_violated_must_be_empty_for: [OP-CLOSE]   # any rule attached to OP-CLOSE here is a false fire (must-tier)
 expected_verdict_must_not:
-  - "OP-OPTION PASS"
+  # assertion-shaped only — a correct rejection quotes the claim it rejects
   - "both operations pass"
   - "package accepted"
-  - "OP-CLOSE UNTESTED"
+  - "OP-CLOSE should be UNTESTED"
 
 must_catch:
   - id: passive_observation_binding

@@ -450,7 +450,8 @@ run_case "opevidence ophumansig gold (PASS)" "$OP_SCORER" \
     "+ passive_observation_binding under OP-AD" \
     "+ setup_action_continuity under OP-OPTION" \
     "+ passive_observation_binding under OP-OPTION" \
-    "+ ancestor_remapping_review under OP-OPTION" "Status: PASS"
+    "+ ancestor_remapping_review under OP-OPTION" \
+    "+ passive_observation_binding under OP-LABEL" "Status: PASS"
 
 # Case 68: opevidence ophumansig trap — accepts the whole signature-only
 # package (FAIL)

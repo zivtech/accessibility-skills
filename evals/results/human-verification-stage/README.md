@@ -27,7 +27,7 @@ used it and reported `Valid!`); no repo writes.
 One disclosure on extraction: the harness's idle notification truncated both
 final messages, so each `response` was extracted **verbatim from the
 subagent's own transcript** (the last assistant text block; the receipts
-record the transcript timestamp). Nothing was edited. `elapsed_seconds` is
+record the transcript timestamp). Nothing was edited — but the transcripts are not committed, so the verbatim claim is not verifiable from the repo: the prompt hash covers the input, nothing covers the output beyond the receipt itself. `elapsed_seconds` is
 first-to-last transcript timestamp; token fields are the transcript's usage
 sums (output) and peak (context), not a billing figure.
 
@@ -40,11 +40,11 @@ sums (output) and peak (context), not a billing figure.
 
 Scorer receipts: `score-acr-county-library-retest-opus.txt`,
 `score-acr-county-library-retest-opus-draw2.txt`. Term mapping 52/52 in both;
-A/AA completeness 56/56 present-or-blocked; zero invented `finding_id`s.
+A/AA completeness 56/56 present-or-blocked; zero invented `finding_id`s. The one delta between the receipts: draw 1 cites 3 known `finding_id` tokens, draw 2 cites 4 (draw 2 names the PDF finding in the document notes as human-owned) — "draw-stable" refers to status and trap outcomes, not to identical text.
 
 ## Per-row reading (statuses are detector output; this is the verdict)
 
-The fixture sets five traps, and the two critic-added failure modes (delta-only trigger, disclosure) make seven rows. Both draws were read against each, not just scored.
+The plan listed five traps; the fixture's own metadata inventories six; with the delta-only trigger the critics added, the table below has seven rows. Both draws were read against each, not just scored.
 
 | Trap | Draw 1 | Draw 2 |
 |---|---|---|
