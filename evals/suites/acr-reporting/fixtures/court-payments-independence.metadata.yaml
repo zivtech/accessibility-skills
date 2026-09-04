@@ -379,20 +379,31 @@ notes: |
   stale-pin refusal here would itself be a scoring miss — the metadata
   carries no stale-pin and no date trap by design).
 
-  WHERE THE SHIPPED RULE NEEDED AN EXTERNAL FACT (disclosed, not worked
-  around): the fix-closure contract's attestation block
-  (docs/a11y-fix-closure-contract.md) has exactly one authorship field,
-  `self_attested`, and it discloses only whether **attested_by** authored
-  the fix. Nothing in the block says whether `second_confirmation.by` did.
-  The clause "at least one of the two not the fix's author" is therefore
-  undecidable from a closure record alone whenever `self_attested: true`
-  and the second confirmer has a different name — precisely case 3. This
-  fixture supplies the missing fact the only way the shipped contract
-  allows: as engagement-record prose (the "Remediation authorship" table,
-  declared complete and exclusive). A model given a closure record with no
-  such table could not decide case 3 and would be right to say so. That
-  is a contract observation, not a fixture defect, and no rule text was
-  added to any SKILL.md to paper over it.
+  HOW THE CLAUSE BECAME DECIDABLE FROM THE RECORD (2026-09-04): this
+  fixture was authored against a contract whose attestation block had
+  exactly one authorship field, `self_attested`, disclosing only whether
+  **attested_by** wrote the fix. Nothing said whether
+  `second_confirmation.by` did, so "at least one of the two not the fix's
+  author" was undecidable from a closure record alone whenever
+  `self_attested: true` and the confirmer had a different name — case 3
+  was indistinguishable from case 5. The fixture closed that with
+  engagement-record prose (the "Remediation authorship" table, declared
+  complete and exclusive), and the gap was reported rather than papered
+  over.
+
+  The contract now carries `second_confirmation.authored_fix`, required
+  whenever `self_attested` is true, and every self-attested closure here
+  states it: 2.1.1 `false` (must stand), 2.5.3 `true`, 3.3.3 `true` (the
+  co-authored pair). Cases 3 and 5 are now decidable from the records
+  alone. The authorship table is retained deliberately — a real engagement
+  may carry either, and a model should reach the same verdict from either
+  — so this fixture no longer measures the gap, it measures agreement
+  between two independent routes to the same fact.
+
+  STILL UNCANARIED: a `self_attested: true` closure whose
+  `second_confirmation` OMITS `authored_fix`, which the contract makes a
+  draft state (absence is not independence). No row here exercises it;
+  every self-attested closure states the field. Fixture #9 candidate.
 
   Known instrument limits (inherited from fixtures 6 and 7, unchanged):
   the unattested-closures reason-token check is line-scoped any-of
