@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Claude Code-compatible; protocol is model-agnostic
 metadata:
   author: zivtech
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Accessibility Testing Skill
@@ -23,6 +23,7 @@ Pick the right execution mode from the routing table before running anything (th
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
 | Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom, Storybook play functions, or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot` | Same daemon, no test runner needed. |
+| A person confirms a fix at the fixed stage (the closure record needs its `attestation` block), or walks an ICT baseline row no machine mode covers | [`references/human-verification-walkthrough.md`](references/human-verification-walkthrough.md) | The human tier: a planned-operation-driven walk that records `before` / `action` / `expected` / `observed` per operation in a shape the five admissibility rules can read, plus an attended-media shape for the alternative-content rows. Never a free walk; the one place a single PASS is the unreliable result. See "Human verification walk-through" below. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
 
 **Decision flowchart:**
@@ -34,6 +35,7 @@ Do you have a prose description of what to test, but no test script yet?
   NO, you need to audit a live URL against a user goal (journey, announcements, focus indicators) → keyboard-a11y-tester
   NO, you need to assert component announcements, names, or reading order in unit tests (no URL yet) → virtual-screen-reader
   NO, you need to explore interactively → agent-browser
+  NO, a person must confirm a fix on the pinned version, or walk a baseline row no mode covers → references/human-verification-walkthrough.md
 ```
 
 **CDP keyboard event delivery for `agent-browser` has been verified end-to-end** on both a vanilla JS disclosure widget (WAI-ARIA APG disclosure-faq example: `focus → press Enter → aria-expanded: false → true`) and a React state-driven modal (react.dev DocSearch: `Meta+K` → React global keydown listener → state-mounted searchbox). The MCP keyboard delivery bug does not apply to `agent-browser` because it calls CDP `Input.dispatchKeyEvent` directly rather than through an MCP wrapper.
@@ -80,6 +82,12 @@ Two clauses that govern when a retest result is trustworthy.
 - Capture the version or content marker as a field on the evidence artifact itself, so a stale-baseline check is mechanical rather than remembered.
 - On a detected delta, a fresh retest is mandatory for any row whose claim is about current conformance. "We tested this in a previous cycle" is not, by itself, an outcome — a frozen baseline may never silently stand in for current evidence.
 
+### Human verification walk-through
+
+The retest campaign has a human tier, and it is not a free walk. When a closure record needs its `attestation` block (the fixed-stage confirmation `acr-reporting` admits an improved term on), or when a declared-508 engagement reaches one of the crosswalk's 13 `not-covered` rows, a named person walks entries from the campaign's planned operation set — never off it — and records, per operation, where they started and how they got there, the action, the expected result, and the observed result, in the package shape [`references/human-verification-walkthrough.md`](references/human-verification-walkthrough.md) specifies (an operation shape, and an attended-media shape for the alternative-content rows). The record is appended to the sample's evidence artifact under the append-only rule, and the closure's attestation block cites it.
+
+**The n = 1 rule reverses at the fixed stage.** A single failed reproduction is variance at diagnosis because the expensive error there is a flaky miss reported as a regression. At the fixed stage the expensive error runs the other way — one human PASS becomes a `supports` in a published document, and the person confirming a fix knows what they expect to see. A single human `FAIL` sends the item back to remediation on its own; a human `PASS` that will back a fixed-stage `supports` needs a second package by a different person, or the same person in a separate session on a later day, with at least one of the two not by the fix's author (the closure contract's `second_confirmation`).
+
 ### Campaign completeness contract
 
 A retest campaign is not complete when the runner exits — it is complete when **zero** planned operations remain unresolved. Treat "the suite ran" and "every planned operation has a result" as different claims until proven equal:
@@ -100,6 +108,8 @@ Retest evidence is admissible for the operation it claims only when it survives 
 - **Passive observations are bound, never standalone.** A DOM/AX snapshot (roles and states present in the rendered tree) is admissible only as support bound to the causing action and on a source allowlist. By itself it is never evidence of keyboard-reachability or of announcement — those require the causing key press and its observed result.
 - **No silent ancestor remapping.** When the exact target is not on the focus path, evidence recorded against a nearest reachable ancestor is admissible only through a reviewed, separately frozen owner/descendant mapping (the composite's documented owner and navigation model). A silent nearest-ancestor substitution is not evidence about the target.
 
+**Human-sourced packages are scored by the same five rules.** A person's walk-through package ([`references/human-verification-walkthrough.md`](references/human-verification-walkthrough.md)) carries the fields the rules read — `before.reached_by` and `before.locus` in one `session` for continuity, `observed_via` for passive binding, `target_reached` for ancestor remapping, the exit attempt in `action` before any trap conclusion, approved inputs only for conditional states. A package missing those fields fails the rule whose predicate it cannot show: "I checked it, it's fine" has no starting locus and no action for its observation to bind to, so it breaks `setup_action_continuity` and `passive_observation_binding` as written — no sixth rule is needed, and the operation stays where its admitted evidence left it. For human evidence rules 2 and 4 are structured self-report rather than a verified identity or a source allowlist; the record says so, and the second confirmation is the control.
+
 ### Structured disposition block
 
 Every admissibility review closes with one fenced yaml block a rule-based scorer checks mechanically (the `score_acr.py` precedent). Stable ids for the five rules above: `bounded_diagnostic_not_promoted`, `setup_action_continuity`, `natural_only_conditional_state`, `passive_observation_binding`, `ancestor_remapping_review`.
@@ -111,7 +121,7 @@ rules_violated: {<operation id>: [<rule id>, ...]}                 # only operat
 claim_boundary: "<per operation: what the admitted evidence establishes, and what it leaves undecided about the target>"
 ```
 
-The four disposition values are this block's closed set. `PASS` and `FAIL` mean admitted evidence decides the operation's own predicate; `BLOCKED` means an admitted bounded collector observation *about that operation* stands without the trace that would decide it; `UNTESTED` means no admitted observation bears on it. Rejected evidence never moves an operation: a recorded prior state stays, and an operation with none takes only what its admitted evidence supports. A non-conclusive run state outside the four (`cantTell`, `skipped`) is `UNTESTED` here and named in `claim_boundary`, never folded into `BLOCKED`. `admissibility` and `rules_violated` score the evidence package, not the target's accessibility; `dispositions` carries forward only what admitted evidence establishes about each operation.
+The four disposition values are this block's closed set. `PASS` and `FAIL` mean admitted evidence decides the operation's own predicate; `BLOCKED` means an admitted bounded observation *about that operation* stands without the trace or instrument reading that would decide it — a collector's `focus_stagnation_observed` note with no exit-path trace, or a person's "I watched the animation and cannot count flashes per second" with no analyzer reading; the definition was written around collector output and applies unchanged to an attended human observation, whose `claim_boundary` names the missing instrument; `UNTESTED` means no admitted observation bears on it. Rejected evidence never moves an operation: a recorded prior state stays, and an operation with none takes only what its admitted evidence supports. A non-conclusive run state outside the four (`cantTell`, `skipped`) is `UNTESTED` here and named in `claim_boundary`, never folded into `BLOCKED`. `admissibility` and `rules_violated` score the evidence package, not the target's accessibility; `dispositions` carries forward only what admitted evidence establishes about each operation.
 
 ### PASS partition: rule-tier vs chain-tier
 

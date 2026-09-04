@@ -39,6 +39,8 @@ The measurement layer. Produces the evidence the critic reviews. Six execution m
 
 **Do not use Playwright MCP for keyboard events** — `browser_press_key` is silently dropped for most interactive widgets.
 
+**The human tier.** Two things no execution mode produces: the fixed-stage confirmation that lets a fix-closure record carry its `attestation` block (what `acr-reporting` admits an improved conformance term on), and the evidence for the 13 ICT baseline rows the stack does not cover. Both come from a named person walking the campaign's planned operation set — never a free walk — and recording `before` / `action` / `expected` / `observed` per operation in a shape the five operation-evidence admissibility rules can read, or the attended-media shape for the alternative-content rows: [`references/human-verification-walkthrough.md`](../.claude/skills/a11y-test/references/human-verification-walkthrough.md). It is the one place a single PASS is the unreliable result: a fixed-stage `supports` needs a second confirmation, a single FAIL sends the item back on its own.
+
 Two boundaries worth stating plainly. A clean axe-core scan is not conformance: it covers roughly 30–40% of WCAG issue classes and is never keyboard or screen-reader evidence. And virtual-screen-reader's interactions are synthetic, so it is never keyboard-operability evidence.
 
 Full tool inventory with pins and blind spots: [tools.md](tools.md). Adoption boundaries and cross-validation records: [baseline-url-scan](baseline-url-scan-adoption-assessment.md), [keyboard-a11y-tester](keyboard-a11y-tester-adoption-assessment.md), [virtual-screen-reader](virtual-screen-reader-adoption-assessment.md).
