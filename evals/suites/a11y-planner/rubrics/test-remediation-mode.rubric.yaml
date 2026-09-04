@@ -1,10 +1,5 @@
 fixture_id: test-remediation-mode
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 # De-hinted fixture (Tier-2, R-25). The fixture text supplies NONE of the
 # graded vocabulary — every methodology check probes REMEDIATION PROFILE
 # knowledge the plan must bring itself. check_dehinted.py enforces the

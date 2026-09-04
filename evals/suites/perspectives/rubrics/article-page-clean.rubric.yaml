@@ -1,11 +1,6 @@
 fixture_id: article-page-clean
 rubric_version: "1.0"
 fixture_category: CLEAN
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 # -----------------------------------------------------------------------
 # SCORING DIMENSIONS
 # -----------------------------------------------------------------------
@@ -16,16 +11,6 @@ hybrid_weights:
 # -----------------------------------------------------------------------
 
 dimensions:
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: >
-      Correctly NOT flagging well-implemented patterns as issues.
-      Penalizes any finding that targets a correctly implemented feature.
-    weight: -2
-    note: >
-      Each incorrectly flagged item from false_positive_traps subtracts 2
-      from the raw score. Applied per false positive raised.
-
   - id: critical_false_positive
     name: "Critical False Positive Penalty"
     description: >
@@ -70,7 +55,7 @@ dimensions:
     note: >
       Finding enhancements is acceptable and shows thoroughness.
       Only counts positively if framed at ENHANCEMENT severity.
-      If framed at higher severity, counts as false_positive_trap instead.
+      If framed at higher severity, it counts as a false positive instead.
 
   - id: perspective_alarm_accuracy
     name: "Perspective Alarm Level Accuracy"
@@ -128,21 +113,6 @@ expected_findings:
         expected_find_rate: "25%"
         severity_required: ENHANCEMENT
 
-  - category: false_positive_trap
-    count: 3
-    items:
-      - id: main-tabindex-minus-one
-        description: "main tabIndex={-1} is correct for skip link target"
-        penalty_if_flagged: -2
-
-      - id: fade-in-animation
-        description: "Fade-in animation correctly gated on prefers-reduced-motion"
-        penalty_if_flagged: -2
-
-      - id: main-focus-outline-none
-        description: "outline:none on main:focus is correct for tabIndex=-1 element"
-        penalty_if_flagged: -2
-
 # -----------------------------------------------------------------------
 # SCORING FORMULA
 # -----------------------------------------------------------------------
@@ -169,9 +139,6 @@ composite_score_formula: |
   raw_score += format_compliance_score * format_compliance.weight  # +1
 
   # Negative contributions
-  for each false_positive_raised:
-    raw_score += false_positive_trap.weight  # -2 each
-
   for each CRITICAL_or_MAJOR_finding:
     raw_score += critical_false_positive.weight  # -3 each
 
@@ -253,56 +220,6 @@ verdict_expectations:
 # LLM JUDGE PROMPTS
 # -----------------------------------------------------------------------
 
-llm_judge:
-  model: claude-sonnet-4-6
-  temperature: 0
-
-  false_positive_adjudication_prompt: |
-    You are evaluating an accessibility reviewer's output against a CLEAN fixture.
-    The fixture is a React article page with NO real accessibility issues.
-    All landmark regions, heading hierarchy, alt text, contrast ratios, skip link,
-    prefers-reduced-motion handling, and keyboard access are correctly implemented.
-
-    For each finding in the reviewer output, determine:
-    1. Is this finding targeting a real accessibility issue, or a correctly
-       implemented pattern?
-    2. If the reviewer flags tabIndex={-1} on main, outline:none on main:focus,
-       or the CSS animation — are they correctly identifying a known false positive
-       trap, or incorrectly flagging a correct implementation?
-    3. Is the verdict (ACCEPT / ACCEPT-WITH-RESERVATIONS / REJECT) appropriate
-       for a clean page?
-
-    Known correct patterns that should NOT be flagged:
-    - main element has tabIndex={-1}: correct, required for skip link target
-    - article fade-in animation: guarded by prefers-reduced-motion, correct
-    - main:focus has outline:none: correct for tabIndex=-1 programmatic-only target
-
-    Acceptable enhancements (ENHANCEMENT severity only):
-    - aria-current="page" on active nav item
-    - lang attribute on foreign-language quotations
-
-    Return JSON:
-    {
-      "false_positives": [{ "finding": "...", "reason": "..." }],
-      "false_positive_count": N,
-      "verdict_appropriate": true|false,
-      "verdict_given": "...",
-      "overall_assessment": "..."
-    }
-
-  clean_recognition_prompt: |
-    The reviewer examined a well-implemented React article page. Assess whether
-    the reviewer correctly recognized the implementation as clean and accessible,
-    or whether they failed to acknowledge the quality of the implementation.
-
-    Return JSON:
-    {
-      "recognized_as_clean": true|false,
-      "verdict": "...",
-      "enhancement_only": true|false,
-      "notes": "..."
-    }
-
 notes: |
   CLEAN fixture purpose: measure false-positive rate, not detection sensitivity.
 
@@ -321,3 +238,72 @@ notes: |
   All three conditions should score 75%+ on this fixture. Divergence from that
   floor indicates miscalibration. Condition C scoring LOWER than A indicates the
   perspective enhancement is introducing noise.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    count: 3
+    items:
+      - id: main-tabindex-minus-one
+        description: "main tabIndex={-1} is correct for skip link target"
+        penalty_if_flagged: -2
+
+      - id: fade-in-animation
+        description: "Fade-in animation correctly gated on prefers-reduced-motion"
+        penalty_if_flagged: -2
+
+      - id: main-focus-outline-none
+        description: "outline:none on main:focus is correct for tabIndex=-1 element"
+        penalty_if_flagged: -2
+  retired_llm_judge_prompts:
+    false_positive_adjudication_prompt: |
+      You are evaluating an accessibility reviewer's output against a CLEAN fixture.
+      The fixture is a React article page with NO real accessibility issues.
+      All landmark regions, heading hierarchy, alt text, contrast ratios, skip link,
+      prefers-reduced-motion handling, and keyboard access are correctly implemented.
+
+      For each finding in the reviewer output, determine:
+      1. Is this finding targeting a real accessibility issue, or a correctly
+         implemented pattern?
+      2. If the reviewer flags tabIndex={-1} on main, outline:none on main:focus,
+         or the CSS animation — are they correctly identifying a known false positive
+         trap, or incorrectly flagging a correct implementation?
+      3. Is the verdict (ACCEPT / ACCEPT-WITH-RESERVATIONS / REJECT) appropriate
+         for a clean page?
+
+      Known correct patterns that should NOT be flagged:
+      - main element has tabIndex={-1}: correct, required for skip link target
+      - article fade-in animation: guarded by prefers-reduced-motion, correct
+      - main:focus has outline:none: correct for tabIndex=-1 programmatic-only target
+
+      Acceptable enhancements (ENHANCEMENT severity only):
+      - aria-current="page" on active nav item
+      - lang attribute on foreign-language quotations
+
+      Return JSON:
+      {
+        "false_positives": [{ "finding": "...", "reason": "..." }],
+        "false_positive_count": N,
+        "verdict_appropriate": true|false,
+        "verdict_given": "...",
+        "overall_assessment": "..."
+      }
+
+    clean_recognition_prompt: |
+      The reviewer examined a well-implemented React article page. Assess whether
+      the reviewer correctly recognized the implementation as clean and accessible,
+      or whether they failed to acknowledge the quality of the implementation.
+
+      Return JSON:
+      {
+        "recognized_as_clean": true|false,
+        "verdict": "...",
+        "enhancement_only": true|false,
+        "notes": "..."
+      }

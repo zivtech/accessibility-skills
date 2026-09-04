@@ -1,10 +1,5 @@
 fixture_id: multistep-form-error-clearing
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,12 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle semantic and robustness gaps"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues — large correct-ARIA surface in this fixture"
-    weight: -2
-    note: "Labels, aria-invalid, aria-describedby, aria-live region, semantic headings are all correct. Flagging any of these as missing or broken is a false positive."
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -72,10 +61,6 @@ expected_findings:
         wcag: "2.4.3 Focus Order; 1.3.2 Meaningful Sequence"
         evidence_requirement: "Reference to inactive panels (lines 58-93) showing aria-hidden with CSS clip but no inert attribute — keyboard focus enters invisible inputs"
         expected_to_find: "15%"
-
-  - category: false_positive_trap
-    count: 0
-    note: "No planted traps, but large correct-ARIA surface invites over-flagging. Penalize if reviewer flags: labels as missing, aria-describedby as absent, aria-live region as missing, or aria-invalid as not toggling — all are correctly implemented."
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -132,3 +117,14 @@ notes: |
   Expected baseline gap: 30-45 points between baseline-zero-shot and harsh-critic.
   This gap comes from the difference between attribute presence checking (baseline)
   and interaction lifecycle tracing (harsh-critic).
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    note: "No planted traps, but large correct-ARIA surface invites over-flagging. Penalize if reviewer flags: labels as missing, aria-describedby as absent, aria-live region as missing, or aria-invalid as not toggling — all are correctly implemented."

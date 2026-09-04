@@ -1,11 +1,6 @@
 rubric_id: color-only-status-indicators
 fixture_id: color-only-status-indicators
 version: "1.0.0"
-scoring_method: hybrid
-weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 # ─────────────────────────────────────────────
 # SCORING DIMENSIONS
 # ─────────────────────────────────────────────
@@ -18,7 +13,6 @@ dimensions:
       Cognitive & Neurodivergent perspectives, not just keyboard/ARIA patterns?
     weight: 2
     critical: true
-    method: llm_judge
     scoring:
       0:
         label: No coverage
@@ -52,7 +46,6 @@ dimensions:
       This is the primary differentiator between conditions A/B and condition C.
     weight: 2
     critical: true
-    method: llm_judge
     scoring:
       0:
         label: Incorrect or absent
@@ -82,7 +75,6 @@ dimensions:
     description: >
       Does the review identify the full set of must_find and should_find issues?
     weight: 1
-    method: rule_based
     scoring:
       rule: >
         Score = (must_find_found * 2 + should_find_found * 1) /
@@ -99,7 +91,6 @@ dimensions:
       Key traps: (1) flagging dot colors as failing contrast, (2) flagging
       keyboard navigation as broken.
     weight: 1
-    method: llm_judge
     scoring:
       0:
         label: Multiple false positives
@@ -122,7 +113,6 @@ dimensions:
       For each finding, does the review include: element reference, problem statement,
       affected user group, and proposed fix?
     weight: 1
-    method: rule_based
     scoring:
       rule: >
         For each finding, award 1 point if it includes all four components:
@@ -137,7 +127,6 @@ dimensions:
       Hover-only tooltips and sort target size should be MAJOR. Row selection color-only
       and density should be MINOR.
     weight: 1
-    method: rule_based
     scoring:
       rule: >
         Exact match = 1.0 per finding; one level off = 0.5; two or more levels off = 0.
@@ -212,37 +201,46 @@ delta_driver: color_only_diagnosis
 # ─────────────────────────────────────────────
 # LLM JUDGE INSTRUCTIONS
 # ─────────────────────────────────────────────
-llm_judge_instructions: |
-  You are scoring an accessibility review of a React project dashboard component.
 
-  The component has these key characteristics:
-  - Status indicators (blocked/at-risk/on-track/not-started) are colored dots only.
-    Each dot color PASSES WCAG AA contrast ratio checks (4.5:1+) against white.
-    But color is the ONLY differentiator — no text, no aria-label, no shape/pattern.
-    This is a WCAG 1.4.1 (Use of Color) violation, NOT a WCAG 1.4.3 (Contrast) violation.
-  - Keyboard navigation works correctly. Do not penalize reviews that confirm this.
-  - Hover-only tooltips violate WCAG 1.4.13 and 2.1.1. This is a real finding.
-  - Sort icons are 10x10px. This violates WCAG 2.5.8. This is a real finding.
-  - Abbreviations (L/M/S, P1/P2/P3) are unexpanded. Cognitive concern. Real finding.
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  retired_llm_judge_prompts: |
+    You are scoring an accessibility review of a React project dashboard component.
 
-  FALSE POSITIVES to watch for:
-  - Flagging dot contrast ratios as failing (they pass — false positive)
-  - Flagging keyboard navigation as broken (it works — false positive)
-  - Conflating 1.4.1 and 1.4.3 and recommending higher contrast as the fix
+    The component has these key characteristics:
+    - Status indicators (blocked/at-risk/on-track/not-started) are colored dots only.
+      Each dot color PASSES WCAG AA contrast ratio checks (4.5:1+) against white.
+      But color is the ONLY differentiator — no text, no aria-label, no shape/pattern.
+      This is a WCAG 1.4.1 (Use of Color) violation, NOT a WCAG 1.4.3 (Contrast) violation.
+    - Keyboard navigation works correctly. Do not penalize reviews that confirm this.
+    - Hover-only tooltips violate WCAG 1.4.13 and 2.1.1. This is a real finding.
+    - Sort icons are 10x10px. This violates WCAG 2.5.8. This is a real finding.
+    - Abbreviations (L/M/S, P1/P2/P3) are unexpanded. Cognitive concern. Real finding.
 
-  KEY EVALUATION QUESTION for perspective_coverage and color_only_diagnosis:
-  Does the review demonstrate that it understands WCAG 1.4.1 and 1.4.3 are
-  independent requirements, and that a component can pass contrast checks
-  while still failing the color-only requirement?
+    FALSE POSITIVES to watch for:
+    - Flagging dot contrast ratios as failing (they pass — false positive)
+    - Flagging keyboard navigation as broken (it works — false positive)
+    - Conflating 1.4.1 and 1.4.3 and recommending higher contrast as the fix
 
-  Score each dimension using the rubric criteria above. Return a JSON object
-  with dimension IDs as keys and integer scores as values, plus a brief rationale
-  string for each score (1-2 sentences). Example:
-  {
-    "perspective_coverage": 2,
-    "perspective_coverage_rationale": "...",
-    "color_only_diagnosis": 3,
-    "color_only_diagnosis_rationale": "...",
-    "false_positive_avoidance": 2,
-    "false_positive_avoidance_rationale": "..."
-  }
+    KEY EVALUATION QUESTION for perspective_coverage and color_only_diagnosis:
+    Does the review demonstrate that it understands WCAG 1.4.1 and 1.4.3 are
+    independent requirements, and that a component can pass contrast checks
+    while still failing the color-only requirement?
+
+    Score each dimension using the rubric criteria above. Return a JSON object
+    with dimension IDs as keys and integer scores as values, plus a brief rationale
+    string for each score (1-2 sentences). Example:
+    {
+      "perspective_coverage": 2,
+      "perspective_coverage_rationale": "...",
+      "color_only_diagnosis": 3,
+      "color_only_diagnosis_rationale": "...",
+      "false_positive_avoidance": 2,
+      "false_positive_avoidance_rationale": "..."
+    }

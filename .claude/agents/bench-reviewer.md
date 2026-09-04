@@ -22,7 +22,8 @@ Review the quality and consistency of the eval suite — fixtures, rubrics, scor
 ### 2. Rubric Quality
 - Do rubric must_find items have clear, searchable keywords?
 - Are scoring thresholds reasonable (not too easy or too hard)?
-- Do false_positive_trap dimensions exist for CLEAN fixtures?
+- Do CLEAN fixtures document their traps under `non_scored_authoring_notes`?
+  (The scored `false_positive_trap` dimension was deleted in #63 — do not ask for it back.)
 - Are ADVERSARIAL rubrics using `must_articulate` instead of `must_find`?
 
 ### 3. Scoring Script Accuracy

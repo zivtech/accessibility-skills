@@ -1,10 +1,5 @@
 fixture_id: visual-data-viz
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.6
-  llm_judge: 0.4
-
 dimensions:
   - id: completeness
     name: "Completeness"

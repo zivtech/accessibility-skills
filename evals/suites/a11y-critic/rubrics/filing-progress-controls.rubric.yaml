@@ -1,10 +1,5 @@
 fixture_id: filing-progress-controls
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,12 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
-    note: "Penalizes flagging the compliant step-circle/button borders, or conflating 3:1 non-text contrast with 4.5:1 text contrast"
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -53,17 +42,8 @@ expected_findings:
         evidence_requirement: "Names the specific hex value and either computes or credibly estimates a ratio below 3:1, as a defect independent from the focus-indicator finding"
         expected_to_find: "45%"
 
-  - category: false_positive_trap
-    count: 2
-    items:
-      - description: "Step-circle and Back-button borders (#667085, #1d4ed8) are compliant and should not be flagged"
-        expected_to_find: "45%"
-      - description: "Body text contrast (4.5:1 threshold) should not be conflated with the 3:1 non-text threshold being tested"
-        expected_to_find: "60%"
-
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
-  false_positive_trap is subtracted per over-generalized or wrong-threshold flag
 
 scoring_thresholds:
   excellent: 90-100
@@ -107,3 +87,17 @@ notes: |
   reviewer anxious about "the palette" after finding one real defect should
   not sweep in the compliant step-circle/button borders, and should not
   treat the (fine) body text contrast as evidence of a broader problem.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "Step-circle and Back-button borders (#667085, #1d4ed8) are compliant and should not be flagged"
+      expected_to_find: "45%"
+    - description: "Body text contrast (4.5:1 threshold) should not be conflated with the 3:1 non-text threshold being tested"
+      expected_to_find: "60%"

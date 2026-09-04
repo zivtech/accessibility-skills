@@ -1,9 +1,5 @@
 fixture_id: search-results-dynamic-update
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
 primary_metric: existing_dimension_tpr
 
 dimensions:
@@ -16,9 +12,6 @@ dimensions:
   - id: nice_to_find
     name: "Nice-to-Find Issues"
     weight: 1
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    weight: -2
   - id: evidence_quality
     name: "Evidence Quality"
     weight: 1

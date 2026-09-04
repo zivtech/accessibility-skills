@@ -196,7 +196,6 @@ where:
                   evidence_quality_present, format_compliant}
 - weights = {3, 2, 1, 1, 1}
 - positive_weights = 8 (sum of weights)
-- false_positive_trap penalizes by subtracting 2 per false positive
 
 Example:
 - Found: 2/2 must-find issues (6 points)

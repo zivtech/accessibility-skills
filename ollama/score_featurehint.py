@@ -4,10 +4,11 @@
 45 of 50 critic fixtures show the model an `## Accessibility Features Present`
 section above the blind cut line. Issue #51 argues that section is what the
 `false_positive_trap` dimension actually measures. Measured 2026-09-03:
-`false_positive_trap` is declared in all 50 rubrics and read by no scorer at
-all — nor are `llm_judge`, `hybrid_weights` or `scoring_method`. So this
-scorer does not report a trap score; it reports the consequence the trap
-dimension was supposed to stand for.
+`false_positive_trap` was declared in all 50 rubrics and read by no scorer at
+all — nor were `llm_judge`, `hybrid_weights` or `scoring_method`. All four were
+deleted in #63 after this lane's own draws showed the predicted trap constructs
+firing at 0-10%. So this scorer does not report a trap score; it reports the
+consequence the trap dimension was supposed to stand for.
 
 CLEAN fixtures (expected verdict ACCEPT) carry the measurement: with the
 section removed, does the model still accept correct code, or does it start

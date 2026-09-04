@@ -1,10 +1,5 @@
 fixture_id: composite-descendant-clean
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -18,11 +13,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
-    note: "Penalizes flagging roving-tabindex descendants as unreachable; rewards recognizing the APG Toolbar pattern"
   - id: evidence_quality
     name: "Evidence Quality"
     description: "Any finding backed by file:line or quotes"
@@ -44,16 +34,9 @@ expected_findings:
     description: "Optional: aria-pressed usage on momentary command buttons"
     impact: "Enhancement suggestion (ENHANCEMENT severity)"
     expected_to_find: "50%"
-  - category: false_positive_trap
-    count: 1
-    description: "Correctly identifying roving tabindex (tabindex='-1' descendants reached via arrow keys) as intentional and correct"
-    impact: "The core L-017 trap — a Tab-only reachability sweep wrongly reports the non-tabbable buttons as unreachable"
-    expected_to_find: "80%"
-
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
   where positive_weights = [must_find, should_find, nice_to_find, evidence_quality, format_compliance]
-  false_positive_trap is subtracted from score if incorrectly flagged
 
 scoring_thresholds:
   excellent: 90-100
@@ -83,3 +66,16 @@ notes: |
   unreachable / a broken tab order / a keyboard trap, is the false positive
   this fixture exists to catch. Scoring is detector output, not verdict
   authority — same routing rule as every local-model lane.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    description: "Correctly identifying roving tabindex (tabindex='-1' descendants reached via arrow keys) as intentional and correct"
+    impact: "The core L-017 trap — a Tab-only reachability sweep wrongly reports the non-tabbable buttons as unreachable"
+    expected_to_find: "80%"

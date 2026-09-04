@@ -1,10 +1,5 @@
 fixture_id: megamenu-no-structure
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -80,9 +70,6 @@ expected_findings:
     count: 0
 
   - category: nice_to_find
-    count: 0
-
-  - category: false_positive_trap
     count: 0
 
 composite_score_formula: |

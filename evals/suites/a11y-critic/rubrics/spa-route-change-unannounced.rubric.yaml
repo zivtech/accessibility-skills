@@ -1,10 +1,5 @@
 fixture_id: spa-route-change-unannounced
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -60,21 +50,6 @@ expected_findings:
     description: "Optional: both defects share one fix site — a single pathname-keyed effect sets the title and moves focus, with the title derived from the SECTIONS list rather than a second hardcoded string"
     impact: "Enhancement suggestion (ENHANCEMENT severity)"
     expected_to_find: "20%"
-
-  - category: false_positive_trap
-    count: 3
-    items:
-      - description: "The nav is correct — flagging link semantics or missing current-page state is a false alarm"
-        impact: "Lines 60-74 render NavLink (an <a href>) inside <nav aria-label='Account sections'>. NavLink supplies aria-current='page' itself and the end prop keeps its match exact, so current-page state has a single source. A review that reports 'these should be links, not buttons', 'the nav is unlabelled', or 'no indication of the current section' has flagged what the fixture got right and, in every observed case of this shape, has also missed both real defects."
-        expected_to_find: "75%"
-
-      - description: "Each view has a correct single <h1> inside <main> — flagging a missing heading or landmark is a false alarm"
-        impact: "Lines 8-47 each render one <h1>; line 80 is <main id='main-content' tabIndex={-1}>. The defect is neither an absent heading nor an absent focus target — both exist — it is that nothing sends focus to either. 'The new view has no heading' is the characteristic misread of this fixture: it reports on the markup of a view instead of on the transition between views."
-        expected_to_find: "70%"
-
-      - description: "The skip link is present and correctly implemented — flagging it as missing is a false alarm"
-        impact: "Lines 57-59 plus the off-screen and :focus CSS are a working skip link, and its target at line 80 is focusable. The legitimate observation about it is narrower: because it precedes the nav in the DOM, it is not reachable by forward Tab from a focused nav link, which is why it does not mitigate the focus defect. Reporting 'no skip link' or 'the skip-link target is not focusable' is wrong; reporting 'the skip link does not help here, because…' is the correct use of it."
-        expected_to_find: "65%"
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -161,3 +136,24 @@ notes: |
   description are therefore load-bearing scoring tokens, not prose. Do not
   rewrite them for readability without re-running the canaries in
   evals/results/gt05-spa-route-change/canaries.py.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The nav is correct — flagging link semantics or missing current-page state is a false alarm"
+      impact: "Lines 60-74 render NavLink (an <a href>) inside <nav aria-label='Account sections'>. NavLink supplies aria-current='page' itself and the end prop keeps its match exact, so current-page state has a single source. A review that reports 'these should be links, not buttons', 'the nav is unlabelled', or 'no indication of the current section' has flagged what the fixture got right and, in every observed case of this shape, has also missed both real defects."
+      expected_to_find: "75%"
+
+    - description: "Each view has a correct single <h1> inside <main> — flagging a missing heading or landmark is a false alarm"
+      impact: "Lines 8-47 each render one <h1>; line 80 is <main id='main-content' tabIndex={-1}>. The defect is neither an absent heading nor an absent focus target — both exist — it is that nothing sends focus to either. 'The new view has no heading' is the characteristic misread of this fixture: it reports on the markup of a view instead of on the transition between views."
+      expected_to_find: "70%"
+
+    - description: "The skip link is present and correctly implemented — flagging it as missing is a false alarm"
+      impact: "Lines 57-59 plus the off-screen and :focus CSS are a working skip link, and its target at line 80 is focusable. The legitimate observation about it is narrower: because it precedes the nav in the DOM, it is not reachable by forward Tab from a focused nav link, which is why it does not mitigate the focus defect. Reporting 'no skip link' or 'the skip-link target is not focusable' is wrong; reporting 'the skip link does not help here, because…' is the correct use of it."
+      expected_to_find: "65%"

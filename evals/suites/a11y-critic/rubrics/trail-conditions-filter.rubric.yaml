@@ -1,10 +1,5 @@
 fixture_id: trail-conditions-filter
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,12 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
-    note: "Penalizes flagging :focus-visible-only styling, non-default compliant colors, or the opacity:0 checkbox technique as bugs"
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -51,20 +40,9 @@ expected_findings:
     impact: "Enhancement suggestion (ENHANCEMENT severity)"
     expected_to_find: "20%"
 
-  - category: false_positive_trap
-    count: 3
-    items:
-      - description: ":focus-visible-only styling is correct, not a missing focus indicator"
-        expected_to_find: "55%"
-      - description: "Non-default focus/border colors are computably compliant (~9.4-9.7:1)"
-        expected_to_find: "45%"
-      - description: "opacity:0 native checkbox remains keyboard-operable and AT-exposed"
-        expected_to_find: "50%"
-
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
   where positive_weights = [must_find, should_find, nice_to_find, evidence_quality, format_compliance]
-  false_positive_trap is subtracted from score if any of the three traps is incorrectly flagged
 
 scoring_thresholds:
   excellent: 90-100
@@ -111,3 +89,19 @@ notes: |
   verdict on this fixture, treat that as a signal requiring recalibration —
   either of the reviewer's judgment or, if reproduced consistently across
   models, of this rubric — per this suite's CLEAN-fixture discipline.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: ":focus-visible-only styling is correct, not a missing focus indicator"
+      expected_to_find: "55%"
+    - description: "Non-default focus/border colors are computably compliant (~9.4-9.7:1)"
+      expected_to_find: "45%"
+    - description: "opacity:0 native checkbox remains keyboard-operable and AT-exposed"
+      expected_to_find: "50%"

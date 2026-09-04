@@ -1,10 +1,5 @@
 fixture_id: dashboard-heading-inconsistency
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,12 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Missing landmarks and skip link on a multi-region page"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging working features (captions, aria-label, th elements, semantic headings)"
-    weight: -2
-    note: "No planted traps. But captions, aria-label on sidebar list, th elements, and heading elements are all correct — over-flagging these is penalized."
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -76,10 +65,6 @@ expected_findings:
         wcag: "2.4.1 Bypass Blocks"
         evidence_requirement: "Reference to sidebar navigation preceding content with no skip mechanism"
         expected_to_find: "15%"
-
-  - category: false_positive_trap
-    count: 0
-    note: "No planted traps. Penalize flagging: (1) aria-label on sidebar ul as insufficient, (2) table captions as missing, (3) th elements as wrong element choice, (4) heading elements as non-semantic (they are semantic, just wrong levels)."
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -133,3 +118,14 @@ notes: |
   The compounding effect is important: no single issue is CRITICAL on its own,
   but together they mean the page is essentially unstructured for AT users
   despite looking well-organized visually. A good review notes this compound impact.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    note: "No planted traps. Penalize flagging: (1) aria-label on sidebar ul as insufficient, (2) table captions as missing, (3) th elements as wrong element choice, (4) heading elements as non-semantic (they are semantic, just wrong levels)."

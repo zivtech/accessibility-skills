@@ -890,8 +890,9 @@ def run_titlehint(model, fixture_id, condition, draw, system_prompt):
 # Issue #51 argues those items are the scored false_positive_trap entries, so
 # the trap dimension measures "don't flag what you were told is fine" rather
 # than "don't flag correct code". Measured 2026-09-03: `false_positive_trap`
-# is declared in all 50 rubrics and read by no scorer — as are `llm_judge`,
-# `hybrid_weights` and `scoring_method`. There is no trap metric. So this lane
+# was declared in all 50 rubrics and read by no scorer — as were `llm_judge`,
+# `hybrid_weights` and `scoring_method`; all four were deleted in #63. There is
+# no trap metric and there is not going to be one. So this lane
 # measures the consequence directly instead: on the 11 CLEAN fixtures, whose
 # expected verdict is ACCEPT, does removing the features section flip the
 # verdict or raise spurious findings? That is the "don't flag correct code"

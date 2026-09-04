@@ -1,10 +1,5 @@
 fixture_id: paired-id-name-columns-clean
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 dimensions:
   - id: must_find
     name: "Must-Find Issues"
@@ -20,11 +15,6 @@ dimensions:
     name: "Nice-to-Find Issues"
     description: "Subtle gaps or optimizations"
     weight: 1
-
-  - id: false_positive_trap
-    name: "False Positive Avoidance"
-    description: "Correctly avoiding flagging non-issues"
-    weight: -2
 
   - id: evidence_quality
     name: "Evidence Quality"
@@ -54,21 +44,6 @@ expected_findings:
       - description: "Optional: the table container sets padding and a border but no overflow-x, so at a 320px viewport the table's own overflow escapes to the page instead of being contained in a scrollable region"
         impact: "Enhancement suggestion. 1.4.10 Reflow exempts data tables, so this is robustness rather than conformance — and a scrollable region would itself need tabindex=0 and an accessible name to satisfy 2.1.1, which is the step most implementations skip. Scored because the first blind draw reached it and the reasoning is correct."
         expected_to_find: "30%"
-
-  - category: false_positive_trap
-    count: 3
-    items:
-      - description: "The Case ID/Case Name paired links sharing a destination with different accessible names are NOT an SC 3.2.4 Consistent Identification failure"
-        impact: "Lines 29 and 32 (`/cases/4471`) are the same href with different accessible names ('4471' vs. 'Ridgeway Pumping Station'). WCAG Understanding scopes 3.2.4 to components with the SAME FUNCTIONALITY. An identifier link and a name link are distinct affordances for the same record — one lets a user scan by case number, the other by site name — each correctly labelled for what it is. Raising 3.2.4 here is the false alarm this fixture exists to catch; in one engagement this exact exception collapsed candidate 3.2.4 rows from 103 to 25. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
-        expected_to_find: "82%"
-
-      - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose (In Context) failure"
-        impact: "Line 29's link text is just the case number. Link purpose is determined in context: the programmatically-associated column header 'Case ID' (line 19) plus the row/header pairing a screen reader announces in table-navigation mode supply it. Flagging a bare-number link name here without accounting for the header context misreads how link purpose is evaluated in a data table."
-        expected_to_find: "58%"
-
-      - description: "Repeating the same destination twice in one row is NOT redundant-link bloat to be flagged"
-        impact: "The Case ID link (line 29) and Case Name link (line 32) both go to /cases/4471, but they serve different user intents — scan by id vs. scan by name — so collapsing them into one link would remove a legitimate way of finding the row. Flagging this as duplicate/redundant links treats destination sameness as the test instead of functional sameness."
-        expected_to_find: "45%"
 
 composite_score_formula: |
   score = sum(found_items * weight) / sum(all_positive_weights) * 100
@@ -128,3 +103,24 @@ notes: |
   "a table header cell for a cell that contains the link" — a normative basis
   rather than a behavioural assumption. 2.4.9 (AAA) does fail, and correctly
   so; this fixture targets AA.
+
+# Non-scored. No scorer reads this key, and none is intended to.
+# Fixture-authoring documentation only: which correct patterns in this fixture
+# look wrong to a reviewer. Relocated here from the deleted `false_positive_trap`
+# scoring dimension (issue #63). Any rate below is the original author's
+# prediction, never a measurement: the #65 probe measured the predicted trap
+# constructs firing at 0-10% while the real CLEAN false-positive rate sat at 93%,
+# which is why the dimension was deleted rather than scored.
+non_scored_authoring_notes:
+  false_positive_traps:
+    - description: "The Case ID/Case Name paired links sharing a destination with different accessible names are NOT an SC 3.2.4 Consistent Identification failure"
+      impact: "Lines 29 and 32 (`/cases/4471`) are the same href with different accessible names ('4471' vs. 'Ridgeway Pumping Station'). WCAG Understanding scopes 3.2.4 to components with the SAME FUNCTIONALITY. An identifier link and a name link are distinct affordances for the same record — one lets a user scan by case number, the other by site name — each correctly labelled for what it is. Raising 3.2.4 here is the false alarm this fixture exists to catch; in one engagement this exact exception collapsed candidate 3.2.4 rows from 103 to 25. A second, independent reason the finding does not hold: 3.2.4 governs consistency of a component across *a set of Web pages*, not a naming difference between two adjacent components inside one view. The false alarm arises from a within-page 'same href, different name' heuristic the criterion never authorised. A reviewer who argues the two links do share functionality still has to clear that scope hurdle, so the trap does not rest on the same-functionality reading alone."
+      expected_to_find: "82%"
+
+    - description: "The Case ID link's bare-number accessible name ('4471') is NOT an SC 2.4.4 Link Purpose (In Context) failure"
+      impact: "Line 29's link text is just the case number. Link purpose is determined in context: the programmatically-associated column header 'Case ID' (line 19) plus the row/header pairing a screen reader announces in table-navigation mode supply it. Flagging a bare-number link name here without accounting for the header context misreads how link purpose is evaluated in a data table."
+      expected_to_find: "58%"
+
+    - description: "Repeating the same destination twice in one row is NOT redundant-link bloat to be flagged"
+      impact: "The Case ID link (line 29) and Case Name link (line 32) both go to /cases/4471, but they serve different user intents — scan by id vs. scan by name — so collapsing them into one link would remove a legitimate way of finding the row. Flagging this as duplicate/redundant links treats destination sameness as the test instead of functional sameness."
+      expected_to_find: "45%"

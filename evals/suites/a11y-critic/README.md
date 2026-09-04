@@ -163,7 +163,11 @@ Weights:
 - nice_to_find (optimization): +1 per finding
 - evidence_quality (CRITICAL/MAJOR backed by file:line): +1
 - format_compliance: +1
-- false_positive_trap (avoid flagging non-issues): -2 per false positive
+
+The `false_positive_trap` dimension was deleted in #63: it was declared on every
+rubric and read by no scorer, and the #65 probe measured the constructs it
+predicted firing at 0-10% against a real CLEAN false-positive rate of 93%. The
+trap prose survives under each rubric's non-scored `non_scored_authoring_notes`.
 
 Example: Found 2/2 must-finds, 1/1 should-find, evidence on both, no false positives:
 score = (6 + 2 + 1 + 1) / 8 * 100 = 125% (capped at 100% or higher if exceeding expectations)

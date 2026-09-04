@@ -130,10 +130,6 @@ notes: |
 ```yaml
 fixture_id: {fixture_id}
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
 
 dimensions:
   - id: completeness
