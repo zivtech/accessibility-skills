@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # verify_run_manifests.py walks history to resolve each artifact's
+          # historical_git_ref; a depth-1 checkout cannot serve it.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -27,6 +31,10 @@ jobs:
         run: python3 -m py_compile ollama/*.py evals/suites/perspectives/*.py
       - name: Validate fixtures and registries
         run: python3 scripts/validate_fixtures.py
+      - name: Verify retained run manifests
+        run: python3 scripts/verify_run_manifests.py
+      - name: Test retained run-manifest verifier
+        run: python3 scripts/test_verify_run_manifests.py
       - name: Skill lint (frontmatter + fence balance)
         run: python3 scripts/lint_skills.py
       - name: Scorer smoke tests
