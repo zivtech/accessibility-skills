@@ -132,7 +132,9 @@ const AccountActivityPanel = ({ status, transactions, onRetry }) => (
 7. **Decorative spinner hidden** (`:25`) — `aria-hidden="true"`, with the adjacent text inside the same region carrying the message; `prefers-reduced-motion` disables the animation.
 8. **`role="list"` on the delisted list** (`:47`) — `list-style: none` makes WebKit drop the implicit list role, so a VoiceOver user would lose "list, N items"; the attribute restores it.
 
-## Accessibility Issues (None Planted — CLEAN Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 None. This fixture is a CLEAN baseline with no planted defects. Everything from
 this heading down is ground-truth material and is stripped from model prompts by

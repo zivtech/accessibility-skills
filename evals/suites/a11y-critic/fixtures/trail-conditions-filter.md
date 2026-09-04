@@ -223,7 +223,9 @@ export default TrailConditionsFilter;
 ✓ Disabled Apply button uses both the disabled attribute and aria-disabled, plus aria-describedby pointing to help text explaining why it's disabled
 ✓ Focus indicators use :focus-visible consistently across checkboxes, select, and button
 
-## Accessibility Issues (None Planted — Clean Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 No accessibility bugs are planted in this fixture. Everything from this
 heading down is eval metadata kept below the blind cut line (runners strip

@@ -41,6 +41,10 @@ A fix-closure record whose `interaction_evidence` does not match the class of it
 
 ## What this does not establish
 
+**How a person establishes it.** This contract states what must be true before a finding closes. It does not describe the guided verification pass that gets a human there — walking the affected pages, confirming the fix on the real thing, recording what they saw, and putting a name to it. A VPAT/ACR chain needs that pass: `acr-reporting` emits a draft somebody signs, and `a11y-content-judgment` refuses any row without a name in `ratified_by`. The stage itself is scoped as [#57](https://github.com/zivtech/accessibility-skills/issues/57), which also records that this contract has no attestation field — a closure record can be schema-valid, class-matched, and unattested; candidate instruments for it (ANDI among them) are discussed in the [ICT baseline assessment](ict-testing-baseline-adoption-assessment.md), Phase 4a, Q2 — but the stage has to be defined before an instrument is chosen for it.
+
+
+
 - A closed fix is a corrected *defect*, not a conformance verdict for the product or page. Aggregating closures does not produce a conformance claim.
 - Triage A ("already fixed upstream") asserts only that the named defect no longer reproduces under the tested condition — not that the surrounding code is otherwise correct.
 - This contract records the evidence for a fix; it does not decide whether the fix is complete against the full component. That is the reviewer's judgment.

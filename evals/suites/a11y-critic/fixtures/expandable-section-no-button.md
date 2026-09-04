@@ -47,7 +47,9 @@ export default BuggyExpandable;
 ✓ Visual indicator (+/−)
 ✓ onClick handler
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Using <div> instead of <button> for trigger** — Trigger is a div with onClick handler instead of a proper button element. Keyboard user cannot activate using Space or Enter keys. Per HTML semantics, interactive elements must be <button> or have role="button" with proper keyboard handling.
    - Evidence: `expandable-section-no-button.md:14-19` (div used instead of button)

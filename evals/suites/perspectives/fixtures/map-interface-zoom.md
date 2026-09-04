@@ -174,7 +174,9 @@ export default MapInterface;
 - Focus-visible outlines on zoom buttons and search input
 - Heading structure (h1) present
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Map panning relies on mouse drag only — WCAG 2.1.1 (Keyboard)**
    No arrow key handlers for panning. Keyboard users cannot navigate the map.

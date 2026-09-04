@@ -54,7 +54,9 @@ export default BuggyVideoPlayer;
 ✓ Play/pause button with aria-label
 ✓ Captions data available
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <track> element for captions** — Video has captions data but no <track> element to expose them to browser and AT. Per HTML video semantics, <track kind="captions"> should be used for caption display and accessibility.
    - Evidence: `video-player-missing-captions.md:25` (video element has no track child)

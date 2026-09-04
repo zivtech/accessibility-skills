@@ -57,7 +57,9 @@ export default BuggyAccordion;
 ✓ Proper id on panel
 ✓ aria-hidden on decorative icon
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Missing role="region" on accordion panel** — Screen reader user just reads content without context that it's an expandable region. Per ARIA Accordion Pattern, expanded content should have role="region" to mark it as a logical section. Without role="region", screen reader just presents content as part of page flow.
    - Evidence: `accordion-no-region-role.md:29-32` (div has no role attribute)

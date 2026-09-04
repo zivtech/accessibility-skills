@@ -207,7 +207,9 @@ export default PortalShell;
 - The application root redirects to `/accounts`, and any unmatched URL renders the not-found view rather than an empty shell.
 - Browser back and forward move between sections, because these are real routes with real URLs.
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Focus is left on the nav link after the view is replaced** — Activating a section link swaps everything inside `<main>`, but nothing moves focus. The browser's own focus reset does not apply: this is a client-side transition, so focus stays exactly where it was, on the link that was just activated. A screen reader user hears the link name and then silence — no title change, no heading, nothing that says a new view arrived; the only way to discover that anything happened is to start reading. A sighted keyboard user is left mid-header and has to Tab through the rest of the nav to reach the content that has already replaced itself on screen. The skip link at `spa-route-change-unannounced.md:57-59` does not rescue them, because it sits **before** the nav in the DOM: from a focused nav link, Tab moves forward past it, so reaching `#main-content` means shift-Tabbing backwards to a link most users do not know is there.
    - Evidence: `spa-route-change-unannounced.md:55-90` — `PortalShell` does not observe the route at all: no `useLocation`, no ref, no effect, no focus call. `<main>` at `:80` carries `tabIndex={-1}`, so a focus target exists and nothing ever uses it; none of the four views (`:8-47`) is a focus target either.

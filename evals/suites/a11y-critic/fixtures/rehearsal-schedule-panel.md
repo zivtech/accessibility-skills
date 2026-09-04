@@ -250,7 +250,9 @@ export default RehearsalSchedulePanel;
 ✓ Both regions are headed by h2 elements and connected via aria-labelledby
 ✓ Calendar and section-call-times controls follow DOM/tab order matching their visual left-to-right position on the card
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: Conductor-notes flag receives focus out of visual order and is not operable once reached.** The `<span className="notes-flag" tabIndex="0">` is the LAST focusable element in the card's DOM order (after the calendar button and the section-call-times toggle), but CSS `position: absolute; top: 10px; right: 12px` visually places it in the top-right corner of the card — where the title already is. A keyboard user tabs through the calendar button, then the section-call-times toggle, and only then lands on the notes flag — focus visibly jumps backward to the top of the card, out of the order a sighted keyboard user would predict from scanning top-to-bottom. Once focus lands there, Enter and Space do nothing: the span has no `role="button"`, no `onClick`, and no `onKeyDown`. The element is reachable but not actionable — a dead stop.
    - Evidence: `rehearsal-schedule-panel.md` — `tabIndex="0"` on the notes-flag span with no role or handler; CSS `.notes-flag { position: absolute; top: 10px; right: 12px; }` against `.rehearsal-card { position: relative; }`

@@ -158,7 +158,9 @@ main p { font-size: 1.1rem; color: #333; line-height: 1.6; }
 - Submenu links are real `<a>` elements
 - `<main>` landmark with heading
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Submenus appear on mouseenter only — no keyboard trigger — WCAG 2.1.1 (Keyboard)**
    Submenus are controlled via `onMouseEnter`/`onMouseLeave`. No `onFocus`, `onKeyDown`, or `aria-expanded` handling. Keyboard users Tab to "Products" but the submenu never opens — they can only reach the top-level href.

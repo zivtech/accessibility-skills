@@ -43,7 +43,9 @@ export default BuggyToast;
 ✓ Automatic dismissal timer
 ✓ Visual styling
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing role="alert"** — Toast notification is just a div without alert semantics. Screen reader user may not be immediately notified of message. Per ARIA, toast notifications should have role="alert" to mark as important status message.
    - Evidence: `toast-notification-no-role.md:19-24` (div has no role)

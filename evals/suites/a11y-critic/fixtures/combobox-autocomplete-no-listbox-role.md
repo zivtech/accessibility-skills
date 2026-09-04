@@ -109,7 +109,9 @@ export default BuggyCombobox;
 ✓ Arrow key navigation implemented
 ✓ Label association via htmlFor
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing role="listbox" on suggestions container** — Screen reader user has no indication that the popup is a selectable list. The div is announced as a generic container, not a listbox. Per WAI-ARIA Combobox (with Listbox Popup) Pattern, aria-owns or aria-controls must establish the relationship.
    - Evidence: `combobox-autocomplete-no-listbox-role.md:64-71` (suggestions div has no role attribute)

@@ -296,7 +296,9 @@ export default ProjectDashboard;
 - Progress values are shown as visible text percentages alongside the bar
 - Color contrast on all dot colors meets WCAG AA against white background (each >= 4.5:1)
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Status communicated by color alone — WCAG 1.4.1 (Use of Color)**
    Four distinct task states (blocked, at-risk, on-track, not-started) are represented solely by dot color. No text label, icon shape, pattern, or other non-color indicator distinguishes the states. The `<span>` has no `aria-label` and renders nothing a screen reader can read. Users with color vision deficiency (affects ~8% of males) cannot distinguish red from green dots. Users on monochrome displays, printed output, or high-contrast mode lose all status information. Note: each dot color passes automated contrast checks (4.5:1+), so axe-core and similar tools will not flag this — the violation is color-as-sole-differentiator, not contrast ratio.

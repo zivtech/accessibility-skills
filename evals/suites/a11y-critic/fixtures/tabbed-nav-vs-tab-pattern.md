@@ -161,7 +161,9 @@ The designer chose the tabs pattern because:
 3. The content areas are thematically grouped subsections of a single product
 4. The tab metaphor is immediately understandable to users
 
-## Accessibility Issues (None Planted — Design Tension)
+## Accessibility Issues
+
+_Answer key: none planted (design tension)._
 
 **No planted bugs.** This is an ADVERSARIAL fixture: the accessibility question is the design tension analyzed below. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
 

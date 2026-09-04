@@ -333,7 +333,9 @@ export default PodcastPlayer;
 - Speed control uses a `<label>` associated to `<select>` via `htmlFor`/`id`
 - Player controls grouped with `role="group"` and `aria-label`
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No transcript for audio-only content** — The component renders no transcript section and provides no link to an external transcript. Every episode consists of spoken audio with no text alternative anywhere in the DOM. WCAG 1.2.1 (Audio-only and Video-only, Prerecorded) requires a text alternative for all prerecorded audio-only content.
    - Evidence: `podcast-audio-only.md` — no transcript `<section>` and no transcript link anywhere on the page

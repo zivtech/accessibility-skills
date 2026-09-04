@@ -147,7 +147,9 @@ export default AccountActivityPanel;
 - If the retry succeeds, the transaction list replaces the error message.
 - The **Retry** button lives in the panel header and stays mounted in every state, so pressing it never destroys the user's focus position.
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Request failure is never announced** — The `loading` branch is a correct live region (`role="status"`, `aria-live="polite"`, `aria-atomic="true"`), but the `error` branch is a plain `<p className="error-text">` with no `role="alert"`, no `aria-live`, and no live-region ancestor. When the fetch rejects, the loading region unmounts and the error paragraph mounts silently. A screen reader user hears "Loading activity…", then nothing at all — no failure, no instruction, no reason to look for the Retry button. They are left believing the request is still in flight.
    - Evidence: `async-retry-error-unannounced.md:41-45` (error branch has no `role="alert"` / `aria-live`); contrast `:34-39` where the loading branch does.

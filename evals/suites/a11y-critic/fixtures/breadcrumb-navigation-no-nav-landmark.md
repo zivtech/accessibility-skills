@@ -43,7 +43,9 @@ export default BuggyBreadcrumb;
 ✓ aria-hidden on separators
 ✓ <ol> semantic list
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing <nav> landmark** — Breadcrumb is just a div, not a navigation landmark. Screen reader user does not identify it as site navigation. Per HTML Breadcrumb Pattern, breadcrumbs should be wrapped in <nav> to create a navigation landmark.
    - Evidence: `breadcrumb-navigation-no-nav-landmark.md:5-6` (div instead of nav)

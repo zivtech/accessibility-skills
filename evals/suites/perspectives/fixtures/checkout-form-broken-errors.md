@@ -362,7 +362,9 @@ legend {
 - Keyboard navigation between fields works correctly (Tab/Shift+Tab)
 - Review section uses `aria-labelledby`
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: `htmlFor` mismatch on First Name field** — `<label htmlFor="first-name">` but `<input id="firstName">`. Screen reader announces "First Name" for an unrelated element (or announces nothing). The input itself is unlabeled from the browser's perspective.
    - Evidence: Lines 71–71 (`htmlFor="first-name"` vs `id="firstName"`)

@@ -323,7 +323,9 @@ export default AppLayout;
 ✓ FAB has `aria-label="Create new report"`
 ✓ Lists use `<ul>`/`<li>` for navigation and content items
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: Tab order does not match visual layout — CSS `order` creates DOM/visual mismatch.** The sidebar renders AFTER `<main>` in DOM order but visually appears on the LEFT via `order: -1` on `.sidebar` inside the flexbox `.app-body`. A keyboard user tabs through the skip link, then the header, then ALL main content links (5 links across 2 sections), and only THEN reaches sidebar navigation. The visual left-to-right reading order (sidebar → main) does not match the DOM tab order (main → sidebar).
    - Evidence: `app-focus-order-illogical.md:30-68` — `<main>` rendered before `<aside>` in JSX; CSS `.sidebar { order: -1 }` (line ~88 of CSS) visually reorders it left

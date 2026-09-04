@@ -278,7 +278,9 @@ Both patterns are correctly implemented per their respective APG guidance:
 - The error summary follows the "Error Message" pattern with `role="alert"`
 - The inline errors follow the "Form Validation" pattern with `aria-describedby` and live region announcements
 
-## Accessibility Issues (None Planted — Design Tension)
+## Accessibility Issues
+
+_Answer key: none planted (design tension)._
 
 **No planted bugs.** This is an ADVERSARIAL fixture: the accessibility question is the design tension analyzed below. Everything from this heading down is eval metadata kept below the blind cut line (runners strip this heading and all following sections from model prompts).
 

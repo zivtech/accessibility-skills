@@ -214,7 +214,9 @@ input:focus { outline: 3px solid #1565c0; outline-offset: 2px; }
 - Inputs have visible focus styles
 - Button focus-visible outlines present
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Full-viewport slide transitions without prefers-reduced-motion — WCAG 2.3.1**
    `translateX(-${step * 100}%)` with `transition: transform 0.5s ease` applied inline. No `@media (prefers-reduced-motion)` block exists anywhere. Full-viewport translations are high-risk for vestibular symptoms.

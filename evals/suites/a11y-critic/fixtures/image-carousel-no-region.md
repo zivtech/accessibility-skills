@@ -66,7 +66,9 @@ export default BuggyCarousel;
 ✓ alt text on images
 ✓ aria-label on indicator buttons
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Missing role="region" on carousel container** — Carousel is just a div without semantic meaning. Screen reader user does not identify it as a carousel region. Per carousel pattern, container should have role="region" to mark it as important section.
    - Evidence: `image-carousel-no-region.md:16-17` (div has no role)

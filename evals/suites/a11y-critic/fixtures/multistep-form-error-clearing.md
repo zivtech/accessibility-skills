@@ -333,7 +333,9 @@ export default MultiStepForm;
 - noValidate on form to prevent browser-native validation conflicts
 - Back button available on steps 2 and 3
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MUST-FIND / MAJOR: Error clearance is silent to screen readers** — The error summary lives inside an `aria-live="polite"` region. When validation fails, error text is injected and screen readers announce it. When the user fixes a field, `handleChange` removes that error from state, the error `<li>` is removed from the DOM, and the live region's text content shrinks or empties. Screen readers do NOT announce text removal from live regions — they only announce text additions. The user gets no auditory confirmation that their fix worked. They must either re-navigate to the error region to discover it's empty, or press "Next" again and hope for the best.
    - Evidence: `multistep-form-error-clearing.md` lines 19-23: `update` handler deletes the error from state. Lines 51-57: the live region conditionally renders error items — when errors clear, the content simply disappears.

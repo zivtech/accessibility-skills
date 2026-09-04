@@ -116,7 +116,9 @@ export default MaintenanceCasesTable;
 4. **Focus is visible** — `.cases-table a:focus-visible` gives every link, including both links in a row, a visible outline on keyboard focus.
 5. **Two links per row are two intents, not duplication** — the ID link serves a user scanning by case number; the Name link serves a user scanning by site name. Neither is redundant with the other, so collapsing them into a single link would remove a legitimate way of finding the row.
 
-## Accessibility Issues (None Planted — CLEAN Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 None. This fixture is a CLEAN baseline with no planted defects. Everything from
 this heading down is ground-truth material and is stripped from model prompts by

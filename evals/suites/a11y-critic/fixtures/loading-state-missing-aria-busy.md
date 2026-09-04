@@ -86,7 +86,9 @@ export default DataLoader;
 - Displays loaded data after loading completes
 - User understands when content is loading vs loaded
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Loading state not communicated to screen readers** — The spinner appears visually but screen reader user has no way to know content is loading. No aria-busy, no aria-live, no role="status". Screen reader announces "Results" content immediately (before it loads), creating confusion.
    - Evidence: `loading-state-missing-aria-busy.md:6-18` (no aria-busy, no live region, no announcement)

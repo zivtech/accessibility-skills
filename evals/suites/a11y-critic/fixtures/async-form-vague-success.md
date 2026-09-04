@@ -279,7 +279,9 @@ export default FeedbackForm;
 - Semantic form structure with fieldset-free layout (appropriate for simple forms)
 - Error state uses role="alert" for assertive announcement
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: Success message is generic — doesn't identify what was submitted** — The live region announces "Your submission was successful!" regardless of form context. A screen reader user who just submitted feedback, a newsletter signup, or a support ticket all hear the same message. Per WCAG 4.1.3 Status Messages, the status message should provide equivalent information to what a sighted user perceives — and a sighted user sees the form title "Send Us Feedback" along with the success message, establishing context. A screen reader user who submitted the form and navigated elsewhere before the announcement arrives hears only the generic "Your submission was successful!" with no way to know WHICH submission succeeded.
    - Evidence: `async-form-vague-success.md:65-67` — hardcoded "Your submission was successful!" with no reference to form purpose or submitted data

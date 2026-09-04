@@ -330,7 +330,9 @@ export default ChatInterface;
 - Typing indicator has `aria-label="Assistant is typing"`
 - Send on Enter (without Shift) is a standard chat convention
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Auto-scroll with no pause mechanism** — Every time a new message is added, `scrollIntoView({ behavior: 'smooth' })` fires unconditionally. Users who have scrolled up to re-read earlier messages are forcibly scrolled down. WCAG 2.2.2 (Pause, Stop, Hide) requires that automatically moving content can be paused or stopped by the user.
    - Evidence: `chat-cognitive-load.md` — `useEffect` calling `messagesEndRef.current?.scrollIntoView` on every `messages` state change; no scroll-lock mechanism

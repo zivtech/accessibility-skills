@@ -109,7 +109,9 @@ export default MaintenanceCasesTable;
 - The **Actions** column links to the same case's edit page (`/cases/{id}/edit`) on every row — the same function every time — but the link text differs row to row: "Edit", "Modify", "Change details".
 - **Status** and **Last updated** are plain text, not interactive.
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **MAJOR: The same row action is labelled three different ways** — every row's Actions link points at the same per-record edit affordance (`/cases/{id}/edit`), but its accessible name changes row to row: "Edit" (row 1), "Modify" (row 2), "Change details" (row 3). This is a textbook SC 3.2.4 Consistent Identification failure: unlike the Case ID/Case Name pair in the same rows (which are two genuinely different functions sharing a destination — see the false-positive trap below), the Actions link is the *same* function — editing the record — recurring across rows, and 3.2.4 requires that a component with one repeated functionality be identified consistently. A user who learns that "Edit" opens the edit form for one case has no way to know that "Modify" and "Change details" do the same thing on the next two rows; a screen reader user tabbing through action links or browsing a forms/links list hears three unrelated-sounding labels instead of one predictable control.
    - Evidence: `row-action-inconsistent-labels.md:38` (`{c.actionLabel}` renders "Edit" / "Modify" / "Change details" across rows, all inside `<a href={`/cases/${c.id}/edit`}>` at the same line) — contrast with the Case ID link at line 30 and Case Name link at line 33, whose href is likewise per-row but whose *labels* are each correct because they are different functions, not the same one.

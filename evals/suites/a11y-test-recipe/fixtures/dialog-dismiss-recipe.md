@@ -294,7 +294,9 @@ Running 1 test using 1 worker
 - Playwright 1.58, Chromium, real keyboard events via `page.keyboard.press`
 - `trace.json` and `screen-reader-census.json` follow the a11y-test verification evidence contract (per-step keystroke and accessibility-tree focus target; reading-order census with role, name, selector)
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 Everything from this heading down is ground-truth material and is stripped from model prompts by the blind protocol (`ANSWER_KEY_RE` in the runners).
 

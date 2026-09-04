@@ -247,7 +247,9 @@ export default SortableTable;
 - Visual sort direction indicators (▲ ▼ ⇅) are present
 - "Showing X–Y of Z" count is visible
 
-## Accessibility Issues (Planted)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: No `aria-sort` on sort column headers** — Sort state (ascending/descending/none) is conveyed only through CSS color changes and arrow icons. Screen reader users have no programmatic indication of which column is sorted or its direction.
    - Evidence: Sort button `<button className={...}>` — no `aria-sort` attribute; state encoded only in CSS class `sort-asc`/`sort-desc`

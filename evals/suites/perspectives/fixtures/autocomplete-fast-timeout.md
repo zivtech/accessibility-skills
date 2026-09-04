@@ -243,7 +243,9 @@ export default AddressAutocomplete;
 - Hint text explains autocomplete behavior
 - Submit button is properly labeled
 
-## Accessibility Issues (Planted Bugs)
+## Accessibility Issues
+
+_Answer key: planted defects._
 
 1. **CRITICAL: Suggestions disappear after 800ms of inactivity — WCAG 2.2.1 (Timing Adjustable)**
    `setTimeout` hides suggestions after 800ms with no way to extend or disable. Switch users and motor-impaired users who navigate slowly lose the suggestion list mid-selection.

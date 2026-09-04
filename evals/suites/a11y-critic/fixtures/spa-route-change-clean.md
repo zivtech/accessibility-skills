@@ -171,7 +171,9 @@ main:focus-visible,
 
 5. **Both programmatic focus targets have a visible indicator** (`:144-150`) — neither `<main>` nor the heading is keyboard-reachable, so 2.4.7 does not reach either, but the indicator is kept on both. Without it on `<main>`, a successful skip-link activation would be invisible: `<main>` is already on screen and nothing else changes.
 
-## Accessibility Issues (None Planted — CLEAN Baseline)
+## Accessibility Issues
+
+_Answer key: none planted (CLEAN baseline)._
 
 None. This fixture is a CLEAN baseline with no planted defects. Everything from
 this heading down is ground-truth material and is stripped from model prompts by
