@@ -1,10 +1,5 @@
 fixture_id: test-hybrid-product-audit
 rubric_version: "1.0"
-scoring_method: hybrid
-hybrid_weights:
-  rule_based: 0.7
-  llm_judge: 0.3
-
 # De-hinted fixture (adoption plan step 11a). Unlike test-multi-page-audit,
 # the fixture text supplies NONE of the graded vocabulary — every
 # methodology check below probes knowledge the plan must bring itself.
