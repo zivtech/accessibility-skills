@@ -8,8 +8,8 @@ description: >
   and is navigation consistent across pages (3.2.3, 3.2.4)? It inventories
   every such element across a URL list, attaches deterministic heuristic
   flags, has a model draft a per-row judgment with a rationale, and hands the
-  rows to a named human ratifier as a CSV. Output is always a DRAFT; a row
-  becomes a criterion outcome only when a human ratifies it. Never use it to
+  rows to a named human ratifier as a CSV. Output is a DRAFT until human
+  ratification; ratification does not itself create a criterion outcome. Never use it to
   flip an outcome-map cell, to judge criteria that need interaction or
   assistive technology, or as a substitute for a11y-test's measurement.
 license: Apache-2.0
@@ -39,8 +39,8 @@ acr-reporting (which serializes ratified outcomes). It never replaces either.
 
 ## Core Mandate
 
-**The agent drafts. A named human ratifies. Nothing in this skill's output is a criterion outcome
-until the `ratified_by` column is filled by a person.**
+**The agent drafts. A named human ratifies. Ratification records the human judgment, not a criterion
+outcome: a `yes` remains sample-scoped; a `no` may proceed through the separate finding/receipt path.**
 
 Two reasons this line is where it is, and both are load-bearing:
 
@@ -165,8 +165,16 @@ selector, visible, flags, draft_judgment, confidence, rationale, fix, needs_huma
 spot_check, session_draft_judgment, ratified_by, ratified_judgment, ratifier_note`. `status` is the
 first column on every row (`DRAFT_NOT_RATIFIED` until a person signs that row) so no consumer can
 read a draft as a verdict; `session_draft_judgment` is named for what it is. The last three are blank on delivery and
-are the only fields a human fills. Rows sort `no` → `unsure` → `yes`, widest fan-out first, so the
+are display fields populated from the human's durable return, not edits to the generated CSV. Rows sort `no` → `unsure` → `yes`, widest fan-out first, so the
 ratifier's first hour lands on the rows that matter.
+
+For a portable human handoff, use [the content-review return loop](references/content-review-return-loop.md).
+`review-content-judgments.mjs --export` generates a draft worklist, a CSV for an ordinary tracker
+workspace, and a blank response template. `--apply` validates the returned observation against
+the exact inventory snapshot, unit pin, and prior decision before updating `ratifications.jsonl`;
+run `--merge` afterward to refresh the views. It does not write to a tracker or authenticate the
+person named. Assignments, disagreements, and next work actions remain in the receiving tracker.
+The wrapper covers WCAG content judgments only; direct JSONL retains the separate client scope.
 
 ---
 
@@ -184,6 +192,18 @@ ratifier's first hour lands on the rows that matter.
   ratifier columns from it. A family ruling ("every logo that is a link is named by its destination")
   is one `ruling` id fanned out over its rows, so the CSV shows which sentence of the owner's decided
   each row. Rows a ratifier defers or skips carry a note and no `ratified_by`.
+- **A name alone does not complete a return.** `--merge` requires a name, a `yes | no | unsure`
+  judgment (or a nonblank client result), and a real UTC timestamp ending in `Z` before exposing
+  effective ratifier fields. Incomplete records remain draft with diagnostics. Malformed JSON,
+  invalid IDs/scopes/fields/values, stale supplied unit pins, or conflicting records exit `2`
+  before generated outputs change; only a missing optional file is treated as absent. This is
+  validation atomicity, not a transaction across sequential output writes on a failing filesystem.
+- **Corrections name what they replace.** Identical records are retries, not additional decisions.
+  A changed record requires `supersedes` equal to the prior computed decision ID and a nonblank
+  `supersession_reason`. Orphan and forward references fail. The merged rows expose decision IDs,
+  including incomplete drafts, along with `ratification_state`, unit pin, pin status, and diagnostics;
+  client scope has independent `client_ratification_*` columns. Existing complete unpinned records
+  remain compatible and explicitly `legacy_unpinned`; they are not retroactively pinned evidence.
 - A client-standard ruling is a **separate scope**: `{..., scope: "client", ratified_client_result,
   ruling: "<rule id>"}` renders as `client_ratified_*` columns and leaves the WCAG judgment column
   alone. A page title that is fine under 2.4.2 can sit on a page with three h1s that fails the
@@ -208,9 +228,12 @@ ratifier's first hour lands on the rows that matter.
   the receipt, not the CSV. `drafted_by` travels with it so nobody later mistakes the draft for the
   judgment.
 - Rows with `view_count > 1` ratify once and apply to every listed view; the receipt lists the views.
-- Re-running the inventory changes nothing already ratified: unit ids are content hashes, so an
-  unchanged element keeps its id and its ratification; a changed element gets a new id and a blank
-  `ratified_by`.
+- Keep new captures in new inventory directories and retain their predecessors. IDs are stable
+  grouping keys, not universal evidence revisions: a title unit, for example, is keyed to its view
+  even when its text changes. New returned decisions therefore carry `unit_sha256`, the canonical
+  unit snapshot hash; a supplied pin must match the current unit. The portable loop also pins the
+  whole inventory snapshot. Changed source requires a fresh capture/review bundle, not editing or
+  discarding historical ratifications to pass validation.
 
 ---
 
