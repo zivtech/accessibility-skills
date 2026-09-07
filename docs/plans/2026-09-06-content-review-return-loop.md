@@ -39,3 +39,15 @@ All existing CI command equivalents passed locally: client-reference scan and se
 Once the real inventory and reviewers are named, generate a bundle with the commands in the [return-loop reference](../../.claude/skills/a11y-content-judgment/references/content-review-return-loop.md). Use the existing tracker for assignment and deciding-check ownership. Preserve source observations, human responses, and any contrary reviews separately. Measure handling time alongside clarification, duplicate work, rejected stale/incomplete returns, and observation-quality corrections.
 
 This slice neither promotes the candidate skill nor changes fix-closure attestation, admissibility, or report outcome semantics.
+
+## Reviewer-free continuation
+
+The first historical replay exposed a compatibility gap: the original direct-JSONL contract used calendar dates without time-of-day precision. The importer now preserves valid day-only legacy records with explicit `date_precision: day` and `legacy_unpinned` labels, without inventing a timestamp. Missing names or judgments remain draft; pinned and correction records still require a full UTC timestamp. The new external-return wrapper stays strict. Regression coverage includes invalid dates, missing date precision, forbidden day-only pins/lineage, and an explicit legacy-to-pinned correction.
+
+Prepared a local historical review packet from retained engagement artifacts, with a full pending queue, a 12-item starter view, blank response fields, source-page links, and captured screenshots. The older inventory envelope was projected explicitly into the current schema while preserving every unit object and the original history bytes. Original files and a hash manifest are retained outside this public repository. This preparation is not a fresh live capture or a completed human pilot.
+
+The receiving tracker's actual CSV connector was exercised offline against the starter view: all 12 rows, unit IDs, revision hashes, and text fields were preserved. Its database, workflow state, decision APIs, and live interface were not exercised. No receiving-tracker files or records were changed. Independent agent review accepted both the compatibility repair and the packet's preparation boundary.
+
+The software is reviewable in PR #71. The remaining human step is to observe the selected captured context, supply actual judgments and rationale, and return the pinned responses. Current-live behavior and interactive fix attestation require their own fresh evidence.
+
+Follow-up validation: **30/30 regression tests**, strict mirror parity, skill lint, and diff checks pass. Independent agent review accepted the corrected date-precision and explicit legacy-to-pinned supersession behavior.

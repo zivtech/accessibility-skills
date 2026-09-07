@@ -116,6 +116,8 @@ test('blank template, client-scope return, wrong bundle, and missing pin all ref
   assert.equal((await apply(ctx, { ...response(bundle), bundle_id: 'different' })).status, 2);
   assert.equal((await apply(ctx, response(bundle, { unit_sha256: undefined }))).status, 2);
   assert.equal((await apply(ctx, response(bundle, { ratifier_note: '' }))).status, 2);
+  assert.equal((await apply(ctx, response(bundle, { ratified_utc: '2026-09-07' }))).status, 2);
+  await assert.rejects(readFile(path.join(ctx.inventory, 'ratifications.jsonl')), { code: 'ENOENT' });
 });
 
 test('an outstanding writer lock refuses without removing another process lock', async (t) => {

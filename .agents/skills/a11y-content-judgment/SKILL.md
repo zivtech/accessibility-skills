@@ -193,8 +193,11 @@ The wrapper covers WCAG content judgments only; direct JSONL retains the separat
   is one `ruling` id fanned out over its rows, so the CSV shows which sentence of the owner's decided
   each row. Rows a ratifier defers or skips carry a note and no `ratified_by`.
 - **A name alone does not complete a return.** `--merge` requires a name, a `yes | no | unsure`
-  judgment (or a nonblank client result), and a real UTC timestamp ending in `Z` before exposing
-  effective ratifier fields. Incomplete records remain draft with diagnostics. Malformed JSON,
+  judgment (or a nonblank client result), and a valid review date before exposing effective
+  ratifier fields. New pinned or correction records require a real UTC timestamp ending in `Z`.
+  Historical records without pins or correction fields also accept a calendar-valid `YYYY-MM-DD`,
+  labeled `date_precision: day` and `legacy_unpinned`; no time is invented. Shape alone cannot
+  authenticate a historical record's age. Incomplete records remain draft with diagnostics. Malformed JSON,
   invalid IDs/scopes/fields/values, stale supplied unit pins, or conflicting records exit `2`
   before generated outputs change; only a missing optional file is treated as absent. This is
   validation atomicity, not a transaction across sequential output writes on a failing filesystem.

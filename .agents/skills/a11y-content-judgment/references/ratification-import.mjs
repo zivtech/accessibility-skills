@@ -44,6 +44,17 @@ function validUtc(value) {
     date.getUTCMinutes() === +minute && date.getUTCSeconds() === +second;
 }
 
+function validDay(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+  const [, year, month, day] = match; const date = new Date(Date.UTC(+year, +month - 1, +day));
+  return date.getUTCFullYear() === +year && date.getUTCMonth() === +month - 1 && date.getUTCDate() === +day;
+}
+
+function legacyDayAllowed(record) {
+  return validDay(record.ratified_utc) && ['unit_sha256', 'decision_id', 'supersedes', 'supersession_reason'].every((key) => record[key] === undefined);
+}
+
 function requiredFields(record, scope) {
   const result = scope === 'client' ? 'ratified_client_result' : 'ratified_judgment';
   return ['ratified_by', result, 'ratified_utc'].filter((key) => !text(record[key]));
@@ -79,7 +90,7 @@ function validateValues(record, line, units, errors) {
   if (scope === 'wcag' && record.ratified_client_result !== undefined) errors.push(issue(line, 'scope_field_mismatch', `wcag scope cannot carry ratified_client_result`));
   if (!text(record.id) || !units.has(record.id)) errors.push(issue(line, 'unknown_id', `id is not present in judgment-units.json`));
   if (text(record.ratified_judgment) && !JUDGMENTS.has(record.ratified_judgment)) errors.push(issue(line, 'invalid_enum', `ratified_judgment must be yes, no, or unsure`));
-  if (text(record.ratified_utc) && !validUtc(record.ratified_utc)) errors.push(issue(line, 'invalid_timestamp', `ratified_utc must be a real RFC 3339 UTC timestamp ending in Z`));
+  if (text(record.ratified_utc) && !validUtc(record.ratified_utc) && !legacyDayAllowed(record)) errors.push(issue(line, 'invalid_timestamp', `ratified_utc must be a real RFC 3339 UTC timestamp ending in Z, or an unpinned legacy day`));
   if (record.unit_sha256 !== undefined && !/^sha256:[0-9a-f]{64}$/.test(record.unit_sha256)) errors.push(issue(line, 'invalid_unit_revision', `unit_sha256 must be an exact sha256 digest`));
   else if (record.unit_sha256 !== undefined && units.has(record.id) && record.unit_sha256 !== unitRevision(units.get(record.id))) errors.push(issue(line, 'unit_revision_mismatch', `unit_sha256 does not match ${record.id}`));
 }
@@ -160,9 +171,9 @@ function resolveRecords(records, diagnostics) {
   return { current, retries, supersessions };
 }
 
-function incompleteDraft(record, missing) {
+function incompleteDraft(record, missing, datePrecision) {
   const note = text(record.ratifier_note) ? record.ratifier_note : `Incomplete return: missing ${missing.join(', ')}`;
-  return { ratifier_note: note, ruling: record.ruling || '', unit_sha256: record.unit_sha256 || '', decision_id: decisionId(record), missing };
+  return { ratifier_note: note, ruling: record.ruling || '', unit_sha256: record.unit_sha256 || '', decision_id: decisionId(record), date_precision: datePrecision, missing };
 }
 
 export function parseRatifications(input, unitObjects) {
@@ -170,18 +181,19 @@ export function parseRatifications(input, unitObjects) {
   const diagnostics = []; const records = parseLines(input, units);
   const { current, retries, supersessions } = resolveRecords(records, diagnostics);
   const wcag = new Map(); const client = new Map(); const drafts = new Map();
-  let pinned = 0; let unpinned = 0;
+  let pinned = 0; let unpinned = 0; let legacyDays = 0;
   for (const [key, { line, record }] of current) {
-    const scope = record.scope ?? 'wcag'; const missing = requiredFields(record, scope);
+    const scope = record.scope ?? 'wcag'; const missing = requiredFields(record, scope); const datePrecision = !text(record.ratified_utc) ? '' : validDay(record.ratified_utc) ? 'day' : 'timestamp';
+    if (datePrecision === 'day') { legacyDays += 1; diagnostics.push({ line, level: 'warning', code: 'legacy_day_precision', message: `${key} preserves a legacy day-only ratified_utc without inventing a time` }); }
     if (missing.length) {
-      drafts.set(key, incompleteDraft(record, missing));
+      drafts.set(key, incompleteDraft(record, missing, datePrecision));
       diagnostics.push({ line, level: 'warning', code: 'incomplete_return', message: `${key} remains draft; missing ${missing.join(', ')}` });
       continue;
     }
-    const effective = { ...record, scope, decision_id: decisionId(record), pin_status: record.unit_sha256 ? 'pinned' : 'legacy_unpinned' };
+    const effective = { ...record, scope, decision_id: decisionId(record), pin_status: record.unit_sha256 ? 'pinned' : 'legacy_unpinned', date_precision: datePrecision };
     (scope === 'client' ? client : wcag).set(record.id, effective);
     if (record.unit_sha256) pinned += 1;
     else { unpinned += 1; diagnostics.push({ line, level: 'warning', code: 'legacy_unpinned', message: `${key} has no unit_sha256; preserved as a legacy unpinned decision` }); }
   }
-  return { wcag, client, drafts, diagnostics, summary: { records: records.length, complete_wcag: wcag.size, complete_client: client.size, drafts: drafts.size, pinned, unpinned_legacy: unpinned, identical_retries: retries, supersessions } };
+  return { wcag, client, drafts, diagnostics, summary: { records: records.length, complete_wcag: wcag.size, complete_client: client.size, drafts: drafts.size, pinned, unpinned_legacy: unpinned, legacy_day_precision_records: legacyDays, identical_retries: retries, supersessions } };
 }

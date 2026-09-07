@@ -37,12 +37,33 @@ test('legacy complete WCAG records remain effective but are reported unpinned', 
   assert.match(result.diagnostics[0].message, /unit_sha256/);
 });
 
+test('legacy date-only records retain day precision without weakening strict completeness', () => {
+  const wcag = complete({ ratified_utc: '2026-09-02' });
+  const client = { id: 'unit-2', scope: 'client', ratified_by: 'Reviewer B', ratified_client_result: 'meets-policy', ratified_utc: '2026-09-02' };
+  const result = parseRatifications(lines(wcag, client), units);
+  assert.equal(result.wcag.get('unit-1').date_precision, 'day');
+  assert.equal(result.client.get('unit-2').date_precision, 'day');
+  assert.equal(result.summary.legacy_day_precision_records, 2);
+  assert.equal(result.diagnostics.filter((item) => item.code === 'legacy_day_precision').length, 2);
+  assert.equal(isCompleteWcag(wcag), false);
+  assert.equal(isCompleteClient(client), false);
+});
+
+test('date-only incomplete placeholder remains a sanitized draft', () => {
+  const result = parseRatifications(lines({ id: 'unit-1', ratified_by: '', ratified_judgment: '', ratified_utc: '2026-09-02', ratifier_note: 'Deferred' }), units);
+  const draft = result.drafts.get('wcag:unit-1');
+  assert.equal(draft.date_precision, 'day');
+  assert.deepEqual(draft.missing, ['ratified_by', 'ratified_judgment']);
+  assert.equal(result.summary.legacy_day_precision_records, 1);
+});
+
 test('name-only return remains an incomplete draft', () => {
   const result = parseRatifications(lines({ id: 'unit-1', ratified_by: 'Reviewer A' }), units);
   assert.equal(result.wcag.size, 0);
   assert.equal(result.drafts.get('wcag:unit-1').ratified_by, undefined);
   assert.match(result.drafts.get('wcag:unit-1').ratifier_note, /Incomplete return/);
   assert.deepEqual(result.drafts.get('wcag:unit-1').missing, ['ratified_judgment', 'ratified_utc']);
+  assert.equal(result.drafts.get('wcag:unit-1').date_precision, '');
 });
 
 test('complete client decision stays separate from WCAG', () => {
@@ -67,7 +88,11 @@ test('invalid syntax, id, scope, enum, timestamp, pin, and extra fields are reje
     [lines(complete({ scope: 'other' })), 'invalid_scope'],
     [lines(complete({ ratified_judgment: 'pass' })), 'invalid_enum'],
     [lines(complete({ ratified_utc: '2026-02-30T12:00:00Z' })), 'invalid_timestamp'],
+    [lines(complete({ ratified_utc: '2026-02-30' })), 'invalid_timestamp'],
     [lines(complete({ ratified_utc: '2026-09-06T08:00:00-04:00' })), 'invalid_timestamp'],
+    [lines(complete({ ratified_utc: '2026-09-06', unit_sha256: unitRevision(units[0]) })), 'invalid_timestamp'],
+    [lines(complete({ ratified_utc: '2026-09-06', supersedes: 'sha256:prior', supersession_reason: 'Correction' })), 'invalid_timestamp'],
+    [lines(complete({ ratified_utc: '2026-09-06', supersession_reason: 'Correction' })), 'invalid_timestamp'],
     [lines(complete({ unit_sha256: `sha256:${'0'.repeat(64)}` })), 'unit_revision_mismatch'],
     [lines(complete({ unit_sha256: '   ' })), 'invalid_unit_revision'],
     [lines(complete({ ratified_client_result: 'meets-policy' })), 'scope_field_mismatch'],
@@ -115,6 +140,20 @@ test('pinned decision includes the unit revision in its identity', () => {
   const pinned = complete({ unit_sha256: pin });
   assert.notEqual(decisionId(pinned), decisionId(complete()));
   assert.equal(parseRatifications(lines(pinned), units).summary.pinned, 1);
+});
+
+test('pinned timestamp decision explicitly supersedes a legacy day decision', () => {
+  const legacy = complete({ ratified_utc: '2026-09-02' });
+  const legacyHash = decisionId(legacy);
+  const modern = complete({ ratified_by: 'Reviewer B', ratified_utc: '2026-09-07T14:30:00Z', unit_sha256: unitRevision(units[0]), supersedes: legacyHash, supersession_reason: 'Re-reviewed against the pinned unit snapshot' });
+  const result = parseRatifications(lines(legacy, modern), units);
+  const effective = result.wcag.get('unit-1');
+  assert.equal(legacy.ratified_utc, '2026-09-02');
+  assert.equal(decisionId(legacy), legacyHash);
+  assert.equal(effective.supersedes, legacyHash);
+  assert.equal(effective.date_precision, 'timestamp');
+  assert.equal(effective.pin_status, 'pinned');
+  assert.equal(result.summary.supersessions, 1);
 });
 
 test('invalid import exits 2 without altering existing merge outputs', async () => {

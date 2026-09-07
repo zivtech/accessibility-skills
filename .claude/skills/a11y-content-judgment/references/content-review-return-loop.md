@@ -74,7 +74,9 @@ Hashes bind content and detect accidental drift; they do not authenticate a pers
 
 ## Direct JSONL import compatibility
 
-The existing `--merge` entry point still accepts complete legacy `ratifications.jsonl` records without pins, labels them `legacy_unpinned`, and warns. It does not retroactively prove which content they reviewed. New external returns through this loop always require pins.
+The existing `--merge` entry point still accepts complete legacy `ratifications.jsonl` records without pins, labels them `legacy_unpinned`, and warns. A legacy record without unit pins or supersession fields may retain a real calendar date (`YYYY-MM-DD`); the merged view labels its `date_precision` as `day` and emits a `legacy_day_precision` diagnostic. Its original date string and decision identity stay intact: no midnight or other time is invented. Full UTC dates are labeled `timestamp`. Invalid dates still refuse the import, and missing names/results remain draft. Shape alone cannot establish that an unpinned record is old.
+
+These labels do not retroactively prove which content was reviewed or when within that day. New external returns through this loop always require unit pins and a full UTC timestamp ending in `Z`, as do direct records containing pins or supersession fields. Historical date precision is a compatibility boundary, not a relaxation of the new return contract.
 
 Direct JSONL inputs may carry the existing independent client scope. `ratified_client_result` remains an engagement-specific nonblank string; it does not become a WCAG outcome. This portable wrapper initially covers WCAG content review only.
 
