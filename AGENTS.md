@@ -34,3 +34,8 @@ Agents for running, scoring, documenting, and maintaining the eval suite.
 | fixture-builder | builder | sonnet | all | Create/enrich fixture triplets (.md, .metadata.yaml, .rubric.yaml) |
 
 See `.claude/teams/README.md` for team workflows.
+
+## Commits and pushes
+
+- Authorized implementation work includes making focused commits and pushing the task's feature branch to its configured remote after relevant checks pass. Do not ask for separate confirmation solely because multiple files changed. Honor explicit hold, no-commit, or no-push instructions.
+- Stage only reviewed files for the current task and preserve unrelated changes. Ask only when the destination is ambiguous, the operation would rewrite or delete shared history, or the action would expand the approved scope.
