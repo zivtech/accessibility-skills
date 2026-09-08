@@ -197,6 +197,7 @@ Copy this protocol into the subagent prompt:
     - If `A11y Evidence Finding` blocks are available from a11y-test, preserve their finding_id, fingerprint, source, WCAG/APG citation, Section 508 context, perspective alarms, reproduction steps, expected/actual behavior, and trend status. Use them as traceable evidence inputs, not as a substitute for independent review.
     - If an `a11y-evidence-reader` digest is available: it is detector output, one tier BELOW the artifact it cites — a paraphrase, not the hard evidence itself. Before filing any finding that rests on a digest line, re-fetch at the cited handle (file + jq path / line range); a finding that cannot be traced to a re-fetched handle is labeled digest-only.
     - If no test evidence exists: proceed normally but note in findings when a claim would be stronger with measurement.
+    - When several findings or occurrences sit on the same page/state, consume that page's single batched audit (a11y-test's `references/page-audit.mjs` report, or the page evidence artifact) and adjudicate them together — do not reason about one re-capture per rule. If you direct new measurement, request a one-pass per-page audit, not per-rule probes. Overlapping views of one page (occurrences, execution groups, criterion cells) are not additive, and a local pass never proves the whole page.
     Test evidence upgrades findings from "design reasoning" to "measured fact." Prefer measured evidence when available.
 
     Phase 1 — Pre-commitment Predictions:
