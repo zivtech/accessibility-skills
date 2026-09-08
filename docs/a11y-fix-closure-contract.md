@@ -89,7 +89,7 @@ And what this block cannot do: **bind a name to a person.** `attested_by` is a s
 
 ## What this does not establish
 
-**How a person establishes it.** This contract states what must be true before a finding closes, and — since 2026-09-03 — records who confirmed it (the `attestation` block above). It still does not describe the guided verification pass that gets a human there: walking the affected pages, confirming the fix on the real thing, recording what they saw. A VPAT/ACR chain needs that pass: `acr-reporting` emits a draft somebody signs, `a11y-content-judgment` refuses any row without a name in `ratified_by`, and `acr-reporting` now refuses a fixed-stage `supports` on a draft closure. The pass itself is scoped as [#57](https://github.com/zivtech/accessibility-skills/issues/57) parts 3–4 (plan: `docs/plans/2026-09-03-human-verification-stage-plan.md`); candidate instruments stay parked in the ICT baseline assessment's Q2 until it lands. Before 2026-09-03 this contract had no attestation field at all — a closure record could be schema-valid, class-matched, and unattested, and nothing downstream noticed.
+**How a person establishes it.** The guided procedure is now specified in a11y-test's [human verification walk-through](../.claude/skills/a11y-test/references/human-verification-walkthrough.md): walking the affected pages, performing the operation, and recording what happened. Its specification and synthetic canaries do not demonstrate a real campaign. [#57](https://github.com/zivtech/accessibility-skills/issues/57) still requires a real attested closure admitted by an ACR draft and a countersigned roster. The portable content-review return loop is for content judgments; it does not perform this fix-confirmation procedure or satisfy that campaign requirement.
 
 
 
@@ -97,4 +97,4 @@ And what this block cannot do: **bind a name to a person.** `attested_by` is a s
 - Triage A ("already fixed upstream") asserts only that the named defect no longer reproduces under the tested condition — not that the surrounding code is otherwise correct.
 - This contract records the evidence for a fix; it does not decide whether the fix is complete against the full component. That is the reviewer's judgment.
 - An attested closure is a person's confirmation of one item at one version. It is not a re-evaluation of the criterion across the sample set — that is the retest evaluation report's job — and aggregating attested closures still does not produce a conformance claim.
-- This contract does not say what the attesting person does, in what order, on which pages. That walk-through procedure is a11y-test's to specify (issue #57, parts 3–4); this block only records its result.
+- This contract records the result; the linked a11y-test walk-through specifies the operations, order, and pages. Neither a tracker status nor an imported content judgment substitutes for that evidence.
