@@ -9,7 +9,8 @@
     "The retained response names qwen3:32b and records a timestamp, but no immutable model digest or provider build is retained.",
     "The run summary documents a local endpoint and later sleep interruption, not a per-cell isolation or process-environment receipt.",
     "The response and score were committed after the stated fixture snapshot, so their byte integrity is provable but continuous execution custody is not.",
-    "The historical bytes of .claude/skills/a11y-critic/SKILL.md are unverifiable from public history: the 2026-07-17 draw was made against a working state that was never published to main, so that artifact carries no historical pin. Its current-file hash is still checked; its run-time hash is not, and no substitute commit was invented."
+    "The historical bytes of .claude/skills/a11y-critic/SKILL.md are unverifiable from public history: the 2026-07-17 draw was made against a working state that was never published to main, so that artifact carries no historical pin. Its current-file hash is still checked; its run-time hash is not, and no substitute commit was invented.",
+    "2026-09-08: .claude/skills/a11y-critic/SKILL.md was edited (feat/batched-per-page-audit: a Phase 0 bullet adding the batched one-pass per-page audit default). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only and makes no claim about the 2026-07-17 run-time bytes, which remain unpinned as documented above (no substitute commit invented)."
   ],
   "missing_fields": [
     "provider.model_digest",
@@ -30,7 +31,7 @@
     {
       "role": "skill-source-current",
       "path": ".claude/skills/a11y-critic/SKILL.md",
-      "sha256": "7aad3e9bf1c31c61136a0588269613d0bd22694d7dc8b5cddc04bea2aa837d1b",
+      "sha256": "f29c7afe4d62242e5f02932c54c7ff82bed4e06ce6d4c4414e8dadbcb6312e04",
       "historical_provenance": "unverifiable from public history: the bytes this run was drawn against were never published to main"
     },
     {
