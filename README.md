@@ -10,9 +10,9 @@ npx skills add zivtech/accessibility-skills
 
 ## What it does
 
-Most accessibility failures are not missing attributes. They come from design decisions: the wrong interaction pattern for the job, focus that moves but makes no sense, states that are visible but never announced, semantics that pass axe-core and still confuse a screen reader. Linters do not catch those. These skills are built to.
+Accessibility problems can start with design decisions: controls that behave unexpectedly, focus that moves to the wrong place, or status changes that a screen reader never announces. These skills help teams plan those interactions, test them, and investigate problems that automated scans cannot settle.
 
-The bundle covers the lifecycle — design it, review the design, measure it, review what you measured, file what you found, and report it — plus two orthogonal audit lenses:
+The bundle covers planning, design review, testing, reporting findings, and checking fixes. Three review tools ask different questions:
 
 - **a11y-critic** asks *is the accessibility approach sound?*
 - **perspective-audit** asks *who is blocked?* (seven access-method perspectives)
@@ -29,8 +29,8 @@ The bundle covers the lifecycle — design it, review the design, measure it, re
 | `/perspective-audit` | Deep review from the access perspectives the planner or critic escalated |
 | `/a11y-role-audit` | Attributes findings to the team role that owns the fix |
 | `/bug-reporting` | Turns findings into reproducible issues a developer can act on without a follow-up conversation |
-| `/acr-reporting` | Serializes a finished audit into a draft OpenACR conformance report for human sign-off |
-| `/a11y-content-judgment` | *(candidate)* Drafts per-row judgments on the criteria a scanner cannot decide; a named human ratifies |
+| `/acr-reporting` | Prepares a draft Accessibility Conformance Report (ACR) in OpenACR format from completed audit evidence, for human review and sign-off |
+| `/a11y-content-judgment` | *(candidate; experimental)* Drafts content judgments for human review; exports review tasks and imports the person's decisions |
 
 Repository-maintenance skills — `/maintain-accessibility-skills`, `/verify`, `/drupal-a11y-patch-eval` — are for working *on* this repo rather than with it. See [docs/skills.md](docs/skills.md).
 
@@ -67,7 +67,7 @@ Full inventory, per-tool blind spots, routing table, and what was evaluated and 
 |---|---|
 | `.claude/skills/` | Skill definitions — this is what `npx skills add` installs |
 | `.claude/agents/` | Companion agent prompts for the workflow lane |
-| `.agents/`, `.codex/` | Codex-compatible mirrors, kept byte-identical by CI |
+| `.agents/`, `.codex/` | Copies of the instructions for Codex; automated checks detect differences unless explicitly allowed |
 | `docs/` | Contracts, adoption assessments, verified spec references — [index](docs/) |
 | `evals/suites/` | Fixtures and rubrics, 13 suites |
 | `evals/results/` | Committed raw benchmark artifacts; every published number traces to one |
@@ -84,13 +84,19 @@ Full detail: [docs/standards-and-contracts.md](docs/standards-and-contracts.md).
 
 ## Status
 
-Current release: **[v1.1.0](https://github.com/zivtech/accessibility-skills/releases)** (2026-09-04). The supported runtime is Claude — the skills in `.claude/skills/` and the subagent lane behind `/a11y-workflow`.
+Latest release: **[v1.1.0](https://github.com/zivtech/accessibility-skills/releases/tag/v1.1.0)** (September 4, 2026). It added draft OpenACR reports, human-verification procedures for fixes, scans of URL lists, repository maintenance tools, and checks that keep benchmark answer keys out of model prompts.
 
-Since v1.0.0: the `acr-reporting` skill (OpenACR Lane A), a human verification stage with attested fix closures, a sixth a11y-test execution mode (baseline URL-list scan), a repository maintenance skill, and the machine-enforced blind-prompt protocol over every eval suite.
+The following improvements are now merged into `main`, after v1.1.0:
 
-Everything else ships as benchmark infrastructure, not a supported runtime. In particular the local Ollama lane is what its own results say it is: a **detector, never a verdict authority**. No local model has passed the verdict-authority bar at any size tested. Open work is tracked in [issues](https://github.com/zivtech/accessibility-skills/issues).
+- **Return human content reviews without losing earlier decisions.** Export review tasks, then import a person's observations and decisions against the exact content they reviewed. Incomplete, stale, or conflicting submissions are rejected; corrections preserve the earlier decision and require an explanation. See the [export-and-return instructions](.claude/skills/a11y-content-judgment/references/content-review-return-loop.md). ([PR #71](https://github.com/zivtech/accessibility-skills/pull/71))
+- **Compare federal accessibility plans with and without a supplied reference.** The Codex benchmark runner now supports the `planner-federal` condition, which supplies the toolkit's federal test-coverage reference. It keeps those results and scores separate from runs without that reference, and rejects incomplete or mismatched saved results. See the [hosted benchmark commands](ollama/README.md#codexopenai-requires-codex-cli-auth). ([PR #72](https://github.com/zivtech/accessibility-skills/pull/72))
+- **Test a missing disclosure about who wrote a fix.** A new report test checks that an improved rating stays in draft when the fix's author confirms it and the second reviewer has not disclosed whether they also wrote the fix. Two valid examples guard against rejecting acceptable confirmations. These checks and the new cloud-runner tests run automatically on pull requests. See the [report test cases](evals/suites/acr-reporting/README.md). ([PR #72](https://github.com/zivtech/accessibility-skills/pull/72))
 
-Model comparisons across Claude, Codex/OpenAI, Gemini and local Ollama families — with the caveats that make each number readable — are in [ollama/BENCHMARK.md](ollama/BENCHMARK.md).
+Content judgment remains a candidate and is still experimental. The return workflow still needs a pilot with real reviewers, and the [human-verification milestone](https://github.com/zivtech/accessibility-skills/issues/57) still requires a real retest, accepted fix confirmation, and review record countersigned by the report's signing author. Passing software tests does not complete that work. These two PRs add no new model-comparison results.
+
+Claude is the supported way to run the skills in `.claude/skills/` and the specialist agents behind `/a11y-workflow`. Codex/OpenAI, Gemini, and local Ollama integrations support benchmarking. Local-model findings require further review; no tested local model has met the requirements for making final accessibility judgments.
+
+See the [improvements record](https://github.com/zivtech/accessibility-skills/issues/40) for recent work, [open issues](https://github.com/zivtech/accessibility-skills/issues) for what remains, and [model comparisons](ollama/BENCHMARK.md) for results and their limits.
 
 ## Contributing
 
