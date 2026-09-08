@@ -16,6 +16,8 @@ Usage:
     python3 ollama/run_cloud_benchmark.py codex-escalate [--skill critic|perspective]
     python3 ollama/run_cloud_benchmark.py codex-planner <tier> <fixture-id>
     python3 ollama/run_cloud_benchmark.py codex-planner-all <tier>
+    python3 ollama/run_cloud_benchmark.py codex-planner-federal <tier> <fixture-id>
+    python3 ollama/run_cloud_benchmark.py codex-planner-federal-all <tier>
 
     # Gemini (requires gemini CLI auth; critic suite only — plan 007)
     python3 ollama/run_cloud_benchmark.py gemini <tier> <fixture-id>
@@ -28,6 +30,7 @@ Usage:
     python3 ollama/run_cloud_benchmark.py score-cloud-perspective
     python3 ollama/run_cloud_benchmark.py score-gemini
     python3 ollama/run_cloud_benchmark.py score-codex-planner
+    python3 ollama/run_cloud_benchmark.py score-codex-planner-federal
 
     # Show escalation summary
     python3 ollama/run_cloud_benchmark.py summary
@@ -173,6 +176,10 @@ ALL_PERSPECTIVE_FIXTURES = [
 PLANNER_SKILL_PATH = os.path.join(REPO_DIR, ".claude", "skills", "a11y-planner", "SKILL.md")
 PLANNER_FIXTURES_DIR = os.path.join(REPO_DIR, "evals", "suites", "a11y-planner", "fixtures")
 PLANNER_PROMPT_PREFIX = "Plan the accessible implementation for the following component or feature. Execute all phases of the planning protocol.\n\n"
+CROSSWALK_PATH = os.path.join(
+    REPO_DIR, ".claude", "skills", "a11y-test", "references",
+    "ict-baseline-crosswalk.yaml",
+)
 
 PLANNER_FIXTURES = [
     "aria-combobox-autocomplete",
@@ -251,6 +258,19 @@ def load_planner_system_prompt():
         return strip_frontmatter(f.read())
 
 
+def load_planner_federal_system_prompt():
+    """Planner protocol plus the exact declared-508 crosswalk reference."""
+    with open(CROSSWALK_PATH) as f:
+        crosswalk = f.read()
+    return (
+        load_planner_system_prompt()
+        + "\n\n---\n\nSupplied reference for declared-508 engagements — the "
+        "a11y-test ICT Testing Baseline coverage crosswalk "
+        "(references/ict-baseline-crosswalk.yaml in the a11y-test skill):\n\n"
+        "```yaml\n" + crosswalk + "\n```\n"
+    )
+
+
 ANSWER_KEY_RE = re.compile(r"^## Accessibility Issues.*$", re.MULTILINE)
 
 
@@ -312,15 +332,57 @@ def get_tier(platform, tier_name):
     sys.exit(1)
 
 
-def output_path(platform, tier_name, fixture_id, skill="critic"):
+def output_path(platform, tier_name, fixture_id, skill="critic", condition=None):
     prefix = {"claude": "cloud", "codex": "codex", "gemini": "gemini"}[platform]
     tag = tier_name.replace(".", "").replace("-", "")
-    skill_tag = f"-{skill}" if skill != "critic" else ""
+    artifact_kind = condition if skill == "planner" and condition == "planner-federal" else skill
+    skill_tag = f"-{artifact_kind}" if artifact_kind != "critic" else ""
     return os.path.join(RESULTS_DIR, f"{prefix}-bench{skill_tag}-{fixture_id}-{tag}-response.json")
 
 
-def result_exists(platform, tier_name, fixture_id, skill="critic"):
-    path = output_path(platform, tier_name, fixture_id, skill)
+def load_planner_result(path):
+    """Load one complete planner row and classify its artifact condition."""
+    try:
+        with open(path) as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None, "malformed result"
+    if not isinstance(data, dict):
+        return None, "malformed result"
+    if data.get("error") or data.get("done") is False:
+        return None, "failed or unfinished result"
+    response = data.get("response", "")
+    if not isinstance(response, str) or not response.strip():
+        return None, "empty result"
+    bench = data.get("_benchmark", {})
+    if not isinstance(bench, dict) or bench.get("skill") != "planner":
+        return None, "malformed result metadata"
+
+    path_condition = (
+        "planner-federal"
+        if os.path.basename(path).startswith("codex-bench-planner-federal-")
+        else "planner"
+    )
+    metadata_condition = bench.get("condition")
+    if metadata_condition is None:
+        if path_condition == "planner-federal":
+            return None, "federal-path result without condition"
+        metadata_condition = "planner"  # Legacy plain rows predate the field.
+    if metadata_condition != path_condition:
+        return None, "planner condition does not match result path"
+    return (data, bench, path_condition), None
+
+
+def result_exists(platform, tier_name, fixture_id, skill="critic", condition=None):
+    path = output_path(platform, tier_name, fixture_id, skill, condition)
+    if skill == "planner":
+        loaded, reason = load_planner_result(path)
+        if loaded is None:
+            if os.path.exists(path):
+                print(f"WARN: {reason}, will re-run: {path}")
+            return False
+        expected = condition or "planner"
+        return loaded[2] == expected and len(loaded[0]["response"]) > 100
     if not os.path.exists(path):
         return False
     try:
@@ -329,9 +391,13 @@ def result_exists(platform, tier_name, fixture_id, skill="critic"):
     except (json.JSONDecodeError, OSError):
         print(f"WARN: corrupt result file, will re-run: {path}")
         return False
+    if not isinstance(data, dict):
+        print(f"WARN: malformed result file, will re-run: {path}")
+        return False
     if data.get("error"):
         return False  # error placeholder from infra failure — re-run, don't skip
-    return len(data.get("response", "")) > 100
+    response = data.get("response", "")
+    return isinstance(response, str) and len(response) > 100
 
 
 # ── Claude API ──────────────────────────────────────────────────────────
@@ -452,9 +518,32 @@ PREAMBLES = {
 }
 
 
-def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
-    out = output_path("codex", tier["name"], fixture_id, skill)
-    msg_out = os.path.join(RESULTS_DIR, f"codex-msg-{tier['name']}-{fixture_id}-{skill}.txt")
+def codex_message_path(tier_name, fixture_id, skill, condition=None):
+    artifact_kind = condition if skill == "planner" and condition == "planner-federal" else skill
+    return os.path.join(
+        RESULTS_DIR, f"codex-msg-{tier_name}-{fixture_id}-{artifact_kind}.txt"
+    )
+
+
+def codex_benchmark_metadata(tier, fixture_id, skill, elapsed, condition=None):
+    benchmark = {
+        "platform": "codex",
+        "model": tier["model"],
+        "tier": tier["name"],
+        "fixture_id": fixture_id,
+        "skill": skill,
+        "effort": tier.get("effort"),
+        "elapsed_seconds": round(elapsed, 1),
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+    if condition is not None:
+        benchmark["condition"] = condition
+    return benchmark
+
+
+def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic", condition=None):
+    out = output_path("codex", tier["name"], fixture_id, skill, condition)
+    msg_out = codex_message_path(tier["name"], fixture_id, skill, condition)
 
     print(f"\n{'=' * 60}")
     print(f"CODEX | {tier['label']} | {fixture_id} ({skill})")
@@ -493,20 +582,14 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         elapsed = time.time() - start
         err_msg = f"{type(e).__name__}: {e}"
         print(f"ERROR (infra, not model): {err_msg}")
+        benchmark = codex_benchmark_metadata(
+            tier, fixture_id, skill, elapsed, condition
+        )
         write_json_atomic(out, {
             "response": "",
             "done": False,
             "error": err_msg,
-            "_benchmark": {
-                "platform": "codex",
-                "model": tier["model"],
-                "tier": tier["name"],
-                "fixture_id": fixture_id,
-                "skill": skill,
-                "effort": tier.get("effort"),
-                "elapsed_seconds": round(elapsed, 1),
-                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-            },
+            "_benchmark": benchmark,
         })
         return out
     elapsed = time.time() - start
@@ -522,36 +605,24 @@ def run_codex(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         print(f"ERROR (infra, not model): {err_msg}")
         if proc.stderr:
             print(f"STDERR: {proc.stderr[:500]}")
+        benchmark = codex_benchmark_metadata(
+            tier, fixture_id, skill, elapsed, condition
+        )
         write_json_atomic(out, {
             "response": "",
             "done": False,
             "error": err_msg,
-            "_benchmark": {
-                "platform": "codex",
-                "model": tier["model"],
-                "tier": tier["name"],
-                "fixture_id": fixture_id,
-                "skill": skill,
-                "effort": tier.get("effort"),
-                "elapsed_seconds": round(elapsed, 1),
-                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-            },
+            "_benchmark": benchmark,
         })
         return out
 
+    benchmark = codex_benchmark_metadata(
+        tier, fixture_id, skill, elapsed, condition
+    )
     data = {
         "response": response_text,
         "done": True,
-        "_benchmark": {
-            "platform": "codex",
-            "model": tier["model"],
-            "tier": tier["name"],
-            "fixture_id": fixture_id,
-            "skill": skill,
-            "effort": tier.get("effort"),
-            "elapsed_seconds": round(elapsed, 1),
-            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        },
+        "_benchmark": benchmark,
     }
 
     write_json_atomic(out, data)
@@ -573,11 +644,18 @@ def run_codex_perspective(tier, fixture_id):
     return run_codex(tier, fixture_id, system_prompt, user_prompt, "perspective")
 
 
-def run_codex_planner(tier, fixture_id):
-    system_prompt = load_planner_system_prompt()
+def run_codex_planner(tier, fixture_id, condition="planner"):
+    if condition == "planner-federal":
+        system_prompt = load_planner_federal_system_prompt()
+    elif condition == "planner":
+        system_prompt = load_planner_system_prompt()
+    else:
+        raise ValueError(f"unknown planner condition: {condition}")
     fixture_content = load_fixture(fixture_id, PLANNER_FIXTURES_DIR)
     user_prompt = PLANNER_PROMPT_PREFIX + fixture_content
-    return run_codex(tier, fixture_id, system_prompt, user_prompt, "planner")
+    return run_codex(
+        tier, fixture_id, system_prompt, user_prompt, "planner", condition=condition
+    )
 
 
 # ── Gemini CLI ──────────────────────────────────────────────────────────
@@ -781,19 +859,38 @@ def score_cloud_results(skill="critic"):
     return results
 
 
-def score_codex_results(skill="critic"):
+def codex_score_config(skill):
     if skill == "critic":
-        score_script = os.path.join(BASE_DIR, "score_output.py")
-        pattern = os.path.join(RESULTS_DIR, "codex-bench-*-response.json")
-        fixtures_dir = FIXTURES_DIR
-    elif skill == "planner":
-        score_script = os.path.join(BASE_DIR, "score_planner.py")
-        pattern = os.path.join(RESULTS_DIR, "codex-bench-planner-*-response.json")
-        fixtures_dir = PLANNER_FIXTURES_DIR
-    else:
-        score_script = os.path.join(BASE_DIR, "score_perspective.py")
-        pattern = os.path.join(RESULTS_DIR, "codex-bench-perspective-*-response.json")
-        fixtures_dir = PERSPECTIVE_FIXTURES_DIR
+        return "score_output.py", "codex-bench-*-response.json", FIXTURES_DIR
+    if skill == "planner":
+        return (
+            "score_planner.py", "codex-bench-planner-*-response.json",
+            PLANNER_FIXTURES_DIR,
+        )
+    return (
+        "score_perspective.py", "codex-bench-perspective-*-response.json",
+        PERSPECTIVE_FIXTURES_DIR,
+    )
+
+
+def benchmark_for_codex_score(path, skill, condition):
+    if skill != "planner":
+        with open(path) as f:
+            return json.load(f).get("_benchmark", {})
+    loaded, reason = load_planner_result(path)
+    if loaded is None:
+        print(f"WARN: skipping {reason}: {path}")
+        return None
+    _, benchmark, row_condition = loaded
+    return benchmark if row_condition == condition else None
+
+
+def score_codex_results(skill="critic", condition=None):
+    script_name, file_pattern, fixtures_dir = codex_score_config(skill)
+    score_script = os.path.join(BASE_DIR, script_name)
+    pattern = os.path.join(RESULTS_DIR, file_pattern)
+    if skill == "planner":
+        condition = condition or "planner"
 
     responses = sorted(glob.glob(pattern))
     if not responses:
@@ -802,8 +899,9 @@ def score_codex_results(skill="critic"):
 
     results = {}
     for resp in responses:
-        with open(resp) as f:
-            bench = json.load(f).get("_benchmark", {})
+        bench = benchmark_for_codex_score(resp, skill, condition)
+        if bench is None:
+            continue
         fixture_id = bench.get("fixture_id", "")
         tier = bench.get("tier", "unknown")
         if not fixture_id:
@@ -1145,7 +1243,7 @@ def main():
             sys.exit(1)
         tier = get_tier("codex", sys.argv[2])
         validate_fixture_id(sys.argv[3])
-        run_codex_planner(tier, sys.argv[3])
+        run_codex_planner(tier, sys.argv[3], "planner")
 
     elif cmd == "codex-planner-all":
         if len(sys.argv) < 3:
@@ -1157,7 +1255,29 @@ def main():
                 print(f"[{i}/{len(PLANNER_FIXTURES)}] {fid} — already done, skipping")
                 continue
             print(f"\n[{i}/{len(PLANNER_FIXTURES)}]")
-            run_codex_planner(tier, fid)
+            run_codex_planner(tier, fid, "planner")
+
+    elif cmd == "codex-planner-federal":
+        if len(sys.argv) != 4:
+            print("Usage: run_cloud_benchmark.py codex-planner-federal <tier> <fixture-id>")
+            sys.exit(1)
+        tier = get_tier("codex", sys.argv[2])
+        validate_fixture_id(sys.argv[3])
+        run_codex_planner(tier, sys.argv[3], "planner-federal")
+
+    elif cmd == "codex-planner-federal-all":
+        if len(sys.argv) < 3:
+            print("Usage: run_cloud_benchmark.py codex-planner-federal-all <tier>")
+            sys.exit(1)
+        tier = get_tier("codex", sys.argv[2])
+        for i, fid in enumerate(PLANNER_FIXTURES, 1):
+            if result_exists(
+                "codex", tier["name"], fid, "planner", "planner-federal"
+            ):
+                print(f"[{i}/{len(PLANNER_FIXTURES)}] {fid} — already done, skipping")
+                continue
+            print(f"\n[{i}/{len(PLANNER_FIXTURES)}]")
+            run_codex_planner(tier, fid, "planner-federal")
 
     elif cmd == "gemini":
         require_gemini_cli()
@@ -1204,7 +1324,10 @@ def main():
         score_codex_results("perspective")
 
     elif cmd == "score-codex-planner":
-        score_codex_results("planner")
+        score_codex_results("planner", "planner")
+
+    elif cmd == "score-codex-planner-federal":
+        score_codex_results("planner", "planner-federal")
 
     elif cmd == "summary":
         show_summary()

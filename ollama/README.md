@@ -276,11 +276,21 @@ bash ollama/codex-benchmark.sh perspective
 python3 ollama/run_cloud_benchmark.py codex-escalate
 python3 ollama/run_cloud_benchmark.py codex 5.2 tabs-missing-arrow-nav
 
-# Planner lane (plan 010): single fixture, full 25-fixture run, scoring
+# Planner lane (plan 010): plain condition
 python3 ollama/run_cloud_benchmark.py codex-planner 5.5-low keyboard-breadcrumb
 python3 ollama/run_cloud_benchmark.py codex-planner-all 5.5-low
 python3 ollama/run_cloud_benchmark.py score-codex-planner
+
+# Declared-508 condition: identical fixture with the a11y-test ICT Testing
+# Baseline crosswalk supplied in the system prompt. Results and scoring are
+# isolated from the plain condition.
+python3 ollama/run_cloud_benchmark.py codex-planner-federal 5.5-low test-federal-agency-audit
+python3 ollama/run_cloud_benchmark.py codex-planner-federal-all 5.5-low
+python3 ollama/run_cloud_benchmark.py score-codex-planner-federal
 ```
+
+The hosted planner commands currently cover Codex only. The federal condition
+does not add Claude API or Gemini planner transports.
 
 ### Gemini (requires gemini CLI auth)
 

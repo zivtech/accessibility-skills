@@ -264,6 +264,7 @@ ACR_FIXTURES = [
     "county-library-retest",
     "utility-billing-retest",
     "court-payments-independence",
+    "resident-services-authorship-disclosure",
 ]
 
 # a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system
