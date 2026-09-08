@@ -158,6 +158,25 @@ Key flags: `--profile Default` (reuse the user's Chrome login state for authenti
 
 **When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
 
+## Batched one-pass per-page audit (default for rendered-context adjudication)
+
+When you have to adjudicate more than one scanner occurrence on a page — WCAG-EM audit sampling, a scanner gap-review lane, or re-testing a batch of findings — **work the page, not the rule**. A human reviewer loads a page once and reads its headings, control names, images, tables and landmarks in a single pass, then disposes of every finding on that page from that one look. Probing one element per rule (open page, check the empty button; re-open, check the missing alt; re-open, check the layout table…) is the slow anti-pattern this replaces: it re-navigates the same page many times and scatters the evidence.
+
+The default instead: **one DOM + accessibility-tree capture per bound page/state, covering every rule class at once, then adjudicate all of that page's occurrences from the single capture.** [`references/page-audit.mjs`](references/page-audit.mjs) is the reusable auditor — `auditPage()` runs in the page context and returns evidence for five scanner-rule classes in one call (`region_missing`, `heading_empty`, `button_empty`/empty-name controls, `alt_missing`, `table_layout`). Run it through whichever browser mode you are already in (Playwright `page.evaluate(AUDIT_PAGE_SRC)`, `agent-browser eval`, or the in-session JS tool).
+
+Method:
+
+1. **Group the page's occurrences first.** Map the raw scanner occurrences you must adjudicate to their pages/states (each SPA route or query state is a distinct page). An N-state app is N captures, not N × (rules) probes.
+2. **One capture per page/state.** Run the auditor once the page is loaded and settled. Persist the returned report as the page's evidence artifact (hash it for the receipt).
+3. **Adjudicate every rule for that page from the one report.** The report already carries the empty-name controls, missing-alt images, layout tables, missing landmarks and empty headings together — decide each occurrence's disposition against it without re-navigating.
+
+Discipline (the same rules that govern any evidence here):
+
+- **Detector, not verdict.** The auditor reports the facts a rule keys on; it assigns no WCAG SC, severity, or pass/fail. You do that, per occurrence, in rendered context.
+- **Cross-check the computed name.** Its `accName` walk applies ARIA precedence (an empty `aria-labelledby` target yields an empty name), but confirm an empty-name finding against the browser's OWN computed accessible name (Playwright `page.accessibility.snapshot()`, `agent-browser snapshot -i`, or the DevTools Accessibility pane) before mapping it to a criterion — that read decides 4.1.2 (empty name) vs 2.4.6 (present but non-meaningful).
+- **Positional locators drift.** A retained XPath from an earlier scan may not resolve in the current build (SPA re-render). Confirm at the rule/element level with a stable selector and disclose the drift; never launder a fresh element into a byte-identical reproduction of an old occurrence, and never force a DISMISS when the exact target could not be relocated.
+- **Overlapping views are not additive.** Clusters, raw occurrences, execution groups, criterion cells and ICT rows are different lenses on the same page; do not sum them, and a local observation never proves the whole page passes.
+
 ## Attribute-removal differential diagnosis
 
 A finding usually names a **cause**: "the `aria-label` is overriding better visible text", "`tabindex="0"` on the wrapper is why tab order is wrong". A snapshot proves the attribute exists. It does not prove the attribute is *why*. Differential diagnosis closes that gap: remove the suspect attribute, re-observe under identical conditions, and see whether the experience actually improves.

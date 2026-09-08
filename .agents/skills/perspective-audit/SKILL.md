@@ -69,6 +69,8 @@ Read both reference files at invocation:
 
 Read all source files relevant to the escalated perspectives. Understand the component structure, markup, CSS, and any JS handling state or interaction before running checklists.
 
+When the artifact is a live page rather than source, gather its evidence in a single per-page capture (a11y-test's `references/page-audit.mjs`, or one accessibility-tree pass) and run every escalated perspective's checklist against that one capture — do not re-inspect the page once per perspective. One page's evidence serves all its perspectives.
+
 ### Step 4 — Run per-perspective checklists
 
 For each escalated perspective:
