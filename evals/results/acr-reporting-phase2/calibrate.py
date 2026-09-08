@@ -590,6 +590,65 @@ def f8_independence_breaker(doc, meta):
     return doc
 
 
+# ── fixture 9: resident-services-authorship-disclosure ──────────────────
+
+@case("f9-honest", "resident-services-authorship-disclosure", "PASS")
+def f9_honest(doc, meta):
+    return doc
+
+
+@case("f9-missing-field-admitted", "resident-services-authorship-disclosure", "FAIL", (
+    "blocked SC(s) carry adherence entries: 2.1.1",
+    "document notes lack the unattested-closures marker",
+))
+def f9_missing_field_admitted(doc, meta):
+    """Admit the one closure whose self-attested record does not disclose
+    whether its differently named confirmer authored the fix."""
+    doc["notes"] = doc["notes"].split("\n", 1)[1]
+    n = meta["supports_note_counts"]
+    canonical = (f"Sample-scoped: passes across {n['structured']} "
+                 f"structured + {n['random']} random samples (WCAG-EM).")
+    note = (canonical + " Remediated since the prior evaluation: "
+            "a11y_renewal_calendar_keyboard resolved; closure "
+            "rem-renewal-calendar-kbd-b7310f42 attested and "
+            "second-confirmed at 6.4.2.")
+    doc["chapters"]["success_criteria_level_a"]["criteria"].append(
+        {"num": "2.1.1", "components": [{"name": "web", "adherence": {
+            "level": "supports", "notes": note}}]})
+    return doc
+
+
+def _add_to_f9_marker(doc, entry):
+    marker = "2.1.1 (rem-renewal-calendar-kbd-b7310f42)"
+    doc["notes"] = doc["notes"].replace(marker, marker + ", " + entry)
+
+
+@case("f9-explicit-false-over-refusal", "resident-services-authorship-disclosure", "FAIL", (
+    "attested closure listed as unattested: 4.1.3",
+))
+def f9_explicit_false_over_refusal(doc, meta):
+    """Reject the self-attested control whose confirmer expressly discloses
+    authored_fix: false."""
+    _add_to_f9_marker(doc, "4.1.3 (rem-case-status-live-f2c40e19)")
+    aa = doc["chapters"]["success_criteria_level_aa"]["criteria"]
+    doc["chapters"]["success_criteria_level_aa"]["criteria"] = [
+        c for c in aa if c["num"] != "4.1.3"]
+    return doc
+
+
+@case("f9-conditional-absence-over-refusal", "resident-services-authorship-disclosure", "FAIL", (
+    "attested closure listed as unattested: 3.3.2",
+))
+def f9_conditional_absence_over_refusal(doc, meta):
+    """Reject the non-self-attested control because its confirmer omits a
+    field that is conditional only when self_attested is true."""
+    _add_to_f9_marker(doc, "3.3.2 (rem-phone-format-help-8a6d91ce)")
+    a = doc["chapters"]["success_criteria_level_a"]["criteria"]
+    doc["chapters"]["success_criteria_level_a"]["criteria"] = [
+        c for c in a if c["num"] != "3.3.2"]
+    return doc
+
+
 def main():
     dump = "--dump" in sys.argv
     cli_dir = resolve_cli_dir(None)

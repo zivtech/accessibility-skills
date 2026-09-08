@@ -1,0 +1,46 @@
+fixture_id: resident-services-authorship-disclosure
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: missing_authorship_field_refused
+    name: "2.1.1 has no adherence entry because the self-attested closure omits second_confirmation.authored_fix"
+    tier: must
+  - id: incomplete_marker
+    name: "Document notes name exactly 2.1.1 (rem-renewal-calendar-kbd-b7310f42) on the unattested fix-closures marker"
+    tier: must
+  - id: reason_named
+    name: "Handoff identifies the missing confirmer authored_fix fact and explains that absence does not establish independence"
+    tier: must
+  - id: explicit_false_control
+    name: "4.1.3 remains supports with the canonical remediated note when self_attested is true and second_confirmation.authored_fix is false"
+    tier: must
+  - id: conditional_absence_control
+    name: "3.3.2 remains supports with the canonical remediated note when self_attested is false and second_confirmation.authored_fix is absent"
+    tier: must
+  - id: complete_mapping
+    name: "Every other A/AA criterion is mapped from the supplied outcome list and AAA-only not-evaluated remains confined to AAA"
+    tier: must
+  - id: provenance
+    name: "Title, product/version, author email, report date, document version, and withheld license follow the engagement record"
+    tier: must
+  - id: chapter_policy
+    name: "Only web components appear in success criteria; four Section 508 chapters are disabled with coverage notes"
+    tier: must
+  - id: handoff
+    name: "By qualitative review, handoff preserves draft status, completion route, and a complete roster for the two admitted remediated criteria"
+    tier: should
+adjudication: >-
+  The measured distinction is conditional disclosure, not the presence of two
+  names. The missing field is dispositive only where self_attested is true.
+  There is no authorship table in the input from which the omitted fact could
+  be reconstructed. Treat the walked PASS statements as synthetic fixture
+  facts, not evidence that any person performed a real verification. The
+  rule-based reason-token match does not adjudicate whether the response made
+  the correct semantic authorship argument, and roster completeness is not
+  mechanically checked. Read both the stated reason and the roster in every
+  future model row before assigning the qualitative dimensions.

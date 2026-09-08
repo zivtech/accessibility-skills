@@ -1,0 +1,135 @@
+fixture_id: resident-services-authorship-disclosure
+suite: acr-reporting
+input_format: engagement record + finished retest + re-evaluation delta + three findings + three fix-closure records + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Fixture #9 isolates the conditional authorship-disclosure boundary in the
+  fix-closure contract. All three improved outcomes have two named people,
+  valid dates, an exact 6.4.2 pin, complete methods, and walked PASS results.
+  The self-attested 2.1.1 closure omits second_confirmation.authored_fix and
+  is therefore a draft. A self-attested closure with authored_fix false and
+  a non-self-attested closure where the conditional field is absent are
+  valid controls. The input supplies no separate authorship table.
+
+catalog: 2.5-edition-wcag-2.2-508-en
+exact_fields:
+  title: "Linden Resident Services Portal Accessibility Conformance Report"
+  product.name: "Linden Resident Services Portal"
+  product.version: "6.4.2"
+  author.email: "ana.mensah@northstarinclusive.example"
+  report_date: "2026-09-05"
+forbidden_root_fields: [license]
+doc_version_expected: 2
+
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  "3.3.1": supports
+  "3.3.2": supports
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  "4.1.2": supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  "1.4.3": supports
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  "1.4.11": supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  "2.4.7": supports
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  "3.3.4": supports
+  "3.3.8": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+supports_note_counts: {structured: 4, random: 1}
+remediated_notes:
+  "4.1.3": [a11y_case_status_not_announced, rem-case-status-live-f2c40e19]
+  "3.3.2": [a11y_profile_phone_format_instruction, rem-phone-format-help-8a6d91ce]
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_renewal_calendar_keyboard
+  - a11y_case_status_not_announced
+  - a11y_profile_phone_format_instruction
+web_only_components: true
+incomplete: {expected: false}
+unattested_closures:
+  expected: true
+  gap_scs: ["2.1.1"]
+  item_ids: [rem-renewal-calendar-kbd-b7310f42]
+  reason_tokens:
+    "2.1.1": ["authored_fix", "authored fix"]
+roster:
+  - {sc: "4.1.3", item_id: rem-case-status-live-f2c40e19, attested_by: "June Park", second_by: "Omar Haddad", version: "6.4.2"}
+  - {sc: "3.3.2", item_id: rem-phone-format-help-8a6d91ce, attested_by: "Elena Rossi", second_by: "Samira Bello", version: "6.4.2"}
+disabled_chapters:
+  functional_performance_criteria: {should_tokens: [["not in scope", "web-only", "web only", "none"]]}
+  hardware: {should_tokens: [["not in scope", "web-only", "web only", "none"]]}
+  software: {should_tokens: [["not in scope", "web-only", "web only", "none"]]}
+  support_documentation_and_services: {should_tokens: [["not in scope", "web-only", "web only", "none"]]}
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["4 structured"]
+  - ["1 random"]
+disclaimer_tokens_must: [["draft"]]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding", "not represent a legally", "not a legally-binding"]
+fabricated_tokens: ["JAWS", "Dragon"]
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["authored_fix", "authored fix"]
+closure_notes: >-
+  2.1.1 is omitted because self_attested is true while the differently named
+  confirmer's authored_fix fact is absent. The record cannot establish that
+  either confirmer was a non-author. 4.1.3 remains supports because its
+  self-attested record expressly says authored_fix false for the confirmer.
+  3.3.2 remains supports because self_attested false already establishes a
+  non-author attester, so the confirmer field is not required.
+notes: >-
+  Synthetic fixture input. Its PASS walk-throughs are fixture facts for scorer
+  calibration and must not be described as real human evidence. Instrument
+  limit: the rule-based scorer checks that the handoff contains one of the
+  authorship-field reason tokens; it does not determine whether the prose made
+  the correct semantic authorship argument. It also does not mechanically
+  verify that the attestation roster is complete. Future model rows require a
+  human read of the stated reason and roster before adjudication.
