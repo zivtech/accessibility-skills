@@ -130,6 +130,8 @@ The a11y-test skill has six execution modes; other a11y skills in this bundle ro
 - **Playwright MCP for keyboard events** → do not use. `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead.
 - **Test script generation from prose specs** → `/webwright:run` or `/webwright:craft` (Claude Code plugin). LLM generates complete Python Playwright scripts from natural-language descriptions, using real `page.keyboard.press()` calls (CDP-backed). Claude Code only — not available in Codex CLI; generated `.py` files can be executed from Codex via `python3 script.py`. Do not run simultaneously with agent-browser (port conflicts).
 
+**Keep screenshots and image reads out of the main session.** Image bytes enter context two ways with opposite costs: `agent-browser screenshot` writes the file to disk and returns a path (safe), while the MCP screenshot tools (`claude-in-chrome`, Playwright `browser_take_screenshot`) and `Read` on an image return the bytes inline (they land in context). So run image-heavy visual/browser work in a subagent — `a11y-evidence-reader` is scoped to digest screenshots and returns text only, or use `delegate` — so the images stay in that agent's window and only a text digest returns. Prefer `agent-browser` over the MCP screenshot tools when you don't need to see the image yourself, and `Read` an image into the main window only when a digest won't do. (`to-file` does not apply — it captures large *stdout*, never images.)
+
 See `.claude/skills/a11y-test/SKILL.md` for the full routing table, decision flowchart, and the interactive reconnaissance quickstart.
 
 ## Local Model Portability (Ollama)
