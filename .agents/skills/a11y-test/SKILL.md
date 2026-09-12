@@ -19,9 +19,9 @@ Pick the right execution mode from the routing table before running anything (th
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Baseline sweep across a list of URLs — machine-readable axe-core evidence per page, no `.spec.js` authoring, not CI-embedded | [`references/baseline-url-scan.mjs`](references/baseline-url-scan.mjs) (in-repo reference script; peer deps `playwright` + `@axe-core/playwright`) | Sequential per-page axe scan + summary JSON for baseline/regression evidence across many pages in one run. `--census` adds DOM-census heuristics (empty paragraphs, autocomplete-absence, duplicate ids); `--alt-snapshot` writes a diffable per-page alt-text map. Detector output, not a conformance verdict — axe-detectable subset (plus heuristics) only. See "Baseline URL-list scan" below. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
-| Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See "Test script generation with Webwright" below. |
+| Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See [references/webwright-testgen.md](references/webwright-testgen.md). |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
-| Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom, Storybook play functions, or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See "Component screen-reader assertions with virtual-screen-reader" below. |
+| Component/unit-level screen-reader assertions — accessible names, reading order, live-region announcements — in the project's own test suite (Vitest/Jest+jsdom, Storybook play functions, or a browser page), no URL or journey needed | `@guidepup/virtual-screen-reader` (npm devDependency, exact-pinned `0.32.1`) | Per-component, per-PR spoken-output evidence in milliseconds — the implement→test layer keyboard-a11y-tester can't reach (it needs a deployed URL). Synthetic interactions: never keyboard-operability evidence. See [references/vsr-testing.md](references/vsr-testing.md). |
 | Visual inspection, DOM queries from a conversational session | `agent-browser screenshot` / `agent-browser screenshot --annotate` / `agent-browser snapshot --max-output 8000` | Same daemon, no test runner needed. |
 | A person confirms a fix at the fixed stage (the closure record needs its `attestation` block), or walks an ICT baseline row no machine mode covers | [`references/human-verification-walkthrough.md`](references/human-verification-walkthrough.md) | The human tier: a planned-operation-driven walk that records `before` / `action` / `expected` / `observed` per operation in a shape the five admissibility rules can read, plus an attended-media shape for the alternative-content rows. Never a free walk; the one place a single PASS is the unreliable result. See "Human verification walk-through" below. |
 | Anything requiring real keyboard event delivery through an MCP wrapper | **DO NOT USE Playwright MCP.** Its `browser_press_key` calls are silently dropped for most interactive widgets. Use `npx playwright test` or `agent-browser` instead. |
@@ -156,7 +156,7 @@ Key flags: `--profile Default` (reuse the user's Chrome login state for authenti
 
 **Keyboard-driving discipline (applies to all interactive modes, this one included):** never send a pre-counted sequence of Tabs. Snapshot/observe, then act on what is actually focused — "Tab until the focused control is named X" is right; "Tab 6 times" is wrong. Confirm success by state change (attribute flip, URL change, announcement), not assumption.
 
-**When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates below. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
+**When to escalate to `npx playwright test`**: when the verification needs to live in CI, run across PR builds, or exercise the 12 APG widget pattern templates in `references/keyboard-test-patterns.md`. Reconnaissance with `agent-browser` is for interactive probing; codified regression still belongs in `.spec.js` files.
 
 ## Batched one-pass per-page audit (default for rendered-context adjudication)
 
@@ -218,52 +218,11 @@ Rules:
 
 ## Test script generation with Webwright
 
-**When to use:** You have a prose a11y requirement (from the planner or a ticket) and need a runnable test script, without hand-writing it.
-
-**What it produces:** A Python Playwright script with navigation, keyboard interactions, ARIA state assertions, and screenshots. Webwright generates `sync_playwright` scripts by default — if you need async for an existing test harness, specify in the prompt.
-
-**Language mismatch warning:** Webwright generates Python. Existing CI is Node.js/.spec.js. Generated scripts are starting points — for CI, port logic to .spec.js using the APG templates below, or run Python directly if a Python test runner is available.
-
-**Example `/webwright:run`** (actual prompt that produced a passing dialog focus trap test in benchmark):
-```
-/webwright:run Navigate to https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/.
-Open the modal by clicking the trigger button.
-Verify focus moves into the modal.
-Tab through all focusable elements and verify focus wraps (focus trap).
-Press Escape and verify the modal closes and focus returns to the trigger.
-```
-
-**Quality gate:** The operator must review generated scripts before trusting results. Check that:
-- Keyboard events use `page.keyboard.press()` or `locator.press()`, NOT synthetic `dispatchEvent`
-- Assertions verify state changes (before/after), not just attribute presence
-- No `time.sleep()` > 5 seconds or hardcoded waits that mask timing issues
-
-**ARIA snapshot capability:** Webwright's Playwright environment captures `page.locator("body").aria_snapshot()` — the full accessibility tree with roles, states, and relationships as structured YAML. Richer than `agent-browser snapshot -i --max-output 8000` for structural analysis (captures all 4 tab→panel relationships via aria-controls/aria-labelledby cross-references, vs. agent-browser which shows only interactive element refs).
-
-**Limitations:**
-- No built-in axe-core — the LLM must write injection code (it does this correctly; see benchmark task 3c)
-- May miss a11y-specific patterns unless the prompt is specific about what to check
-- Python scripts don't run in JS CI without a Python runner
-- Requires Claude Code plugin install — not available in Codex CLI
-- Do not run simultaneously with agent-browser — both launch Chrome instances that may conflict on ports
-
-**Benchmark results (2026-05-26):** 25/25 across 5 WAI-ARIA APG tasks (dialog focus trap, tabs ARIA state, axe-core injection, menu keyboard navigation, ARIA tree inspection). All scripts used real `page.keyboard.press()` calls. Full results in `evals/suites/webwright-benchmark/`.
-
-### Installation
-
-**Prerequisites:** Python 3.10+, Playwright Python (`pip install playwright && playwright install chromium`)
-
-**Two-step install:**
-1. `/plugin marketplace add microsoft/Webwright`
-2. `/plugin install webwright@webwright`
-
-**If marketplace fails:** `git clone https://github.com/microsoft/Webwright && /plugin install ./Webwright`
-
-**Platform note:** Claude Code plugin only. Not available in Codex CLI. From Codex, the usable browser automation options are `agent-browser` and `keyboard-a11y-tester` (both plain CLIs). Generated `.py` scripts can be executed from Codex via `python3 script.py`.
+Generate Playwright test scripts from prose specs via the Webwright plugin. See [`references/webwright-testgen.md`](references/webwright-testgen.md).
 
 ## Goal-driven journey audits with keyboard-a11y-tester
 
-**When to use:** you have a live URL and a task in plain words ("can a keyboard-only or screen-reader user complete X?") and need evidence-linked WCAG findings without writing a test file — discovery audits, before/after patch evidence, whole-journey reviews. **When NOT to use:** widget CI regression (→ `.spec.js` + the APG templates), quick probing or authenticated Chrome-profile flows (→ `agent-browser`), rule scans (→ axe-core, §4).
+**When to use:** you have a live URL and a task in plain words ("can a keyboard-only or screen-reader user complete X?") and need evidence-linked WCAG findings without writing a test file — discovery audits, before/after patch evidence, whole-journey reviews. **When NOT to use:** widget CI regression (→ `.spec.js` + the APG templates in `references/keyboard-test-patterns.md`), quick probing or authenticated Chrome-profile flows (→ `agent-browser`), rule scans (→ axe-core, §4).
 
 **What it is:** [ezufelt/keyboard-a11y-tester](https://github.com/ezufelt/keyboard-a11y-tester) — an external tool, adopted at release `0.5.0` (commit `7e852a7`, MIT; originally adopted at `97eb13e`, bumped 2026-07-11 after upstream merged our PR #7 and began tagging releases — re-verify on every upgrade). Two layers: a deterministic Playwright/CDP runner (real keyboard events only, never `.click()`; machine-decidable WCAG checks; dual-signal focus-indicator measurement) and an emulated screen-reader persona (`@guidepup/virtual-screen-reader`: announcement capture, live-region monitoring, reading-order census). Runs both W3C personas (keyboard "Ade", screen-reader "Lakshmi") in one pass. As of 0.5.0 it also detects broken ARIA ID references and keyboard-focusable controls missing from the accessibility tree, includes our 3.3.2 UA-default-name check, and supports authenticated runs via `--storage-state <playwright-storageState.json>` (agent-browser remains the route when you want to reuse the user's real Chrome profile instead of exporting state). Cross-validated against this repo's 33 critic fixtures on 2026-07-10 — agreement record: `evals/results/keyboard-a11y-tester/README.md`.
 
@@ -328,93 +287,11 @@ These are measured test evidence for a11y-critic reviews (formal Phase 0 tier wi
 
 ## Component screen-reader assertions with virtual-screen-reader
 
-**When to use:** you're implementing or fixing a component and need to assert what a screen reader computes and announces — accessible names, reading order, live-region announcements — in the project's own test suite, per PR, with no URL, journey, or deployed page. This is the `implement → test` layer: the cheapest point to catch the toast/async-status defect class. **When NOT to use:** keyboard operability (its interactions are synthetic `user-event` events — real-key evidence stays with `.spec.js`, agent-browser, or keyboard-a11y-tester), anything visual (jsdom has no layout), page/journey audits (→ keyboard-a11y-tester), rule scans (→ axe-core, §4), open-shadow-DOM components (invisible to it — upstream #182), `aria-busy` states (unsupported — upstream #36).
-
-**What it is:** [guidepup/virtual-screen-reader](https://github.com/guidepup/virtual-screen-reader) — a screen-reader simulator as a library (MIT; adopted at npm `0.32.1`, exact-pinned). Walks the accessibility tree of any DOM, emits spoken phrases (`"button, Save document"`), captures live-region announcements with politeness prefixes (`"polite: Draft saved"`), and exposes SR quick-key emulation via `virtual.perform(virtual.commands.*)` — `moveToNextHeading`, `moveToNextLandmark`, per-level heading jumps, `jumpToErrorMessageElement` (aria-errormessage), aria-flowto reading-order commands. Spec-anchored (ACCNAME 1.2, CORE-AAM, HTML-AAM, WAI-ARIA 1.2) and WPT-tested upstream. It is already this stack's transitive SR engine inside keyboard-a11y-tester; this lane uses it directly. Validated in-repo 2026-07-11 in three environments — plain Node+jsdom, Vitest 4 jsdom environment, real Chromium via its ESM build — plus the Storybook lane 2026-07-13 (10.4.6 play functions via `@storybook/addon-vitest` browser mode, 12/12): `docs/virtual-screen-reader-adoption-assessment.md`. Jest+jsdom is expected to match Vitest but was not run — treat it as unvalidated until someone runs it.
-
-### Install (Node ≥ 20)
-
-```bash
-npm install --save-dev @guidepup/virtual-screen-reader@0.32.1   # exact pin; re-verify calibration rules on any bump
-```
-
-### Core patterns (Vitest, jsdom environment — the verified harness)
-
-```js
-import { afterEach, expect, test } from "vitest";
-import { virtual } from "@guidepup/virtual-screen-reader";
-
-afterEach(async () => {
-  await virtual.stop().catch(() => {});   // stateful singleton — mandatory, or phrase logs leak across tests
-  document.body.innerHTML = "";
-});
-
-// 1. Announcement assertion — persistent-container pattern (the only reliable shape; see rule 3)
-test("saving announces to screen reader users", async () => {
-  document.body.innerHTML = `
-    <main><button>Save</button></main>
-    <div role="status" id="app-status"></div>  <!-- persistent, empty at mount -->
-  `;
-  await virtual.start({ container: document.body });
-  document.getElementById("app-status").textContent = "Item saved";
-  await Promise.resolve();   // microtask flush suffices (measured) — no arbitrary sleep needed
-  expect(await virtual.spokenPhraseLog()).toContain("polite: Item saved");
-});
-
-// 2. Reading-order / name assertions — bounded walk (never while-true; see rule 1)
-test("reads the expected sequence", async () => {
-  document.body.innerHTML = `<h2>Cart</h2><p>$29.00</p><button>Buy now</button>`;
-  await virtual.start({ container: document.body });
-  const phrases = [];
-  for (let i = 0; i < 40; i++) {           // max-step guard: aria-modal traps the cursor by design
-    await virtual.next();
-    const p = await virtual.lastSpokenPhrase();
-    phrases.push(p);
-    if (p === "end of document") break;
-  }
-  expect(phrases.indexOf("$29.00")).toBeLessThan(phrases.indexOf("button, Buy now"));
-});
-```
-
-### Storybook stories as SR tests (verified 2026-07-13: Storybook 10.4.6 + `@storybook/addon-vitest` browser mode, Chromium)
-
-Component libraries that live in Storybook can make announcement assertions part of the stories themselves — CI-shaped via `npx vitest run --project=storybook`, and visible in the dev-mode Interactions panel:
-
-```js
-import { expect, userEvent, waitFor } from "storybook/test";
-import { virtual } from "@guidepup/virtual-screen-reader";
-
-export const AnnouncesOnSave = {
-  play: async ({ canvasElement, canvas }) => {
-    await virtual.start({ container: canvasElement });   // scope to the story canvas
-    try {
-      await userEvent.click(await canvas.findByRole("button", { name: "Save order" }));
-      await waitFor(async () =>
-        expect(await virtual.spokenPhraseLog()).toContain("polite: Item saved"));
-    } finally {
-      await virtual.stop();   // mandatory — measured: the phrase log SURVIVES a missing stop and bleeds into the next story (start() itself recovers; the leak is the hazard)
-    }
-  },
-};
-```
-
-Calibration rules 1–5 below apply unchanged in this lane (rule 3 re-verified in it). Upstream's own Storybook example omits the `finally` — don't copy that shape. Storybook 8 `@storybook/test-runner` setups are expected to work but were not run here. Validation record: `evals/results/virtual-screen-reader/harness/storybook/`.
-
-### Calibration rules (measured 2026-07-11 at 0.32.1; environments noted)
-
-1. **Never walk-to-end-of-document when `aria-modal="true"` is present** *(jsdom)*. The cursor traps inside the modal by design (upstream #54) — the walk never terminates. Scope `container` to the component and bound every walk with a max-step guard.
-2. **A silent or short walk is not a clean pass — check for shadow roots first** *(jsdom)*. Open shadow DOM is invisible (upstream #182). If `element.shadowRoot` exists anywhere under the container, VSR evidence is partial: route to keyboard-a11y-tester or browser testing instead.
-3. **Mount-with-content live regions read as silent — including correctly-fixed ones** *(jsdom AND Chromium — engine behavior, not a jsdom artifact)*. VSR announces mutations *inside* existing live regions (text changes, child insertions, mount-empty-then-fill) but not insertion of a pre-populated `role="alert"` element. Removal splits on `aria-atomic` *(measured, fixture sweep)*: clearing a non-atomic region is silent; clearing an `aria-atomic="true"` region announces an empty `"polite: "` phrase — an empty polite entry is a region-clear marker, not noise. Interpretive context (domain knowledge, not probed here): real screen readers are also inconsistent on pre-populated alert insertion, which is why robust toast guidance uses a persistent container. Consequences: assert via the persistent-container pattern; a silent log after mount-with-content of an alert is **inconclusive**, not proof the fix failed; buggy-component silence is defect evidence only alongside the structural fact (no role/aria-live present).
-4. **Fake timers wedge the singleton — hard incompatibility** *(Vitest; Jest unmeasured, mechanism harness-independent)*. Under fake timers, `start()` resolves but log reads hang forever, and the wedged state cascades hangs into every later test in the file, teardown included. Never enable fake timers in a file that runs VSR. Components needing fake timers (auto-dismiss toasts) get announcement assertions in a separate real-timer file — natural with the persistent-container pattern (assert the announcement on show; the timed dismiss is a separate concern).
-5. **Cite the VSR version in every piece of evidence** (`vsr@0.32.1 <test file>`). Both consumption routes are frozen (this exact pin; keyboard-a11y-tester's committed lockfile), so skew arises only on deliberate upgrade — the citation makes it detectable. Re-verify rules 1–4 on any version bump.
-
-### Evidence
-
-The artifacts are spoken-phrase logs plus the asserting test file — a11y-critic Phase 0 hard evidence (gate passed 2026-07-11: `evals/results/virtual-screen-reader/`; contract mapping in `docs/a11y-evidence-finding-contract.md`). Cite tool version + test file + the exact phrase or its absence, and pair silence with the structural fact (no role/aria-live present). Platform note: plain npm library — works from Claude Code and Codex.
+Component/unit screen-reader assertions (accessible names, reading order, live-region announcements) via `@guidepup/virtual-screen-reader`. See [`references/vsr-testing.md`](references/vsr-testing.md).
 
 ## Baseline URL-list scan with references/baseline-url-scan.mjs
 
-**When to use:** you have a list of URLs — a spot-check set, a sampled route list from a discovery or audit-scope engagement, a client's page inventory — and need machine-readable axe-core evidence across all of them in one run, without authoring a `.spec.js` file per page or wiring CI. Promoted 2026-08-14 from a one-off evidence harness written for the 2026-08-13 EPA public-sites engagement (the zivtech/a11y-audits repo (private), `2026-08-13-epa-public-sites/evidence/harness/audit-pages.mjs`, run against 40 views) into a reusable, generalized reference script: [references/baseline-url-scan.mjs](references/baseline-url-scan.mjs). **When NOT to use:** a single page or component you're actively developing against (→ `.spec.js` + the APG templates, or `agent-browser` for quick probing); keyboard operability or screen-reader announcement evidence — this mode never presses a key or captures an announcement (→ keyboard-a11y-tester or virtual-screen-reader); a sitemap-wide sweep where a maintained, hosted CI tool fits better than an in-repo script (→ pa11y-ci, below).
+**When to use:** you have a list of URLs — a spot-check set, a sampled route list from a discovery or audit-scope engagement, a client's page inventory — and need machine-readable axe-core evidence across all of them in one run, without authoring a `.spec.js` file per page or wiring CI. Promoted 2026-08-14 from a one-off evidence harness written for the 2026-08-13 EPA public-sites engagement (the zivtech/a11y-audits repo (private), `2026-08-13-epa-public-sites/evidence/harness/audit-pages.mjs`, run against 40 views) into a reusable, generalized reference script: [references/baseline-url-scan.mjs](references/baseline-url-scan.mjs). **When NOT to use:** a single page or component you're actively developing against (→ `.spec.js` + the APG templates in `references/keyboard-test-patterns.md`, or `agent-browser` for quick probing); keyboard operability or screen-reader announcement evidence — this mode never presses a key or captures an announcement (→ keyboard-a11y-tester or virtual-screen-reader); a sitemap-wide sweep where a maintained, hosted CI tool fits better than an in-repo script (→ pa11y-ci, below).
 
 **What it is:** a plain Node script depending only on `playwright` and `@axe-core/playwright` — peer dependencies installed in your own project, never in this repo (this bundle stays prompt-only; see this repo's `CLAUDE.md`). It launches one Chromium browser, visits each URL sequentially with a polite delay between requests, scans with axe-core scoped to this bundle's WCAG 2.2 AA default tag set at each configured viewport — default `1280x800,320x800`, matching the EPA harness's desktop+narrow lineage, override with `--viewports WxH[,WxH...]` — and writes a per-URL JSON result keyed by viewport (rule id, impact, node count, up to 3 sample selectors per viewport) plus an aggregated `summary.json` (violation counts by impact, violations by rule across all pages and viewports). It deliberately drops the EPA harness's other engagement-specific extras — full structure inventory, ARIA snapshot, keyboard tab-trace, text-spacing reflow probe, per-node XPath — to stay a focused baseline tool; reach for `agent-browser` or `keyboard-a11y-tester` when you need those.
 
@@ -476,279 +353,7 @@ Same adoption boundary as keyboard-a11y-tester and virtual-screen-reader: a rout
 
 **MANDATORY: All keyboard tests MUST use real Playwright keyboard interactions against a live or local site. Never check ARIA attributes alone and claim a keyboard test passed — you must actually press keys and verify the result.**
 
-### Required Testing Method
-- Use `page.keyboard.press('Enter')`, `page.keyboard.press('Tab')`, `page.keyboard.press('Escape')`, `page.keyboard.press('Space')` for single keys
-- Use `page.keyboard.press('Shift+ArrowRight')`, `page.keyboard.press('Control+Enter')`, `page.keyboard.press('Meta+Enter')` for key combos
-- Use `page.keyboard.down('Shift')` / `page.keyboard.up('Shift')` with `page.keyboard.press('ArrowRight')` for held-key sequences (e.g., text selection)
-- Use `element.focus()` then verify with `toBeFocused()` or `document.activeElement === element`
-- **NEVER** use synthetic `dispatchEvent(new KeyboardEvent(...))` to test keyboard features — that bypasses the real browser keyboard path and proves nothing
-- **NEVER** claim a keyboard test passed by only reading DOM attributes (aria-expanded, aria-pressed, etc.) without actually pressing a key and observing the state change
-
-### What to Test (with real key presses)
-1. **Tab order**: Press Tab repeatedly and verify focus moves to each interactive element in logical order
-2. **Enter/Space activation**: Focus a button/link, press Enter or Space, verify the expected action occurred (panel opened, state toggled, navigation happened)
-3. **Escape to dismiss**: Open a modal/popup/sidebar, press Escape, verify it closed
-4. **Arrow key navigation**: For tablists, menus, and custom widgets — press Arrow keys and verify focus/selection moves
-5. **Keyboard text selection**: For content areas — use Shift+Arrow to select text, verify selection was created via `window.getSelection()`
-6. **Modifier combos**: Test Ctrl+Enter, Meta+Enter, and other app-specific shortcuts
-7. **Focus management**: After opening/closing panels, verify focus moves to the correct element (e.g., CKEditor gets focus when annotation form opens, focus returns to trigger after modal closes)
-
-### State Verification Pattern
-Every keyboard test must follow this pattern:
-```
-1. Record initial state (aria-expanded, aria-pressed, visibility, activeElement)
-2. Perform real keyboard action (page.keyboard.press)
-3. Wait for UI to update (waitForTimeout or waitForFunction)
-4. Verify state actually changed (attribute toggled, element visible/hidden, focus moved)
-```
-
-Example — testing a toggle button:
-```js
-const btn = page.locator('button[aria-expanded]');
-const initialExpanded = await btn.getAttribute('aria-expanded');
-await btn.focus();
-await page.keyboard.press('Enter');
-await page.waitForTimeout(300);
-const afterExpanded = await btn.getAttribute('aria-expanded');
-expect(initialExpanded).not.toBe(afterExpanded); // State MUST change
-```
-
-### WAI-ARIA APG Keyboard Test Templates
-
-Reusable Playwright templates for common widget patterns. Each uses real `page.keyboard.press()` calls — never synthetic events.
-
-**1. Tree View**
-Interactions: ArrowDown/Up move `aria-activedescendant`; ArrowRight expands closed node or moves to first child; ArrowLeft collapses open node or moves to parent; Home/End jump to first/last visible treeitem; Enter activates.
-```js
-const tree = page.locator('[role="tree"]');
-await tree.focus();
-const before = await tree.getAttribute('aria-activedescendant');
-await page.keyboard.press('ArrowDown');
-await page.waitForTimeout(200);
-const after = await tree.getAttribute('aria-activedescendant');
-expect(after).not.toBe(before);
-expect(after).toBeTruthy(); // must reference a [role="treeitem"] id
-```
-
-**2. Roving Tabindex (Tabs)**
-Interactions: ArrowRight/Left move focus between `[role="tab"]` elements and update tabindex; active tab keeps `tabindex="0"`, others get `tabindex="-1"`; only one `aria-selected="true"` per `[role="tablist"]`.
-```js
-const activeTab = page.locator('[role="tab"][tabindex="0"]');
-await activeTab.focus();
-await page.keyboard.press('ArrowRight');
-await page.waitForTimeout(200);
-const newActive = page.locator('[role="tab"][tabindex="0"]');
-await expect(newActive).toHaveAttribute('aria-selected', 'true');
-expect(await page.locator('[role="tab"][aria-selected="true"]').count()).toBe(1);
-```
-
-**3. Dialog Focus Trap**
-Interactions: Tab/Shift+Tab cycle within `[role="dialog"]` (last focusable→first, first→last); Escape closes; focus returns to trigger after close.
-```js
-await triggerButton.click();
-const dialog = page.locator('[role="dialog"]');
-// Tab past last focusable item — should wrap to first
-const focusables = dialog.locator('button, [href], input, [tabindex="0"]');
-const count = await focusables.count();
-for (let i = 0; i < count; i++) await page.keyboard.press('Tab');
-await expect(focusables.first()).toBeFocused();
-await page.keyboard.press('Escape');
-await expect(triggerButton).toBeFocused();
-```
-
-**4. Sidebar/Panel Focus Management**
-Interactions: Close button receives focus on panel open; Escape closes panel and returns focus to trigger.
-```js
-await triggerButton.click();
-const panel = page.locator('[role="region"]'); // or your panel selector
-await expect(panel.locator('button[aria-label*="Close"]')).toBeFocused();
-await page.keyboard.press('Escape');
-await page.waitForTimeout(150); // allow React unmount + setTimeout(0)
-await expect(triggerButton).toBeFocused();
-```
-
-**5. Disclosure Widget**
-Interactions: Enter/Space toggle `aria-expanded` between "true"/"false"; `aria-controls` references the panel id; panel visibility matches expanded state.
-```js
-const btn = page.locator('button[aria-expanded]');
-await btn.focus();
-const initial = await btn.getAttribute('aria-expanded');
-await page.keyboard.press('Enter');
-await page.waitForTimeout(200);
-const toggled = await btn.getAttribute('aria-expanded');
-expect(toggled).not.toBe(initial);
-const panelId = await btn.getAttribute('aria-controls');
-const panel = page.locator(`#${panelId}`);
-await expect(panel).toBeVisible(); // when expanded=true
-```
-
-**6. Menu Button / Dropdown**
-Interactions: Enter/Space opens menu, focus moves to first item; Arrow keys navigate with wrapping; Escape closes and returns focus to trigger; Home/End jump to first/last; type-ahead jumps to matching item.
-```js
-const trigger = page.locator('button[aria-haspopup="menu"]');
-await trigger.focus();
-await page.keyboard.press('Enter');
-await page.waitForTimeout(200);
-const menu = page.locator('[role="menu"]');
-await expect(menu).toBeVisible();
-await expect(menu.locator('[role="menuitem"]').first()).toBeFocused();
-await page.keyboard.press('End');
-await expect(menu.locator('[role="menuitem"]').last()).toBeFocused();
-await page.keyboard.press('Escape');
-await expect(trigger).toBeFocused();
-```
-
-**7. Combobox / Autocomplete**
-Interactions: typing shows listbox with filtered options; ArrowDown focuses first option; Enter selects and closes; Escape closes without selection; `aria-expanded` and `aria-activedescendant` update.
-```js
-const input = page.locator('[role="combobox"]');
-await input.focus();
-await input.type('ap');
-await page.waitForTimeout(300);
-await expect(input).toHaveAttribute('aria-expanded', 'true');
-const listbox = page.locator('[role="listbox"]');
-await page.keyboard.press('ArrowDown');
-expect(await input.getAttribute('aria-activedescendant')).toBeTruthy();
-await page.keyboard.press('Enter');
-await expect(listbox).toBeHidden();
-```
-
-**8. Listbox (single and multi-select)**
-Interactions: Arrow keys move selection in single-select; Space toggles in multi-select; Shift+Arrow extends range; Home/End jump to first/last; type-ahead navigation.
-```js
-const listbox = page.locator('[role="listbox"]');
-await listbox.focus();
-await expect(listbox.locator('[role="option"]').first()).toHaveAttribute('aria-selected', 'true');
-await page.keyboard.press('ArrowDown');
-await page.waitForTimeout(150);
-await expect(listbox.locator('[role="option"]').nth(1)).toHaveAttribute('aria-selected', 'true');
-await page.keyboard.press('End');
-await expect(listbox.locator('[role="option"]').last()).toBeFocused();
-```
-
-**9. Slider**
-Interactions: ArrowLeft/Right adjust by step; PageUp/Down by larger increment; Home/End set to min/max; `aria-valuenow`, `aria-valuemin`, `aria-valuemax` update.
-```js
-const slider = page.locator('[role="slider"]');
-await slider.focus();
-const before = Number(await slider.getAttribute('aria-valuenow'));
-await page.keyboard.press('ArrowRight');
-await page.waitForTimeout(150);
-expect(Number(await slider.getAttribute('aria-valuenow'))).toBeGreaterThan(before);
-await page.keyboard.press('Home');
-expect(await slider.getAttribute('aria-valuenow')).toBe(await slider.getAttribute('aria-valuemin'));
-await page.keyboard.press('End');
-expect(await slider.getAttribute('aria-valuenow')).toBe(await slider.getAttribute('aria-valuemax'));
-```
-
-**10. Date Picker**
-Interactions: Arrow keys navigate days; PageUp/Down navigate months; Shift+PageUp/Down navigate years; Enter selects and closes; Escape closes without selection and returns focus to input.
-```js
-const input = page.locator('[aria-label*="date" i]');
-await input.focus();
-await page.keyboard.press('Enter');
-const grid = page.locator('[role="grid"]');
-await expect(grid).toBeVisible();
-await page.keyboard.press('ArrowRight');
-await page.keyboard.press('PageDown');
-await page.keyboard.press('Enter');
-await expect(grid).toBeHidden();
-expect(await input.inputValue()).not.toBe('');
-```
-
-**11. Accordion**
-Interactions: Enter/Space on header toggles panel; `aria-expanded` reflects state; Arrow keys move between headers; Home/End jump to first/last header.
-```js
-const headers = page.locator('[role="button"][aria-expanded]');
-await headers.first().focus();
-const initial = await headers.first().getAttribute('aria-expanded');
-await page.keyboard.press('Enter');
-await page.waitForTimeout(200);
-expect(await headers.first().getAttribute('aria-expanded')).not.toBe(initial);
-await page.keyboard.press('ArrowDown');
-await expect(headers.nth(1)).toBeFocused();
-await page.keyboard.press('End');
-await expect(headers.last()).toBeFocused();
-```
-
-**12. Radio Group**
-Interactions: Arrow keys move selection within group (roving tabindex); Tab moves to/from group as a whole; first or checked radio receives initial focus; `aria-checked` updates with selection.
-```js
-const radios = page.locator('[role="radiogroup"] [role="radio"]');
-await radios.first().focus();
-await page.keyboard.press('ArrowDown');
-await page.waitForTimeout(150);
-await expect(radios.nth(1)).toHaveAttribute('aria-checked', 'true');
-await expect(radios.first()).toHaveAttribute('aria-checked', 'false');
-await page.keyboard.press('Tab');
-await expect(radios.nth(1)).not.toBeFocused();
-```
-
-### Live Site Requirement
-Keyboard tests MUST run against a real site (local dev environment like Lando/DDEV, or staging). Guard against accidental use of mocks:
-```js
-if (!BASE_URL || !BASE_URL.match(/https?:\/\/.+/)) {
-  throw new Error('Keyboard tests require a real site. Set BASE_URL.');
-}
-```
-
-### SPA-Specific Testing Patterns
-
-React and other SPA frameworks introduce gotchas that break naive Playwright tests:
-
-- **No direct URL navigation**: SPA routes (e.g., `/book/truth-lending/2460032`) return 404 from the server — the server has no route for them. Navigate WITHIN the app by clicking menu items and waiting for React to render. Use `waitForSelector()` to confirm content has loaded before interacting.
-
-- **Duplicate DOM (mobile + desktop)**: Many React apps render the same component twice — once for desktop, once for mobile. Playwright strict mode throws when a selector matches both. Fix by scoping to a container (`nav.left-sidebar [role="tree"]`) or appending `.first()` / `.last()` to your locator.
-
-- **React state waits**: After `page.keyboard.press()`, React state updates are async — the DOM may not reflect the new state for tens of milliseconds. Add `waitForTimeout(200–500)` or `waitForFunction(() => ...)` before asserting on ARIA attributes that change via React state.
-
-- **React 16 `setTimeout(0)` for focus-after-unmount**: In React 16, focus calls issued inside async callbacks do not survive component unmount. Production code must wrap the focus call in `setTimeout(() => el.focus(), 0)`. Tests must account for this by allowing 100–200ms after a panel closes before checking `document.activeElement`.
-
-- **DOMPurify stripping `data-*` attributes**: A bare `DOMPurify.sanitize()` call strips `data-*` attributes by default. If tests find click handlers broken after sanitization, the fix is to route sanitization through a wrapper component that calls sanitize at render time (not as a pre-processing step that discards needed attributes).
-
-- **Playwright MCP cannot deliver keyboard events**: The Playwright MCP browser integration CANNOT forward keyboard events — `browser_press_key` calls are silently dropped for most interactive widgets. Always run keyboard a11y tests with `npx playwright test` using `.spec.js` files. Use the MCP browser only for visual inspection and DOM queries.
-
-### CSS Anti-patterns That Break Keyboard Access
-
-**`visibility:hidden` + `:focus-within` catch-22 (CRITICAL)**
-
-Never use `visibility: hidden` on elements that are supposed to become visible when a parent receives keyboard focus via `:focus-within`. The pattern creates an impossible state for keyboard users:
-
-- `visibility: hidden` removes the element from the tab order entirely
-- Because the element can't receive focus, `:focus-within` is never triggered on the parent
-- Result: keyboard users can never reach the element at all
-
-```css
-/* ❌ BROKEN — keyboard users can never trigger :focus-within on the parent */
-.annotation-block-edit {
-  opacity: 0;
-  visibility: hidden; /* removes from tab order → :focus-within never fires */
-}
-.annotation-block:focus-within .annotation-block-edit {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ✅ CORRECT — opacity keeps element in tab order; :focus-within works */
-.annotation-block-edit {
-  opacity: 0; /* visually hidden but still focusable */
-}
-.annotation-block:hover .annotation-block-edit,
-.annotation-block:focus-within .annotation-block-edit {
-  opacity: 1;
-}
-```
-
-This applies to any "reveal on hover/focus" pattern: edit buttons, delete buttons, action menus inside cards. Use `opacity` only (not `visibility`) when the element must remain keyboard-reachable.
-
-### ARIA Attribute Checks (supplement, not substitute)
-After verifying keyboard operability, also check:
-- Buttons have `aria-label` or visible text
-- Toggle buttons have `aria-pressed` or `aria-expanded`
-- Tab widgets have `role="tablist"`, `role="tab"`, `aria-selected`
-- SVGs inside buttons have `aria-hidden="true"`
-- Close buttons have descriptive `aria-label`
-- Only one tab has `aria-selected="true"` per tablist
+The full keyboard testing detail — required testing method, the 12 WAI-ARIA APG widget-pattern templates, SPA-specific patterns, CSS anti-patterns, and ARIA supplement checks — is in [`references/keyboard-test-patterns.md`](references/keyboard-test-patterns.md).
 
 ## Section 5: Time-Based Media Tests
 
@@ -805,114 +410,8 @@ Run these tests when `<video>`, `<audio>`, or media player components are presen
 - Verify: focus moves to main content or heading; back button restores expected focus
 
 ## 2. Visual Regression Tests (REQUIRED)
-Visual regression tests ensure accessibility fixes don't introduce unintended visual changes. Supports **Playwright** and optionally **BackstopJS** for side-by-side HTML reports.
 
-### Baseline Strategy
-- **Preferred**: Use `npx playwright test --update-snapshots` on the current branch to establish baselines, then run tests after further changes to detect regressions.
-- **CRITICAL — build must be complete first**: Only run `--update-snapshots` after any build (React, webpack, etc.) has fully finished. Running it during a concurrent build captures mixed pre/post-build screenshots — some pages reflect old code, some new. The resulting baseline is internally inconsistent and will fail on the next clean run. Wait for the build to complete, then run `--update-snapshots`, then run the tests.
-- **Cross-branch comparison**: Only when explicitly requested. Requires branch switching, cache clearing, and potential config sync — avoid unless necessary.
-- **Never** assume branch-switching is safe without checking with the user first.
-
-### Playwright Screenshot Configuration
-Use `toHaveScreenshot()` with the correct options:
-
-- **`maxDiffPixelRatio`** (0 to 1): Maximum ratio of *different pixels* to total pixels. Use `0.01` (1%) for element screenshots, `0.03` (3%) for full-page screenshots. This is the primary control for flakiness.
-- **`threshold`** (0 to 1): Per-pixel *color distance* tolerance (0 = exact, 1 = any color). Default `0.2` is fine for most cases. This is NOT the overall diff threshold.
-- **`maxDiffPixels`**: Absolute count of allowed different pixels. Alternative to `maxDiffPixelRatio`.
-
-```js
-// Element screenshot — tight tolerance
-await expect(element).toHaveScreenshot('name.png', {
-  maxDiffPixelRatio: 0.01,
-});
-
-// Full-page screenshot — looser for dynamic content
-await expect(page).toHaveScreenshot('name.png', {
-  fullPage: true,
-  maxDiffPixelRatio: 0.03,
-  mask: [page.locator('.dynamic-region')],
-});
-```
-
-### BackstopJS (Optional)
-BackstopJS provides an HTML report with side-by-side visual diffs — useful for manual review. It can run alongside Playwright tests.
-
-**Setup:**
-```bash
-npm install --save-dev backstopjs
-```
-
-**Configuration** (`backstop.json`):
-- Use `scenarioDefaults` for shared settings (delay, misMatchThreshold, removeSelectors)
-- Use `"selectors": ["document"]` for full-page, or class/tag selectors for elements
-- Avoid attribute selectors with quoted values (e.g. `[type='text']`) — they cause parse errors in Puppeteer engine
-- Use `requireSameDimensions: false` for pages with dynamic heights
-- Full-page scenarios need higher `misMatchThreshold` (15-20%) due to dynamic content
-- Element scenarios can use tighter thresholds (5-10%)
-
-**Popup/overlay handling:**
-Create an `onReady.cjs` engine script (use `.cjs` extension if project has `"type": "module"` in package.json):
-```js
-const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-module.exports = async (page, scenario, vp) => {
-  await wait(2000);
-  await page.evaluate(() => {
-    document.querySelectorAll('dialog, [role="dialog"], .modal, .popup').forEach(el => el.remove());
-  });
-  await wait(300);
-};
-```
-
-**Workflow:**
-```bash
-npx backstop reference --config=path/to/backstop.json  # Capture baseline
-npx backstop test --config=path/to/backstop.json       # Compare against baseline
-npx backstop approve --config=path/to/backstop.json    # Promote test -> reference
-npx backstop openReport --config=path/to/backstop.json # View HTML report
-```
-
-### Handling Dynamic Content
-CMS pages often contain dynamic elements (timestamps, session blocks, popups). These cause false failures.
-
-- **Prefer element-level screenshots** over full-page — more stable and more useful for a11y regression detection.
-- **Mask dynamic regions**: Playwright uses `mask: [page.locator()]`, BackstopJS uses `removeSelectors` or `hideSelectors`.
-- **Common elements to mask/remove**: `.contextual`, `.toolbar-tray`, `.messages`, `[data-drupal-messages]`, `dialog`, `[role="dialog"]`, time/date elements.
-- **Dismiss popups before capture**: Use Playwright's `dismissPopups()` helper or BackstopJS `onReadyScript`.
-- **Use `waitForLoadState('networkidle')`** and a short wait to let JS behaviors settle before capture.
-
-### Contrast Verification
-- Use browser DevTools (Chrome: CSS Overview, Firefox: Accessibility Inspector) to audit all text contrast
-- Run axe-core with `color-contrast` rule enabled (catches most but not all cases)
-- Manually check: text over images/gradients (axe-core misses these)
-- Manually check: focus indicator contrast against both focused and unfocused backgrounds
-- Check non-text contrast: UI component borders, icons, form control outlines (WCAG 1.4.11)
-- Test with forced-colors mode: verify all interactive elements remain distinguishable
-
-### Zoom and Reflow Verification
-- Set viewport to 1280px, zoom to 400% (equivalent to 320px)
-- Verify: no horizontal scrollbar, content reflows to single column
-- Verify: no text truncation, overlap, or content hidden behind other elements
-- Test text spacing override: 1.5x line height, 2x paragraph spacing, 0.12em letter spacing
-- Verify: all interactive elements remain visible and operable at 200% zoom
-
-### Elements to Test
-- Focus indicators (links, buttons, inputs in :focus state)
-- Breadcrumbs (structure and current page indicator)
-- Navigation menus (default, hover, active states)
-- Form inputs (borders, focus states)
-- Link underlines in content areas
-- External link icons
-- Skip links (when visible)
-- Progress bars and loading indicators
-
-### Viewport Sizes
-- Desktop: 1280x800
-- Tablet: 768x1024
-- Mobile: 320x568
-
-### Reporting
-- Playwright: `npx playwright show-report` for HTML report with side-by-side diffs
-- BackstopJS: `npx backstop openReport` for visual comparison dashboard
+Visual regression testing — screenshot baselines, dynamic-content handling, contrast, zoom/reflow. See [`references/visual-regression-testing.md`](references/visual-regression-testing.md).
 
 ## 3. WCAG Compliance Checks
 - 1.1.1 Non-text Content (alt text, aria-labels)
