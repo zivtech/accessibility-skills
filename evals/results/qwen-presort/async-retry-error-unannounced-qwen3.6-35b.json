@@ -1,0 +1,45 @@
+{
+  "fixture": "async-retry-error-unannounced",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:14:23.578429+00:00",
+  "num_candidates": 5,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the main content area that swaps between error messages and transaction lists",
+      "suspected_class": "live-region",
+      "why": "state changes for failures and successful data loads appear visually but lack announcements for assistive technology users.",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the container wrapping the busy indicator and dynamic content",
+      "suspected_class": "live-region",
+      "why": "it signals a busy state but does not explicitly announce when that state clears or when new information becomes available.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the retry control in the panel header",
+      "suspected_class": "focus-order-indicator",
+      "why": "focus stays on this control after operations complete, which may leave users uncertain about where to look next or whether the operation succeeded.",
+      "confidence": "low"
+    },
+    {
+      "id": "c4",
+      "location_hint": "the interactive button in the panel header",
+      "suspected_class": "contrast-visual",
+      "why": "the blue foreground color against a white background should be verified for minimum contrast ratios, particularly if the rendered text size is small.",
+      "confidence": "low"
+    },
+    {
+      "id": "c5",
+      "location_hint": "the loading indicator container",
+      "suspected_class": "name-role-state",
+      "why": "it applies both a status role and a live attribute simultaneously, which is redundant and may cause unexpected announcement behavior on some assistive technologies.",
+      "confidence": "low"
+    }
+  ]
+}

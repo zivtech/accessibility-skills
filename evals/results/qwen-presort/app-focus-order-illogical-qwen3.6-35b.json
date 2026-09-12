@@ -1,0 +1,45 @@
+{
+  "fixture": "app-focus-order-illogical",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:13:45.454914+00:00",
+  "num_candidates": 5,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the target element that the skip-to-content link jumps to",
+      "suspected_class": "keyboard-operability",
+      "why": "Generic divs are not focusable by default, so keyboard users may not actually move focus to this location without additional attributes.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the main content area and the sidebar navigation relative to each other in the markup",
+      "suspected_class": "focus-order-indicator",
+      "why": "CSS flex order visually places the sidebar first, but the DOM structure puts main before aside, which will cause the keyboard tab sequence to jump backward visually.",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the floating action button positioned at the bottom right of the viewport",
+      "suspected_class": "focus-order-indicator",
+      "why": "Explicitly assigning a positive tab index forces this control into an unnatural position in the keyboard sequence, breaking the expected reading order.",
+      "confidence": "high"
+    },
+    {
+      "id": "c4",
+      "location_hint": "the focus outline on the floating action button",
+      "suspected_class": "contrast-visual",
+      "why": "The dark blue outline color against the button's blue background may have insufficient contrast to be clearly visible to keyboard users.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c5",
+      "location_hint": "the heading text inside the sidebar navigation landmark",
+      "suspected_class": "semantic-html",
+      "why": "Using a level-two heading inside a sidebar alongside a page-level heading might disrupt the document outline; worth verifying if it should be scoped or use an aria-level attribute.",
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "fixture": "accordion-no-region-role",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:12:53.889474+00:00",
+  "num_candidates": 5,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "The outer container wrapping all accordion items",
+      "suspected_class": "semantic-html",
+      "why": "It lacks a grouping role to establish the relationship between triggers and panels, which might confuse screen readers about the widget's structure.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c2",
+      "location_hint": "The conditional content panels that appear when expanded",
+      "suspected_class": "name-role-state",
+      "why": "They are rendered as plain divs without a region role or a label pointing back to their trigger button, so assistive technology may not announce them as distinct interactive regions.",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "location_hint": "The trigger buttons and their referenced content panels",
+      "suspected_class": "semantic-html",
+      "why": "The reference attribute pointing to the content area targets elements that are conditionally removed from the DOM when collapsed, which can break tracking for some assistive technologies.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c4",
+      "location_hint": "The navigation between accordion items",
+      "suspected_class": "keyboard-operability",
+      "why": "There is no visible or documented support for arrow key navigation between triggers, which is standard for this widget type and expected by power users.",
+      "confidence": "low"
+    },
+    {
+      "id": "c5",
+      "location_hint": "The focus behavior when a panel expands or collapses",
+      "suspected_class": "focus-order-indicator",
+      "why": "Focus remains on the trigger button after toggling, which might leave users unsure whether the content is active or if they need to tab into it manually.",
+      "confidence": "low"
+    }
+  ]
+}

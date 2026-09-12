@@ -1,0 +1,38 @@
+{
+  "fixture": "trail-conditions-filter",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:17:16.323545+00:00",
+  "num_candidates": 4,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the Apply button when it is in the disabled state",
+      "suspected_class": "contrast-visual",
+      "why": "The white text remains unchanged while the button background shifts to a light gray, creating a luminance difference that should be manually verified against minimum contrast thresholds.",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the helper text paragraph positioned below the Apply button",
+      "suspected_class": "live-region",
+      "why": "When the button transitions from enabled to disabled, the helper text is linked via description but may not dynamically announce its content to screen readers without additional live region handling.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the state attributes applied to the Apply button",
+      "suspected_class": "name-role-state",
+      "why": "Both the native disabled attribute and an aria-disabled attribute are applied simultaneously, which could cause redundant or inconsistent state announcements across different assistive technologies.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c4",
+      "location_hint": "the default option in the region dropdown menu",
+      "suspected_class": "semantic-html",
+      "why": "The default dropdown option uses an empty value string, which some screen readers may read ambiguously rather than clearly indicating a neutral or unselected filter state.",
+      "confidence": "low"
+    }
+  ]
+}
