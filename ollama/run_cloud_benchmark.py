@@ -127,6 +127,40 @@ GEMINI_TIERS = [
     {"name": "pro", "model": "gemini-2.5-pro", "label": "Gemini 2.5 Pro"},
 ]
 
+# USD per 1,000,000 tokens, by the exact model id passed to
+# client.messages.create() in run_claude() (see CLAUDE_TIERS above).
+# VERIFY against current published pricing before trusting cost figures.
+PRICES = {
+    "claude-opus-4-7": {"input": 15.00, "output": 75.00, "cache_write": 18.75, "cache_read": 1.50},
+    "claude-sonnet-4-6": {"input": 3.00, "output": 15.00, "cache_write": 3.75, "cache_read": 0.30},
+    "claude-haiku-4-5-20251001": {"input": 0.80, "output": 4.00, "cache_write": 1.00, "cache_read": 0.08},
+    # Fallback for any model id not listed above (e.g. a new tier added
+    # without a matching PRICES entry) — priced at the Sonnet rate as a
+    # conservative mid-tier default. VERIFY against current published
+    # pricing before trusting cost figures.
+    "_DEFAULT": {"input": 3.00, "output": 15.00, "cache_write": 3.75, "cache_read": 0.30},
+}
+
+
+def cost_usd(usage: dict, model: str) -> float:
+    """Compute USD cost from a Claude usage dict and model id.
+
+    usage keys (any may be absent, defaulting to 0): input_tokens,
+    output_tokens, cache_creation_input_tokens, cache_read_input_tokens.
+    Falls back to PRICES["_DEFAULT"] for an unrecognized model id.
+    """
+    prices = PRICES.get(model, PRICES["_DEFAULT"])
+    input_tokens = usage.get("input_tokens", 0) or 0
+    output_tokens = usage.get("output_tokens", 0) or 0
+    cache_write_tokens = usage.get("cache_creation_input_tokens", 0) or 0
+    cache_read_tokens = usage.get("cache_read_input_tokens", 0) or 0
+    return (
+        input_tokens / 1_000_000 * prices["input"]
+        + output_tokens / 1_000_000 * prices["output"]
+        + cache_write_tokens / 1_000_000 * prices["cache_write"]
+        + cache_read_tokens / 1_000_000 * prices["cache_read"]
+    )
+
 ALL_CRITIC_FIXTURES = [
     "button-skip-link-clean", "interactive-dropdown-clean", "modal-complete-clean",
     "search-results-dynamic-clean", "trail-conditions-filter", "pool-lesson-registration",
@@ -456,12 +490,27 @@ def run_claude(tier, fixture_id, system_prompt, user_prompt, skill="critic"):
         elif block.type == "text":
             response_text += block.text
 
+    # Defensive: not every model/tier response carries cache fields (e.g. no
+    # prompt caching used on that call), so read them via getattr rather than
+    # assuming they're present on response.usage.
+    cache_creation_input_tokens = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
+    cache_read_input_tokens = getattr(response.usage, "cache_read_input_tokens", 0) or 0
+    usage_for_cost = {
+        "input_tokens": response.usage.input_tokens,
+        "output_tokens": response.usage.output_tokens,
+        "cache_creation_input_tokens": cache_creation_input_tokens,
+        "cache_read_input_tokens": cache_read_input_tokens,
+    }
+
     data = {
         "response": response_text,
         "done": True,
         "thinking": thinking_text if thinking_text else None,
         "input_tokens": response.usage.input_tokens,
         "output_tokens": response.usage.output_tokens,
+        "cache_creation_input_tokens": cache_creation_input_tokens,
+        "cache_read_input_tokens": cache_read_input_tokens,
+        "cost_usd": cost_usd(usage_for_cost, tier["model"]),
         "_benchmark": {
             "platform": "claude",
             "model": tier["model"],

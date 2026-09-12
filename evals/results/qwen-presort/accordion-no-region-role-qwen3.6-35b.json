@@ -1,0 +1,31 @@
+{
+  "fixture": "accordion-no-region-role",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T19:41:45.990955+00:00",
+  "num_candidates": 3,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the content containers that appear when a trigger is activated",
+      "suspected_class": "name-role-state",
+      "why": "they lack a landmark role and an accessible label to identify the section for screen reader users",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the interactive triggers controlling the expandable sections",
+      "suspected_class": "keyboard-operability",
+      "why": "focus management during expansion is not explicitly handled, which may leave keyboard users disoriented when new content appears",
+      "confidence": "medium"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the conditional rendering logic for the expandable panels",
+      "suspected_class": "semantic-html",
+      "why": "mounting and unmounting DOM nodes dynamically can sometimes cause assistive technologies to lose context or focus state unexpectedly",
+      "confidence": "low"
+    }
+  ]
+}
