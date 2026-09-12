@@ -23,8 +23,10 @@ Three clean, whole-section, self-contained mode guides → new reference files, 
 
 Result: SKILL.md 93,269 → 76,754 chars (17,215 moved). `check_mirrors --strict`, `lint_skills`, `check_client_refs` green; moved content verified verbatim in refs.
 
-### Stage 1b — next
-The APG keyboard-test-patterns block (largest single chunk, ~14.5KB) → `references/keyboard-test-patterns.md`. Needs keep-parent/move-children care: the `## 1. Keyboard Accessibility Tests` heading + its MANDATORY real-keyboard-events caution stay inline as the anchor; the method/templates/SPA/CSS children move. Rewrite the two "APG templates below" pointers.
+### Stage 1b — DONE (this PR)
+The APG keyboard-test-patterns block → `references/keyboard-test-patterns.md`. Keep-parent/move-children: `## 1. Keyboard Accessibility Tests` + its MANDATORY real-keyboard-events caution stay inline; the ### children (required method, 12 APG widget templates, SPA patterns, CSS anti-patterns, ARIA supplement) moved (14,501 chars). Fixed 4 APG-template cross-refs — 3 in SKILL.md plus the dangling "below" that Stage 1a left inside `webwright-testgen.md`.
+
+Result: SKILL.md 76,754 → 62,637 chars. Combined Stage 1a+1b: **93,269 → 62,637 (~33% off)**. All validators green.
 
 ### Stage 2 — own PR, higher care (deferred; the 6 flagged risks live here)
 - Retest classification / operation-evidence admissibility / disposition block → `references/retest-and-admissibility.md`.

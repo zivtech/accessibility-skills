@@ -4,7 +4,7 @@
 
 **What it produces:** A Python Playwright script with navigation, keyboard interactions, ARIA state assertions, and screenshots. Webwright generates `sync_playwright` scripts by default — if you need async for an existing test harness, specify in the prompt.
 
-**Language mismatch warning:** Webwright generates Python. Existing CI is Node.js/.spec.js. Generated scripts are starting points — for CI, port logic to .spec.js using the APG templates below, or run Python directly if a Python test runner is available.
+**Language mismatch warning:** Webwright generates Python. Existing CI is Node.js/.spec.js. Generated scripts are starting points — for CI, port logic to .spec.js using the APG templates in `references/keyboard-test-patterns.md`, or run Python directly if a Python test runner is available.
 
 **Example `/webwright:run`** (actual prompt that produced a passing dialog focus trap test in benchmark):
 ```
