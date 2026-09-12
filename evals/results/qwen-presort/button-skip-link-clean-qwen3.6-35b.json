@@ -1,0 +1,38 @@
+{
+  "fixture": "button-skip-link-clean",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:01:51.341581+00:00",
+  "num_candidates": 4,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the off-screen skip-to-content link",
+      "suspected_class": "other",
+      "why": "Verify the negative top value fully hides the link without leaving partial visibility or causing scrollbars depending on font size.",
+      "confidence": "low"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the navigation links in the main menu",
+      "suspected_class": "name-role-state",
+      "why": "Check whether an active or current page indicator is provided for keyboard users navigating between sections.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the focus ring on navigation items",
+      "suspected_class": "focus-order-indicator",
+      "why": "Ensure the negative outline offset does not clip the focus indicator against the link padding or adjacent elements.",
+      "confidence": "low"
+    },
+    {
+      "id": "c4",
+      "location_hint": "the copyright text in the footer",
+      "suspected_class": "contrast-visual",
+      "why": "Verify the light gray text on the light background meets minimum contrast requirements for readability.",
+      "confidence": "low"
+    }
+  ]
+}

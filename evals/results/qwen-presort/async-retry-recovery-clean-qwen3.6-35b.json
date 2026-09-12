@@ -1,0 +1,52 @@
+{
+  "fixture": "async-retry-recovery-clean",
+  "model": "qwen3.6:35b",
+  "port": 11435,
+  "temperature": 0.3,
+  "generated_at": "2026-09-12T20:01:13.853716+00:00",
+  "num_candidates": 6,
+  "candidates": [
+    {
+      "id": "c1",
+      "location_hint": "the persistent status message container that updates when loading or ready",
+      "suspected_class": "live-region",
+      "why": "atomic mode forces assistive technology to re-read the entire container on every update, which could be noisy or redundant if other content is added later.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c2",
+      "location_hint": "the persistent error message container that conditionally shows text",
+      "suspected_class": "live-region",
+      "why": "keeping an alert region mounted but empty may cause some screen readers to announce the role repeatedly or ignore it until content appears, warranting a cross-AT check.",
+      "confidence": "low"
+    },
+    {
+      "id": "c3",
+      "location_hint": "the individual transaction rows inside the list",
+      "suspected_class": "semantic-html",
+      "why": "screen readers may announce the values in a confusing order or without context, so verifying if explicit labels or a definition list would clarify the data relationship is worthwhile.",
+      "confidence": "medium"
+    },
+    {
+      "id": "c4",
+      "location_hint": "the interactive retry control in the panel header",
+      "suspected_class": "focus-order-indicator",
+      "why": "offset outlines can sometimes clip or appear detached on certain browsers or assistive technologies, so confirming the visual boundary is clear and does not overlap adjacent elements is recommended.",
+      "confidence": "low"
+    },
+    {
+      "id": "c5",
+      "location_hint": "the status message text and the error message text",
+      "suspected_class": "contrast-visual",
+      "why": "the color choices may sit near contrast thresholds on certain displays or for users with low vision, making a ratio verification prudent.",
+      "confidence": "low"
+    },
+    {
+      "id": "c6",
+      "location_hint": "the container wrapping the transaction items",
+      "suspected_class": "semantic-html",
+      "why": "explicitly setting a list role on a native list element can sometimes confuse assistive technology if the implicit semantics are already correct, so checking for double-announcement or role confusion is advised.",
+      "confidence": "low"
+    }
+  ]
+}
