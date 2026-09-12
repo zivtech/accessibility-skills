@@ -3,42 +3,35 @@
   "model": "qwen3.6:35b",
   "port": 11435,
   "temperature": 0.3,
-  "generated_at": "2026-09-12T20:02:27.857672+00:00",
-  "num_candidates": 5,
+  "generated_at": "2026-09-12T20:17:16.323545+00:00",
+  "num_candidates": 4,
   "candidates": [
     {
       "id": "c1",
-      "location_hint": "the custom checkbox inputs and their sibling visual boxes",
-      "suspected_class": "name-role-state",
-      "why": "custom visuals often risk losing native state announcements or keyboard operability if the hidden input isn't properly managed; worth verifying screen reader feedback and focus behavior.",
-      "confidence": "low"
+      "location_hint": "the Apply button when it is in the disabled state",
+      "suspected_class": "contrast-visual",
+      "why": "The white text remains unchanged while the button background shifts to a light gray, creating a luminance difference that should be manually verified against minimum contrast thresholds.",
+      "confidence": "high"
     },
     {
       "id": "c2",
-      "location_hint": "the apply button and its disabled styling",
-      "suspected_class": "other",
-      "why": "uses both native disabled attribute and aria-disabled on the same element, which is redundant but worth checking for assistive technology compatibility.",
-      "confidence": "low"
+      "location_hint": "the helper text paragraph positioned below the Apply button",
+      "suspected_class": "live-region",
+      "why": "When the button transitions from enabled to disabled, the helper text is linked via description but may not dynamically announce its content to screen readers without additional live region handling.",
+      "confidence": "medium"
     },
     {
       "id": "c3",
-      "location_hint": "the helper text paragraph below the apply button",
-      "suspected_class": "contrast-visual",
-      "why": "light gray text color might be worth verifying against minimum contrast thresholds for supporting text on varying displays.",
-      "confidence": "low"
+      "location_hint": "the state attributes applied to the Apply button",
+      "suspected_class": "name-role-state",
+      "why": "Both the native disabled attribute and an aria-disabled attribute are applied simultaneously, which could cause redundant or inconsistent state announcements across different assistive technologies.",
+      "confidence": "medium"
     },
     {
       "id": "c4",
-      "location_hint": "the focus indicators applied to all interactive controls",
-      "suspected_class": "focus-order-indicator",
-      "why": "reliance solely on :focus-visible without a fallback may leave older browsers or non-standard input methods without visible focus feedback; worth confirming consistent visibility.",
-      "confidence": "low"
-    },
-    {
-      "id": "c5",
-      "location_hint": "the region dropdown and its associated label",
+      "location_hint": "the default option in the region dropdown menu",
       "suspected_class": "semantic-html",
-      "why": "ensure the label is programmatically bound correctly and that the dropdown's state changes are properly announced to assistive technology.",
+      "why": "The default dropdown option uses an empty value string, which some screen readers may read ambiguously rather than clearly indicating a neutral or unselected filter state.",
       "confidence": "low"
     }
   ]

@@ -64,8 +64,13 @@ def load_presort_prompt():
 
 
 def load_fixture_component(fixture_id):
-    """Load ONLY the fixture's .md component file. Never the sibling
-    .metadata.yaml or .rubric.yaml (those are the answer key)."""
+    """Load the fixture's .md component with its in-file answer key stripped.
+
+    Fixture .md files embed their expected findings under an
+    '## Accessibility Issues' heading (below a blind cut line). Pre-sort must
+    see EXACTLY what the hosted judge sees, so we reuse the runner's canonical
+    strip_answer_key() rather than feeding qwen the planted-defect list. Also
+    never reads the sibling .metadata.yaml / .rubric.yaml."""
     path = os.path.join(FIXTURES_DIR, f"{fixture_id}.md")
     if not os.path.exists(path):
         sys.exit(
@@ -73,7 +78,12 @@ def load_fixture_component(fixture_id):
             f"(expected evals/suites/a11y-critic/fixtures/{fixture_id}.md)"
         )
     with open(path) as f:
-        return f.read()
+        raw = f.read()
+    # Reuse the exact blind cut the hosted lane applies (anthropic is imported
+    # lazily inside run_cloud_benchmark, so this import has no heavy side effect).
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from run_cloud_benchmark import strip_answer_key
+    return strip_answer_key(raw)
 
 
 def call_ollama(host_port, model, system_prompt, prompt_text, num_ctx, temperature):

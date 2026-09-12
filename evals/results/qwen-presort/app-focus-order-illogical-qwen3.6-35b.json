@@ -3,42 +3,42 @@
   "model": "qwen3.6:35b",
   "port": 11435,
   "temperature": 0.3,
-  "generated_at": "2026-09-12T19:59:47.663753+00:00",
+  "generated_at": "2026-09-12T20:13:45.454914+00:00",
   "num_candidates": 5,
   "candidates": [
     {
       "id": "c1",
-      "location_hint": "The flex container holding the main content area and the sidebar panel",
+      "location_hint": "the target element that the skip-to-content link jumps to",
       "suspected_class": "keyboard-operability",
-      "why": "Visual reordering via CSS likely diverges from the natural DOM tab sequence, which could disorient keyboard users expecting focus to follow the layout.",
-      "confidence": "high"
+      "why": "Generic divs are not focusable by default, so keyboard users may not actually move focus to this location without additional attributes.",
+      "confidence": "medium"
     },
     {
       "id": "c2",
-      "location_hint": "The target element referenced by the skip link at the top of the page",
-      "suspected_class": "name-role-state",
-      "why": "Standard divs are not natively focusable, so activating the skip link may scroll to the element without moving keyboard focus to it.",
+      "location_hint": "the main content area and the sidebar navigation relative to each other in the markup",
+      "suspected_class": "focus-order-indicator",
+      "why": "CSS flex order visually places the sidebar first, but the DOM structure puts main before aside, which will cause the keyboard tab sequence to jump backward visually.",
       "confidence": "high"
     },
     {
       "id": "c3",
-      "location_hint": "The focus outline style applied to links inside the left sidebar navigation panel",
-      "suspected_class": "contrast-visual",
-      "why": "The light outline color against the near-white sidebar background may fall below the minimum contrast threshold required for visible focus states.",
-      "confidence": "medium"
-    },
-    {
-      "id": "c4",
-      "location_hint": "The floating action button in the bottom-right corner with an explicit positive tab index value",
-      "suspected_class": "keyboard-operability",
-      "why": "Positive tab indices force elements into the early tab sequence, potentially placing this button before the skip link and main navigation, breaking logical focus flow.",
+      "location_hint": "the floating action button positioned at the bottom right of the viewport",
+      "suspected_class": "focus-order-indicator",
+      "why": "Explicitly assigning a positive tab index forces this control into an unnatural position in the keyboard sequence, breaking the expected reading order.",
       "confidence": "high"
     },
     {
+      "id": "c4",
+      "location_hint": "the focus outline on the floating action button",
+      "suspected_class": "contrast-visual",
+      "why": "The dark blue outline color against the button's blue background may have insufficient contrast to be clearly visible to keyboard users.",
+      "confidence": "medium"
+    },
+    {
       "id": "c5",
-      "location_hint": "The heading structure inside the sidebar panel versus the main content area",
+      "location_hint": "the heading text inside the sidebar navigation landmark",
       "suspected_class": "semantic-html",
-      "why": "While headings appear present, verifying that landmark regions and their associated headings maintain a logical, non-skipping hierarchy for screen reader navigation is worth a quick check.",
+      "why": "Using a level-two heading inside a sidebar alongside a page-level heading might disrupt the document outline; worth verifying if it should be scoped or use an aria-level attribute.",
       "confidence": "low"
     }
   ]

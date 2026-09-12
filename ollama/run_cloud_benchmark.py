@@ -129,16 +129,19 @@ GEMINI_TIERS = [
 
 # USD per 1,000,000 tokens, by the exact model id passed to
 # client.messages.create() in run_claude() (see CLAUDE_TIERS above).
-# VERIFY against current published pricing before trusting cost figures.
+# Verified 2026-09-12 against platform.claude.com/docs/en/about-claude/pricing.
+# cache_write = 5-minute cache-write rate (1.25x input); the 1-hour write is 2x
+# input. cache_read (a cache hit) = 0.1x input. Re-verify on any model bump.
 PRICES = {
-    "claude-opus-4-7": {"input": 15.00, "output": 75.00, "cache_write": 18.75, "cache_read": 1.50},
-    "claude-sonnet-4-6": {"input": 3.00, "output": 15.00, "cache_write": 3.75, "cache_read": 0.30},
-    "claude-haiku-4-5-20251001": {"input": 0.80, "output": 4.00, "cache_write": 1.00, "cache_read": 0.08},
-    # Fallback for any model id not listed above (e.g. a new tier added
-    # without a matching PRICES entry) — priced at the Sonnet rate as a
-    # conservative mid-tier default. VERIFY against current published
-    # pricing before trusting cost figures.
-    "_DEFAULT": {"input": 3.00, "output": 15.00, "cache_write": 3.75, "cache_read": 0.30},
+    "claude-opus-4-7":           {"input": 5.00, "output": 25.00, "cache_write": 6.25, "cache_read": 0.50},
+    "claude-sonnet-4-6":         {"input": 3.00, "output": 15.00, "cache_write": 3.75, "cache_read": 0.30},
+    "claude-haiku-4-5-20251001": {"input": 1.00, "output":  5.00, "cache_write": 1.25, "cache_read": 0.10},
+    # Current-gen aliases: `claude -p --model opus/sonnet` (the Stage-A judge
+    # runner) resolve to these.
+    "claude-opus-5":             {"input": 5.00, "output": 25.00, "cache_write": 6.25, "cache_read": 0.50},
+    "claude-sonnet-5":           {"input": 2.00, "output": 10.00, "cache_write": 2.50, "cache_read": 0.20},
+    # Fallback for any unlisted model id — current mid-tier (Sonnet 5) rate.
+    "_DEFAULT":                  {"input": 2.00, "output": 10.00, "cache_write": 2.50, "cache_read": 0.20},
 }
 
 
