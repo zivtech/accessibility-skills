@@ -16,6 +16,8 @@ Apply the matching workflow below. Preserve the exact checkout and dirty baselin
 
 Do not claim a local pass proves the committed gate works unless the scanner was staged during the test.
 
+`scripts/check_doc_budget.py` is an instance of this pattern for a size boundary rather than a content pattern: it gates the byte size of the always-on context files (`CLAUDE.md`, `AGENTS.md`), which regrew from ~13KB to 33KB of inline eval-result and provenance narrative before being cut back. It follows the same shape (report-only by default, `--strict` exits 1, `--self-test` proves the thresholds fire) and is wired into `ci.yml`. Content policy it backstops: dated eval results, model-row deltas, and phase-by-phase provenance belong in `docs/*-adoption-assessment.md` or `evals/results/*/README.md`, cited by a one-line pointer — never inline.
+
 ## Prove history-rewrite safety
 
 1. Locate the exact reset, rebase, or rewrite operation in the reflog.
