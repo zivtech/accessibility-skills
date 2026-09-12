@@ -63,3 +63,7 @@ jobs:
         run: python3 scripts/check_mirrors.py --self-test
       - name: Mirror drift check (strict)
         run: python3 scripts/check_mirrors.py --strict
+      - name: Doc-budget gate self-test (thresholds must fire)
+        run: python3 scripts/check_doc_budget.py --self-test
+      - name: Doc byte-budget check (strict)
+        run: python3 scripts/check_doc_budget.py --strict
