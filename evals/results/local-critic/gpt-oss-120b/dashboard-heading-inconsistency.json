@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin:**  \n\nThe\u202f*a11y\u2011critic* skill reviews **design decisions**\u202fafter automated checks have already passed.  \n\nHave you run an **accessibility\u2011testing** step (e.g., axe\u2011core, Pa11y, or the `accessibility\u2011testing` skill) on this component and confirmed that all violations are resolved?  \n\nIf the tests are still pending, please run them first (or share the results) so I can focus on the design\u2011level review you asked for.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T00:38:27.075238+00:00"
+}

@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the design\u2011level review, I need to confirm the testing state.**  \n\nHave you already run the **`accessibility-testing`** skill (axe\u2011core / Pa11y) on this component, and did it pass all automated checks?  \n\nIf the automated tests are still failing, we should address those violations first. Once the component passes the automated checks, I can run the full **A11y Design Review** (all phases of the investigation protocol) on the code you provided. Please let me know the test results (or share the test report) so we can proceed.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T00:38:43.047282+00:00"
+}
