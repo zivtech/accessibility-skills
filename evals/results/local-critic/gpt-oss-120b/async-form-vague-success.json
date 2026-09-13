@@ -1,0 +1,6 @@
+{
+  "response": "**Assistant:**  \n\nBefore we dive into a full design\u2011review, the\u202f*a11y\u2011critic*\u202fskill works **after** automated accessibility checks have been run.  \n\nHave you already executed the `accessibility\u2011testing` skill (or an equivalent axe\u2011core / Pa11y run) on this component and confirmed that it **passes** all violations?  \n\nIf the tests are still pending, please run them first so we can focus the review on the **design decisions** that pass those checks. Once you confirm the automated results are clean, I\u2019ll proceed with the complete investigation protocol.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T00:37:56.429635+00:00"
+}

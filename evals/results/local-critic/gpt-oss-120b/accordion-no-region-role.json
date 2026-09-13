@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full design review, I need to confirm the testing status.**  \n\nHave you already run the **`accessibility-testing`** skill (axe\u2011core / Pa11y scan, keyboard\u2011operability tests, etc.) on this `BuggyAccordion` component and received a passing result?  \n\nThe\u202f*a11y\u2011critic* review focuses on the **design decisions** behind a component that already passes automated checks. If the automated checks have not yet been run, we should run them first (or you can share the results) before I proceed with the detailed protocol.  \n\n*Please let me know the outcome of the accessibility\u2011testing step, or share any test evidence you have.*",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T00:37:39.947110+00:00"
+}
