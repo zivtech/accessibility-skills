@@ -1,0 +1,6 @@
+{
+  "response": "**Before we dive into the full design review, I need to confirm the prerequisite step for this skill.**  \n\nThe\u202f*a11y\u2011critic*\u202freview works **after automated accessibility testing has been run** (axe\u2011core, Pa11y, etc.) and those checks have passed. The review then focuses on design decisions that automated tools can\u2019t catch.\n\n**Could you let me know:**\n\n1. **Have you run the `accessibility\u2011testing` skill (or an equivalent axe\u2011core/Pa11y scan) on this component?**  \n2. **Did all automated checks pass, or are there any remaining violations?**  \n\nOnce I have that confirmation, I\u2019ll proceed with the full 10\u2011phase investigation (pre\u2011commitment predictions \u2192 semantic audit \u2192 ARIA pattern audit \u2192 focus management \u2192 state communication \u2192 multi\u2011perspective review \u2192 gap analysis \u2192 realism check \u2192 self\u2011audit \u2192 synthesis) and give you a structured verdict with file\u2011line evidence and WCAG/APG citations.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:25:18.234059+00:00"
+}

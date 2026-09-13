@@ -1,6 +1,6 @@
 {
-  "response": "**Before we begin the full A11y design review, I need to confirm the prerequisite step.**  \n\nHave you already run the **`accessibility\u2011testing`** skill (axe\u2011core / Pa11y scan, keyboard\u2011operability tests, etc.) on this component and verified that the automated checks all pass?  \n\nIf the tests have not yet been run, please run them first (or share the results) so I can focus the review on *design decisions* rather than on basic violations. Once you confirm the automated checks are green, I\u2019ll proceed with the complete investigation protocol.",
+  "response": "**Before we begin the full A11y design review, I need to confirm the prerequisite step.**  \n\nThe\u202f`a11y\u2011critic`\u202fskill reviews *design decisions* **after** automated accessibility checks have been run and passed.  \n\n> **Have you already run the `accessibility\u2011testing` skill (axe\u2011core / Pa11y / a11y\u2011test) on this component and confirmed that there are no automated violations?**  \n\nIf the tests have not yet been executed, please run them first (or share the results). Once we have a clean automated\u2011testing baseline, I\u2019ll proceed with the complete investigation protocol (pre\u2011commitment predictions, semantic audit, ARIA pattern audit, focus\u2011management review, state\u2011communication audit, multi\u2011perspective review, gap analysis, severity calibration, and final verdict).  \n\nLet me know when the automated checks are done or provide the test output, and we\u2019ll continue.",
   "model": "gpt-oss:120b",
   "attempts": 1,
-  "generated_at": "2026-09-13T00:38:38.263502+00:00"
+  "generated_at": "2026-09-13T01:23:14.959594+00:00"
 }

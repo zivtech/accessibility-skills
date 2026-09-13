@@ -1,6 +1,6 @@
 {
-  "response": "**Before we begin the full design\u2011review, I need to confirm the prerequisite step.**  \n\nHave you already run an automated accessibility check (e.g., `accessibility\u2011testing` with axe\u2011core / Pa11y) on this component, and did it pass?  \n\nIf the tests are still pending, please run them first (or share the results). Once the automated checks are clear, I\u2019ll execute **all phases of the A11y Design Review Protocol** on the `SalesDataTable` component.",
+  "response": "**Before we begin the full design\u2011review, could you let me know whether this component has already been run through the `accessibility\u2011testing` skill (axe\u2011core / Pa11y / a11y\u2011test) and that the automated checks are passing?**  \n\nIf the automated tests are still pending, I\u2019ll note that the review will focus on design decisions only and will flag any gaps that could cause failures once the tests are run. Once you confirm the test status, I\u2019ll proceed with the complete investigation protocol.",
   "model": "gpt-oss:120b",
   "attempts": 1,
-  "generated_at": "2026-09-13T00:38:32.635032+00:00"
+  "generated_at": "2026-09-13T01:23:08.434028+00:00"
 }
