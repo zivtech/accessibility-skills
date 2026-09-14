@@ -46,6 +46,7 @@ Every external dependency and standard has one. Each records what was adopted, w
 | [error-workbook-adoption-assessment.md](error-workbook-adoption-assessment.md) | XLSX triage workbook builder |
 | [content-judgment-adoption-assessment.md](content-judgment-adoption-assessment.md) | Content-judgment skill — candidate, gate not met |
 | [alfa-scan-adoption-assessment.md](alfa-scan-adoption-assessment.md) | Siteimprove Alfa — negative result, recorded |
+| [wave-adoption-assessment.md](wave-adoption-assessment.md) | WebAIM WAVE — supplemental lane adopted, core promotion deferred |
 
 [EXTERNAL-SKILLS-INVENTORY.md](EXTERNAL-SKILLS-INVENTORY.md) is the landscape scan behind these: external accessibility skills surveyed, with adoption recommendations.
 
