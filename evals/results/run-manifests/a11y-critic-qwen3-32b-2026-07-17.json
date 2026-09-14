@@ -10,7 +10,8 @@
     "The run summary documents a local endpoint and later sleep interruption, not a per-cell isolation or process-environment receipt.",
     "The response and score were committed after the stated fixture snapshot, so their byte integrity is provable but continuous execution custody is not.",
     "The historical bytes of .claude/skills/a11y-critic/SKILL.md are unverifiable from public history: the 2026-07-17 draw was made against a working state that was never published to main, so that artifact carries no historical pin. Its current-file hash is still checked; its run-time hash is not, and no substitute commit was invented.",
-    "2026-09-08: .claude/skills/a11y-critic/SKILL.md was edited (feat/batched-per-page-audit: a Phase 0 bullet adding the batched one-pass per-page audit default). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only and makes no claim about the 2026-07-17 run-time bytes, which remain unpinned as documented above (no substitute commit invented)."
+    "2026-09-08: .claude/skills/a11y-critic/SKILL.md was edited (feat/batched-per-page-audit: a Phase 0 bullet adding the batched one-pass per-page audit default). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only and makes no claim about the 2026-07-17 run-time bytes, which remain unpinned as documented above (no substitute commit invented).",
+    "2026-09-14: ollama/run_benchmark.py was edited (evals/corroboration-canary, #85: the riverbend-permits-corroboration fixture was registered in ACR_FIXTURES and BUGREPORT_FIXTURES). The harness skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run."
   ],
   "missing_fields": [
     "provider.model_digest",
@@ -49,7 +50,7 @@
     {
       "role": "harness",
       "path": "ollama/run_benchmark.py",
-      "sha256": "8211e579cf8b2538cdd89fb9a2174d2e7b9926208f215db14dde4a54c9d50689",
+      "sha256": "9c42b0ca8a36bcaa63cae86402cb5f4dbac1d298bbae1d3a1bee8de3f6d1a198",
       "historical_git_ref": "15091ef91151d2f7dae4f7ae126c0e4c136e2e06",
       "historical_sha256": "0f8ded7c9182375759c2cb15aba9c262cc410cc9f943ace3cb0782589384048d"
     },
