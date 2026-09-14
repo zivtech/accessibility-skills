@@ -22,6 +22,8 @@ Do not emit a contract for passing checks or clean reviews. A clean result with 
 | `trend` | optional | One of `new`, `persistent`, `worsening`, `improving`, or `resolved`. |
 | `evaluation_context` | optional | Audit-scope only: `evaluation_id` plus `sample_id` (and `process_id` when the finding sits inside a complete process), linking the finding into an evaluation report's sample set. |
 | `baseline_test` | optional | Declared-508 audit scope only: the ICT Testing Baseline **web** test this finding files under (e.g. `5.C-ControlState`). Valid only if the ID exists in the web list of [ict-baseline-test-id-manifest.yaml](ict-baseline-test-id-manifest.yaml) — see the Section 508 boundary rules below. |
+| `detected_by` | optional | Machine-detector findings only: the list of scanner engines that produced this finding on the same target, e.g. `[axe-core, html_codesniffer]`. Each entry is an engine id, not a rule id (engines name the same defect differently). See Cross-Detector Corroboration below. |
+| `corroboration` | optional | Machine-detector findings only: `single` (one engine) or `corroborated` (≥2 independent engines agree on the same WCAG criterion + target). A triage-confidence tag, never a conformance input. Absent on non-detector findings. See Cross-Detector Corroboration below. |
 
 ## Example
 
@@ -105,6 +107,48 @@ Use trend only when comparing against prior evidence:
 Do not infer trend from a single run.
 
 `resolved` records what a retest observed; it does not by itself make the criterion a fixed-stage conformance input. That is decided one layer down: the finding's fix-closure record must carry a fully attested `attestation` block (a named person confirmed the fix on the product at the report's version, doing what and seeing what, and a second person or session confirmed it — [A11y Fix-Closure Contract](a11y-fix-closure-contract.md)) before `acr-reporting` will publish the improved term on a previously-failed criterion. A still-failing criterion keeps its failing entry either way. A resolved finding with a draft closure is still resolved. It is not yet a conformance input.
+
+## Cross-Detector Corroboration
+
+When more than one machine detector runs over the same target, a finding the
+detectors agree on carries a corroboration signal. This makes structured the
+rule the [`a11y-test` detector-lane authority boundary](../.claude/skills/a11y-test/SKILL.md)
+already states in prose: *cross-tool agreement on the same target raises triage
+priority; it never confirms a defect by itself, and an absence of detection is
+not evidence of conformance.*
+
+Two optional fields carry it:
+
+- `detected_by` — the engines that produced this finding on the same target, as
+  a list of engine ids (`axe-core`, `html_codesniffer`, `alfa`, `wave`, …).
+- `corroboration` — `single` when one engine produced it, `corroborated` when
+  two or more **independent** engines did.
+
+**The join key is WCAG criterion + fingerprint, never rule id.** Engines name
+the same defect differently (axe `color-contrast`, Alfa `sia-r69`, WAVE
+`contrast_error` all map to 1.4.3). Two findings corroborate when they share the
+same `wcag_or_apg` criterion on the same target/fingerprint — not when they
+share a rule string.
+
+**Word choice is deliberate: `corroborated`, not "confirmed."** In this bundle
+"confirmed" belongs to the human/AT verification tier (the
+[human verification walk-through](../.claude/skills/a11y-test/SKILL.md) and the
+fix-closure `attestation` block). Scanner agreement never reaches that bar —
+line 59 of `a11y-test` says cross-tool agreement "never confirms a defect by
+itself." So `corroborated` is a triage-confidence tag: it raises the priority of
+a *detection*, it never establishes that a criterion conforms or fails, and it
+never enters an outcome map.
+
+**Same-family agreement is weaker than it looks.** axe-core, HTML_CodeSniffer,
+and Alfa are largely ACT-rules implementations over the same machine-decidable
+~30–40% of WCAG; two of them agreeing is common *because they overlap*, and they
+tend to miss the same hard cases together. Agreement across engine *families*
+(for example WebAIM's WAVE against axe) is a stronger corroboration signal than
+agreement within one family. When it matters, note the family split in a trailing
+line rather than treating a same-family pair as if it were independent
+confirmation. Corroboration counts detections that agree; it never counts a
+silence as agreement — an engine that did not flag a target contributes nothing,
+for or against.
 
 ## Section 508 and WCAG Boundary
 
