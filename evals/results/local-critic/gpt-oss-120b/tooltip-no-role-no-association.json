@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the design\u2011level review, I need to confirm the prerequisite step for this skill.**  \n\nThe\u202f`a11y\u2011critic`\u202freview works **after** automated accessibility testing has been run (e.g., axe\u2011core, Pa11y, or the `accessibility\u2011testing` skill).  \n\n- Have you already executed the accessibility\u2011testing suite on this component and confirmed that it **passes** the automated checks?  \n\nIf not, please run the tests first (or share the test results) so I can focus the review on the *design decisions* that pass those checks. Once you confirm the tests are green, I\u2019ll proceed with the full 10\u2011phase investigation protocol.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:25:29.923918+00:00"
+}

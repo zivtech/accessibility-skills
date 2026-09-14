@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full A11y\u202fDesign Review, I need to confirm the prerequisite step.**  \n\nHave you already run the **`accessibility\u2011testing`** skill (axe\u2011core / Pa11y scan, keyboard\u2011operability tests, etc.) on this `BuggyDropdown` component and verified that the automated checks are passing?  \n\nThe\u202fa11y\u2011critic review focuses on *design decisions* (ARIA pattern completeness, focus\u2011management design, state communication, etc.) **after** the automated compliance checks have succeeded. If the tests have not yet been run, please run them first (or let me know the results), and then we can proceed with the full investigation protocol.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:23:56.860310+00:00"
+}

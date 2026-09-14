@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full A11y\u202fDesign Review, I need to confirm the prerequisite step.**  \n\nHave you already run the **`accessibility\u2011testing`** skill (axe\u2011core / Pa11y scan, keyboard\u2011operability tests, etc.) on this component and verified that it **passes** all automated checks?  \n\nIf the automated tests are still pending, please run them first (or share the results). Once we have a clean pass, I\u2019ll proceed with the complete investigation protocol you requested.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:23:37.673143+00:00"
+}

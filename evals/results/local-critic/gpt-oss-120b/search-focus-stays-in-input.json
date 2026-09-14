@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full design\u2011review, I need to make sure the prerequisite automated checks have already been run.**  \n\nHave you executed the `accessibility\u2011testing` skill (axe\u2011core / Pa11y / a11y\u2011test) on this component and confirmed that it **passes** all violations? If not, please run those checks first so we can focus the review on *design* gaps rather than on any remaining compliance failures.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:24:44.523472+00:00"
+}

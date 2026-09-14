@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full A11y design review, I need to confirm the prerequisite step.**  \n\nHave you already run the `accessibility\u2011testing` skill (axe\u2011core / Pa11y / a11y\u2011test) on this component and verified that all automated checks are passing?  \n\nIf the automated tests are still pending or are failing, please run those checks first (or share the results) so that the **a11y\u2011critic** can focus on design\u2011level gaps rather than on violations that still need to be fixed.  \n\nOnce you confirm that the automated accessibility tests are green, I\u2019ll proceed with the complete investigation protocol (pre\u2011commitment predictions \u2192 semantic HTML audit \u2192 ARIA pattern audit \u2192 focus\u2011management review \u2192 state\u2011communication audit \u2192 multi\u2011perspective review \u2192 gap analysis, etc.).  \n\n*Please let me know the status of the automated testing, or provide the test report if you have it.*",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:23:33.065016+00:00"
+}

@@ -1,6 +1,6 @@
 {
-  "response": "**Before we begin the full A11y Design Review, could you let me know whether this component has already been run through the `accessibility\u2011testing` skill (axe\u2011core, Pa11y, etc.) and whether those automated checks are passing?**  \n\nThe\u202fa11y\u2011critic works on top of a passing automated test suite; if the tests are still failing we need to address those violations first. Once you confirm the automated checks are green, I\u2019ll proceed with the complete investigation protocol (pre\u2011commitment predictions, semantic audit, ARIA pattern audit, focus\u2011management review, state\u2011communication audit, multi\u2011perspective review, gap analysis, severity calibration, and final verdict).",
+  "response": "**Before we begin the design\u2011level review, I need to confirm the testing context.**  \n\nThe\u202f`a11y\u2011critic` skill evaluates the *design decisions* behind code that has already passed automated accessibility checks (axe\u2011core, Pa11y, etc.).  \n\n> **Have you run the `accessibility\u2011testing` skill (or an equivalent axe/Pa11y scan) on this component, and did it report\u202fno violations?**  \n\nIf you have not yet run those checks, please do so first (or share the results), and then we can proceed with the full 10\u2011phase investigation protocol.",
   "model": "gpt-oss:120b",
   "attempts": 1,
-  "generated_at": "2026-09-13T00:38:12.985087+00:00"
+  "generated_at": "2026-09-13T01:22:53.040681+00:00"
 }

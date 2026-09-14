@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the full design review, I need to confirm the testing status.**  \n\nHave you already run the `accessibility\u2011testing` skill (axe\u2011core / Pa11y scans, keyboard\u2011operability tests, etc.) on this component and received a \u201cpass\u201d result?  \n\nThe\u202f*a11y\u2011critic* review works on top of a passing automated test suite; if the tests are still failing, we should address those violations first. Please let me know the outcome (or share the test report) so I can proceed with the full investigation protocol.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:24:28.400715+00:00"
+}

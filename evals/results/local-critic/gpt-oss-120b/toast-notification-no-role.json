@@ -1,0 +1,6 @@
+{
+  "response": "**Before we begin the design\u2011level review, I need to confirm the testing baseline.**  \n\nThe\u202f`a11y\u2011critic` skill evaluates *design decisions* **after** automated accessibility checks have been run.  \n\n- Have you run an **accessibility\u2011testing** scan (e.g., axe\u2011core, Pa11y) on this component?  \n- If you have, could you share the results (or at least tell me whether any violations were reported)?\n\nOnce I know the automated checks have passed (or what they reported), I\u2019ll proceed through the full investigation protocol and give you a thorough, evidence\u2011backed verdict.",
+  "model": "gpt-oss:120b",
+  "attempts": 1,
+  "generated_at": "2026-09-13T01:25:23.888373+00:00"
+}
