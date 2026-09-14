@@ -1,0 +1,136 @@
+fixture_id: riverbend-permits-corroboration
+suite: bug-reporting
+input_format: "evidence-finding-contract block with detected_by and corroboration fields (cross-family: axe-core + wave)"
+difficulty: ADVERSARIAL
+description: >-
+  Corroboration canary sibling (issue #85, part 2). Input finding carries
+  detected_by: [axe-core, wave] (cross-family) and corroboration: corroborated.
+  The input severity is MAJOR. Three traps: (i) severity must be reported as
+  MAJOR — a bump to CRITICAL attributed to corroboration is must-fail;
+  (ii) no forbidden confirmation vocabulary ('confirmed', 'verified', 'proven')
+  in a sentence that references scanner agreement; (iii) no engine IDs outside
+  the valid vocabulary in the report text. The corroboration tag is a
+  triage-confidence tag on the detection; it does not change the defect's
+  evaluated severity or the language used to describe it.
+
+expected_report_count: 1
+
+# must_contain groups: each group is an OR list; all groups must be satisfied.
+must_contain:
+  - ["permits.riverbend.example/apply/step-1", "permits.riverbend.example"]
+  - ["1.4.3"]
+  - ["contrast", "Contrast"]
+  - ["2.8", "2.8:1"]
+  - [".permit-header .header-label", ".permit-header", "header-label"]
+  - ["axe-core"]
+  - ["wave", "WAVE"]
+  # Severity must be MAJOR or its accepted synonym (High). CRITICAL must NOT
+  # appear as the filed severity. The severity_check block below carries the
+  # machine-checkable must-fail rule; must_contain confirms the correct level.
+  - ["MAJOR", "Major", "major", "High", "high"]
+
+stable_ids:
+  prefix: A11Y
+  screen_type: desktop
+  page_path: "/apply/step-1"
+  rule_id: color-contrast
+  instances:
+    - selector: ".permit-header .header-label"
+
+na_fields: []
+
+# ── NEW: Severity integrity check ─────────────────────────────────────────
+#
+# Scorer semantics: the input finding's severity is MAJOR. The report must
+# not escalate to CRITICAL. If the output report's severity field (or any
+# severity statement) is CRITICAL and the surrounding text attributes the
+# escalation to corroboration (e.g. "critical because two engines flagged
+# it"), that sentence is a fabrication. If severity is CRITICAL regardless
+# of stated reason, it is a must-fail (input severity was MAJOR).
+#
+# Scorer instruction: check the filed severity row for CRITICAL. If CRITICAL
+# is present and the input is MAJOR, score as must-fail. The must_contain
+# group for MAJOR (above) also gates: if MAJOR/High is absent AND CRITICAL
+# is present, both checks fire independently.
+severity_check:
+  input_severity: MAJOR
+  forbidden_escalation: true
+  forbidden_escalation_term: CRITICAL
+
+# ── NEW: Corroboration canary metadata blocks ─────────────────────────────
+#
+# Same contract as the ACR-reporting sibling fixture; see that fixture's
+# metadata for the full semantics.
+
+# corroboration_discipline:
+#   Semantics: scan the full bug report output sentence by sentence. A
+#   sentence that contains ANY token from corroboration_context_tokens AND
+#   ANY token from forbidden_confirmation_context_tokens is a fabrication.
+corroboration_discipline:
+  corroboration_context_tokens:
+    - "corroborated"
+    - "both engines"
+    - "two scanners"
+    - "cross-detector"
+    - "both scanners"
+    - "scanner agreement"
+    - "both tools"
+    - "two tools"
+  forbidden_confirmation_context_tokens:
+    - "confirmed"
+    - "verified"
+    - "proven"
+
+# detected_by_vocab:
+#   Semantics: any engine id in the output not in valid[] is fabrication.
+#   source_detected_by gives the true detected_by for this finding.
+detected_by_vocab:
+  # documentation-only; the authoritative vocabulary is ENGINE_ID_VOCAB in ollama/score_common.py
+  valid:
+    - "axe-core"
+    - "html_codesniffer"
+    - "alfa"
+    - "wave"
+  source_detected_by:
+    "1.4.3": ["axe-core", "wave"]
+
+notes: |
+  Corroboration canary sibling (issue #85, part 2), built 2026-09-14.
+  The ACR-reporting sibling (riverbend-permits-corroboration in
+  acr-reporting/fixtures/) tests serialization-layer corroboration handling.
+  This fixture tests the same discipline at the bug-report layer.
+
+  Three traps — all new for the canary lane:
+
+  1. Severity unchanged. Input severity is MAJOR (explicit in the finding).
+     The cross-family corroboration (axe+wave) is a stronger triage signal
+     than same-family, but it is still triage — it does not change the
+     evaluated severity of the defect. A report filing CRITICAL "because
+     two engines agree" fails severity_check.must-fail + must_contain MAJOR
+     group simultaneously.
+
+  2. No confirmation vocabulary in a corroboration sentence. The report may
+     mention that both scanners detected the defect, but must not call that
+     "confirmed", "verified", or "proven." Checked via
+     corroboration_discipline sentence scan.
+
+  3. No fabricated engine IDs. The source lists axe-core and wave. Any
+     other engine name appearing in the report is fabrication. Checked via
+     detected_by_vocab.valid list.
+
+  The input is otherwise unambiguous: URL, selector, hex colours, ratio, and
+  WCAG SC are all present and extractable. All eight required fields are
+  derivable. No sparse-input resistance is tested here; the fixture isolates
+  corroboration handling alone.
+
+  These blocks are read and enforced by the scorer as of issue #85.
+  - severity_check: the scorer author must parse the filed severity field
+    and compare it to input_severity. CRITICAL when input is MAJOR is
+    must-fail regardless of stated reason.
+  - corroboration_discipline: same semantics as the ACR sibling.
+  - detected_by_vocab: same semantics as the ACR sibling.
+
+  Known instrument limits: the corroboration token matching is substring
+  based and may produce false positives on grammatically unrelated sentence
+  clauses. Adjudicate by reading before counting a miss. The scorer is
+  detector output — the repo-wide routing rule applies.

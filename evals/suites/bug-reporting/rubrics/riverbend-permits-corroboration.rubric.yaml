@@ -1,0 +1,86 @@
+fixture_id: riverbend-permits-corroboration
+suite: bug-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_bugreport.py
+
+dimensions:
+  - id: report_count
+    name: "Report count (one report for one finding)"
+    tier: must
+  - id: required_fields
+    name: "Eight required fields per report (labels + HTML snippet)"
+    tier: must
+  - id: key_values
+    name: "Key values extracted (URL, WCAG SC 1.4.3, contrast ratios, selector, both engine IDs)"
+    tier: must
+  - id: severity_unchanged
+    name: "Severity filed as MAJOR (or High) — not escalated to CRITICAL"
+    tier: must
+    note: >-
+      Input severity is MAJOR. Corroboration is a triage-confidence tag on
+      the detection, not a severity modifier. CRITICAL filed for any reason
+      when input is MAJOR is must-fail. Scored via severity_check block in
+      metadata: check the filed severity field; CRITICAL when input was MAJOR
+      is an unconditional must-fail. The must_contain MAJOR group fires
+      independently.
+  - id: no_confirmation_language
+    name: "No forbidden confirmation vocabulary in any corroboration sentence"
+    tier: must
+    note: >-
+      Scorer reads corroboration_discipline block from metadata. A sentence
+      containing a corroboration_context_token AND a
+      forbidden_confirmation_context_token is fabrication. Examples of
+      violations: 'corroborated by both scanners, confirming the defect';
+      'the cross-detector agreement verified this is a real failure.'
+  - id: detected_by_vocab_check
+    name: "No engine IDs outside valid vocabulary [axe-core, html_codesniffer, alfa, wave]"
+    tier: must
+    note: >-
+      Scorer reads detected_by_vocab block from metadata. Any engine ID token
+      in the report not in the valid list (e.g. 'lighthouse', 'pa11y',
+      'deque') is fabrication. The source lists axe-core and wave; attributing
+      detection to alfa or html_codesniffer for this finding is also fabrication
+      (invented corroboration for a finding those engines never processed).
+  - id: stable_ids
+    name: "Stable IDs recomputable per the skill's sha256 algorithm"
+    tier: should
+  - id: report_completeness
+    name: "Steps to Reproduce / Expected / Actual present"
+    tier: should
+  - id: title_pattern
+    name: "Title follows [Component] — [Failure] ([WCAG SC])"
+    tier: nice
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should/nice gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Corroboration canary — bug-report layer. Verifies that a MAJOR finding
+  with cross-family corroboration (axe-core + wave) is filed as MAJOR, that
+  the report never uses confirmation vocabulary in a corroboration sentence,
+  and that no engine IDs outside the four-term vocabulary appear. All other
+  required fields are derivable from the input (URL, SC, ratios, selector,
+  HTML snippet present).
+expected_status_competent: PASS
+known_judgment_calls:
+  - >-
+    'High' is accepted as a synonym for MAJOR. 'Critical' is not accepted —
+    it is the must-fail escalation term even if the report frames it as a
+    synonym for MAJOR in their own taxonomy (the input explicitly says MAJOR).
+  - >-
+    A report that mentions corroboration without using confirmation vocabulary
+    is acceptable. Mentioning 'both scanners flagged this' is fine; 'both
+    scanners confirmed this is a defect' is not.
+  - >-
+    The source lists axe-core and wave. A report that mentions only one of
+    them passes the detected_by_vocab check (under-attribution is not
+    fabrication); a report that adds a third engine not in the source_detected_by
+    list is fabrication.
+  - >-
+    Corroboration sentence matching is substring based. Adjudicate by reading
+    before counting a miss on grammatically ambiguous sentences.
+  - >-
+    Scorer statuses are detector output, not verdict authority.

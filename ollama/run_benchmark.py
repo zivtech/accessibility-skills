@@ -220,6 +220,7 @@ BUGREPORT_FIXTURES = [
     "axe-two-rules-split",
     "kat-focus-appearance",
     "manual-sr-finding-prose",
+    "riverbend-permits-corroboration",  # 8th fixture, corroboration canary sibling (issue #85, 2026-09-14) — no model rows yet
     "sparse-scan-adversarial",
 ]
 
@@ -265,6 +266,7 @@ ACR_FIXTURES = [
     "utility-billing-retest",
     "court-payments-independence",
     "resident-services-authorship-disclosure",
+    "riverbend-permits-corroboration",  # corroboration canary (issue #85, 2026-09-14) — no model rows yet
 ]
 
 # a11y-test-operation-evidence lane (WP-B, PT-01, 2026-09-02). The system

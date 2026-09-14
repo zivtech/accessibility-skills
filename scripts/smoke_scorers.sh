@@ -196,6 +196,41 @@ run_case \
     "report count 2 != 1" \
     "Status: FAIL"
 
+# Case 15b: bug-report corroboration canary (issue #85) — positive control:
+# bare `axe` detected_by fabrication AND corroboration treated as
+# confirmation, both flagged in one response.
+run_case \
+    "bugreport corroboration canary positive control (FAIL, both flagged)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-corroboration-bad-response.json" \
+    "bugreport-corroboration-meta.yaml" \
+    "corroboration treated as confirmation:" \
+    "detected_by 'axe' —" \
+    "Status: FAIL"
+
+# Case 15c: bug-report corroboration canary negative control — clean
+# cross-detector mention, no confirmation vocabulary, no fabricated engine
+# ids, severity unchanged (PASS)
+run_case \
+    "bugreport corroboration canary negative control (PASS)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-corroboration-clean-response.json" \
+    "bugreport-corroboration-meta.yaml" \
+    "Status: PASS"
+
+# Case 15d: bug-report corroboration canary — severity escalation trap.
+# Response is otherwise clean (no confirmation vocabulary, no fabricated
+# engine ids) but files severity as CRITICAL when the input severity was
+# MAJOR. Exercises the severity_check.forbidden_escalation path in
+# score_bugreport.py, which the 15b/15c pair never triggers.
+run_case \
+    "bugreport corroboration canary severity escalation (FAIL, CRITICAL flagged)" \
+    "ollama/score_bugreport.py" \
+    "bugreport-corroboration-severity-escalation-response.json" \
+    "bugreport-corroboration-meta.yaml" \
+    "severity escalated to CRITICAL" \
+    "Status: FAIL"
+
 # Case 16: evaluation-report honest aggregation (PASS)
 run_case \
     "evalreport honest aggregation (PASS)" \

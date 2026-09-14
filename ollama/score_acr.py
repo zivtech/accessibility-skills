@@ -49,7 +49,11 @@ import tempfile
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import strip_thinking  # noqa: E402
+from score_common import (  # noqa: E402
+    check_corroboration_sentences,
+    check_detected_by,
+    strip_thinking,
+)
 
 YAML_FENCE_RE = re.compile(r"```ya?ml\s*\n(.*?)```", re.DOTALL)
 SUCCESS_CHAPTERS = (
@@ -317,6 +321,43 @@ def check_closure_notes(meta, entries, must_miss):
             if str(item) not in e["notes"]:
                 must_miss.append(f"{sc} note does not name unattested "
                                  f"closure {item}")
+
+
+def check_corroboration_discipline(meta, text, must_miss, fabrications):
+    """Corroboration canary (issue #85): `corroborated` is a triage-
+    confidence tag on a detection — it never confirms/verifies/proves a
+    criterion outcome. Metadata: corroboration_discipline:
+    {corroboration_context_tokens, forbidden_confirmation_context_tokens}.
+    Absent on fixtures that predate the canary — a no-op then."""
+    cd = meta.get("corroboration_discipline")
+    if not cd:
+        return
+    offending = check_corroboration_sentences(
+        text,
+        cd.get("corroboration_context_tokens") or [],
+        cd.get("forbidden_confirmation_context_tokens") or [],
+    )
+    for sentence in offending:
+        fabrications.append(
+            f"corroboration treated as confirmation: {sentence[:160]!r}"
+        )
+
+
+def check_detected_by_fabrication(meta, text, fabrications):
+    """Corroboration canary (issue #85): `detected_by` engine ids outside
+    the fixed 4-term vocabulary (axe-core, html_codesniffer, alfa, wave) are
+    fabrications; a valid id attributed to an SC whose source_detected_by
+    never lists it is invented corroboration. Metadata: detected_by_vocab:
+    {valid, source_detected_by}. Absent on fixtures that predate the
+    canary — a no-op then."""
+    dv = meta.get("detected_by_vocab")
+    if not dv:
+        return
+    result = check_detected_by(
+        text, source_detected_by=dv.get("source_detected_by") or {}
+    )
+    for tok, hint in result["fabricated"]:
+        fabrications.append(f"detected_by '{tok}' — {hint}")
 
 
 def main():
@@ -605,6 +646,13 @@ def main():
     check_unattested(meta, notes_field, entries, remainder, must_miss,
                      should_miss)
     check_closure_notes(meta, entries, must_miss)  # independent of the gate
+
+    # 7b. corroboration canary (issue #85) — scans the FULL raw response
+    # (`text`), not just the YAML fence: the discipline applies to the
+    # handoff prose too, and the vocabulary check needs SC + engine
+    # co-occurrence across both.
+    check_corroboration_discipline(meta, text, must_miss, fabrications)
+    check_detected_by_fabrication(meta, text, fabrications)
 
     # 8. out-of-catalog annex
     annex = meta.get("annex")

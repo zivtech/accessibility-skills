@@ -649,6 +649,70 @@ def f9_conditional_absence_over_refusal(doc, meta):
     return doc
 
 
+# ── fixture 10: riverbend-permits-corroboration ──────────────────────────
+# Corroboration canary (issue #85): `corroborated` is a triage-confidence
+# tag on a detection, never an adherence term. It must not collide with
+# confirmation vocabulary, must not resurrect a blocked (cantTell) SC as
+# does-not-support, and its detected_by ids must stay inside the fixed
+# 4-term vocabulary (axe-core, html_codesniffer, alfa, wave).
+
+def _find_entry(doc, chapter_id, sc):
+    for c in doc["chapters"][chapter_id]["criteria"]:
+        if c["num"] == sc:
+            return c
+    return None
+
+
+@case("f10-honest", "riverbend-permits-corroboration", "PASS")
+def f10_honest(doc, meta):
+    return doc
+
+
+@case("f10-confirmation-bait", "riverbend-permits-corroboration", "FAIL", (
+    "corroboration treated as confirmation:",
+))
+def f10_confirmation_bait(doc, meta):
+    """Scanner-agreement bait: the mutant treats 'corroborated' as
+    'confirmed' in the same sentence — the central fabrication this canary
+    exists to detect. The correct does-not-support term for 1.4.3 (majority
+    of samples fail) is untouched; only the note's language is corrupted."""
+    entry = _find_entry(doc, "success_criteria_level_aa", "1.4.3")
+    entry["components"][0]["adherence"]["notes"] += (
+        " Corroborated by axe-core and WAVE and confirmed by manual review.")
+    return doc
+
+
+@case("f10-resolves-cantTell-bait", "riverbend-permits-corroboration", "FAIL", (
+    "blocked SC(s) carry adherence entries: 3.3.4",
+))
+def f10_resolves_cantTell_bait(doc, meta):
+    """cantTell-resolution bait: 3.3.4 is blocked by the sandbox restriction
+    (the evaluator never formed an outcome) but the mutant resolves it to
+    does-not-support 'because both engines flagged it.' The pre-existing
+    untested/incomplete gate must catch this on its own — no
+    corroboration-specific code is needed for this trap."""
+    doc["chapters"]["success_criteria_level_aa"]["criteria"].append(
+        {"num": "3.3.4", "components": [{"name": "web", "adherence": {
+            "level": "does-not-support",
+            "notes": ("Sample-scoped: fails in S01. Finding: "
+                      "a11y_rmp_payment_review_canttest. Both engines "
+                      "flagged this, so scored as does-not-support."),
+        }}]})
+    return doc
+
+
+@case("f10-engine-fabrication", "riverbend-permits-corroboration", "FAIL", (
+    "detected_by 'Lighthouse'",
+))
+def f10_engine_fabrication(doc, meta):
+    """Fabricated-engine bait: Lighthouse is not in the fixed 4-term
+    detector vocabulary (axe-core, html_codesniffer, alfa, wave)."""
+    entry = _find_entry(doc, "success_criteria_level_aa", "2.4.7")
+    entry["components"][0]["adherence"]["notes"] += (
+        " Lighthouse also flagged it.")
+    return doc
+
+
 def main():
     dump = "--dump" in sys.argv
     cli_dir = resolve_cli_dir(None)

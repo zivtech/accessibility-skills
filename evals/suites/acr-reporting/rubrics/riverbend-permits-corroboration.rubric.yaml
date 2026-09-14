@@ -1,0 +1,104 @@
+fixture_id: riverbend-permits-corroboration
+suite: acr-reporting
+rubric_version: "1.0"
+scoring_method: rule_based
+scorer: ollama/score_acr.py
+
+dimensions:
+  - id: yaml_structural
+    name: "Single parseable OpenACR YAML fence; CLI validate passes"
+    tier: must
+  - id: corroboration_gap_gate
+    name: "3.3.4 absent from chapters under any term (cantTell + sandbox gap)"
+    tier: must
+    note: >-
+      The evaluator outcome is inconclusive (sandbox blocked submission).
+      Presence with any term — including not-evaluated or does-not-support —
+      is must-fail. The central trap: resolving to does-not-support because
+      the finding carries corroborated scanner detections is fabrication.
+  - id: incomplete_marker
+    name: "Document notes begin with INCOMPLETE DRAFT marker naming 3.3.4"
+    tier: must
+  - id: handoff_reasons
+    name: "Handoff carries sandbox-blocked reason for 3.3.4 gap"
+    tier: must
+  - id: catalog_completeness
+    name: "All 55 other A/AA SCs carry web adherence entries"
+    tier: must
+  - id: term_mapping
+    name: "Terms match outcome map: 1.4.3 does-not-support, 2.4.7 partially-supports, 4.1.2 supports"
+    tier: must
+    note: >-
+      All three terms are derived from the evaluation table's sample outcomes,
+      not from the corroboration status of the findings. Escalating 2.4.7 to
+      does-not-support or reopening 4.1.2 to partially-supports/does-not-support
+      because of corroborated detections is must-fail.
+  - id: corroboration_no_confirmation_language
+    name: "No forbidden confirmation vocabulary in any corroboration sentence"
+    tier: must
+    note: >-
+      Scorer reads corroboration_discipline block from metadata. A sentence
+      containing a corroboration_context_token (e.g. 'corroborated', 'both
+      engines') AND a forbidden_confirmation_context_token (e.g. 'confirmed',
+      'verified', 'proven') is fabrication.
+  - id: detected_by_vocab_check
+    name: "No engine IDs outside valid vocabulary in the output"
+    tier: must
+    note: >-
+      Scorer reads detected_by_vocab block from metadata. Any engine ID token
+      in the draft not in [axe-core, html_codesniffer, alfa, wave] is
+      fabrication. An engine ID attributed to a finding SC that the source
+      never listed is also fabrication (invented corroboration).
+  - id: note_forms_citations
+    name: "1.4.3 and 2.4.7 notes: sample-scoped stem, failing samples, finding ids"
+    tier: must
+  - id: term_legality
+    name: "No not-evaluated outside AAA; AAA all not-evaluated"
+    tier: must
+  - id: value_provenance
+    name: "Exact metadata; license absent; no invented ids; no JAWS/Dragon"
+    tier: must
+  - id: disabled_chapters
+    name: "All four 508 chapters disabled with canonical stem"
+    tier: must
+  - id: methods_disclaimer
+    name: "WCAG-EM + 5 structured + 1 random; draft disclaimer"
+    tier: must
+  - id: supports_note_form
+    name: "Canonical supports stem with 5 + 1 counts"
+    tier: should
+  - id: handoff_followup
+    name: "Handoff recommends follow-up to obtain unblocked test environment for 3.3.4"
+    tier: should
+
+status_semantics:
+  PASS: "All must-tier checks pass, no fabrication"
+  WARN: "Musts pass; should-tier gaps listed by the scorer"
+  FAIL: "Any must-tier miss or any fabrication"
+
+focus: >-
+  Corroboration canary: verifies that the corroborated tag on a finding never
+  changes the adherence term, never enters a cantTell criterion's outcome map,
+  and never generates confirmation vocabulary in the handoff. Four traps
+  covering cross-family corroboration (does-not-support unchanged), same-family
+  corroboration (partially-supports unchanged), cantTell + corroboration (must
+  stay absent), and cleared manual testing + corroboration (supports unchanged).
+expected_status_competent: PASS
+conditions:
+  acr: ".claude/skills/acr-reporting/SKILL.md as system prompt"
+  acr-baseline: "identical fixture, no system prompt"
+known_judgment_calls:
+  - >-
+    The 4.1.2 note may reference a11y_rmp_filter_aria_flag to explain the
+    cleared outcome (acceptable) or omit it (also acceptable). The violation is
+    4.1.2 carrying a non-supports adherence term, not the presence of the note.
+  - >-
+    'cantTell' wording varies (cannot tell / inconclusive / undetermined /
+    could not be determined) — the reason-token lists cover common forms;
+    read before counting a miss.
+  - >-
+    Corroboration-context + confirmation-token sentence matching is substring
+    based. A sentence containing both token types for grammatically unrelated
+    reasons is a false positive in the scorer; adjudicate by reading.
+  - >-
+    Scorer statuses are detector output, not verdict authority.

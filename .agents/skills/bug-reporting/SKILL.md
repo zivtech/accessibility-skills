@@ -141,6 +141,8 @@ Assign a severity level using the taxonomy above. Use it consistently across
 all reports in a project. When multiple tools report the same violation at
 different severities, use the higher severity.
 
+A `corroborated` cross-detector finding (the same violation flagged by more than one engine) is not confirmed — it is only a triage-confidence signal, so severity must never be bumped because engines agree, and any `detected_by` engine id cited must come from the fixed vocabulary (`axe-core`, `html_codesniffer`, `alfa`, `wave`) rather than an invented tool name.
+
 ### 8. Frequency / Occurrence
 
 Report how often the element appears on the page and across the site.

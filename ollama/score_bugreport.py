@@ -29,7 +29,13 @@ import sys
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
-from score_common import BASELINE_ID_RE, check_baseline_ids, load_baseline_manifest  # noqa: E402
+from score_common import (  # noqa: E402
+    BASELINE_ID_RE,
+    check_baseline_ids,
+    check_corroboration_sentences,
+    check_detected_by,
+    load_baseline_manifest,
+)
 
 # Filed-row detection for the declared-508 `Baseline test` field. Generous on
 # label variants (dash bullets, "ICT Baseline test", parentheticals, markdown
@@ -240,6 +246,46 @@ def main():
             fabrications.append(f"baseline ID '{tok}' — {hint}")
     else:
         print("Baseline IDs: none cited (fixture not declared-508) — OK")
+
+    # 7. corroboration canary (issue #85). `corroborated` is a triage-
+    # confidence tag on a detection; it never confirms/verifies/proves the
+    # finding, never bumps its filed severity, and only ever rides the
+    # fixed 4-term detector vocabulary.
+    cd = meta.get("corroboration_discipline")
+    if cd:
+        offending = check_corroboration_sentences(
+            text,
+            cd.get("corroboration_context_tokens") or [],
+            cd.get("forbidden_confirmation_context_tokens") or [],
+        )
+        for sentence in offending:
+            fabrications.append(
+                f"corroboration treated as confirmation: {sentence[:160]!r}"
+            )
+
+    dv = meta.get("detected_by_vocab")
+    if dv:
+        db = check_detected_by(
+            text, source_detected_by=dv.get("source_detected_by") or {}
+        )
+        for tok, hint in db["fabricated"]:
+            fabrications.append(f"detected_by '{tok}' — {hint}")
+
+    # Severity integrity: a corroborated (cross-detector) finding is a
+    # stronger triage signal, but triage is not evaluated severity — an
+    # escalation attributed to corroboration is a fabrication regardless of
+    # its stated reason.
+    sev = meta.get("severity_check")
+    if sev and sev.get("forbidden_escalation"):
+        forbidden_term = sev.get("forbidden_escalation_term", "CRITICAL")
+        input_severity = sev.get("input_severity")
+        filed = [v.strip() for v in label_line_re("Severity").findall(text)]
+        if any(re.search(rf"(?i)\b{re.escape(forbidden_term)}\b", v)
+               for v in filed):
+            fabrications.append(
+                f"severity escalated to {forbidden_term} "
+                f"(input severity was {input_severity})"
+            )
 
     # verdict
     print()
