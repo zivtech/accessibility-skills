@@ -2,6 +2,8 @@
 
 **Decision (2026-09-02):** **not adopted** as a seventh `a11y-test` execution mode. This record exists so the measurement, its boundary, the durable technical findings, and the reopen triggers have a home — the repo's established shape for "we evaluated a tool, here is where it stands" — rather than living only in a dispositions table. Nothing is routed, pinned, or vendored by this decision.
 
+**Status update (2026-09-14, user's ruling):** the *core-promotion* decision above is unchanged — Alfa is still not a core `a11y-test` mode, and its unique-coverage delta over axe stays unmeasured. What changed is a product decision one level up (the user's, in an engagement where both Alfa and WAVE proved useful): Alfa is now offered as an **optional supplemental detector lane** for broad automated coverage + aggregate corroboration signal (it feeds the evidence contract's `detected_by` / `corroboration` fields), documented in `a11y-test` under "Supplemental detector lanes (WAVE, Siteimprove Alfa)," routed never vendored. Offering the lane is a breadth + aggregate-signal decision, not a coverage claim; the reopen triggers below are still what would promote it to the core stack.
+
 ## What was evaluated
 
 Candidate PT-06 from the engagement-tooling promotion catalogue (`docs/plans/2026-09-02-engagement-tooling-promotion-handoff.md`; dispositions in `docs/plans/2026-09-02-promotion-candidate-dispositions.md`). The candidate's job-to-be-done named three value propositions: run a second independent ACT-rules engine beside axe so detections can be **cross-checked**, so rule coverage is **widened**, and with **EARL-native output**.
