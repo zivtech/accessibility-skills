@@ -18,6 +18,7 @@ Pick the right execution mode from the routing table before running anything (th
 |---|---|---|
 | Codified CI keyboard tests, visual regression, axe-core scans, WCAG compliance suites | `npx playwright test` with `.spec.js` files | Real keyboard events, CI-runnable, version-controlled, reproducible. Primary path — all mandatory rules below still apply. |
 | Baseline sweep across a list of URLs — machine-readable axe-core evidence per page, no `.spec.js` authoring, not CI-embedded | [`references/baseline-url-scan.mjs`](references/baseline-url-scan.mjs) (in-repo reference script; peer deps `playwright` + `@axe-core/playwright`) | Sequential per-page axe scan + summary JSON for baseline/regression evidence across many pages in one run. `--census` adds DOM-census heuristics (empty paragraphs, autocomplete-absence, duplicate ids); `--alt-snapshot` writes a diffable per-page alt-text map. Detector output, not a conformance verdict — axe-detectable subset (plus heuristics) only. See "Baseline URL-list scan" below. |
+| Supplemental scanner corroboration — run a second/third detector engine over an already-scanned page to raise triage confidence through cross-detector agreement (never a conformance verdict) | Siteimprove **Alfa** (`@siteimprove/*` Playwright, consuming-project dep) or WebAIM **WAVE** (extension or subscription API, operator's own licence) | Detector-only supplemental lanes that feed `detected_by` / `corroboration`. Their unique-coverage delta over axe is unmeasured here. See "Supplemental detector lanes (WAVE, Siteimprove Alfa)" below. |
 | Interactive agent-driven reconnaissance: snapshot ARIA structure, navigate a SPA to reach the page under test, verify a fix in place, capture annotated screenshots, probe a disclosure/menu/modal without writing a test file | `agent-browser` CLI (snapshot+ref pattern, persistent CDP daemon, real keyboard events) | One shell call per action, no test-file overhead, returns `@e1`-style refs that map directly to actions. See "Interactive reconnaissance with agent-browser" below. |
 | Generate a test script from a prose spec ("test that this modal traps focus and Escape closes it") | `/webwright:run` or `/webwright:craft` (Claude Code plugin) | LLM generates complete Python Playwright script. Review before trusting. Also captures `aria_snapshot()` for deep ARIA tree inspection. See [references/webwright-testgen.md](references/webwright-testgen.md). |
 | Goal-driven journey audit of a live URL — "can a keyboard-only or screen-reader user complete this task?" — with evidence artifacts | `keyboard-a11y-tester` (external clone, pinned release `0.5.0`; deterministic runner + agent-driven serve/step loop) | URL + goal in, evidence-linked WCAG findings out — no test file needed. Emulated screen-reader announcements, live-region capture, and focus-indicator measurement at the page/journey level that no other mode provides. See "Goal-driven journey audits with keyboard-a11y-tester" below. |
@@ -348,6 +349,36 @@ npx pa11y-ci --sitemap https://example.com/sitemap.xml --runner axe --runner htm
 ```
 
 Same adoption boundary as keyboard-a11y-tester and virtual-screen-reader: a routed external tool the operator installs in their own project, never vendored into this repo.
+
+## Supplemental detector lanes (WAVE, Siteimprove Alfa)
+
+**When to use:** a page has already been scanned by the primary lanes (axe-core, and HTML_CodeSniffer via `pa11y-ci`) and you want a second or third independent detector over the same target to raise triage confidence — cross-detector agreement on the same WCAG criterion + target becomes `corroboration: corroborated` with a `detected_by` engine list (see the Detector-lane authority boundary above). Both are **detector-only supplemental lanes**: never keyboard, screen-reader, WCAG, or Section 508 verdicts, and their unique-coverage delta over axe **has not been measured in this bundle** — do not claim they find defects axe misses without the multi-page head-to-head that would show it (Alfa was measured once and declined for promotion; the reopen triggers live in the Alfa scan adoption assessment under `docs/`).
+
+**Routed, never vendored.** Neither engine is a dependency of this repo. Install and run them in the consuming audit or project, then map their output into the A11y Evidence Finding Contract (`source`, `detected_by`, `corroboration`), keeping `cantTell` distinct from pass/fail and WCAG criterion + level separate from the detector's own result.
+
+### Siteimprove Alfa (Playwright)
+
+Open-source ACT-rules engine (MIT). Install exact-pinned in the consuming project — never in this repo:
+
+```bash
+npm install --save-dev --save-exact \
+  @siteimprove/alfa-test-utils@0.84.2 \
+  @siteimprove/alfa-playwright@0.84.2
+```
+
+Record both the wrapper version and the engine version (`@siteimprove/alfa-rules`, `0.119.0` at this writing) — they drift independently. **Level separation is load-bearing:** on real pages most Alfa failures are AAA or advisory, not WCAG 2.2 AA — classify every outcome (`WCAG_2_2_AA` / `AAA` / `ADVISORY` / `UNMAPPED`) and let only AA-scoped outcomes enter the AA queue, still pending independent review. To reach a WCAG criterion from an outcome, join `rule.uri` against the default export of `@siteimprove/alfa-rules` and read each rule's `requirements` where `type === "criterion"`. Alfa's default JSON carries no selector — only an internal serialization id — so a finding needs extra DOM-target serialization before it satisfies the contract's `evidence` field.
+
+### WebAIM WAVE
+
+Commercial tool; the licence is the operator's, not the suite's. Three modes, in priority order:
+
+1. **Observe a user-supplied browser-extension report** — the extension evaluates rendered/dynamic content locally and sends nothing to WebAIM. Record report URL, evaluated URL, state, viewport, timestamp, and the visible category/item totals.
+2. **Subscription API** with `WAVE_API_KEY` from the environment — never written to a URL, log, or evidence file, redacted from errors, no more than two simultaneous requests, and **`SKIPPED_CREDENTIAL_REQUIRED` when the key is absent, never a clean result.** Use `reporttype=4` for CSS selectors + contrast data.
+3. **Licensed stand-alone engine** an engagement already provides — route to it; never copy or vendor the WAVE engine.
+
+Treat `error` / `contrast` / `alert` as candidate findings and `feature` / `structure` / `aria` as informational unless independent review finds a defect.
+
+**Disclaimer (required wherever WAVE evidence appears):** this lane does not authorize WAVE credit purchases, account creation, credential use, or redistribution of WebAIM's proprietary reports. Do not republish or sell WAVE reports or WAVE-derived counts without WebAIM permission — an engagement may retain private, access-controlled evidence and independently validate each defect, but external reporting describes the independently verified defect, not the proprietary report data. Non-commercial use is permitted under WebAIM's terms; a licence is still the operator's to hold.
 
 ## 1. Keyboard Accessibility Tests
 
