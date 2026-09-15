@@ -41,7 +41,7 @@ This is a standing obligation, not a publication-time-only check: the disclaimer
 Verbatim from the PT-07 disposition cell:
 
 - **(a)** WebAIM publishes an official client, SDK, CLI, GitHub Action, skill, or MCP server.
-- **(b)** A WAVE licence-holder runs a five-page head-to-head against axe (the Lighthouse comparison in `docs/tools.md` is the template) and finds A/AA defect classes axe misses. This head-to-head has never been run; it is tracked as issue #86.
+- **(b)** A WAVE licence-holder runs a five-page head-to-head against axe (the Lighthouse comparison in `docs/tools.md` is the template) and finds A/AA defect classes axe misses. This head-to-head has never been run; it is tracked as issue #86. The runnable protocol — surface independence, pre-declaration, and the WAVE-terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md`.
 - **(c)** `@afixt/wave-node` reaches 1.0 with a public repo (today: v0.1.0, MIT, single release 2025-06-07, no repo linked from npm metadata).
 
 **Not claimed:** that WAVE finds nothing axe misses — that comparison has never been run here; trigger (b) is what would measure it.
