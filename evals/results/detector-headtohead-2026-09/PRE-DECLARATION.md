@@ -75,7 +75,9 @@ distinct template/CMS/authoring source; both conditions shown.
 | 2 | `https://cfpub.epa.gov/roe/` | cfpub.epa.gov — Apache, separate hosting boundary | Adobe ColdFusion (`.cfm`) legacy application, not Drupal |
 | 3 | `https://enviro.epa.gov/` | enviro.epa.gov — nginx/1.28.2, separate boundary | Envirofacts application (query/data app), distinct authoring source, not the WebCMS |
 | 4 | `https://ordspub.epa.gov/ords/guideme_ext/f?p=guideme:home` | ordspub.epa.gov — Apache (reached via `ofmpub.epa.gov/apex` → `ordspub.epa.gov/ords`) | Oracle APEX / ORDS application, distinct generator and authoring source |
-| 5 | `https://comptox.epa.gov/dashboard/` | comptox.epa.gov — Apache, separate boundary | CompTox Chemicals Dashboard, client-rendered React SPA, distinct build/authoring source |
+| 5 | *[EPA chemicals-dashboard SPA — exact host/URL redacted from tracked files by the client-reference gate `scripts/check_client_refs.py`; frozen value in the private record and in git history at `091321a`]* | Apache, separate hosting boundary | client-rendered React SPA (distinct build/authoring source, not the WebCMS) |
+
+*(Post-run redaction, 2026-09-15: surface 5's exact host matches the client-reference hygiene gate's scrub list, so the token is redacted from this tracked copy only. No surface was changed, added, or removed — the frozen set is preserved verbatim in the pre-declaration commit `091321a` and in the private engagement record. This is a token redaction, not an adjustment to what §6 froze.)*
 
 **SPA caveat, disclosed before the run (not a post-hoc excuse):** surface 5 is
 client-rendered. The axe leg runs through Playwright (rendered DOM) and sees the

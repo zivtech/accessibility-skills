@@ -15,7 +15,9 @@ amendment `cbeec39`. **Engines:** axe-core 4.13.0, HTML_CodeSniffer 2.6.0
 **Surfaces:** 5 independent EPA systems, each a distinct origin AND
 template/CMS per §2 — Drupal 10 (`www.epa.gov/climate-change`), ColdFusion
 (`cfpub.epa.gov/roe/`), Envirofacts/nginx (`enviro.epa.gov/`), Oracle APEX
-(`ordspub.epa.gov/ords/...`), React SPA (`comptox.epa.gov/dashboard/`). The SPA
+(`ordspub.epa.gov/ords/...`), and a React SPA on a separate EPA subdomain
+(exact host redacted here per the client-reference gate `scripts/check_client_refs.py`;
+frozen in the pre-declaration commit and the private record). The SPA
 rendered fully in both Playwright and the WAVE API.
 
 ## Outcome
