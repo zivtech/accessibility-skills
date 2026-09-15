@@ -31,3 +31,7 @@ The register earns an eval lane the way the rest of the bundle does: a fixture i
 - It does not add new conformance semantics; it names pairs that were already being conflated and states the separation.
 - It is not exhaustive. New orthogonal pairs are added here when an engagement surfaces one that keeps getting collapsed — not speculatively.
 - The `claim_boundary` field is a discipline, not a proof: it records the boundary an author asserts; it does not verify the underlying evidence is correct.
+
+## Considered, not admitted
+
+**Considered, not admitted (2026-09-14): corroboration tag ⊥ conformance term.** Not admitted — no observed collapse; the admission rule is *observed* collapse, not anticipated. Enforcement: acr-reporting canary `riverbend-permits-corroboration` + the `detected_by` vocabulary check. Watch signal: severity bumped on a `corroborated` finding (severity is user-impact-based). Reopen: first field collapse → add the row, cite the incident.

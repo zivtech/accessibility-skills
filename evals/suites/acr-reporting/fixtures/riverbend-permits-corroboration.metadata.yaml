@@ -1,0 +1,269 @@
+fixture_id: riverbend-permits-corroboration
+suite: acr-reporting
+input_format: engagement record (ACR-feed fields) + finished contract-shaped
+  evaluation report with four findings carrying detected_by and corroboration
+  fields + catalog frame
+difficulty: ADVERSARIAL
+description: >-
+  Corroboration canary (issue #85). Everything except corroboration handling
+  is held boilerplate-correct. Four trap SCs: 1.4.3 (cross-family
+  corroboration axe+wave, correct term does-not-support — majority of samples
+  fail; no "confirmed" language in any corroboration sentence); 2.4.7
+  (same-family corroboration axe+htmlCS, correct term partially-supports —
+  only S02 fails); 3.3.4 (evaluator outcome cantTell despite a corroborated
+  scanner finding — must stay absent from chapters via the incomplete gate;
+  resolving to does-not-support because two engines flagged it is must-fail);
+  4.1.2 (reverse bait — corroborated scanner flag cleared by manual walkthrough,
+  correct term supports). The corroboration tag is a triage-confidence signal
+  on detections; it never enters the outcome map or changes the adherence term.
+
+# ── Scorer contract (ollama/score_acr.py) ────────────────────────────────
+
+catalog: 2.5-edition-wcag-2.2-508-en
+
+exact_fields:
+  title: "Riverbend Municipal Permits Portal Accessibility Conformance Report"
+  product.name: "Riverbend Municipal Permits Portal"
+  product.version: "3.2.0"
+  author.email: "j.everett@cascadeaccess.example"
+  report_date: "2026-09-05"
+
+forbidden_root_fields:
+  - license
+
+doc_version_expected: 1
+
+# 55 of the catalog's 56 A/AA rows carry terms; 3.3.4 is the blocked criterion
+# (cantTell / inconclusive sandbox) and must be ABSENT from chapters under any
+# term. Presence with any term — including not-evaluated — is a must-fail.
+expected_terms:
+  "1.1.1": supports
+  "1.2.1": not-applicable
+  "1.2.2": not-applicable
+  "1.2.3": not-applicable
+  "1.3.1": supports
+  "1.3.2": supports
+  "1.3.3": supports
+  "1.4.1": supports
+  "1.4.2": not-applicable
+  "2.1.1": supports
+  "2.1.2": supports
+  "2.1.4": not-applicable
+  "2.2.1": supports
+  "2.2.2": supports
+  "2.3.1": supports
+  "2.4.1": supports
+  "2.4.2": supports
+  "2.4.3": supports
+  "2.4.4": supports
+  "2.5.1": supports
+  "2.5.2": supports
+  "2.5.3": supports
+  "2.5.4": not-applicable
+  "3.1.1": supports
+  "3.2.1": supports
+  "3.2.2": supports
+  "3.2.6": supports
+  "3.3.1": supports
+  "3.3.2": supports
+  "3.3.7": supports
+  "4.1.1": not-applicable
+  # Reverse-bait control: scanner flagged aria-expanded; manual testing cleared
+  # it. Corroborated scanner flag does not re-open a manually cleared outcome.
+  "4.1.2": supports
+  "1.2.4": not-applicable
+  "1.2.5": not-applicable
+  "1.3.4": supports
+  "1.3.5": supports
+  # Cross-family corroboration (axe+wave): outcome from the evaluation table is
+  # does-not-support (S01,S02,S03,S04 fail = majority of samples). The term is
+  # derived from the evaluation outcome, not from the corroboration status.
+  "1.4.3": does-not-support
+  "1.4.4": supports
+  "1.4.5": supports
+  "1.4.10": supports
+  "1.4.11": supports
+  "1.4.12": supports
+  "1.4.13": supports
+  "2.4.5": supports
+  "2.4.6": supports
+  # Same-family corroboration (axe+htmlCS): outcome from the evaluation table is
+  # partially-supports (S02 fails = some functionality). Corroboration does not
+  # escalate the term to does-not-support.
+  "2.4.7": partially-supports
+  "2.4.11": supports
+  "2.5.7": supports
+  "2.5.8": supports
+  "3.1.2": supports
+  "3.2.3": supports
+  "3.2.4": supports
+  "3.3.3": supports
+  # 3.3.4 intentionally absent — cantTell outcome; the incomplete gate governs.
+  # Resolving to does-not-support "because both engines flagged it" is must-fail.
+  "3.3.8": supports
+  "4.1.3": supports
+
+expected_terms_aaa: {}
+
+supports_note_counts:
+  structured: 5
+  random: 1
+
+note_citations:
+  "1.4.3": [a11y_rmp_header_text_contrast]
+  "2.4.7": [a11y_rmp_form_focus_invisible]
+
+note_samples:
+  "1.4.3": ["S01", "S02", "S03", "S04"]
+  "2.4.7": ["S02"]
+
+# The 3.3.4 finding must not ride any adherence entry (the criterion is absent
+# from chapters). 4.1.2 cleared by manual testing — its finding may appear in
+# a note explaining the supports outcome; it must NOT drive the criterion to
+# does-not-support or partially-supports.
+forbidden_in_criteria_ids:
+  - a11y_rmp_payment_review_canttest
+
+finding_id_pattern: "a11y_[a-z0-9_]+"
+expected_finding_ids:
+  - a11y_rmp_header_text_contrast
+  - a11y_rmp_form_focus_invisible
+  - a11y_rmp_filter_aria_flag
+  - a11y_rmp_payment_review_canttest
+
+web_only_components: true
+
+# The cantTell gate — 3.3.4 blocked by sandbox restrictions.
+incomplete:
+  expected: true
+  gap_scs: ["3.3.4"]
+  reason_tokens:
+    "3.3.4": ["sandbox", "could not determine", "cannot tell", "cantTell",
+              "inconclusive", "blocked", "could not verify", "could not be determined"]
+
+disabled_chapters:
+  functional_performance_criteria:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  hardware:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  software:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+  support_documentation_and_services:
+    should_tokens:
+      - ["not in scope", "no ", "web-only", "web only", "none"]
+
+doc_notes_must:
+  - ["web-only", "web only", "only the web", "web surfaces only", "web component"]
+
+methods_tokens:
+  - ["WCAG-EM"]
+  - ["5 structured"]
+  - ["1 random"]
+
+disclaimer_tokens_must:
+  - ["draft"]
+disclaimer_tokens_should:
+  - ["not a legally binding", "not legally binding", "non-binding",
+     "not represent a legally", "not a legally-binding"]
+
+fabricated_tokens:
+  - "JAWS"
+  - "Dragon"
+
+handoff_should:
+  - ["CLI", "HTML", "rendered"]
+  - ["sign", "human", "review"]
+  - ["sandbox", "further testing", "complete the", "missing testing",
+     "follow-up", "unblocked"]
+
+# ── NEW: Corroboration canary metadata blocks ─────────────────────────────
+#
+# These blocks are consumed exclusively by the corroboration-canary scorer
+# lane (issue #85). The existing score_acr.py does not read them; they are
+# defined here for the scorer author to wire up.
+
+# corroboration_discipline:
+#   Semantics: scan the full ACR draft output (YAML fence + handoff text)
+#   sentence by sentence. A sentence that contains ANY token from
+#   corroboration_context_tokens AND ANY token from
+#   forbidden_confirmation_context_tokens is a fabrication (must-fail).
+#   Rationale: "corroborated" is a triage-confidence tag on a detection;
+#   it never "confirms", "verifies", or "proves" a criterion outcome.
+corroboration_discipline:
+  corroboration_context_tokens:
+    - "corroborated"
+    - "both engines"
+    - "two scanners"
+    - "cross-detector"
+    - "both scanners"
+    - "scanner agreement"
+    - "both tools"
+    - "two tools"
+  forbidden_confirmation_context_tokens:
+    - "confirmed"
+    - "verified"
+    - "proven"
+
+# detected_by_vocab:
+#   Semantics: any engine id appearing in the ACR draft output that is NOT
+#   in valid[] is a fabrication (must-fail). source_detected_by gives the
+#   true detected_by per finding SC, so the scorer can also flag an engine
+#   ID attributed to a finding that the source never listed — invented
+#   corroboration.
+detected_by_vocab:
+  # documentation-only; the authoritative vocabulary is ENGINE_ID_VOCAB in ollama/score_common.py
+  valid:
+    - "axe-core"
+    - "html_codesniffer"
+    - "alfa"
+    - "wave"
+  source_detected_by:
+    "1.4.3": ["axe-core", "wave"]
+    "2.4.7": ["axe-core", "html_codesniffer"]
+    "3.3.4": ["axe-core", "html_codesniffer"]
+    "4.1.2": ["axe-core", "alfa"]
+
+notes: |
+  Corroboration canary (issue #85, part 1), built 2026-09-14. Companion to
+  the bug-reporting lane sibling (riverbend-permits-corroboration in
+  bug-reporting/fixtures/).
+
+  Four-trap inventory:
+  1. 1.4.3 — cross-family corroboration (axe-core + wave). Majority of
+     samples fail (S01,S02,S03,S04 out of 6). Correct term: does-not-support.
+     The corroboration tag adds no signal: the term follows from the sample
+     count, not from engine agreement. Secondary trap: the handoff must not
+     contain "confirmed" or similar in a sentence about scanner agreement.
+  2. 2.4.7 — same-family corroboration (axe-core + html_codesniffer). Only
+     S02 fails out of 6. Correct term: partially-supports. A model that
+     escalates to does-not-support "because two engines flagged it" fails here.
+  3. 3.3.4 — cantTell outcome despite corroborated scanner finding. The
+     sandbox blocked the test; the evaluator never formed an outcome. Must
+     stay absent from chapters via the incomplete gate. A model that resolves
+     to does-not-support "because both engines flagged it" commits the central
+     fabrication this canary exists to detect.
+  4. 4.1.2 — reverse bait. Corroborated scanner flag (axe-core + alfa) cleared
+     by manual walkthrough. Correct term: supports. A model that re-opens the
+     criterion to partially-supports or does-not-support because of the
+     corroborated detection fails here.
+
+  Isolation strategy: the fixture holds all other serialization variables
+  constant and correct (exact_fields, catalog completeness, note forms, value
+  provenance, disabled chapters, methods + disclaimer) so the ONLY variables
+  are the four trap SCs and the two new metadata blocks.
+
+  These blocks are read and enforced by the scorer as of issue #85.
+  - corroboration_discipline: the sentence-level check; the scorer author
+    must parse sentences for co-occurring context + confirmation tokens.
+  - detected_by_vocab: the vocabulary check; the scorer author must scan
+    the full output for engine-shaped tokens outside the valid set.
+
+  Known instrument limits: the corroboration_context_tokens and
+  forbidden_confirmation_context_tokens are substring/token matches, not
+  semantic parsers — a sentence can contain "corroborated" and "verified" in
+  unrelated clauses (e.g. "corroborated by the team; the fix was verified
+  separately"). Adjudicate by reading before counting a miss. The scorer is
+  detector output — the repo-wide routing rule applies.

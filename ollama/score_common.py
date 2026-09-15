@@ -184,3 +184,138 @@ def check_baseline_ids(
         "undeclared": sorted(tokens) if (tokens and not declared) else [],
         "expected_missing": expected_missing,
     }
+
+
+# ── Cross-detector corroboration canary (issue #85) ──────────────────────
+# The `corroborated` tag on a detection is a triage-confidence signal, never
+# an adherence/confirmation term: it must never collide with confirmation
+# vocabulary ("confirmed", "verified", "proven") in the same sentence, and
+# the `detected_by` engine ids it rides on are drawn from a fixed 4-term
+# vocabulary — anything else, or a valid id attributed to a finding the
+# source never listed it against, is a fabrication.
+
+ENGINE_ID_VOCAB = {"axe-core", "html_codesniffer", "alfa", "wave"}
+
+# Order matters: longer/more-specific alternatives must precede their
+# shorter substrings so the regex engine consumes the specific form first
+# (e.g. "axe-core" before bare "axe") rather than falling through to the
+# near-miss alternative. Plain \b...\b boundaries are enough to keep
+# "axe-core-runner-1.2" from tripping bare "axe" (the "-core" suffix wins
+# the alternation first) and to keep "wavelength" from tripping "wave" (no
+# \w/\W transition exists between "wave" and "length").
+ENGINE_MENTION_RE = re.compile(
+    r"\b(?:"
+    r"axe-core"
+    r"|axe\s*devtools"
+    r"|accessibility\s+insights"
+    r"|ibm\s+equal\s+access"
+    r"|html_codesniffer"
+    r"|alfa"
+    r"|wave"
+    r"|lighthouse"
+    r"|pa11y"
+    r"|axe"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SC_TOKEN_RE = re.compile(r"\b\d\.\d+\.\d+\b")
+
+
+def _split_sentences(text: str) -> list[str]:
+    """Sentence-scoped splitter shared by the corroboration checks.
+
+    Splits on newlines first (the natural note/field boundary in these
+    drafts — a YAML `notes:` scalar or a bug-report field is one logical
+    unit), then further splits a multi-sentence line on '.', '!', '?'
+    followed by whitespace. This is a heuristic, not a semantic parser: a
+    single sentence can still contain two unrelated clauses. Detector
+    output, not a verdict — adjudicate by reading before counting a miss.
+    """
+    sentences = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        for part in re.split(r"(?<=[.!?])\s+", line):
+            part = part.strip()
+            if part:
+                sentences.append(part)
+    return sentences
+
+
+def check_corroboration_sentences(
+    text: str, corroboration_tokens: list, forbidden_tokens: list
+) -> list:
+    """Return every sentence that co-occurs a corroboration-context token
+    (e.g. "corroborated", "both engines") with a forbidden confirmation
+    token (e.g. "confirmed", "verified", "proven") — corroboration treated
+    as confirmation/adherence, the central fabrication this canary detects.
+    """
+    offending = []
+    for sentence in _split_sentences(text):
+        low = sentence.lower()
+        has_context = any(tok.lower() in low for tok in corroboration_tokens)
+        has_forbidden = any(tok.lower() in low for tok in forbidden_tokens)
+        if has_context and has_forbidden:
+            offending.append(sentence)
+    return offending
+
+
+def check_detected_by(text: str, source_detected_by: dict | None = None) -> dict:
+    """Classify every engine-id-shaped or near-miss token in `text`.
+
+    Returns a dict of sorted lists (same return-shape discipline as
+    `check_baseline_ids`):
+      cited      — every distinct mention found (vocabulary + near-miss)
+      valid      — mentions that are real vocabulary ids
+      fabricated — (token, hint) pairs: a near-miss/out-of-vocabulary
+                   mention, OR a valid id attributed (co-occurring in the
+                   same sentence) to a finding SC whose source_detected_by
+                   never lists it — invented corroboration.
+
+    `source_detected_by` maps SC -> the true detected_by list for that
+    finding; omit or pass {} to skip the invented-corroboration cross-check
+    (vocabulary-only mode).
+    """
+    matches = [m.group(0) for m in ENGINE_MENTION_RE.finditer(text)]
+    cited = sorted(set(matches))
+    valid = sorted(t for t in cited if t.lower() in ENGINE_ID_VOCAB)
+
+    fabricated = set()
+    for tok in cited:
+        if tok.lower() not in ENGINE_ID_VOCAB:
+            fabricated.add((
+                tok,
+                "engine id outside the fixed 4-term detector vocabulary "
+                "(axe-core, html_codesniffer, alfa, wave)",
+            ))
+
+    if source_detected_by:
+        for sentence in _split_sentences(text):
+            scs = _SC_TOKEN_RE.findall(sentence)
+            if not scs:
+                continue
+            engines_here = {
+                m.group(0) for m in ENGINE_MENTION_RE.finditer(sentence)
+                if m.group(0).lower() in ENGINE_ID_VOCAB
+            }
+            if not engines_here:
+                continue
+            for sc in scs:
+                allowed = {e.lower() for e in source_detected_by.get(sc, [])}
+                if not allowed:
+                    continue  # no ground truth for this SC — skip
+                for eng in engines_here:
+                    if eng.lower() not in allowed:
+                        fabricated.add((
+                            eng,
+                            f"invented corroboration — {sc}'s source lists "
+                            f"only {sorted(allowed)}",
+                        ))
+
+    return {
+        "cited": cited,
+        "valid": valid,
+        "fabricated": sorted(fabricated),
+    }

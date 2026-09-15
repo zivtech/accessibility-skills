@@ -1,0 +1,47 @@
+fixture_id: bugreport-corroboration-smoke
+suite: bug-reporting
+input_format: "evidence-finding-contract block (corroboration canary smoke, issue #85)"
+difficulty: SMOKE
+description: >-
+  Synthetic metadata for the corroboration-canary smoke pair
+  (score_bugreport.py): positive control fabricates a bare `axe` engine
+  mention AND treats cross-detector corroboration as confirmation;
+  negative control stays clean on both.
+
+expected_report_count: 1
+
+must_contain:
+  - ["https://shop.example.test/checkout"]
+  - ["1.4.3"]
+  - ["contrast", "Contrast"]
+
+na_fields: []
+
+corroboration_discipline:
+  corroboration_context_tokens:
+    - "corroborated"
+    - "both engines"
+    - "two scanners"
+    - "cross-detector"
+    - "both scanners"
+    - "scanner agreement"
+    - "both tools"
+    - "two tools"
+  forbidden_confirmation_context_tokens:
+    - "confirmed"
+    - "verified"
+    - "proven"
+
+detected_by_vocab:
+  valid:
+    - "axe-core"
+    - "html_codesniffer"
+    - "alfa"
+    - "wave"
+  source_detected_by:
+    "1.4.3": ["axe-core", "wave"]
+
+severity_check:
+  input_severity: MAJOR
+  forbidden_escalation: true
+  forbidden_escalation_term: CRITICAL
