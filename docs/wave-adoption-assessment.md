@@ -41,10 +41,12 @@ This is a standing obligation, not a publication-time-only check: the disclaimer
 Verbatim from the PT-07 disposition cell:
 
 - **(a)** WebAIM publishes an official client, SDK, CLI, GitHub Action, skill, or MCP server.
-- **(b)** A WAVE licence-holder runs a five-page head-to-head against axe (the Lighthouse comparison in `docs/tools.md` is the template) and finds A/AA defect classes axe misses. This head-to-head has never been run; it is tracked as issue #86. The runnable protocol — surface independence, pre-declaration, and the WAVE-terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md`.
+- **(b)** A WAVE licence-holder runs a five-page head-to-head against axe (the Lighthouse comparison in `docs/tools.md` is the template) and finds A/AA defect classes axe misses. **Run 2026-09-15 (issue #86): NOT MET — no promotion** (see below). The runnable protocol — surface independence, pre-declaration, and the WAVE-terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md`.
 - **(c)** `@afixt/wave-node` reaches 1.0 with a public repo (today: v0.1.0, MIT, single release 2025-06-07, no repo linked from npm metadata).
 
-**Not claimed:** that WAVE finds nothing axe misses — that comparison has never been run here; trigger (b) is what would measure it.
+**Trigger (b) measured 2026-09-15 (issue #86): NOT MET, no promotion.** A WebAIM-account head-to-head ran WAVE (API `reporttype=4`) against axe on **5 independent EPA surfaces** (Drupal 10, ColdFusion, Envirofacts, Oracle APEX, a React SPA), pre-declaration `091321a` committed before any scan. A naive success-criterion-level overlap suggested a large WAVE-only delta; it **collapsed to no A/AA defect class axe missed** once (1) uniqueness was deduped at the **element level** — axe and WAVE file the same element under different SC numbers, so an SC-number overlap over-counts (an unlabelled form input and a page-language defect were each caught by *both* engines); (2) WAVE's advisory-tier warnings, which are not failures, were set aside; and (3) the remaining candidates were live-inspected and found to be false positives (contrast on screen-reader-only text, missing-alt on `aria-hidden` decorative icons) or a control hidden in the loaded state that axe correctly skips. WAVE stays a supplemental lane; core promotion stays deferred. Full method, receipts, and human ratification: `evals/results/detector-headtohead-2026-09/RESULTS.md`. Per WAVE's terms, no WAVE report data (counts, item listings) is published — only the decision and independently-described WCAG defects. The element-level dedup fix is now in the protocol (§4a).
+
+**Not claimed:** that WAVE finds nothing axe misses in general — the 2026-09-15 run measured five independent EPA surfaces on one day, one version set; it is a "not demonstrated here," not a universal claim.
 
 ## Escape hatch and dependency risk
 
@@ -52,6 +54,6 @@ Losing the WAVE lane costs a finding only its corroboration tag, never its valid
 
 **What this does not claim:**
 
-- No coverage number for WAVE against axe — that measurement has never been run.
-- No promotion to the core `a11y-test` stack — core promotion stays DEFERRED.
+- No coverage *number* for WAVE against axe is published — WAVE-derived counts stay private per its terms. The 2026-09-15 head-to-head (trigger (b) above) established the *decision* — no A/AA class axe missed on five independent EPA surfaces — not a published number.
+- No promotion to the core `a11y-test` stack — core promotion stays DEFERRED (now measured-and-not-demonstrated, 2026-09-15, not merely unmeasured).
 - No endorsement of WAVE over Siteimprove Alfa or any other detector — both are optional supplemental lanes, evaluated on separate receipts (see `docs/alfa-scan-adoption-assessment.md`).

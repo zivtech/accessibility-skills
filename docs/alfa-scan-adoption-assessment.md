@@ -52,7 +52,9 @@ Checked when a candidate ledger or this program is next reviewed; recorded here 
 - **(c) An engagement mandates EARL-native output** — measure Alfa's EARL then; it was not measured here.
 - **(d) A maker-published skill or MCP server appears** that would make this a reuse rather than a build. Surveyed 2026-09-02 (`evals/results/promotion-eval-2026-09/memos/1.8-maker-skill-survey.md`): the maker's `alfa-playwright` / `alfa-puppeteer` / CLI integrations are actively maintained and are what any future adapter should sit on; no skill or MCP server exists; the one community MCP wraps the paid SaaS API, not the open engine.
 
-The runnable head-to-head protocol for trigger (a) — surface independence, pre-declaration, human confirmation, and the terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md` (runs deferred).
+The runnable head-to-head protocol for trigger (a) — surface independence, pre-declaration, human confirmation, and the terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md`.
+
+**Trigger (a) measured 2026-09-15 (issue #86): NOT MET, no promotion.** The first run against trigger (a) — 5 independent EPA surfaces (Drupal 10, ColdFusion, Envirofacts, Oracle APEX, a React SPA), pre-declaration `091321a` committed before any scan — found **2 Alfa-only A/AA rule classes over axe+htmlcs, below the ≥3 floor** (the same result as the prior demo-page run). Alfa stays a supplemental lane; core promotion still declined. Receipts and the full method: `evals/results/detector-headtohead-2026-09/RESULTS.md`. That run also surfaced a durable method fix now in the protocol (§4a): cross-engine uniqueness must be deduped at the **element level**, since engines file the same defect under different SC numbers — an SC-number overlap over-counts.
 
 ## Escape hatch and dependency risk (if ever adopted)
 
