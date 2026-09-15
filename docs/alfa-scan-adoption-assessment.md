@@ -52,6 +52,8 @@ Checked when a candidate ledger or this program is next reviewed; recorded here 
 - **(c) An engagement mandates EARL-native output** — measure Alfa's EARL then; it was not measured here.
 - **(d) A maker-published skill or MCP server appears** that would make this a reuse rather than a build. Surveyed 2026-09-02 (`evals/results/promotion-eval-2026-09/memos/1.8-maker-skill-survey.md`): the maker's `alfa-playwright` / `alfa-puppeteer` / CLI integrations are actively maintained and are what any future adapter should sit on; no skill or MCP server exists; the one community MCP wraps the paid SaaS API, not the open engine.
 
+The runnable head-to-head protocol for trigger (a) — surface independence, pre-declaration, human confirmation, and the terms-compliant reporting split — is `docs/plans/2026-09-14-detector-headtohead-protocol.md` (runs deferred).
+
 ## Escape hatch and dependency risk (if ever adopted)
 
 Routed, never vendored; exact-pinned. MIT is irrevocable for released versions, so a pinned version cannot be withdrawn; the residual risk is single-vendor governance (a future major could relicense), mitigated by the pin. Fallback second engine: `pa11y-ci --runner htmlcs`, already routed. Maintainer bus-factor and transitive supply-chain exposure across the `@siteimprove/*` package family are deferred to their own lenses (`security-ownership-mapper`, `security-threat-model-planner`), not assessed here.
