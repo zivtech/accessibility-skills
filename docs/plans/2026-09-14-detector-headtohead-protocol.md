@@ -150,8 +150,13 @@ private by default; nothing here is public unless named so explicitly):
 `run-pa11y.mjs` (htmlcs), `analyze.mjs` (cross-engine SC normalization +
 overlap classification), `write-overlap-table.mjs` (Markdown tables),
 `requirements-map.json` (Alfa rule→SC join, only if Alfa is in scope). A
-WAVE-inclusive run swaps in the §2 surface list and adds a fourth leg below;
-it does not modify these scripts.
+WAVE-inclusive run swaps in the §2 surface list and adds a fourth leg below.
+**Exception — `analyze.mjs` is *not* reused unchanged:** its overlap step
+decides uniqueness at the **SC-number** level, which over-counts a cross-engine
+head-to-head (§4a). The `run-*`/`requirements-map.json` legs are reused
+unchanged; `analyze.mjs`'s SC-level overlap is kept only as a diagnostic, and
+the engine-only count that feeds §1's bar is produced by the **element-level
+dedup pass** §4a requires.
 
 **New WAVE leg** (written when a key exists — not part of this task):
 `reporttype=4` (selectors + contrast, 3 credits/page, handoff doc line 52);
@@ -181,11 +186,49 @@ know which repo they're writing into.
 **Sequence:** (1) freeze the surface list per §2 with independence
 justification written first (also §6 step 1); (2) run axe+htmlcs(+Alfa) via
 the existing scripts, unmodified; (3) run the WAVE leg under the
-concurrency/credential rules; (4) extend `analyze.mjs`'s normalization to
-classify each surface×SC outcome as engine-only vs ≥2-engine agreement; (5)
-run the §5 packet on every engine-only class before it counts; (6) tally
-confirmed classes against §2's surface count and §1's bar; (7) apply §3 on
-write-up.
+concurrency/credential rules; (4) classify each candidate as engine-only vs
+≥2-engine agreement **at the element level per §4a** — `analyze.mjs`'s
+surface×SC overlap is retained only as a diagnostic, never as the count that
+feeds the bar; (5) run the §5 packet on every engine-only class before it
+counts; (6) tally confirmed classes against §2's surface count and §1's bar;
+(7) apply §3 on write-up.
+
+### 4a. Element-level dedup (REQUIRED — an SC-number overlap over-counts)
+
+The `analyze.mjs` reused above decides "engine-only" by comparing the *sets of
+WCAG success criteria* each engine flagged per surface. That is wrong for a
+cross-engine head-to-head, because **different engines file the same element and
+the same defect under different SC numbers.** Two engines can both flag one
+control and still each show up as "engine-only" on every SC line, purely
+because their rule→SC maps differ. So the uniqueness that feeds §1's bar is
+decided at the **element level**, not the SC-number level:
+
+- An engine-B finding counts as **B-only** on a surface *only if* engine A
+  flagged **no violation on the same element, under any rule or SC.** Match
+  elements by a normalized locator — terminal `#id` when present, else a
+  normalized terminal selector token — reconciling the engines' different
+  selector serializations (axe `target[]`, WAVE `selectors[]`, an Alfa-derived
+  locator per §5.7).
+- **Document-scope findings carry no element locator** (e.g. a page-language or
+  page-title defect — WAVE may return a null selector). Match these at the
+  **page + SC-family** level instead: if the other engine flagged the same
+  page-level SC family, that is agreement, not uniqueness.
+- The SC-number overlap `analyze.mjs` already produces is kept **only as a
+  reported diagnostic**; it is never the number compared against ≥3. Any
+  overlap table is labelled SC-level (diagnostic), and a separate element-level
+  table carries the count that governs.
+
+**Receipt this fixes:** the issue-#86 run (pre-declaration `091321a`) found a
+raw SC-level WAVE-only count that collapsed to **zero** verified WAVE-only
+defects once deduped element-level — the two strongest "WAVE-only" classes (an
+unlabelled form input; a page-language defect) were each **also flagged by
+axe**, under a different SC number, and were miscounted as unique purely by the
+SC-level method. Element-level dedup is the single correction that turns that
+run's headline from "large delta" into "no delta." This applies to the
+**Alfa-vs-axe comparison too**, not only WAVE — any two engines with divergent
+rule→SC maps. (An SC-level table that survived the split of §3 stays valid to
+publish as a diagnostic; the element-level count is what a promotion decision
+cites.)
 
 ## 5. Human-confirmation packet
 
