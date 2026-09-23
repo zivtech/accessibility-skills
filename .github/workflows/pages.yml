@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    paths: [docs/**]
+    paths: [docs/**, .github/workflows/pages.yml]
 
 permissions:
   contents: read
@@ -22,8 +22,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for per-page <lastmod> dates
 
       - uses: actions/configure-pages@v5
+
+      # Pages serves docs/ verbatim; list only the top-level HTML pages
+      # (the .md files are served raw, not rendered).
+      - name: Generate sitemap.xml
+        env:
+          BASE_URL: https://zivtech.github.io/accessibility-skills/
+        run: |
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            for f in docs/*.html; do
+              page="${f#docs/}"
+              [ "$page" = index.html ] && page=""
+              echo "  <url><loc>${BASE_URL}${page}</loc><lastmod>$(git log -1 --format=%cs -- "$f")</lastmod></url>"
+            done
+            echo '</urlset>'
+          } > docs/sitemap.xml
+          cat docs/sitemap.xml
 
       - uses: actions/upload-pages-artifact@v3
         with:
