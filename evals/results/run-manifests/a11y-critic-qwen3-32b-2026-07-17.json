@@ -11,7 +11,8 @@
     "The response and score were committed after the stated fixture snapshot, so their byte integrity is provable but continuous execution custody is not.",
     "The historical bytes of .claude/skills/a11y-critic/SKILL.md are unverifiable from public history: the 2026-07-17 draw was made against a working state that was never published to main, so that artifact carries no historical pin. Its current-file hash is still checked; its run-time hash is not, and no substitute commit was invented.",
     "2026-09-08: .claude/skills/a11y-critic/SKILL.md was edited (feat/batched-per-page-audit: a Phase 0 bullet adding the batched one-pass per-page audit default). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only and makes no claim about the 2026-07-17 run-time bytes, which remain unpinned as documented above (no substitute commit invented).",
-    "2026-09-14: ollama/run_benchmark.py was edited (evals/corroboration-canary, #85: the riverbend-permits-corroboration fixture was registered in ACR_FIXTURES and BUGREPORT_FIXTURES). The harness skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run."
+    "2026-09-14: ollama/run_benchmark.py was edited (evals/corroboration-canary, #85: the riverbend-permits-corroboration fixture was registered in ACR_FIXTURES and BUGREPORT_FIXTURES). The harness skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run.",
+    "2026-10-23: ollama/score_output.py was edited (ZIV-24: count_false_positives now delegates to ollama/finding_sections.py, so findings grouped under a severity heading are counted instead of only severity-tagged items). The scorer-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run. Note that the retained score for this draw was produced by the pre-ZIV-24 scorer and therefore under-counts CLEAN findings; it is preserved as drawn rather than rescored, and the correction is published in the receipts README."
   ],
   "missing_fields": [
     "provider.model_digest",
@@ -57,7 +58,7 @@
     {
       "role": "scorer",
       "path": "ollama/score_output.py",
-      "sha256": "818678f15b9cb9157be8cf5c1410745b1f138a5b6fa48596f4c37cd0ec5afecb",
+      "sha256": "793fa46a8b7f8d0acd2c95f5c04f0b43feb53367bbcbd5a1778560b17f8b1b48",
       "historical_git_ref": "15091ef91151d2f7dae4f7ae126c0e4c136e2e06",
       "historical_sha256": "d20fd7b0c74297ba1a7e37c82a5081fff265acdfcfbcdc5a6f21ed53a2ae604d"
     },

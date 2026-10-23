@@ -733,6 +733,20 @@ always read this way. Full citation: `docs/plans/2026-08-25-context-utilization-
   instruction) counts any numbered `Finding N:` regardless of severity and cannot tell
   the difference on its own. `score_evidence_lane.py`'s CLEAN-row reporting was changed
   to state this candidate status explicitly rather than printing a bare PASS/FAIL (§11).
+  - **Correction, 2026-10-23 (ZIV-24).** The sentence above describes the counter as it
+    stood when this phase ran, and it understated the problem in the lenient direction.
+    Those four patterns each required the severity word *inline with the item*, which
+    Claude's output does not write — it files findings as `### MAJOR 1 — …` headings or
+    as `### M1 — …` sub-headings under a `## Major Findings` group. Rescored against
+    this directory's own retained rows (`rows-hosted/`, 16 draws on the two CLEAN
+    fixtures): the old counter finds 7 findings in total and **zero on ten of the
+    sixteen**; the fixed counter finds 29 at the same MINOR-excluding threshold, and 74
+    counting MINOR. No Claude response in this repo emits a `Severity:` line at all.
+    P3's directional DUMP-vs-CURATED comparison was made on the old numbers and should
+    be re-derived from `rows-hosted/` before it is cited; the raw rows are intact, so
+    nothing here needs re-running. The adjudication pass F8 asks for is correspondingly
+    larger than these counts implied. `count_false_positives` now delegates to
+    `ollama/finding_sections.py`.
 
 ## 7. Decision rules (verbatim, pre-committed)
 
