@@ -18,6 +18,7 @@ import re
 import yaml
 
 sys.path.insert(0, os.path.dirname(__file__))
+from finding_sections import ALL_SEVERITIES, count_findings  # noqa: E402
 from score_common import (  # noqa: E402
     MUST_FIND_ABORT_THRESHOLD,
     check_baseline_ids,
@@ -188,24 +189,30 @@ def check_finding(text: str, finding: dict) -> dict:
 def count_false_positives(text: str, declared_verdict: str) -> dict:
     """For CLEAN fixtures: check if the model raised actual accessibility findings.
 
-    Uses structured signals (numbered findings, severity-tagged items) rather than
-    keyword matching, which false-fires on section headers and positive statements.
-    Accepts the already-computed verdict to avoid re-deriving it.
+    Uses structured signals (findings grouped under a severity heading,
+    severity-prefixed finding headings, and severity-tagged items) rather than
+    keyword matching, which false-fires on section headers and positive
+    statements. Accepts the already-computed verdict to avoid re-deriving it.
+
+    Until 2026-10-23 this counted only severity tags that sat *inline with the
+    item*, so the two layouts both critics actually emit -- a severity heading
+    with the finding's title in the bold slot -- scored zero. See
+    ``finding_sections`` for the four layouts and what is deliberately excluded.
+
+    ``structured_findings`` excludes MINOR, as the original patterns did;
+    ``findings_by_severity`` reports every severity detected either way, so a
+    consumer can apply its own threshold without rescoring.
     """
-    finding_patterns = [
-        r"(?:Finding|Issue)\s*#?\d+\s*[:.]",
-        r"^\s*\d+\.\s+\*\*(?:CRITICAL|SERIOUS|MAJOR|MODERATE)",
-        r"Severity:\s*(?:CRITICAL|SERIOUS|MAJOR)",
-        r"\|\s*(?:CRITICAL|SERIOUS|MAJOR)\s*\|",
-    ]
-    finding_count = 0
-    for pattern in finding_patterns:
-        finding_count += len(re.findall(pattern, text, re.MULTILINE | re.IGNORECASE))
+    findings = count_findings(text)
 
     reject_revise = declared_verdict in ("REJECT", "REVISE")
 
     return {
-        "structured_findings": finding_count,
+        "structured_findings": findings["total"],
+        "findings_detected": findings["total_detected"],
+        "findings_by_severity": findings["by_severity"],
+        "counted_severities": findings["counted_severities"],
+        "finding_layouts": findings["layouts"],
         "wrong_verdict": reject_revise,
     }
 
@@ -364,8 +371,27 @@ def score(response_path: str, rubric_path: str):
         print()
 
         fp = count_false_positives(text, verdict)
+        by_severity = fp["findings_by_severity"]
+        breakdown = ", ".join(
+            f"{level} {by_severity[level]}"
+            for level in ALL_SEVERITIES
+            if by_severity[level]
+        )
+        excluded = [
+            level for level in ALL_SEVERITIES if level not in fp["counted_severities"]
+        ]
         print(f"False positive signals:")
-        print(f"  Structured findings (numbered/tagged): {fp['structured_findings']}")
+        # The label said "(numbered/tagged)" until 2026-10-23, when the counter
+        # stopped requiring an inline tag. Consumers that regex this line match
+        # both spellings; see meta-router scripts/measure_local_recall.py.
+        print(f"  Structured findings (severity-classified): {fp['structured_findings']}")
+        # The total applies a severity threshold and the breakdown does not, so
+        # they disagree whenever an excluded severity was found. Print both and
+        # name the threshold rather than leaving a reader to infer it.
+        print(f"  Findings by severity: {breakdown or 'none'}")
+        print(f"  Findings detected (all severities): {fp['findings_detected']}")
+        print(f"  Severities excluded from the total: {', '.join(excluded) or 'none'}")
+        print(f"  Finding layouts seen: {', '.join(fp['finding_layouts']) or 'none'}")
         print(f"  Wrong verdict (REJECT/REVISE): {fp['wrong_verdict']}")
         print()
 

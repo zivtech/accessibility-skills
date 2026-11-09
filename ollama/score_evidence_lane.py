@@ -235,12 +235,22 @@ def classify_miss(item_index, audit, payload):
 
 
 def score_clean(text, verdict):
-    """CLEAN-fixture scoring. Gate F8: count_false_positives (score_output.py,
-    untouched) counts any numbered `Finding N:` regardless of severity, and
-    both CLEAN fixtures carry one legitimate nice_to_find ENHANCEMENT each —
-    a model correctly reporting it would count as an FP here. Gate's fix is
-    documentation-only (README states P3 needs the same adjudication pass);
-    print_report never presents this count as a settled verdict."""
+    """CLEAN-fixture scoring. Gate F8: count_false_positives (score_output.py)
+    counts findings filed under a severity heading, MINOR excluded, and both
+    CLEAN fixtures carry one legitimate nice_to_find ENHANCEMENT each — a model
+    correctly reporting it would count as an FP here if it files it under a
+    severity heading rather than in an Enhancements section, which the counter
+    skips. Gate's fix is documentation-only (README states P3 needs the same
+    adjudication pass); print_report never presents this count as a settled
+    verdict.
+
+    2026-10-23 (ZIV-24): until this date the counter required the severity
+    word inline with the item, so it saw almost nothing — 1 across the 11
+    CLEAN receipts that hold 17 at the same severity threshold, and that 1 was
+    an evidence-contract line rather than a finding. Counts taken from this
+    gate before that date are not comparable with counts taken after it, and
+    the adjudication pass the README asks for is a larger job than the old
+    numbers implied."""
     fp = count_false_positives(text, verdict)
     return {
         "applicable": True,
@@ -248,6 +258,12 @@ def score_clean(text, verdict):
         "structured_findings": fp["structured_findings"],
         "wrong_verdict": fp["wrong_verdict"],
         "fp_count": fp["structured_findings"],
+        # Carried so a consumer can re-threshold without rescoring the run,
+        # and so a 0 from an all-MINOR response is distinguishable from a 0
+        # from a layout this parser did not recognise.
+        "findings_by_severity": fp["findings_by_severity"],
+        "findings_detected": fp["findings_detected"],
+        "finding_layouts": fp["finding_layouts"],
     }
 
 
