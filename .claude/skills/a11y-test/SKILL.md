@@ -423,6 +423,8 @@ Run these tests when `<video>`, `<audio>`, or media player components are presen
 | VoiceOver | Safari (macOS) | Web rotor + standard navigation |
 | (Optional) JAWS | Chrome/Edge | Virtual cursor + Forms mode |
 
+**Scope boundary for this section.** Automated screen-reader lanes — virtual-screen-reader, keyboard-a11y-tester's emulated personas, and any future real-VoiceOver driver — capture the *text* of spoken phrases, never the audio. Mispronunciation, wrong pause placement and rhythm problems (a word split across `<span>`s read as two words, for example) are detectable only by a human listening. A clean phrase log satisfies the announcement checks below; it does not satisfy this protocol. Two hard rules for any agent-driven screen-reader session: never grant blanket `osascript`/AppleScript permission (a bounded command surface only), and never edit application source to make a scenario pass — a tester that fixes has stopped measuring.
+
 ### Landmark Navigation Test
 - Use landmark navigation (NVDA: D key, VoiceOver: Web rotor)
 - Verify: `<main>`, `<nav>`, `<header>`, `<footer>` announced correctly
