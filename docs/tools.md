@@ -64,7 +64,7 @@ The 13 not-covered rows are the deliverable, not the residue: they name exactly 
 
 ANDI sits in this gap too, and is deferred rather than adopted — see the decision table below. Note that ANDI and YANKI are the same SSA branch, so adopting both would be one bet rather than two, exactly as noted for `@guidepup/guidepup` and virtual-screen-reader sharing a maintainer.
 
-Real-AT automation (`@guidepup/guidepup`, driving actual VoiceOver or NVDA) is **deliberately deferred**, not overlooked. It needs macOS/Windows runners, and it shares a maintainer with virtual-screen-reader — so it is a correlated fallback, not risk diversification. The documented capability floor if that engine ever dies is the manual AT protocol, which is why the manual protocol stays a shipping gate rather than a legacy section.
+Real-AT automation (`@guidepup/guidepup`, driving actual VoiceOver or NVDA) is **deliberately deferred**, not overlooked. It needs macOS/Windows runners, and it shares a maintainer with virtual-screen-reader — so it is a correlated fallback, not risk diversification. The documented capability floor if that engine ever dies is the manual AT protocol, which is why the manual protocol stays a shipping gate rather than a legacy section. The 2026-08-26 smoke probe passed and the ruling held; a 2026-11-09 prior-art review (Abbott's Claude-interpreted Gherkin over a VoiceOver AppleScript wrapper) reinforced rather than reopened it — the record and the carried-forward hard rules are in [`virtual-screen-reader-adoption-assessment.md`](virtual-screen-reader-adoption-assessment.md#2026-08-26-smoke-probe-guidepupguidepup-real-voiceover-on-macos-26-tahoe).
 
 ## Evaluated and not adopted
 
