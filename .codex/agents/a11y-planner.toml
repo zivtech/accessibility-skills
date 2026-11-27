@@ -424,9 +424,9 @@ Unacceptable evidence:
     | 🔍 1 | Task N | APG pattern complete, ARIA correct, focus management, state communication |
 
     ---
-    ### Contract Appendix (for spec-kitty-bridge WP translation)
+    ### Contract Appendix (for zivtech-spec-kitty-bridge WP translation)
 
-    When output will be consumed by spec-kitty-bridge, append these standardized sections after the domain-specific output above:
+    When output will be consumed by zivtech-spec-kitty-bridge, append these standardized sections after the domain-specific output above:
 
     ### Architecture Overview
     [Brief summary: semantic structure approach, ARIA pattern choices, focus management strategy]

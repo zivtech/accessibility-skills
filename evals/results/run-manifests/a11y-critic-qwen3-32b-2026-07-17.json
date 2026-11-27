@@ -12,7 +12,8 @@
     "The historical bytes of .claude/skills/a11y-critic/SKILL.md are unverifiable from public history: the 2026-07-17 draw was made against a working state that was never published to main, so that artifact carries no historical pin. Its current-file hash is still checked; its run-time hash is not, and no substitute commit was invented.",
     "2026-09-08: .claude/skills/a11y-critic/SKILL.md was edited (feat/batched-per-page-audit: a Phase 0 bullet adding the batched one-pass per-page audit default). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only and makes no claim about the 2026-07-17 run-time bytes, which remain unpinned as documented above (no substitute commit invented).",
     "2026-09-14: ollama/run_benchmark.py was edited (evals/corroboration-canary, #85: the riverbend-permits-corroboration fixture was registered in ACR_FIXTURES and BUGREPORT_FIXTURES). The harness skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run.",
-    "2026-10-23: ollama/score_output.py was edited (ZIV-24: count_false_positives now delegates to ollama/finding_sections.py, so findings grouped under a severity heading are counted instead of only severity-tagged items). The scorer-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run. Note that the retained score for this draw was produced by the pre-ZIV-24 scorer and therefore under-counts CLEAN findings; it is preserved as drawn rather than rescored, and the correction is published in the receipts README."
+    "2026-10-23: ollama/score_output.py was edited (ZIV-24: count_false_positives now delegates to ollama/finding_sections.py, so findings grouped under a severity heading are counted instead of only severity-tagged items). The scorer-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The 2026-07-17 run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged, so this refresh makes no claim about and does not alter the historical run. Note that the retained score for this draw was produced by the pre-ZIV-24 scorer and therefore under-counts CLEAN findings; it is preserved as drawn rather than rescored, and the correction is published in the receipts README.",
+    "2026-11-27: .claude/skills/a11y-critic/SKILL.md was edited (the spec-kitty output note now names zivtech-spec-kitty-bridge, the bridge's new name). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. This artifact still carries no historical pin, as stated above, and no substitute commit was added."
   ],
   "missing_fields": [
     "provider.model_digest",
@@ -33,7 +34,7 @@
     {
       "role": "skill-source-current",
       "path": ".claude/skills/a11y-critic/SKILL.md",
-      "sha256": "f29c7afe4d62242e5f02932c54c7ff82bed4e06ce6d4c4414e8dadbcb6312e04",
+      "sha256": "1a9d465a0f73402467402a4eea6cfea12e5b2c9abcfe258469177a8c4f231276",
       "historical_provenance": "unverifiable from public history: the bytes this run was drawn against were never published to main"
     },
     {
