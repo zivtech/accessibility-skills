@@ -824,9 +824,9 @@ Copy this protocol into the subagent prompt:
 
     ---
 
-    ### Contract Appendix (for spec-kitty-bridge WP translation)
+    ### Contract Appendix (for zivtech-spec-kitty-bridge WP translation)
 
-    When output will be consumed by spec-kitty-bridge, append these standardized sections after the domain-specific output above:
+    When output will be consumed by zivtech-spec-kitty-bridge, append these standardized sections after the domain-specific output above:
 
     ### Architecture Overview
     [Brief summary of component count, ARIA patterns, and keyboard interaction design from the plan above]

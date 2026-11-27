@@ -8,7 +8,8 @@
   "status_reasons": [
     "The retained response has a model alias, method, timestamp, elapsed time, and raw output, but no immutable provider model version or request receipt.",
     "The planner README states one background subagent per fixture but retains no sandbox, working-directory, tool-state, or input-assembly receipt.",
-    "The output commit is a durable repository snapshot; it is not sufficient to reconstruct the exact hosted execution environment."
+    "The output commit is a durable repository snapshot; it is not sufficient to reconstruct the exact hosted execution environment.",
+    "2026-11-27: .claude/skills/a11y-planner/SKILL.md was edited (the Contract Appendix heading and its lead sentence now name zivtech-spec-kitty-bridge, the bridge's new name). The skill-source-current hash is refreshed to the new live-file bytes; this is a current-integrity anchor only. The run-time bytes remain pinned via historical_git_ref/historical_sha256 and are unchanged."
   ],
   "missing_fields": [
     "provider.model_version",
@@ -30,7 +31,7 @@
     {
       "role": "skill-source-current",
       "path": ".claude/skills/a11y-planner/SKILL.md",
-      "sha256": "c0b86fe3606bac2746f7ed2924d4bb53e1e1d5f739677b92a3c2a5b8bf7b0bed",
+      "sha256": "6233bea434cbc8ed5e74ef2dd87175cf9f6bdb8b8c16905d306291dd677731fd",
       "historical_git_ref": "3bc6d8d23aa7d24650ea4d64e56b56de51f38ae6",
       "historical_sha256": "7f62478aaf2c8257fdff9671858b130dabe8fdd8630bbab822066ccbb143b9ef"
     },
